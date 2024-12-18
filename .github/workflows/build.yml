@@ -10,14 +10,14 @@ concurrency:
   cancel-in-progress: true
  
 jobs:
-  build-x64:
+  windows-x64:
     runs-on: windows-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4.2.2
 
-      - name: 设置 Python
+      - name: Setup Python
         uses: actions/setup-python@v5.3.0
         with:
           python-version: '3.8.10'
@@ -40,7 +40,7 @@ jobs:
           name: Windows-x64
           path: ./dist/ClassWidgets/
   
-  build-x86:
+  windows-x86:
     runs-on: windows-latest
 
     steps:
@@ -70,3 +70,64 @@ jobs:
         with:
           name: Windows-x86
           path: ./dist/ClassWidgets/
+          
+  linux-x64:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.2.2
+
+      - name: Setup Python
+        uses: actions/setup-python@v5.3.0
+        with:
+          python-version: '3.8.10'
+
+      - name: 创建虚拟环境
+        run: |
+          python -m venv venv
+          source ./venv/bin/activate
+          pip install -r requirements.linux.txt
+          pip install pyinstaller
+
+      - name: 使用 PyInstaller 打包
+        run: |
+          source ./venv/bin/activate
+          pyinstaller main.py -w -i ./img/favicon.ico -n ClassWidgets --contents-directory . --add-data config:config --add-data audio:audio --add-data img:img --add-data ui:ui --add-data font:font --add-data *.ui:. --add-data LICENSE:. --add-data plugins:plugins
+
+      - name: 存到构建输出
+        uses: actions/upload-artifact@v4.4.2
+        with:
+          name: Linux-x64
+          path: ./dist/ClassWidgets/
+
+#  linux-x86:
+#    runs-on: ubuntu-20.04
+#
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v4.2.2
+#
+#      - name: 设置 Python
+#        uses: actions/setup-python@v5.3.0
+#        with:
+#          python-version: '3.8.10'
+#          architecture: 'x86'
+#
+#      - name: 创建虚拟环境
+#        run: |
+#          python -m venv venv
+#          .\venv\Scripts\activate
+#          pip install -r requirements.linux.txt
+#          pip install pyinstaller
+#
+#      - name: 使用 PyInstaller 打包
+#        run: |
+#          .\venv\Scripts\activate
+#          pyinstaller main.py -w -i ./img/favicon.ico -n ClassWidgets --contents-directory . --add-data config:config --add-data audio:audio --add-data img:img --add-data ui:ui --add-data font:font --add-data *.ui:. --add-data LICENSE:. --add-data plugins:plugins
+#
+#      - name: 存到构建输出
+#        uses: actions/upload-artifact@v4.4.2
+#        with:
+#          name: Linux-x86
+#          path: ./dist/ClassWidgets/

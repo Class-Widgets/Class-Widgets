@@ -1,5 +1,6 @@
 import importlib
 import os
+import subprocess
 from pathlib import Path
 from shutil import rmtree
 
@@ -19,7 +20,7 @@ from qfluentwidgets import (
     CalendarPicker, BodyLabel, ColorDialog, isDarkTheme, TimeEdit, EditableComboBox, MessageBoxBase,
     SearchLineEdit, Slider, PlainTextEdit, ToolTipFilter, ToolTipPosition, RadioButton, HyperlinkLabel,
     PrimaryDropDownPushButton, Action, RoundMenu, CardWidget, ImageLabel, StrongBodyLabel,
-    TransparentDropDownToolButton
+    TransparentDropDownToolButton, Dialog
 )
 from copy import deepcopy
 from loguru import logger
@@ -77,6 +78,22 @@ def get_timeline():
     global loaded_data
     loaded_data = conf.load_from_json(filename)
     return loaded_data['timeline']
+
+
+def open_dir(path: str):
+    if sys.platform.startswith('win32'):
+        os.startfile(path)
+    elif sys.platform.startswith('linux'):
+        subprocess.run(['xdg-open', path])
+    else:
+        msg_box = Dialog(
+            '无法打开文件夹', f'Class Widgets 在您的系统下不支持自动打开文件夹，请手动打开以下地址：\n{path}'
+        )
+        msg_box.yesButton.setText('好')
+        msg_box.cancelButton.hide()
+        msg_box.buttonLayout.insertStretch(0, 1)
+        msg_box.setFixedWidth(550)
+        msg_box.exec()
 
 
 class VersionThread(QThread):  # 获取最新版本号
@@ -213,7 +230,7 @@ class PluginCard(CardWidget):  # 插件卡片
         self.moreMenu.addActions([
             Action(
                 fIcon.FOLDER, f'打开“{title}”插件文件夹',
-                triggered=lambda: os.startfile(os.path.join(os.getcwd(), conf.PLUGINS_DIR, self.plugin_dir))
+                triggered=lambda: open_dir(os.path.join(os.getcwd(), conf.PLUGINS_DIR, self.plugin_dir))
             ),
             Action(
                 fIcon.DELETE, f'卸载“{title}”插件',
@@ -377,7 +394,7 @@ class SettingsMenu(FluentWindow):
 
         plugin_card_layout = self.findChild(QVBoxLayout, 'plugin_card_layout')
         open_plugin_folder = self.findChild(PushButton, 'open_plugin_folder')
-        open_plugin_folder.clicked.connect(lambda: os.startfile(os.path.join(os.getcwd(), conf.PLUGINS_DIR)))  # 打开插件目录
+        open_plugin_folder.clicked.connect(lambda: open_dir(os.path.join(os.getcwd(), conf.PLUGINS_DIR)))  # 打开插件目录
         for plugin in plugin_dict:
             try:
                 module = importlib.import_module(f'{conf.PLUGINS_DIR}.{plugin}')
@@ -474,7 +491,7 @@ class SettingsMenu(FluentWindow):
         cf_export_schedule = self.findChild(PushButton, 'ex_schedule')
         cf_export_schedule.clicked.connect(self.cf_export_schedule)  # 导出课程表
         cf_open_schedule_folder = self.findChild(PushButton, 'open_schedule_folder')  # 打开课程表文件夹
-        cf_open_schedule_folder.clicked.connect(lambda: os.startfile(os.path.join(os.getcwd(), 'config/schedule')))
+        cf_open_schedule_folder.clicked.connect(lambda: open_dir(os.path.join(os.getcwd(), 'config/schedule')))
 
     def setup_customization_interface(self):
         self.ct_update_preview()
@@ -512,7 +529,7 @@ class SettingsMenu(FluentWindow):
         set_fc_color.clicked.connect(self.ct_set_fc_color)
 
         open_theme_folder = self.findChild(HyperlinkLabel, 'open_theme_folder')  # 打开主题文件夹
-        open_theme_folder.clicked.connect(lambda: os.startfile(os.path.join(os.getcwd(), 'ui')))
+        open_theme_folder.clicked.connect(lambda: open_dir(os.path.join(os.getcwd(), 'ui')))
 
         select_theme_combo = self.findChild(ComboBox, 'combo_theme_select')  # 主题选择
         select_theme_combo.addItems(list.theme_names)
@@ -607,9 +624,11 @@ class SettingsMenu(FluentWindow):
         switch_startup = self.findChild(SwitchButton, 'switch_startup')
         switch_startup.setChecked(int(conf.read_conf('General', 'auto_startup')))
         switch_startup.checkedChanged.connect(self.switch_startup)  # 开机自启
+        if os.name != 'nt':
+            switch_startup.setEnabled(False)
 
         hide_mode_combo = self.findChild(ComboBox, 'hide_mode_combo')
-        hide_mode_combo.addItems(list.hide_mode)
+        hide_mode_combo.addItems(list.hide_mode if os.name == 'nt' else list.non_nt_hide_mode)
         hide_mode_combo.setCurrentIndex(int(conf.read_conf('General', 'hide')))
         hide_mode_combo.currentIndexChanged.connect(
             lambda: conf.write_conf('General', 'hide', str(hide_mode_combo.currentIndex()))
@@ -618,6 +637,8 @@ class SettingsMenu(FluentWindow):
         hide_method_default = self.findChild(RadioButton, 'hide_method_default')
         hide_method_default.setChecked(conf.read_conf('General', 'hide_method') == '0')
         hide_method_default.toggled.connect(lambda: conf.write_conf('General', 'hide_method', '0'))
+        if os.name != 'nt':
+            hide_method_default.setEnabled(False)
         # 默认隐藏
 
         hide_method_all = self.findChild(RadioButton, 'hide_method_all')

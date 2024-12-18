@@ -4,11 +4,13 @@ import configparser as config
 from pathlib import Path
 from shutil import copy
 
-from win32com.client import Dispatch
 from datetime import datetime
 from loguru import logger
 
 import list
+
+if os.name == 'nt':
+    from win32com.client import Dispatch
 
 path = 'config.ini'
 conf = config.ConfigParser()
@@ -160,6 +162,8 @@ def is_temp_schedule():
 
 
 def add_shortcut_to_startmenu(file='', icon=''):
+    if os.name != 'nt':
+        return
     try:
         if file == "":
             file_path = os.path.realpath(__file__)
@@ -190,6 +194,8 @@ def add_shortcut_to_startmenu(file='', icon=''):
 
 
 def add_shortcut(file='', icon=''):
+    if os.name != 'nt':
+        return
     try:
         if file == "":
             file_path = os.path.realpath(__file__)
@@ -220,6 +226,8 @@ def add_shortcut(file='', icon=''):
 
 
 def add_to_startup(file_path='', icon_path=''):  # 注册到开机启动
+    if os.name != 'nt':
+        return
     if file_path == "":
         file_path = os.path.realpath(__file__)
     else:
