@@ -33,7 +33,7 @@ jobs:
         with:
           enable-cache: true
       - name: Run windows build
-        if: ${{ matrix.os == "windows-latest" }}
+        if: ${{ matrix.os == 'windows-latest' }}
         run: |
           uv venv
           .\venv\Scripts\activate
@@ -53,7 +53,7 @@ jobs:
             --add-data LICENSE:. `
             --add-data plugins:plugins
       - name: Run linux build
-        if: ${{ matrix.os != "windows-latest" }}
+        if: ${{ matrix.os != 'windows-latest' }}
         run: |
           uv venv
           source ./venv/bin/activate
