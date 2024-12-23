@@ -37,7 +37,7 @@ jobs:
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
           uv venv
-          .\venv\Scripts\activate
+          .venv\Scripts\activate
           uv pip sync requirements.txt
           uv pip install pyinstaller
           pyinstaller main.py `
@@ -57,7 +57,7 @@ jobs:
         if: ${{ matrix.os != 'windows-latest' }}
         run: |
           uv venv
-          source ./venv/bin/activate
+          source .venv/bin/activate
           uv pip sync requirements.linux.txt
           uv pip install pyinstaller
           pyinstaller main.py \
