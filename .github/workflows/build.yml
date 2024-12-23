@@ -33,7 +33,6 @@ jobs:
         with:
           enable-cache: true
           cache-dependency-glob: "requirements**.txt"
-          cache-local-path: ".venv"
       - name: Run windows build
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
