@@ -34,7 +34,7 @@ jobs:
           enable-cache: true
       - name: Run windows build
         if: ${{ matrix.os == windows-latest }}
-        runs: |
+        run: |
           uv venv
           .\venv\Scripts\activate
           uv pip sync requirements.txt
@@ -54,7 +54,7 @@ jobs:
             --add-data plugins:plugins
       - name: Run linux build
         if: ${{ matrix.os != windows-latest }}
-        runs: |
+        run: |
           uv venv
           source ./venv/bin/activate
           uv pip sync requirements.linux.txt
