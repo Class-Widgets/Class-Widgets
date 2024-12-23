@@ -119,10 +119,10 @@ def get_start_time():
 def get_part():
     def return_data():
         c_time = parts_start_time[i] + dt.timedelta(seconds=time_offset)
-        if any(f'a{int(order[i])}' in key or f'f{int(order[i])}' in key for key in timeline_data.keys()):
-            return c_time, int(order[i])
-        else:
-            return c_time, 0  # 默认
+        # if any(f'a{int(order[i])}' in key or f'f{int(order[i])}' in key for key in timeline_data.keys()):
+        return c_time, int(order[i])
+        # else:
+        #     return c_time, 0  # 默认
 
     current_dt = dt.datetime.now()
     for i in range(len(parts_start_time)):  # 遍历每个Part
@@ -179,6 +179,7 @@ def get_countdown(toast=False):  # 重构好累aaaa
 
     if parts_start_time:
         c_time, part = get_part()
+        print(c_time, part)
 
         if current_dt >= c_time:
             for item_name, item_time in timeline_data.items():
