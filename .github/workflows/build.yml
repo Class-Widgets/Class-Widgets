@@ -30,9 +30,6 @@ jobs:
           architecture: ${{ matrix.arch }}
       - name: Setup uv
         uses: astral-sh/setup-uv@v4
-        with:
-          enable-cache: true
-          cache-dependency-glob: "requirements**.txt"
       - name: Run windows build
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
