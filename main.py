@@ -184,11 +184,13 @@ def get_countdown(toast=False):  # 重构好累aaaa
         if current_dt >= c_time:
             for item_name, item_time in timeline_data.items():
                 if item_name.startswith(f'a{str(part)}') or item_name.startswith(f'f{str(part)}'):
-                    # 判断时间是否上下课，发送通知
+                    # 判断时间是否上下课，发送通知并处理自动显示/收回
                     if current_dt == c_time and toast:
                         if item_name.startswith('a'):
                             notification.push_notification(1, current_lesson_name)  # 上课
+                            mgr.decide_to_hide() # 上课时收回
                         else:
+                            mgr.show_windows() # 下课/放学时释放
                             if next_lessons:  # 下课/放学
                                 notification.push_notification(0, next_lessons[0])  # 下课
                             else:
@@ -1024,16 +1026,16 @@ class DesktopWidget(QWidget):  # 主要小组件
         time_offset = conf.get_time_offset()
         filename = conf.read_conf('General', 'schedule')
 
-        if conf.read_conf('General', 'hide') == '1':  # 上课自动隐藏
-            if current_state:
-                mgr.decide_to_hide()
-            else:
-                mgr.show_windows()
-        elif conf.read_conf('General', 'hide') == '2':  # 最大化/全屏自动隐藏
-            if check_windows_maximize() or check_fullscreen():
-                mgr.decide_to_hide()
-            else:
-                mgr.show_windows()
+        # if conf.read_conf('General', 'hide') == '1':  # 上课自动隐藏
+        #     if current_state:
+        #         mgr.decide_to_hide()
+        #     else:
+        #         mgr.show_windows()
+        # elif conf.read_conf('General', 'hide') == '2':  # 最大化/全屏自动隐藏
+        #     if check_windows_maximize() or check_fullscreen():
+        #         mgr.decide_to_hide()
+        #     else:
+        #         mgr.show_windows()
 
         if conf.is_temp_week():  # 调休日
             current_week = conf.read_conf('Temp', 'set_week')
@@ -1400,5 +1402,6 @@ if __name__ == '__main__':
             setThemeColor(f"#{conf.read_conf('Color', 'attend_class')}")
         else:
             setThemeColor(f"#{conf.read_conf('Color', 'finish_class')}")
+
 
     sys.exit(app.exec())
