@@ -1026,6 +1026,8 @@ class DesktopWidget(QWidget):  # 主要小组件
         time_offset = conf.get_time_offset()
         filename = conf.read_conf('General', 'schedule')
 
+        # 此处即 #97 问题的对应代码，由于出现在 update_data 函数里，每隔一会儿就会跑一遍，导致根本无法手动调节……
+        #
         # if conf.read_conf('General', 'hide') == '1':  # 上课自动隐藏
         #     if current_state:
         #         mgr.decide_to_hide()
