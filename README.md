@@ -1,8 +1,11 @@
+> [!NOTE]
+> Class Widgets 有QQ群啦！详见[此处](#社区)
+
 > [!IMPORTANT]
-> 若要体验此页面的特性，请前往[此处](https://github.com/RinLit-233-shiroko/Class-Widgets/releases/tag/v1.1.7-b3)预发行版的页面下载。
+> 若要体验此页面的特性，请前往[此处](https://github.com/RinLit-233-shiroko/Class-Widgets/releases/tag/v1.1.7-b4)预发行版的页面下载。
 
 <p align="center">
-  <img width="18%" align="center" src="img/Logo.png" alt="logo">
+  <img width="16%" align="center" src="img/Logo.png" alt="logo">
 </p>
   <h1 align="center">
   Class Widgets
@@ -18,10 +21,11 @@
 [![测试版](https://img.shields.io/github/v/tag/RinLit-233-shiroko/Class-Widgets?include_prereleases&label=当前测试版&color=yellow&style=for-the-badge)](https://github.com/RinLit-233-shiroko/Class-Widgets/releases)
 [![开源许可](https://img.shields.io/badge/license-GPLv3-blue.svg?label=开源许可证&style=for-the-badge)](https://github.com/RinLit-233-shiroko/Class-Widgets)
 [![下载量](https://img.shields.io/github/downloads/RinLit-233-shiroko/Class-Widgets/total.svg?label=下载量&color=green&style=for-the-badge)](https://github.com/RinLit-233-shiroko/Class-Widgets)
+[![Q群](https://img.shields.io/badge/QQ群-169200380-blue.svg?logo=qq&color=blue&style=for-the-badge)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380)
 
 ![Banner](img/Banner.png)
 
-#### [了解更多 >](https://www.bilibili.com/video/BV1xwW9eyEGu/)
+#### [了解更多 >](https://www.bilibili.com/video/BV1xwW9eyEGu/) | [加入我们的Q群 >](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380)
 
 </div>
 
@@ -73,7 +77,7 @@ Copyright © 2024 RinLit.
 
 ### 资源
 
-- [SF Symbols](https://developer.apple.com/sf-symbols/) （部分图标已做修改）
+- [SF Symbols](https://developer.apple.com/cn/sf-symbols/) （部分图标已做修改）
 - [和风天气图标](https://icons.qweather.com/)（部分图标已做修改）
 - [HarmonyOS Sans](https://developer.huawei.com/consumer/cn/design/resource/)
 
@@ -84,6 +88,9 @@ Copyright © 2024 RinLit.
   <img src="https://contrib.rocks/image?repo=Class-Widgets/Class-Widgets" />
 </a>
 </div>
+
+## 社区
+我们目前开通了 [Discussions](https://github.com/orgs/Class-Widgets/discussions) 和 [QQ群](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380)
 
 ## 星标历史
 <picture>

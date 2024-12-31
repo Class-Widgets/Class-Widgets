@@ -29,8 +29,8 @@
   },
   "Color": {
     "attend_class": "DD986F",
-    "finish_class": "#46B878",
-    "prepare_class": "#7065D8"
+    "finish_class": "46B878",
+    "prepare_class": "7065D8"
   },
   "Plugin": {
     "version": 1,

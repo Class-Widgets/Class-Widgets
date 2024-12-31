@@ -41,10 +41,14 @@ class tip_toast(QWidget):
         # 窗口位置
         if conf.read_conf('Toast', 'pin_on_top') == '1':
             self.setWindowFlags(
-                Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.FramelessWindowHint | Qt.WindowType.Tool)
+                Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.FramelessWindowHint |
+                Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
+            )
         else:
             self.setWindowFlags(
-                Qt.WindowType.WindowStaysOnBottomHint | Qt.WindowType.FramelessWindowHint | Qt.WindowType.Tool)
+                Qt.WindowType.WindowStaysOnBottomHint | Qt.WindowType.FramelessWindowHint |
+                Qt.X11BypassWindowManagerHint
+            )
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.move(pos[0], pos[1])
         self.resize(width, height)
@@ -60,6 +64,9 @@ class tip_toast(QWidget):
             pixmap = QPixmap(icon)
             pixmap = pixmap.scaled(48, 48)
             icon_label.setPixmap(pixmap)
+
+        if conf.read_conf('General', 'color_mode') == '2':
+            setTheme(Theme.AUTO)
 
         if state == 1:
             logger.info('上课铃声显示')
@@ -119,9 +126,6 @@ class tip_toast(QWidget):
             bg_color = ['rgba(110, 190, 210, 255)', 'rgba(110, 190, 210, 255)', 'rgba(90, 210, 215, 255)']
         else:
             bg_color = ['rgba(110, 190, 210, 255)', 'rgba(110, 190, 210, 255)', 'rgba(90, 210, 215, 255)']
-
-        if detect_enable_toast(state):
-            return
 
         backgnd.setStyleSheet(f'font-weight: bold; border-radius: {radius}; '
                               'background-color: qlineargradient('
@@ -198,6 +202,8 @@ class tip_toast(QWidget):
         self.opacity_animation_close.finished.connect(self.close)
 
     def closeEvent(self, event):
+        global window_list
+        window_list.remove(self)
         self.deleteLater()
         event.accept()
 
@@ -208,10 +214,14 @@ class wave_Effect(QWidget):
 
         if conf.read_conf('Toast', 'pin_on_top') == '1':
             self.setWindowFlags(
-                Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.FramelessWindowHint | Qt.WindowType.Tool)
+                Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.FramelessWindowHint |
+                Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
+            )
         else:
             self.setWindowFlags(
-                Qt.WindowType.WindowStaysOnBottomHint | Qt.WindowType.FramelessWindowHint | Qt.WindowType.Tool)
+                Qt.WindowType.WindowStaysOnBottomHint | Qt.WindowType.FramelessWindowHint |
+                Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
+            )
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
         self._radius = 0
@@ -277,6 +287,8 @@ class wave_Effect(QWidget):
         painter.drawEllipse(loc, self._radius, self._radius)
 
     def closeEvent(self, event):
+        global window_list
+        window_list.remove(self)
         self.deleteLater()
         event.accept()
 
@@ -320,12 +332,12 @@ def main(state=1, lesson_name='', title='通知示例', subtitle='副标题',
     finish_class_color = f"#{conf.read_conf('Color', 'finish_class')}"
     prepare_class_color = f"#{conf.read_conf('Color', 'prepare_class')}"
 
-    if conf.read_conf('General', 'color_mode') == '2':
-        setTheme(Theme.AUTO)
-    elif conf.read_conf('General', 'color_mode') == '1':
-        setTheme(Theme.DARK)
-    else:
-        setTheme(Theme.LIGHT)
+    # if conf.read_conf('General', 'color_mode') == '2':
+    #     setTheme(Theme.AUTO)
+    # elif conf.read_conf('General', 'color_mode') == '1':
+    #     setTheme(Theme.DARK)
+    # else:
+    #     setTheme(Theme.LIGHT)
 
     theme = conf.read_conf('General', 'theme')
     height = conf.load_theme_config(theme)['height']
@@ -374,10 +386,12 @@ def main(state=1, lesson_name='', title='通知示例', subtitle='副标题',
 def detect_enable_toast(state=0):
     if conf.read_conf('Toast', 'attend_class') != '1' and state == 1:
         return True
-    if conf.read_conf('Toast', 'finish_class') != '1' and state == 0 or state == 2:
+    if conf.read_conf('Toast', 'finish_class') != '1' and state == 0:
         return True
     if conf.read_conf('Toast', 'prepare_class') != '1' and state == 3:
         return True
+    else:
+        return False
 
 
 def push_notification(state=1, lesson_name='', title=None, subtitle=None,
@@ -398,10 +412,10 @@ def push_notification(state=1, lesson_name='', title=None, subtitle=None,
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     main(
-        state=4,
-        title='测试通知喵',
-        subtitle='By Rin.',
-        content='欢迎使用 ClassWidgets',
-        icon='img/favicon.png'
+        state=2,
+        # title='测试通知喵',
+        # subtitle='By Rin.',
+        # content='欢迎使用 ClassWidgets',
+        # icon='img/favicon.png'
     )
     sys.exit(app.exec())

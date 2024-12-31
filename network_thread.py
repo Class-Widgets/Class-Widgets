@@ -11,6 +11,8 @@ from loguru import logger
 import conf
 
 headers = {"User-Agent": "Mozilla/5.0"}
+proxies = {"http": "http://127.0.0.1:10809", "https": "http://127.0.0.1:10809"}  # 加速访问
+# proxies = {"http": None, "https": None}
 
 MIRROR_PATH = "config/mirror.json"
 PLAZA_REPO_URL = "https://raw.githubusercontent.com/Class-Widgets/plugin-plaza/"
@@ -26,6 +28,10 @@ except Exception as e:
 
 for name in mirror_dict:
     mirror_list.append(name)
+
+if conf.read_conf('Plugin', 'mirror') not in mirror_list:  # 如果当前配置不在镜像列表中，则设置为默认镜像
+    logger.warning(f"当前配置不在镜像列表中，设置为默认镜像: {mirror_list[0]}")
+    conf.write_conf('Plugin', 'mirror', mirror_list[0])
 
 
 class getRepoFileList(QThread):  # 获取仓库文件目录
@@ -48,7 +54,7 @@ class getRepoFileList(QThread):  # 获取仓库文件目录
             # 获取目录内容
             url = f"{PLAZA_REPO_DIR}{self.path}"
             print(url)
-            response = requests.get(url, proxies={'http': None, 'https': None}, headers=headers)
+            response = requests.get(url, proxies=proxies, headers=headers)
             if response.status_code == 200:
                 response.raise_for_status()
                 files = response.json()
@@ -93,7 +99,7 @@ class getPluginInfo(QThread):  # 获取插件信息(json)
         try:
             mirror_url = mirror_dict[conf.read_conf('Plugin', 'mirror')]
             url = f"{mirror_url}{self.download_url}"
-            response = requests.get(url, proxies={'http': None, 'https': None})  # 禁用代理
+            response = requests.get(url, proxies=proxies)  # 禁用代理
             if response.status_code == 200:
                 data = response.json()
                 return data
@@ -102,6 +108,38 @@ class getPluginInfo(QThread):  # 获取插件信息(json)
                 return {}
         except Exception as e:
             logger.error(f"获取插件信息失败：{e}")
+            return {}
+
+
+class getTags(QThread):  # 获取插件标签(json)
+    repo_signal = pyqtSignal(dict)
+
+    def __init__(
+            self, url='https://raw.githubusercontent.com/Class-Widgets/plugin-plaza/main/Plugins/tags.json'
+    ):
+        super().__init__()
+        self.download_url = url
+
+    def run(self):
+        try:
+            plugin_info_data = self.get_plugin_info()
+            self.repo_signal.emit(plugin_info_data)
+        except Exception as e:
+            logger.error(f"触发Tag信息失败: {e}")
+
+    def get_plugin_info(self):
+        try:
+            mirror_url = mirror_dict[conf.read_conf('Plugin', 'mirror')]
+            url = f"{mirror_url}{self.download_url}"
+            response = requests.get(url, proxies=proxies)  # 禁用代理
+            if response.status_code == 200:
+                data = response.json()
+                return data
+            else:
+                logger.error(f"获取Tag信息失败：{response.status_code}")
+                return {}
+        except Exception as e:
+            logger.error(f"获取Tag信息失败：{e}")
             return {}
 
 
@@ -127,7 +165,7 @@ class getImg(QThread):  # 获取图片
         try:
             mirror_url = mirror_dict[conf.read_conf('Plugin', 'mirror')]
             url = f"{mirror_url}{self.download_url}"
-            response = requests.get(url, proxies={'http': None, 'https': None})
+            response = requests.get(url, proxies=proxies)
             if response.status_code == 200:
                 return response.content
             else:
@@ -157,7 +195,7 @@ class getReadme(QThread):  # 获取README
             mirror_url = mirror_dict[conf.read_conf('Plugin', 'mirror')]
             url = f"{mirror_url}{self.download_url}"
             print(url)
-            response = requests.get(url, proxies={'http': None, 'https': None})
+            response = requests.get(url, proxies=proxies)
             if response.status_code == 200:
                 return response.text
             else:
@@ -181,7 +219,7 @@ class VersionThread(QThread):  # 获取最新版本号
     def get_latest_version(self):
         url = "https://api.github.com/repos/RinLit-233-shiroko/Class-Widgets/releases/latest"
         try:
-            response = requests.get(url, proxies={'http': None, 'https': None})
+            response = requests.get(url, proxies=proxies)
             if response.status_code == 200:
                 data = response.json()
                 return data.get("tag_name")
@@ -205,7 +243,7 @@ class getDownloadUrl(QThread):
     def run(self):
         try:
             url = f"https://api.github.com/repos/{self.username}/{self.repo}/releases/latest"
-            response = requests.get(url, proxies={'http': None, 'https': None})
+            response = requests.get(url, proxies=proxies)
             if response.status_code == 200:
                 data = response.json()
                 for asset in data['assets']:  # 遍历下载链接
@@ -214,7 +252,7 @@ class getDownloadUrl(QThread):
                         self.geturl_signal.emit(asset_url)
             elif response.status_code == 403:  # 触发API限制
                 logger.warning("到达Github API限制，请稍后再试")
-                response = requests.get('https://api.github.com/users/octocat', proxies={'http': None, 'https': None})
+                response = requests.get('https://api.github.com/users/octocat', proxies=proxies)
                 reset_time = response.headers.get('X-RateLimit-Reset')
                 reset_time = datetime.fromtimestamp(int(reset_time))
                 self.geturl_signal.emit(f"ERROR: 由于请求次数过多，到达Github API限制，请在{reset_time.minute}分钟后再试")
@@ -235,7 +273,7 @@ class DownloadAndExtract(QThread):  # 下载并解压插件
         print(self.download_url)
         self.cache_dir = "cache"
         self.plugin_name = plugin_name
-        self.extract_dir = f'Plugins/{plugin_name}'
+        self.extract_dir = f'Plugins'
 
     def run(self):
         try:
@@ -262,7 +300,7 @@ class DownloadAndExtract(QThread):  # 下载并解压插件
         try:
             self.download_url = mirror_dict[conf.read_conf('Plugin', 'mirror')] + self.download_url
             print(self.download_url)
-            response = requests.get(self.download_url, stream=True, proxies={'http': None, 'https': None})
+            response = requests.get(self.download_url, stream=True, proxies=proxies)
             if response.status_code != 200:
                 logger.error(f"插件下载失败，错误代码: {response.status_code}")
                 self.status_signal.emit(f'ERROR: 网络连接错误：{response.status_code}')
@@ -283,8 +321,17 @@ class DownloadAndExtract(QThread):  # 下载并解压插件
 
     def extract_zip(self, zip_path):
         try:
+            before = set(os.listdir(self.extract_dir))
             with zipfile.ZipFile(zip_path, 'r') as zip_ref:
                 zip_ref.extractall(self.extract_dir)
+            after_extract = set(os.listdir(self.extract_dir))
+
+            # 找出新增的文件夹
+            new_folder = after_extract - before
+            if new_folder:
+                folder_name = new_folder.pop()  # 取出集合中的一个元素
+                new_name = folder_name.rsplit('-', 1)[0]
+                os.rename(os.path.join(self.extract_dir, folder_name), os.path.join(self.extract_dir, new_name))
         except Exception as e:
             logger.error(f"解压失败: {e}")
 

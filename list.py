@@ -182,9 +182,9 @@ def get_subject_abbreviation(key):
 # 学科图标
 def get_subject_icon(key):
     if key in subject_icon:
-        return f'img/{subject_icon[key]}.svg'
+        return f'img/subject/{subject_icon[key]}.svg'
     else:
-        return f'img/self_study.svg'
+        return f'img/subject/self_study.svg'
 
 
 # 学科主题色

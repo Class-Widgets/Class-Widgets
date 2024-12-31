@@ -1,18 +1,19 @@
 import json
 
 from PyQt5 import uic
-from PyQt5.QtCore import QSize, Qt, QTimer, QEventLoop, QUrl
+from PyQt5.QtCore import QSize, Qt, QTimer, QUrl, QEvent, QStringListModel
 from PyQt5.QtGui import QIcon, QPixmap, QDesktopServices
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QGridLayout, QSpacerItem, QSizePolicy, QWidget, \
-    QScroller
+    QScroller, QCompleter
 from qfluentwidgets import MSFluentWindow, FluentIcon as fIcon, NavigationItemPosition, TitleLabel, \
     ImageLabel, StrongBodyLabel, HyperlinkLabel, CaptionLabel, PrimaryPushButton, HorizontalFlipView, \
     InfoBar, InfoBarPosition, SplashScreen, MessageBoxBase, TransparentToolButton, BodyLabel, \
     PrimarySplitPushButton, RoundMenu, Action, PipsPager, TextBrowser, CardWidget, \
-    IndeterminateProgressRing, ComboBox, IndeterminateProgressBar, ProgressBar, isDarkTheme, SmoothScrollArea
+    IndeterminateProgressRing, ComboBox, ProgressBar, SmoothScrollArea, SearchLineEdit, HyperlinkButton
 
 from loguru import logger
 from datetime import datetime
+from random import shuffle
 
 import conf
 import list as l
@@ -35,14 +36,34 @@ plugins_data = []  # 仓库插件信息
 download_progress = []  # 下载线程
 
 installed_plugins = []  # 已安装插件（通过PluginPlaza获取）
+tags = ['示例', '信息展示', '学习', '测试', '工具', '自动化']  # 测试用TAG
+search_items = []
+SEARCH_FIELDS = ["name", "description", "tag", "author"]  # 搜索字段
+
+
+class TagLink(HyperlinkButton):  # 标签链接
+    def __init__(self, text, parent=None):
+        super().__init__(parent)
+        self.parent = parent
+        self.tag = text
+        self.setText(text)
+        self.setIcon(fIcon.SEARCH)
+
+        self.setFixedHeight(30)
+        self.clicked.connect(self.search_tag)
+
+    def search_tag(self):
+        self.parent.search_plugin.setText(self.tag)
+        self.parent.search_plugin.searchSignal.emit(self.tag)  # 发射搜索信号
 
 
 class downloadProgressBar(InfoBar):  # 下载进度条(创建下载进程)
-    def __init__(self, url=TEST_DOWNLOAD_LINK, name="Test", parent=None):
+    def __init__(self, url=TEST_DOWNLOAD_LINK, branch='main', name="Test", parent=None):
         global download_progress
         self.p_name = url.split('/')[4]  # repo
-        user = url.split('/')[3]
+        # user = url.split('/')[3]
         self.name = name
+        self.url = f'{url}/archive/refs/heads/{branch}.zip'
 
         super().__init__(icon=fIcon.DOWNLOAD,
                          title='',
@@ -65,19 +86,14 @@ class downloadProgressBar(InfoBar):  # 下载进度条(创建下载进程)
         # 开始下载
 
         download_progress.append(self.p_name)
-        self.get_url_thread = nt.getDownloadUrl(user, self.p_name)
-        self.get_url_thread.geturl_signal.connect(self.set_url)  # 获取下载链接
-        self.get_url_thread.start()
+        self.download(self.url)
 
-    def set_url(self, url):  # 接受下载连接并开始任务
-        if not url.startswith('ERROR'):
-            self.download_thread = nt.DownloadAndExtract(url, self.p_name)
-            # self.download_thread = nt.DownloadAndExtract(TEST_DOWNLOAD_LINK, self.p_name)
-            self.download_thread.progress_signal.connect(lambda progress: self.bar.setValue(int(progress)))  # 下载
-            self.download_thread.status_signal.connect(self.detect_status)  # 判断状态
-            self.download_thread.start()
-        else:
-            self.download_error(url[6:])
+    def download(self, url):  # 接受下载连接并开始任务
+        self.download_thread = nt.DownloadAndExtract(url, self.p_name)
+        # self.download_thread = nt.DownloadAndExtract(TEST_DOWNLOAD_LINK, self.p_name)
+        self.download_thread.progress_signal.connect(lambda progress: self.bar.setValue(int(progress)))  # 下载
+        self.download_thread.status_signal.connect(self.detect_status)  # 判断状态
+        self.download_thread.start()
 
     def cancelDownload(self):
         global download_progress
@@ -137,6 +153,7 @@ class PluginDetailPage(MessageBoxBase):  # 插件详情页面
         super().__init__(parent)
         self.url = url
         self.data = data
+        self.branch = data.get("branch")
         self.title = title
         self.parent = parent
         self.p_name = url.split('/')[-1]  # repo
@@ -150,25 +167,25 @@ class PluginDetailPage(MessageBoxBase):  # 插件详情页面
         self.iconWidget.setFixedSize(100, 100)
         self.iconWidget.setBorderRadius(8, 8, 8, 8)
 
-        self.titleLabel = self.findChild(TitleLabel, 'titleLabel')
+        self.titleLabel = self.findChild(TitleLabel, 'titleLabel')  # 标题
         self.titleLabel.setText(title)
 
-        self.contentLabel = self.findChild(CaptionLabel, 'descLabel')
+        self.contentLabel = self.findChild(CaptionLabel, 'descLabel')  # 描述
         self.contentLabel.setText(content)
 
-        self.tagLabel = self.findChild(HyperlinkLabel, 'tagButton')
+        self.tagLabel = self.findChild(HyperlinkLabel, 'tagButton')  # tag
         self.tagLabel.setText(tag)
 
-        self.versionLabel = self.findChild(BodyLabel, 'versionLabel')
+        self.versionLabel = self.findChild(BodyLabel, 'versionLabel')  # 版本
         self.versionLabel.setText(version)
 
-        self.authorLabel = self.findChild(HyperlinkLabel, 'authorButton')
+        self.authorLabel = self.findChild(HyperlinkLabel, 'authorButton')  # 作者
         self.authorLabel.setText(author)
         self.authorLabel.setUrl(author_url)
 
-        self.openGitHub = self.findChild(TransparentToolButton, 'openGitHub')
-        self.openGitHub.setIcon(fIcon.GITHUB)
-        self.openGitHub.setIconSize(QSize(24, 24))
+        self.openGitHub = self.findChild(TransparentToolButton, 'openGitHub')  # 打开连接
+        self.openGitHub.setIcon(fIcon.LINK)
+        self.openGitHub.setIconSize(QSize(18, 18))
         self.openGitHub.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(self.url)))
 
         self.installButton = self.findChild(PrimarySplitPushButton, 'installButton')
@@ -191,7 +208,7 @@ class PluginDetailPage(MessageBoxBase):  # 插件详情页面
         ])
         self.installButton.setFlyout(menu)
 
-        self.readmePage = TextBrowser()
+        self.readmePage = TextBrowser(self)
         self.readmePage.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.readmePage.setReadOnly(True)
         scroll_area_widget.addWidget(self.readmePage)
@@ -200,7 +217,8 @@ class PluginDetailPage(MessageBoxBase):  # 插件详情页面
         self.installButton.setText("  安装中  ")
         self.installButton.setEnabled(False)
         di = downloadProgressBar(
-            url=f"{replace_to_file_server(self.url, self.data['branch'])}/releases/latest/download",
+            url=f"{self.url}",
+            branch=self.branch,
             name=self.title,
             parent=self.parent
         )
@@ -239,7 +257,7 @@ class PluginDetailPage(MessageBoxBase):  # 插件详情页面
 
 class PluginCard_Horizontal(CardWidget):  # 插件卡片（横向）
     def __init__(
-            self, icon='img/settings/plugin-icon.png', title='Plugin Name', content='Description...', tag='Unknown',
+            self, icon='img/plaza/plugin_pre.png', title='Plugin Name', content='Description...', tag='Unknown',
             version='1.0.0', author="CW Support",
             url="https://github.com/RinLit-233-shiroko/cw-example-plugin", data=None, parent=None):
         super().__init__(parent)
@@ -247,6 +265,7 @@ class PluginCard_Horizontal(CardWidget):  # 插件卡片（横向）
         self.title = title
         self.parent = parent
         self.tag = tag
+        self.branch = data.get("branch")
         self.url = url
         self.p_name = url.split('/')[-1]  # repo
         self.data = data
@@ -267,6 +286,7 @@ class PluginCard_Horizontal(CardWidget):  # 插件卡片（横向）
 
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         self.setFixedHeight(110)
+        self.setMinimumWidth(250)
         self.authorLabel.setText(author)
         self.authorLabel.setUrl(author_url)
         self.authorLabel.setSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Fixed)
@@ -278,7 +298,8 @@ class PluginCard_Horizontal(CardWidget):  # 插件卡片（横向）
         self.titleLabel.setSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Fixed)
 
         self.installButton.setText("安装")
-        self.installButton.setFixedSize(115, 36)
+        self.installButton.setMaximumSize(100, 36)
+        self.installButton.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         self.installButton.setIcon(fIcon.DOWNLOAD)
         self.installButton.clicked.connect(self.install)
         if self.p_name in installed_plugins:  # 如果已安装
@@ -311,16 +332,20 @@ class PluginCard_Horizontal(CardWidget):  # 插件卡片（横向）
     def install(self):
         if self.p_name not in download_progress:  # 如果正在下载
             di = downloadProgressBar(
-                url=f"{replace_to_file_server(self.url, self.data['branch'])}/releases/latest/download",
+                url=f"{self.url}",
+                branch=self.branch,
                 name=self.title,
                 parent=self.parent
             )
             di.show()
 
     def set_img(self, img):
-        self.icon = img
-        self.iconWidget.setImage(img)
-        self.iconWidget.setFixedSize(84, 84)
+        try:
+            self.icon = img
+            self.iconWidget.setImage(img)
+            self.iconWidget.setFixedSize(84, 84)
+        except Exception as e:
+            logger.error(f"设置插件图片失败: {e}")
 
     def show_detail(self):
         w = PluginDetailPage(
@@ -347,10 +372,13 @@ class PluginPlaza(MSFluentWindow):
             self.latestsInterface.setObjectName("latestInterface")
             self.settingsInterface = uic.loadUi('pp-settings.ui')  # 设置
             self.settingsInterface.setObjectName("settingsInterface")
+            self.searchInterface = uic.loadUi('pp-search.ui')  # 搜索
+            self.searchInterface.setObjectName("searchInterface")
 
             self.init_nav()
             self.init_window()
             self.get_pp_data()
+            self.get_tags_data()
             self.get_banner_img()
         except Exception as e:
             logger.error(f'初始化插件广场时发生错误：{e}')
@@ -358,6 +386,69 @@ class PluginPlaza(MSFluentWindow):
     def load_all_interface(self):
         self.setup_homeInterface()
         self.setup_settingsInterface()
+        self.setup_searchInterface()
+
+    def setup_searchInterface(self):  # 初始化搜索
+        search_scroll = self.searchInterface.findChild(SmoothScrollArea, 'search_scroll')
+
+        def search(keyword):  # 搜索
+            result = {}
+            for key, value in plugins_data.items():
+                if any(keyword.lower() in str(value.get(field, "")).lower() for field in SEARCH_FIELDS):
+                    result[key] = value
+            return result
+
+        def clear_results():
+            for i in reversed(range(self.search_plugin_grid.count())):
+                widget = self.search_plugin_grid.itemAt(i).widget()
+                if widget:
+                    widget.setParent(None)  # 移除控件
+                    widget.deleteLater()
+
+        def search_plugins():  # 搜索插件
+            if not plugins_data:
+                return
+            clear_results()
+
+            if self.search_plugin.text():
+                def set_plugin_image(plugin_card, data):
+                    pixmap = QPixmap()
+                    pixmap.loadFromData(data)
+                    plugin_card.set_img(pixmap)
+
+                keyword = self.search_plugin.text()
+                print(search(keyword))  # 结果
+                plugin_num = 0  # 计数
+                for key, data in search(keyword).items():
+                    plugin_card = PluginCard_Horizontal(title=data['name'], content=data['description'],
+                                                        tag=data['tag'], version=data['version'], url=data['url'],
+                                                        author=data['author'], data=data, parent=self)
+                    plugin_card.clicked.connect(plugin_card.show_detail)  # 点击事件
+
+                    # 启动线程加载图片
+                    image_thread = nt.getImg(f"{replace_to_file_server(data['url'], data['branch'])}/icon.png")
+                    image_thread.repo_signal.connect(
+                        lambda img_data, card=plugin_card: set_plugin_image(card, img_data))
+                    image_thread.start()
+
+                    self.search_plugin_grid.addWidget(plugin_card, plugin_num // 2, plugin_num % 2)  # 排列
+                    plugin_num += 1
+
+        self.search_plugin_grid = self.searchInterface.findChild(QGridLayout, 'search_plugin_grid')  # 插件表格
+        self.tags_layout = self.searchInterface.findChild(QGridLayout, 'tags_layout')  # tag 布局
+        self.search_plugin = self.searchInterface.findChild(SearchLineEdit, 'search_plugin')
+        self.search_plugin.searchSignal.connect(search_plugins)
+        self.search_plugin.returnPressed.connect(search_plugins)
+        self.search_plugin.clearSignal.connect(clear_results)
+        self.search_completer = QCompleter(search_items, self.search_plugin)
+        # 设置显示的选项数
+        self.search_completer.setMaxVisibleItems(10)
+        self.search_completer.setFilterMode(Qt.MatchContains)  # 内容匹配
+        self.search_completer.setCaseSensitivity(Qt.CaseInsensitive)  # 不区分大小写
+        self.search_completer.activated.connect(search_plugins)
+        self.search_plugin.setCompleter(self.search_completer)
+
+        QScroller.grabGesture(search_scroll.viewport(), QScroller.LeftMouseButtonGesture)
 
     def setup_settingsInterface(self):  # 初始化设置
         # 选择代理
@@ -395,7 +486,31 @@ class PluginPlaza(MSFluentWindow):
         )
         QScroller.grabGesture(home_scroll.viewport(), QScroller.LeftMouseButtonGesture)
 
+    def set_tags_data(self, data):
+        global tags, search_items
+        if data:
+            tags = data.get('tags')
+            shuffle(tags)  # 随机
+        for tag in tags:
+            search_items.append(tag)
+            self.search_completer.setModel(QStringListModel(search_items))  # 设置搜索提示
+        tag_num = 0  # 计数
+        for tag in tags[:6]:
+            tag_link = TagLink(tag, self)
+            self.tags_layout.addWidget(tag_link, tag_num // 3, tag_num % 3)  # 排列
+            tag_num += 1
+
+
     def load_recommend_plugin(self, p_data):
+        global plugins_data, search_items
+        plugins_data = p_data  # 保存插件数据
+
+        for plugin in p_data.values():  # 遍历插件数据
+            search_items.append(plugin['name'])
+            if plugin['author'] not in search_items:
+                search_items.append(plugin['author'])
+        self.search_completer.setModel(QStringListModel(search_items))  # 设置搜索提示
+
         def set_plugin_image(plugin_card, data):
             pixmap = QPixmap()
             pixmap.loadFromData(data)
@@ -458,14 +573,14 @@ class PluginPlaza(MSFluentWindow):
         global restart_tips_flag
         restart_tips_flag = True
         w = InfoBar.info(
-                title='需要重启',
-                content='若要应用插件配置，需重启 Class Widgets',
-                orient=Qt.Horizontal,
-                isClosable=True,
-                position=InfoBarPosition.TOP,
-                duration=-1,
-                parent=self
-            )
+            title='需要重启',
+            content='若要应用插件配置，需重启 Class Widgets',
+            orient=Qt.Horizontal,
+            isClosable=True,
+            position=InfoBarPosition.TOP,
+            duration=-1,
+            parent=self
+        )
         restart_btn = HyperlinkLabel('关闭软件')
         restart_btn.clicked.connect(lambda: sys.exit())
         w.addWidget(restart_btn)
@@ -477,6 +592,11 @@ class PluginPlaza(MSFluentWindow):
         self.get_plugin_list_thread.repo_signal.connect(self.load_recommend_plugin)
         self.get_plugin_list_thread.start()
 
+    def get_tags_data(self):
+        self.get_tags_list_thread = nt.getTags()
+        self.get_tags_list_thread.repo_signal.connect(self.set_tags_data)
+        self.get_tags_list_thread.start()
+
     def switch_banners(self):  # 切换Banner
         if self.banner_view.currentIndex() == len(self.banners) - 1:
             self.banner_view.scrollToIndex(0)
@@ -487,17 +607,20 @@ class PluginPlaza(MSFluentWindow):
 
     def init_nav(self):
         self.addSubInterface(self.homeInterface, fIcon.HOME, '首页', fIcon.HOME_FILL)
-        self.addSubInterface(self.latestsInterface, fIcon.MEGAPHONE, '最新上架')
+        self.addSubInterface(self.latestsInterface, fIcon.LIBRARY, '最新上架', fIcon.LIBRARY_FILL)
         self.addSubInterface(
-            self.settingsInterface, fIcon.SETTING, '设置', position=NavigationItemPosition.BOTTOM
+            self.searchInterface, fIcon.SEARCH, '搜索', position=NavigationItemPosition.BOTTOM
+        )
+        self.addSubInterface(
+            self.settingsInterface, fIcon.SETTING, '设置', fIcon.SETTING, position=NavigationItemPosition.BOTTOM
         )
 
     def init_window(self):
         self.load_all_interface()
         self.init_font()
 
-        self.setMinimumWidth(950)
-        self.setMinimumHeight(400)
+        self.setMinimumWidth(850)
+        self.setMinimumHeight(500)
         self.setMicaEffectEnabled(True)
         self.setWindowTitle('插件广场')
         self.setWindowIcon(QIcon('img/pp_favicon.png'))

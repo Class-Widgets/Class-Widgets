@@ -1,6 +1,4 @@
 {
     "enabled_plugins": [
-        "test",
-        "cw-example-plugin"
     ]
 }

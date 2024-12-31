@@ -2,7 +2,7 @@
     "gh_mirror": {
         "original": "",
         "gh_proxy": "https://gh-proxy.com/",
-        "fastgit": "https://raw.fastgit.org/",
+        "git_mirror": "https://hub.gitmirror.com/",
         "moeyy": "https://github.moeyy.xyz/"
     }
 }
