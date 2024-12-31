@@ -1539,10 +1539,7 @@ if __name__ == '__main__':
         else:
             setThemeColor(f"#{conf.read_conf('Color', 'finish_class')}")
 
-<<<<<<< HEAD
-=======
         # w = ErrorDialog()
         # w.exec()
->>>>>>> 35d7e0dd7d5eed0fe5386224079ea43f5304f295
 
     sys.exit(app.exec())
