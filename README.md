@@ -83,11 +83,9 @@ Copyright © 2024 RinLit.
 
 ### 贡献者
 
-<div align="center">
-<a href="https://github.com/Class-Widgets/Class-Widgets/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Class-Widgets/Class-Widgets" />
-</a>
-</div>
+Thanks goes to these wonderful people:
+
+[![Contributors](http://contrib.nn.ci/api?repo=Class-Widgets/Class-Widgets&repo=Class-Widgets/plugin-plaza&repo=Class-Widgets/cw-interim-site)](https://github.com/Class-Widgets/Class-Widgets/graphs/contributors)
 
 ## 社区
 我们目前开通了 [Discussions](https://github.com/orgs/Class-Widgets/discussions) 和 [QQ群](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380)
@@ -111,7 +109,6 @@ Copyright © 2024 RinLit.
     src="https://api.star-history.com/svg?repos=RinLit-233-shiroko/Class-Widgets&type=Date&theme=dark"
   />
 </picture>
-
 
 ##
 这仅是我作为新人的练习作品，欢迎提供更多意见！
