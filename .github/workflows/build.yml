@@ -39,6 +39,7 @@ jobs:
           .venv\Scripts\activate
           uv pip install -r requirements.txt
           uv pip install pyinstaller
+          uv pip install --upgrade numpy --user
           pyinstaller main.py `
             -w `
             -i ./img/favicon.ico `
