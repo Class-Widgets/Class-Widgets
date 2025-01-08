@@ -39,7 +39,6 @@ jobs:
           .venv\Scripts\activate
           uv pip install -r requirements.txt
           uv pip install pyinstaller
-          uv pip install --upgrade numpy --user
           pyinstaller main.py `
             -w `
             -i ./img/favicon.ico `
@@ -52,11 +51,7 @@ jobs:
             --add-data font:font `
             --add-data *.ui:. `
             --add-data LICENSE:. `
-            --add-data plugins:plugins `
-            --hidden-import numpy.core._multiarray_umath `
-            --hidden-import numpy.core._multiarray_umath `
-            --hidden-import numpy.core._multiarray_umath `
-            --collect-all numpy
+            --add-data plugins:plugins
 
       - name: Run Linux build
         if: ${{ matrix.os == 'ubuntu-20.04' }}
@@ -77,8 +72,7 @@ jobs:
             --add-data font:font \
             --add-data *.ui:. \
             --add-data LICENSE:. \
-            --add-data plugins:plugins \
-            --hidden-import numpy
+            --add-data plugins:plugins
 
       - name: Run macOS build
         if: ${{ matrix.os == 'macos-13' }}
@@ -99,8 +93,8 @@ jobs:
             --add-data font:font \
             --add-data *.ui:. \
             --add-data LICENSE:. \
-            --add-data plugins:plugins \
-            --hidden-import numpy
+            --add-data plugins:plugins
+
       - name: Upload
         uses: actions/upload-artifact@v4.4.2
         with:
@@ -109,7 +103,7 @@ jobs:
       - name: Upload macOS Bundle
         if: ${{ matrix.os == 'macos-13' }}
         uses: actions/upload-artifact@v4.4.2
-        with: 
+        with:
           name: macos-13-bundle
           path: ./dist/ClassWidgets.app
 

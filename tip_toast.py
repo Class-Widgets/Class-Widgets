@@ -314,6 +314,7 @@ def generate_gradient_color(theme_color):  # 计算渐变色
         r = max(0, min(255, int(color.red() * (1 + factor))))
         g = max(0, min(255, int(color.green() * (1 + factor))))
         b = max(0, min(255, int(color.blue() * (1 + factor))))
+        # return QColor(r, g, b)
         return f'rgba({r}, {g}, {b}, 255)'
 
     color = QColor(theme_color)
