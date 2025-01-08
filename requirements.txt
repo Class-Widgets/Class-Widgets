@@ -1,7 +1,7 @@
 certifi==2024.8.30
 charset-normalizer==3.3.2
 colorama==0.4.6
-configparser~=7.0.0
+configparser~=7.1.0
 darkdetect==0.8.0
 idna==3.10
 loguru~=0.7.2
@@ -21,3 +21,4 @@ PyQtWebEngine~=5.15.7
 PyGetWindow~=0.0.9
 numpy==1.24.4
 Markdown~=3.7
+pygame~=2.6.1

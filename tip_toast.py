@@ -1,13 +1,11 @@
-import os.path
+import os
 import sys
 
-import sounddevice
-import soundfile
+import pygame
 from PyQt5 import uic
-from PyQt5.QtCore import Qt, QPropertyAnimation, QRect, QEasingCurve, QTimer, QPoint, \
-    pyqtProperty
+from PyQt5.QtCore import Qt, QPropertyAnimation, QRect, QEasingCurve, QTimer, QPoint, pyqtProperty
 from PyQt5.QtGui import QColor, QPainter, QBrush, QPixmap
-from PyQt5.QtWidgets import QWidget, QApplication, QLabel, QFrame, QGraphicsDropShadowEffect, QGraphicsBlurEffect
+from PyQt5.QtWidgets import QWidget, QApplication, QLabel, QFrame, QGraphicsBlurEffect
 from loguru import logger
 from qfluentwidgets import setThemeColor
 
@@ -15,8 +13,7 @@ import conf
 import list
 
 # 适配高DPI缩放
-QApplication.setHighDpiScaleFactorRoundingPolicy(
-        Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
 QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
 
@@ -36,8 +33,10 @@ normal_color = '#56CFD8'
 
 window_list = []  # 窗口列表
 
+# 初始化pygame混音器
+pygame.mixer.init()
 
-# 重写力
+
 class tip_toast(QWidget):
     def __init__(self, pos, width, state=1, lesson_name=None, title=None, subtitle=None, content=None, icon=None):
         super().__init__()
@@ -301,10 +300,11 @@ class wave_Effect(QWidget):
 
 def playsound(filename):
     try:
-        data, samplerate = soundfile.read(f'{base_directory}/audio/{filename}')
+        file_path = os.path.join(base_directory, 'audio', filename)
+        pygame.mixer.music.load(file_path)
         volume = int(conf.read_conf('Audio', 'volume')) / 100
-        data *= volume
-        sounddevice.play(data, samplerate)
+        pygame.mixer.music.set_volume(volume)
+        pygame.mixer.music.play()
     except Exception as e:
         logger.error(f'读取音频文件出错：{e}')
 
@@ -314,7 +314,6 @@ def generate_gradient_color(theme_color):  # 计算渐变色
         r = max(0, min(255, int(color.red() * (1 + factor))))
         g = max(0, min(255, int(color.green() * (1 + factor))))
         b = max(0, min(255, int(color.blue() * (1 + factor))))
-        # return QColor(r, g, b)
         return f'rgba({r}, {g}, {b}, 255)'
 
     color = QColor(theme_color)
