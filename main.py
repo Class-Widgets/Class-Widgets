@@ -13,7 +13,8 @@ from PyQt5.QtGui import QColor, QIcon, QPixmap, QPainter, QDesktopServices
 from loguru import logger
 import sys
 from qfluentwidgets import Theme, setTheme, setThemeColor, SystemTrayMenu, Action, FluentIcon as fIcon, isDarkTheme, \
-    Dialog, ProgressRing, PlainTextEdit, ImageLabel, PushButton, InfoBarIcon, Flyout, FlyoutAnimationType, CheckBox
+    Dialog, ProgressRing, PlainTextEdit, ImageLabel, PushButton, InfoBarIcon, Flyout, FlyoutAnimationType, CheckBox, \
+    PrimaryPushButton
 import datetime as dt
 import list
 import conf
@@ -83,6 +84,11 @@ if conf.read_conf('Other', 'do_not_log') != '1':
     logger.info('未禁用日志输出')
 else:
     logger.info('已禁用日志输出功能，若需保存日志，请在“设置”->“高级选项”中关闭禁用日志功能')
+
+
+def restart():
+    logger.debug('重启程序')
+    os.execl(sys.executable, sys.executable, *sys.argv)
 
 
 def global_exceptHook(exc_type, exc_value, exc_tb):  # 全局异常捕获
@@ -429,6 +435,7 @@ class ErrorDialog(Dialog):  # 重大错误提示框
         self.copy_log_btn = PushButton(fIcon.COPY, '复制日志')
         self.ignore_error_btn = PushButton(fIcon.INFO, '忽略错误')
         self.ignore_same_error = CheckBox('在下次启动之前，忽略此错误')
+        self.restart_btn = PrimaryPushButton(fIcon.SYNC, '重新启动')
 
         self.iconLabel.setScaledContents(True)
         self.iconLabel.setFixedSize(50, 50)
@@ -437,8 +444,8 @@ class ErrorDialog(Dialog):  # 重大错误提示框
         self.error_log.setReadOnly(True)
         self.error_log.setPlainText(error_details)
         self.error_log.setFixedHeight(200)
-        self.yesButton.setText('关闭程序')
-        self.yesButton.setIcon(fIcon.CLOSE)
+        self.restart_btn.setFixedWidth(150)
+        self.yesButton.hide()
         self.cancelButton.hide()  # 隐藏取消按钮
         self.title_layout.setSpacing(12)
 
@@ -450,6 +457,7 @@ class ErrorDialog(Dialog):  # 重大错误提示框
         )
         self.copy_log_btn.clicked.connect(self.copy_log)
         self.ignore_error_btn.clicked.connect(self.ignore_error)
+        self.restart_btn.clicked.connect(restart)
 
         self.title_layout.addWidget(self.iconLabel)  # 标题布局
         self.title_layout.addWidget(self.titleLabel)
@@ -461,6 +469,7 @@ class ErrorDialog(Dialog):  # 重大错误提示框
         self.buttonLayout.insertWidget(1, self.report_problem)
         self.buttonLayout.insertStretch(1)
         self.buttonLayout.insertWidget(4, self.ignore_error_btn)
+        self.buttonLayout.insertWidget(5, self.restart_btn)
 
     def copy_log(self):  # 复制日志
         QApplication.clipboard().setText(self.error_log.toPlainText())
@@ -1526,7 +1535,7 @@ if __name__ == '__main__':
 
     if share.attach() and conf.read_conf('Other', 'multiple_programs') != '1':
         msg_box = Dialog('Class Widgets 正在运行', 'Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。'
-                                                   '\n(若您需要打开多个实例，请在“设置”->“高级选项”中启用“允许程序多开”)')
+                         '\n(若您需要打开多个实例，请在“设置”->“高级选项”中启用“允许程序多开”)')
         msg_box.yesButton.setText('好')
         msg_box.cancelButton.hide()
         msg_box.buttonLayout.insertStretch(0, 1)
