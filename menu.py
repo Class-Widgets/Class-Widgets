@@ -344,25 +344,25 @@ class SettingsMenu(FluentWindow):
         self.plugins_settings = {}
         try:
             # 创建子页面
-            self.spInterface = uic.loadUi(f'{base_directory}/menu-preview.ui')  # 预览
+            self.spInterface = uic.loadUi(f'{base_directory}/view/menu/preview.ui')  # 预览
             self.spInterface.setObjectName("spInterface")
-            self.teInterface = uic.loadUi(f'{base_directory}/menu-timeline_edit.ui')  # 时间线编辑
+            self.teInterface = uic.loadUi(f'{base_directory}/view/menu/timeline_edit.ui')  # 时间线编辑
             self.teInterface.setObjectName("teInterface")
-            self.seInterface = uic.loadUi(f'{base_directory}/menu-schedule_edit.ui')  # 课程表编辑
+            self.seInterface = uic.loadUi(f'{base_directory}/view/menu/schedule_edit.ui')  # 课程表编辑
             self.seInterface.setObjectName("seInterface")
-            self.adInterface = uic.loadUi(f'{base_directory}/menu-advance.ui')  # 高级选项
+            self.adInterface = uic.loadUi(f'{base_directory}/view/menu/advance.ui')  # 高级选项
             self.adInterface.setObjectName("adInterface")
-            self.ifInterface = uic.loadUi(f'{base_directory}/menu-about.ui')  # 关于
+            self.ifInterface = uic.loadUi(f'{base_directory}/view/menu/about.ui')  # 关于
             self.ifInterface.setObjectName("ifInterface")
-            self.ctInterface = uic.loadUi(f'{base_directory}/menu-custom.ui')  # 自定义
+            self.ctInterface = uic.loadUi(f'{base_directory}/view/menu/custom.ui')  # 自定义
             self.ctInterface.setObjectName("ctInterface")
-            self.cfInterface = uic.loadUi(f'{base_directory}/menu-configs.ui')  # 配置文件
+            self.cfInterface = uic.loadUi(f'{base_directory}/view/menu/configs.ui')  # 配置文件
             self.cfInterface.setObjectName("cfInterface")
-            self.sdInterface = uic.loadUi(f'{base_directory}/menu-sound.ui')  # 通知
+            self.sdInterface = uic.loadUi(f'{base_directory}/view/menu/sound.ui')  # 通知
             self.sdInterface.setObjectName("sdInterface")
-            self.hdInterface = uic.loadUi(f'{base_directory}/menu-help.ui')  # 帮助
+            self.hdInterface = uic.loadUi(f'{base_directory}/view/menu/help.ui')  # 帮助
             self.hdInterface.setObjectName("hdInterface")
-            self.plInterface = uic.loadUi(f'{base_directory}/menu-plugin_mgr.ui')  # 插件
+            self.plInterface = uic.loadUi(f'{base_directory}/view/menu/plugin_mgr.ui')  # 插件
             self.plInterface.setObjectName("plInterface")
 
             self.init_nav()

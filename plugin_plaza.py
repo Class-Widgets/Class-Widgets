@@ -252,7 +252,7 @@ class PluginDetailPage(MessageBoxBase):  # 插件详情页面
     def init_ui(self):
         # 加载ui文件
         self.temp_widget = QWidget()
-        uic.loadUi(f'{base_directory}/pp-plugin_detail.ui', self.temp_widget)
+        uic.loadUi(f'{base_directory}/view/pp/plugin_detail.ui', self.temp_widget)
         self.viewLayout.addWidget(self.temp_widget)
         self.viewLayout.setContentsMargins(0, 0, 0, 0)
         # 隐藏原有按钮
@@ -388,13 +388,13 @@ class PluginPlaza(MSFluentWindow):
         except Exception as e:
             logger.error(f"读取已安装的插件失败: {e}")
         try:
-            self.homeInterface = uic.loadUi(f'{base_directory}/pp-home.ui')  # 首页
+            self.homeInterface = uic.loadUi(f'{base_directory}/view/pp/home.ui')  # 首页
             self.homeInterface.setObjectName("homeInterface")
-            self.latestsInterface = uic.loadUi(f'{base_directory}/pp-latests.ui')  # 最新更新
+            self.latestsInterface = uic.loadUi(f'{base_directory}/view/pp/latests.ui')  # 最新更新
             self.latestsInterface.setObjectName("latestInterface")
-            self.settingsInterface = uic.loadUi(f'{base_directory}/pp-settings.ui')  # 设置
+            self.settingsInterface = uic.loadUi(f'{base_directory}/view/pp/settings.ui')  # 设置
             self.settingsInterface.setObjectName("settingsInterface")
-            self.searchInterface = uic.loadUi(f'{base_directory}/pp-search.ui')  # 搜索
+            self.searchInterface = uic.loadUi(f'{base_directory}/view/pp/search.ui')  # 搜索
             self.searchInterface.setObjectName("searchInterface")
 
             load_local_plugins_version()  # 加载本地插件版本

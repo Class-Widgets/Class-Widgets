@@ -34,7 +34,7 @@ class ExactMenu(FluentWindow):
     def __init__(self):
         super().__init__()
         self.menu = None
-        self.interface = uic.loadUi(f'{base_directory}/exact_menu.ui')
+        self.interface = uic.loadUi(f'{base_directory}/view/exact_menu.ui')
         self.initUI()
         self.init_interface()
 
