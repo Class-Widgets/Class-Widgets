@@ -56,7 +56,7 @@
         <x>0</x>
         <y>0</y>
         <width>640</width>
-        <height>1256</height>
+        <height>1380</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -457,6 +457,12 @@
                  <height>135</height>
                 </size>
                </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>135</height>
+                </size>
+               </property>
                <property name="pixmap">
                 <pixmap>img/settings/default.png</pixmap>
                </property>
@@ -502,6 +508,12 @@
                  <height>135</height>
                 </size>
                </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>135</height>
+                </size>
+               </property>
                <property name="pixmap">
                 <pixmap>img/settings/hide_all.png</pixmap>
                </property>
@@ -544,6 +556,12 @@
                <property name="minimumSize">
                 <size>
                  <width>200</width>
+                 <height>135</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
                  <height>135</height>
                 </size>
                </property>
@@ -885,6 +903,84 @@
            <property name="text">
             <string>其他</string>
            </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="CardWidget" name="CardWidget_12">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>70</height>
+            </size>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_13">
+            <property name="leftMargin">
+             <number>16</number>
+            </property>
+            <property name="topMargin">
+             <number>16</number>
+            </property>
+            <property name="rightMargin">
+             <number>16</number>
+            </property>
+            <property name="bottomMargin">
+             <number>16</number>
+            </property>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_18">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="StrongBodyLabel" name="StrongBodyLabel_14">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>安全模式</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="CaptionLabel" name="CaptionLabel_12">
+                <property name="text">
+                 <string>若启用，Class Widgets 将在程序崩溃时自动忽略，并不再弹出窗口；以免影响教学任务。</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+                <property name="lightColor" stdset="0">
+                 <color alpha="150">
+                  <red>0</red>
+                  <green>0</green>
+                  <blue>0</blue>
+                 </color>
+                </property>
+                <property name="darkColor" stdset="0">
+                 <color alpha="200">
+                  <red>255</red>
+                  <green>255</green>
+                  <blue>255</blue>
+                 </color>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="SwitchButton" name="switch_safe_mode">
+              <property name="onText">
+               <string>启用</string>
+              </property>
+              <property name="offText">
+               <string>禁用</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
          </item>
          <item>

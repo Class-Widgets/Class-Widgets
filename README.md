@@ -72,8 +72,6 @@ Copyright © 2025 RinLit.
 - [PyQt-Fluent-Widgets](https://github.com/zhiyiYo/PyQt-Fluent-Widgets)
 - [Loguru](https://github.com/Delgan/loguru)
 - [Request](https://github.com/psf/requests)
-- [SoundFile](https://github.com/bastibe/python-soundfile)
-- [SoundDevice](https://github.com/spatialaudio/python-sounddevice)
 
 ### 资源
 

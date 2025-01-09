@@ -14,16 +14,15 @@ from loguru import logger
 import sys
 from qfluentwidgets import Theme, setTheme, setThemeColor, SystemTrayMenu, Action, FluentIcon as fIcon, isDarkTheme, \
     Dialog, ProgressRing, PlainTextEdit, ImageLabel, PushButton, InfoBarIcon, Flyout, FlyoutAnimationType, CheckBox, \
-    SystemThemeListener
+    PrimaryPushButton
 import datetime as dt
 import list
 import conf
 import tip_toast
 from PyQt5.QtGui import QFontDatabase
 
-from menu import SettingsMenu
 from menu import open_plaza
-from exact_menu import ExactMenu
+from exact_menu import ExactMenu, open_settings
 import weather_db as db
 import importlib
 import subprocess
@@ -57,7 +56,7 @@ current_time = dt.datetime.now().strftime('%H:%M:%S')
 current_week = dt.datetime.now().weekday()
 current_lessons = {}
 loaded_data = {}
-parts_type= []
+parts_type = []
 notification = tip_toast
 update_timer = QTimer()
 
@@ -69,6 +68,7 @@ temperature = '未设置'
 weather_icon = 0
 weather_name = ''
 city = 101010100  # 默认城市
+theme = None
 
 time_offset = 0  # 时差偏移
 first_start = True
@@ -76,17 +76,25 @@ error_cooldown = dt.timedelta(seconds=2)  # 冷却时间(s)
 ignore_errors = []
 last_error_time = dt.datetime.now() - error_cooldown  # 上一次错误
 
-settings = None
 ex_menu = None
 
 if conf.read_conf('Other', 'do_not_log') != '1':
-    logger.add(f"{base_directory}/log/ClassWidgets_main_{{time}}.log", rotation="1 MB", encoding="utf-8", retention="1 minute")
+    logger.add(f"{base_directory}/log/ClassWidgets_main_{{time}}.log", rotation="1 MB", encoding="utf-8",
+               retention="1 minute")
     logger.info('未禁用日志输出')
 else:
     logger.info('已禁用日志输出功能，若需保存日志，请在“设置”->“高级选项”中关闭禁用日志功能')
 
 
+def restart():
+    logger.debug('重启程序')
+    os.execl(sys.executable, sys.executable, *sys.argv)
+
+
 def global_exceptHook(exc_type, exc_value, exc_tb):  # 全局异常捕获
+    if conf.read_conf('Other', 'safe_mode') == '1':  # 安全模式
+        return
+
     error_details = ''.join(traceback.format_exception(exc_type, exc_value, exc_tb))  # 异常详情
     if error_details in ignore_errors:  # 忽略重复错误
         return
@@ -102,7 +110,7 @@ def global_exceptHook(exc_type, exc_value, exc_tb):  # 全局异常捕获
             w = ErrorDialog(error_details)
             w.exec()
     else:
-        # 忽略重复错误
+        # 忽略冷却时间
         pass
 
 
@@ -161,14 +169,13 @@ def get_start_time():
 def get_part():
     def return_data():
         c_time = parts_start_time[i] + dt.timedelta(seconds=time_offset)
-        # if any(f'a{int(order[i])}' in key or f'f{int(order[i])}' in key for key in timeline_data.keys()):
         return c_time, int(order[i])
-        # else:
-        #     return c_time, 0  # 默认
 
     current_dt = dt.datetime.now()
+
     for i in range(len(parts_start_time)):  # 遍历每个Part
         time_len = dt.timedelta(minutes=0)  # Part长度
+
         for item_name, item_time in timeline_data.items():
             if item_name.startswith(f'a{str(order[i])}') or item_name.startswith(f'f{str(order[i])}'):
                 time_len += dt.timedelta(minutes=int(item_time))  # 累计Part长度
@@ -428,6 +435,7 @@ class ErrorDialog(Dialog):  # 重大错误提示框
         self.copy_log_btn = PushButton(fIcon.COPY, '复制日志')
         self.ignore_error_btn = PushButton(fIcon.INFO, '忽略错误')
         self.ignore_same_error = CheckBox('在下次启动之前，忽略此错误')
+        self.restart_btn = PrimaryPushButton(fIcon.SYNC, '重新启动')
 
         self.iconLabel.setScaledContents(True)
         self.iconLabel.setFixedSize(50, 50)
@@ -436,8 +444,8 @@ class ErrorDialog(Dialog):  # 重大错误提示框
         self.error_log.setReadOnly(True)
         self.error_log.setPlainText(error_details)
         self.error_log.setFixedHeight(200)
-        self.yesButton.setText('关闭程序')
-        self.yesButton.setIcon(fIcon.CLOSE)
+        self.restart_btn.setFixedWidth(150)
+        self.yesButton.hide()
         self.cancelButton.hide()  # 隐藏取消按钮
         self.title_layout.setSpacing(12)
 
@@ -449,6 +457,7 @@ class ErrorDialog(Dialog):  # 重大错误提示框
         )
         self.copy_log_btn.clicked.connect(self.copy_log)
         self.ignore_error_btn.clicked.connect(self.ignore_error)
+        self.restart_btn.clicked.connect(restart)
 
         self.title_layout.addWidget(self.iconLabel)  # 标题布局
         self.title_layout.addWidget(self.titleLabel)
@@ -460,6 +469,7 @@ class ErrorDialog(Dialog):  # 重大错误提示框
         self.buttonLayout.insertWidget(1, self.report_problem)
         self.buttonLayout.insertStretch(1)
         self.buttonLayout.insertWidget(4, self.ignore_error_btn)
+        self.buttonLayout.insertWidget(5, self.restart_btn)
 
     def copy_log(self):  # 复制日志
         QApplication.clipboard().setText(self.error_log.toPlainText())
@@ -510,7 +520,8 @@ class PluginLoader:  # 插件加载器
                 if folder.is_dir() and (folder / 'plugin.json').exists():
                     if folder.name not in conf.load_plugin_config()['enabled_plugins']:
                         continue
-                    module_name = f"{conf.PLUGINS_DIR}.{folder.name}"
+                    relative_path = conf.PLUGINS_DIR.split('\\')[-1]
+                    module_name = f"{relative_path}.{folder.name}"
                     try:
                         module = importlib.import_module(module_name)
                         if hasattr(module, 'Plugin'):
@@ -990,6 +1001,7 @@ class FloatingWidget(QWidget):  # 浮窗
 class DesktopWidget(QWidget):  # 主要小组件
     def __init__(self, path='widget-time.ui', pos=(100, 50), enable_tray=False):
         super().__init__()
+        self.last_widgets = list.get_widget_config()
         self.path = path
         self.last_code = 101010100
         self.last_theme = conf.read_conf('General', 'theme')
@@ -1008,8 +1020,6 @@ class DesktopWidget(QWidget):  # 主要小组件
 
         if enable_tray:
             self.init_tray_menu()  # 初始化托盘菜单
-            self.themeListener = SystemThemeListener(self)  # 系统主题监听器
-            self.themeListener.start()
 
         if path == 'widget-time.ui':  # 日期显示
             self.date_text = self.findChild(QLabel, 'date_text')
@@ -1028,7 +1038,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.current_subject.mouseReleaseEvent = self.rightReleaseEvent
 
             self.d_t_timer = QTimer(self)
-            self.d_t_timer.setInterval(500)
+            self.d_t_timer.setInterval(1000)
             self.d_t_timer.timeout.connect(self.detect_theme_changed)
             self.d_t_timer.start()
         elif path == 'widget-next-activity.ui':  # 接下来的活动
@@ -1128,13 +1138,6 @@ class DesktopWidget(QWidget):  # 主要小组件
                 backgnd.setGraphicsEffect(shadow_effect)
             except:
                 backgnd_frame.setGraphicsEffect(shadow_effect)
-    #
-    # def _onThemeChangedFinished(self):  # 主题切换
-    #     super()._onThemeChangedFinished()
-    #
-    #     # 云母特效启用时需要增加重试机制
-    #     if self.isMicaEffectEnabled():
-    #         QTimer.singleShot(100, lambda: self.windowEffect.setMicaEffect(self.winId(), isDarkTheme()))
 
     def init_font(self):
         font_path = f'{base_directory}/font/HarmonyOS_Sans_SC_Bold.ttf'
@@ -1160,7 +1163,7 @@ class DesktopWidget(QWidget):  # 主要小组件
         self.tray_menu.addActions([
             Action(fIcon.SHOPPING_CART, '插件广场', triggered=open_plaza),
             Action(fIcon.DEVELOPER_TOOLS, '额外选项', triggered=self.open_exact_menu),
-            Action(fIcon.SETTING, '设置', triggered=self.open_settings)
+            Action(fIcon.SETTING, '设置', triggered=open_settings)
         ])
         self.tray_menu.addSeparator()
         self.tray_menu.addAction(Action(fIcon.CLOSE, '退出', triggered=lambda: sys.exit()))
@@ -1237,7 +1240,8 @@ class DesktopWidget(QWidget):  # 主要小组件
             pixmap.fill(Qt.GlobalColor.transparent)
             painter = QPainter(pixmap)
             render.render(painter)
-            if isDarkTheme() and conf.load_theme_config(theme)['support_dark_mode']:  # 在暗色模式显示亮色图标
+            if (isDarkTheme() and conf.load_theme_config(theme)['support_dark_mode']
+                    or isDarkTheme() and conf.load_theme_config(theme)['default_theme'] == 'dark'):  # 在暗色模式显示亮色图标
                 painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_SourceIn)
                 painter.fillRect(pixmap.rect(), QColor("#FFFFFF"))
             painter.end()
@@ -1280,9 +1284,11 @@ class DesktopWidget(QWidget):  # 主要小组件
     def detect_theme_changed(self):
         theme = conf.read_conf('General', 'theme')
         color_mode = conf.read_conf('General', 'color_mode')
-        if theme != self.last_theme or color_mode != self.last_color_mode:
+        widgets = list.get_widget_config()
+        if theme != self.last_theme or color_mode != self.last_color_mode or widgets != self.last_widgets:
             self.last_theme = theme
             self.last_color_mode = color_mode
+            self.last_widgets = widgets
             logger.info(f'切换主题：{theme}，颜色模式{color_mode}')
             mgr.clear_widgets()
 
@@ -1307,20 +1313,6 @@ class DesktopWidget(QWidget):  # 主要小组件
                 logger.error(f'天气组件出错：{e}')
         else:
             logger.error(f'获取天气数据出错：{weather_data}')
-
-    def open_settings(self):
-        global settings
-        try:
-            if settings is None or not settings.isVisible():
-                settings = SettingsMenu()
-                settings.show()
-                logger.info('打开“设置”')
-            else:
-                settings.raise_()
-                settings.activateWindow()
-        except Exception as e:
-            settings.show()
-            logger.info('打开“设置”')
 
     def open_exact_menu(self):
         global ex_menu
@@ -1465,10 +1457,15 @@ def init():
     update_timer.setInterval(1000)
     update_time()
 
+    theme = conf.read_conf('General', 'theme')  # 主题
+
+    if not os.path.exists(f'{base_directory}/ui/{theme}/theme.json'):
+        logger.warning(f'主题 {theme} 不存在，使用默认主题')
+        theme = 'default'
+
     mgr = WidgetsManager()
     fw = FloatingWidget()
 
-    theme = conf.read_conf('General', 'theme')  # 主题
     logger.info(f'应用主题：{theme}')
     # 获取屏幕横向分辨率
     screen_geometry = app.primaryScreen().availableGeometry()
@@ -1497,14 +1494,17 @@ def init():
     start_x = (screen_width - total_width) // 2
     start_y = int(conf.read_conf('General', 'margin'))
 
-    def cal_start_width(num):
-        try:
-            return int(start_x + spacing * num + sum(conf.load_theme_width(theme)[widgets[i]] for i in range(num)))
-        except KeyError:
-            return int(start_x + spacing * num + sum(list.widget_width[widgets[i]] for i in range(num)))
-        except Exception as e:
-            logger.error(f'计算窗口位置出错：{e}')
-            return 0
+    def cal_start_width(num):  # 计算每个组件的起始位置
+        w_start_x = 0
+        w_start_x += start_x + spacing * num
+        for i in range(num):
+            try:
+                w_start_x += conf.load_theme_width(theme)[widgets[i]]
+            except KeyError:
+                w_start_x += list.widget_width[widgets[i]]
+            except:
+                w_start_x += 0
+        return w_start_x
 
     for w in range(len(widgets)):
         show_window(widgets[w], (cal_start_width(w), start_y), w == 0)
@@ -1535,7 +1535,7 @@ if __name__ == '__main__':
 
     if share.attach() and conf.read_conf('Other', 'multiple_programs') != '1':
         msg_box = Dialog('Class Widgets 正在运行', 'Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。'
-                                                   '\n(若您需要打开多个实例，请在“设置”->“高级选项”中启用“允许程序多开”)')
+                         '\n(若您需要打开多个实例，请在“设置”->“高级选项”中启用“允许程序多开”)')
         msg_box.yesButton.setText('好')
         msg_box.cancelButton.hide()
         msg_box.buttonLayout.insertStretch(0, 1)
@@ -1546,7 +1546,8 @@ if __name__ == '__main__':
         if conf.read_conf('Other', 'initialstartup') == '1':  # 首次启动
             try:
                 conf.add_shortcut('ClassWidgets.exe', f'{base_directory}/img/favicon.ico')
-                conf.add_shortcut_to_startmenu(f'{base_directory}/ClassWidgets.exe', f'{base_directory}/img/favicon.ico')
+                conf.add_shortcut_to_startmenu(f'{base_directory}/ClassWidgets.exe',
+                                               f'{base_directory}/img/favicon.ico')
                 conf.write_conf('Other', 'initialstartup', '')
             except Exception as e:
                 logger.error(f'添加快捷方式失败：{e}')
@@ -1555,12 +1556,8 @@ if __name__ == '__main__':
             except Exception as e:
                 logger.error(f'创建新课表失败：{e}')
 
-        theme = conf.read_conf('General', 'theme')  # 主题
-
-        fw = FloatingWidget()
         p_loader = PluginLoader()
         p_mgr = PluginManager()
-
         p_loader.load_plugins()
         init()
         get_start_time()
@@ -1568,7 +1565,7 @@ if __name__ == '__main__':
         get_current_lesson_name()
         get_next_lessons()
 
-        if current_state:
+        if current_state == 1:
             setThemeColor(f"#{conf.read_conf('Color', 'attend_class')}")
         else:
             setThemeColor(f"#{conf.read_conf('Color', 'finish_class')}")

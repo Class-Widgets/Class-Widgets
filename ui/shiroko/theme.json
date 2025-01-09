@@ -1,6 +1,7 @@
 {
   "name": "砂狼白子",
   "support_dark_mode": true,
+  "default_theme": null,
   "radius": "8px",
   "spacing": -5,
   "shadow": true,

@@ -52,6 +52,7 @@ jobs:
             --add-data *.ui:. `
             --add-data LICENSE:. `
             --add-data plugins:plugins
+
       - name: Run Linux build
         if: ${{ matrix.os == 'ubuntu-20.04' }}
         run: |
@@ -71,8 +72,7 @@ jobs:
             --add-data font:font \
             --add-data view:view \
             --add-data LICENSE:. \
-            --add-data plugins:plugins \
-            --hidden-import numpy
+            --add-data plugins:plugins
 
       - name: Run macOS build
         if: ${{ matrix.os == 'macos-13' }}
@@ -93,17 +93,17 @@ jobs:
             --add-data font:font \
             --add-data view:view \
             --add-data LICENSE:. \
-            --add-data plugins:plugins \
-            --hidden-import numpy
+            --add-data plugins:plugins
+
       - name: Upload
         uses: actions/upload-artifact@v4.4.2
         with:
           name: ${{ matrix.os }}-${{ matrix.arch }}
-
           path: ./dist/ClassWidgets
       - name: Upload macOS Bundle
+        if: ${{ matrix.os == 'macos-13' }}
         uses: actions/upload-artifact@v4.4.2
-        with: 
+        with:
           name: macos-13-bundle
           path: ./dist/ClassWidgets.app
 

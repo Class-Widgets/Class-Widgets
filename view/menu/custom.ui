@@ -1134,7 +1134,7 @@
         </size>
        </property>
        <property name="text">
-        <string>保存布局</string>
+        <string>应用</string>
        </property>
       </widget>
      </item>

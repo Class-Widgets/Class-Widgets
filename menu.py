@@ -10,9 +10,9 @@ from PyQt5.QtCore import Qt, QTime, QUrl, QDate
 from qframelesswindow.webengine import FramelessWebEngineView
 import sys
 
-from PyQt5.QtGui import QIcon, QDesktopServices, QPixmap, QColor
+from PyQt5.QtGui import QIcon, QDesktopServices, QColor
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidgetItem, QLabel, QHBoxLayout, QSizePolicy, \
-    QSpacerItem, QFileDialog, QVBoxLayout, QWidget, QScroller
+    QSpacerItem, QFileDialog, QVBoxLayout, QScroller
 from qfluentwidgets import (
     Theme, setTheme, FluentWindow, FluentIcon as fIcon, ToolButton, ListWidget, ComboBox, CaptionLabel,
     SpinBox, LineEdit, PrimaryPushButton, TableWidget, Flyout, InfoBarIcon,
@@ -342,33 +342,30 @@ class SettingsMenu(FluentWindow):
     def __init__(self):
         super().__init__()
         self.plugins_settings = {}
-        try:
-            # 创建子页面
-            self.spInterface = uic.loadUi(f'{base_directory}/view/menu/preview.ui')  # 预览
-            self.spInterface.setObjectName("spInterface")
-            self.teInterface = uic.loadUi(f'{base_directory}/view/menu/timeline_edit.ui')  # 时间线编辑
-            self.teInterface.setObjectName("teInterface")
-            self.seInterface = uic.loadUi(f'{base_directory}/view/menu/schedule_edit.ui')  # 课程表编辑
-            self.seInterface.setObjectName("seInterface")
-            self.adInterface = uic.loadUi(f'{base_directory}/view/menu/advance.ui')  # 高级选项
-            self.adInterface.setObjectName("adInterface")
-            self.ifInterface = uic.loadUi(f'{base_directory}/view/menu/about.ui')  # 关于
-            self.ifInterface.setObjectName("ifInterface")
-            self.ctInterface = uic.loadUi(f'{base_directory}/view/menu/custom.ui')  # 自定义
-            self.ctInterface.setObjectName("ctInterface")
-            self.cfInterface = uic.loadUi(f'{base_directory}/view/menu/configs.ui')  # 配置文件
-            self.cfInterface.setObjectName("cfInterface")
-            self.sdInterface = uic.loadUi(f'{base_directory}/view/menu/sound.ui')  # 通知
-            self.sdInterface.setObjectName("sdInterface")
-            self.hdInterface = uic.loadUi(f'{base_directory}/view/menu/help.ui')  # 帮助
-            self.hdInterface.setObjectName("hdInterface")
-            self.plInterface = uic.loadUi(f'{base_directory}/view/menu/plugin_mgr.ui')  # 插件
-            self.plInterface.setObjectName("plInterface")
+        # 创建子页面
+        self.spInterface = uic.loadUi(f'{base_directory}/view/menu/preview.ui')  # 预览
+        self.spInterface.setObjectName("spInterface")
+        self.teInterface = uic.loadUi(f'{base_directory}/view/menu/timeline_edit.ui')  # 时间线编辑
+        self.teInterface.setObjectName("teInterface")
+        self.seInterface = uic.loadUi(f'{base_directory}/view/menu/schedule_edit.ui')  # 课程表编辑
+        self.seInterface.setObjectName("seInterface")
+        self.adInterface = uic.loadUi(f'{base_directory}/view/menu/advance.ui')  # 高级选项
+        self.adInterface.setObjectName("adInterface")
+        self.ifInterface = uic.loadUi(f'{base_directory}/view/menu/about.ui')  # 关于
+        self.ifInterface.setObjectName("ifInterface")
+        self.ctInterface = uic.loadUi(f'{base_directory}/view/menu/custom.ui')  # 自定义
+        self.ctInterface.setObjectName("ctInterface")
+        self.cfInterface = uic.loadUi(f'{base_directory}/view/menu/configs.ui')  # 配置文件
+        self.cfInterface.setObjectName("cfInterface")
+        self.sdInterface = uic.loadUi(f'{base_directory}/view/menu/sound.ui')  # 通知
+        self.sdInterface.setObjectName("sdInterface")
+        self.hdInterface = uic.loadUi(f'{base_directory}/view/menu/help.ui')  # 帮助
+        self.hdInterface.setObjectName("hdInterface")
+        self.plInterface = uic.loadUi(f'{base_directory}/view/menu/plugin_mgr.ui')  # 插件
+        self.plInterface.setObjectName("plInterface")
 
-            self.init_nav()
-            self.init_window()
-        except Exception as e:
-            logger.error(f'初始化设置界面时发生错误：{e}')
+        self.init_nav()
+        self.init_window()
 
     def init_font(self):  # 设置字体
         self.setStyleSheet("""QLabel {
@@ -412,7 +409,8 @@ class SettingsMenu(FluentWindow):
         open_plugin_folder.clicked.connect(lambda: open_dir(os.path.join(os.getcwd(), conf.PLUGINS_DIR)))  # 打开插件目录
         for plugin in plugin_dict:
             try:
-                module = importlib.import_module(f'{conf.PLUGINS_DIR}.{plugin}')
+                relative_path = conf.PLUGINS_DIR.split('\\')[-1]
+                module = importlib.import_module(f'{relative_path}.{plugin}')
                 if hasattr(module, 'Settings'):
                     plugin_class = getattr(module, "Settings")  # 获取 Plugin 类
                     # 实例化插件
@@ -554,7 +552,7 @@ class SettingsMenu(FluentWindow):
 
         select_theme_combo = self.findChild(ComboBox, 'combo_theme_select')  # 主题选择
         select_theme_combo.addItems(list.theme_names)
-        select_theme_combo.setCurrentIndex(list.get_current_theme_num())
+        select_theme_combo.setCurrentIndex(list.theme_folder.index(self.getThemeName()))
         select_theme_combo.currentIndexChanged.connect(
             lambda: conf.write_conf('General', 'theme', list.get_theme_ui_path(select_theme_combo.currentText())))
 
@@ -677,7 +675,11 @@ class SettingsMenu(FluentWindow):
 
         switch_enable_alt_schedule = self.findChild(SwitchButton, 'switch_enable_alt_schedule')
         switch_enable_alt_schedule.setChecked(int(conf.read_conf('General', 'enable_alt_schedule')))
-        switch_enable_alt_schedule.checkedChanged.connect(self.switch_enable_alt_schedule)  # 单双周开关
+        switch_enable_alt_schedule.checkedChanged.connect(self.switch_safe_mode)  # 单双周开关
+
+        switch_enable_safe_mode = self.findChild(SwitchButton, 'switch_safe_mode')
+        switch_enable_safe_mode.setChecked(int(conf.read_conf('Other', 'safe_mode')))
+        switch_enable_safe_mode.checkedChanged.connect(self.switch_enable_alt_schedule)  # 单双周开关
 
         switch_enable_multiple_programs = self.findChild(SwitchButton, 'switch_multiple_programs')
         switch_enable_multiple_programs.setChecked(int(conf.read_conf('Other', 'multiple_programs')))
@@ -849,6 +851,13 @@ class SettingsMenu(FluentWindow):
         license_dialog = licenseDialog(self)
         license_dialog.exec()
 
+    def getThemeName(self):
+        theme = conf.read_conf('General', 'theme')
+        if not os.path.exists(f'{base_directory}/ui/{theme}/theme.json'):
+            return theme
+        else:
+            return 'default'
+
     def switch_disable_log(self):
         switch_disable_log = self.findChild(SwitchButton, 'switch_disable_log')
         if switch_disable_log.isChecked():
@@ -920,6 +929,13 @@ class SettingsMenu(FluentWindow):
             conf.write_conf('General', 'enable_alt_schedule', '1')
         else:
             conf.write_conf('General', 'enable_alt_schedule', '0')
+
+    def switch_safe_mode(self):
+        switch_safe_mode = self.findChild(SwitchButton,'switch_safe_mode')
+        if switch_safe_mode.isChecked():
+            conf.write_conf('Other', 'safe_mode', '1')
+        else:
+            conf.write_conf('Other', 'safe_mode', '0')
 
     def switch_enable_multiple_programs(self):
         switch_enable_multiple_programs = self.findChild(SwitchButton, 'switch_multiple_programs')
@@ -1110,20 +1126,30 @@ class SettingsMenu(FluentWindow):
 
             left_spacer = QSpacerItem(20, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
             widgets_preview.addItem(left_spacer)
+
+            theme_folder = conf.read_conf("General", "theme")
+            if not os.path.exists(f'{base_directory}/ui/{theme_folder}/theme.json'):
+                theme_folder = 'default'  # 主题文件夹不存在，使用默认主题
+                logger.warning(f'主题文件夹不存在，使用默认主题：{theme_folder}')
+
             for i in range(len(widget_config)):
                 widget_name = widget_config[i]
-                if isDarkTheme() and conf.load_theme_config(conf.read_conf("General", "theme"))['support_dark_mode']:
-                    path = f'{base_directory}/ui/{conf.read_conf("General", "theme")}/dark/preview/{widget_name[:-3]}.png'
+                if isDarkTheme() and conf.load_theme_config(theme_folder)['support_dark_mode']:
+                    if os.path.exists(f'{base_directory}/ui/{theme_folder}/dark/preview/{widget_name[:-3]}.png'):
+                        path = f'{base_directory}/ui/{theme_folder}/dark/preview/{widget_name[:-3]}.png'
+                    else:
+                        path = f'{base_directory}/ui/{theme_folder}/dark/preview/widget-custom.png'
                 else:
-                    path = f'{base_directory}/ui/{conf.read_conf("General", "theme")}/preview/{widget_name[:-3]}.png'
-                label = QLabel()
-                label.setPixmap(QPixmap(path))
+                    if os.path.exists(f'ui/{theme_folder}/preview/{widget_name[:-3]}.png'):
+                        path = f'{base_directory}/ui/{theme_folder}/preview/{widget_name[:-3]}.png'
+                    else:
+                        path = f'{base_directory}/ui/{theme_folder}/preview/widget-custom.png'
+                label = ImageLabel(path)
                 widgets_preview.addWidget(label)
                 widget_config[i] = label
             right_spacer = QSpacerItem(20, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
             widgets_preview.addItem(right_spacer)
         except Exception as e:
-            print(f'更新预览界面时发生错误：{e}')
             logger.error(f'更新预览界面时发生错误：{e}')
 
     def ad_change_file_name(self):

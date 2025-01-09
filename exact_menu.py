@@ -13,7 +13,7 @@ from qfluentwidgets import FluentWindow, FluentIcon as fIcon, ComboBox, \
 
 import conf
 import list
-import menu
+from menu import SettingsMenu
 
 # 适配高DPI缩放
 QApplication.setHighDpiScaleFactorRoundingPolicy(
@@ -25,9 +25,26 @@ base_directory = os.path.dirname(os.path.abspath(__file__))
 if base_directory.endswith('MacOS'):
     base_directory = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)), 'Resources')
 
+settings = None
+
 filename = conf.read_conf('General', 'schedule')
 current_week = dt.datetime.today().weekday()
 temp_schedule = {'schedule': {}, 'schedule_even': {}}
+
+
+def open_settings():
+    global settings
+    try:
+        if settings is None or not settings.isVisible():
+            settings = SettingsMenu()
+            settings.show()
+            logger.info('打开“设置”')
+        else:
+            settings.raise_()
+            settings.activateWindow()
+    except Exception as e:
+        settings.show()
+        logger.info('打开“设置”')
 
 
 class ExactMenu(FluentWindow):
@@ -59,15 +76,7 @@ class ExactMenu(FluentWindow):
         save_temp_conf.clicked.connect(self.save_temp_conf)
 
         redirect_to_settings = self.findChild(HyperlinkButton, 'redirect_to_settings')
-        redirect_to_settings.clicked.connect(self.open_settings)
-
-    def open_settings(self):
-        if self.menu is None or not self.menu.isVisible():  # 防多开
-            self.menu = menu.SettingsMenu()
-            self.menu.show()
-        else:
-            self.menu.raise_()
-            self.menu.activateWindow()
+        redirect_to_settings.clicked.connect(open_settings)
 
     def load_schedule(self):
         global filename

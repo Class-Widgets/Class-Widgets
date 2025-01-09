@@ -107,7 +107,8 @@ try:  # 加载课程/主题配置文件
     subject_info = json.load(open(f'{base_directory}/config/data/subject.json', 'r', encoding='utf-8'))
     subject_icon = subject_info['subject_icon']
     subject_abbreviation = subject_info['subject_abbreviation']
-    theme_folder = [f for f in os.listdir(f'{base_directory}/ui/') if os.path.isdir(os.path.join(f'{base_directory}/ui/', f))]
+    theme_folder = [f for f in os.listdir(f'{base_directory}/ui/')
+                    if os.path.isdir(os.path.join(f'{base_directory}/ui/', f))]
     theme_names = []
 except Exception as e:
     logger.error(f'加载课程/主题配置文件发生错误，使用默认配置：{e}')
@@ -165,6 +166,8 @@ def get_widget_names():
 
 def get_current_theme_num():
     for i in range(len(theme_folder)):
+        if not os.path.exists(f'{base_directory}/config/schedule/{theme_folder[i]}.json'):
+            return "default"
         if theme_folder[i] == conf.read_conf('General', 'theme'):
             return i
 

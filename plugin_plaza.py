@@ -48,6 +48,11 @@ search_items = []
 SEARCH_FIELDS = ["name", "description", "tag", "author"]  # 搜索字段
 
 
+def restart():
+    logger.debug('重启程序')
+    os.execl(sys.executable, sys.executable, *sys.argv)
+
+
 class TagLink(HyperlinkButton):  # 标签链接
     def __init__(self, text, parent=None):
         super().__init__(parent)
@@ -610,8 +615,8 @@ class PluginPlaza(MSFluentWindow):
             duration=-1,
             parent=self
         )
-        restart_btn = HyperlinkLabel('关闭软件')
-        restart_btn.clicked.connect(lambda: sys.exit())
+        restart_btn = HyperlinkLabel('现在重启')
+        restart_btn.clicked.connect(restart)
         w.addWidget(restart_btn)
         w.show()
 
