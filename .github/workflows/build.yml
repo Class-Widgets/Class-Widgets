@@ -69,7 +69,7 @@ jobs:
             --add-data img:img \
             --add-data ui:ui \
             --add-data font:font \
-            --add-data *.ui:. \
+            --add-data view:view \
             --add-data LICENSE:. \
             --add-data plugins:plugins \
             --hidden-import numpy
@@ -91,7 +91,7 @@ jobs:
             --add-data img:img \
             --add-data ui:ui \
             --add-data font:font \
-            --add-data *.ui:. \
+            --add-data view:view \
             --add-data LICENSE:. \
             --add-data plugins:plugins \
             --hidden-import numpy
@@ -124,7 +124,7 @@ jobs:
       - name: 使用 PyInstaller 打包
         run: |
           source ./venv/bin/activate
-          pyinstaller main.py -w -i ./img/favicon.ico -n ClassWidgets --contents-directory . --add-data config:config --add-data audio:audio --add-data img:img --add-data ui:ui --add-data font:font --add-data *.ui:. --add-data LICENSE:. --add-data plugins:plugins
+          pyinstaller main.py -w -i ./img/favicon.ico -n ClassWidgets --contents-directory . --add-data config:config --add-data audio:audio --add-data img:img --add-data ui:ui --add-data font:font --add-data view:view --add-data LICENSE:. --add-data plugins:plugins
 
       - name: 存到构建输出
         uses: actions/upload-artifact@v4.4.2
