@@ -49,7 +49,7 @@ jobs:
             --add-data img:img `
             --add-data ui:ui `
             --add-data font:font `
-            --add-data *.ui:. `
+            --add-data view:view `
             --add-data LICENSE:. `
             --add-data plugins:plugins
 
