@@ -41,7 +41,7 @@ body:
         > [!WARNING]
         > 若您要上传材料，请等待材料文件上传完成后再发布Issue
         >
-        > 若显示为`![Uploading 文件名]()`即为上传中，请等待链接变动后再上传。
+        > 若显示为`![Uploading 文件名]()`即为上传中，请等待链接变动后再提交。
         
   - type: textarea
     id: excepted
