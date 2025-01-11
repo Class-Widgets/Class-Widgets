@@ -13,9 +13,9 @@ jobs:
         with:
           filter-threshold: 0.5
           comment-title: |
-            ### 相似 Issues
+            ### 相似 Issues 分析
           comment-body: '${index}. ${similarity} #${number}'
-          title-excludes: "（在这里输入你的标题）,bug"
+          title-excludes: "（在这里输入你的标题）"
           since-days: 365
           show-footer: true
           show-mentioned: true
