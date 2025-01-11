@@ -101,7 +101,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgb
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap>img/attend_class.svg</pixmap>
+             <pixmap>../img/attend_class.svg</pixmap>
             </property>
            </widget>
           </item>
