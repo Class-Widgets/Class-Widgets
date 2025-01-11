@@ -29,6 +29,7 @@ from loguru import logger
 import datetime as dt
 import list
 import conf
+from conf import base_directory
 from plugin_plaza import PluginPlaza
 import tip_toast
 import weather_db
@@ -39,10 +40,6 @@ QApplication.setHighDpiScaleFactorRoundingPolicy(
         Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
 QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
-
-base_directory = os.path.dirname(os.path.abspath(__file__))
-if base_directory.endswith('MacOS'):
-    base_directory = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)), 'Resources')
 
 today = dt.date.today()
 plugin_plaza = None
@@ -409,7 +406,7 @@ class SettingsMenu(FluentWindow):
         open_plugin_folder.clicked.connect(lambda: open_dir(os.path.join(os.getcwd(), conf.PLUGINS_DIR)))  # 打开插件目录
         for plugin in plugin_dict:
             try:
-                relative_path = conf.PLUGINS_DIR.split('\\')[-1]
+                relative_path = conf.PLUGINS_DIR.name  # 修复引用Bug
                 module = importlib.import_module(f'{relative_path}.{plugin}')
                 if hasattr(module, 'Settings'):
                     plugin_class = getattr(module, "Settings")  # 获取 Plugin 类
@@ -552,6 +549,7 @@ class SettingsMenu(FluentWindow):
 
         select_theme_combo = self.findChild(ComboBox, 'combo_theme_select')  # 主题选择
         select_theme_combo.addItems(list.theme_names)
+        print(list.theme_folder, list.theme_names, self.getThemeName())
         select_theme_combo.setCurrentIndex(list.theme_folder.index(self.getThemeName()))
         select_theme_combo.currentIndexChanged.connect(
             lambda: conf.write_conf('General', 'theme', list.get_theme_ui_path(select_theme_combo.currentText())))
@@ -564,7 +562,7 @@ class SettingsMenu(FluentWindow):
         widgets_combo = self.findChild(ComboBox, 'widgets_combo')  # 组件选择
         widgets_combo.addItems(list.get_widget_names())
 
-        search_city_button = self.findChild(PushButton, 'select_city')
+        search_city_button = self.findChild(PushButton, 'select_city')  # 查找城市
         search_city_button.clicked.connect(self.show_search_city)
 
         add_widget_button = self.findChild(PrimaryPushButton, 'add_widget')
@@ -621,84 +619,87 @@ class SettingsMenu(FluentWindow):
             'https://github.com/RinLit-233-shiroko/Class-Widgets?tab=readme-ov-file#致谢')))
 
     def setup_advance_interface(self):
-        adv_scroll = self.findChild(SmoothScrollArea, 'adv_scroll')  # 触摸屏适配
+        adv_scroll = self.adInterface.findChild(SmoothScrollArea, 'adv_scroll')  # 触摸屏适配
         QScroller.grabGesture(adv_scroll.viewport(), QScroller.LeftMouseButtonGesture)
 
-        margin_spin = self.findChild(SpinBox, 'margin_spin')
+        margin_spin = self.adInterface.findChild(SpinBox, 'margin_spin')
         margin_spin.setValue(int(conf.read_conf('General', 'margin')))
         margin_spin.valueChanged.connect(
             lambda: conf.write_conf('General', 'margin', str(margin_spin.value()))
         )  # 保存边距设定
 
-        conf_combo = self.findChild(ComboBox, 'conf_combo')
+        conf_combo = self.adInterface.findChild(ComboBox, 'conf_combo')
         conf_combo.addItems(list.get_schedule_config())
         conf_combo.setCurrentIndex(list.get_schedule_config().index(conf.read_conf('General', 'schedule')))
         conf_combo.currentIndexChanged.connect(self.ad_change_file)  # 切换配置文件
 
-        conf_name = self.findChild(LineEdit, 'conf_name')
+        conf_name = self.adInterface.findChild(LineEdit, 'conf_name')
         conf_name.setText(filename[:-5])
         conf_name.textChanged.connect(self.ad_change_file_name)
 
-        switch_pin_button = self.findChild(SwitchButton, 'switch_pin_button')
-        switch_pin_button.setChecked(int(conf.read_conf('General', 'pin_on_top')))
-        switch_pin_button.checkedChanged.connect(self.switch_pin)  # 置顶开关
+        window_status_combo = self.adInterface.findChild(ComboBox, 'window_status_combo')
+        window_status_combo.addItems(list.window_status)
+        window_status_combo.setCurrentIndex(int(conf.read_conf('General', 'pin_on_top')))
+        window_status_combo.currentIndexChanged.connect(
+            lambda: conf.write_conf('General', 'window_status', str(self.window_status_combo.currentIndex()))
+        )  # 窗口状态
 
-        switch_startup = self.findChild(SwitchButton, 'switch_startup')
+        switch_startup = self.adInterface.findChild(SwitchButton, 'switch_startup')
         switch_startup.setChecked(int(conf.read_conf('General', 'auto_startup')))
         switch_startup.checkedChanged.connect(self.switch_startup)  # 开机自启
         if os.name != 'nt':
             switch_startup.setEnabled(False)
 
-        hide_mode_combo = self.findChild(ComboBox, 'hide_mode_combo')
+        hide_mode_combo = self.adInterface.findChild(ComboBox, 'hide_mode_combo')
         hide_mode_combo.addItems(list.hide_mode if os.name == 'nt' else list.non_nt_hide_mode)
         hide_mode_combo.setCurrentIndex(int(conf.read_conf('General', 'hide')))
         hide_mode_combo.currentIndexChanged.connect(
             lambda: conf.write_conf('General', 'hide', str(hide_mode_combo.currentIndex()))
         )  # 隐藏模式
 
-        hide_method_default = self.findChild(RadioButton, 'hide_method_default')
+        hide_method_default = self.adInterface.findChild(RadioButton, 'hide_method_default')
         hide_method_default.setChecked(conf.read_conf('General', 'hide_method') == '0')
         hide_method_default.toggled.connect(lambda: conf.write_conf('General', 'hide_method', '0'))
         if os.name != 'nt':
             hide_method_default.setEnabled(False)
         # 默认隐藏
 
-        hide_method_all = self.findChild(RadioButton, 'hide_method_all')
+        hide_method_all = self.adInterface.findChild(RadioButton, 'hide_method_all')
         hide_method_all.setChecked(conf.read_conf('General', 'hide_method') == '1')
         hide_method_all.toggled.connect(lambda: conf.write_conf('General', 'hide_method', '1'))
         # 单击全部隐藏
 
-        hide_method_floating = self.findChild(RadioButton, 'hide_method_floating')
+        hide_method_floating = self.adInterface.findChild(RadioButton, 'hide_method_floating')
         hide_method_floating.setChecked(conf.read_conf('General', 'hide_method') == '2')
         hide_method_floating.toggled.connect(lambda: conf.write_conf('General', 'hide_method', '2'))
         # 最小化为浮窗
 
-        switch_enable_alt_schedule = self.findChild(SwitchButton, 'switch_enable_alt_schedule')
+        switch_enable_alt_schedule = self.adInterface.findChild(SwitchButton, 'switch_enable_alt_schedule')
         switch_enable_alt_schedule.setChecked(int(conf.read_conf('General', 'enable_alt_schedule')))
         switch_enable_alt_schedule.checkedChanged.connect(self.switch_safe_mode)  # 单双周开关
 
-        switch_enable_safe_mode = self.findChild(SwitchButton, 'switch_safe_mode')
+        switch_enable_safe_mode = self.adInterface.findChild(SwitchButton, 'switch_safe_mode')
         switch_enable_safe_mode.setChecked(int(conf.read_conf('Other', 'safe_mode')))
         switch_enable_safe_mode.checkedChanged.connect(self.switch_enable_alt_schedule)  # 单双周开关
 
-        switch_enable_multiple_programs = self.findChild(SwitchButton, 'switch_multiple_programs')
+        switch_enable_multiple_programs = self.adInterface.findChild(SwitchButton, 'switch_multiple_programs')
         switch_enable_multiple_programs.setChecked(int(conf.read_conf('Other', 'multiple_programs')))
         switch_enable_multiple_programs.checkedChanged.connect(self.switch_enable_multiple_programs)  # 多开
 
-        switch_disable_log = self.findChild(SwitchButton, 'switch_disable_log')
+        switch_disable_log = self.adInterface.findChild(SwitchButton, 'switch_disable_log')
         switch_disable_log.setChecked(int(conf.read_conf('Other', 'do_not_log')))
         switch_disable_log.checkedChanged.connect(self.switch_disable_log)  # 禁用日志
 
-        button_clear_log = self.findChild(PushButton, 'button_clear_log')
+        button_clear_log = self.adInterface.findChild(PushButton, 'button_clear_log')
         button_clear_log.clicked.connect(self.clear_log)  # 清空日志
 
-        set_start_date = self.findChild(CalendarPicker, 'set_start_date')  # 日期
+        set_start_date = self.adInterface.findChild(CalendarPicker, 'set_start_date')  # 日期
         if conf.read_conf('Date', 'start_date') != '':
             set_start_date.setDate(QDate.fromString(conf.read_conf('Date', 'start_date'), 'yyyy-M-d'))
         set_start_date.dateChanged.connect(
             lambda: conf.write_conf('Date', 'start_date', set_start_date.date.toString('yyyy-M-d')))  # 开学日期
 
-        offset_spin = self.findChild(SpinBox, 'offset_spin')
+        offset_spin = self.adInterface.findChild(SpinBox, 'offset_spin')
         offset_spin.setValue(int(conf.read_conf('General', 'time_offset')))
         offset_spin.valueChanged.connect(
             lambda: conf.write_conf('General', 'time_offset', str(offset_spin.value()))
@@ -853,7 +854,7 @@ class SettingsMenu(FluentWindow):
 
     def getThemeName(self):
         theme = conf.read_conf('General', 'theme')
-        if not os.path.exists(f'{base_directory}/ui/{theme}/theme.json'):
+        if os.path.exists(f'{base_directory}/ui/{theme}/theme.json'):
             return theme
         else:
             return 'default'

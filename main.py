@@ -1,6 +1,7 @@
 import ctypes
 import json
 import os
+import re
 from shutil import copy
 import requests
 from PyQt5 import uic
@@ -18,6 +19,7 @@ from qfluentwidgets import Theme, setTheme, setThemeColor, SystemTrayMenu, Actio
 import datetime as dt
 import list
 import conf
+from conf import base_directory
 import tip_toast
 from PyQt5.QtGui import QFontDatabase
 
@@ -37,10 +39,6 @@ QApplication.setHighDpiScaleFactorRoundingPolicy(
     Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
 QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
-
-base_directory = os.path.dirname(os.path.abspath(__file__))
-if base_directory.endswith('MacOS'):
-    base_directory = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)), 'Resources')
 
 today = dt.date.today()
 filename = conf.read_conf('General', 'schedule')
@@ -520,7 +518,7 @@ class PluginLoader:  # 插件加载器
                 if folder.is_dir() and (folder / 'plugin.json').exists():
                     if folder.name not in conf.load_plugin_config()['enabled_plugins']:
                         continue
-                    relative_path = conf.PLUGINS_DIR.split('\\')[-1]
+                    relative_path = conf.PLUGINS_DIR.name
                     module_name = f"{relative_path}.{folder.name}"
                     try:
                         module = importlib.import_module(module_name)
@@ -566,6 +564,7 @@ class PluginManager:  # 插件管理器
             "Notification": notification.notification_contents,  # 检测到的通知内容
 
             "PLUGIN_PATH": f'{conf.PLUGINS_DIR}/{path}',  # 传递插件目录
+            "Base_Directory": base_directory,  # 资源目录
         }
         return self.cw_contexts
 
@@ -649,7 +648,7 @@ class weatherReportThread(QThread):  # 获取最新天气信息
 
 class WidgetsManager:
     def __init__(self):
-        self.widgets = []
+        self.widgets = []  # 小组件实例
         self.state = 1
 
     def add_widget(self, widget):
@@ -683,12 +682,14 @@ class WidgetsManager:
 
     def update_widgets(self):
         c = 0
+
         for widget in self.widgets:
             if c == 0:
                 get_countdown(True)
             widget.update_data(path=widget.path)
             c += 1
         p_loader.update_plugins()
+
         if notification.pushed_notification:
             notification.pushed_notification = False
 
@@ -1004,6 +1005,8 @@ class DesktopWidget(QWidget):  # 主要小组件
         self.last_widgets = list.get_widget_config()
         self.path = path
         self.last_code = 101010100
+        self.radius = 0
+        self.radius = conf.load_theme_config(theme)['radius']
         self.last_theme = conf.read_conf('General', 'theme')
         self.last_color_mode = conf.read_conf('General', 'color_mode')
         self.w = 100
@@ -1021,15 +1024,26 @@ class DesktopWidget(QWidget):  # 主要小组件
         if enable_tray:
             self.init_tray_menu()  # 初始化托盘菜单
 
+        # 样式
+        self.backgnd = self.findChild(QFrame, 'backgnd')
+        if self.backgnd is None:
+            self.backgnd = self.findChild(QLabel, 'backgnd')
+
+        stylesheet = self.backgnd.styleSheet()  # 应用圆角
+        updated_stylesheet = re.sub(r'border-radius:\d+px;', f'border-radius:{self.radius}px;', stylesheet)
+        self.setStyleSheet(updated_stylesheet)
+
         if path == 'widget-time.ui':  # 日期显示
             self.date_text = self.findChild(QLabel, 'date_text')
             self.date_text.setText(f'{today.year} 年 {today.month} 月')
             self.day_text = self.findChild(QLabel, 'day_text')
             self.day_text.setText(f'{today.day}日  {list.week[today.weekday()]}')
+
         elif path == 'widget-countdown.ui':  # 活动倒计时
             self.countdown_progress_bar = self.findChild(QProgressBar, 'progressBar')
             self.activity_countdown = self.findChild(QLabel, 'activity_countdown')
             self.ac_title = self.findChild(QLabel, 'activity_countdown_title')
+
         elif path == 'widget-current-activity.ui':  # 当前活动
             self.current_subject = self.findChild(QPushButton, 'subject')
             self.blur_effect_label = self.findChild(QLabel, 'blurEffect')
@@ -1041,12 +1055,18 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.d_t_timer.setInterval(1000)
             self.d_t_timer.timeout.connect(self.detect_theme_changed)
             self.d_t_timer.start()
+
         elif path == 'widget-next-activity.ui':  # 接下来的活动
             self.nl_text = self.findChild(QLabel, 'next_lesson_text')
+
         elif path == 'widget-countdown-custom.ui':  # 自定义倒计时
             self.custom_title = self.findChild(QLabel, 'countdown_custom_title')
             self.custom_countdown = self.findChild(QLabel, 'custom_countdown')
+
         elif path == 'widget-weather.ui':  # 天气组件
+            self.temperature = self.findChild(QLabel, 'temperature')
+            self.weather_icon = self.findChild(QLabel, 'weather_icon')
+
             self.get_weather_data()
             self.weather_timer = QTimer(self)
             self.weather_timer.setInterval(30 * 60 * 1000)  # 30分钟更新一次
@@ -1113,10 +1133,15 @@ class DesktopWidget(QWidget):  # 主要小组件
                 or conf.read_conf('General', 'hide') == '1'):
             self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
 
-        if int(conf.read_conf('General', 'pin_on_top')):  # 置顶
+        if conf.read_conf('General', 'pin_on_top') == '1':  # 置顶
             self.setWindowFlags(
                 Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Tool |
                 Qt.WindowType.WindowDoesNotAcceptFocus | Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
+            )
+        elif conf.read_conf('General', 'pin_on_top') == '2':  # 置底
+            self.setWindowFlags(
+                Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnBottomHint | Qt.WindowType.Tool |
+                Qt.WindowType.WindowDoesNotAcceptFocus
             )
         else:
             self.setWindowFlags(
@@ -1127,17 +1152,13 @@ class DesktopWidget(QWidget):  # 主要小组件
 
         # 添加阴影效果
         if conf.load_theme_config(theme)['shadow']:  # 修改阴影问题
-            backgnd = self.findChild(QLabel, 'backgnd')
-            backgnd_frame = self.findChild(QFrame, 'backgnd')
             shadow_effect = QGraphicsDropShadowEffect(self)
             shadow_effect.setBlurRadius(28)
             shadow_effect.setXOffset(0)
             shadow_effect.setYOffset(6)
             shadow_effect.setColor(QColor(0, 0, 0, 75))
-            try:
-                backgnd.setGraphicsEffect(shadow_effect)
-            except:
-                backgnd_frame.setGraphicsEffect(shadow_effect)
+
+            self.backgnd.setGraphicsEffect(shadow_effect)
 
     def init_font(self):
         font_path = f'{base_directory}/font/HarmonyOS_Sans_SC_Bold.ttf'
@@ -1224,8 +1245,9 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.date_text.setText(f'{today.year} 年 {today.month} 月')
             self.day_text.setText(f'{today.day} 日 {list.week[today.weekday()]}')
 
-        elif path == 'widget-current-activity.ui':  # 当前活动
+        if path == 'widget-current-activity.ui':  # 当前活动
             self.current_subject.setText(f'  {current_lesson_name}')
+
             if current_state != 2:  # 非休息段
                 render = QSvgRenderer(list.get_subject_icon(current_lesson_name))
                 self.blur_effect_label.setStyleSheet(
@@ -1238,6 +1260,7 @@ class DesktopWidget(QWidget):  # 主要小组件
                 )
             pixmap = QPixmap(render.defaultSize())
             pixmap.fill(Qt.GlobalColor.transparent)
+
             painter = QPainter(pixmap)
             render.render(painter)
             if (isDarkTheme() and conf.load_theme_config(theme)['support_dark_mode']
@@ -1245,6 +1268,7 @@ class DesktopWidget(QWidget):  # 主要小组件
                 painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_SourceIn)
                 painter.fillRect(pixmap.rect(), QColor("#FFFFFF"))
             painter.end()
+
             self.current_subject.setIcon(QIcon(pixmap))
             self.blur_effect.setBlurRadius(25)  # 模糊半径
             self.blur_effect_label.setGraphicsEffect(self.blur_effect)
@@ -1252,7 +1276,7 @@ class DesktopWidget(QWidget):  # 主要小组件
         elif path == 'widget-next-activity.ui':  # 接下来的活动
             self.nl_text.setText(get_next_lessons_text())
 
-        elif path == 'widget-countdown.ui':  # 活动倒计时
+        if path == 'widget-countdown.ui':  # 活动倒计时
             if cd_list:
                 if conf.read_conf('General', 'blur_countdown') == '1':  # 模糊倒计时
                     if cd_list[1] == '00:00':
@@ -1264,7 +1288,7 @@ class DesktopWidget(QWidget):  # 主要小组件
                 self.ac_title.setText(cd_list[0])
                 self.countdown_progress_bar.setValue(cd_list[2])
 
-        elif path == 'widget-countdown-custom.ui':  # 自定义倒计时
+        if path == 'widget-countdown-custom.ui':  # 自定义倒计时
             self.custom_title.setText(f'距离 {conf.read_conf("Date", "cd_text_custom")} 还有')
             self.custom_countdown.setText(conf.get_custom_countdown())
         self.update()
@@ -1296,19 +1320,19 @@ class DesktopWidget(QWidget):  # 主要小组件
         global weather_name, temperature
         if type(weather_data) is dict and hasattr(self, 'weather_icon'):
             logger.success('已获取天气数据')
-            temperature = self.findChild(QLabel, 'temperature')
-            weather_icon = self.findChild(QLabel, 'weather_icon')
             weather_name = db.get_weather_by_code(db.get_weather_data('icon', weather_data))
             current_city = self.findChild(QLabel, 'current_city')
-            backgnd = self.findChild(QLabel, 'backgnd')
             try:  # 天气组件
-                temperature.setText(f"{db.get_weather_data('temp', weather_data)}")
-                weather_icon.setPixmap(QPixmap(db.get_weather_icon_by_code(db.get_weather_data('icon', weather_data))))
+                self.weather_icon.setPixmap(
+                    QPixmap(db.get_weather_icon_by_code(db.get_weather_data('icon', weather_data)))
+                )
+                self.temperature.setText(f"{db.get_weather_data('temp', weather_data)}")
                 current_city.setText(f"{db.search_by_num(conf.read_conf('Weather', 'city'))} · "
                                      f"{weather_name}")
-                backgnd.setStyleSheet('background-color: qlineargradient('
-                                      f"{db.get_weather_stylesheet(db.get_weather_data('icon', weather_data))}); "
-                                      f'border-radius: {radius}')
+                update_stylesheet = re.sub(r'border-image: url\((.*?)\);',
+                                           f"border-image: url({db.get_weather_stylesheet(db.get_weather_data('icon', weather_data))});",
+                                           self.backgnd.styleSheet())
+                self.backgnd.setStyleSheet(update_stylesheet)
             except Exception as e:
                 logger.error(f'天气组件出错：{e}')
         else:
@@ -1401,6 +1425,7 @@ class DesktopWidget(QWidget):  # 主要小组件
         self.animation.setEndValue(
             QRect(self.x(), int(conf.read_conf('General', 'margin')), self.width(), self.height()))
         self.animation.setEasingCurve(QEasingCurve.Type.InOutCirc)  # 设置动画效果
+
         if os.name != 'nt':
             self.show()
 
@@ -1410,6 +1435,8 @@ class DesktopWidget(QWidget):  # 主要小组件
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.MouseButton.RightButton:
             return  # 右键不执行
+        if conf.read_conf('General', 'pin_on_top') == '2':  # 置底
+            return  # 置底不执行
         if conf.read_conf('General', 'hide') != '2':  # 置顶
             if mgr.state:
                 mgr.decide_to_hide()
@@ -1530,7 +1557,6 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     share = QSharedMemory('ClassWidgets')
     share.create(1)  # 创建共享内存
-    mgr = WidgetsManager()
     logger.info(f"共享内存：{share.isAttached()} 是否允许多开实例：{conf.read_conf('Other', 'multiple_programs')}")
 
     if share.attach() and conf.read_conf('Other', 'multiple_programs') != '1':
@@ -1543,6 +1569,8 @@ if __name__ == '__main__':
         msg_box.exec()
         sys.exit(-1)
     else:
+        mgr = WidgetsManager()
+
         if conf.read_conf('Other', 'initialstartup') == '1':  # 首次启动
             try:
                 conf.add_shortcut('ClassWidgets.exe', f'{base_directory}/img/favicon.ico')
@@ -1559,6 +1587,7 @@ if __name__ == '__main__':
         p_loader = PluginLoader()
         p_mgr = PluginManager()
         p_loader.load_plugins()
+
         init()
         get_start_time()
         get_current_lessons()

@@ -67,7 +67,8 @@ font-weight: bold;</string>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(40, 60, 110, 245), stop:1 rgba(75, 175, 245, 245));
-border-radius: 8px</string>
+border-radius: 8px;
+border-image: url();</string>
    </property>
    <property name="text">
     <string/>
@@ -95,7 +96,7 @@ border-radius: 8px</string>
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>../../../img/weather/0.svg</pixmap>
+       <pixmap>../../img/weather/0.svg</pixmap>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -149,7 +150,7 @@ font-weight: bold</string>
     <string notr="true"/>
    </property>
    <property name="pixmap">
-    <pixmap>../img/4.png</pixmap>
+    <pixmap>img/4.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>

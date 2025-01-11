@@ -1,14 +1,10 @@
 import datetime
-import os.path
 import sqlite3
 import json
 from loguru import logger
 
 import conf
-
-base_directory = os.path.dirname(os.path.abspath(__file__))
-if base_directory.endswith('MacOS'):
-    base_directory = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)), 'Resources')
+from conf import base_directory
 
 path = f'{base_directory}/config/data/xiaomi_weather.db'
 api_config = json.load(open(f'{base_directory}/config/data/weather_api.json', encoding='utf-8'))
@@ -112,10 +108,14 @@ def get_weather_stylesheet(code):  # 天气背景样式
             else:
                 weather_code = str(weather['code'])
             break
-    if weather_code in ('0', '1', '3', '99', '900'):
+    if weather_code in ('0', '1', '3', '99', '900'):  # 晴、多云、阵雨、未知
         if 6 <= current_time.hour < 18:  # 如果是日间
-            return 'spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(40, 60, 110, 255), stop:1 rgba(75, 175, 245, 255)'
-    return 'spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(20, 60, 90, 255), stop:1 rgba(10, 20, 29, 255)'
+            # return 'spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(40, 60, 110, 255), stop:1 rgba(75, 175, 245, 255)'
+            return 'img/weather/bkg/day.png'
+        else:  # 如果是夜间
+            return 'img/weather/bkg/night.png'
+    # return 'spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(20, 60, 90, 255), stop:1 rgba(10, 20, 29, 255)'
+    return 'img/weather/bkg/rain.png'
 
 
 def get_weather_url():
