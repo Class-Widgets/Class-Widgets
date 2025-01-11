@@ -68,6 +68,7 @@ body:
         - 额外选项
         - 浮窗
         - 其他
+      description: 选择问题发生的位置，以便于我们更好发现问题。
     validations:
       required: true
 
