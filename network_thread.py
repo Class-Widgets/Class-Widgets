@@ -12,7 +12,7 @@ from loguru import logger
 import conf
 from conf import base_directory
 
-headers = {"User-Agent": "Mozilla/5.0"}
+headers = {"User-Agent": "Mozilla/5.0", "Cache-Control": "no-cache"}  # 设置请求头
 # proxies = {"http": "http://127.0.0.1:10809", "https": "http://127.0.0.1:10809"}  # 加速访问
 proxies = {"http": None, "https": None}
 
@@ -56,7 +56,7 @@ class getRepoFileList(QThread):  # 获取仓库文件目录
         try:
             mirror_url = mirror_dict[conf.read_conf('Plugin', 'mirror')]
             url = f"{mirror_url}{self.download_url}"
-            response = requests.get(url, proxies=proxies)  # 禁用代理
+            response = requests.get(url, proxies=proxies, headers=headers)  # 禁用代理
             if response.status_code == 200:
                 data = response.json()
                 return data
@@ -88,7 +88,7 @@ class getPluginInfo(QThread):  # 获取插件信息(json)
         try:
             mirror_url = mirror_dict[conf.read_conf('Plugin', 'mirror')]
             url = f"{mirror_url}{self.download_url}"
-            response = requests.get(url, proxies=proxies)  # 禁用代理
+            response = requests.get(url, proxies=proxies, headers=headers)  # 禁用代理
             if response.status_code == 200:
                 data = response.json()
                 return data
@@ -120,7 +120,7 @@ class getTags(QThread):  # 获取插件标签(json)
         try:
             mirror_url = mirror_dict[conf.read_conf('Plugin', 'mirror')]
             url = f"{mirror_url}{self.download_url}"
-            response = requests.get(url, proxies=proxies)  # 禁用代理
+            response = requests.get(url, proxies=proxies, headers=headers)  # 禁用代理
             if response.status_code == 200:
                 data = response.json()
                 return data
@@ -154,7 +154,7 @@ class getImg(QThread):  # 获取图片
         try:
             mirror_url = mirror_dict[conf.read_conf('Plugin', 'mirror')]
             url = f"{mirror_url}{self.download_url}"
-            response = requests.get(url, proxies=proxies)
+            response = requests.get(url, proxies=proxies, headers=headers)
             if response.status_code == 200:
                 return response.content
             else:

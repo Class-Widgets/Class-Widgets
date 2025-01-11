@@ -10,7 +10,8 @@ from qfluentwidgets import MSFluentWindow, FluentIcon as fIcon, NavigationItemPo
     ImageLabel, StrongBodyLabel, HyperlinkLabel, CaptionLabel, PrimaryPushButton, HorizontalFlipView, \
     InfoBar, InfoBarPosition, SplashScreen, MessageBoxBase, TransparentToolButton, BodyLabel, \
     PrimarySplitPushButton, RoundMenu, Action, PipsPager, TextBrowser, CardWidget, \
-    IndeterminateProgressRing, ComboBox, ProgressBar, SmoothScrollArea, SearchLineEdit, HyperlinkButton, SubtitleLabel
+    IndeterminateProgressRing, ComboBox, ProgressBar, SmoothScrollArea, SearchLineEdit, HyperlinkButton, SubtitleLabel, \
+    MessageBox
 
 from loguru import logger
 from datetime import datetime
@@ -42,6 +43,7 @@ download_progress = []  # 下载线程
 installed_plugins = {}  # 已安装插件（通过PluginPlaza获取）
 tags = ['示例', '信息展示', '学习', '测试', '工具', '自动化']  # 测试用TAG
 search_items = []
+SELF_PLUGIN_VERSION = conf.read_conf('Plugin', 'version')  # 自身版本号
 SEARCH_FIELDS = ["name", "description", "tag", "author"]  # 搜索字段
 
 
@@ -157,16 +159,52 @@ class downloadProgressBar(InfoBar):  # 下载进度条(创建下载进程)
         self.close()
 
 
+def install_plugin(parent, p_name, data=dict):
+    plugin_ver = str(data.get('plugin_ver'))
+    if plugin_ver != SELF_PLUGIN_VERSION:  # 插件版本不匹配
+        if plugin_ver > SELF_PLUGIN_VERSION:
+            content = (f'此插件版本（{plugin_ver}）高于当前设备中 Class Widgets 兼容的插件版本（{SELF_PLUGIN_VERSION}）；\n'
+                       f'请更新 Class Widgets 后再尝试安装此插件。')
+        else:
+            content = (f'此插件版本（{plugin_ver}）低于当前设备中 Class Widgets 兼容的插件版本（{SELF_PLUGIN_VERSION}）；\n'
+                       f'可能是插件缺乏维护，请联系插件作者更新插件，或在社区（GitHub、QQ群）中提出问题。')
+
+        cc = MessageBox(
+            "本插件不兼容当前版本的 Class Widgets",
+            f"{content}\n\n不建议安装此插件，否则将出现不可预料（包括崩溃、闪退等故障）的问题。",
+            parent
+        )  # 兼容性检查窗口
+        cc.yesButton.setText("取消安装")
+        cc.cancelButton.setText("强制安装（不建议）")
+        if cc.exec():  # 取消安装
+            return False
+
+    if p_name not in download_progress:  # 如果正在下载
+        url = data.get("url")
+        branch = data.get("branch")
+        title = data.get("title")
+
+        di = downloadProgressBar(
+            url=f"{url}",
+            branch=branch,
+            name=title,
+            parent=parent
+        )
+        di.show()
+        return True
+    return False
+
+
 class PluginDetailPage(MessageBoxBase):  # 插件详情页面
     def __init__(self, icon, title, content, tag, version, author, url, data=None, parent=None):
         super().__init__(parent)
-        self.url = url
         self.data = data
         self.branch = data.get("branch")
         self.title = title
         self.parent = parent
+        self.url = url
         self.p_name = url.split('/')[-1]  # repo
-        author_url = '/'.join(self.url.rsplit('/', 2)[:-1])
+        author_url = '/'.join(url.rsplit('/', 2)[:-1])
         self.init_ui()
         self.download_readme()
         scroll_area_widget = self.findChild(QVBoxLayout, 'verticalLayout_9')
@@ -195,7 +233,7 @@ class PluginDetailPage(MessageBoxBase):  # 插件详情页面
         self.openGitHub = self.findChild(TransparentToolButton, 'openGitHub')  # 打开连接
         self.openGitHub.setIcon(fIcon.LINK)
         self.openGitHub.setIconSize(QSize(18, 18))
-        self.openGitHub.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(self.url)))
+        self.openGitHub.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(url)))
 
         self.installButton = self.findChild(PrimarySplitPushButton, 'installButton')
         self.installButton.setText("  安装  ")
@@ -220,7 +258,7 @@ class PluginDetailPage(MessageBoxBase):  # 插件详情页面
         menu.addActions([
             Action(fIcon.DOWNLOAD, "为 Class Widgets 安装", triggered=self.install),
             Action(fIcon.LINK, "下载到本地",
-                   triggered=lambda: QDesktopServices.openUrl(QUrl(f"{self.url}/releases/latest")))
+                   triggered=lambda: QDesktopServices.openUrl(QUrl(f"{url}/releases/latest")))
         ])
         self.installButton.setFlyout(menu)
 
@@ -230,15 +268,9 @@ class PluginDetailPage(MessageBoxBase):  # 插件详情页面
         scroll_area_widget.addWidget(self.readmePage)
 
     def install(self):
-        self.installButton.setText("  安装中  ")
-        self.installButton.setEnabled(False)
-        di = downloadProgressBar(
-            url=f"{self.url}",
-            branch=self.branch,
-            name=self.title,
-            parent=self.parent
-        )
-        di.show()
+        if install_plugin(self.parent, self.p_name, self.data):
+            self.installButton.setText("  安装中  ")
+            self.installButton.setEnabled(False)
 
     def download_readme(self):
         def display_readme(markdown_text):
@@ -279,6 +311,7 @@ class PluginCard_Horizontal(CardWidget):  # 插件卡片（横向）
         super().__init__(parent)
         self.icon = icon
         self.title = title
+        self.plugin_ver = data.get('plugin_ver')
         self.parent = parent
         self.tag = tag
         self.branch = data.get("branch")
@@ -354,14 +387,7 @@ class PluginCard_Horizontal(CardWidget):  # 插件卡片（横向）
         self.hBoxLayout_Author.addWidget(self.authorLabel, 0, Qt.AlignmentFlag.AlignLeft)
 
     def install(self):
-        if self.p_name not in download_progress:  # 如果正在下载
-            di = downloadProgressBar(
-                url=f"{self.url}",
-                branch=self.branch,
-                name=self.title,
-                parent=self.parent
-            )
-            di.show()
+        install_plugin(self.parent, self.p_name, self.data)
 
     def set_img(self, img):
         try:
@@ -536,6 +562,7 @@ class PluginPlaza(MSFluentWindow):
     def load_recommend_plugin(self, p_data):
         global plugins_data, search_items
         plugins_data = p_data  # 保存插件数据
+        print(plugins_data)
 
         for plugin in p_data.values():  # 遍历插件数据
             search_items.append(plugin['name'])
