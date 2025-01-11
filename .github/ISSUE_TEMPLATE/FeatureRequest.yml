@@ -33,13 +33,42 @@ body:
   - type: markdown
     attributes: 
       value: |
-        ### 背景与动机
+        ### 新功能
+        描述您的新功能。您可以附上截图、录屏、堆栈跟踪、日志等材料，便于开发者进行开发。
         
         > [!WARNING]
         > 若您要上传材料，请等待材料文件上传完成后再发布Issue
         >
         > 若显示为`![Uploading 文件名]()`即为上传中，请等待链接变动后再提交。
-
+  - type: dropdown
+    id: where-want
+    attributes:
+      label: 需要改进的位置
+      options:
+        - 小组件
+        - 设置→课表预览
+        - 设置→时间线编辑
+        - 设置→课程表编辑
+        - 设置→配置文件
+        - 设置→帮助
+        - 设置→插件
+        - 设置→提醒
+        - 设置→高级选项
+        - 设置→关于本产品
+        - 错误跟踪窗口
+        - 关闭/重启
+        - 插件
+        - 单双周课表
+        - 时间线
+        - 节点
+        - 上下课提醒
+        - 插件广场
+        - 额外选项
+        - 浮窗
+        - 其他
+      description: 选择需要改进的位置，以便于我们更好发现实现该功能。
+    validations:
+      required: true
   - type: textarea
     id: back
     attributes:
