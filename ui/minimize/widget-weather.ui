@@ -67,7 +67,8 @@ font-weight: bold;</string>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(40, 60, 110, 245), stop:1 rgba(75, 175, 245, 245));
-border-radius: 8px
+border-radius: 8px;
+border-image: url();
 </string>
    </property>
    <property name="text">

@@ -56,7 +56,7 @@
         <x>0</x>
         <y>0</y>
         <width>640</width>
-        <height>1380</height>
+        <height>1397</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -703,7 +703,7 @@
               <item>
                <widget class="StrongBodyLabel" name="StrongBodyLabel_2">
                 <property name="text">
-                 <string>置顶小组件</string>
+                 <string>置顶/置底小组件</string>
                 </property>
                </widget>
               </item>
@@ -716,7 +716,8 @@
                  </sizepolicy>
                 </property>
                 <property name="text">
-                 <string>重启后生效</string>
+                 <string>更改小组件的窗口状态（重启后生效）
+*开启”置底“功能时，将会禁用”单击隐藏小组件“</string>
                 </property>
                 <property name="wordWrap">
                  <bool>false</bool>
@@ -740,14 +741,7 @@
              </layout>
             </item>
             <item>
-             <widget class="SwitchButton" name="switch_pin_button">
-              <property name="onText">
-               <string>置顶</string>
-              </property>
-              <property name="offText">
-               <string>不置顶</string>
-              </property>
-             </widget>
+             <widget class="ComboBox" name="window_status_combo"/>
             </item>
            </layout>
           </widget>
