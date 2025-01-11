@@ -67,6 +67,7 @@ body:
         - 插件广场
         - 额外选项
         - 浮窗
+        - 其他
     validations:
       required: true
 
