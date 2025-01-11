@@ -1,7 +1,7 @@
 name: 插件请求
-description: 请求一项新的插件。
+description: 请求一个新的插件。
 title: "[Plugins]:"
-labels: ["插件"]
+labels: ["插件可实现"]
 body:
   - type: markdown
     attributes:
