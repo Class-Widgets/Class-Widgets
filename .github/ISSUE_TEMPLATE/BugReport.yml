@@ -17,7 +17,7 @@ body:
 
         在反馈此问题之前，请先确认一下事项是否满足：
 
-        1. 我已更新到最新版 ![GitHub Release](https://img.shields.io/github/v/release/RinLit-233-shiroko/Class-Widgets?include_prereleases)，并看过[最新提交](https://github.com/RinLit-233-shiroko/Class-Widgets/commits/main/)，确认这一 Bug 还没有修复。
+        1. 我已更新到最新版 ![GitHub Release](https://img.shields.io/github/v/release/RinLit-233-shiroko/Class-Widgets?include_prereleases)，并看过[最新提交](https://github.com/RinLit-233-shiroko/Class-Widgets/commits)。
         2. 我已在 [Issues](https://github.com/RinLit-233-shiroko/Class-Widgets/issues?q=label%3ABug) 中检索，确认这一 Bug 未被提交过。
         3. 我已知晓并同意，此处仅用于汇报程序中存在的问题（关于其他非程序本身的问题应当在 Discussion 板块提出）。
         
@@ -27,9 +27,8 @@ body:
       label: 确认检查清单
       description: 在反馈此问题之前，请先确认一下事项是否满足：
       options:
-         - label: | 
-             我已阅读以上清单并确认。
-           required: true
+        - label: 我已阅读以上清单并确认。
+          required: true
 
   - type: markdown
     attributes: 
@@ -39,37 +38,38 @@ body:
         描述您遇到的 Bug。您可以附上截图、录屏、堆栈跟踪、日志等材料，便于开发者追踪问题。
         
         > [!WARNING]
-        > 若您要上传材料，请等待材料文件上传完成后再发布Issue
+        > 若您要上传材料，请等待材料文件上传完成后再发布 Issue。
         >
-        > 若显示为`![Uploading 文件名]()`即为上传中，请等待链接变动后再提交。
+        > 若显示为 `![Uploading 文件名]()` 即为上传中，请等待链接变动后再提交。
 
-- type: dropdown
-  id: where-happened
-  attributes:
-    label: 问题发生的位置
-    options:
-      - 小组件
-      - 设置/课表预览
-      - 设置/时间线编辑
-      - 设置/课程表编辑
-      - 设置/配置文件
-      - 设置/帮助
-      - 设置/插件
-      - 设置/提醒
-      - 设置/高级选项
-      - 设置/关于本产品
-      - 错误跟踪窗口
-      - 关闭/重启
-      - 插件
-      - 单双周课表
-      - 时间线
-      - 节点
-      - 上下课提醒
-      - 插件广场
-      - 额外选项
-      - 浮窗
-  validations:
-    required: true
+  - type: dropdown
+    id: where-happened
+    attributes:
+      label: 问题发生的位置
+      options:
+        - 小组件
+        - 设置/课表预览
+        - 设置/时间线编辑
+        - 设置/课程表编辑
+        - 设置/配置文件
+        - 设置/帮助
+        - 设置/插件
+        - 设置/提醒
+        - 设置/高级选项
+        - 设置/关于本产品
+        - 错误跟踪窗口
+        - 关闭/重启
+        - 插件
+        - 单双周课表
+        - 时间线
+        - 节点
+        - 上下课提醒
+        - 插件广场
+        - 额外选项
+        - 浮窗
+    validations:
+      required: true
+
   - type: textarea
     id: excepted
     attributes:
@@ -77,6 +77,7 @@ body:
       description: 详细的描述你期望发生的行为，突出与目前（可能不正确的）行为的不同。（选填）
     validations:
       required: false
+
   - type: textarea
     id: what-happened
     attributes:
@@ -84,6 +85,7 @@ body:
       description: 实际发生的行为，尽量包含如截图、录屏、文本描述等信息，便于开发者追踪问题。
     validations:
       required: true
+
   - type: textarea
     id: reproduce-steps
     attributes:
@@ -96,12 +98,14 @@ body:
         3. ……
     validations:
       required: true
+
   - type: textarea
     id: stacktrace
     attributes:
       label: 堆栈跟踪
-      description: 如果在遇到这个 Bug 时发生了崩溃（弹出崩溃提示），或者产生了错误日志，请将产生的堆栈跟踪信息粘贴到此处，便于开发者定位 Bug。（可选）
+      description: 如果在遇到这个 Bug 时发生了崩溃（弹出崩溃提示），或者产生了错误日志，请将产生的堆栈跟踪信息粘贴到此处，便于开发者定位 Bug。
       render: shell
+
   - type: input
     id: app_version
     attributes:
@@ -110,6 +114,7 @@ body:
       placeholder: 如：1.2.3
     validations:
       required: true
+
   - type: input
     id: os_version
     attributes:
@@ -118,6 +123,7 @@ body:
         若您当前使用的操作系统为 Windows，可以运行 `winver.exe` 查看；其他系统的查询方式可上网查阅。
         如果您不能肯定此 Bug 与操作系统无关，请填写此项。
       placeholder: 如：Windows - 10.0.22000.0
+
   - type: checkboxes
     id: revision
     attributes:
