@@ -389,38 +389,38 @@ class WeatherConfig:
         if "Weather" not in config.sections():
             config.add_section("Weather")
 
-        config.set("Weather", "city", str(self.city))
-        config.set("Weather", "api", self.api)
-        config.set("Weather", "api_key", self.api_key)
+        config.set("Weather", "city", str(self.__city))
+        config.set("Weather", "api", self.__api)
+        config.set("Weather", "api_key", self.__api_key)
 
         with open(CONFIG_FILE_PATH, "w") as configfile:
             config.write(configfile)
 
     @property
     def city(self) -> int:
-        return self.city
+        return self.__city
 
     @city.setter
     def city(self, value: int) -> None:
-        self.city = value
+        self.__city = value
         self.save_config()
 
     @property
     def api(self) -> str:
-        return self.api
+        return self.__api
 
     @api.setter
     def api(self, value: str) -> None:
-        self.api = value
+        self.__api = value
         self.save_config()
 
     @property
     def api_key(self) -> str:
-        return self.api_key
+        return self.__api_key
 
     @api_key.setter
     def api_key(self, value: str) -> None:
-        self.api_key = value
+        self.__api_key = value
         self.save_config()
 
 
