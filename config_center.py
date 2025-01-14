@@ -741,7 +741,7 @@ class OtherConfig:
     __safe_mode: bool
     __initialstartup: bool
     __multiple_programs: bool
-    __version_channel: bool
+    __version_channel: int
     __auto_check_update: bool
     __version: str
 
@@ -824,11 +824,11 @@ class OtherConfig:
         self.save_config()
 
     @property
-    def version_channel(self) -> bool:
+    def version_channel(self) -> int:
         return self.__version_channel
 
     @version_channel.setter
-    def version_channel(self, value: bool) -> None:
+    def version_channel(self, value: int) -> None:
         self.__version_channel = value
         self.save_config()
 

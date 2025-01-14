@@ -12,6 +12,7 @@ from plyer import notification
 
 import conf
 from conf import base_directory
+from config_center import plugin_config, other_config
 
 headers = {"User-Agent": "Mozilla/5.0", "Cache-Control": "no-cache"}  # 设置请求头
 # proxies = {"http": "http://127.0.0.1:10809", "https": "http://127.0.0.1:10809"}  # 加速访问
@@ -34,9 +35,9 @@ except Exception as e:
 for name in mirror_dict:
     mirror_list.append(name)
 
-if conf.read_conf('Plugin', 'mirror') not in mirror_list:  # 如果当前配置不在镜像列表中，则设置为默认镜像
+if plugin_config.mirror not in mirror_list:  # 如果当前配置不在镜像列表中，则设置为默认镜像
     logger.warning(f"当前配置不在镜像列表中，设置为默认镜像: {mirror_list[0]}")
-    conf.write_conf('Plugin', 'mirror', mirror_list[0])
+    plugin_config.mirror = mirror_list[0]
 
 
 class getRepoFileList(QThread):  # 获取仓库文件目录
@@ -57,7 +58,7 @@ class getRepoFileList(QThread):  # 获取仓库文件目录
 
     def get_plugin_info(self):
         try:
-            mirror_url = mirror_dict[conf.read_conf('Plugin', 'mirror')]
+            mirror_url = mirror_dict[plugin_config.mirror]
             url = f"{mirror_url}{self.download_url}"
             response = requests.get(url, proxies=proxies, headers=headers)  # 禁用代理
             if response.status_code == 200:
@@ -89,7 +90,7 @@ class getPluginInfo(QThread):  # 获取插件信息(json)
 
     def get_plugin_info(self):
         try:
-            mirror_url = mirror_dict[conf.read_conf('Plugin', 'mirror')]
+            mirror_url = mirror_dict[plugin_config.mirror]
             url = f"{mirror_url}{self.download_url}"
             response = requests.get(url, proxies=proxies, headers=headers)  # 禁用代理
             if response.status_code == 200:
@@ -121,7 +122,7 @@ class getTags(QThread):  # 获取插件标签(json)
 
     def get_plugin_info(self):
         try:
-            mirror_url = mirror_dict[conf.read_conf('Plugin', 'mirror')]
+            mirror_url = mirror_dict[plugin_config.mirror]
             url = f"{mirror_url}{self.download_url}"
             response = requests.get(url, proxies=proxies, headers=headers)  # 禁用代理
             if response.status_code == 200:
@@ -155,7 +156,7 @@ class getImg(QThread):  # 获取图片
 
     def get_banner(self):
         try:
-            mirror_url = mirror_dict[conf.read_conf('Plugin', 'mirror')]
+            mirror_url = mirror_dict[plugin_config.mirror]
             url = f"{mirror_url}{self.download_url}"
             response = requests.get(url, proxies=proxies, headers=headers)
             if response.status_code == 200:
@@ -184,7 +185,7 @@ class getReadme(QThread):  # 获取README
 
     def get_readme(self):
         try:
-            mirror_url = mirror_dict[conf.read_conf('Plugin', 'mirror')]
+            mirror_url = mirror_dict[plugin_config.mirror]
             url = f"{mirror_url}{self.download_url}"
             print(url)
             response = requests.get(url, proxies=proxies)
@@ -290,7 +291,7 @@ class DownloadAndExtract(QThread):  # 下载并解压插件
     def download_file(self, file_path):
         # time.sleep(555)  # 模拟下载时间
         try:
-            self.download_url = mirror_dict[conf.read_conf('Plugin', 'mirror')] + self.download_url
+            self.download_url = mirror_dict[plugin_config.mirror] + self.download_url
             print(self.download_url)
             response = requests.get(self.download_url, stream=True, proxies=proxies)
             if response.status_code != 200:
@@ -353,10 +354,10 @@ def check_version(version):  # 检查更新
         )
         return False
 
-    channel = int(conf.read_conf("Other", "version_channel"))
+    channel = other_config.version_channel
     new_version = version['version_release' if channel == 0 else 'version_beta']
 
-    if new_version != conf.read_conf("Other", "version"):
+    if new_version != other_config.version:
         notification.notify(
             title="发现 Class Widgets 新版本！",
             message=f"新版本速递：{new_version}\n请在“设置”中了解更多。",
