@@ -109,7 +109,7 @@ jobs:
 
   self-hosted:
     runs-on: self-hosted
-
+    needs: []  # 明确指定没有依赖关系
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4.2.2
