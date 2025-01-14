@@ -17,8 +17,8 @@ from loguru import logger
 from datetime import datetime
 from random import shuffle
 
-import conf
 from conf import base_directory
+from config_center import plugin_config
 import list as l
 import sys
 
@@ -43,7 +43,7 @@ download_progress = []  # 下载线程
 installed_plugins = {}  # 已安装插件（通过PluginPlaza获取）
 tags = ['示例', '信息展示', '学习', '测试', '工具', '自动化']  # 测试用TAG
 search_items = []
-SELF_PLUGIN_VERSION = conf.read_conf('Plugin', 'version')  # 自身版本号
+SELF_PLUGIN_VERSION = plugin_config.version  # 自身版本号
 SEARCH_FIELDS = ["name", "description", "tag", "author"]  # 搜索字段
 
 
@@ -503,12 +503,13 @@ class PluginPlaza(MSFluentWindow):
         QScroller.grabGesture(search_scroll.viewport(), QScroller.LeftMouseButtonGesture)
 
     def setup_settingsInterface(self):  # 初始化设置
+        def set_proxy():
+            plugin_config.mirror = select_mirror.currentText()
         # 选择代理
         select_mirror = self.settingsInterface.findChild(ComboBox, 'select_proxy')
         select_mirror.addItems(nt.mirror_list)
-        select_mirror.setCurrentIndex(nt.mirror_list.index(conf.read_conf('Plugin', 'mirror')))
-        select_mirror.currentIndexChanged.connect(
-            lambda: conf.write_conf('Plugin', 'mirror', select_mirror.currentText()))
+        select_mirror.setCurrentIndex(nt.mirror_list.index(plugin_config.mirror))
+        select_mirror.currentIndexChanged.connect(set_proxy)
 
     def setup_homeInterface(self):  # 初始化首页
         # 标题和副标题

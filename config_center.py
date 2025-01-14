@@ -487,7 +487,7 @@ class ColorConfig:
 
 
 class PluginConfig:
-    __version: int = 1
+    __version: str = "1"
     __mirror: str = "gh_proxy"
     __auto_delay: int = 5
 
@@ -498,7 +498,7 @@ class PluginConfig:
         config.read(CONFIG_FILE_PATH)
 
         if "Plugin" in config.sections():
-            self.__version = config.getint("Plugin", "version", fallback=1)
+            self.__version = config.get("Plugin", "version", fallback="1")
             self.__mirror = config.get("Plugin", "mirror", fallback="gh_proxy")
             self.__auto_delay = config.getint("Plugin", "auto_delay", fallback=5)
 
@@ -511,7 +511,7 @@ class PluginConfig:
         if "Plugin" not in config.sections():
             config.add_section("Plugin")
 
-        config.set("Plugin", "version", str(self.__version))
+        config.set("Plugin", "version", self.__version)
         config.set("Plugin", "mirror", self.__mirror)
         config.set("Plugin", "auto_delay", str(self.__auto_delay))
 
@@ -519,11 +519,11 @@ class PluginConfig:
             config.write(configfile)
 
     @property
-    def version(self) -> int:
+    def version(self) -> str:
         return self.__version
 
     @version.setter
-    def version(self, value: int) -> None:
+    def version(self, value: str) -> None:
         self.__version = value
         self.save_config()
 
@@ -544,9 +544,6 @@ class PluginConfig:
     def auto_delay(self, value: int) -> None:
         self.__auto_delay = value
         self.save_config()
-
-
-# data = {"start_date": "", "cd_text_custom": "自定义", "countdown_date": ""}
 
 
 class DateConfig:
