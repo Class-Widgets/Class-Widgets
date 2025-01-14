@@ -31,17 +31,20 @@ temp_schedule = {'schedule': {}, 'schedule_even': {}}
 
 def open_settings():
     global settings
-    try:
-        if settings is None or not settings.isVisible():
-            settings = SettingsMenu()
-            settings.show()
-            logger.info('打开“设置”')
-        else:
-            settings.raise_()
-            settings.activateWindow()
-    except Exception as e:
+    if settings is None or not settings.isVisible():
+        settings = SettingsMenu()
         settings.show()
+        settings.destroyed.connect(cleanup_settings)
         logger.info('打开“设置”')
+    else:
+        settings.raise_()
+        settings.activateWindow()
+
+
+def cleanup_settings():
+    global settings
+    print('clean up settings')
+    settings = None
 
 
 class ExactMenu(FluentWindow):
@@ -172,11 +175,6 @@ class ExactMenu(FluentWindow):
         self.setWindowIcon(QIcon('img/logo/favicon-exmenu.ico'))
 
         self.addSubInterface(self.interface, fIcon.INFO, '更多设置')
-
-    def closeEvent(self, event):
-        event.ignore()
-        # self.deleteLater()
-        self.hide()
 
 
 if __name__ == '__main__':

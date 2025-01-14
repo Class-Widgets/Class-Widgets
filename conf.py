@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 import configparser as config
 from pathlib import Path
 from shutil import copy
@@ -17,6 +18,14 @@ conf = config.ConfigParser()
 name = 'Class Widgets'
 
 PLUGINS_DIR = Path(base_directory) / 'plugins'
+
+# app 图标
+if os.name == 'nt':
+    app_icon = os.path.join(base_directory, 'img', 'favicon.ico')
+elif os.name == 'darwin':
+    app_icon = os.path.join(base_directory, 'img', 'favicon.icns')
+else:
+    app_icon = os.path.join(base_directory, 'img', 'favicon.png')
 
 
 def load_from_json(filename):
@@ -303,6 +312,10 @@ def check_config():
         conf.read_dict(default_conf)
         with open(path, 'w', encoding='utf-8') as configfile:
             conf.write(configfile)
+        if sys.platform == 'linux':
+            conf.set('General', 'hide_method', '2')
+            with open(path, 'w', encoding='utf-8') as configfile:
+                conf.write(configfile)
         logger.info("配置文件不存在，已创建并写入默认配置。")
         copy(f'{base_directory}/config/default.json', f'{base_directory}/config/schedule/新课表 - 1.json')
     else:
@@ -341,6 +354,20 @@ def check_config():
             else:
                 write_conf('General', 'schedule', schedule_config[0])
         print(os.path.join(os.getcwd(), 'config', 'schedule'))
+
+    # 判断是否存在 Plugins 文件夹
+    plugins_dir = Path(base_directory) / 'plugins'
+    if not plugins_dir.exists():
+        plugins_dir.mkdir()
+        logger.info("Plugins 文件夹不存在，已创建。")
+
+    # 判断 Plugins 文件夹内是否存在 plugins_from_pp.json 文件
+    plugins_file = plugins_dir / 'plugins_from_pp.json'
+    if not plugins_file.exists():
+        with open(plugins_file, 'w', encoding='utf-8') as file:
+            # 使用 indent=4 来缩进，并确保数组元素在多行显示
+            json.dump({"plugins": []}, file, ensure_ascii=False, indent=4)
+        logger.info("plugins_from_pp.json 文件不存在，已创建。")
 
 
 check_config()

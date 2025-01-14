@@ -8,6 +8,7 @@ from datetime import datetime
 import requests
 from PyQt5.QtCore import QThread, pyqtSignal
 from loguru import logger
+from plyer import notification
 
 import conf
 from conf import base_directory
@@ -19,6 +20,8 @@ proxies = {"http": None, "https": None}
 MIRROR_PATH = f"{base_directory}/config/mirror.json"
 PLAZA_REPO_URL = "https://raw.githubusercontent.com/Class-Widgets/plugin-plaza/"
 PLAZA_REPO_DIR = "https://api.github.com/repos/Class-Widgets/plugin-plaza/contents/"
+
+threads = []
 
 # 读取镜像配置
 mirror_list = []
@@ -196,7 +199,7 @@ class getReadme(QThread):  # 获取README
 
 
 class VersionThread(QThread):  # 获取最新版本号
-    version_signal = pyqtSignal(str)
+    version_signal = pyqtSignal(dict)
 
     def __init__(self):
         super().__init__()
@@ -206,18 +209,18 @@ class VersionThread(QThread):  # 获取最新版本号
         self.version_signal.emit(version)
 
     def get_latest_version(self):
-        url = "https://classwidgets.rinlit.cn/version"
+        url = "https://classwidgets.rinlit.cn/version.json"
         try:
             response = requests.get(url, proxies=proxies)
             if response.status_code == 200:
-                data = response.text
+                data = response.json()
                 return data
             else:
                 logger.error(f"无法获取版本信息 错误代码：{response.status_code}")
-                return f"请求失败，错误代码：{response.status_code}"
+                return {'error': f"请求失败，错误代码：{response.status_code}"}
         except requests.exceptions.RequestException as e:
             logger.error(f"请求失败，错误代码：{e}")
-            return f"请求失败\n{e}"
+            return {"error": f"请求失败\n{e}"}
 
 
 class getDownloadUrl(QThread):
@@ -325,6 +328,42 @@ class DownloadAndExtract(QThread):  # 下载并解压插件
                         os.rename(os.path.join(self.extract_dir, p_dir), os.path.join(self.extract_dir, new_name))
         except Exception as e:
             logger.error(f"解压失败: {e}")
+
+
+def check_update():
+    global threads
+    version_thread = VersionThread()
+    threads.append(version_thread)
+    version_thread.version_signal.connect(check_version)
+    version_thread.start()
+
+
+def check_version(version):  # 检查更新
+    global threads
+    for thread in threads:
+        thread.terminate()
+    threads = []
+    if 'error' in version:
+        notification.notify(
+            title="检查更新失败！",
+            message=f"检查更新失败！\n{version['error']}",
+            app_name="Class Widgets",
+            app_icon=conf.app_icon,
+            timeout=25  # 通知显示时间（秒）
+        )
+        return False
+
+    channel = int(conf.read_conf("Other", "version_channel"))
+    new_version = version['version_release' if channel == 0 else 'version_beta']
+
+    if new_version != conf.read_conf("Other", "version"):
+        notification.notify(
+            title="发现 Class Widgets 新版本！",
+            message=f"新版本速递：{new_version}\n请在“设置”中了解更多。",
+            app_name="Class Widgets",
+            app_icon=conf.app_icon,
+            timeout=10  # 通知显示时间（秒）
+        )
 
 
 if __name__ == '__main__':

@@ -48,7 +48,7 @@ def write_conf(section, key, value):
     if section not in data:
         data.add_section(section)
 
-    data.set(section, key, value)
+    data.set(section, key, str(value))
 
     with open(path, 'w', encoding='utf-8') as configfile:
         data.write(configfile)

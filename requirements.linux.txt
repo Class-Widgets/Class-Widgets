@@ -14,8 +14,7 @@ pyqt5-stubs==5.15.6.0
 requests==2.32.3
 urllib3==2.2.3
 win32-setctime==1.1.0
-soundfile~=0.12.1
-sounddevice~=0.5.0
 PyQtWebEngine~=5.15.7
 Markdown~=3.7
 pygame~=2.6.1
+plyer==2.1.0

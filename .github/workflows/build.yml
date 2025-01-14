@@ -51,7 +51,8 @@ jobs:
             --add-data font:font `
             --add-data view:view `
             --add-data LICENSE:. `
-            --add-data plugins:plugins
+            --add-data plugins:plugins `
+            --hidden-import=plyer.platforms.win.notification
 
       - name: Run Linux build
         if: ${{ matrix.os == 'ubuntu-20.04' }}
@@ -72,7 +73,8 @@ jobs:
             --add-data font:font \
             --add-data view:view \
             --add-data LICENSE:. \
-            --add-data plugins:plugins
+            --add-data plugins:plugins \
+            --hidden-import=plyer.platforms.linux.notification
 
       - name: Run macOS build
         if: ${{ matrix.os == 'macos-13' }}
@@ -93,7 +95,8 @@ jobs:
             --add-data font:font \
             --add-data view:view \
             --add-data LICENSE:. \
-            --add-data plugins:plugins
+            --add-data plugins:plugins \
+            --hidden-import=plyer.platforms.macosx.notification
 
       - name: Upload
         uses: actions/upload-artifact@v4.4.2
@@ -124,7 +127,19 @@ jobs:
       - name: 使用 PyInstaller 打包
         run: |
           source ./venv/bin/activate
-          pyinstaller main.py -w -i ./img/favicon.ico -n ClassWidgets --contents-directory . --add-data config:config --add-data audio:audio --add-data img:img --add-data ui:ui --add-data font:font --add-data view:view --add-data LICENSE:. --add-data plugins:plugins
+          pyinstaller main.py -w \
+            -i ./img/favicon.ico \
+            -n ClassWidgets \
+            --contents-directory . \
+            --add-data config:config \
+            --add-data audio:audio \
+            --add-data img:img \
+            --add-data ui:ui \
+            --add-data font:font \
+            --add-data view:view \
+            --add-data LICENSE:. \
+            --add-data plugins:plugins \
+            --hidden-import=plyer.platforms.linux.notification
 
       - name: 存到构建输出
         uses: actions/upload-artifact@v4.4.2

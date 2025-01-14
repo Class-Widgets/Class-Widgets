@@ -11,7 +11,8 @@
     "color_mode": 2,
     "enable_alt_schedule": 0,
     "blur_countdown": 0,
-    "theme": "default"
+    "theme": "default",
+    "scale": 1
   },
   "Toast": {
     "wave": 1,
@@ -57,6 +58,8 @@
     "safe_mode": 0,
     "initialstartup": 1,
     "multiple_programs": 0,
+    "version_channel": 0,
+    "auto_check_update": 1,
     "version": "1.1.7-b5"
   }
 }

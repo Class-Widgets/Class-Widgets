@@ -24,6 +24,7 @@ import tip_toast
 from PyQt5.QtGui import QFontDatabase
 
 from menu import open_plaza
+from network_thread import check_update
 from exact_menu import ExactMenu, open_settings
 import weather_db as db
 import importlib
@@ -1340,17 +1341,18 @@ class DesktopWidget(QWidget):  # 主要小组件
 
     def open_exact_menu(self):
         global ex_menu
-        try:
-            if ex_menu is None or not ex_menu.isVisible():
-                ex_menu = ExactMenu()
-                ex_menu.show()
-                logger.info('打开“额外选项”')
-            else:
-                ex_menu.raise_()
-                ex_menu.activateWindow()
-        except Exception as e:
+        if ex_menu is None or not ex_menu.isVisible():
+            ex_menu = ExactMenu()
             ex_menu.show()
+            ex_menu.destroyed.connect(self.cleanup_exact_menu)
             logger.info('打开“额外选项”')
+        else:
+            ex_menu.raise_()
+            ex_menu.activateWindow()
+
+    def cleanup_exact_menu(self):
+        global ex_menu
+        ex_menu = None
 
     def hide_show_widgets(self):  # 隐藏/显示主界面（全部隐藏）
         if mgr.state:
@@ -1554,7 +1556,13 @@ def update_time():
 
 
 if __name__ == '__main__':
+    scale_factor = float(conf.read_conf('General','scale'))
+    os.environ['QT_SCALE_FACTOR'] = str(scale_factor)
+    logger.info(f"当前缩放系数：{scale_factor * 100}%")
+    if scale_factor > 1.8 or scale_factor < 1.0:
+        logger.warning("当前缩放系数可能导致显示异常，建议使缩放系数在 100% 到 180% 之间")
     app = QApplication(sys.argv)
+    app.setQuitOnLastWindowClosed(False)
     share = QSharedMemory('ClassWidgets')
     share.create(1)  # 创建共享内存
     logger.info(f"共享内存：{share.isAttached()} 是否允许多开实例：{conf.read_conf('Other', 'multiple_programs')}")
@@ -1601,5 +1609,7 @@ if __name__ == '__main__':
 
         # w = ErrorDialog()
         # w.exec()
+        if conf.read_conf('Other', 'auto_check_update') == '1':
+            check_update()
 
     sys.exit(app.exec())

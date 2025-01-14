@@ -2,7 +2,7 @@ import json
 import os.path
 
 from PyQt5 import uic
-from PyQt5.QtCore import QSize, Qt, QTimer, QUrl, QEvent, QStringListModel
+from PyQt5.QtCore import QSize, Qt, QTimer, QUrl, QEvent, QStringListModel, QCoreApplication
 from PyQt5.QtGui import QIcon, QPixmap, QDesktopServices
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QGridLayout, QSpacerItem, QSizePolicy, QWidget, \
     QScroller, QCompleter
@@ -131,6 +131,7 @@ class downloadProgressBar(InfoBar):  # 下载进度条(创建下载进程)
         add2save_plugin(self.p_name)  # 保存到配置
         self.download_thread.finished.emit()
         self.download_thread.deleteLater()
+
         InfoBar.success(
             title='下载成功！',
             content=f"下载 {self.name} 成功！",
@@ -714,11 +715,6 @@ class PluginPlaza(MSFluentWindow):
         self.setStyleSheet("""QLabel {
                     font-family: 'Microsoft YaHei';
                 }""")
-
-    def closeEvent(self, event):
-        event.ignore()
-        # self.deleteLater()
-        self.hide()
 
 
 def add2save_plugin(p_name):  # 保存已安装插件

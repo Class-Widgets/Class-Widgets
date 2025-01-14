@@ -7,6 +7,7 @@ from shutil import rmtree
 
 from PyQt5 import uic, QtCore
 from PyQt5.QtCore import Qt, QTime, QUrl, QDate
+from plyer import notification
 from qframelesswindow.webengine import FramelessWebEngineView
 import sys
 
@@ -63,18 +64,19 @@ timeline_dict = {}  # 时间线字典
 
 def open_plaza():
     global plugin_plaza
-    try:
-        if plugin_plaza is None or not plugin_plaza.isVisible():
-            plugin_plaza = PluginPlaza()
-            plugin_plaza.show()
-            logger.info('打开“插件广场”')
-        else:
-            plugin_plaza.raise_()
-            plugin_plaza.activateWindow()
-    except Exception as e:
+    if plugin_plaza is None or not plugin_plaza.isVisible():
         plugin_plaza = PluginPlaza()
         plugin_plaza.show()
         logger.info('打开“插件广场”')
+    else:
+        plugin_plaza.raise_()
+        plugin_plaza.activateWindow()
+
+
+def cleanup_plaza():
+    global plugin_plaza
+    plugin_plaza = None
+    del plugin_plaza
 
 
 def get_timeline():
@@ -596,12 +598,27 @@ class SettingsMenu(FluentWindow):
         api_key_edit.textChanged.connect(lambda: conf.write_conf('Weather', 'api_key', api_key_edit.text()))
 
     def setup_about_interface(self):
-        self.version = self.findChild(BodyLabel, 'version')
-        self.version.setText(f'当前版本：{conf.read_conf("Other", "version")}\n正在检查最新版本…')
+        ab_scroll = self.findChild(SmoothScrollArea, 'ab_scroll')  # 触摸屏适配
+        QScroller.grabGesture(ab_scroll.viewport(), QScroller.LeftMouseButtonGesture)
 
-        self.version_thread = VersionThread()
-        self.version_thread.version_signal.connect(self.ab_check_update)
-        self.version_thread.start()
+        self.version = self.findChild(BodyLabel, 'version')
+
+        self.check_update_btn = self.findChild(PrimaryPushButton, 'check_update')
+        self.check_update_btn.setIcon(fIcon.SYNC)
+        self.check_update_btn.clicked.connect(self.check_update)
+
+        self.auto_check_update = self.ifInterface.findChild(SwitchButton, 'auto_check_update')
+        self.auto_check_update.setChecked(int(conf.read_conf("Other", "auto_check_update")))
+        self.auto_check_update.checkedChanged.connect(
+            lambda: conf.write_conf("Other", "auto_check_update", int(self.auto_check_update.isChecked()))
+        )  # 自动检查更新
+
+        self.version_channel = self.findChild(ComboBox, 'version_channel')
+        self.version_channel.addItems(list.version_channel)
+        self.version_channel.setCurrentIndex(int(conf.read_conf("Other", "version_channel")))
+        self.version_channel.currentIndexChanged.connect(
+            lambda: conf.write_conf("Other", "version_channel", self.version_channel.currentIndex())
+            )  # 版本更新通道
 
         github_page = self.findChild(PushButton, "button_github")
         github_page.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(
@@ -617,6 +634,8 @@ class SettingsMenu(FluentWindow):
         thanks_button = self.findChild(PushButton, 'button_thanks')
         thanks_button.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(
             'https://github.com/RinLit-233-shiroko/Class-Widgets?tab=readme-ov-file#致谢')))
+
+        self.check_update()
 
     def setup_advance_interface(self):
         adv_scroll = self.adInterface.findChild(SmoothScrollArea, 'adv_scroll')  # 触摸屏适配
@@ -641,7 +660,7 @@ class SettingsMenu(FluentWindow):
         window_status_combo.addItems(list.window_status)
         window_status_combo.setCurrentIndex(int(conf.read_conf('General', 'pin_on_top')))
         window_status_combo.currentIndexChanged.connect(
-            lambda: conf.write_conf('General', 'window_status', str(self.window_status_combo.currentIndex()))
+            lambda: conf.write_conf('General', 'pin_on_top', str(window_status_combo.currentIndex()))
         )  # 窗口状态
 
         switch_startup = self.adInterface.findChild(SwitchButton, 'switch_startup')
@@ -676,7 +695,7 @@ class SettingsMenu(FluentWindow):
 
         switch_enable_alt_schedule = self.adInterface.findChild(SwitchButton, 'switch_enable_alt_schedule')
         switch_enable_alt_schedule.setChecked(int(conf.read_conf('General', 'enable_alt_schedule')))
-        switch_enable_alt_schedule.checkedChanged.connect(self.switch_safe_mode)  # 单双周开关
+        switch_enable_alt_schedule.checkedChanged.connect(self.switch_safe_mode)  # 安全模式
 
         switch_enable_safe_mode = self.adInterface.findChild(SwitchButton, 'switch_safe_mode')
         switch_enable_safe_mode.setChecked(int(conf.read_conf('Other', 'safe_mode')))
@@ -704,6 +723,17 @@ class SettingsMenu(FluentWindow):
         offset_spin.valueChanged.connect(
             lambda: conf.write_conf('General', 'time_offset', str(offset_spin.value()))
         )  # 保存时差偏移
+
+        text_scale_factor = self.adInterface.findChild(LineEdit, 'text_scale_factor')
+        text_scale_factor.setText(str(float(conf.read_conf('General', 'scale')) * 100) + '%')  # 初始化缩放系数显示
+
+        slider_scale_factor = self.adInterface.findChild(Slider, 'slider_scale_factor')
+        slider_scale_factor.setValue(int(float(conf.read_conf('General', 'scale')) * 100))
+        slider_scale_factor.valueChanged.connect(
+            lambda: (conf.write_conf('General', 'scale', str(slider_scale_factor.value() / 100)),
+                     text_scale_factor.setText(str(slider_scale_factor.value()) + '%'))
+        )  # 保存缩放系数
+
 
     def setup_schedule_edit(self):
         self.se_load_item()
@@ -1066,11 +1096,39 @@ class SettingsMenu(FluentWindow):
                 if alert.exec():
                     return 0
 
-    def ab_check_update(self, version):  # 检查更新
-        if version[1:] == conf.read_conf("Other", "version"):
-            self.version.setText(f'当前版本：{version}\n当前为最新版本')
+    def check_update(self):
+        self.version.setText(f'当前版本：{conf.read_conf("Other", "version")}\n正在检查最新版本…')
+        self.version_thread = VersionThread()
+        self.version_thread.version_signal.connect(self.check_version)
+        self.version_thread.start()
+
+    def check_version(self, version):  # 检查更新
+        if 'error' in version:
+            self.version.setText(f'当前版本：{conf.read_conf("Other", "version")}\n{version["error"]}')
+
+            notification.notify(
+                title="检查更新失败！",
+                message=f"检查更新失败！\n{version['error']}",
+                app_name="Class Widgets",
+                app_icon=conf.app_icon,
+                timeout=10  # 通知显示时间（秒）
+            )
+            return False
+        channel = int(conf.read_conf("Other", "version_channel"))
+        new_version = version['version_release' if channel == 0 else 'version_beta']
+
+        if new_version == conf.read_conf("Other", "version"):
+            self.version.setText(f'当前版本：{new_version}\n当前为最新版本')
         else:
-            self.version.setText(f'当前版本：{conf.read_conf("Other", "version")}\n最新版本：{version}')
+            self.version.setText(f'当前版本：{conf.read_conf("Other", "version")}\n最新版本：{new_version}')
+
+            notification.notify(
+                title="发现 Class Widgets 新版本！",
+                message=f"新版本速递：{new_version}",
+                app_name="Class Widgets",
+                app_icon=conf.app_icon,
+                timeout=10  # 通知显示时间（秒）
+            )
 
     def cf_import_schedule(self):  # 导入课程表
         file_path, _ = QFileDialog.getOpenFileName(self, "选择文件", "", "Json 配置文件 (*.json)")
@@ -1830,11 +1888,6 @@ class SettingsMenu(FluentWindow):
         self.setWindowIcon(QIcon(f'{base_directory}/img/logo/favicon-settings.ico'))
 
         self.init_font()  # 设置字体
-
-    def closeEvent(self, event):
-        event.ignore()
-        # self.deleteLater()
-        self.hide()
 
 
 def sp_get_class_num():  # 获取当前周课程数（未完成）
