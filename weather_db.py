@@ -3,8 +3,9 @@ import sqlite3
 import json
 from loguru import logger
 
-import conf
+# import conf
 from conf import base_directory
+from config_center import weather_config
 
 path = f'{base_directory}/config/data/xiaomi_weather.db'
 api_config = json.load(open(f'{base_directory}/config/data/weather_api.json', encoding='utf-8'))
@@ -12,7 +13,7 @@ api_config = json.load(open(f'{base_directory}/config/data/weather_api.json', en
 
 def update_path():
     global path
-    path = f"{base_directory}/config/data/{api_config['weather_api_parameters'][conf.read_conf('Weather', 'api')]['database']}"
+    path = f"{base_directory}/config/data/{api_config['weather_api_parameters'][weather_config.api]['database']}"
 
 
 def search_by_name(search_term):
@@ -66,7 +67,7 @@ def search_by_num(search_term):
 
 
 def get_weather_by_code(code):  # 用代码获取天气描述
-    weather_status = json.load(open(f"{base_directory}/config/data/{conf.read_conf('Weather', 'api')}_status.json", encoding="utf-8"))
+    weather_status = json.load(open(f"{base_directory}/config/data/{weather_config.api}_status.json", encoding="utf-8"))
     for weather in weather_status['weatherinfo']:
         if str(weather['code']) == code:
             return weather['wea']
@@ -74,7 +75,7 @@ def get_weather_by_code(code):  # 用代码获取天气描述
 
 
 def get_weather_icon_by_code(code):  # 用代码获取天气图标
-    weather_status = json.load(open(f"{base_directory}/config/data/{conf.read_conf('Weather', 'api')}_status.json", encoding="utf-8"))
+    weather_status = json.load(open(f"{base_directory}/config/data/{weather_config.api}_status.json", encoding="utf-8"))
     weather_code = None
     current_time = datetime.datetime.now()
     # 遍历获取天气代码
@@ -98,7 +99,7 @@ def get_weather_icon_by_code(code):  # 用代码获取天气图标
 
 def get_weather_stylesheet(code):  # 天气背景样式
     current_time = datetime.datetime.now()
-    weather_status = json.load(open(f"{base_directory}/config/data/{conf.read_conf('Weather', 'api')}_status.json", encoding="utf-8"))
+    weather_status = json.load(open(f"{base_directory}/config/data/{weather_config.api}_status.json", encoding="utf-8"))
     weather_code = '99'
     for weather in weather_status['weatherinfo']:
         if str(weather['code']) == code:
@@ -119,14 +120,14 @@ def get_weather_stylesheet(code):  # 天气背景样式
 
 
 def get_weather_url():
-    if conf.read_conf('Weather', 'api') in api_config['weather_api_list']:
-        return api_config['weather_api'][conf.read_conf('Weather', 'api')]
+    if weather_config.api in api_config['weather_api_list']:
+        return api_config['weather_api'][weather_config.api]
     else:
         return api_config['weather_api']['xiaomi_weather']
 
 
 def get_weather_code_by_description(value):
-    weather_status = json.load(open(f"{base_directory}/config/data/{conf.read_conf('Weather', 'api')}_status.json", encoding="utf-8"))
+    weather_status = json.load(open(f"{base_directory}/config/data/{weather_config.api}_status.json", encoding="utf-8"))
     for weather in weather_status['weatherinfo']:
         if str(weather['wea']) == value:
             return str(weather['code'])
@@ -142,20 +143,20 @@ def get_weather_data(key='temp', weather_data=None):  # 获取天气数据
         key值可以为：temp、icon
     '''
     # 各个天气api的可访问值
-    api_parameters = api_config['weather_api_parameters'][conf.read_conf('Weather', 'api')]
+    api_parameters = api_config['weather_api_parameters'][weather_config.api]
     parameter = api_parameters[key].split('.')
     # 遍历获取值
     value = weather_data
-    if conf.read_conf('Weather', 'api') == 'amap_weather':
+    if weather_config.api == 'amap_weather':
         value = weather_data['lives'][0][api_parameters[key]]
-    elif conf.read_conf('Weather', 'api') == 'qq_weather':
+    elif weather_config.api == 'qq_weather':
         value = str(weather_data['result']['realtime'][0]['infos'][api_parameters[key]])
     else:
         for parameter in parameter:
             if parameter in value:
                 value = value[parameter]
             else:
-                logger.error(f'获取天气参数失败，{parameter}不存在于{conf.read_conf("Weather", "api")}中')
+                logger.error(f'获取天气参数失败，{parameter}不存在于{weather_config.api}中')
                 return '错误'
     if key == 'temp':
         value += '°C'
