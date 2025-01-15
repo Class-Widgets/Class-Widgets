@@ -52,7 +52,8 @@ jobs:
             --add-data view:view `
             --add-data LICENSE:. `
             --add-data plugins:plugins `
-            --hidden-import=plyer.platforms.win.notification
+            --hidden-import PyQt5.QtWebEngine `
+            --hidden-import plyer.platforms.win.notification
 
       - name: Run Linux build
         if: ${{ matrix.os == 'ubuntu-20.04' }}
@@ -74,7 +75,8 @@ jobs:
             --add-data view:view \
             --add-data LICENSE:. \
             --add-data plugins:plugins \
-            --hidden-import=plyer.platforms.linux.notification
+            --hidden-import PyQt5.QtWebEngine \
+            --hidden-import plyer.platforms.linux.notification
 
       - name: Run macOS build
         if: ${{ matrix.os == 'macos-13' }}
@@ -96,6 +98,7 @@ jobs:
             --add-data view:view \
             --add-data LICENSE:. \
             --add-data plugins:plugins \
+            --hidden-import PyQt5.QtWebEngine \
             --hidden-import=plyer.platforms.macosx.notification
 
       - name: Upload
@@ -117,18 +120,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4.2.2
 
-      - name: 创建虚拟环境
+      - name: Set up python
         run: |
           /home/actions/.pyenv/versions/3.8.10/bin/python -m venv venv
           source ./venv/bin/activate
           pip install -r requirements.linux.txt
           pip install pyinstaller
 
-      - name: 使用 PyInstaller 打包
+      - name: Run Linux (Debian 10) build
         run: |
           source ./venv/bin/activate
-          pyinstaller main.py -w \
-            -i ./img/favicon.ico \
+          pyinstaller main.py \
+            -w \
             -n ClassWidgets \
             --contents-directory . \
             --add-data config:config \
@@ -136,12 +139,13 @@ jobs:
             --add-data img:img \
             --add-data ui:ui \
             --add-data font:font \
-            --add-data view:view \
+            --add-data *.ui:. \
             --add-data LICENSE:. \
             --add-data plugins:plugins \
-            --hidden-import=plyer.platforms.linux.notification
+            --hidden-import PyQt5.QtWebEngine \
+            --hidden-import plyer.platforms.linux.notification
 
-      - name: 存到构建输出
+      - name: Upload
         uses: actions/upload-artifact@v4.4.2
         with:
           name: debian10-x64
