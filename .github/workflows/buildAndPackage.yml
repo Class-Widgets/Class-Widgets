@@ -1,0 +1,45 @@
+name: Build and Package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-package:
+    runs-on: windows-latest
+
+    steps:
+    # 检出代码仓库
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # 下载 ZIP 文件
+    - name: Download ZIP file
+      run: |
+        curl -L -o build.zip https://nightly.link/Class-Widgets/Class-Widgets/workflows/build/main/windows-latest-x64.zip
+
+    # 解压 ZIP 文件
+    - name: Unzip downloaded file
+      run: |
+        powershell -Command "Expand-Archive -Path 'build.zip' -DestinationPath './build' -Force"
+
+    # 安装 Inno Setup
+    - name: Install Inno Setup
+      run: |
+        choco install innosetup --yes
+
+    # 使用 Inno Setup 打包
+    - name: Package with Inno Setup
+      run: |
+        iscc /Qp /O"output" ClassWidgets.iss
+
+    # 上传打包后的文件作为 Artifact
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: SetupInstaller
+        path: output
