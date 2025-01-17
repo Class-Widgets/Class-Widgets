@@ -32,6 +32,11 @@ jobs:
       run: |
         choco install innosetup --yes
 
+    # 获取 iss 文件
+    - name: curl get Inno Setup
+      run: |
+        curl -L -o ClassWidgets.iss https://nightly.link/Class-Widgets/Class-Widgets/workflows/ClassWidgets.iss
+
     # 使用 Inno Setup 打包
     - name: Package with Inno Setup
       run: |
