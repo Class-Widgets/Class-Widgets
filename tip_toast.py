@@ -145,7 +145,7 @@ class tip_toast(QWidget):
 
         self.timer = QTimer(self)
         self.timer.setSingleShot(True)
-        self.timer.setInterval(duration)  # 使用传入的duration参数
+        self.timer.setInterval(duration)
         self.timer.timeout.connect(self.close_window)
 
         # 放大效果
