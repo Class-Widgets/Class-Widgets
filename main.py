@@ -561,6 +561,8 @@ class PluginManager:  # 插件管理器
 
             "Current_Lesson": current_lesson_name,  # 当前课程名
             "State": current_state,  # 0：课间 1：上课（上下课状态）
+            # "Current_Part": get_part(),  # 返回开始时间、Part序号
+            # "Next_Lessons_text": get_next_lessons_text(),  # 下节课程
 
             "Weather": weather_name,  # 天气情况
             "Temp": temperature,  # 温度
@@ -581,6 +583,9 @@ class PluginMethod:  # 插件方法
         self.app_contexts['Widgets_Width'][widget_code] = widget_width
         self.app_contexts['Widgets_Name'][widget_code] = widget_name
         self.app_contexts['Widgets_Code'][widget_name] = widget_code
+
+    def adjust_widget_width(self, widget_code, width):  # 调整小组件宽度
+        self.app_contexts['Widgets_Width'][widget_code] = width
 
     def get_widget(self, widget_code):  # 获取小组件实例
         for widget in mgr.widgets:
@@ -653,10 +658,90 @@ class weatherReportThread(QThread):  # 获取最新天气信息
 class WidgetsManager:
     def __init__(self):
         self.widgets = []  # 小组件实例
+        self.widgets_list = []  # 小组件列表配置
         self.state = 1
 
-    def add_widget(self, widget):
-        self.widgets.append(widget)
+        self.widgets_width = 0  # 小组件总宽度
+        self.spacing = 0  # 小组件间隔
+
+        self.start_pos_x = 0  # 小组件起始位置
+        self.start_pos_y = 0
+
+    def init_widgets(self):  # 初始化小组件
+        self.widgets_list = list.get_widget_config()
+        self.spacing = conf.load_theme_config(theme)['spacing']
+
+        self.get_start_pos()
+
+        # 添加小组件实例
+        for w in range(len(self.widgets_list)):
+            widget = DesktopWidget(self, self.widgets_list[w], True if w == 0 else False)
+            self.widgets.append(widget)
+
+        self.create_widgets()
+
+    def get_widget_width(self, path):
+        try:
+            width = conf.load_theme_width(theme)[path]
+        except KeyError:
+            width = list.widget_width[path]
+        return int(width)
+
+    def get_widgets_height(self):
+        return int(conf.load_theme_config(theme)['height'])
+
+    def create_widgets(self):
+        for widget in self.widgets:
+            widget.show()
+            logger.info(f'显示小组件：{widget.path, widget.windowTitle()}')
+
+    def adjust_ui(self):  # 更新小组件UI
+        for widget in self.widgets:
+            # 调整窗口尺寸
+            width = self.get_widget_width(widget.path)
+            height = self.get_widgets_height()
+            pos_x = self.get_widget_pos(widget.path)[0]
+            op = int(conf.read_conf('General', 'opacity')) / 100
+
+            if widget.animation is None:
+                widget.widget_transition(pos_x, width, height, op)
+
+    def get_widget_pos(self, path):  # 获取小组件位置
+        num = self.widgets_list.index(path)
+        self.get_start_pos()
+        pos_x = self.start_pos_x + self.spacing * num
+        for i in range(num):
+            try:
+                pos_x += conf.load_theme_width(theme)[self.widgets_list[i]]
+            except KeyError:
+                pos_x += list.widget_width[self.widgets_list[i]]
+            except:
+                pos_x += 0
+        return [int(pos_x), int(self.start_pos_y)]
+
+    def get_start_pos(self):
+        self.calculate_widgets_width()
+        screen_geometry = app.primaryScreen().availableGeometry()
+        screen_width = screen_geometry.width()
+        screen_height = screen_geometry.height()
+
+        self.start_pos_y = int(conf.read_conf('General', 'margin'))
+        self.start_pos_x = (screen_width - self.widgets_width) // 2
+
+    def calculate_widgets_width(self):  # 计算小组件占用宽度
+        self.widgets_width = 0
+        # 累加小组件宽度
+        for widget in self.widgets_list:
+            try:
+                self.widgets_width += self.get_widget_width(widget)
+            except Exception as e:
+                logger.warning(f'计算小组件宽度发生错误：{e}')
+                self.widgets_width += 0
+
+        self.widgets_width += self.spacing * (len(self.widgets_list) - 1)
+
+    # def add_widget(self, widget):
+    #     self.widgets.append(widget)
 
     def hide_windows(self):
         self.state = 0
@@ -686,6 +771,7 @@ class WidgetsManager:
 
     def update_widgets(self):
         c = 0
+        self.adjust_ui()
 
         for widget in self.widgets:
             if c == 0:
@@ -1004,17 +1090,20 @@ class FloatingWidget(QWidget):  # 浮窗
 
 
 class DesktopWidget(QWidget):  # 主要小组件
-    def __init__(self, path='widget-time.ui', pos=(100, 50), enable_tray=False):
+    def __init__(self, parent=WidgetsManager, path='widget-time.ui', enable_tray=False):
         super().__init__()
         self.last_widgets = list.get_widget_config()
         self.path = path
+
         self.last_code = 101010100
-        self.radius = 0
         self.radius = conf.load_theme_config(theme)['radius']
         self.last_theme = conf.read_conf('General', 'theme')
         self.last_color_mode = conf.read_conf('General', 'color_mode')
         self.w = 100
+
+        self.position = parent.get_widget_pos(self.path)
         self.animation = None
+        self.opacity_animation = None
 
         try:
             self.w = conf.load_theme_config(theme)['widget_width'][self.path]
@@ -1088,15 +1177,17 @@ class DesktopWidget(QWidget):  # 主要小组件
             opacity.setOpacity(0.65)
             img.setGraphicsEffect(opacity)
 
+        self.resize(self.w, self.height())
+
         # 设置窗口位置
         if first_start:
-            self.animate_window(pos)
+            self.animate_window(self.position)
             self.setWindowOpacity(int(conf.read_conf('General', 'opacity')) / 100)
         else:
             self.setWindowOpacity(0)
             self.animate_show_opacity()
-            self.move(pos[0], pos[1])
-            self.resize(self.w, self.h)
+            self.move(self.position[0], self.position[1])
+            self.resize(self.w, self.height())
 
         self.update_data('')
 
@@ -1240,8 +1331,6 @@ class DesktopWidget(QWidget):  # 主要小组件
         get_current_lessons()
         get_current_lesson_name()
         get_next_lessons()
-
-        self.animation_adjust_opacity(int(conf.read_conf('General', 'opacity')) / 100)  # 设置窗口透明度
 
         cd_list = get_countdown()
 
@@ -1389,9 +1478,8 @@ class DesktopWidget(QWidget):  # 主要小组件
     def animate_hide(self, full=False):  # 隐藏窗口
         self.animation = QPropertyAnimation(self, b"geometry")
         self.animation.setDuration(625)  # 持续时间
-        width = self.width()
         height = self.height()
-        self.setFixedSize(width, height)  # 防止连续打断窗口高度变小
+        self.setFixedHeight(height)  # 防止连续打断窗口高度变小
 
         if full and os.name == 'nt':
             '''全隐藏 windows'''
@@ -1430,9 +1518,6 @@ class DesktopWidget(QWidget):  # 主要小组件
         self.animation = QPropertyAnimation(self, b"geometry")
         self.animation.setDuration(625)  # 持续时间
         # 获取当前窗口的宽度和高度，确保动画过程中保持一致
-        width = self.width()
-        height = self.height()
-        self.setFixedSize(width, height)  # 防止连续打断窗口高度变小
         self.animation.setEndValue(
             QRect(self.x(), int(conf.read_conf('General', 'margin')), self.width(), self.height()))
         self.animation.setEasingCurve(QEasingCurve.Type.InOutCirc)  # 设置动画效果
@@ -1443,15 +1528,22 @@ class DesktopWidget(QWidget):  # 主要小组件
 
         self.animation.start()
 
-    def animation_adjust_opacity(self, opacity):  # 调整窗口透明度
-        if not self.animation:
-            self.animation = QPropertyAnimation(self, b"windowOpacity")
-            self.animation.setDuration(300)  # 持续时间
-            self.animation.setStartValue(self.windowOpacity())
-            self.animation.setEndValue(opacity)
-            self.animation.setEasingCurve(QEasingCurve.Type.InOutCirc)  # 设置动画效果
-            self.animation.start()
-            self.animation.finished.connect(self.clear_animation)
+    def widget_transition(self, pos_x, width, height, opacity=1):  # 窗口形变
+        self.animation = QPropertyAnimation(self, b"geometry")
+        self.animation.setDuration(525)  # 持续时间
+        self.animation.setStartValue(QRect(self.x(), self.y(), self.width(), self.height()))
+        self.animation.setEndValue(QRect(pos_x, self.y(), width, height))
+        self.animation.setEasingCurve(QEasingCurve.Type.OutCubic)  # 设置动画效果
+        self.animation.start()
+
+        self.opacity_animation = QPropertyAnimation(self, b"windowOpacity")
+        self.opacity_animation.setDuration(525)  # 持续时间
+        self.opacity_animation.setStartValue(self.windowOpacity())
+        self.opacity_animation.setEndValue(opacity)
+        self.opacity_animation.setEasingCurve(QEasingCurve.Type.InOutCirc)  # 设置动画效果
+        self.opacity_animation.start()
+
+        self.animation.finished.connect(self.clear_animation)
 
     # 点击自动隐藏
     def mouseReleaseEvent(self, event):
@@ -1502,9 +1594,6 @@ def show_window(path, pos, enable_tray=False):
 
 def init():
     global theme, radius, mgr, screen_width, first_start, fw, update_timer
-    update_timer.timeout.connect(update_time)
-    update_timer.setInterval(1000)
-    update_time()
 
     theme = conf.read_conf('General', 'theme')  # 主题
 
@@ -1526,41 +1615,11 @@ def init():
         if widget not in list.widget_name:
             widgets.remove(widget)  # 移除不存在的组件(确保移除插件后不会出错)
 
-    # 所有组件窗口的宽度
-    spacing = conf.load_theme_config(theme)['spacing']
-    radius = conf.load_theme_config(theme)['radius']
-    widgets_width = 0
-    for widget in widgets:  # 计算总宽度(兼容插件)
-        try:
-            widgets_width += conf.load_theme_width(theme)[widget]
-        except KeyError:
-            widgets_width += list.widget_width[widget]
-        except:
-            widgets_width += 0
+    mgr.init_widgets()
 
-    total_width = widgets_width + spacing * (len(widgets) - 1)
-
-    start_x = (screen_width - total_width) // 2
-    start_y = int(conf.read_conf('General', 'margin'))
-
-    def cal_start_width(num):  # 计算每个组件的起始位置
-        w_start_x = 0
-        w_start_x += start_x + spacing * num
-        for i in range(num):
-            try:
-                w_start_x += conf.load_theme_width(theme)[widgets[i]]
-            except KeyError:
-                w_start_x += list.widget_width[widgets[i]]
-            except:
-                w_start_x += 0
-        return w_start_x
-
-    for w in range(len(widgets)):
-        show_window(widgets[w], (cal_start_width(w), start_y), w == 0)
-
-    for application in mgr.widgets:  # 显示所有窗口
-        logger.info(f'显示窗口：{application.windowTitle()}')
-        application.show()
+    update_timer.timeout.connect(update_time)
+    update_timer.setInterval(1000)
+    update_time()
 
     logger.info(f'Class Widgets 启动。版本: {conf.read_conf("Other", "version")}')
     p_loader.run_plugins()  # 运行插件
