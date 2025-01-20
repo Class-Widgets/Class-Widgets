@@ -35,7 +35,7 @@ pygame.mixer.init()
 
 
 class tip_toast(QWidget):
-    def __init__(self, pos, width, state=1, lesson_name=None, title=None, subtitle=None, content=None, icon=None):
+    def __init__(self, pos, width, state=1, lesson_name=None, title=None, subtitle=None, content=None, icon=None, duration=2000):
         super().__init__()
         uic.loadUi(f"{base_directory}/view/widget-toast-bar.ui", self)
 
@@ -145,7 +145,7 @@ class tip_toast(QWidget):
 
         self.timer = QTimer(self)
         self.timer.setSingleShot(True)
-        self.timer.setInterval(2000)
+        self.timer.setInterval(duration)  # 使用传入的duration参数
         self.timer.timeout.connect(self.close_window)
 
         # 放大效果
@@ -320,7 +320,7 @@ def generate_gradient_color(theme_color):  # 计算渐变色
 
 
 def main(state=1, lesson_name='', title='通知示例', subtitle='副标题',
-         content='这是一条通知示例', icon=None):  # 0:下课铃声 1:上课铃声 2:放学铃声 3:预备铃 4:其他
+         content='这是一条通知示例', icon=None, duration=2000):
     if detect_enable_toast(state):
         return
 
@@ -365,7 +365,7 @@ def main(state=1, lesson_name='', title='通知示例', subtitle='副标题',
     start_y = int(conf.read_conf('General', 'margin'))
 
     if state != 4:
-        window = tip_toast((start_x, start_y), total_width, state, lesson_name)
+        window = tip_toast((start_x, start_y), total_width, state, lesson_name, duration=duration)
     else:
         window = tip_toast(
             (start_x, start_y),
@@ -374,7 +374,8 @@ def main(state=1, lesson_name='', title='通知示例', subtitle='副标题',
             title,
             subtitle,
             content,
-            icon
+            icon,
+            duration=duration
         )
 
     window.show()
@@ -415,10 +416,11 @@ def push_notification(state=1, lesson_name='', title=None, subtitle=None,
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     main(
-        state=0,
+        state=4,  # 自定义通知
         title='测试通知喵',
         subtitle='By Rin.',
         content='欢迎使用 ClassWidgets',
-        icon='img/favicon.ico'
+        icon='img/favicon.ico',
+        duration=2000
     )
     sys.exit(app.exec())
