@@ -320,7 +320,7 @@ def generate_gradient_color(theme_color):  # 计算渐变色
 
 
 def main(state=1, lesson_name='', title='通知示例', subtitle='副标题',
-         content='这是一条通知示例', icon=None, duration=2000):
+         content='这是一条通知示例', icon=None, duration=2000):  # 0:下课铃声 1:上课铃声 2:放学铃声 3:预备铃 4:其他
     if detect_enable_toast(state):
         return
 
