@@ -1,19 +1,20 @@
+import datetime as dt
 import importlib
 import json
 import os
 import subprocess
+import sys
+from copy import deepcopy
 from pathlib import Path
 from shutil import rmtree
 
 from PyQt5 import uic, QtCore
 from PyQt5.QtCore import Qt, QTime, QUrl, QDate
-from plyer import notification
-from qframelesswindow.webengine import FramelessWebEngineView
-import sys
-
 from PyQt5.QtGui import QIcon, QDesktopServices, QColor
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidgetItem, QLabel, QHBoxLayout, QSizePolicy, \
     QSpacerItem, QFileDialog, QVBoxLayout, QScroller
+from loguru import logger
+from plyer import notification
 from qfluentwidgets import (
     Theme, setTheme, FluentWindow, FluentIcon as fIcon, ToolButton, ListWidget, ComboBox, CaptionLabel,
     SpinBox, LineEdit, PrimaryPushButton, TableWidget, Flyout, InfoBarIcon,
@@ -23,22 +24,21 @@ from qfluentwidgets import (
     PrimaryDropDownPushButton, Action, RoundMenu, CardWidget, ImageLabel, StrongBodyLabel,
     TransparentDropDownToolButton, Dialog, SmoothScrollArea, TransparentToolButton
 )
-from copy import deepcopy
+from qframelesswindow.webengine import FramelessWebEngineView
 
-from network_thread import VersionThread
-from loguru import logger
-import datetime as dt
-import list
 import conf
-from conf import base_directory
-from plugin_plaza import PluginPlaza
+import list
 import tip_toast
 import weather_db
 import weather_db as wd
+from conf import base_directory
+from network_thread import VersionThread
+from plugin_plaza import PluginPlaza
+from utils import restart
 
 # 适配高DPI缩放
 QApplication.setHighDpiScaleFactorRoundingPolicy(
-        Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+    Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
 QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
 
@@ -100,7 +100,7 @@ def open_dir(path: str):
         msg_box.setFixedWidth(550)
         msg_box.exec()
 
- 
+
 class selectCity(MessageBoxBase):  # 选择城市
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -488,7 +488,7 @@ class SettingsMenu(FluentWindow):
                    triggered=lambda: tip_toast.push_notification(3, lesson_name='信息技术')),
             Action(fIcon.CODE, '其他提醒',
                    triggered=lambda: tip_toast.push_notification(4, title='通知', subtitle='测试通知示例',
-                                                content='这是一条测试通知ヾ(≧▽≦*)o'))
+                                                                 content='这是一条测试通知ヾ(≧▽≦*)o'))
         ])
         preview_toast_button.setMenu(pre_toast_menu)  # 预览通知栏
 
@@ -618,7 +618,7 @@ class SettingsMenu(FluentWindow):
         self.version_channel.setCurrentIndex(int(conf.read_conf("Other", "version_channel")))
         self.version_channel.currentIndexChanged.connect(
             lambda: conf.write_conf("Other", "version_channel", self.version_channel.currentIndex())
-            )  # 版本更新通道
+        )  # 版本更新通道
 
         github_page = self.findChild(PushButton, "button_github")
         github_page.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(
@@ -733,7 +733,6 @@ class SettingsMenu(FluentWindow):
             lambda: (conf.write_conf('General', 'scale', str(slider_scale_factor.value() / 100)),
                      text_scale_factor.setText(str(slider_scale_factor.value()) + '%'))
         )  # 保存缩放系数
-
 
     def setup_schedule_edit(self):
         self.se_load_item()
@@ -962,7 +961,7 @@ class SettingsMenu(FluentWindow):
             conf.write_conf('General', 'enable_alt_schedule', '0')
 
     def switch_safe_mode(self):
-        switch_safe_mode = self.findChild(SwitchButton,'switch_safe_mode')
+        switch_safe_mode = self.findChild(SwitchButton, 'switch_safe_mode')
         if switch_safe_mode.isChecked():
             conf.write_conf('Other', 'safe_mode', '1')
         else:
@@ -1136,12 +1135,12 @@ class SettingsMenu(FluentWindow):
             file_name = file_path.split("/")[-1]
             if list.import_schedule(file_path, file_name):
                 alert = MessageBox('您已成功导入课程表配置文件',
-                                   '软件将在您确认后关闭，\n'
+                                   '软件将在您确认后重启，\n'
                                    '您需重新启动以应用您切换的配置文件。', self)
                 alert.cancelButton.hide()  # 隐藏取消按钮，必须重启
                 alert.buttonLayout.insertStretch(0, 1)
                 if alert.exec():
-                    sys.exit()
+                    restart()
             else:
                 print('导入失败！')
                 alert = MessageBox('导入失败！',
@@ -1217,7 +1216,8 @@ class SettingsMenu(FluentWindow):
             conf_name = self.findChild(LineEdit, 'conf_name')
             old_name = filename
             new_name = conf_name.text()
-            os.rename(f'{base_directory}/config/schedule/{old_name}', f'{base_directory}/config/schedule/{new_name}.json')  # 重命名
+            os.rename(f'{base_directory}/config/schedule/{old_name}',
+                      f'{base_directory}/config/schedule/{new_name}.json')  # 重命名
             conf.write_conf('General', 'schedule', f'{new_name}.json')
             filename = new_name + '.json'
             conf_combo = self.findChild(ComboBox, 'conf_combo')

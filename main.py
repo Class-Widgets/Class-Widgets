@@ -1,36 +1,38 @@
 import ctypes
+import datetime as dt
+import importlib
 import json
 import os
 import re
+import subprocess
+import sys
+import traceback
+from pathlib import Path
 from shutil import copy
+
 import requests
 from PyQt5 import uic
-from PyQt5.QtSvg import QSvgRenderer
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QProgressBar, QGraphicsBlurEffect, QPushButton, \
-    QGraphicsDropShadowEffect, QSystemTrayIcon, QFrame, QGraphicsOpacityEffect, QHBoxLayout
 from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QRect, QEasingCurve, QSharedMemory, QThread, pyqtSignal, \
     QSize, QPoint, QUrl
 from PyQt5.QtGui import QColor, QIcon, QPixmap, QPainter, QDesktopServices
+from PyQt5.QtGui import QFontDatabase
+from PyQt5.QtSvg import QSvgRenderer
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QProgressBar, QGraphicsBlurEffect, QPushButton, \
+    QGraphicsDropShadowEffect, QSystemTrayIcon, QFrame, QGraphicsOpacityEffect, QHBoxLayout
 from loguru import logger
-import sys
 from qfluentwidgets import Theme, setTheme, setThemeColor, SystemTrayMenu, Action, FluentIcon as fIcon, isDarkTheme, \
     Dialog, ProgressRing, PlainTextEdit, ImageLabel, PushButton, InfoBarIcon, Flyout, FlyoutAnimationType, CheckBox, \
     PrimaryPushButton
-import datetime as dt
-import list
-import conf
-from conf import base_directory
-import tip_toast
-from PyQt5.QtGui import QFontDatabase
 
+import conf
+import list
+import tip_toast
+import weather_db as db
+from conf import base_directory
+from exact_menu import ExactMenu, open_settings
 from menu import open_plaza
 from network_thread import check_update
-from exact_menu import ExactMenu, open_settings
-import weather_db as db
-import importlib
-import subprocess
-from pathlib import Path
-import traceback
+from utils import restart
 
 if os.name == 'nt':
     import pygetwindow
@@ -83,12 +85,6 @@ if conf.read_conf('Other', 'do_not_log') != '1':
     logger.info('未禁用日志输出')
 else:
     logger.info('已禁用日志输出功能，若需保存日志，请在“设置”->“高级选项”中关闭禁用日志功能')
-
-
-def restart():
-    logger.debug('重启程序')
-    share.detach()  # 释放共享内存
-    os.execl(sys.executable, sys.executable, *sys.argv)
 
 
 def global_exceptHook(exc_type, exc_value, exc_tb):  # 全局异常捕获
@@ -1640,13 +1636,14 @@ def update_time():
 
 
 if __name__ == '__main__':
-    scale_factor = float(conf.read_conf('General','scale'))
+    scale_factor = float(conf.read_conf('General', 'scale'))
     os.environ['QT_SCALE_FACTOR'] = str(scale_factor)
     logger.info(f"当前缩放系数：{scale_factor * 100}%")
 
     if scale_factor > 1.8 or scale_factor < 1.0:
         logger.warning("当前缩放系数可能导致显示异常，建议使缩放系数在 100% 到 180% 之间")
-        msg_box = Dialog('缩放系数过大', f"当前缩放系数为 {scale_factor * 100}%，可能导致显示异常。\n建议将缩放系数设置为 100% 到 180% 之间。")
+        msg_box = Dialog('缩放系数过大',
+                         f"当前缩放系数为 {scale_factor * 100}%，可能导致显示异常。\n建议将缩放系数设置为 100% 到 180% 之间。")
         msg_box.yesButton.setText('好')
         msg_box.cancelButton.hide()
         msg_box.buttonLayout.insertStretch(0, 1)
@@ -1661,7 +1658,7 @@ if __name__ == '__main__':
 
     if share.attach() and conf.read_conf('Other', 'multiple_programs') != '1':
         msg_box = Dialog('Class Widgets 正在运行', 'Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。'
-                         '\n(若您需要打开多个实例，请在“设置”->“高级选项”中启用“允许程序多开”)')
+                                                   '\n(若您需要打开多个实例，请在“设置”->“高级选项”中启用“允许程序多开”)')
         msg_box.yesButton.setText('好')
         msg_box.cancelButton.hide()
         msg_box.buttonLayout.insertStretch(0, 1)
