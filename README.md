@@ -1,3 +1,6 @@
+> [!WARNING]
+> 目前已知Class Widgets在Windows环境下在**有中文**的路径中运行打开设置页面会崩溃，请避免将Class Widgets放在**含中文**的路径下。
+
 > [!NOTE]
 > Class Widgets 有QQ群啦！详见[此处](#社区)
 
@@ -57,9 +60,6 @@
 
 > [!IMPORTANT]
 > 若要体验此页面的特性，请前往[此处](https://github.com/RinLit-233-shiroko/Class-Widgets/releases/tag/v1.1.7-b3)预发行版的页面下载。
-
-> [!WARNING]
-> 请勿将软件放在包含中文字符的路径下，否则会导致一些不可预知的错误。
 
 下载 ![当前版本](https://img.shields.io/github/v/release/RinLit-233-shiroko/Class-Widgets?style=flat&color=purple&label=当前版本) 中最新版的压缩文件，解压到合适位置后，打开 `ClassWidgets.exe` 即可。
 可通过托盘菜单进入设置、或退出此程序。
