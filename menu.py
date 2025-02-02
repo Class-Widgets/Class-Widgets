@@ -747,7 +747,7 @@ class SettingsMenu(FluentWindow):
 
         conf_name = self.adInterface.findChild(LineEdit, 'conf_name')
         conf_name.setText(filename[:-5])
-        conf_name.textChanged.connect(self.ad_change_file_name)
+        conf_name.textEdited.connect(self.ad_change_file_name)
 
         window_status_combo = self.adInterface.findChild(ComboBox, 'window_status_combo')
         window_status_combo.addItems(list.window_status)
