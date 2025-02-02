@@ -739,10 +739,11 @@ class SettingsMenu(FluentWindow):
             lambda: conf.write_conf('General', 'margin', str(margin_spin.value()))
         )  # 保存边距设定
 
-        conf_combo = self.adInterface.findChild(ComboBox, 'conf_combo')
-        conf_combo.addItems(list.get_schedule_config())
-        conf_combo.setCurrentIndex(list.get_schedule_config().index(conf.read_conf('General', 'schedule')))
-        conf_combo.currentIndexChanged.connect(self.ad_change_file)  # 切换配置文件
+        self.conf_combo = self.adInterface.findChild(ComboBox, 'conf_combo')
+        self.conf_combo.clear()
+        self.conf_combo.addItems(list.get_schedule_config())
+        self.conf_combo.setCurrentIndex(list.get_schedule_config().index(conf.read_conf('General', 'schedule')))
+        self.conf_combo.currentIndexChanged.connect(self.ad_change_file)  # 切换配置文件
 
         conf_name = self.adInterface.findChild(LineEdit, 'conf_name')
         conf_name.setText(filename[:-5])
@@ -1153,6 +1154,8 @@ class SettingsMenu(FluentWindow):
             try:
                 with open(save_path, 'w', encoding='utf-8') as f:
                     json.dump(cw_data, f, ensure_ascii=False, indent=4)
+                    self.conf_combo.clear()
+                    self.conf_combo.addItems(list.get_schedule_config())
                     alert = MessageBox('您已成功导入 CSES 课程表配置文件',
                                        '请在“高级选项”中手动切换您的配置文件。', self)
                     alert.cancelButton.hide()  # 隐藏取消按钮，必须重启
@@ -1196,6 +1199,8 @@ class SettingsMenu(FluentWindow):
         if file_path:
             file_name = file_path.split("/")[-1]
             if list.import_schedule(file_path, file_name):
+                self.conf_combo.clear()
+                self.conf_combo.addItems(list.get_schedule_config())
                 alert = MessageBox('您已成功导入课程表配置文件',
                                    '请在“高级选项”中手动切换您的配置文件。', self)
                 alert.cancelButton.hide()  # 隐藏取消按钮，必须重启
@@ -1291,30 +1296,29 @@ class SettingsMenu(FluentWindow):
 
     def ad_change_file(self):  # 切换课程文件
         try:
-            conf_combo = self.findChild(ComboBox, 'conf_combo')
             conf_name = self.findChild(LineEdit, 'conf_name')
             # 添加新课表
-            if conf_combo.currentText() == '添加新课表':
+            if self.conf_combo.currentText() == '添加新课表':
                 new_name = f'新课表 - {list.return_default_schedule_number() + 1}'
                 list.create_new_profile(f'{new_name}.json')
-                conf_combo.clear()
-                conf_combo.addItems(list.get_schedule_config())
+                self.conf_combo.clear()
+                self.conf_combo.addItems(list.get_schedule_config())
                 conf.write_conf('General', 'schedule', f'{new_name}.json')
-                conf_combo.setCurrentIndex(list.get_schedule_config().index(conf.read_conf('General', 'schedule')))
+                self.conf_combo.setCurrentIndex(list.get_schedule_config().index(conf.read_conf('General', 'schedule')))
                 conf_name.setText(new_name)
 
-            elif conf_combo.currentText().endswith('.json'):
-                new_name = conf_combo.currentText()
+            elif self.conf_combo.currentText().endswith('.json'):
+                new_name = self.conf_combo.currentText()
                 conf.write_conf('General', 'schedule', new_name)
                 conf_name.setText(new_name[:-5])
 
             else:
-                logger.error(f'切换课程文件时列表选择异常：{conf_combo.currentText()}')
+                logger.error(f'切换课程文件时列表选择异常：{self.conf_combo.currentText()}')
                 Flyout.create(
                     icon=InfoBarIcon.ERROR,
                     title='错误！',
-                    content=f"列表选项异常！{conf_combo.currentText()}",
-                    target=conf_combo,
+                    content=f"列表选项异常！{self.conf_combo.currentText()}",
+                    target=self.conf_combo,
                     parent=self,
                     isClosable=True,
                     aniType=FlyoutAnimationType.PULL_UP

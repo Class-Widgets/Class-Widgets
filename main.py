@@ -10,6 +10,7 @@ import platform
 import traceback
 from pathlib import Path
 from shutil import copy
+from packaging.version import Version
 
 import requests
 from PyQt5 import uic
@@ -117,7 +118,7 @@ sys.excepthook = global_exceptHook  # 设置全局异常捕获
 
 def setTheme_():  # 设置主题
     if conf.read_conf('General', 'color_mode') == '2':  # 自动
-        if platform.system() == 'Darwin' and platform.uname().release < '10.14':
+        if platform.system() == 'Darwin' and Version(platform.mac_ver()[0]) < Version('10.14'):
             return
         if platform.system() == 'Windows' and platform.release() != '10':
             return
@@ -1694,7 +1695,17 @@ if __name__ == '__main__':
     share = QSharedMemory('ClassWidgets')
     share.create(1)  # 创建共享内存
     logger.info(f"共享内存：{share.isAttached()} 是否允许多开实例：{conf.read_conf('Other', 'multiple_programs')}")
-    logger.info(f"操作系统：{platform.system()}，版本：{platform.version()}/{platform.release()}")
+
+    # 优化操作系统和版本输出
+    system = platform.system()
+    if system == 'Darwin': system = 'macOS'
+    osRelease = platform.release()
+    if system == 'Windows': osRelease = 'Windows ' + osRelease
+    if system == 'macOS': osRelease = 'Darwin Kernel Version ' + osRelease
+    osVersion = platform.version()
+    if system == 'macOS': osVersion = 'macOS ' + platform.mac_ver()[0]
+
+    logger.info(f"操作系统：{system}，版本：{osRelease}/{osVersion}")
 
     if share.attach() and conf.read_conf('Other', 'multiple_programs') != '1':
         msg_box = Dialog(

@@ -82,6 +82,7 @@ class CSES_Converter:
                 # 节点
                 if class_ == classes[0]:
                     time = [class_.start_time.hour, class_.start_time.minute]
+
                     if time in part_list and weeks != 'odd' and weeks != 'even':  # 实现双周时间线
                         continue  # 跳过重复的节点
 
