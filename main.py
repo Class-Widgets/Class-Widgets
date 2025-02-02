@@ -117,11 +117,12 @@ sys.excepthook = global_exceptHook  # 设置全局异常捕获
 
 def setTheme_():  # 设置主题
     if conf.read_conf('General', 'color_mode') == '2':  # 自动
-        if platform.system() == 'Darwin' and float(platform.version()) < 10.14:
+        if platform.system() == 'Darwin' and platform.uname().release < '10.14':
             return
         if platform.system() == 'Windows' and platform.release() != '10':
             return
-
+        if platform.system() == 'Linux':
+            return
         setTheme(Theme.AUTO)
     elif conf.read_conf('General', 'color_mode') == '1':
         setTheme(Theme.DARK)
@@ -783,6 +784,8 @@ class WidgetsManager:
             fw.close()
         for widget in self.widgets:
             widget.animate_hide_opacity()
+        for widget in self.widgets:
+            self.widgets.remove(widget)
         init()
 
     def update_widgets(self):
@@ -1300,6 +1303,9 @@ class DesktopWidget(QWidget):  # 主要小组件
                 """)
 
     def init_tray_menu(self):
+        if not first_start:
+            return
+
         utils.tray_icon = utils.TrayIcon(self)
         self.tray_menu = SystemTrayMenu(title='Class Widgets', parent=self)
         self.tray_menu.addActions([
@@ -1447,7 +1453,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             current_city = self.findChild(QLabel, 'current_city')
             try:  # 天气组件
                 self.weather_icon.setPixmap(
-                    QPixmap(db.get_weather_icon_by_code('18'))
+                    QPixmap(db.get_weather_icon_by_code(db.get_weather_data('icon', weather_data)))
                 )
                 self.temperature.setText(f"{db.get_weather_data('temp', weather_data)}")
                 current_city.setText(f"{db.search_by_num(conf.read_conf('Weather', 'city'))} · "
@@ -1591,13 +1597,17 @@ class DesktopWidget(QWidget):  # 主要小组件
             event.ignore()
 
     def closeEvent(self, event):
-        try:
-            self.tray_icon.hide()
-            self.tray_icon = None
-        except:
-            pass
-        self.deleteLater()  # 销毁内存
-        event.accept()
+        super().closeEvent(event)
+        self.destroy()
+
+        if hasattr(self, 'w_d_timer'):
+            self.w_d_timer.stop()  # 停止定时器
+        if hasattr(self, 'd_t_timer'):
+            self.d_t_timer.stop()  # 停止定时器
+        if hasattr(self, 'weather_thread'):
+            self.weather_timer.stop()  # 停止定时器
+            self.weather_thread.terminate()  # 终止天气线程
+            self.weather_thread.quit()  # 退出天气线程
 
 
 def check_windows_maximize():  # 检查窗口是否最大化

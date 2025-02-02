@@ -110,6 +110,9 @@
                 <property name="text">
                  <string>需导入从其他 Class Widgets 导出的课程表</string>
                 </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
                 <property name="lightColor" stdset="0">
                  <color alpha="150">
                   <red>0</red>
@@ -181,6 +184,9 @@
                <widget class="CaptionLabel" name="CaptionLabel_8">
                 <property name="text">
                  <string>将当前使用的课程表文件 (.json) 导出</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
                 </property>
                 <property name="lightColor" stdset="0">
                  <color alpha="150">
@@ -254,6 +260,9 @@
                 <property name="text">
                  <string>打开 Class Widgets 课程表文件夹</string>
                 </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
                 <property name="lightColor" stdset="0">
                  <color alpha="150">
                   <red>0</red>
@@ -285,6 +294,185 @@
         </layout>
        </item>
        <item>
+        <layout class="QVBoxLayout" name="verticalLayout_6">
+         <property name="spacing">
+          <number>3</number>
+         </property>
+         <item>
+          <widget class="SubtitleLabel" name="SubtitleLabel_4">
+           <property name="text">
+            <string>通用课程表交换格式（CSES）</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="HyperlinkButton" name="what_is">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>什么是 CSES?</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="CardWidget" name="CardWidget_9">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>60</height>
+            </size>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_9">
+            <property name="leftMargin">
+             <number>16</number>
+            </property>
+            <property name="topMargin">
+             <number>16</number>
+            </property>
+            <property name="rightMargin">
+             <number>16</number>
+            </property>
+            <property name="bottomMargin">
+             <number>16</number>
+            </property>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_12">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="StrongBodyLabel" name="StrongBodyLabel_9">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>导入 CSES 格式的课程表</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="CaptionLabel" name="CaptionLabel_7">
+                <property name="text">
+                 <string>需导入从其他支持的软件导出的 CSES 格式的课程表
+注意：由 CSES 格式转换的 Class Widgets 课程表可读性可能降低</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+                <property name="lightColor" stdset="0">
+                 <color alpha="150">
+                  <red>0</red>
+                  <green>0</green>
+                  <blue>0</blue>
+                 </color>
+                </property>
+                <property name="darkColor" stdset="0">
+                 <color alpha="200">
+                  <red>255</red>
+                  <green>255</green>
+                  <blue>255</blue>
+                 </color>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="PushButton" name="im_schedule_cses">
+              <property name="text">
+               <string>导入 CSES 文件</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="CardWidget" name="CardWidget_10">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>60</height>
+            </size>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_10">
+            <property name="leftMargin">
+             <number>16</number>
+            </property>
+            <property name="topMargin">
+             <number>16</number>
+            </property>
+            <property name="rightMargin">
+             <number>16</number>
+            </property>
+            <property name="bottomMargin">
+             <number>16</number>
+            </property>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_14">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="StrongBodyLabel" name="StrongBodyLabel_10">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>导出 Class Widgets 课程表</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="CaptionLabel" name="CaptionLabel_9">
+                <property name="text">
+                 <string>将当前使用的课程表文件 (.yaml) 导出为 CSES 格式
+注意：生成的 CSES 课程表可读性可能降低</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+                <property name="lightColor" stdset="0">
+                 <color alpha="150">
+                  <red>0</red>
+                  <green>0</green>
+                  <blue>0</blue>
+                 </color>
+                </property>
+                <property name="darkColor" stdset="0">
+                 <color alpha="200">
+                  <red>255</red>
+                  <green>255</green>
+                  <blue>255</blue>
+                 </color>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="PushButton" name="ex_schedule_cses">
+              <property name="text">
+               <string>导出 CSES 文件</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -304,6 +492,11 @@
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>HyperlinkButton</class>
+   <extends>PushButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
   <customwidget>
    <class>PushButton</class>
    <extends>QPushButton</extends>

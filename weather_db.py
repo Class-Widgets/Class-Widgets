@@ -66,7 +66,8 @@ def search_by_num(search_term):
 
 
 def get_weather_by_code(code):  # 用代码获取天气描述
-    weather_status = json.load(open(f"{base_directory}/config/data/{conf.read_conf('Weather', 'api')}_status.json", encoding="utf-8"))
+    weather_status = json.load(
+        open(f"{base_directory}/config/data/{conf.read_conf('Weather', 'api')}_status.json", encoding="utf-8"))
     for weather in weather_status['weatherinfo']:
         if str(weather['code']) == code:
             return weather['wea']
@@ -74,7 +75,10 @@ def get_weather_by_code(code):  # 用代码获取天气描述
 
 
 def get_weather_icon_by_code(code):  # 用代码获取天气图标
-    weather_status = json.load(open(f"{base_directory}/config/data/{conf.read_conf('Weather', 'api')}_status.json", encoding="utf-8"))
+    weather_status = json.load(
+        open(f"{base_directory}/config/data/{conf.read_conf('Weather', 'api')}_status.json",
+             encoding="utf-8")
+    )
     weather_code = None
     current_time = datetime.datetime.now()
     # 遍历获取天气代码
@@ -98,7 +102,8 @@ def get_weather_icon_by_code(code):  # 用代码获取天气图标
 
 def get_weather_stylesheet(code):  # 天气背景样式
     current_time = datetime.datetime.now()
-    weather_status = json.load(open(f"{base_directory}/config/data/{conf.read_conf('Weather', 'api')}_status.json", encoding="utf-8"))
+    weather_status = json.load(
+        open(f"{base_directory}/config/data/{conf.read_conf('Weather', 'api')}_status.json", encoding="utf-8"))
     weather_code = '99'
     for weather in weather_status['weatherinfo']:
         if str(weather['code']) == code:
@@ -126,7 +131,8 @@ def get_weather_url():
 
 
 def get_weather_code_by_description(value):
-    weather_status = json.load(open(f"{base_directory}/config/data/{conf.read_conf('Weather', 'api')}_status.json", encoding="utf-8"))
+    weather_status = json.load(
+        open(f"{base_directory}/config/data/{conf.read_conf('Weather', 'api')}_status.json", encoding="utf-8"))
     for weather in weather_status['weatherinfo']:
         if str(weather['wea']) == value:
             return str(weather['code'])

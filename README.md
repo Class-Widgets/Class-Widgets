@@ -89,6 +89,9 @@ Thanks goes to these wonderful people:
 
 ### 赞助商 / Sponsors
 
+感谢以下人员对本项目的支持：
+- [猞猁](http://dq6666.cn/)
+
 感谢以下赞助商对本项目的支持。
 
 <table>

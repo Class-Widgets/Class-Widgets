@@ -30,74 +30,236 @@
     <number>24</number>
    </property>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <property name="spacing">
-      <number>3</number>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="leftMargin">
+      <number>6</number>
+     </property>
+     <property name="rightMargin">
+      <number>6</number>
      </property>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <property name="spacing">
+        <number>3</number>
+       </property>
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
-         <item>
-          <widget class="TitleLabel" name="TitleLabel">
-           <property name="text">
-            <string>帮助文档</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="CaptionLabel" name="CaptionLabel">
-           <property name="text">
-            <string>需连接到互联网</string>
-           </property>
-           <property name="lightColor" stdset="0">
-            <color alpha="150">
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-           </property>
-           <property name="darkColor" stdset="0">
-            <color alpha="200">
-             <red>255</red>
-             <green>255</green>
-             <blue>255</blue>
-            </color>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <widget class="TitleLabel" name="TitleLabel">
+         <property name="text">
+          <string>帮助文档</string>
+         </property>
+        </widget>
        </item>
        <item>
-        <widget class="PushButton" name="open_by_browser">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
+        <widget class="CaptionLabel" name="CaptionLabel">
          <property name="text">
-          <string>在浏览器中打开</string>
+          <string>需连接到互联网</string>
+         </property>
+         <property name="lightColor" stdset="0">
+          <color alpha="150">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </property>
+         <property name="darkColor" stdset="0">
+          <color alpha="200">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
          </property>
         </widget>
        </item>
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="web"/>
+      <widget class="PushButton" name="open_by_browser">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>在浏览器中打开</string>
+       </property>
+      </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="SmoothScrollArea" name="adv_scroll">
+     <property name="styleSheet">
+      <string notr="true">background: transparent; border: none</string>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>673</width>
+        <height>688</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_26">
+       <property name="spacing">
+        <number>12</number>
+       </property>
+       <property name="leftMargin">
+        <number>14</number>
+       </property>
+       <property name="topMargin">
+        <number>9</number>
+       </property>
+       <property name="rightMargin">
+        <number>16</number>
+       </property>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_27">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <item>
+          <widget class="SubtitleLabel" name="SubtitleLabel_5">
+           <property name="text">
+            <string>猜你想问</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="common_question">
+           <property name="spacing">
+            <number>3</number>
+           </property>
+           <item>
+            <widget class="HyperlinkButton" name="HyperlinkButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Hyperlink button</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_28">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <item>
+          <widget class="SubtitleLabel" name="SubtitleLabel_6">
+           <property name="text">
+            <string>社区</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="common_question_2">
+           <property name="spacing">
+            <number>3</number>
+           </property>
+           <item>
+            <widget class="HyperlinkButton" name="HyperlinkButton_3">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>我们的Q群</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="HyperlinkButton" name="HyperlinkButton_2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Discord</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QFrame" name="blank_2">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <property name="lineWidth">
+          <number>5</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </widget>
    </item>
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>HyperlinkButton</class>
+   <extends>PushButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
   <customwidget>
    <class>PushButton</class>
    <extends>QPushButton</extends>
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
+   <class>SmoothScrollArea</class>
+   <extends>QScrollArea</extends>
+   <header>qfluentwidgets</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
    <class>CaptionLabel</class>
+   <extends>QLabel</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>SubtitleLabel</class>
    <extends>QLabel</extends>
    <header>qfluentwidgets</header>
   </customwidget>
