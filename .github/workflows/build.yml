@@ -44,13 +44,26 @@ jobs:
       #     curl -o upx.zip -L https://github.com/upx/upx/releases/download/v4.2.4/upx-4.2.4-win64.zip
       #     tar -xvzf upx.zip
       #     ren upx-4.2.4-win64 upx
+      - name: Setup venv
+        run: |
+          uv venv
+          uv pip install -r requirements.txt
+          uv pip install pyinstaller
+      - name: Add commit SHA and dev version flag to config files
+        shell: bash
+        run: |
+          for file in ./config/temp_config.json ./config/default_config.json; do
+            if [ -f "$file" ]; then
+              python3 -c "import json; data=json.load(open('$file')); data.setdefault('Other', {}).update({'build_id': '${{ github.sha }}', 'is_dev_version': True}); json.dump(data, open('$file', 'w'), indent=2)"
+            else
+              python3 -c "import json; data={'Other': {'build_id': '${{ github.sha }}', 'is_dev_version': True}}; json.dump(data, open('$file', 'w'), indent=2)"
+            fi
+          done
       - name: Run Windows build
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
-          uv venv
+          del ./config/temp_config.json
           .venv\Scripts\activate
-          uv pip install -r requirements.txt
-          uv pip install pyinstaller
           pyinstaller main.py `
             -w `
             -i ./img/favicon.ico `
@@ -69,10 +82,8 @@ jobs:
       - name: Run Linux build
         if: ${{ matrix.os == 'ubuntu-20.04' }}
         run: |
-          uv venv
+          rm ./config/temp_config.json
           source .venv/bin/activate
-          uv pip install -r  requirements.linux.txt
-          uv pip install pyinstaller
           pyinstaller main.py \
             -w \
             -i ./img/favicon.ico \
@@ -91,10 +102,8 @@ jobs:
       - name: Run macOS build
         if: ${{ matrix.os == 'macos-13' }}
         run: |
-          uv venv
+          rm ./config/temp_config.json
           source .venv/bin/activate
-          uv pip install -r  requirements.linux.txt
-          uv pip install pyinstaller
           pyinstaller main.py \
             -w \
             -i ./img/favicon.icns \
@@ -124,29 +133,7 @@ jobs:
       #       else
       #         python3 -c "import json; data={'Other': {'build_id': '${{ github.sha }}'}}; json.dump(data, open('$file', 'w'), indent=2)"
       #       fi
-      #     done
-
-      # 新增步骤：向配置文件添加提交 SHA 和开发版本标识
-      - name: Add commit SHA and dev version flag to config files
-        shell: bash
-        run: |
-          mkdir -p ./dist/ClassWidgets/config
-          for file in ./dist/ClassWidgets/config/temp_config.json ./dist/ClassWidgets/config/default_config.json; do
-            if [ -f "$file" ]; then
-              python3 -c "import json; data=json.load(open('$file')); data.setdefault('Other', {}).update({'build_id': '${{ github.sha }}', 'is_dev_version': True}); json.dump(data, open('$file', 'w'), indent=2)"
-            else
-              python3 -c "import json; data={'Other': {'build_id': '${{ github.sha }}', 'is_dev_version': True}}; json.dump(data, open('$file', 'w'), indent=2)"
-            fi
-          done
-
-      - name: 删除临时配置文件
-        run: |
-          # 统一使用 bash shell 并检查文件存在性
-          if [ -f "./dist/ClassWidgets/config/temp_config.json" ]; then
-            rm -v "./dist/ClassWidgets/config/temp_config.json"
-          fi
-        shell: bash  # 强制使用 Git Bash
-        
+      #     done      
 
       - name: Upload unsigned application
         if: ${{ ( matrix.os != 'windows-latest' && github.event_name != 'pull_request' ) || github.event_name == 'pull_request' }}
@@ -201,15 +188,6 @@ jobs:
     container:
       image: debian:10
     steps:
-      - name: Install sudo and set Python 3 as default
-        run: |
-          apt-get update
-          apt-get install -y sudo
-
-          apt-get install -y python3
-          update-alternatives --install /usr/bin/python python /usr/bin/python3 1
-          echo $PATH
-
       - name: Install dependencies
         shell: bash
         run: |
@@ -223,13 +201,27 @@ jobs:
         uses: astral-sh/setup-uv@v4
         with:
           python-version: 3.8.10
-      - name: Run Linux (Debian 10) build
+      - name: Setup venv
         shell: bash
         run: |
           uv venv
-          source .venv/bin/activate
           uv pip install -r  requirements.linux.txt
           uv pip install pyinstaller
+      - name: Add commit SHA and dev version flag to config files
+        shell: bash
+        run: |
+          for file in ./config/temp_config.json ./config/default_config.json; do
+            if [ -f "$file" ]; then
+              python -c "import json; data=json.load(open('$file')); data.setdefault('Other', {}).update({'build_id': '${{ github.sha }}', 'is_dev_version': True}); json.dump(data, open('$file', 'w'), indent=2)"
+            else
+              python -c "import json; data={'Other': {'build_id': '${{ github.sha }}', 'is_dev_version': True}}; json.dump(data, open('$file', 'w'), indent=2)"
+            fi
+          done
+      - name: Run Linux (Debian 10) build
+        shell: bash
+        run: |
+          rm ./config/temp_config.json
+          source .venv/bin/activate
           pyinstaller main.py \
             -w \
             -n ClassWidgets \
@@ -259,29 +251,6 @@ jobs:
       #         python -c "import json; data={'Other': {'build_id': '${{ github.sha }}'}}; json.dump(data, open('$file', 'w'), indent=2)"
       #       fi
       #     done
-
-      # 新增步骤：向配置文件添加提交 SHA 和开发版本标识（Debian）
-      - name: Add commit SHA and dev version flag to config files
-        shell: bash
-        run: |
-          python -m venv .venv
-          source .venv/bin/activate
-          mkdir -p ./dist/ClassWidgets/config
-          for file in ./dist/ClassWidgets/config/temp_config.json ./dist/ClassWidgets/config/default_config.json; do
-            if [ -f "$file" ]; then
-              python -c "import json; data=json.load(open('$file')); data.setdefault('Other', {}).update({'build_id': '${{ github.sha }}', 'is_dev_version': True}); json.dump(data, open('$file', 'w'), indent=2)"
-            else
-              python -c "import json; data={'Other': {'build_id': '${{ github.sha }}', 'is_dev_version': True}}; json.dump(data, open('$file', 'w'), indent=2)"
-            fi
-          done
-
-      - name: 删除临时配置文件
-        run: |
-          # 统一使用 bash shell 并检查文件存在性
-          if [ -f "./dist/ClassWidgets/config/temp_config.json" ]; then
-            rm -v "./dist/ClassWidgets/config/temp_config.json"
-          fi
-        shell: bash  # 强制使用 Git Bash
         
 
       - name: Upload
