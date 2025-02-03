@@ -71,7 +71,7 @@ jobs:
         run: |
           uv venv
           source .venv/bin/activate
-          uv pip install -r  requirements.linux.txt
+          uv pip install -r requirements.txt
           uv pip install pyinstaller
           pyinstaller main.py \
             -w \
@@ -93,7 +93,7 @@ jobs:
         run: |
           uv venv
           source .venv/bin/activate
-          uv pip install -r  requirements.linux.txt
+          uv pip install -r requirements.txt
           uv pip install pyinstaller
           pyinstaller main.py \
             -w \
@@ -183,7 +183,7 @@ jobs:
         run: |
           uv venv
           source .venv/bin/activate
-          uv pip install -r  requirements.linux.txt
+          uv pip install -r requirements.txt
           uv pip install pyinstaller
           pyinstaller main.py \
             -w \
