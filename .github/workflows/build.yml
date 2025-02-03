@@ -212,6 +212,7 @@ jobs:
       - name: Add commit SHA and dev version flag to config files
         shell: bash
         run: |
+          source .venv/bin/activate
           for file in ./config/temp_config.json ./config/default_config.json; do
             if [ -f "$file" ]; then
               python -c "import json; data=json.load(open('$file')); data.setdefault('Other', {}).update({'build_id': '${{ github.sha }}', 'is_dev_version': True}); json.dump(data, open('$file', 'w'), indent=2)"
