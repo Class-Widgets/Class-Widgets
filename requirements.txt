@@ -19,4 +19,5 @@ PyQtWebEngine~=5.15.7
 PyGetWindow~=0.0.9
 Markdown~=3.7
 pygame~=2.6.1
+packaging~=24.2
 git+https://github.com/CSES-org/pycses.git

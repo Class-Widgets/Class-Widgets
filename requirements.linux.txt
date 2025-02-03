@@ -17,4 +17,5 @@ win32-setctime==1.1.0
 PyQtWebEngine~=5.15.7
 Markdown~=3.7
 pygame~=2.6.1
+packaging~=24.2
 git+https://github.com/CSES-org/pycses.git

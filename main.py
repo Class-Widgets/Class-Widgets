@@ -3,18 +3,17 @@ import datetime as dt
 import importlib
 import json
 import os
+import platform
 import re
 import subprocess
 import sys
-import platform
 import traceback
 from pathlib import Path
 from shutil import copy
-from packaging.version import Version
 
 import requests
 from PyQt5 import uic
-from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QRect, QEasingCurve, QSharedMemory, QThread, pyqtSignal, \
+from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QRect, QEasingCurve, QThread, pyqtSignal, \
     QSize, QPoint, QUrl
 from PyQt5.QtGui import QColor, QIcon, QPixmap, QPainter, QDesktopServices
 from PyQt5.QtGui import QFontDatabase
@@ -22,6 +21,7 @@ from PyQt5.QtSvg import QSvgRenderer
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QProgressBar, QGraphicsBlurEffect, QPushButton, \
     QGraphicsDropShadowEffect, QSystemTrayIcon, QFrame, QGraphicsOpacityEffect, QHBoxLayout
 from loguru import logger
+from packaging.version import Version
 from qfluentwidgets import Theme, setTheme, setThemeColor, SystemTrayMenu, Action, FluentIcon as fIcon, isDarkTheme, \
     Dialog, ProgressRing, PlainTextEdit, ImageLabel, PushButton, InfoBarIcon, Flyout, FlyoutAnimationType, CheckBox, \
     PrimaryPushButton, SystemThemeListener
@@ -1235,8 +1235,10 @@ class DesktopWidget(QWidget):  # 主要小组件
         try:
             title = self.findChild(QLabel, 'title')
             desc = self.findChild(QLabel, 'content')
-            title.setText(context[0])
-            desc.setText(context[1])
+            if title is not None:
+                title.setText(context[0])
+            if desc is not None:
+                desc.setText(context[1])
         except Exception as e:
             logger.error(f"更新插件小组件时出错：{e}")
 
