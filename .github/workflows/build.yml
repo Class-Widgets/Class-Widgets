@@ -44,6 +44,12 @@ jobs:
       #     curl -o upx.zip -L https://github.com/upx/upx/releases/download/v4.2.4/upx-4.2.4-win64.zip
       #     tar -xvzf upx.zip
       #     ren upx-4.2.4-win64 upx
+      - name: Generate git.properties
+        run: |
+          echo "git.commit.id=$(git rev-parse --short HEAD)" > git.properties
+          echo "git.commit.time=$(git log -1 --format=%cd)" >> git.properties
+          echo "git.branch=$(git rev-parse --abbrev-ref HEAD)" >> git.properties
+          echo "git.build.version=$(git describe --tags --always)" >> git.properties
       - name: Run Windows build
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
