@@ -141,13 +141,14 @@ jobs:
 
       - name: 删除临时配置文件
         run: |
-          if [ $RUNNER_OS == 'Linux' ]; then
+          if [ "${{ runner.os }}" == "Linux" ]; then
             rm -f ./dist/ClassWidgets/config/temp_config.json
-          elif [ $RUNNER_OS == 'Windows' ]; then
+          elif [ "${{ runner.os }}" == "Windows" ]; then
             del /f .\dist\ClassWidgets\config\temp_config.json
-          elif [ $RUNNER_OS == 'macOS' ]; then
+          elif [ "${{ runner.os }}" == "macOS" ]; then
             rm -f ./dist/ClassWidgets/config/temp_config.json
           fi
+        shell: bash
         
 
       - name: Upload unsigned application
@@ -277,16 +278,17 @@ jobs:
             fi
           done
 
-          - name: 删除临时配置文件
-          run: |
-            if [ $RUNNER_OS == 'Linux' ]; then
-              rm -f ./dist/ClassWidgets/config/temp_config.json
-            elif [ $RUNNER_OS == 'Windows' ]; then
-              del /f .\dist\ClassWidgets\config\temp_config.json
-            elif [ $RUNNER_OS == 'macOS' ]; then
-              rm -f ./dist/ClassWidgets/config/temp_config.json
-            fi
-
+      - name: 删除临时配置文件
+        run: |
+          if [ "${{ runner.os }}" == "Linux" ]; then
+            rm -f ./dist/ClassWidgets/config/temp_config.json
+          elif [ "${{ runner.os }}" == "Windows" ]; then
+            del /f .\dist\ClassWidgets\config\temp_config.json
+          elif [ "${{ runner.os }}" == "macOS" ]; then
+            rm -f ./dist/ClassWidgets/config/temp_config.json
+          fi
+        shell: bash
+        
 
       - name: Upload
         uses: actions/upload-artifact@v4.4.2
