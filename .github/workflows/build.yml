@@ -112,6 +112,20 @@ jobs:
           mkdir bundle
           mv dist/Class\ Widgets.app bundle/Class\ Widgets.app
 
+      # 新增步骤：向配置文件添加提交 SHA
+      - name: Add commit SHA to config files
+        shell: bash
+        run: |
+          mkdir -p ./dist/config
+          for file in ./dist/config/temp_config.json ./dist/config/default_config.json; do
+            if [ -f "$file" ]; then
+            python3 -c "import json, sys; data=json.load(open('$file')); data.setdefault('Other', {}).update({'build_id': '6c007ed9cf135d4b1b3f14921abb74b70aa475c2'}); json.dump(data, open('$file', 'w'), indent=2)"
+          else
+            python3 -c "import json; data={'Other': {'build_id': '6c007ed9cf135d4b1b3f14921abb74b70aa475c2'}}; json.dump(data, open('$file', 'w'), indent=2)"
+          fi
+          done
+
+
       - name: Upload unsigned application
         if: ${{ ( matrix.os != 'windows-latest' && github.event_name != 'pull_request' ) || github.event_name == 'pull_request' }}
         uses: actions/upload-artifact@v4.4.2
@@ -165,6 +179,15 @@ jobs:
     container:
       image: debian:10
     steps:
+      - name: Install sudo and set Python 3 as default
+        run: |
+          apt-get update
+          apt-get install -y sudo
+
+          apt-get install -y python3
+          update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+          echo $PATH
+
       - name: Install dependencies
         shell: bash
         run: |
@@ -198,6 +221,21 @@ jobs:
             --add-data LICENSE:. \
             --add-data plugins:plugins \
             --hidden-import PyQt5.QtWebEngine
+
+      # 新增步骤：向配置文件添加提交 SHA（Debian）
+      - name: Add commit SHA to config files
+        shell: bash
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          mkdir -p ./dist/config
+          for file in ./dist/config/temp_config.json ./dist/config/default_config.json; do
+            if [ -f "$file" ]; then
+              python -c "import json, sys; data=json.load(open('$file')); data.setdefault('Other', {}).update({'build_id': '${{ github.sha }}'}); json.dump(data, open('$file', 'w'), indent=2)"
+            else
+              python -c "import json; data={'Other': {'build_id': '${{ github.sha }}'}}; json.dump(data, open('$file', 'w'), indent=2)"
+            fi
+          done
 
       - name: Upload
         uses: actions/upload-artifact@v4.4.2
