@@ -139,6 +139,10 @@ jobs:
             fi
           done
 
+      - name: 删除临时配置文件
+        run: |
+          rm -f ./dist/ClassWidgets/config/temp_config.json
+
 
       - name: Upload unsigned application
         if: ${{ ( matrix.os != 'windows-latest' && github.event_name != 'pull_request' ) || github.event_name == 'pull_request' }}
@@ -266,6 +270,10 @@ jobs:
               python -c "import json; data={'Other': {'build_id': '${{ github.sha }}', 'is_dev_version': True}}; json.dump(data, open('$file', 'w'), indent=2)"
             fi
           done
+
+      - name: 删除临时配置文件
+        run: |
+          rm -f ./dist/ClassWidgets/config/temp_config.json
 
 
       - name: Upload
