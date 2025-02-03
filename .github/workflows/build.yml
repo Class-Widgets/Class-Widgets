@@ -112,17 +112,31 @@ jobs:
           mkdir bundle
           mv dist/Class\ Widgets.app bundle/Class\ Widgets.app
 
-      # 新增步骤：向配置文件添加提交 SHA
-      - name: Add commit SHA to config files
+
+      # # 新增步骤：向配置文件添加提交 SHA
+      # - name: Add commit SHA to config files
+      #   shell: bash
+      #   run: |
+      #     mkdir -p ./dist/config
+      #     for file in ./dist/config/temp_config.json ./dist/config/default_config.json; do
+      #         if [ -f "$file" ]; then
+      #         python3 -c "import json, sys; data=json.load(open('$file')); data.setdefault('Other', {}).update({'build_id': '${{ github.sha }}'}); json.dump(data, open('$file', 'w'), indent=2)"
+      #       else
+      #         python3 -c "import json; data={'Other': {'build_id': '${{ github.sha }}'}}; json.dump(data, open('$file', 'w'), indent=2)"
+      #       fi
+      #     done
+
+      # 新增步骤：向配置文件添加提交 SHA 和开发版本标识
+      - name: Add commit SHA and dev version flag to config files
         shell: bash
         run: |
           mkdir -p ./dist/config
           for file in ./dist/config/temp_config.json ./dist/config/default_config.json; do
             if [ -f "$file" ]; then
-            python3 -c "import json, sys; data=json.load(open('$file')); data.setdefault('Other', {}).update({'build_id': '${{ github.sha }}'}); json.dump(data, open('$file', 'w'), indent=2)"
-          else
-            python3 -c "import json; data={'Other': {'build_id': '${{ github.sha }}'}}; json.dump(data, open('$file', 'w'), indent=2)"
-          fi
+              python3 -c "import json; data=json.load(open('$file')); data.setdefault('Other', {}).update({'build_id': '${{ github.sha }}', 'is_dev_version': true}); json.dump(data, open('$file', 'w'), indent=2)"
+            else
+              python3 -c "import json; data={'Other': {'build_id': '${{ github.sha }}', 'is_dev_version': true}}; json.dump(data, open('$file', 'w'), indent=2)"
+            fi
           done
 
 
@@ -222,8 +236,24 @@ jobs:
             --add-data plugins:plugins \
             --hidden-import PyQt5.QtWebEngine
 
-      # 新增步骤：向配置文件添加提交 SHA（Debian）
-      - name: Add commit SHA to config files
+
+      # # 新增步骤：向配置文件添加提交 SHA（Debian）
+      # - name: Add commit SHA to config files
+      #   shell: bash
+      #   run: |
+      #     python -m venv .venv
+      #     source .venv/bin/activate
+      #     mkdir -p ./dist/config
+      #     for file in ./dist/config/temp_config.json ./dist/config/default_config.json; do
+      #       if [ -f "$file" ]; then
+      #         python -c "import json, sys; data=json.load(open('$file')); data.setdefault('Other', {}).update({'build_id': '${{ github.sha }}'}); json.dump(data, open('$file', 'w'), indent=2)"
+      #       else
+      #         python -c "import json; data={'Other': {'build_id': '${{ github.sha }}'}}; json.dump(data, open('$file', 'w'), indent=2)"
+      #       fi
+      #     done
+
+      # 新增步骤：向配置文件添加提交 SHA 和开发版本标识（Debian）
+      - name: Add commit SHA and dev version flag to config files
         shell: bash
         run: |
           python -m venv .venv
@@ -231,11 +261,12 @@ jobs:
           mkdir -p ./dist/config
           for file in ./dist/config/temp_config.json ./dist/config/default_config.json; do
             if [ -f "$file" ]; then
-              python -c "import json, sys; data=json.load(open('$file')); data.setdefault('Other', {}).update({'build_id': '${{ github.sha }}'}); json.dump(data, open('$file', 'w'), indent=2)"
+              python -c "import json; data=json.load(open('$file')); data.setdefault('Other', {}).update({'build_id': '${{ github.sha }}', 'is_dev_version': true}); json.dump(data, open('$file', 'w'), indent=2)"
             else
-              python -c "import json; data={'Other': {'build_id': '${{ github.sha }}'}}; json.dump(data, open('$file', 'w'), indent=2)"
+              python -c "import json; data={'Other': {'build_id': '${{ github.sha }}', 'is_dev_version': true}}; json.dump(data, open('$file', 'w'), indent=2)"
             fi
           done
+
 
       - name: Upload
         uses: actions/upload-artifact@v4.4.2
