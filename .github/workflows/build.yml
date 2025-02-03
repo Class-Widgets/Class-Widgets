@@ -64,6 +64,7 @@ jobs:
             --add-data view:view `
             --add-data LICENSE:. `
             --add-data plugins:plugins `
+            --add-data git.properties:. `
             --hidden-import PyQt5.QtWebEngine
 
       - name: Run Linux build
@@ -86,6 +87,7 @@ jobs:
             --add-data view:view \
             --add-data LICENSE:. \
             --add-data plugins:plugins \
+            --add-data git.properties:. \
             --hidden-import PyQt5.QtWebEngine
 
       - name: Run macOS build
@@ -108,6 +110,7 @@ jobs:
             --add-data view:view \
             --add-data LICENSE:. \
             --add-data plugins:plugins \
+            --add-data git.properties:. \
             --hidden-import PyQt5.QtWebEngine
           mkdir bundle
           mv dist/Class\ Widgets.app bundle/Class\ Widgets.app
@@ -197,6 +200,7 @@ jobs:
             --add-data view:view \
             --add-data LICENSE:. \
             --add-data plugins:plugins \
+            --add-data git.properties:. \
             --hidden-import PyQt5.QtWebEngine
 
       - name: Upload
