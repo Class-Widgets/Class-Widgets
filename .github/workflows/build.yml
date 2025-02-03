@@ -141,14 +141,11 @@ jobs:
 
       - name: 删除临时配置文件
         run: |
-          if [ "${{ runner.os }}" == "Linux" ]; then
-            rm -f ./dist/ClassWidgets/config/temp_config.json
-          elif [ "${{ runner.os }}" == "Windows" ]; then
-            del /f .\dist\ClassWidgets\config\temp_config.json
-          elif [ "${{ runner.os }}" == "macOS" ]; then
-            rm -f ./dist/ClassWidgets/config/temp_config.json
+          # 统一使用 bash shell 并检查文件存在性
+          if [ -f "./dist/ClassWidgets/config/temp_config.json" ]; then
+            rm -v "./dist/ClassWidgets/config/temp_config.json"
           fi
-        shell: bash
+        shell: bash  # 强制使用 Git Bash
         
 
       - name: Upload unsigned application
@@ -280,14 +277,11 @@ jobs:
 
       - name: 删除临时配置文件
         run: |
-          if [ "${{ runner.os }}" == "Linux" ]; then
-            rm -f ./dist/ClassWidgets/config/temp_config.json
-          elif [ "${{ runner.os }}" == "Windows" ]; then
-            del /f .\dist\ClassWidgets\config\temp_config.json
-          elif [ "${{ runner.os }}" == "macOS" ]; then
-            rm -f ./dist/ClassWidgets/config/temp_config.json
+          # 统一使用 bash shell 并检查文件存在性
+          if [ -f "./dist/ClassWidgets/config/temp_config.json" ]; then
+            rm -v "./dist/ClassWidgets/config/temp_config.json"
           fi
-        shell: bash
+        shell: bash  # 强制使用 Git Bash
         
 
       - name: Upload
