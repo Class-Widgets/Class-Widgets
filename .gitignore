@@ -10,6 +10,7 @@ __pycache__/
 config.ini
 config/plugin.json
 config/widget.json
+config/schedule/
 plugins/
 
 # Distribution / packaging
