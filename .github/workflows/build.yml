@@ -117,8 +117,8 @@ jobs:
       # - name: Add commit SHA to config files
       #   shell: bash
       #   run: |
-      #     mkdir -p ./dist/config
-      #     for file in ./dist/config/temp_config.json ./dist/config/default_config.json; do
+      #     mkdir -p ./dist/ClassWidgets/config
+      #     for file in ./dist/ClassWidgets/config/temp_config.json ./dist/ClassWidgets/config/default_config.json; do
       #         if [ -f "$file" ]; then
       #         python3 -c "import json, sys; data=json.load(open('$file')); data.setdefault('Other', {}).update({'build_id': '${{ github.sha }}'}); json.dump(data, open('$file', 'w'), indent=2)"
       #       else
@@ -130,8 +130,8 @@ jobs:
       - name: Add commit SHA and dev version flag to config files
         shell: bash
         run: |
-          mkdir -p ./dist/config
-          for file in ./dist/config/temp_config.json ./dist/config/default_config.json; do
+          mkdir -p ./dist/ClassWidgets/config
+          for file in ./dist/ClassWidgets/config/temp_config.json ./dist/ClassWidgets/config/default_config.json; do
             if [ -f "$file" ]; then
               python3 -c "import json; data=json.load(open('$file')); data.setdefault('Other', {}).update({'build_id': '${{ github.sha }}', 'is_dev_version': True}); json.dump(data, open('$file', 'w'), indent=2)"
             else
@@ -243,8 +243,8 @@ jobs:
       #   run: |
       #     python -m venv .venv
       #     source .venv/bin/activate
-      #     mkdir -p ./dist/config
-      #     for file in ./dist/config/temp_config.json ./dist/config/default_config.json; do
+      #     mkdir -p ./dist/ClassWidgets/config
+      #     for file in ./dist/ClassWidgets/config/temp_config.json ./dist/ClassWidgets/config/default_config.json; do
       #       if [ -f "$file" ]; then
       #         python -c "import json, sys; data=json.load(open('$file')); data.setdefault('Other', {}).update({'build_id': '${{ github.sha }}'}); json.dump(data, open('$file', 'w'), indent=2)"
       #       else
@@ -258,8 +258,8 @@ jobs:
         run: |
           python -m venv .venv
           source .venv/bin/activate
-          mkdir -p ./dist/config
-          for file in ./dist/config/temp_config.json ./dist/config/default_config.json; do
+          mkdir -p ./dist/ClassWidgets/config
+          for file in ./dist/ClassWidgets/config/temp_config.json ./dist/ClassWidgets/config/default_config.json; do
             if [ -f "$file" ]; then
               python -c "import json; data=json.load(open('$file')); data.setdefault('Other', {}).update({'build_id': '${{ github.sha }}', 'is_dev_version': True}); json.dump(data, open('$file', 'w'), indent=2)"
             else
