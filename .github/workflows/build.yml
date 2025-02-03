@@ -141,8 +141,14 @@ jobs:
 
       - name: 删除临时配置文件
         run: |
-          rm -f ./dist/ClassWidgets/config/temp_config.json
-
+          if [ $RUNNER_OS == 'Linux' ]; then
+            rm -f ./dist/ClassWidgets/config/temp_config.json
+          elif [ $RUNNER_OS == 'Windows' ]; then
+            del /f .\dist\ClassWidgets\config\temp_config.json
+          elif [ $RUNNER_OS == 'macOS' ]; then
+            rm -f ./dist/ClassWidgets/config/temp_config.json
+          fi
+        
 
       - name: Upload unsigned application
         if: ${{ ( matrix.os != 'windows-latest' && github.event_name != 'pull_request' ) || github.event_name == 'pull_request' }}
@@ -271,9 +277,15 @@ jobs:
             fi
           done
 
-      - name: 删除临时配置文件
-        run: |
-          rm -f ./dist/ClassWidgets/config/temp_config.json
+          - name: 删除临时配置文件
+          run: |
+            if [ $RUNNER_OS == 'Linux' ]; then
+              rm -f ./dist/ClassWidgets/config/temp_config.json
+            elif [ $RUNNER_OS == 'Windows' ]; then
+              del /f .\dist\ClassWidgets\config\temp_config.json
+            elif [ $RUNNER_OS == 'macOS' ]; then
+              rm -f ./dist/ClassWidgets/config/temp_config.json
+            fi
 
 
       - name: Upload
