@@ -133,9 +133,9 @@ jobs:
           mkdir -p ./dist/config
           for file in ./dist/config/temp_config.json ./dist/config/default_config.json; do
             if [ -f "$file" ]; then
-              python3 -c "import json; data=json.load(open('$file')); data.setdefault('Other', {}).update({'build_id': '${{ github.sha }}', 'is_dev_version': true}); json.dump(data, open('$file', 'w'), indent=2)"
+              python3 -c "import json; data=json.load(open('$file')); data.setdefault('Other', {}).update({'build_id': '${{ github.sha }}', 'is_dev_version': True}); json.dump(data, open('$file', 'w'), indent=2)"
             else
-              python3 -c "import json; data={'Other': {'build_id': '${{ github.sha }}', 'is_dev_version': true}}; json.dump(data, open('$file', 'w'), indent=2)"
+              python3 -c "import json; data={'Other': {'build_id': '${{ github.sha }}', 'is_dev_version': True}}; json.dump(data, open('$file', 'w'), indent=2)"
             fi
           done
 
@@ -261,9 +261,9 @@ jobs:
           mkdir -p ./dist/config
           for file in ./dist/config/temp_config.json ./dist/config/default_config.json; do
             if [ -f "$file" ]; then
-              python -c "import json; data=json.load(open('$file')); data.setdefault('Other', {}).update({'build_id': '${{ github.sha }}', 'is_dev_version': true}); json.dump(data, open('$file', 'w'), indent=2)"
+              python -c "import json; data=json.load(open('$file')); data.setdefault('Other', {}).update({'build_id': '${{ github.sha }}', 'is_dev_version': True}); json.dump(data, open('$file', 'w'), indent=2)"
             else
-              python -c "import json; data={'Other': {'build_id': '${{ github.sha }}', 'is_dev_version': true}}; json.dump(data, open('$file', 'w'), indent=2)"
+              python -c "import json; data={'Other': {'build_id': '${{ github.sha }}', 'is_dev_version': True}}; json.dump(data, open('$file', 'w'), indent=2)"
             fi
           done
 
