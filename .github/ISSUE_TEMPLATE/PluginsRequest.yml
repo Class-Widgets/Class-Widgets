@@ -1,6 +1,6 @@
 name: 插件请求
 description: 请求一个新的插件。
-title: "[Plugins]:"
+title: "[Plugins]: "
 labels: ["插件可实现"]
 body:
   - type: markdown
@@ -34,9 +34,9 @@ body:
         描述您想要的插件的功能。您可以附上截图、录屏、堆栈跟踪、日志等材料，便于插件开发者进行开发。
         
         > [!WARNING]
-        > 若您要上传材料，请等待材料文件上传完成后再发布Issue
+        > 若您要上传材料，请等待材料文件上传完成后再发布 Issue。
         >
-        > 若显示为`![Uploading 文件名]()`即为上传中，请等待链接变动后再提交。
+        > 若显示为 `![Uploading 文件名]()` 即为上传中，请等待链接变动后再提交。
 
   - type: textarea
     id: back
@@ -59,5 +59,5 @@ body:
       label: 最后一步
       description: 回顾您的回答
       options:
-        - label: 我认为上述的描述已经足以详细，以便插件开发人员理解您想要的功能。如果我的 issue 没有按照上述的要求填写，可能会被 **无条件关闭**。
+        - label: 我认为上述的描述已经足以详细，以便插件开发人员理解您想要的功能。如果我的 Issue 没有按照上述的要求填写，可能会被 **无条件关闭**。
           required: true
