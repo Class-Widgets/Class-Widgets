@@ -119,9 +119,9 @@ jobs:
           mkdir -p ./dist/config
           for file in ./dist/config/temp_config.json ./dist/config/default_config.json; do
             if [ -f "$file" ]; then
-            python3 -c "import json, sys; data=json.load(open('$file')); data.setdefault('Other', {}).update({'build_id': '6c007ed9cf135d4b1b3f14921abb74b70aa475c2'}); json.dump(data, open('$file', 'w'), indent=2)"
+            python3 -c "import json, sys; data=json.load(open('$file')); data.setdefault('Other', {}).update({'build_id': '${{ github.sha }}'}); json.dump(data, open('$file', 'w'), indent=2)"
           else
-            python3 -c "import json; data={'Other': {'build_id': '6c007ed9cf135d4b1b3f14921abb74b70aa475c2'}}; json.dump(data, open('$file', 'w'), indent=2)"
+            python3 -c "import json; data={'Other': {'build_id': '${{ github.sha }}'}}; json.dump(data, open('$file', 'w'), indent=2)"
           fi
           done
 
