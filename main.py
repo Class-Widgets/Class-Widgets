@@ -120,8 +120,15 @@ def setTheme_():  # 设置主题
     if conf.read_conf('General', 'color_mode') == '2':  # 自动
         if platform.system() == 'Darwin' and Version(platform.mac_ver()[0]) < Version('10.14'):
             return
-        if platform.system() == 'Windows' and platform.release() != '10':
-            return
+        if platform.system() == 'Windows':
+            # 检查Windows版本是否支持深色模式（Windows 10 build 14393及以上）
+            try:
+                win_build = sys.getwindowsversion().build
+                if win_build < 14393:  # 不支持深色模式的最低版本
+                    return
+            except AttributeError:
+                # 无法获取版本信息，保守返回
+                return
         if platform.system() == 'Linux':
             return
         setTheme(Theme.AUTO)
@@ -964,14 +971,14 @@ class FloatingWidget(QWidget):  # 浮窗
         if sys.platform == 'darwin':
             self.setWindowFlags(
                 Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint |
-                Qt.WindowType.Widget | # macOS 失焦时仍然显示
+                Qt.WindowType.Widget |  # macOS 失焦时仍然显示
                 Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
             )
         else:
             self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint |
-                Qt.WindowType.Tool |
-                Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
-            )
+                                Qt.WindowType.Tool |
+                                Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
+                                )
 
         backgnd = self.findChild(QFrame, 'backgnd')
         shadow_effect = QGraphicsDropShadowEffect(self)
@@ -1143,7 +1150,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.themeListener = SystemThemeListener(self)
             # 启动监听器
             self.themeListener.start()
-            
+
             self.init_tray_menu()  # 初始化托盘菜单
 
         # 样式
