@@ -187,6 +187,12 @@ jobs:
         uses: astral-sh/setup-uv@v4
         with:
           python-version: 3.8.10
+      - name: Generate git.properties
+        run: |
+          echo "git.commit.id=$(git rev-parse --short HEAD)" > git.properties
+          echo "git.commit.time=$(git log -1 --format=%cd)" >> git.properties
+          echo "git.branch=$(git rev-parse --abbrev-ref HEAD)" >> git.properties
+          echo "git.build.version=$(git describe --tags --always)" >> git.properties
       - name: Run Linux (Debian 10) build
         shell: bash
         run: |
