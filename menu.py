@@ -519,18 +519,11 @@ class SettingsMenu(FluentWindow):
             tips_plugin_empty.hide()
 
     def setup_help_interface(self):
-        # help_docu = FramelessWebEngineView(self)
-        # help_docu.load(QUrl("https://classwidgets.rinlit.cn/docs-user/"))
-        # help_docu.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-
         open_by_browser = self.findChild(PushButton, 'open_by_browser')
         open_by_browser.setIcon(fIcon.LINK)
         open_by_browser.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(
             'https://classwidgets.rinlit.cn/docs-user/'
         )))
-
-        # web_layout = self.findChild(QVBoxLayout, 'web')
-        # web_layout.addWidget(help_docu)
 
     def setup_sound_interface(self):
         sd_scroll = self.findChild(SmoothScrollArea, 'sd_scroll')  # 触摸屏适配

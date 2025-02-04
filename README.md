@@ -1,6 +1,3 @@
-> [!WARNING]
-> 目前已知Class Widgets在Windows环境下在**有中文**的路径中运行打开设置页面会崩溃，请避免将Class Widgets放在**含中文**的路径下。
-
 > [!NOTE]
 > Class Widgets 有QQ群啦！详见[此处](#社区)
 
