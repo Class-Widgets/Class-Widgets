@@ -54,6 +54,12 @@ jobs:
       #     curl -o upx.zip -L https://github.com/upx/upx/releases/download/v4.2.4/upx-4.2.4-win64.zip
       #     tar -xvzf upx.zip
       #     ren upx-4.2.4-win64 upx
+      - name: Generate git.properties
+        run: |
+          echo "git.commit.id=$(git rev-parse --short HEAD)" > git.properties
+          echo "git.commit.time=$(git log -1 --format=%cd)" >> git.properties
+          echo "git.branch=$(git rev-parse --abbrev-ref HEAD)" >> git.properties
+          echo "git.build.version=$(git describe --tags --always)" >> git.properties
       - name: Run Windows build
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
@@ -74,6 +80,7 @@ jobs:
             --add-data view:view `
             --add-data LICENSE:. `
             --add-data plugins:plugins `
+            --add-data git.properties:. `
             --hidden-import PyQt5.QtWebEngine
 
       - name: Run Linux build
@@ -96,6 +103,7 @@ jobs:
             --add-data view:view \
             --add-data LICENSE:. \
             --add-data plugins:plugins \
+            --add-data git.properties:. \
             --hidden-import PyQt5.QtWebEngine
 
       - name: Run macOS build
@@ -118,6 +126,7 @@ jobs:
             --add-data view:view \
             --add-data LICENSE:. \
             --add-data plugins:plugins \
+            --add-data git.properties:. \
             --hidden-import PyQt5.QtWebEngine
           mkdir bundle
           mv dist/Class\ Widgets.app bundle/Class\ Widgets.app
@@ -188,6 +197,12 @@ jobs:
         uses: astral-sh/setup-uv@v4
         with:
           python-version: 3.8.10
+      - name: Generate git.properties
+        run: |
+          echo "git.commit.id=$(git rev-parse --short HEAD)" > git.properties
+          echo "git.commit.time=$(git log -1 --format=%cd)" >> git.properties
+          echo "git.branch=$(git rev-parse --abbrev-ref HEAD)" >> git.properties
+          echo "git.build.version=$(git describe --tags --always)" >> git.properties
       - name: Run Linux (Debian 10) build
         shell: bash
         run: |
@@ -207,6 +222,7 @@ jobs:
             --add-data view:view \
             --add-data LICENSE:. \
             --add-data plugins:plugins \
+            --add-data git.properties:. \
             --hidden-import PyQt5.QtWebEngine
 
       - name: Upload
