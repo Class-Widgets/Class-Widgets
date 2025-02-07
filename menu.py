@@ -1876,12 +1876,16 @@ class SettingsMenu(FluentWindow):
 
 
 def sp_get_class_num():  # 获取当前周课程数（未完成）
-    timeline = get_timeline()['default']
-    count = 0
-    for item_name, item_time in timeline.items():
-        if item_name.startswith('a'):
-            count += 1
-    return count
+    highest_count = 0
+    for timeline_ in get_timeline().keys():
+        timeline = get_timeline()[timeline_]
+        count = 0
+        for item_name, item_time in timeline.items():
+            if item_name.startswith('a'):
+                count += 1
+        if count > highest_count:
+            highest_count = count
+    return highest_count
 
 
 if __name__ == '__main__':

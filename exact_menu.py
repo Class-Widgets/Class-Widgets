@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import QApplication, QScroller
 from loguru import logger
 from qfluentwidgets import FluentWindow, FluentIcon as fIcon, ComboBox, \
     PrimaryPushButton, Flyout, FlyoutAnimationType, InfoBarIcon, ListWidget, LineEdit, ToolButton, HyperlinkButton, \
-    SmoothScroll, SmoothScrollArea
+    SmoothScroll, SmoothScrollArea, Dialog
 
 import conf
 from conf import base_directory
@@ -31,6 +31,19 @@ temp_schedule = {'schedule': {}, 'schedule_even': {}}
 
 
 def open_settings():
+    if conf.read_conf('Temp', 'temp_schedule'):
+        w = Dialog(
+            "暂时无法使用“设置”",
+            "由于您正在使用临时课表，将无法使用“设置”的课程表功能；\n若要启用“设置”，请重新启动 Class Widgets。"
+            "\n(重启后，临时课表也将会恢复)",
+            None
+        )
+        w.cancelButton.hide()
+        w.buttonLayout.insertStretch(1)
+        w.exec()
+
+        return
+
     global settings
     if settings is None or not settings.isVisible():
         settings = SettingsMenu()
