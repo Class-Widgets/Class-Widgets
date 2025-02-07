@@ -1,5 +1,5 @@
 > [!NOTE]
-> Class Widgets 有QQ群啦！详见[此处](#社区)
+> Class Widgets 有 QQ 群和 Discord 服务器啦！详见[此处](#社区)
 
 <p align="center">
   <img width="16%" align="center" src="img/Logo.png" alt="logo">
@@ -13,11 +13,14 @@
 
 <div align="center">
 
-[![星标](https://img.shields.io/github/stars/RinLit-233-shiroko/Class-Widgets?style=for-the-badge&color=orange&label=星标)](https://github.com/RinLit-233-shiroko/Class-Widgets)
-[![当前版本](https://img.shields.io/github/v/release/RinLit-233-shiroko/Class-Widgets?style=for-the-badge&color=purple&label=当前版本)](https://github.com/RinLit-233-shiroko/Class-Widgets/releases/latest)
-[![测试版](https://img.shields.io/github/v/tag/RinLit-233-shiroko/Class-Widgets?include_prereleases&label=当前测试版&color=yellow&style=for-the-badge)](https://github.com/RinLit-233-shiroko/Class-Widgets/releases)
-[![开源许可](https://img.shields.io/badge/license-GPLv3-blue.svg?label=开源许可证&style=for-the-badge)](https://github.com/RinLit-233-shiroko/Class-Widgets)
-[![下载量](https://img.shields.io/github/downloads/RinLit-233-shiroko/Class-Widgets/total.svg?label=下载量&color=green&style=for-the-badge)](https://github.com/RinLit-233-shiroko/Class-Widgets)
+[![星标](https://img.shields.io/github/stars/Class-Widgets/Class-Widgets?style=for-the-badge&color=orange&label=星标)](https://github.com/Class-Widgets/Class-Widgets)
+[![当前版本](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?style=for-the-badge&color=purple&label=当前版本)](https://github.com/Class-Widgets/Class-Widgets/releases/latest)
+[![测试版](https://img.shields.io/github/v/tag/Class-Widgets/Class-Widgets?include_prereleases&label=当前测试版&color=yellow&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets/releases)
+[![开源许可](https://img.shields.io/badge/license-GPLv3-blue.svg?label=开源许可证&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets)
+[![下载量](https://img.shields.io/github/downloads/Class-Widgets/Class-Widgets/total.svg?label=下载量&color=green&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets)
+
+  
+
 [![Q群](https://img.shields.io/badge/QQ群-169200380-blue.svg?logo=qq&color=blue&style=for-the-badge)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380)
 [![DC](https://img.shields.io/discord/1332636953719476284?style=for-the-badge&logo=discord&logoColor=ffffff&label=discord%20%E6%9C%8D%E5%8A%A1%E5%99%A8&labelColor=5865f2)](https://discord.gg/EFF4PpqpqZ)
 
@@ -53,9 +56,9 @@
 > 可在 [Class Widgets 官方文档](https://www.yuque.com/rinlit/class-widgets_help/gs3gsbms1iivgibm) 查看教程。
 
 > [!IMPORTANT]
-> 若要体验此页面的特性，请前往[此处](https://github.com/RinLit-233-shiroko/Class-Widgets/releases/tag/v1.1.7-b3)预发行版的页面下载。
+> 若要体验此页面的特性，请前往[此处](https://github.com/Class-Widgets/Class-Widgets/releases/tag/v1.1.7-b3)预发行版的页面下载。
 
-下载 ![当前版本](https://img.shields.io/github/v/release/RinLit-233-shiroko/Class-Widgets?style=flat&color=purple&label=当前版本) 中最新版的压缩文件，解压到合适位置后，打开 `ClassWidgets.exe` 即可。
+下载 ![当前版本](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?style=flat&color=purple&label=当前版本) 中最新版的压缩文件，解压到合适位置后，打开 `ClassWidgets.exe` 即可。
 可通过托盘菜单进入设置、或退出此程序。
 
 ## 协议
@@ -80,13 +83,15 @@ Copyright © 2025 RinLit.
 
 ### 贡献者
 
-Thanks goes to these wonderful people:
+感谢以下同学为 Class Widgets 作出贡献。
 
 [![Contributors](http://contrib.nn.ci/api?repo=Class-Widgets/Class-Widgets&repo=Class-Widgets/plugin-plaza&repo=Class-Widgets/cw-interim-site)](https://github.com/Class-Widgets/Class-Widgets/graphs/contributors)
 
+如果您想要为 Class Widgets 作出贡献，请阅读[贡献指南](CONTRIBUTING.md)
+
 ### 赞助商 / Sponsors
 
-感谢以下人员对本项目的支持：
+感谢以下人员对本项目的支持。
 - [猞猁](http://dq6666.cn/)
 
 感谢以下赞助商对本项目的支持。
@@ -118,7 +123,7 @@ Thanks goes to these wonderful people:
 除非用户或安装或操作它的人特别要求，否则本程序不会将任何信息传输到其他网络系统。
 
 ## 社区
-我们目前开通了 [Discussions](https://github.com/orgs/Class-Widgets/discussions)、[QQ群](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380) 和 [Discord 服务器](https://discord.gg/EFF4PpqpqZ)
+我们目前开通了 [Discussions](https://github.com/orgs/Class-Widgets/discussions)、[QQ群](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380) 和 [Discord 服务器](https://discord.gg/EFF4PpqpqZ)。
 
 ## 星标历史
  <picture>

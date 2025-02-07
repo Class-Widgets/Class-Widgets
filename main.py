@@ -35,6 +35,7 @@ from conf import base_directory
 from exact_menu import ExactMenu, open_settings
 from menu import open_plaza
 from network_thread import check_update
+from plugin import PluginLoader, p_loader
 from utils import restart, share
 
 if os.name == 'nt':
@@ -533,35 +534,6 @@ class ErrorDialog(Dialog):  # 重大错误提示框
         event.ignore()
         self.hide()
         self.deleteLater()
-
-
-class PluginLoader:  # 插件加载器
-    def __init__(self):
-        self.plugins = []
-
-    def load_plugins(self):
-        for folder in Path(conf.PLUGINS_DIR).iterdir():
-            if folder.is_dir() and (folder / 'plugin.json').exists():
-                if folder.name not in conf.load_plugin_config()['enabled_plugins']:
-                    continue
-                relative_path = conf.PLUGINS_DIR.name
-                module_name = f"{relative_path}.{folder.name}"
-                module = importlib.import_module(module_name)
-                if hasattr(module, 'Plugin'):
-                    plugin_class = getattr(module, "Plugin")  # 获取 Plugin 类
-                    # 实例化插件
-                    self.plugins.append(plugin_class(p_mgr.get_app_contexts(folder.name), p_mgr.method))
-                logger.success(f"加载插件成功：{module_name}")
-        return self.plugins
-
-    def run_plugins(self):
-        for plugin in self.plugins:
-            plugin.execute()
-
-    def update_plugins(self):
-        for plugin in self.plugins:
-            if hasattr(plugin, 'update'):
-                plugin.update(p_mgr.get_app_contexts())
 
 
 class PluginManager:  # 插件管理器
@@ -1743,8 +1715,8 @@ if __name__ == '__main__':
             except Exception as e:
                 logger.error(f'创建新课表失败：{e}')
 
-        p_loader = PluginLoader()
         p_mgr = PluginManager()
+        p_loader.set_manager(p_mgr)
         p_loader.load_plugins()
 
         init()

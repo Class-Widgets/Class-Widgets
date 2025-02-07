@@ -11,7 +11,8 @@ import list as list_
 import conf
 from file import base_directory
 
-CSES_WEEKS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+CSES_WEEKS_TEXTS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+CSES_WEEKS = [1, 2, 3, 4, 5, 6, 7]
 
 
 class CSES_Converter:
@@ -171,7 +172,7 @@ class CSES_Converter:
 
                     print(timelines_part)
                     self.generator.add_schedule(
-                        name=f'{name}_{CSES_WEEKS[int(day)]}',
+                        name=f'{name}_{CSES_WEEKS_TEXTS[int(day)]}',
                         enable_day=CSES_WEEKS[int(day)],
                         weeks=type_,
                         classes=[timelines_part[str(day)][i] for i in range(len(timelines_part[str(day)]))]

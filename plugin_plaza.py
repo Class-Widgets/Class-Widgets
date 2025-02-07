@@ -13,8 +13,8 @@ from qfluentwidgets import MSFluentWindow, FluentIcon as fIcon, NavigationItemPo
     ImageLabel, StrongBodyLabel, HyperlinkLabel, CaptionLabel, PrimaryPushButton, HorizontalFlipView, \
     InfoBar, InfoBarPosition, SplashScreen, MessageBoxBase, TransparentToolButton, BodyLabel, \
     PrimarySplitPushButton, RoundMenu, Action, PipsPager, TextBrowser, CardWidget, \
-    IndeterminateProgressRing, ComboBox, ProgressBar, SmoothScrollArea, SearchLineEdit, HyperlinkButton, SubtitleLabel, \
-    MessageBox, SwitchButton
+    IndeterminateProgressRing, ComboBox, ProgressBar, SmoothScrollArea, SearchLineEdit, HyperlinkButton, \
+    MessageBox, SwitchButton, SubtitleLabel
 
 import conf
 import list as l
@@ -34,12 +34,13 @@ PLAZA_REPO_DIR = "https://api.github.com/repos/Class-Widgets/plugin-plaza/conten
 TEST_DOWNLOAD_LINK = "https://dldir1.qq.com/qqfile/qq/PCQQ9.7.17/QQ9.7.17.29225.exe"
 
 restart_tips_flag = False  # 重启提示
-plugins_data = []  # 仓库插件信息
+plugins_data = {}  # 仓库插件信息
 local_plugins_version = {}  # 本地插件版本
 download_progress = []  # 下载线程
 
-installed_plugins = {}  # 已安装插件（通过PluginPlaza获取）
+installed_plugins = []  # 已安装插件（通过PluginPlaza获取）
 tags = ['示例', '信息展示', '学习', '测试', '工具', '自动化']  # 测试用TAG
+recommend_plugins = ['cw-example-plugin']  # 推荐插件（通过PluginPlaza获取）
 search_items = []
 SELF_PLUGIN_VERSION = conf.read_conf('Plugin', 'version')  # 自身版本号
 SEARCH_FIELDS = ["name", "description", "tag", "author"]  # 搜索字段
@@ -153,7 +154,7 @@ class downloadProgressBar(InfoBar):  # 下载进度条(创建下载进程)
         self.close()
 
 
-def install_plugin(parent, p_name, data=dict):
+def install_plugin(parent, p_name, data):
     plugin_ver = str(data.get('plugin_ver'))
     if plugin_ver != SELF_PLUGIN_VERSION:  # 插件版本不匹配
         if plugin_ver > SELF_PLUGIN_VERSION:
@@ -426,20 +427,27 @@ class PluginPlaza(MSFluentWindow):
             self.init_nav()
             self.init_window()
             self.get_pp_data()
-            self.get_tags_data()
             self.get_banner_img()
         except Exception as e:
             logger.error(f'初始化插件广场时发生错误：{e}')
 
     def load_all_interface(self):
         self.setup_homeInterface()
+        self.setup_latestInterface()
         self.setup_settingsInterface()
         self.setup_searchInterface()
+
+    def setup_latestInterface(self):  # 初始化最新更新
+        latest_scroll = self.latestsInterface.findChild(SmoothScrollArea, 'latest_scroll')
+        QScroller.grabGesture(latest_scroll.viewport(), QScroller.LeftMouseButtonGesture)
 
     def setup_searchInterface(self):  # 初始化搜索
         search_scroll = self.searchInterface.findChild(SmoothScrollArea, 'search_scroll')
 
         def search(keyword):  # 搜索
+            if keyword == '/all':
+                return plugins_data
+
             result = {}
             for key, value in plugins_data.items():
                 if any(keyword.lower() in str(value.get(field, "")).lower() for field in SEARCH_FIELDS):
@@ -465,7 +473,7 @@ class PluginPlaza(MSFluentWindow):
                     plugin_card.set_img(pixmap)
 
                 keyword = self.search_plugin.text()
-                print(search(keyword))  # 结果
+                print(f'结果：{search(keyword)}')  # 结果
                 plugin_num = 0  # 计数
                 for key, data in search(keyword).items():
                     plugin_card = PluginCard_Horizontal(title=data['name'], content=data['description'],
@@ -556,9 +564,11 @@ class PluginPlaza(MSFluentWindow):
             ))
 
     def set_tags_data(self, data):
-        global tags, search_items
+        global tags, search_items, recommend_plugins
+        rec_data = {}
         if data:
             tags = data.get('tags')
+            recommend_plugins = data.get('recommend_plugin')
             shuffle(tags)  # 随机
         for tag in tags:
             search_items.append(tag)
@@ -569,10 +579,13 @@ class PluginPlaza(MSFluentWindow):
             self.tags_layout.addWidget(tag_link, tag_num // 3, tag_num % 3)  # 排列
             tag_num += 1
 
-    def load_recommend_plugin(self, p_data):
-        global plugins_data, search_items
-        plugins_data = p_data  # 保存插件数据
-        print(plugins_data)
+        for key, data in plugins_data.items():
+            if key in recommend_plugins:
+                rec_data[key] = data
+        self.load_plugins(rec_data, 'home')
+
+    def load_plugins(self, p_data, page):
+        global search_items
 
         for plugin in p_data.values():  # 遍历插件数据
             search_items.append(plugin['name'])
@@ -585,7 +598,12 @@ class PluginPlaza(MSFluentWindow):
             pixmap.loadFromData(data)
             plugin_card.set_img(pixmap)
 
-        self.rec_plugin_grid = self.homeInterface.findChild(QGridLayout, 'rec_plugin_grid')  # 插件表格
+        if page == 'latest':
+            self.plugin_grid = self.latestsInterface.findChild(QGridLayout, 'all_plugin_grid')  # 插件表格
+        elif page == 'home':
+            self.plugin_grid = self.homeInterface.findChild(QGridLayout, 'rec_plugin_grid')  # 插件表格
+        else:
+            self.plugin_grid = self.latestsInterface.findChild(QGridLayout, 'all_plugin_grid')  # 插件表格
         plugin_num = 0  # 计数
 
         for plugin, data in p_data.items():  # 遍历插件数据
@@ -599,7 +617,7 @@ class PluginPlaza(MSFluentWindow):
             image_thread.repo_signal.connect(lambda img_data, card=plugin_card: set_plugin_image(card, img_data))
             image_thread.start()
 
-            self.rec_plugin_grid.addWidget(plugin_card, plugin_num // 2, plugin_num % 2)  # 排列
+            self.plugin_grid.addWidget(plugin_card, plugin_num // 2, plugin_num % 2)  # 排列
             plugin_num += 1
 
         self.homeInterface.findChild(IndeterminateProgressRing, 'load_plugin_progress').hide()
@@ -668,8 +686,14 @@ class PluginPlaza(MSFluentWindow):
 
     def get_pp_data(self):
         global plugins_data
+        def callback(data):
+            global plugins_data
+            plugins_data = data  # 保存插件数据
+            self.load_plugins(data, 'latest')
+            self.get_tags_data()
+
         self.get_plugin_list_thread = nt.getPluginInfo()
-        self.get_plugin_list_thread.repo_signal.connect(self.load_recommend_plugin)
+        self.get_plugin_list_thread.repo_signal.connect(callback)
         self.get_plugin_list_thread.start()
 
     def get_tags_data(self):
@@ -687,7 +711,7 @@ class PluginPlaza(MSFluentWindow):
 
     def init_nav(self):
         self.addSubInterface(self.homeInterface, fIcon.HOME, '首页', fIcon.HOME_FILL)
-        self.addSubInterface(self.latestsInterface, fIcon.LIBRARY, '最新上架', fIcon.LIBRARY_FILL)
+        self.addSubInterface(self.latestsInterface, fIcon.LIBRARY, '分类', fIcon.LIBRARY_FILL)
         self.addSubInterface(
             self.searchInterface, fIcon.SEARCH, '搜索', position=NavigationItemPosition.BOTTOM
         )

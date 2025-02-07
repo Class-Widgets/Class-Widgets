@@ -13,7 +13,7 @@ loguru~=0.7.2
 PyQt5~=5.15.11
 PyQt-Fluent-Widgets~=1.7.2
 pyqt5-frameless-window==0.4.3
-pyqt5-qt5==5.15.2
+pyqt5-qt5~=5.15.2
 pyqt5-sip==12.15.0
 pyqt5-stubs==5.15.6.0
 pywin32==306; sys_platform == "win32"

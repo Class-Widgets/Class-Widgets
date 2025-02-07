@@ -106,7 +106,7 @@ class getTags(QThread):  # 获取插件标签(json)
     repo_signal = pyqtSignal(dict)
 
     def __init__(
-            self, url='https://raw.githubusercontent.com/Class-Widgets/plugin-plaza/main/Plugins/tags.json'
+            self, url='https://raw.githubusercontent.com/Class-Widgets/plugin-plaza/main/Plugins/plaza_detail.json'
     ):
         super().__init__()
         self.download_url = url

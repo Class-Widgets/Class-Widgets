@@ -14,13 +14,23 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        arch: [ x86, x64 ]
-        os: [ ubuntu-20.04, windows-latest, macos-13 ]
+        arch: [ x86, x64, arm64 ]
+        os: [ ubuntu-20.04, windows-latest, macos-13, macos-14 ]
         exclude:
           - os: ubuntu-20.04
             arch: x86
+          - os: ubuntu-20.04
+            arch: arm64
           - os: macos-13
             arch: x86
+          - os: macos-13
+            arch: arm64
+          - os: windows-latest
+            arch: arm64
+          - os: macos-14
+            arch: x86
+          - os: macos-14
+            arch: x64
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout repository
@@ -44,9 +54,12 @@ jobs:
       #     curl -o upx.zip -L https://github.com/upx/upx/releases/download/v4.2.4/upx-4.2.4-win64.zip
       #     tar -xvzf upx.zip
       #     ren upx-4.2.4-win64 upx
+      - name: Init zip folder
+        run: mkdir zip
       - name: Run Windows build
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
+          curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
           uv venv
           .venv\Scripts\activate
           uv pip install -r requirements.txt
@@ -63,8 +76,8 @@ jobs:
             --add-data font:font `
             --add-data view:view `
             --add-data LICENSE:. `
-            --add-data plugins:plugins `
-            --hidden-import PyQt5.QtWebEngine
+            --add-data plugins:plugins
+          ./zip -r -q "zip/ClassWidgets-Windows-${{ matrix.arch }} (Unsigned).zip" dist/ClassWidgets/*
 
       - name: Run Linux build
         if: ${{ matrix.os == 'ubuntu-20.04' }}
@@ -85,11 +98,11 @@ jobs:
             --add-data font:font \
             --add-data view:view \
             --add-data LICENSE:. \
-            --add-data plugins:plugins \
-            --hidden-import PyQt5.QtWebEngine
+            --add-data plugins:plugins
+          zip -r -q zip/ClassWidgets-Ubuntu20.04.zip dist/ClassWidgets/*
 
       - name: Run macOS build
-        if: ${{ matrix.os == 'macos-13' }}
+        if: ${{ startsWith(matrix.os, 'macos') }}
         run: |
           uv venv
           source .venv/bin/activate
@@ -107,17 +120,17 @@ jobs:
             --add-data font:font \
             --add-data view:view \
             --add-data LICENSE:. \
-            --add-data plugins:plugins \
-            --hidden-import PyQt5.QtWebEngine
-          mkdir bundle
-          mv dist/Class\ Widgets.app bundle/Class\ Widgets.app
+            --add-data plugins:plugins
+          
+          zip -r -q "zip/Class Widgets-macOS-${{ matrix.arch }} (bundle).zip" dist/Class\ Widgets.app/*
+          zip -r -q zip/Class\ Widgets-macOS-${{ matrix.arch }}.zip dist/Class\ Widgets/*
 
       - name: Upload unsigned application
         if: ${{ ( matrix.os != 'windows-latest' && github.event_name != 'pull_request' ) || github.event_name == 'pull_request' }}
         uses: actions/upload-artifact@v4.4.2
         with:
           name: ${{ matrix.os }}-${{ matrix.arch }}
-          path: ./dist
+          path: ./zip
       - name: Upload unsigned single file
         if: ${{ matrix.os == 'windows-latest' && github.event_name != 'pull_request' }}
         id: upload-unsigned-artifact
@@ -125,12 +138,6 @@ jobs:
         with:
           name: windows-${{ matrix.arch }} (Unsigned single)
           path: ./dist/ClassWidgets/ClassWidgets.exe
-      - name: Upload macOS Bundle
-        if: ${{ matrix.os == 'macos-13' }}
-        uses: actions/upload-artifact@v4.4.2
-        with:
-          name: macos-13-bundle
-          path: ./bundle
       - name: Sign application (Test)
         if: ${{ matrix.os == 'windows-latest' && github.event_name != 'pull_request' }}
         uses: signpath/github-action-submit-signing-request@v1.1
@@ -153,12 +160,17 @@ jobs:
           github-artifact-id: '${{ steps.upload-unsigned-artifact.outputs.artifact-id }}'
           wait-for-completion: true
           output-artifact-directory: './dist/ClassWidgets'
+      - name: Recompress
+        if: ${{ matrix.os == 'windows-latest' && github.event_name != 'pull_request' }}
+        run: |
+          del "zip/ClassWidgets-Windows-${{ matrix.arch }} (Unsigned).zip"
+          ./zip -r -q zip/ClassWidgets-Windows-${{ matrix.arch }}.zip dist/ClassWidgets/*
       - name: Upload signed application
         if: ${{ matrix.os == 'windows-latest' && github.event_name != 'pull_request' }}
         uses: actions/upload-artifact@v4.4.2
         with:
           name: windows-latest-${{ matrix.arch }}
-          path: ./dist
+          path: ./zip
 
   debian:
     runs-on: ubuntu-latest
@@ -169,7 +181,7 @@ jobs:
         shell: bash
         run: |
           apt-get update
-          apt-get install -y wget binutils libglib2.0-dev libfreetype6 libxfixes3 libgssapi-krb5-2 libdbus-1-3 libxext6 libfontconfig1 libxrandr2 libnspr4 libx11-xcb1 libxrender1 libasound2 libxkbcommon0 libxtst6 libnss3 libxdamage1 libxcomposite1 libcups2 libwayland-client0 libwayland-cursor0 libcairo2 libcairo-gobject2 libpango-1.0-0 libgtk-3-0 libgdk-pixbuf2.0-0 libxkbcommon-x11-0 libwayland-egl1 libxcb-xinerama0 libxcb-render-util0 libxcb-randr0 libxcb-image0 libxcb-sync1 libxcb-keysyms1 libxcb-shape0 libxcb-xfixes0 libxcb-icccm4 libxcb-glx0 git
+          apt-get install -y wget zip binutils libglib2.0-dev libfreetype6 libxfixes3 libgssapi-krb5-2 libdbus-1-3 libxext6 libfontconfig1 libxrandr2 libnspr4 libx11-xcb1 libxrender1 libasound2 libxkbcommon0 libxtst6 libnss3 libxdamage1 libxcomposite1 libcups2 libwayland-client0 libwayland-cursor0 libcairo2 libcairo-gobject2 libpango-1.0-0 libgtk-3-0 libgdk-pixbuf2.0-0 libxkbcommon-x11-0 libwayland-egl1 libxcb-xinerama0 libxcb-render-util0 libxcb-randr0 libxcb-image0 libxcb-sync1 libxcb-keysyms1 libxcb-shape0 libxcb-xfixes0 libxcb-icccm4 libxcb-glx0 git
           wget http://ftp.debian.org/debian/pool/main/x/xcb-util/libxcb-util1_0.4.0-1+b1_amd64.deb
           dpkg -i libxcb-util1_0.4.0-1+b1_amd64.deb
       - name: Checkout repository
@@ -181,6 +193,7 @@ jobs:
       - name: Run Linux (Debian 10) build
         shell: bash
         run: |
+          mkdir zip
           uv venv
           source .venv/bin/activate
           uv pip install -r requirements.txt
@@ -196,11 +209,18 @@ jobs:
             --add-data font:font \
             --add-data view:view \
             --add-data LICENSE:. \
-            --add-data plugins:plugins \
-            --hidden-import PyQt5.QtWebEngine
+            --add-data plugins:plugins
+          zip -r -q zip/ClassWidgets-Debian10.zip dist/ClassWidgets/*
 
       - name: Upload
         uses: actions/upload-artifact@v4.4.2
         with:
           name: debian10-x64
-          path: ./dist
+          path: ./zip
+
+  release:
+    needs: [debian, builder_matrix]
+    if: ${{ startsWith(github.ref, 'refs/tags/') }}
+    uses: ./.github/workflows/release.yml
+    with:
+      runid: ${{ github.run_id }}

@@ -33,6 +33,7 @@ import weather_db as wd
 from conf import base_directory
 from cses_mgr import CSES_Converter
 from network_thread import VersionThread
+from plugin import p_loader
 from plugin_plaza import PluginPlaza
 from utils import restart
 
@@ -257,7 +258,7 @@ class PluginSettingsDialog(MessageBoxBase):  # 插件设置对话框
 
     def init_ui(self):
         # 加载已定义的UI
-        self.plugin_widget = self.parent.plugins_settings[self.plugin_dir]
+        self.plugin_widget = p_loader.plugins_settings[self.plugin_dir]
         self.viewLayout.addWidget(self.plugin_widget)
         self.viewLayout.setContentsMargins(0, 0, 0, 0)
 
@@ -420,7 +421,7 @@ class SettingsMenu(FluentWindow):
         super().__init__()
         self.button_clear_log = None
         self.version_thread = None
-        self.plugins_settings = {}
+
         # 创建子页面
         self.spInterface = uic.loadUi(f'{base_directory}/view/menu/preview.ui')  # 预览
         self.spInterface.setObjectName("spInterface")
@@ -486,18 +487,11 @@ class SettingsMenu(FluentWindow):
         plugin_card_layout = self.findChild(QVBoxLayout, 'plugin_card_layout')
         open_plugin_folder = self.findChild(PushButton, 'open_plugin_folder')
         open_plugin_folder.clicked.connect(lambda: open_dir(os.path.join(os.getcwd(), conf.PLUGINS_DIR)))  # 打开插件目录
-        for plugin in plugin_dict:
-            try:
-                relative_path = conf.PLUGINS_DIR.name  # 修复引用Bug
-                module = importlib.import_module(f'{relative_path}.{plugin}')
-                if hasattr(module, 'Settings'):
-                    plugin_class = getattr(module, "Settings")  # 获取 Plugin 类
-                    # 实例化插件
-                    self.plugins_settings[plugin] = plugin_class(f'{conf.PLUGINS_DIR}/{plugin}')
-                logger.success(f"加载插件成功：{plugin}")
-            except Exception as e:
-                logger.error(f"加载插件失败：{e}")
 
+        if not p_loader.plugins_settings:  # 若插件设置为空
+            p_loader.load_plugins()  # 加载插件设置
+
+        for plugin in plugin_dict:
             if (Path(conf.PLUGINS_DIR) / plugin / 'icon.png').exists():  # 若插件目录存在icon.png
                 icon_path = f'{base_directory}/plugins/{plugin}/icon.png'
             else:

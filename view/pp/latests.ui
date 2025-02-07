@@ -36,7 +36,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="SmoothScrollArea" name="SmoothScrollArea">
+    <widget class="SmoothScrollArea" name="latest_scroll">
      <property name="styleSheet">
       <string notr="true">background: transparent; border: none</string>
      </property>
@@ -67,14 +67,21 @@
          <item>
           <widget class="TitleLabel" name="TitleLabel">
            <property name="text">
-            <string>最新上架</string>
+            <string>分类</string>
            </property>
           </widget>
          </item>
         </layout>
        </item>
        <item>
-        <layout class="QGridLayout" name="rec_plugin_grid" rowstretch="0" columnstretch="0"/>
+        <widget class="SubtitleLabel" name="SubtitleLabel_3">
+         <property name="text">
+          <string>所有插件</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QGridLayout" name="all_plugin_grid" rowstretch="0" columnstretch="0"/>
        </item>
        <item>
         <widget class="BodyLabel" name="BodyLabel">
@@ -147,6 +154,11 @@
   </customwidget>
   <customwidget>
    <class>BodyLabel</class>
+   <extends>QLabel</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>SubtitleLabel</class>
    <extends>QLabel</extends>
    <header>qfluentwidgets</header>
   </customwidget>
