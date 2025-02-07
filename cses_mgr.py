@@ -189,9 +189,9 @@ class CSES_Converter:
             logger.error(f'File {base_directory}/config/data/subject.json not found')
             return False
 
-        for subject in cw_subjects['subject_list']:
+        for subject_ in cw_subjects['subject_list']:
             self.generator.add_subject(
-                name=subject, simplified_name=list_.get_subject_abbreviation(subject),
+                name=subject_, simplified_name=list_.get_subject_abbreviation(subject_),
                 teacher=None, room=None
             )
 

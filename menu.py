@@ -25,7 +25,7 @@ from qfluentwidgets import (
 )
 
 import conf
-import list
+import list as list_
 import tip_toast
 import utils
 import weather_db
@@ -414,6 +414,56 @@ class PluginCard(CardWidget):  # 插件卡片
                 logger.error(f'删除插件“{self.title}”时发生错误：{e}')
 
 
+class TextFieldMessageBox(MessageBoxBase):
+    """ Custom message box """
+    def __init__(
+            self, parent=None, title='标题', text='请输入内容', default_text='', enable_check=False):
+        super().__init__(parent)
+        self.fail_color = (QColor('#c42b1c'), QColor('#ff99a4'))
+        self.success_color = (QColor('#0f7b0f'), QColor('#6ccb5f'))
+        self.check_list = enable_check
+
+        self.titleLabel = SubtitleLabel()
+        self.titleLabel.setText(title)
+        self.subtitleLabel = BodyLabel()
+        self.subtitleLabel.setText(text)
+        self.textField = LineEdit()
+        self.tipsLabel = CaptionLabel()
+        self.tipsLabel.setText('')
+        self.yesButton.setText('确定')
+
+        self.fieldLayout = QVBoxLayout()
+        self.textField.setPlaceholderText(default_text)
+        self.textField.setClearButtonEnabled(True)
+        if enable_check:
+            self.textField.textChanged.connect(self.check_text)
+            self.yesButton.setEnabled(False)
+
+        # 将组件添加到布局中
+        self.viewLayout.addWidget(self.titleLabel)
+        self.viewLayout.addWidget(self.subtitleLabel)
+        self.viewLayout.addLayout(self.fieldLayout)
+        self.fieldLayout.addWidget(self.textField)
+        self.fieldLayout.addWidget(self.tipsLabel)
+
+        # 设置对话框的最小宽度
+        self.widget.setMinimumWidth(350)
+
+    def check_text(self):
+        self.tipsLabel.setTextColor(self.fail_color[0], self.fail_color[1])
+        self.yesButton.setEnabled(False)
+        if self.textField.text() == '':
+            self.tipsLabel.setText('不能为空值啊 ( •̀ ω •́ )✧')
+            return
+        if f'{self.textField.text()}.json' in self.check_list:
+            self.tipsLabel.setText('不可以和之前的课程名重复哦 o(TヘTo)')
+            return
+
+        self.yesButton.setEnabled(True)
+        self.tipsLabel.setTextColor(self.success_color[0], self.success_color[1])
+        self.tipsLabel.setText('很好！就这样！ヾ(≧▽≦*)o')
+
+
 class SettingsMenu(FluentWindow):
     closed = pyqtSignal()
 
@@ -594,9 +644,9 @@ class SettingsMenu(FluentWindow):
 
         widgets_list_widgets = self.findChild(ListWidget, 'widgets_list')
         widgets_list = []
-        for key in list.get_widget_config():
+        for key in list_.get_widget_config():
             try:
-                widgets_list.append(list.widget_name[key])
+                widgets_list.append(list_.widget_name[key])
             except KeyError:
                 logger.warning(f'未知的组件：{key}')
             except Exception as e:
@@ -628,19 +678,19 @@ class SettingsMenu(FluentWindow):
         open_theme_folder.clicked.connect(lambda: open_dir(os.path.join(os.getcwd(), 'ui')))
 
         select_theme_combo = self.findChild(ComboBox, 'combo_theme_select')  # 主题选择
-        select_theme_combo.addItems(list.theme_names)
-        print(list.theme_folder, list.theme_names, get_theme_name())
-        select_theme_combo.setCurrentIndex(list.theme_folder.index(get_theme_name()))
+        select_theme_combo.addItems(list_.theme_names)
+        print(list_.theme_folder, list_.theme_names, get_theme_name())
+        select_theme_combo.setCurrentIndex(list_.theme_folder.index(get_theme_name()))
         select_theme_combo.currentIndexChanged.connect(
-            lambda: conf.write_conf('General', 'theme', list.get_theme_ui_path(select_theme_combo.currentText())))
+            lambda: conf.write_conf('General', 'theme', list_.get_theme_ui_path(select_theme_combo.currentText())))
 
         color_mode_combo = self.findChild(ComboBox, 'combo_color_mode')  # 颜色模式选择
-        color_mode_combo.addItems(list.color_mode)
+        color_mode_combo.addItems(list_.color_mode)
         color_mode_combo.setCurrentIndex(int(conf.read_conf('General', 'color_mode')))
         color_mode_combo.currentIndexChanged.connect(self.ct_change_color_mode)
 
         widgets_combo = self.findChild(ComboBox, 'widgets_combo')  # 组件选择
-        widgets_combo.addItems(list.get_widget_names())
+        widgets_combo.addItems(list_.get_widget_names())
 
         search_city_button = self.findChild(PushButton, 'select_city')  # 查找城市
         search_city_button.clicked.connect(self.show_search_city)
@@ -693,7 +743,7 @@ class SettingsMenu(FluentWindow):
         )  # 自动检查更新
 
         self.version_channel = self.findChild(ComboBox, 'version_channel')
-        self.version_channel.addItems(list.version_channel)
+        self.version_channel.addItems(list_.version_channel)
         self.version_channel.setCurrentIndex(int(conf.read_conf("Other", "version_channel")))
         self.version_channel.currentIndexChanged.connect(
             lambda: conf.write_conf("Other", "version_channel", self.version_channel.currentIndex())
@@ -728,8 +778,8 @@ class SettingsMenu(FluentWindow):
 
         self.conf_combo = self.adInterface.findChild(ComboBox, 'conf_combo')
         self.conf_combo.clear()
-        self.conf_combo.addItems(list.get_schedule_config())
-        self.conf_combo.setCurrentIndex(list.get_schedule_config().index(conf.read_conf('General', 'schedule')))
+        self.conf_combo.addItems(list_.get_schedule_config())
+        self.conf_combo.setCurrentIndex(list_.get_schedule_config().index(conf.read_conf('General', 'schedule')))
         self.conf_combo.currentIndexChanged.connect(self.ad_change_file)  # 切换配置文件
 
         conf_name = self.adInterface.findChild(LineEdit, 'conf_name')
@@ -737,7 +787,7 @@ class SettingsMenu(FluentWindow):
         conf_name.textEdited.connect(self.ad_change_file_name)
 
         window_status_combo = self.adInterface.findChild(ComboBox, 'window_status_combo')
-        window_status_combo.addItems(list.window_status)
+        window_status_combo.addItems(list_.window_status)
         window_status_combo.setCurrentIndex(int(conf.read_conf('General', 'pin_on_top')))
         window_status_combo.currentIndexChanged.connect(
             lambda: conf.write_conf('General', 'pin_on_top', str(window_status_combo.currentIndex()))
@@ -751,7 +801,7 @@ class SettingsMenu(FluentWindow):
             switch_startup.setEnabled(False)
 
         hide_mode_combo = self.adInterface.findChild(ComboBox, 'hide_mode_combo')
-        hide_mode_combo.addItems(list.hide_mode if os.name == 'nt' else list.non_nt_hide_mode)
+        hide_mode_combo.addItems(list_.hide_mode if os.name == 'nt' else list_.non_nt_hide_mode)
         hide_mode_combo.setCurrentIndex(int(conf.read_conf('General', 'hide')))
         hide_mode_combo.currentIndexChanged.connect(
             lambda: conf.write_conf('General', 'hide', str(hide_mode_combo.currentIndex()))
@@ -839,10 +889,10 @@ class SettingsMenu(FluentWindow):
         se_clear_button.clicked.connect(self.se_delete_item)
 
         se_class_kind_combo = self.findChild(ComboBox, 'class_combo')  # 课程类型
-        se_class_kind_combo.addItems(list.class_kind)
+        se_class_kind_combo.addItems(list_.class_kind)
 
         se_week_combo = self.findChild(ComboBox, 'week_combo')  # 星期
-        se_week_combo.addItems(list.week)
+        se_week_combo.addItems(list_.week)
         se_week_combo.currentIndexChanged.connect(self.se_upload_list)
 
         se_schedule_list = self.findChild(ListWidget, 'schedule_list')
@@ -854,7 +904,7 @@ class SettingsMenu(FluentWindow):
         se_save_button.clicked.connect(self.se_save_item)
 
         se_week_type_combo = self.findChild(ComboBox, 'week_type_combo')
-        se_week_type_combo.addItems(list.week_type)
+        se_week_type_combo.addItems(list_.week_type)
         se_week_type_combo.currentIndexChanged.connect(self.se_upload_list)
 
         se_copy_schedule_button = self.findChild(PushButton, 'copy_schedule')
@@ -862,7 +912,7 @@ class SettingsMenu(FluentWindow):
         se_copy_schedule_button.clicked.connect(self.se_copy_odd_schedule)
 
         quick_set_schedule = self.findChild(ListWidget, 'subject_list')
-        quick_set_schedule.addItems(list.class_kind[1:])
+        quick_set_schedule.addItems(list_.class_kind[1:])
         quick_set_schedule.itemClicked.connect(self.se_quick_set_schedule)
 
         quick_select_week_button = self.findChild(PushButton, 'quick_select_week')
@@ -886,10 +936,10 @@ class SettingsMenu(FluentWindow):
         te_add_part_button.clicked.connect(self.te_add_part)
 
         te_part_type_combo = self.findChild(ComboBox, 'part_type')  # 节次类型
-        te_part_type_combo.addItems(list.part_type)
+        te_part_type_combo.addItems(list_.part_type)
 
         te_name_edit = self.findChild(EditableComboBox, 'name_part_combo')  # 名称
-        te_name_edit.addItems(list.time)
+        te_name_edit.addItems(list_.time)
 
         te_delete_part_button = self.findChild(ToolButton, 'delete_part_button')  # 删除节点
         te_delete_part_button.setIcon(fIcon.DELETE)
@@ -913,13 +963,13 @@ class SettingsMenu(FluentWindow):
         te_delete_button.clicked.connect(self.te_upload_item)
 
         te_class_activity_combo = self.findChild(ComboBox, 'class_activity')  # 活动类型
-        te_class_activity_combo.addItems(list.class_activity)
+        te_class_activity_combo.addItems(list_.class_activity)
         te_class_activity_combo.setToolTip('选择活动类型（“课程”或“课间”）')
         te_class_activity_combo.currentIndexChanged.connect(self.te_sync_time)
 
         te_select_timeline = self.findChild(ComboBox, 'select_timeline')  # 选择时间线
         te_select_timeline.addItem('默认')
-        te_select_timeline.addItems(list.week)
+        te_select_timeline.addItems(list_.week)
         te_select_timeline.setToolTip('选择一周内的某一天的时间线')
         te_select_timeline.currentIndexChanged.connect(self.te_upload_list)
 
@@ -944,12 +994,12 @@ class SettingsMenu(FluentWindow):
         schedule_view.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)  # 使列表自动等宽
 
         sp_week_type_combo = self.findChild(ComboBox, 'pre_week_type_combo')
-        sp_week_type_combo.addItems(list.week_type)
+        sp_week_type_combo.addItems(list_.week_type)
         sp_week_type_combo.currentIndexChanged.connect(self.sp_fill_grid_row)
 
         # 设置表格
         schedule_view.setColumnCount(7)
-        schedule_view.setHorizontalHeaderLabels(list.week[0:7])
+        schedule_view.setHorizontalHeaderLabels(list_.week[0:7])
         schedule_view.setBorderVisible(True)
         schedule_view.verticalHeader().hide()
         schedule_view.setBorderRadius(8)
@@ -1076,7 +1126,7 @@ class SettingsMenu(FluentWindow):
     def cf_export_schedule(self):  # 导出课程表
         file_path, _ = QFileDialog.getSaveFileName(self, "保存文件", filename, "Json 配置文件 (*.json)")
         if file_path:
-            if list.export_schedule(file_path, filename):
+            if list_.export_schedule(file_path, filename):
                 alert = MessageBox('您已成功导出课程表配置文件',
                                    f'文件将导出于{file_path}', self)
                 alert.cancelButton.hide()
@@ -1142,7 +1192,7 @@ class SettingsMenu(FluentWindow):
                 with open(save_path, 'w', encoding='utf-8') as f:
                     json.dump(cw_data, f, ensure_ascii=False, indent=4)
                     self.conf_combo.clear()
-                    self.conf_combo.addItems(list.get_schedule_config())
+                    self.conf_combo.addItems(list_.get_schedule_config())
                     alert = MessageBox('您已成功导入 CSES 课程表配置文件',
                                        '请在“高级选项”中手动切换您的配置文件。', self)
                     alert.cancelButton.hide()  # 隐藏取消按钮，必须重启
@@ -1185,9 +1235,9 @@ class SettingsMenu(FluentWindow):
         file_path, _ = QFileDialog.getOpenFileName(self, "选择文件", "", "Json 配置文件 (*.json)")
         if file_path:
             file_name = file_path.split("/")[-1]
-            if list.import_schedule(file_path, file_name):
+            if list_.import_schedule(file_path, file_name):
                 self.conf_combo.clear()
-                self.conf_combo.addItems(list.get_schedule_config())
+                self.conf_combo.addItems(list_.get_schedule_config())
                 alert = MessageBox('您已成功导入课程表配置文件',
                                    '请在“高级选项”中手动切换您的配置文件。', self)
                 alert.cancelButton.hide()  # 隐藏取消按钮，必须重启
@@ -1207,7 +1257,7 @@ class SettingsMenu(FluentWindow):
         widgets_list = self.findChild(ListWidget, 'widgets_list')
         widget_config = {'widgets': []}
         for i in range(widgets_list.count()):
-            widget_config['widgets'].append(list.widget_conf[widgets_list.item(i).text()])
+            widget_config['widgets'].append(list_.widget_conf[widgets_list.item(i).text()])
         if conf.save_widget_conf_to_json(widget_config):
             self.ct_update_preview()
             Flyout.create(
@@ -1224,7 +1274,7 @@ class SettingsMenu(FluentWindow):
         try:
             widgets_preview = self.findChild(QHBoxLayout, 'widgets_preview')
             # 获取配置列表
-            widget_config = list.get_widget_config()
+            widget_config = list_.get_widget_config()
             while widgets_preview.count() > 0:  # 清空预览界面
                 item = widgets_preview.itemAt(0)
                 if item:
@@ -1275,8 +1325,8 @@ class SettingsMenu(FluentWindow):
             filename = new_name + '.json'
             conf_combo = self.findChild(ComboBox, 'conf_combo')
             conf_combo.clear()
-            conf_combo.addItems(list.get_schedule_config())
-            conf_combo.setCurrentIndex(list.get_schedule_config().index(f'{new_name}.json'))
+            conf_combo.addItems(list_.get_schedule_config())
+            conf_combo.setCurrentIndex(list_.get_schedule_config().index(f'{new_name}.json'))
         except Exception as e:
             print(f'修改课程文件名称时发生错误：{e}')
             logger.error(f'修改课程文件名称时发生错误：{e}')
@@ -1286,12 +1336,21 @@ class SettingsMenu(FluentWindow):
             conf_name = self.findChild(LineEdit, 'conf_name')
             # 添加新课表
             if self.conf_combo.currentText() == '添加新课表':
-                new_name = f'新课表 - {list.return_default_schedule_number() + 1}'
-                list.create_new_profile(f'{new_name}.json')
+                self.conf_combo.setCurrentIndex(-1)  # 取消
+                # new_name = f'新课表 - {list.return_default_schedule_number() + 1}'
+                n2_dialog = TextFieldMessageBox(
+                    self, '请输入新课表名称',
+                    '请命名您的课程表计划：', '新课表 - 1', list_.get_schedule_config()
+                )
+                if not n2_dialog.exec():
+                    return
+
+                new_name = n2_dialog.textField.text()
+                list_.create_new_profile(f'{new_name}.json')
                 self.conf_combo.clear()
-                self.conf_combo.addItems(list.get_schedule_config())
+                self.conf_combo.addItems(list_.get_schedule_config())
                 conf.write_conf('General', 'schedule', f'{new_name}.json')
-                self.conf_combo.setCurrentIndex(list.get_schedule_config().index(conf.read_conf('General', 'schedule')))
+                self.conf_combo.setCurrentIndex(list_.get_schedule_config().index(conf.read_conf('General', 'schedule')))
                 conf_name.setText(new_name)
 
             elif self.conf_combo.currentText().endswith('.json'):
@@ -1365,7 +1424,7 @@ class SettingsMenu(FluentWindow):
             except IndexError:
                 part_type = 'part'
 
-            part_type = list.part_type[part_type == 'break']
+            part_type = list_.part_type[part_type == 'break']
             text = f'{prefix} - {period} - {part_type}'
             part_list.addItem(text)
 
