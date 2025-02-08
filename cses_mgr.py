@@ -158,6 +158,7 @@ class CSES_Converter:
                             class_counter += 1
 
                             if subject == '未添加':  # 跳过未添加的科目
+                                time_counter += int(time)  # 时间叠加
                                 continue
 
                             class_dict['subject'] = subject
@@ -171,12 +172,25 @@ class CSES_Converter:
                     class_counter_dict[part][day] = class_counter  # 记录一个节点当天的课程数
 
                     print(timelines_part)
+                    if not timelines_part[str(day)]:  # 跳过空时间线
+                        continue
+
                     self.generator.add_schedule(
                         name=f'{name}_{CSES_WEEKS_TEXTS[int(day)]}',
                         enable_day=CSES_WEEKS[int(day)],
                         weeks=type_,
                         classes=[timelines_part[str(day)][i] for i in range(len(timelines_part[str(day)]))]
                     )
+
+        def check_subjects(schedule):  # 检查课表是否有未正式设定的科目
+            unset_subjects = []
+            for _, classes in schedule.items():
+                for class_ in classes:
+                    if class_ == '未添加':
+                        continue
+                    if class_ not in cw_subjects['subject_list']:
+                        unset_subjects.append(class_)
+            return unset_subjects
 
         """
         转换/CONVERT
@@ -217,6 +231,16 @@ class CSES_Converter:
 
         convert(schedules_odd)
         convert(schedule_even, 'even')
+        us_set_odd = set(check_subjects(schedules_odd))
+        us_set_even = set(check_subjects(schedule_even))
+        us_union = us_set_odd.union(us_set_even)
+
+        for subject_ in list(us_union):
+            self.generator.add_subject(
+                name=subject_, simplified_name=list_.get_subject_abbreviation(subject_),
+                teacher=None, room=None
+            )
+
         try:
             self.generator.save_to_file(self.path)
             return True

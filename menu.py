@@ -977,6 +977,11 @@ class SettingsMenu(FluentWindow):
         te_timeline_list.addItems(timeline_dict['default'])
         te_timeline_list.itemChanged.connect(self.te_upload_item)
 
+        te_part_time = self.teInterface.findChild(TimeEdit, 'part_time')  # 节次时间
+        te_part_time.timeChanged.connect(
+            lambda: self.show_tip_flyout('重要提示', '请使用 24 小时制', te_part_time)
+        )
+
         te_save_button = self.findChild(PrimaryPushButton, 'save')  # 保存
         te_save_button.clicked.connect(self.te_save_item)
 
@@ -1465,6 +1470,18 @@ class SettingsMenu(FluentWindow):
             self.te_detect_item()
         except Exception as e:
             print(f'加载时间线时发生错误：{e}')
+
+    def show_tip_flyout(self, title, content, target):
+        Flyout.create(
+            icon=InfoBarIcon.WARNING,
+            title=title,
+            content=content,
+            target=target,
+            parent=self,
+            isClosable=True,
+            aniType=FlyoutAnimationType.PULL_UP
+        )
+
 
     # 上传课表到列表组件
     def se_upload_list(self):  # 更新课表到列表组件
