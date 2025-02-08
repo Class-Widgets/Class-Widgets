@@ -242,7 +242,9 @@ def get_custom_countdown():  # 获取自定义倒计时
             # )
 
 
-def get_week_type():  # 获取单双周
+def get_week_type(): 
+    if (temp_schedule:=read_conf('Temp', 'set_schedule')) != '': # 获取单双周
+        return int(temp_schedule)
     if read_conf('Date', 'start_date') != '':
         start_date = read_conf('Date', 'start_date')
         start_date = datetime.strptime(start_date, '%Y-%m-%d')

@@ -78,6 +78,11 @@ class ExactMenu(FluentWindow):
         select_temp_week.setCurrentIndex(current_week)
         select_temp_week.currentIndexChanged.connect(self.refresh_schedule_list)  # 日期选择变化
 
+        select_temp_schedule = self.findChild(ComboBox, 'select_temp_schedule')  # 选择替换课表
+        select_temp_schedule.addItems(list.week_type)
+        select_temp_schedule.setCurrentIndex(conf.get_week_type())
+        select_temp_schedule.currentIndexChanged.connect(self.refresh_schedule_list) # 日期选择变化
+
         tmp_schedule_list = self.findChild(ListWidget, 'schedule_list')  # 换课列表
         tmp_schedule_list.addItems(self.load_schedule())
         tmp_schedule_list.itemChanged.connect(self.upload_item)
@@ -106,6 +111,7 @@ class ExactMenu(FluentWindow):
     def save_temp_conf(self):
         try:
             temp_week = self.findChild(ComboBox, 'select_temp_week')
+            temp_schedule_set = self.findChild(ComboBox, 'select_temp_schedule')
             if temp_schedule != {'schedule': {}, 'schedule_even': {}}:
                 if conf.read_conf('Temp', 'temp_schedule') == '':  # 备份检测
                     copy(f'{base_directory}/config/schedule/{filename}', f'{base_directory}/config/schedule/backup.json')  # 备份课表配置
@@ -113,6 +119,7 @@ class ExactMenu(FluentWindow):
                     conf.write_conf('Temp', 'temp_schedule', filename)
                 conf.save_data_to_json(temp_schedule, filename)
             conf.write_conf('Temp', 'set_week', str(temp_week.currentIndex()))
+            conf.write_conf('Temp', 'set_schedule',str(temp_schedule_set.currentIndex()))
             Flyout.create(
                 icon=InfoBarIcon.SUCCESS,
                 title='保存成功',
@@ -136,16 +143,18 @@ class ExactMenu(FluentWindow):
     def refresh_schedule_list(self):
         global current_week
         current_week = self.findChild(ComboBox, 'select_temp_week').currentIndex()
+        current_schedule = self.findChild(ComboBox, 'select_temp_schedule').currentIndex()
+        logger.debug(f'current_week: {current_week}, current_schedule: {current_schedule}')
         tmp_schedule_list = self.findChild(ListWidget, 'schedule_list')  # 换课列表
         tmp_schedule_list.clear()
         tmp_schedule_list.clearSelection()
         if conf.read_conf('Temp', 'temp_schedule') == '':
-            if conf.get_week_type():
+            if current_schedule:
                 tmp_schedule_list.addItems(conf.load_from_json(filename)['schedule_even'][str(current_week)])
             else:
                 tmp_schedule_list.addItems(conf.load_from_json(filename)['schedule'][str(current_week)])
         else:
-            if conf.get_week_type():
+            if current_schedule:
                 tmp_schedule_list.addItems(conf.load_from_json('backup.json')['schedule_even'][str(current_week)])
             else:
                 tmp_schedule_list.addItems(conf.load_from_json('backup.json')['schedule'][str(current_week)])
