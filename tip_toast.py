@@ -383,7 +383,7 @@ def main(state=1, lesson_name='', title='通知示例', subtitle='副标题',
 def detect_enable_toast(state=0):
     if conf.read_conf('Toast', 'attend_class') != '1' and state == 1:
         return True
-    if conf.read_conf('Toast', 'finish_class') != '1' and state == 0:
+    if conf.read_conf('Toast', 'finish_class') != '1' and state == 0 or state == 2:
         return True
     if conf.read_conf('Toast', 'prepare_class') != '1' and state == 3:
         return True
@@ -410,9 +410,9 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     main(
         state=4,  # 自定义通知
-        title='测试通知喵',
-        subtitle='By Rin.',
-        content='欢迎使用 ClassWidgets',
+        title='天气预报',
+        subtitle='',
+        content='1°~-3° | 3°~-3° | 9°~1°',
         icon='img/favicon.ico',
         duration=2000
     )

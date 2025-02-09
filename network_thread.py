@@ -4,6 +4,7 @@ import shutil
 import time
 import zipfile  # 解压插件zip
 from datetime import datetime
+import weather_db as db
 
 import requests
 from PyQt5.QtCore import QThread, pyqtSignal
@@ -363,3 +364,55 @@ def check_version(version):  # 检查更新
 
     if new_version != conf.read_conf("Other", "version"):
         utils.tray_icon.push_update_notification(f"新版本速递：{new_version}\n请在“设置”中了解更多。")
+
+
+class weatherReportThread(QThread):  # 获取最新天气信息
+    weather_signal = pyqtSignal(dict)
+
+    def __init__(self):
+        super().__init__()
+
+    def run(self):
+        try:
+            weather_data = self.get_weather_data()
+            self.weather_signal.emit(weather_data)
+        except Exception as e:
+            logger.error(f"触发天气信息失败: {e}")
+
+
+    def get_weather_data(self):
+        location_key = conf.read_conf('Weather', 'city')
+        days = 1
+        key = conf.read_conf('Weather', 'api_key')
+        url = db.get_weather_url().format(location_key=location_key, days=days, key=key)
+        alert_url = db.get_weather_alert_url()
+        try:
+            data_group = {'now': {}, 'alert': {}}
+            response_now = requests.get(url, proxies=proxies)  # 禁用代理
+            if alert_url == 'NotSupported':
+                logger.warning(f"当前API不支持天气预警信息")
+            elif alert_url is None:
+                logger.warning(f"无单独天气预警信息API")
+            else:
+                alert_url = alert_url.format(location_key=location_key, key=key)
+                response_alert = requests.get(alert_url, proxies=proxies)
+
+                if response_alert.status_code == 200:
+                    data_alert = response_alert.json()
+                    data_group['alert'] = data_alert
+                else:
+                    logger.error(f"获取天气预警信息失败：{response_alert.status_code}")
+
+            if response_now.status_code == 200:
+                data = response_now.json()
+                data_group['now'] = data
+                return data_group
+            else:
+                logger.error(f"获取天气信息失败：{response_now.status_code}")
+                return {'error': {'info': {'value': '错误', 'unit': response_now.status_code}}}
+        except requests.exceptions.RequestException as e:  # 请求失败
+            logger.error(f"获取天气信息失败：{e}")
+            return {'error': {'info': {'value': '错误', 'unit': ''}}}
+        except Exception as e:
+            logger.error(f"获取天气信息失败：{e}")
+            return {'error': {'info': {'value': '错误', 'unit': ''}}}

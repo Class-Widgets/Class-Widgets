@@ -130,6 +130,15 @@ def get_weather_url():
         return api_config['weather_api']['xiaomi_weather']
 
 
+def get_weather_alert_url():
+    if not api_config['weather_api_parameters'][conf.read_conf('Weather', 'api')]['alerts']:
+        return 'NotSupported'
+    if conf.read_conf('Weather', 'api') in api_config['weather_api_list']:
+        return api_config['weather_api_parameters'][conf.read_conf('Weather', 'api')]['alerts']['url']
+    else:
+        return api_config['weather_api_parameters']['xiaomi_weather']['alerts']['url']
+
+
 def get_weather_code_by_description(value):
     weather_status = json.load(
         open(f"{base_directory}/config/data/{conf.read_conf('Weather', 'api')}_status.json", encoding="utf-8"))
@@ -137,6 +146,16 @@ def get_weather_code_by_description(value):
         if str(weather['wea']) == value:
             return str(weather['code'])
     return '99'
+
+
+def get_alert_image(alert_type):
+    alerts_list = api_config['weather_api_parameters'][conf.read_conf('Weather', 'api')]['alerts']['types']
+    return f'{base_directory}/img/weather/alerts/{alerts_list[alert_type]}'
+
+def is_supported_alert():
+    if not api_config['weather_api_parameters'][conf.read_conf('Weather', 'api')]['alerts']:
+        return False
+    return True
 
 
 def get_weather_data(key='temp', weather_data=None):  # 获取天气数据
@@ -149,7 +168,10 @@ def get_weather_data(key='temp', weather_data=None):  # 获取天气数据
     '''
     # 各个天气api的可访问值
     api_parameters = api_config['weather_api_parameters'][conf.read_conf('Weather', 'api')]
-    parameter = api_parameters[key].split('.')
+    if key == 'alert':
+        parameter = api_parameters['alerts']['type'].split('.')
+    else:
+        parameter = api_parameters[key].split('.')
     # 遍历获取值
     value = weather_data
     if conf.read_conf('Weather', 'api') == 'amap_weather':
@@ -158,13 +180,19 @@ def get_weather_data(key='temp', weather_data=None):  # 获取天气数据
         value = str(weather_data['result']['realtime'][0]['infos'][api_parameters[key]])
     else:
         for parameter in parameter:
+            if not value:
+                print(f'{key}为空')
+                return None
+            if parameter == '0':
+                value = value[0]
+                continue
             if parameter in value:
                 value = value[parameter]
             else:
                 logger.error(f'获取天气参数失败，{parameter}不存在于{conf.read_conf("Weather", "api")}中')
                 return '错误'
     if key == 'temp':
-        value += '°C'
+        value += '°'
     elif key == 'icon':  # 修复此代码影响其他天气源的问题
         if api_parameters['return_desc']:  # 如果此api返回的是天气描述而不是代码
             value = get_weather_code_by_description(value)

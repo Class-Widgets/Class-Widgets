@@ -24,7 +24,7 @@ from loguru import logger
 from packaging.version import Version
 from qfluentwidgets import Theme, setTheme, setThemeColor, SystemTrayMenu, Action, FluentIcon as fIcon, isDarkTheme, \
     Dialog, ProgressRing, PlainTextEdit, ImageLabel, PushButton, InfoBarIcon, Flyout, FlyoutAnimationType, CheckBox, \
-    PrimaryPushButton, SystemThemeListener
+    PrimaryPushButton, SystemThemeListener, IconWidget
 
 import conf
 import list
@@ -34,7 +34,7 @@ import weather_db as db
 from conf import base_directory
 from exact_menu import ExactMenu, open_settings
 from menu import open_plaza
-from network_thread import check_update
+from network_thread import check_update, weatherReportThread
 from plugin import PluginLoader, p_loader
 from utils import restart, share
 
@@ -189,6 +189,9 @@ def get_start_time():
 
 
 def get_part():
+    if not parts_start_time:
+        return None
+
     def return_data():
         c_time = parts_start_time[i] + dt.timedelta(seconds=time_offset)
         return c_time, int(order[i])  # 返回开始时间、Part序号
@@ -551,8 +554,8 @@ class PluginManager:  # 插件管理器
 
             "Current_Lesson": current_lesson_name,  # 当前课程名
             "State": current_state,  # 0：课间 1：上课（上下课状态）
-            # "Current_Part": get_part(),  # 返回开始时间、Part序号
-            # "Next_Lessons_text": get_next_lessons_text(),  # 下节课程
+            "Current_Part": get_part(),  # 返回开始时间、Part序号
+            "Next_Lessons_text": get_next_lessons_text(),  # 下节课程
 
             "Weather": weather_name,  # 天气情况
             "Temp": temperature,  # 温度
@@ -610,40 +613,6 @@ class PluginMethod:  # 插件方法
             return config.get(section, option)
         except Exception as e:
             logger.error(f"插件读取配置文件失败：{e}")
-
-
-class weatherReportThread(QThread):  # 获取最新天气信息
-    weather_signal = pyqtSignal(dict)
-
-    def __init__(self):
-        super().__init__()
-
-    def run(self):
-        try:
-            weather_data = self.get_weather_data()
-            self.weather_signal.emit(weather_data)
-        except Exception as e:
-            logger.error(f"触发天气信息失败: {e}")
-
-    def get_weather_data(self):
-        location_key = conf.read_conf('Weather', 'city')
-        days = 1
-        key = conf.read_conf('Weather', 'api_key')
-        url = db.get_weather_url().format(location_key=location_key, days=days, key=key)
-        try:
-            response = requests.get(url, proxies={'http': None, 'https': None})  # 禁用代理
-            if response.status_code == 200:
-                data = response.json()
-                return data
-            else:
-                logger.error(f"获取天气信息失败：{response.status_code}")
-                return {'error': {'info': {'value': '错误', 'unit': response.status_code}}}
-        except requests.exceptions.RequestException as e:  # 请求失败
-            logger.error(f"获取天气信息失败：{e}")
-            return {'error': {'info': {'value': '错误', 'unit': ''}}}
-        except Exception as e:
-            logger.error(f"获取天气信息失败：{e}")
-            return {'error': {'info': {'value': '错误', 'unit': ''}}}
 
 
 class WidgetsManager:
@@ -1118,11 +1087,6 @@ class DesktopWidget(QWidget):  # 主要小组件
         self.init_font()
 
         if enable_tray:
-            # 创建主题监听器
-            self.themeListener = SystemThemeListener(self)
-            # 启动监听器
-            self.themeListener.start()
-
             self.init_tray_menu()  # 初始化托盘菜单
 
         # 样式
@@ -1165,8 +1129,13 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.custom_countdown = self.findChild(QLabel, 'custom_countdown')
 
         elif path == 'widget-weather.ui':  # 天气组件
+            contentLayout = self.findChild(QHBoxLayout, 'horizontalLayout_2')
+            contentLayout.setSpacing(16)
             self.temperature = self.findChild(QLabel, 'temperature')
             self.weather_icon = self.findChild(QLabel, 'weather_icon')
+            self.alert_icon = IconWidget()
+            self.alert_icon.setFixedSize(24, 24)
+            contentLayout.insertWidget(0, self.alert_icon)
 
             self.get_weather_data()
             self.weather_timer = QTimer(self)
@@ -1431,12 +1400,25 @@ class DesktopWidget(QWidget):  # 主要小组件
         global weather_name, temperature
         if type(weather_data) is dict and hasattr(self, 'weather_icon'):
             logger.success('已获取天气数据')
+            alert_data = weather_data.get('alert')
+            weather_data = weather_data.get('now')
+
             weather_name = db.get_weather_by_code(db.get_weather_data('icon', weather_data))
             current_city = self.findChild(QLabel, 'current_city')
             try:  # 天气组件
                 self.weather_icon.setPixmap(
                     QPixmap(db.get_weather_icon_by_code(db.get_weather_data('icon', weather_data)))
                 )
+                self.alert_icon.hide()
+                if db.is_supported_alert():
+                    print(alert_data if alert_data else weather_data)
+                    alert_type = db.get_weather_data('alert', alert_data if alert_data else weather_data)
+                    if alert_type:
+                        self.alert_icon.setIcon(
+                            db.get_alert_image(alert_type)
+                        )
+                        self.alert_icon.show()
+
                 self.temperature.setText(f"{db.get_weather_data('temp', weather_data)}")
                 current_city.setText(f"{db.search_by_num(conf.read_conf('Weather', 'city'))} · "
                                      f"{weather_name}")
