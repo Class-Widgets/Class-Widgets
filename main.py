@@ -80,6 +80,7 @@ first_start = True
 error_cooldown = dt.timedelta(seconds=2)  # 冷却时间(s)
 ignore_errors = []
 last_error_time = dt.datetime.now() - error_cooldown  # 上一次错误
+weather_data_temp = None
 
 ex_menu = None
 
@@ -559,11 +560,13 @@ class PluginManager:  # 插件管理器
 
             "Weather": weather_name,  # 天气情况
             "Temp": temperature,  # 温度
+            "Weather_Data": weather_data_temp,  # 天气数据
+            "Weather_API": conf.read_conf('Weather', 'api'),  # 天气API
             "Notification": notification.notification_contents,  # 检测到的通知内容
 
             "PLUGIN_PATH": f'{conf.PLUGINS_DIR}/{path}',  # 传递插件目录
             "Base_Directory": base_directory,  # 资源目录
-            "Widgets_Mgr": mgr,  # 组件管理器
+            "Widgets_Mgr": mgr,  # 组件管理器实例
         }
         return self.cw_contexts
 
