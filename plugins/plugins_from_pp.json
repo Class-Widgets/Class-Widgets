@@ -1,9 +1,5 @@
 {
     "plugins": [
-        "cw-range-name-plugin",
-        "cw-example-plugin",
-        "cw-ship-plugin",
-        "cw-yiyan-plugin",
-        "cw-student-on-duty-plugin"
+
     ]
 }
