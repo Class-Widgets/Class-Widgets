@@ -1,10 +1,8 @@
 import json
 import os
 import shutil
-import time
 import zipfile  # 解压插件zip
 from datetime import datetime
-import weather_db as db
 
 import requests
 from PyQt5.QtCore import QThread, pyqtSignal
@@ -12,6 +10,7 @@ from loguru import logger
 
 import conf
 import utils
+import weather_db as db
 from conf import base_directory
 
 headers = {"User-Agent": "Mozilla/5.0", "Cache-Control": "no-cache"}  # 设置请求头

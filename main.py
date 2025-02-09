@@ -1,6 +1,5 @@
 import ctypes
 import datetime as dt
-import importlib
 import json
 import os
 import platform
@@ -8,13 +7,10 @@ import re
 import subprocess
 import sys
 import traceback
-from pathlib import Path
 from shutil import copy
 
-import requests
 from PyQt5 import uic
-from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QRect, QEasingCurve, QThread, pyqtSignal, \
-    QSize, QPoint, QUrl
+from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QRect, QEasingCurve, QSize, QPoint, QUrl
 from PyQt5.QtGui import QColor, QIcon, QPixmap, QPainter, QDesktopServices
 from PyQt5.QtGui import QFontDatabase
 from PyQt5.QtSvg import QSvgRenderer
@@ -24,7 +20,7 @@ from loguru import logger
 from packaging.version import Version
 from qfluentwidgets import Theme, setTheme, setThemeColor, SystemTrayMenu, Action, FluentIcon as fIcon, isDarkTheme, \
     Dialog, ProgressRing, PlainTextEdit, ImageLabel, PushButton, InfoBarIcon, Flyout, FlyoutAnimationType, CheckBox, \
-    PrimaryPushButton, SystemThemeListener, IconWidget
+    PrimaryPushButton, IconWidget
 
 import conf
 import list
@@ -35,7 +31,7 @@ from conf import base_directory
 from exact_menu import ExactMenu, open_settings
 from menu import open_plaza
 from network_thread import check_update, weatherReportThread
-from plugin import PluginLoader, p_loader
+from plugin import p_loader
 from utils import restart, share
 
 if os.name == 'nt':
@@ -72,6 +68,7 @@ parts_start_time = []
 temperature = '未设置'
 weather_icon = 0
 weather_name = ''
+weather_data_temp = None
 city = 101010100  # 默认城市
 theme = None
 
@@ -80,7 +77,6 @@ first_start = True
 error_cooldown = dt.timedelta(seconds=2)  # 冷却时间(s)
 ignore_errors = []
 last_error_time = dt.datetime.now() - error_cooldown  # 上一次错误
-weather_data_temp = None
 
 ex_menu = None
 
@@ -1400,11 +1396,12 @@ class DesktopWidget(QWidget):  # 主要小组件
             mgr.clear_widgets()
 
     def update_weather_data(self, weather_data):  # 更新天气数据(已兼容多api)
-        global weather_name, temperature
+        global weather_name, temperature, weather_data_temp
         if type(weather_data) is dict and hasattr(self, 'weather_icon'):
             logger.success('已获取天气数据')
             alert_data = weather_data.get('alert')
             weather_data = weather_data.get('now')
+            weather_data_temp = weather_data
 
             weather_name = db.get_weather_by_code(db.get_weather_data('icon', weather_data))
             current_city = self.findChild(QLabel, 'current_city')
