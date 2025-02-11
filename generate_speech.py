@@ -16,6 +16,13 @@ class TTSEngine:
     """支持多平台和智能语音选择的多引擎TTS工具类"""
 
     def __init__(self):
+        """
+        初始化TTS引擎实例
+        属性：
+        - cache_dir: 音频缓存目录路径（软件运行目录下 cache/audio文件夹）
+        - engine_priority: 引擎优先级列表
+        - voice_mapping: 跨平台语音映射配置表
+        """
         self.cache_dir = os.path.join(os.getcwd(), "cache", "audio")
         self._ensure_cache_dir()
         self.engine_priority = ['edge', 'pyttsx3']
@@ -31,7 +38,17 @@ class TTSEngine:
 
     @staticmethod
     def _get_platform_voices():
-        """获取当前平台的默认语音配置"""
+        """
+        获取当前平台的默认语音配置
+
+        返回：
+        - dict: 包含中英文语音ID的字典，结构为{'zh-CN': voice_id, 'en-US': voice_id}
+
+        平台支持：
+        - Windows: 使用注册表路径标识语音
+        - macOS: 使用Apple语音标识符
+        - Linux: 使用espeak语音名称
+        """
         current_os = platform.system()
 
         # Windows默认配置
@@ -138,6 +155,23 @@ class TTSEngine:
             file_path: str,
             timeout: float
     ) -> str:
+        """
+        生成语音文件的核心异步方法
+
+        参数：
+        text (str): 要转换的文本内容（支持中英文自动检测）
+        engine (str): 首选TTS引擎（默认edge）
+        voice (str): 指定语音ID（可选），不指定则根据语言自动选择
+        auto_fallback (bool): 引擎失败时是否自动回退（默认False）
+        timeout (float): 单引擎超时时间（秒，默认10）
+        filename (str): 自定义文件名（可选），不指定则自动生成
+
+        返回：
+        str: 生成的音频文件绝对路径
+
+        异常：
+        RuntimeError: 所有尝试的引擎均失败时抛出
+        """
         try:
             if engine == "edge":
                 task = self._edge_tts(text, voice, file_path)
@@ -256,7 +290,7 @@ def generate_speech_sync(
         timeout: float = 10.0,
         filename: Optional[str] = None
 ) -> str:
-    """同步生成方法（已修复默认语音问题）"""
+    """同步生成方法"""
     tts = TTSEngine()
     return asyncio.run(tts.generate_speech(
         text=text,

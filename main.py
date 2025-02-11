@@ -631,6 +631,19 @@ class PluginMethod:  # 插件方法
             auto_fallback: bool = True
 
     ) -> str:
+        """
+        同步生成语音文件（供插件调用）
+
+        参数：
+        text (str): 要转换的文本（支持中英文混合）
+        engine (str): 首选的TTS引擎（默认edge）
+        voice (str): 指定语音ID（可选，默认自动选择）
+        timeout (float): 超时时间（秒，默认10）
+        auto_fallback (bool): 是否自动回退引擎（默认True）
+
+        返回：
+        str: 生成的音频文件路径
+        """
         return generate_speech_sync(
             text=text,
             engine=engine,
@@ -641,6 +654,16 @@ class PluginMethod:  # 插件方法
 
     @staticmethod
     def play_audio(file_path: str, tts_delete_after: bool = True):
+        """
+        播放音频文件
+
+        参数：
+        file_path (str): 要播放的音频文件路径
+        tts_delete_after (bool): 播放后是否删除文件（默认True）
+
+        说明：
+        - 删除操作有重试机制（3次尝试）
+        """
         play_audio(file_path, tts_delete_after)
 
 
