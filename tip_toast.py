@@ -2,7 +2,15 @@ import sys
 
 import os
 from PyQt5 import uic
-from PyQt5.QtCore import Qt, QPropertyAnimation, QRect, QEasingCurve, QTimer, QPoint, pyqtProperty
+from PyQt5.QtCore import (
+    Qt,
+    QPropertyAnimation,
+    QRect,
+    QEasingCurve,
+    QTimer,
+    QPoint,
+    pyqtProperty,
+)
 from PyQt5.QtGui import QColor, QPainter, QBrush, QPixmap
 from PyQt5.QtWidgets import QWidget, QApplication, QLabel, QFrame, QGraphicsBlurEffect
 from loguru import logger
@@ -14,48 +22,69 @@ import list
 from play_audio import play_audio
 
 # 适配高DPI缩放
-QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+QApplication.setHighDpiScaleFactorRoundingPolicy(
+    Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
+)
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
 QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
 
-prepare_class = conf.read_conf('Audio', 'prepare_class')
-attend_class = conf.read_conf('Audio', 'attend_class')
-finish_class = conf.read_conf('Audio', 'finish_class')
+prepare_class = conf.read_conf("Audio", "prepare_class")
+attend_class = conf.read_conf("Audio", "attend_class")
+finish_class = conf.read_conf("Audio", "finish_class")
 
 pushed_notification = False
-notification_contents = {"state": None, "lesson_name": None, "title": None, "subtitle": None, "content": None}
+notification_contents = {
+    "state": None,
+    "lesson_name": None,
+    "title": None,
+    "subtitle": None,
+    "content": None,
+}
 
 # 波纹效果
-normal_color = '#56CFD8'
+normal_color = "#56CFD8"
 
 window_list = []  # 窗口列表
 
 
 class tip_toast(QWidget):
-    def __init__(self, pos, width, state=1, lesson_name=None, title=None, subtitle=None, content=None, icon=None, duration=2000):
+    def __init__(
+        self,
+        pos,
+        width,
+        state=1,
+        lesson_name=None,
+        title=None,
+        subtitle=None,
+        content=None,
+        icon=None,
+        duration=2000,
+    ):
         super().__init__()
         uic.loadUi(f"{base_directory}/view/widget-toast-bar.ui", self)
 
         # 窗口位置
-        if conf.read_conf('Toast', 'pin_on_top') == '1':
+        if conf.read_conf("Toast", "pin_on_top") == "1":
             self.setWindowFlags(
-                Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.FramelessWindowHint |
-                Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
+                Qt.WindowType.WindowStaysOnTopHint
+                | Qt.WindowType.FramelessWindowHint
+                | Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
             )
         else:
             self.setWindowFlags(
-                Qt.WindowType.WindowStaysOnBottomHint | Qt.WindowType.FramelessWindowHint
+                Qt.WindowType.WindowStaysOnBottomHint
+                | Qt.WindowType.FramelessWindowHint
             )
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.move(pos[0], pos[1])
         self.resize(width, height)
 
         # 标题
-        title_label = self.findChild(QLabel, 'title')
-        backgnd = self.findChild(QFrame, 'backgnd')
-        lesson = self.findChild(QLabel, 'lesson')
-        subtitle_label = self.findChild(QLabel, 'subtitle')
-        icon_label = self.findChild(QLabel, 'icon')
+        title_label = self.findChild(QLabel, "title")
+        backgnd = self.findChild(QFrame, "backgnd")
+        lesson = self.findChild(QLabel, "lesson")
+        subtitle_label = self.findChild(QLabel, "subtitle")
+        icon_label = self.findChild(QLabel, "icon")
 
         if icon:
             pixmap = QPixmap(icon)
@@ -63,38 +92,38 @@ class tip_toast(QWidget):
             icon_label.setPixmap(pixmap)
 
         if state == 1:
-            logger.info('上课铃声显示')
-            title_label.setText('活动开始')  # 修正文本，以适应不同场景
-            subtitle_label.setText('当前课程')
+            logger.info("上课铃声显示")
+            title_label.setText("活动开始")  # 修正文本，以适应不同场景
+            subtitle_label.setText("当前课程")
             lesson.setText(lesson_name)  # 课程名
             playsound(attend_class)
             setThemeColor(f"#{conf.read_conf('Color', 'attend_class')}")  # 主题色
         elif state == 0:
-            logger.info('下课铃声显示')
-            title_label.setText('下课')
+            logger.info("下课铃声显示")
+            title_label.setText("下课")
             if lesson_name:
-                subtitle_label.setText('即将进行')
+                subtitle_label.setText("即将进行")
             else:
                 subtitle_label.hide()
             lesson.setText(lesson_name)  # 课程名
             playsound(finish_class)
             setThemeColor(f"#{conf.read_conf('Color', 'finish_class')}")
         elif state == 2:
-            logger.info('放学铃声显示')
-            title_label.setText('放学')
-            subtitle_label.setText('当前课程已结束')
-            lesson.setText('')  # 课程名
+            logger.info("放学铃声显示")
+            title_label.setText("放学")
+            subtitle_label.setText("当前课程已结束")
+            lesson.setText("")  # 课程名
             playsound(finish_class)
             setThemeColor(f"#{conf.read_conf('Color', 'finish_class')}")
         elif state == 3:
-            logger.info('预备铃声显示')
-            title_label.setText('即将开始')  # 同上
-            subtitle_label.setText('下一节')
+            logger.info("预备铃声显示")
+            title_label.setText("即将开始")  # 同上
+            subtitle_label.setText("下一节")
             lesson.setText(lesson_name)
             playsound(prepare_class)
             setThemeColor(f"#{conf.read_conf('Color', 'prepare_class')}")
         elif state == 4:
-            logger.info(f'通知显示: {title}')
+            logger.info(f"通知显示: {title}")
             title_label.setText(title)
             subtitle_label.setText(subtitle)
             lesson.setText(content)
@@ -105,35 +134,44 @@ class tip_toast(QWidget):
             bg_color = [  # 1为正常、2为渐变亮色部分、3为渐变暗色部分
                 generate_gradient_color(attend_class_color)[0],
                 generate_gradient_color(attend_class_color)[1],
-                generate_gradient_color(attend_class_color)[2]
+                generate_gradient_color(attend_class_color)[2],
             ]
         elif state == 0 or state == 2:  # 下课铃声
             bg_color = [
                 generate_gradient_color(finish_class_color)[0],
                 generate_gradient_color(finish_class_color)[1],
-                generate_gradient_color(finish_class_color)[2]
+                generate_gradient_color(finish_class_color)[2],
             ]
         elif state == 3:  # 预备铃声
             bg_color = [
                 generate_gradient_color(prepare_class_color)[0],
                 generate_gradient_color(prepare_class_color)[1],
-                generate_gradient_color(prepare_class_color)[2]
+                generate_gradient_color(prepare_class_color)[2],
             ]
         elif state == 4:  # 通知铃声
-            bg_color = ['rgba(110, 190, 210, 255)', 'rgba(110, 190, 210, 255)', 'rgba(90, 210, 215, 255)']
+            bg_color = [
+                "rgba(110, 190, 210, 255)",
+                "rgba(110, 190, 210, 255)",
+                "rgba(90, 210, 215, 255)",
+            ]
         else:
-            bg_color = ['rgba(110, 190, 210, 255)', 'rgba(110, 190, 210, 255)', 'rgba(90, 210, 215, 255)']
+            bg_color = [
+                "rgba(110, 190, 210, 255)",
+                "rgba(110, 190, 210, 255)",
+                "rgba(90, 210, 215, 255)",
+            ]
 
-        backgnd.setStyleSheet(f'font-weight: bold; border-radius: {radius}; '
-                              'background-color: qlineargradient('
-                              'spread:pad, x1:0, y1:0, x2:1, y2:1,'
-                              f' stop:0 {bg_color[1]}, stop:0.5 {bg_color[0]}, stop:1 {bg_color[2]}'
-                              ');'
-                              )
+        backgnd.setStyleSheet(
+            f"font-weight: bold; border-radius: {radius}; "
+            "background-color: qlineargradient("
+            "spread:pad, x1:0, y1:0, x2:1, y2:1,"
+            f" stop:0 {bg_color[1]}, stop:0.5 {bg_color[0]}, stop:1 {bg_color[2]}"
+            ");"
+        )
 
         # 模糊效果
         self.blur_effect = QGraphicsBlurEffect(self)
-        if conf.read_conf('Toast', 'wave') == '1':
+        if conf.read_conf("Toast", "wave") == "1":
             backgnd.setGraphicsEffect(self.blur_effect)
 
         # 设置窗口初始大小
@@ -149,10 +187,16 @@ class tip_toast(QWidget):
         self.geometry_animation = QPropertyAnimation(self, b"geometry")
         self.geometry_animation.setDuration(750)  # 动画持续时间
         self.geometry_animation.setStartValue(
-            QRect(int(start_x + mini_size_x / 2), int(start_y + mini_size_y / 2),
-                  total_width - mini_size_x, height - mini_size_y)
+            QRect(
+                int(start_x + mini_size_x / 2),
+                int(start_y + mini_size_y / 2),
+                total_width - mini_size_x,
+                height - mini_size_y,
+            )
         )
-        self.geometry_animation.setEndValue(QRect(start_x, start_y, total_width, height))
+        self.geometry_animation.setEndValue(
+            QRect(start_x, start_y, total_width, height)
+        )
         self.geometry_animation.setEasingCurve(QEasingCurve.Type.OutCirc)
         self.geometry_animation.finished.connect(self.timer.start)
 
@@ -177,10 +221,17 @@ class tip_toast(QWidget):
         # 放大效果
         self.geometry_animation_close = QPropertyAnimation(self, b"geometry")
         self.geometry_animation_close.setDuration(400)  # 动画持续时间
-        self.geometry_animation_close.setStartValue(QRect(start_x, start_y, total_width, height))
+        self.geometry_animation_close.setStartValue(
+            QRect(start_x, start_y, total_width, height)
+        )
         self.geometry_animation_close.setEndValue(
-            QRect(int(start_x + mini_size_x / 2), int(start_y + mini_size_y / 2),
-                  total_width - mini_size_x, height - mini_size_y))
+            QRect(
+                int(start_x + mini_size_x / 2),
+                int(start_y + mini_size_y / 2),
+                total_width - mini_size_x,
+                height - mini_size_y,
+            )
+        )
         self.geometry_animation_close.setEasingCurve(QEasingCurve.Type.InOutCirc)
 
         self.blur_animation_close = QPropertyAnimation(self.blur_effect, b"blurRadius")
@@ -210,15 +261,17 @@ class wave_Effect(QWidget):
     def __init__(self, state=1):
         super().__init__()
 
-        if conf.read_conf('Toast', 'pin_on_top') == '1':
+        if conf.read_conf("Toast", "pin_on_top") == "1":
             self.setWindowFlags(
-                Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.FramelessWindowHint |
-                Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
+                Qt.WindowType.WindowStaysOnTopHint
+                | Qt.WindowType.FramelessWindowHint
+                | Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
             )
         else:
             self.setWindowFlags(
-                Qt.WindowType.WindowStaysOnBottomHint | Qt.WindowType.FramelessWindowHint |
-                Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
+                Qt.WindowType.WindowStaysOnBottomHint
+                | Qt.WindowType.FramelessWindowHint
+                | Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
             )
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
@@ -255,21 +308,23 @@ class wave_Effect(QWidget):
         self.update()
 
     def showAnimation(self):
-        self.animation = QPropertyAnimation(self, b'radius')
+        self.animation = QPropertyAnimation(self, b"radius")
         self.animation.setDuration(self.duration)
         self.animation.setStartValue(50)
         self.animation.setEndValue(max(self.width(), self.height()) * 1.7)
         self.animation.setEasingCurve(QEasingCurve.Type.InOutCirc)
         self.animation.start()
 
-        self.fade_animation = QPropertyAnimation(self, b'windowOpacity')
+        self.fade_animation = QPropertyAnimation(self, b"windowOpacity")
         self.fade_animation.setDuration(self.duration - self.duration // 5)
 
-        self.fade_animation.setKeyValues([  # 关键帧
-            (0, 0),
-            (0.06, 0.9),
-            (1, 0)
-        ])
+        self.fade_animation.setKeyValues(
+            [  # 关键帧
+                (0, 0),
+                (0.06, 0.9),
+                (1, 0),
+            ]
+        )
 
         self.fade_animation.setEasingCurve(QEasingCurve.Type.InOutCirc)
         self.fade_animation.finished.connect(self.close)
@@ -294,10 +349,10 @@ class wave_Effect(QWidget):
 
 def playsound(filename):
     try:
-        file_path = os.path.join(base_directory, 'audio', filename)
+        file_path = os.path.join(base_directory, "audio", filename)
         play_audio(str(file_path))
     except Exception as e:
-        logger.error(f'播放音频文件失败：{e}')
+        logger.error(f"播放音频文件失败：{e}")
 
 
 def generate_gradient_color(theme_color):  # 计算渐变色
@@ -306,19 +361,38 @@ def generate_gradient_color(theme_color):  # 计算渐变色
         g = max(0, min(255, int(color.green() * (1 + factor))))
         b = max(0, min(255, int(color.blue() * (1 + factor))))
         # return QColor(r, g, b)
-        return f'rgba({r}, {g}, {b}, 255)'
+        return f"rgba({r}, {g}, {b}, 255)"
 
     color = QColor(theme_color)
-    gradient = [adjust_color(color, 0), adjust_color(color, 0.24), adjust_color(color, -0.11)]
+    gradient = [
+        adjust_color(color, 0),
+        adjust_color(color, 0.24),
+        adjust_color(color, -0.11),
+    ]
     return gradient
 
 
-def main(state=1, lesson_name='', title='通知示例', subtitle='副标题',
-         content='这是一条通知示例', icon=None, duration=2000):  # 0:下课铃声 1:上课铃声 2:放学铃声 3:预备铃 4:其他
+def main(
+    state=1,
+    lesson_name="",
+    title="通知示例",
+    subtitle="副标题",
+    content="这是一条通知示例",
+    icon=None,
+    duration=2000,
+):  # 0:下课铃声 1:上课铃声 2:放学铃声 3:预备铃 4:其他
     if detect_enable_toast(state):
         return
 
-    global start_x, start_y, total_width, height, radius, attend_class_color, finish_class_color, prepare_class_color
+    global \
+        start_x, \
+        start_y, \
+        total_width, \
+        height, \
+        radius, \
+        attend_class_color, \
+        finish_class_color, \
+        prepare_class_color
 
     widgets = list.get_widget_config()
     for widget in widgets:  # 检查组件
@@ -329,13 +403,13 @@ def main(state=1, lesson_name='', title='通知示例', subtitle='副标题',
     finish_class_color = f"#{conf.read_conf('Color', 'finish_class')}"
     prepare_class_color = f"#{conf.read_conf('Color', 'prepare_class')}"
 
-    theme = conf.read_conf('General', 'theme')
-    height = conf.load_theme_config(theme)['height']
-    radius = conf.load_theme_config(theme)['radius']
+    theme = conf.read_conf("General", "theme")
+    height = conf.load_theme_config(theme)["height"]
+    radius = conf.load_theme_config(theme)["radius"]
 
     screen_geometry = QApplication.primaryScreen().geometry()
     screen_width = screen_geometry.width()
-    spacing = conf.load_theme_config(theme)['spacing']
+    spacing = conf.load_theme_config(theme)["spacing"]
 
     widgets_width = 0
     for widget in widgets:  # 计算总宽度(兼容插件)
@@ -343,50 +417,54 @@ def main(state=1, lesson_name='', title='通知示例', subtitle='副标题',
             widgets_width += conf.load_theme_width(theme)[widget]
         except KeyError:
             widgets_width += list.widget_width[widget]
-        except:
+        except Exception:
             widgets_width += 0
 
     total_width = widgets_width + spacing * (len(widgets) - 1)
 
     start_x = int((screen_width - total_width) / 2)
-    start_y = int(conf.read_conf('General', 'margin'))
+    start_y = int(conf.read_conf("General", "margin"))
 
     if state != 4:
-        window = tip_toast((start_x, start_y), total_width, state, lesson_name, duration=duration)
+        window = tip_toast(
+            (start_x, start_y), total_width, state, lesson_name, duration=duration
+        )
     else:
         window = tip_toast(
             (start_x, start_y),
-            total_width, state,
-            '',
+            total_width,
+            state,
+            "",
             title,
             subtitle,
             content,
             icon,
-            duration=duration
+            duration=duration,
         )
 
     window.show()
     window_list.append(window)
 
-    if conf.read_conf('Toast', 'wave') == '1':
+    if conf.read_conf("Toast", "wave") == "1":
         wave = wave_Effect(state)
         wave.show()
         window_list.append(wave)
 
 
 def detect_enable_toast(state=0):
-    if conf.read_conf('Toast', 'attend_class') != '1' and state == 1:
+    if conf.read_conf("Toast", "attend_class") != "1" and state == 1:
         return True
-    if conf.read_conf('Toast', 'finish_class') != '1' and state == 0 or state == 2:
+    if conf.read_conf("Toast", "finish_class") != "1" and state == 0 or state == 2:
         return True
-    if conf.read_conf('Toast', 'prepare_class') != '1' and state == 3:
+    if conf.read_conf("Toast", "prepare_class") != "1" and state == 3:
         return True
     else:
         return False
 
 
-def push_notification(state=1, lesson_name='', title=None, subtitle=None,
-                      content=None):  # 推送通知
+def push_notification(
+    state=1, lesson_name="", title=None, subtitle=None, content=None
+):  # 推送通知
     global pushed_notification, notification_contents
     pushed_notification = True
     notification_contents = {
@@ -394,20 +472,20 @@ def push_notification(state=1, lesson_name='', title=None, subtitle=None,
         "lesson_name": lesson_name,
         "title": title,
         "subtitle": subtitle,
-        "content": content
+        "content": content,
     }
     main(state, lesson_name, title, subtitle, content)
     return notification_contents
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = QApplication(sys.argv)
     main(
         state=4,  # 自定义通知
-        title='天气预报',
-        subtitle='',
-        content='1°~-3° | 3°~-3° | 9°~1°',
-        icon='img/favicon.ico',
-        duration=2000
+        title="天气预报",
+        subtitle="",
+        content="1°~-3° | 3°~-3° | 9°~1°",
+        icon="img/favicon.ico",
+        duration=2000,
     )
     sys.exit(app.exec())

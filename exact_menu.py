@@ -1,6 +1,5 @@
 import datetime as dt
 import sys
-import os
 from shutil import copy
 
 from PyQt5 import uic
@@ -8,9 +7,21 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QScroller
 from loguru import logger
-from qfluentwidgets import FluentWindow, FluentIcon as fIcon, ComboBox, \
-    PrimaryPushButton, Flyout, FlyoutAnimationType, InfoBarIcon, ListWidget, LineEdit, ToolButton, HyperlinkButton, \
-    SmoothScroll, SmoothScrollArea, Dialog
+from qfluentwidgets import (
+    FluentWindow,
+    FluentIcon as fIcon,
+    ComboBox,
+    PrimaryPushButton,
+    Flyout,
+    FlyoutAnimationType,
+    InfoBarIcon,
+    ListWidget,
+    LineEdit,
+    ToolButton,
+    HyperlinkButton,
+    SmoothScrollArea,
+    Dialog,
+)
 
 import conf
 from conf import base_directory
@@ -19,24 +30,25 @@ from menu import SettingsMenu
 
 # 适配高DPI缩放
 QApplication.setHighDpiScaleFactorRoundingPolicy(
-        Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+    Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
+)
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
 QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
 
 settings = None
 
-filename = conf.read_conf('General', 'schedule')
+filename = conf.read_conf("General", "schedule")
 current_week = dt.datetime.today().weekday()
-temp_schedule = {'schedule': {}, 'schedule_even': {}}
+temp_schedule = {"schedule": {}, "schedule_even": {}}
 
 
 def open_settings():
-    if conf.read_conf('Temp', 'temp_schedule'):
+    if conf.read_conf("Temp", "temp_schedule"):
         w = Dialog(
             "暂时无法使用“设置”",
             "由于您正在使用临时课表，将无法使用“设置”的课程表功能；\n若要启用“设置”，请重新启动 Class Widgets。"
             "\n(重启后，临时课表也将会恢复)",
-            None
+            None,
         )
         w.cancelButton.hide()
         w.buttonLayout.insertStretch(1)
@@ -49,7 +61,7 @@ def open_settings():
         settings = SettingsMenu()
         settings.closed.connect(cleanup_settings)
         settings.show()
-        logger.info('打开“设置”')
+        logger.info("打开“设置”")
     else:
         settings.raise_()
         settings.activateWindow()
@@ -57,8 +69,7 @@ def open_settings():
 
 def cleanup_settings():
     global settings
-    logger.info('关闭“设置”')
-    del settings
+    logger.info("关闭“设置”")
     settings = None
 
 
@@ -66,106 +77,123 @@ class ExactMenu(FluentWindow):
     def __init__(self):
         super().__init__()
         self.menu = None
-        self.interface = uic.loadUi(f'{base_directory}/view/exact_menu.ui')
+        self.interface = uic.loadUi(f"{base_directory}/view/exact_menu.ui")
         self.initUI()
         self.init_interface()
 
     def init_interface(self):
-        ex_scroll = self.findChild(SmoothScrollArea, 'ex_scroll')
+        ex_scroll = self.findChild(SmoothScrollArea, "ex_scroll")
         QScroller.grabGesture(ex_scroll, QScroller.LeftMouseButtonGesture)
-        select_temp_week = self.findChild(ComboBox, 'select_temp_week')  # 选择替换日期
+        select_temp_week = self.findChild(ComboBox, "select_temp_week")  # 选择替换日期
         select_temp_week.addItems(list.week)
         select_temp_week.setCurrentIndex(current_week)
-        select_temp_week.currentIndexChanged.connect(self.refresh_schedule_list)  # 日期选择变化
+        select_temp_week.currentIndexChanged.connect(
+            self.refresh_schedule_list
+        )  # 日期选择变化
 
-        tmp_schedule_list = self.findChild(ListWidget, 'schedule_list')  # 换课列表
+        tmp_schedule_list = self.findChild(ListWidget, "schedule_list")  # 换课列表
         tmp_schedule_list.addItems(self.load_schedule())
         tmp_schedule_list.itemChanged.connect(self.upload_item)
 
-        class_kind_combo = self.findChild(ComboBox, 'class_combo')  # 课程类型
+        class_kind_combo = self.findChild(ComboBox, "class_combo")  # 课程类型
         class_kind_combo.addItems(list.class_kind)
 
-        set_button = self.findChild(ToolButton, 'set_button')
+        set_button = self.findChild(ToolButton, "set_button")
         set_button.setIcon(fIcon.EDIT)
         set_button.clicked.connect(self.edit_item)
 
-        save_temp_conf = self.findChild(PrimaryPushButton, 'save_temp_conf')  # 保存设置
+        save_temp_conf = self.findChild(PrimaryPushButton, "save_temp_conf")  # 保存设置
         save_temp_conf.clicked.connect(self.save_temp_conf)
 
-        redirect_to_settings = self.findChild(HyperlinkButton, 'redirect_to_settings')
+        redirect_to_settings = self.findChild(HyperlinkButton, "redirect_to_settings")
         redirect_to_settings.clicked.connect(open_settings)
 
     def load_schedule(self):
         global filename
-        filename = conf.read_conf('General', 'schedule')
+        filename = conf.read_conf("General", "schedule")
         if conf.get_week_type():
-            return conf.load_from_json(filename)['schedule_even'][str(current_week)]
+            return conf.load_from_json(filename)["schedule_even"][str(current_week)]
         else:
-            return conf.load_from_json(filename)['schedule'][str(current_week)]
+            return conf.load_from_json(filename)["schedule"][str(current_week)]
 
     def save_temp_conf(self):
         try:
-            temp_week = self.findChild(ComboBox, 'select_temp_week')
-            if temp_schedule != {'schedule': {}, 'schedule_even': {}}:
-                if conf.read_conf('Temp', 'temp_schedule') == '':  # 备份检测
-                    copy(f'{base_directory}/config/schedule/{filename}', f'{base_directory}/config/schedule/backup.json')  # 备份课表配置
-                    logger.info(f'备份课表配置成功：已将 {filename} -备份至-> backup.json')
-                    conf.write_conf('Temp', 'temp_schedule', filename)
+            temp_week = self.findChild(ComboBox, "select_temp_week")
+            if temp_schedule != {"schedule": {}, "schedule_even": {}}:
+                if conf.read_conf("Temp", "temp_schedule") == "":  # 备份检测
+                    copy(
+                        f"{base_directory}/config/schedule/{filename}",
+                        f"{base_directory}/config/schedule/backup.json",
+                    )  # 备份课表配置
+                    logger.info(
+                        f"备份课表配置成功：已将 {filename} -备份至-> backup.json"
+                    )
+                    conf.write_conf("Temp", "temp_schedule", filename)
                 conf.save_data_to_json(temp_schedule, filename)
-            conf.write_conf('Temp', 'set_week', str(temp_week.currentIndex()))
+            conf.write_conf("Temp", "set_week", str(temp_week.currentIndex()))
             Flyout.create(
                 icon=InfoBarIcon.SUCCESS,
-                title='保存成功',
-                content=f"已保存至 ./config.ini \n重启后恢复。",
-                target=self.findChild(PrimaryPushButton, 'save_temp_conf'),
+                title="保存成功",
+                content="已保存至 ./config.ini \n重启后恢复。",
+                target=self.findChild(PrimaryPushButton, "save_temp_conf"),
                 parent=self,
                 isClosable=True,
-                aniType=FlyoutAnimationType.PULL_UP
+                aniType=FlyoutAnimationType.PULL_UP,
             )
         except Exception as e:
             Flyout.create(
                 icon=InfoBarIcon.ERROR,
-                title='保存失败',
+                title="保存失败",
                 content=f"错误信息：{e}",
-                target=self.findChild(PrimaryPushButton, 'save_temp_conf'),
+                target=self.findChild(PrimaryPushButton, "save_temp_conf"),
                 parent=self,
                 isClosable=True,
-                aniType=FlyoutAnimationType.PULL_UP
+                aniType=FlyoutAnimationType.PULL_UP,
             )
 
     def refresh_schedule_list(self):
         global current_week
-        current_week = self.findChild(ComboBox, 'select_temp_week').currentIndex()
-        tmp_schedule_list = self.findChild(ListWidget, 'schedule_list')  # 换课列表
+        current_week = self.findChild(ComboBox, "select_temp_week").currentIndex()
+        tmp_schedule_list = self.findChild(ListWidget, "schedule_list")  # 换课列表
         tmp_schedule_list.clear()
         tmp_schedule_list.clearSelection()
-        if conf.read_conf('Temp', 'temp_schedule') == '':
+        if conf.read_conf("Temp", "temp_schedule") == "":
             if conf.get_week_type():
-                tmp_schedule_list.addItems(conf.load_from_json(filename)['schedule_even'][str(current_week)])
+                tmp_schedule_list.addItems(
+                    conf.load_from_json(filename)["schedule_even"][str(current_week)]
+                )
             else:
-                tmp_schedule_list.addItems(conf.load_from_json(filename)['schedule'][str(current_week)])
+                tmp_schedule_list.addItems(
+                    conf.load_from_json(filename)["schedule"][str(current_week)]
+                )
         else:
             if conf.get_week_type():
-                tmp_schedule_list.addItems(conf.load_from_json('backup.json')['schedule_even'][str(current_week)])
+                tmp_schedule_list.addItems(
+                    conf.load_from_json("backup.json")["schedule_even"][
+                        str(current_week)
+                    ]
+                )
             else:
-                tmp_schedule_list.addItems(conf.load_from_json('backup.json')['schedule'][str(current_week)])
+                tmp_schedule_list.addItems(
+                    conf.load_from_json("backup.json")["schedule"][str(current_week)]
+                )
 
     def upload_item(self):
         global temp_schedule
-        se_schedule_list = self.findChild(ListWidget, 'schedule_list')
+        se_schedule_list = self.findChild(ListWidget, "schedule_list")
         cache_list = []
         for i in range(se_schedule_list.count()):  # 缓存ListWidget数据至列表
             item_text = se_schedule_list.item(i).text()
             cache_list.append(item_text)
         if conf.get_week_type():
-            temp_schedule['schedule_even'][str(current_week)] = cache_list
+            temp_schedule["schedule_even"][str(current_week)] = cache_list
         else:
-            temp_schedule['schedule'][str(current_week)] = cache_list
+            temp_schedule["schedule"][str(current_week)] = cache_list
 
     def edit_item(self):
-        tmp_schedule_list = self.findChild(ListWidget, 'schedule_list')
-        class_combo = self.findChild(ComboBox, 'class_combo')
-        custom_class = self.findChild(LineEdit, 'custom_class')
+        tmp_schedule_list = self.findChild(ListWidget, "schedule_list")
+        class_combo = self.findChild(ComboBox, "class_combo")
+        custom_class = self.findChild(LineEdit, "custom_class")
         selected_items = tmp_schedule_list.selectedItems()
 
         if selected_items:
@@ -173,7 +201,7 @@ class ExactMenu(FluentWindow):
             if class_combo.currentIndex() != 0:
                 selected_item.setText(class_combo.currentText())
             else:
-                if custom_class.text() != '':
+                if custom_class.text() != "":
                     selected_item.setText(custom_class.text())
 
     def initUI(self):
@@ -188,13 +216,13 @@ class ExactMenu(FluentWindow):
         self.move(int(screen_width / 2 - width / 2), 150)
         self.resize(width, height)
 
-        self.setWindowTitle('Class Widgets - 更多功能')
-        self.setWindowIcon(QIcon(f'{base_directory}/img/logo/favicon-exmenu.ico'))
+        self.setWindowTitle("Class Widgets - 更多功能")
+        self.setWindowIcon(QIcon(f"{base_directory}/img/logo/favicon-exmenu.ico"))
 
-        self.addSubInterface(self.interface, fIcon.INFO, '更多设置')
+        self.addSubInterface(self.interface, fIcon.INFO, "更多设置")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = QApplication(sys.argv)
     ex = ExactMenu()
     ex.show()
