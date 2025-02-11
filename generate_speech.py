@@ -162,6 +162,7 @@ class TTSEngine:
             filename: Optional[str] = None
     ) -> str:
         """核心生成方法"""
+
         # 自动语音选择逻辑
         lang = self._detect_language(text)
         if not voice:
@@ -250,7 +251,7 @@ class TTSEngine:
 def generate_speech_sync(
         text: str,
         engine: str = "edge",
-        voice: Optional[str] = None,  # 关键修改点
+        voice: Optional[str] = None,
         auto_fallback: bool = False,
         timeout: float = 10.0,
         filename: Optional[str] = None
@@ -260,7 +261,7 @@ def generate_speech_sync(
     return asyncio.run(tts.generate_speech(
         text=text,
         engine=engine,
-        voice=voice,  # 传递None触发自动选择
+        voice=voice,
         auto_fallback=auto_fallback,
         timeout=timeout,
         filename=filename

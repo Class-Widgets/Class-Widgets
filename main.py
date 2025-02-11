@@ -628,7 +628,7 @@ class PluginMethod:  # 插件方法
             engine: str = "edge",
             voice: Optional[str] = None,
             timeout: float = 10.0,
-            auto_fallback: bool = True  # 新增自动回退参数,
+            auto_fallback: bool = True
 
     ) -> str:
         return generate_speech_sync(
