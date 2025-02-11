@@ -185,7 +185,7 @@ class getReadme(QThread):  # 获取README
         try:
             mirror_url = mirror_dict[conf.read_conf('Plugin', 'mirror')]
             url = f"{mirror_url}{self.download_url}"
-            print(url)
+            # print(url)
             response = requests.get(url, proxies=proxies)
             if response.status_code == 200:
                 return response.text

@@ -25,4 +25,6 @@ PyGetWindow~=0.0.9; sys_platform == "win32"
 Markdown~=3.7
 pygame~=2.6.1
 packaging~=24.2
+PyGetWindow~=0.0.9
+pyttsx3~=2.98
 git+https://github.com/CSES-org/pycses.git

@@ -1,6 +1,5 @@
 import sys
 
-import pygame
 import os
 from PyQt5 import uic
 from PyQt5.QtCore import Qt, QPropertyAnimation, QRect, QEasingCurve, QTimer, QPoint, pyqtProperty
@@ -12,6 +11,7 @@ from qfluentwidgets import setThemeColor
 import conf
 from conf import base_directory
 import list
+from play_audio import play_audio
 
 # 适配高DPI缩放
 QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
@@ -29,9 +29,6 @@ notification_contents = {"state": None, "lesson_name": None, "title": None, "sub
 normal_color = '#56CFD8'
 
 window_list = []  # 窗口列表
-
-# 初始化pygame混音器
-pygame.mixer.init()
 
 
 class tip_toast(QWidget):
@@ -298,12 +295,9 @@ class wave_Effect(QWidget):
 def playsound(filename):
     try:
         file_path = os.path.join(base_directory, 'audio', filename)
-        pygame.mixer.music.load(file_path)
-        volume = int(conf.read_conf('Audio', 'volume')) / 100
-        pygame.mixer.music.set_volume(volume)
-        pygame.mixer.music.play()
+        play_audio(str(file_path))
     except Exception as e:
-        logger.error(f'读取音频文件出错：{e}')
+        logger.error(f'播放音频文件失败：{e}')
 
 
 def generate_gradient_color(theme_color):  # 计算渐变色

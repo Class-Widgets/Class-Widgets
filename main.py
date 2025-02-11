@@ -8,6 +8,7 @@ import subprocess
 import sys
 import traceback
 from shutil import copy
+from typing import Optional
 
 from PyQt5 import uic
 from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QRect, QEasingCurve, QSize, QPoint, QUrl
@@ -29,8 +30,10 @@ import utils
 import weather_db as db
 from conf import base_directory
 from exact_menu import ExactMenu, open_settings
+from generate_speech import generate_speech_sync, list_pyttsx3_voices
 from menu import open_plaza
 from network_thread import check_update, weatherReportThread
+from play_audio import play_audio
 from plugin import p_loader
 from utils import restart, share
 
@@ -579,39 +582,66 @@ class PluginMethod:  # 插件方法
     def adjust_widget_width(self, widget_code, width):  # 调整小组件宽度
         self.app_contexts['Widgets_Width'][widget_code] = width
 
-    def get_widget(self, widget_code):  # 获取小组件实例
+    @staticmethod
+    def get_widget(widget_code):  # 获取小组件实例
         for widget in mgr.widgets:
             if widget.path == widget_code:
                 return widget
         return None
 
-    def change_widget_content(self, widget_code, title, content):  # 修改小组件内容
+    @staticmethod
+    def change_widget_content(widget_code, title, content):  # 修改小组件内容
         for widget in mgr.widgets:
             if widget.path == widget_code:
                 widget.update_widget_for_plugin([title, content])
 
-    def is_get_notification(self):  # 检查是否有通知
+    @staticmethod
+    def is_get_notification():  # 检查是否有通知
         if notification.pushed_notification:
             return True
         else:
             return False
 
-    def send_notification(self, state=1, lesson_name='示例课程', title='通知示例', subtitle='副标题',
+    @staticmethod
+    def send_notification(state=1, lesson_name='示例课程', title='通知示例', subtitle='副标题',
                           content='这是一条通知示例', icon=None, duration=2000):  # 发送通知
         notification.main(state, lesson_name, title, subtitle, content, icon, duration)
 
-    def subprocess_exec(self, title, action):  # 执行系统命令
+    @staticmethod
+    def subprocess_exec(title, action):  # 执行系统命令
         w = openProgressDialog(title, action)
         p_mgr.temp_window = [w]
         w.show()
 
-    def read_config(self, path, section, option):  # 读取配置文件
+    @staticmethod
+    def read_config(path, section, option):  # 读取配置文件
         try:
             with open(path, 'r', encoding='utf-8') as r:
                 config = json.load(r)
             return config.get(section, option)
         except Exception as e:
             logger.error(f"插件读取配置文件失败：{e}")
+
+    @staticmethod
+    def generate_speech(
+            text: str,
+            engine: str = "edge",
+            voice: Optional[str] = None,
+            timeout: float = 10.0,
+            auto_fallback: bool = True  # 新增自动回退参数,
+
+    ) -> str:
+        return generate_speech_sync(
+            text=text,
+            engine=engine,
+            voice=voice,
+            auto_fallback=auto_fallback,
+            timeout=timeout
+        )
+
+    @staticmethod
+    def play_audio(file_path: str, tts_delete_after: bool = True):
+        play_audio(file_path, tts_delete_after)
 
 
 class WidgetsManager:
@@ -645,14 +675,16 @@ class WidgetsManager:
             if widget not in list.widget_width.keys():
                 self.widgets_list.remove(widget)
 
-    def get_widget_width(self, path):
+    @staticmethod
+    def get_widget_width(path):
         try:
             width = conf.load_theme_width(theme)[path]
         except KeyError:
             width = list.widget_width[path]
         return int(width)
 
-    def get_widgets_height(self):
+    @staticmethod
+    def get_widgets_height():
         return int(conf.load_theme_config(theme)['height'])
 
     def create_widgets(self):
@@ -1166,7 +1198,8 @@ class DesktopWidget(QWidget):  # 主要小组件
 
         self.update_data('')
 
-    def _onThemeChangedFinished(self):
+    @staticmethod
+    def _onThemeChangedFinished():
         print('theme_changed')
 
     def update_widget_for_plugin(self, context=None):
@@ -1276,7 +1309,8 @@ class DesktopWidget(QWidget):  # 主要小组件
         utils.tray_icon.activated.connect(self.on_tray_icon_clicked)
         utils.tray_icon.show()
 
-    def on_tray_icon_clicked(self, reason):  # 点击托盘图标隐藏
+    @staticmethod
+    def on_tray_icon_clicked(reason):  # 点击托盘图标隐藏
         if reason == QSystemTrayIcon.ActivationReason.Trigger:
             if mgr.state:
                 mgr.decide_to_hide()
@@ -1411,7 +1445,7 @@ class DesktopWidget(QWidget):  # 主要小组件
                 )
                 self.alert_icon.hide()
                 if db.is_supported_alert():
-                    print(alert_data if alert_data else weather_data)
+                    # print(alert_data if alert_data else weather_data)
                     alert_type = db.get_weather_data('alert', alert_data if alert_data else weather_data)
                     if alert_type:
                         self.alert_icon.setIcon(
@@ -1442,17 +1476,20 @@ class DesktopWidget(QWidget):  # 主要小组件
             ex_menu.raise_()
             ex_menu.activateWindow()
 
-    def cleanup_exact_menu(self):
+    @staticmethod
+    def cleanup_exact_menu():
         global ex_menu
         ex_menu = None
 
-    def hide_show_widgets(self):  # 隐藏/显示主界面（全部隐藏）
+    @staticmethod
+    def hide_show_widgets():  # 隐藏/显示主界面（全部隐藏）
         if mgr.state:
             mgr.full_hide_windows()
         else:
             mgr.show_windows()
 
-    def minimize_to_floating(self):  # 最小化到浮窗
+    @staticmethod
+    def minimize_to_floating():  # 最小化到浮窗
         if mgr.state:
             fw.show()
             mgr.full_hide_windows()
@@ -1668,6 +1705,8 @@ if __name__ == '__main__':
     if system == 'macOS': osVersion = 'macOS ' + platform.mac_ver()[0]
 
     logger.info(f"操作系统：{system}，版本：{osRelease}/{osVersion}")
+
+    list_pyttsx3_voices()
 
     if share.attach() and conf.read_conf('Other', 'multiple_programs') != '1':
         msg_box = Dialog(
