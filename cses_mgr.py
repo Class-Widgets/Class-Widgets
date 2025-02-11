@@ -18,9 +18,11 @@ CSES_WEEKS = [1, 2, 3, 4, 5, 6, 7]
 
 def _get_time(time: typing.Union[str, int]) -> datetime:
     if isinstance(time, str):
-        return datetime.strptime(str(time), '%H:%M')
+        return datetime.strptime(str(time), '%H:%M:%S')
     elif isinstance(time, int):
-        return datetime.strptime(f'{int(time / 60 / 60)}:{int(time / 60 % 60)}','%H:%M')
+        tmp = datetime.strptime(f'{int(time / 60 / 60)}:{int(time / 60 % 60)}:{time % 60}','%H:%M:%S')
+        print(tmp, time, time / 60 / 60, time / 60 % 60)
+        return tmp
     else:
         raise ValueError(f'需要 int 或 HH:MM:SS 类型，得到 {type(time)}，值为 {time}')
 
@@ -84,7 +86,6 @@ class CSES_Converter:
                 if class_ == classes[0]:
                     raw_time = _get_time(class_['start_time'])
                     time = [raw_time.hour, raw_time.minute]
-                    
                     if time in part_list and weeks != 'odd' and weeks != 'even':  # 实现双周时间线
                         continue  # 跳过重复的节点
 
