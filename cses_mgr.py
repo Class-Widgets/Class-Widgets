@@ -20,9 +20,7 @@ def _get_time(time: typing.Union[str, int]) -> datetime:
     if isinstance(time, str):
         return datetime.strptime(str(time), '%H:%M:%S')
     elif isinstance(time, int):
-        tmp = datetime.strptime(f'{int(time / 60 / 60)}:{int(time / 60 % 60)}:{time % 60}','%H:%M:%S')
-        print(tmp, time, time / 60 / 60, time / 60 % 60)
-        return tmp
+        return datetime.strptime(f'{int(time / 60 / 60)}:{int(time / 60 % 60)}:{time % 60}','%H:%M:%S')
     else:
         raise ValueError(f'需要 int 或 HH:MM:SS 类型，得到 {type(time)}，值为 {time}')
 
