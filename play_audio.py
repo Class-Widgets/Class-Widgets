@@ -15,7 +15,7 @@ pygame.mixer.init()
 def play_audio(file_path: str, tts_delete_after: bool = False):
     try:
         if not os.path.exists(file_path):
-            raise FileNotFoundError(f"音频文件不存在: {file_path}")
+            raise FileNotFoundError(f'音频文件不存在: {file_path}')
 
         if not pygame.mixer.get_init():
             pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=2048)
@@ -26,25 +26,25 @@ def play_audio(file_path: str, tts_delete_after: bool = False):
                 break
             time.sleep(0.1)
         else:
-            raise IOError("音频文件写入超时")
+            raise IOError('音频文件写入超时')
 
         sound = pygame.mixer.Sound(file_path)
-        volume = int(conf.read_conf("Audio", "volume")) / 100
+        volume = int(conf.read_conf('Audio', 'volume')) / 100
         pygame.mixer.music.set_volume(volume)
         channel = sound.play()
         while channel.get_busy():
             pygame.time.wait(100)
 
-        logger.debug(f"成功播放音频: {file_path}")
+        logger.debug(f'成功播放音频: {file_path}')
 
         if tts_delete_after:
             tts = TTSEngine()
             tts.delete_audio_file(file_path)
 
     except Exception as e:
-        logger.error(f"播放失败 | 路径: {file_path} | 错误: {str(e)}")
+        logger.error(f'播放失败 | 路径: {file_path} | 错误: {str(e)}')
     finally:
         # 确保释放音频资源
-        if "sound" in locals():
+        if 'sound' in locals():
             sound.stop()
         pygame.mixer.quit()
