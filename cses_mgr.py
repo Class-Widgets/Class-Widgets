@@ -85,7 +85,6 @@ class CSES_Converter:
                     raw_time = _get_time(class_['start_time'])
                     time = [raw_time.hour, raw_time.minute]
                     
-                    # time = [int(str(class_['start_time']).split(':')[0]), int(str(class_['start_time']).split(':')[1])]
                     if time in part_list and weeks != 'odd' and weeks != 'even':  # 实现双周时间线
                         continue  # 跳过重复的节点
 
