@@ -20,6 +20,7 @@ import conf
 import list as l
 import network_thread as nt
 from conf import base_directory
+from plugin import p_loader
 from utils import restart, calculate_size
 
 # 适配高DPI缩放
@@ -411,6 +412,11 @@ class PluginPlaza(MSFluentWindow):
         try:
             with open(CONF_PATH, 'r', encoding='utf-8') as file:
                 installed_plugins = json.load(file).get('plugins')
+            # 校验
+            for plugin in installed_plugins:
+                if plugin not in p_loader.plugins_name:
+                    logger.warning(f"已在插件广场安装的插件 {plugin} 未找到，可能已遭删除")
+                    installed_plugins.remove(plugin)
         except Exception as e:
             logger.error(f"读取已安装的插件失败: {e}")
         try:

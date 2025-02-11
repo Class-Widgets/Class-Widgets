@@ -162,8 +162,8 @@ class CSES_Converter:
                                 continue
 
                             class_dict['subject'] = subject
-                            class_dict['start_time'] = start_time.strftime('%H:%M')
-                            class_dict['end_time'] = end_time.strftime('%H:%M')
+                            class_dict['start_time'] = start_time.strftime('%H:%M:00')
+                            class_dict['end_time'] = end_time.strftime('%H:%M:00')
 
                             timelines_part[str(day)].append(class_dict)
                         if key[1] == part:  # 时间叠加counter
