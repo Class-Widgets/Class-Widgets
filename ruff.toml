@@ -1,4 +1,10 @@
 target-version = "py38"
 
+[lint]
+select = ["Q"]
+
+[lint.flake8-quotes]
+inline-quotes = "single"
+
 [format]
 quote-style = "single"
