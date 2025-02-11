@@ -72,6 +72,7 @@ from qfluentwidgets import (
 )
 
 import conf
+import file
 import list as list_
 import tip_toast
 import utils
@@ -1905,9 +1906,9 @@ class SettingsMenu(FluentWindow):
 
             # 写入
             data_dict_even = {"schedule_even": data_dict_even}
-            conf.save_data_to_json(data_dict_even, filename)
+            file.save_data_to_json(data_dict_even, filename)
             data_dict = {"schedule": data_dict}
-            conf.save_data_to_json(data_dict, filename)
+            file.save_data_to_json(data_dict, filename)
             Flyout.create(
                 icon=InfoBarIcon.SUCCESS,
                 title="保存成功",
@@ -1991,7 +1992,7 @@ class SettingsMenu(FluentWindow):
                     item_time = item_info[1][0 : len(item_info[1]) - 2]
                     data_dict["timeline"][str(week)][item_name] = item_time
 
-            conf.save_data_to_json(data_dict, filename)
+            file.save_data_to_json(data_dict, filename)
             self.te_detect_item()
             se_load_item()
             self.se_upload_list()

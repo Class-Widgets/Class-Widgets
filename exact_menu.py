@@ -25,6 +25,7 @@ from qfluentwidgets import (
 
 import conf
 from conf import base_directory
+import file
 import list
 from menu import SettingsMenu
 
@@ -129,7 +130,7 @@ class ExactMenu(FluentWindow):
                         f"备份课表配置成功：已将 {filename} -备份至-> backup.json"
                     )
                     conf.write_conf("Temp", "temp_schedule", filename)
-                conf.save_data_to_json(temp_schedule, filename)
+                file.save_data_to_json(temp_schedule, filename)
             conf.write_conf("Temp", "set_week", str(temp_week.currentIndex()))
             Flyout.create(
                 icon=InfoBarIcon.SUCCESS,
