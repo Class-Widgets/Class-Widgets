@@ -1,4 +1,4 @@
-target-version="py38"
+target-version = "py38"
 
 [format]
 quote-style = "single"
