@@ -196,7 +196,7 @@ def get_part():
         c_time = parts_start_time[i] + dt.timedelta(seconds=time_offset)
         return c_time, int(order[i])  # 返回开始时间、Part序号
 
-    current_dt = dt.datetime.now() + dt.timedelta(seconds=time_offset)  # 当前时间
+    current_dt = dt.datetime.now()
 
     for i in range(len(parts_start_time)):  # 遍历每个Part
         time_len = dt.timedelta(minutes=0)  # Part长度
@@ -929,8 +929,6 @@ class openProgressDialog(QWidget):
 class FloatingWidget(QWidget):  # 浮窗
     def __init__(self):
         super().__init__()
-        self.m_flag = None
-        self.r_Position = None
         self.init_ui()
         self.init_font()
         self.position = None
@@ -1095,7 +1093,7 @@ class FloatingWidget(QWidget):  # 浮窗
             event.accept()
 
     def mouseMoveEvent(self, event):
-        if event.buttons() == Qt.MouseButton.LeftButton and self.m_flag:
+        if event.button() == Qt.MouseButton.LeftButton and self.m_flag:
             self.move(event.globalPos() - self.m_Position)  # 更改窗口位置
             event.accept()
 
@@ -1106,7 +1104,6 @@ class FloatingWidget(QWidget):  # 浮窗
             hasattr(self, "p_Position")
             and self.r_Position == self.p_Position
             and not self.animating
-            and conf.read_conf("General", "hide") == "0"
         ):  # 开启自动隐藏忽略点击事件
             mgr.show_windows()
             self.close()
