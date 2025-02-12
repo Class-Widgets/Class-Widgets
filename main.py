@@ -215,7 +215,7 @@ def get_part():
 
 def get_excluded_lessons():
     global excluded_lessons
-    if(conf.read_conf('General', 'excluded_lesson' == "0")):
+    if conf.read_conf('General', 'excluded_lesson') == "0":
         excluded_lessons = []
         return 
     excluded_lessons_raw = conf.read_conf('General', 'excluded_lessons')
@@ -1337,9 +1337,11 @@ class DesktopWidget(QWidget):  # 主要小组件
         time_offset = conf.get_time_offset()
         filename = conf.read_conf('General', 'schedule')
 
+        get_start_time()
         get_current_lessons()
         get_current_lesson_name()
         get_excluded_lessons()
+        get_next_lessons()
 
         if conf.read_conf('General', 'hide') == '1':  # 上课自动隐藏
             if current_state:
@@ -1357,10 +1359,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             current_week = conf.read_conf('Temp', 'set_week')
         else:
             current_week = dt.datetime.now().weekday()
-
-        get_start_time()
-        get_next_lessons()
-
+        
         cd_list = get_countdown()
 
         if path == 'widget-time.ui':  # 日期显示
