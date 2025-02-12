@@ -1347,6 +1347,8 @@ class DesktopWidget(QWidget):  # 主要小组件
             if current_state:
                 if not current_lesson_name in excluded_lessons:
                     mgr.decide_to_hide()
+                else:
+                    mgr.show_windows()
             else:
                 mgr.show_windows()
         elif conf.read_conf('General', 'hide') == '2':  # 最大化/全屏自动隐藏
