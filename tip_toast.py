@@ -11,7 +11,7 @@ from qfluentwidgets import setThemeColor
 import conf
 from conf import base_directory
 import list
-from play_audio import play_audio
+from play_audio import PlayAudio
 
 # 适配高DPI缩放
 QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
@@ -34,6 +34,7 @@ window_list = []  # 窗口列表
 class tip_toast(QWidget):
     def __init__(self, pos, width, state=1, lesson_name=None, title=None, subtitle=None, content=None, icon=None, duration=2000):
         super().__init__()
+        self.audio_thread = None
         uic.loadUi(f"{base_directory}/view/widget-toast-bar.ui", self)
 
         # 窗口位置
@@ -67,7 +68,7 @@ class tip_toast(QWidget):
             title_label.setText('活动开始')  # 修正文本，以适应不同场景
             subtitle_label.setText('当前课程')
             lesson.setText(lesson_name)  # 课程名
-            playsound(attend_class)
+            self.playsound(attend_class)
             setThemeColor(f"#{conf.read_conf('Color', 'attend_class')}")  # 主题色
         elif state == 0:
             logger.info('下课铃声显示')
@@ -77,28 +78,28 @@ class tip_toast(QWidget):
             else:
                 subtitle_label.hide()
             lesson.setText(lesson_name)  # 课程名
-            playsound(finish_class)
+            self.playsound(finish_class)
             setThemeColor(f"#{conf.read_conf('Color', 'finish_class')}")
         elif state == 2:
             logger.info('放学铃声显示')
             title_label.setText('放学')
             subtitle_label.setText('当前课程已结束')
             lesson.setText('')  # 课程名
-            playsound(finish_class)
+            self.playsound(finish_class)
             setThemeColor(f"#{conf.read_conf('Color', 'finish_class')}")
         elif state == 3:
             logger.info('预备铃声显示')
             title_label.setText('即将开始')  # 同上
             subtitle_label.setText('下一节')
             lesson.setText(lesson_name)
-            playsound(prepare_class)
+            self.playsound(prepare_class)
             setThemeColor(f"#{conf.read_conf('Color', 'prepare_class')}")
         elif state == 4:
             logger.info(f'通知显示: {title}')
             title_label.setText(title)
             subtitle_label.setText(subtitle)
             lesson.setText(content)
-            playsound(prepare_class)
+            self.playsound(prepare_class)
 
         # 设置样式表
         if state == 1:  # 上课铃声
@@ -205,6 +206,14 @@ class tip_toast(QWidget):
         self.deleteLater()
         event.ignore()
 
+    def playsound(self, filename):
+        try:
+            file_path = os.path.join(base_directory, 'audio', filename)
+            self.audio_thread = PlayAudio(str(file_path))
+            self.audio_thread.start()
+        except Exception as e:
+            logger.error(f'播放音频文件失败：{e}')
+
 
 class wave_Effect(QWidget):
     def __init__(self, state=1):
@@ -290,14 +299,6 @@ class wave_Effect(QWidget):
         self.deleteLater()
         self.hide()
         event.ignore()
-
-
-def playsound(filename):
-    try:
-        file_path = os.path.join(base_directory, 'audio', filename)
-        play_audio(str(file_path))
-    except Exception as e:
-        logger.error(f'播放音频文件失败：{e}')
 
 
 def generate_gradient_color(theme_color):  # 计算渐变色

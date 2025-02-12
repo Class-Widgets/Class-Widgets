@@ -13,32 +13,37 @@
 
 <div align="center">
 
+![Repobeats](https://repobeats.axiom.co/api/embed/9d06f1435d1b14cb7837d1e863e55f24cc98df23.svg "Repobeats analytics image")
+
 [![星标](https://img.shields.io/github/stars/Class-Widgets/Class-Widgets?style=for-the-badge&color=orange&label=星标)](https://github.com/Class-Widgets/Class-Widgets)
 [![当前版本](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?style=for-the-badge&color=purple&label=当前版本)](https://github.com/Class-Widgets/Class-Widgets/releases/latest)
 [![测试版](https://img.shields.io/github/v/tag/Class-Widgets/Class-Widgets?include_prereleases&label=当前测试版&color=yellow&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets/releases)
-[![开源许可](https://img.shields.io/badge/license-GPLv3-blue.svg?label=开源许可证&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets)
+[![开源许可](https://img.shields.io/badge/license-GPLv3-blue.svg?label=开源许可证&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets?tab=GPL-3.0-1-ov-file)
 [![下载量](https://img.shields.io/github/downloads/Class-Widgets/Class-Widgets/total.svg?label=下载量&color=green&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets)
 
   
 
-[![Q群](https://img.shields.io/badge/QQ群-169200380-blue.svg?logo=qq&color=blue&style=for-the-badge)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380)
-[![DC](https://img.shields.io/discord/1332636953719476284?style=for-the-badge&logo=discord&logoColor=ffffff&label=discord%20%E6%9C%8D%E5%8A%A1%E5%99%A8&labelColor=5865f2)](https://discord.gg/EFF4PpqpqZ)
+
 
 
 ![Banner](img/Banner.png)
 
-#### [了解更多 >](https://www.bilibili.com/video/BV1xwW9eyEGu/) | [加入我们的Q群 >](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380)
+[![Q群](https://img.shields.io/badge/QQ%20群-169200380-blue.svg?logo=qq&color=blue&style=for-the-badge)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380)
+[![DC](https://img.shields.io/discord/1332636953719476284?style=for-the-badge&logo=discord&logoColor=ffffff&label=discord%20%E6%9C%8D%E5%8A%A1%E5%99%A8&labelColor=5865f2)](https://discord.gg/EFF4PpqpqZ)
+
+#### [了解更多 >](https://www.bilibili.com/video/BV1xwW9eyEGu/)
 
 </div>
 
 
 ## 特性
-- 由Python编写的**插件**系统和插件广场（详见最新构建）
+- 由 Python 编写的**插件**系统和插件广场（详见最新构建）
 - 将今日的课程安排以**小组件**的样式为你呈现；
 - 具有 [上下课提醒](https://www.yuque.com/rinlit/class-widgets_help/fv2ou1i1ngap0hrl) 和预备铃；
 - 拥有主题系统支持你高度自定义。
 - 简洁直观的 [课程表编辑](https://www.yuque.com/rinlit/class-widgets_help/oozelh8r56tmw0xb) 界面；
 - 同时存储多个课程表文件，并能在各个 Class Widgets 导入和导出；
+- 支持 [**通用课程表交换格式**（Course Schedule Exchange Schema）](https://github.com/SmartTeachCN/CSES) ，能在不同格式间转换；
 - 提供快捷的调休、换课 [应对方案](https://www.yuque.com/rinlit/class-widgets_help/gc4epffu7g5bf9os)。
 - 提供“天气”、“自定义倒计时”等实用小组件；
 - 通过 [“自定义”](https://www.yuque.com/rinlit/class-widgets_help/qyly70ht1ogge1pi) 个性化你的 Class Widgets；

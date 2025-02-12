@@ -3,6 +3,7 @@ import time
 
 import pygame
 import pygame.mixer
+from PyQt5.QtCore import QThread, pyqtSignal
 from loguru import logger
 
 import conf
@@ -10,9 +11,24 @@ from generate_speech import TTSEngine
 
 # 初始化pygame混音器
 pygame.mixer.init()
+sound = None
+
+
+class PlayAudio(QThread):
+    play_back_signal = pyqtSignal(bool)
+
+    def __init__(self, file_path: str, tts_delete_after: bool = False):
+        super().__init__()
+        self.file_path = file_path
+        self.tts_delete_after = tts_delete_after
+
+    def run(self):
+        play_audio(self.file_path, self.tts_delete_after)
+        self.play_back_signal.emit(True)
 
 
 def play_audio(file_path: str, tts_delete_after: bool = False):
+    global sound
     try:
         if not os.path.exists(file_path):
             raise FileNotFoundError(f"音频文件不存在: {file_path}")
