@@ -1223,7 +1223,7 @@ class FloatingWidget(QWidget):  # 浮窗
             hasattr(self, 'p_Position')
             and self.r_Position == self.p_Position
             and not self.animating
-            and conf.read_conf("General", "hide") == "0"
+            and conf.read_conf('General', 'hide') == '0'
         ):  # 开启自动隐藏忽略点击事件
             mgr.show_windows()
             self.close()
