@@ -52,7 +52,8 @@
   },
   "Temp": {
     "set_week": "",
-    "temp_schedule": ""
+    "temp_schedule": "",
+    "set_schedule": ""
   },
   "Other": {
     "do_not_log": 0,
