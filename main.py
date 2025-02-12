@@ -64,6 +64,7 @@ loaded_data = {}
 parts_type = []
 notification = tip_toast
 update_timer = QTimer()
+excluded_lessons = []
 
 timeline_data = {}
 next_lessons = []
@@ -212,6 +213,13 @@ def get_part():
 
     return parts_start_time[0] + dt.timedelta(seconds=time_offset), 0, 'part'
 
+def get_excluded_lessons():
+    global excluded_lessons
+    if(conf.read_conf('General', 'excluded_lesson' == "0")):
+        excluded_lessons = []
+        return 
+    excluded_lessons_raw = conf.read_conf('General', 'excluded_lessons')
+    excluded_lessons = excluded_lessons_raw.split(',') if excluded_lessons_raw != '' else []
 
 # 获取当前活动
 def get_current_lessons():  # 获取当前课程
@@ -1329,9 +1337,14 @@ class DesktopWidget(QWidget):  # 主要小组件
         time_offset = conf.get_time_offset()
         filename = conf.read_conf('General', 'schedule')
 
+        get_current_lessons()
+        get_current_lesson_name()
+        get_excluded_lessons()
+
         if conf.read_conf('General', 'hide') == '1':  # 上课自动隐藏
             if current_state:
-                mgr.decide_to_hide()
+                if not current_lesson_name in excluded_lessons:
+                    mgr.decide_to_hide()
             else:
                 mgr.show_windows()
         elif conf.read_conf('General', 'hide') == '2':  # 最大化/全屏自动隐藏
@@ -1346,8 +1359,6 @@ class DesktopWidget(QWidget):  # 主要小组件
             current_week = dt.datetime.now().weekday()
 
         get_start_time()
-        get_current_lessons()
-        get_current_lesson_name()
         get_next_lessons()
 
         cd_list = get_countdown()
