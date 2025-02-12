@@ -1,6 +1,5 @@
 import datetime as dt
 import sys
-import os
 from shutil import copy
 
 from PyQt5 import uic
@@ -13,8 +12,8 @@ from qfluentwidgets import FluentWindow, FluentIcon as fIcon, ComboBox, \
     SmoothScroll, SmoothScrollArea, Dialog
 
 import conf
-from conf import base_directory
 import list
+from basic_dirs import CONFIG_HOME, CW_HOME
 from menu import SettingsMenu
 
 # 适配高DPI缩放
@@ -66,7 +65,7 @@ class ExactMenu(FluentWindow):
     def __init__(self):
         super().__init__()
         self.menu = None
-        self.interface = uic.loadUi(f'{base_directory}/view/exact_menu.ui')
+        self.interface = uic.loadUi(CW_HOME / 'view/exact_menu.ui')
         self.initUI()
         self.init_interface()
 
@@ -108,7 +107,7 @@ class ExactMenu(FluentWindow):
             temp_week = self.findChild(ComboBox, 'select_temp_week')
             if temp_schedule != {'schedule': {}, 'schedule_even': {}}:
                 if conf.read_conf('Temp', 'temp_schedule') == '':  # 备份检测
-                    copy(f'{base_directory}/config/schedule/{filename}', f'{base_directory}/config/schedule/backup.json')  # 备份课表配置
+                    copy(CONFIG_HOME / 'schedule' / filename, CONFIG_HOME / 'config/schedule/backup.json')  # 备份课表配置
                     logger.info(f'备份课表配置成功：已将 {filename} -备份至-> backup.json')
                     conf.write_conf('Temp', 'temp_schedule', filename)
                 conf.save_data_to_json(temp_schedule, filename)
@@ -189,7 +188,7 @@ class ExactMenu(FluentWindow):
         self.resize(width, height)
 
         self.setWindowTitle('Class Widgets - 更多功能')
-        self.setWindowIcon(QIcon(f'{base_directory}/img/logo/favicon-exmenu.ico'))
+        self.setWindowIcon(QIcon(str(CW_HOME / 'img/logo/favicon-exmenu.ico')))
 
         self.addSubInterface(self.interface, fIcon.INFO, '更多设置')
 

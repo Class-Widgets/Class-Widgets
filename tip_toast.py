@@ -8,8 +8,8 @@ from PyQt5.QtWidgets import QWidget, QApplication, QLabel, QFrame, QGraphicsBlur
 from loguru import logger
 from qfluentwidgets import setThemeColor
 
+from basic_dirs import CW_HOME
 import conf
-from conf import base_directory
 import list
 from play_audio import PlayAudio
 
@@ -35,7 +35,7 @@ class tip_toast(QWidget):
     def __init__(self, pos, width, state=1, lesson_name=None, title=None, subtitle=None, content=None, icon=None, duration=2000):
         super().__init__()
         self.audio_thread = None
-        uic.loadUi(f"{base_directory}/view/widget-toast-bar.ui", self)
+        uic.loadUi(CW_HOME / "view/widget-toast-bar.ui", self)
 
         # 窗口位置
         if conf.read_conf('Toast', 'pin_on_top') == '1':

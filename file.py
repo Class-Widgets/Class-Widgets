@@ -4,12 +4,10 @@ import os
 from loguru import logger
 import configparser as config
 
-base_directory = os.path.dirname(os.path.abspath(__file__))
+from basic_dirs import CONFIG_HOME, CW_HOME
 
-if base_directory.endswith('MacOS'):
-    base_directory = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)), 'Resources')
 
-path = f'{base_directory}/config.ini'
+path = CW_HOME / 'config.ini'
 
 
 # CONFIG
@@ -24,7 +22,7 @@ def read_conf(section='General', key=''):
     except Exception as e:
         logger.error(f'读取配置文件时出错: {e}')
         return None
-    with open(f'{base_directory}/config/default_config.json', encoding="utf-8") as default:
+    with open(CW_HOME / 'config/default_config.json', encoding="utf-8") as default:
         default_data = json.load(default)
 
     if section in data and key in data[section]:
@@ -70,9 +68,10 @@ def save_data_to_json(new_data, filename):
     data_dict = {}
 
     # 如果文件存在，先读取文件中的现有数据
-    if os.path.exists(f'{base_directory}/config/schedule/{filename}'):
+    file_path = CONFIG_HOME / 'schedule' / str(filename)
+    if file_path.exists():
         try:
-            with open(f'{base_directory}/config/schedule/{filename}', 'r', encoding='utf-8') as file:
+            with open(file_path, 'r', encoding='utf-8') as file:
                 data_dict = json.load(file)
         except Exception as e:
             logger.error(f"读取现有数据时出错: {e}")
@@ -82,7 +81,7 @@ def save_data_to_json(new_data, filename):
 
     # 将更新后的数据保存回文件
     try:
-        with open(f'{base_directory}/config/schedule/{filename}', 'w', encoding='utf-8') as file:
+        with open(file_path, 'w', encoding='utf-8') as file:
             json.dump(data_dict, file, ensure_ascii=False, indent=4)
         return f"数据已成功保存到 config/schedule/{filename}"
     except Exception as e:

@@ -3,6 +3,7 @@ from pathlib import Path
 
 from loguru import logger
 
+from basic_dirs import PLUGIN_HOME
 import conf
 
 
@@ -17,20 +18,20 @@ class PluginLoader:  # 插件加载器
         self.manager = p_mgr
 
     def load_plugins(self):
-        for folder in Path(conf.PLUGINS_DIR).iterdir():
+        for folder in PLUGIN_HOME.iterdir():
             if folder.is_dir() and (folder / 'plugin.json').exists():
                 self.plugins_name.append(folder.name)  # 检测所有插件
 
                 if folder.name not in conf.load_plugin_config()['enabled_plugins']:
                     continue
-                relative_path = conf.PLUGINS_DIR.name
+                relative_path = PLUGIN_HOME.name
                 module_name = f"{relative_path}.{folder.name}"
                 module = importlib.import_module(module_name)
 
                 if hasattr(module, 'Settings'):
                     plugin_class = getattr(module, "Settings")  # 获取 Plugin 类
                     # 实例化插件
-                    self.plugins_settings[folder.name] = plugin_class(f'{conf.PLUGINS_DIR}/{folder.name}')
+                    self.plugins_settings[folder.name] = plugin_class(str(folder))
 
                 if not self.manager:
                     continue

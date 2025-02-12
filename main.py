@@ -28,7 +28,7 @@ import list
 import tip_toast
 import utils
 import weather_db as db
-from conf import base_directory
+from basic_dirs import CW_HOME, CONFIG_HOME, LOG_HOME, PLUGIN_HOME
 from exact_menu import ExactMenu, open_settings
 from generate_speech import generate_speech_sync, list_pyttsx3_voices
 from menu import open_plaza
@@ -84,7 +84,7 @@ last_error_time = dt.datetime.now() - error_cooldown  # 上一次错误
 ex_menu = None
 
 if conf.read_conf('Other', 'do_not_log') != '1':
-    logger.add(f"{base_directory}/log/ClassWidgets_main_{{time}}.log", rotation="1 MB", encoding="utf-8",
+    logger.add(f"{str(LOG_HOME)}/ClassWidgets_main_{{time}}.log", rotation="1 MB", encoding="utf-8",
                retention="1 minute")
     logger.info('未禁用日志输出')
 else:
@@ -458,7 +458,7 @@ class ErrorDialog(Dialog):  # 重大错误提示框
         self.title_layout = QHBoxLayout()
 
         self.iconLabel = ImageLabel()
-        self.iconLabel.setImage(f"{base_directory}/img/logo/favicon-error.ico")
+        self.iconLabel.setImage(str(CW_HOME / "img/logo/favicon-error.ico"))
         self.error_log = PlainTextEdit()
         self.report_problem = PushButton(fIcon.FEEDBACK, '报告此问题')
         self.copy_log_btn = PushButton(fIcon.COPY, '复制日志')
@@ -563,8 +563,8 @@ class PluginManager:  # 插件管理器
             "Weather_API": conf.read_conf('Weather', 'api'),  # 天气API
             "Notification": notification.notification_contents,  # 检测到的通知内容
 
-            "PLUGIN_PATH": f'{conf.PLUGINS_DIR}/{path}',  # 传递插件目录
-            "Base_Directory": base_directory,  # 资源目录
+            "PLUGIN_PATH": str(PLUGIN_HOME / str(path)),  # 传递插件目录
+            "Base_Directory": str(CW_HOME),  # 资源目录
             "Widgets_Mgr": mgr,  # 组件管理器实例
         }
         return self.cw_contexts
@@ -869,9 +869,9 @@ class openProgressDialog(QWidget):
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
         if isDarkTheme():
-            uic.loadUi(f'{base_directory}/ui/default/dark/toast-open_dialog.ui', self)
+            uic.loadUi(CW_HOME / 'ui/default/dark/toast-open_dialog.ui', self)
         else:
-            uic.loadUi(f'{base_directory}/ui/default/toast-open_dialog.ui', self)
+            uic.loadUi(CW_HOME / 'ui/default/toast-open_dialog.ui', self)
 
         backgnd = self.findChild(QFrame, 'backgnd')
         shadow_effect = QGraphicsDropShadowEffect(self)
@@ -882,8 +882,8 @@ class openProgressDialog(QWidget):
         backgnd.setGraphicsEffect(shadow_effect)
 
     def init_font(self):
-        font_path = f'{base_directory}/font/HarmonyOS_Sans_SC_Bold.ttf'
-        font_id = QFontDatabase.addApplicationFont(font_path)
+        font_path = CW_HOME / 'font/HarmonyOS_Sans_SC_Bold.ttf'
+        font_id = QFontDatabase.addApplicationFont(str(font_path))
         if font_id != -1:
             font_family = QFontDatabase.applicationFontFamilies(font_id)[0]
 
@@ -951,16 +951,17 @@ class FloatingWidget(QWidget):  # 浮窗
 
     def init_ui(self):
         setTheme_()
-        if os.path.exists(f'{base_directory}/ui/{theme}/widget-floating.ui'):
+        theme_path = CW_HOME / 'ui' / str(theme)
+        if os.path.exists(theme_path / 'widget-floating.ui'):
             if isDarkTheme() and conf.load_theme_config(theme)['support_dark_mode']:
-                uic.loadUi(f'{base_directory}/ui/{theme}/dark/widget-floating.ui', self)
+                uic.loadUi(theme_path / 'dark/widget-floating.ui', self)
             else:
-                uic.loadUi(f'{base_directory}/ui/{theme}/widget-floating.ui', self)
+                uic.loadUi(theme_path / 'widget-floating.ui', self)
         else:
             if isDarkTheme() and conf.load_theme_config(theme)['support_dark_mode']:
-                uic.loadUi(f'{base_directory}/ui/default/dark/widget-floating.ui', self)
+                uic.loadUi(CW_HOME / 'ui/default/dark/widget-floating.ui', self)
             else:
-                uic.loadUi(f'{base_directory}/ui/default/widget-floating.ui', self)
+                uic.loadUi(CW_HOME / 'ui/default/widget-floating.ui', self)
 
         # 设置窗口无边框和透明背景
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
@@ -986,8 +987,8 @@ class FloatingWidget(QWidget):  # 浮窗
         backgnd.setGraphicsEffect(shadow_effect)
 
     def init_font(self):
-        font_path = f'{base_directory}/font/HarmonyOS_Sans_SC_Bold.ttf'
-        font_id = QFontDatabase.addApplicationFont(font_path)
+        font_path = CW_HOME / 'font/HarmonyOS_Sans_SC_Bold.ttf'
+        font_id = QFontDatabase.addApplicationFont(str(font_path))
         if font_id != -1:
             font_family = QFontDatabase.applicationFontFamilies(font_id)[0]
 
@@ -1245,22 +1246,23 @@ class DesktopWidget(QWidget):  # 主要小组件
             logger.error(f"更新插件小组件时出错：{e}")
 
     def init_ui(self, path):
+        ui_path = CW_HOME / 'ui' / str(theme)
         if conf.load_theme_config(theme)['support_dark_mode']:
-            if os.path.exists(f'{base_directory}/ui/{theme}/{path}'):
+            if os.path.exists(ui_path / str(path)):
                 if isDarkTheme():
-                    uic.loadUi(f'{base_directory}/ui/{theme}/dark/{path}', self)
+                    uic.loadUi(ui_path / 'dark' / str(path), self)
                 else:
-                    uic.loadUi(f'{base_directory}/ui/{theme}/{path}', self)
+                    uic.loadUi(ui_path / str(path), self)
             else:
                 if isDarkTheme():
-                    uic.loadUi(f'{base_directory}/ui/{theme}/dark/widget-base.ui', self)
+                    uic.loadUi(ui_path / 'dark/widget-base.ui', self)
                 else:
-                    uic.loadUi(f'{base_directory}/ui/{theme}/widget-base.ui', self)
+                    uic.loadUi(ui_path / 'widget-base.ui', self)
         else:
-            if os.path.exists(f'{base_directory}/ui/{theme}/{path}'):
-                uic.loadUi(f'{base_directory}/ui/{theme}/{path}', self)
+            if os.path.exists(ui_path / path):
+                uic.loadUi(ui_path / path, self)
             else:
-                uic.loadUi(f'{base_directory}/ui/{theme}/widget-base.ui', self)
+                uic.loadUi(ui_path / 'widget-base.ui', self)
 
         # 设置窗口无边框和透明背景
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
@@ -1303,8 +1305,8 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.backgnd.setGraphicsEffect(shadow_effect)
 
     def init_font(self):
-        font_path = f'{base_directory}/font/HarmonyOS_Sans_SC_Bold.ttf'
-        font_id = QFontDatabase.addApplicationFont(font_path)
+        font_path = CW_HOME / 'font/HarmonyOS_Sans_SC_Bold.ttf'
+        font_id = QFontDatabase.addApplicationFont(str(font_path))
         if font_id != -1:
             font_family = QFontDatabase.applicationFontFamilies(font_id)[0]
 
@@ -1478,7 +1480,7 @@ class DesktopWidget(QWidget):  # 主要小组件
                     alert_type = db.get_weather_data('alert', alert_data if alert_data else weather_data)
                     if alert_type:
                         self.alert_icon.setIcon(
-                            db.get_alert_image(alert_type)
+                            db.get_alert_image(str(alert_type))
                         )
                         self.alert_icon.show()
 
@@ -1489,8 +1491,11 @@ class DesktopWidget(QWidget):  # 主要小组件
                                            f"border-image: url({db.get_weather_stylesheet(db.get_weather_data('icon', weather_data))});",
                                            self.backgnd.styleSheet())
                 self.backgnd.setStyleSheet(update_stylesheet)
-            except Exception as e:
-                logger.error(f'天气组件出错：{e}')
+            # except Exception as e:
+            #     logger.error(f'天气组件出错：{e}')
+            finally:
+                # TODO
+                pass
         else:
             logger.error(f'获取天气数据出错：{weather_data}')
 
@@ -1653,7 +1658,7 @@ def check_windows_maximize():  # 检查窗口是否最大化
 def init_config():  # 重设配置文件
     conf.write_conf('Temp', 'set_week', '')
     if conf.read_conf('Temp', 'temp_schedule') != '':  # 修复换课重置
-        copy(f'{base_directory}/config/schedule/backup.json', f'{base_directory}/config/schedule/{filename}')
+        copy(CONFIG_HOME / 'schedule/backup.json', CONFIG_HOME / 'schedule' / str(filename))
         conf.write_conf('Temp', 'temp_schedule', '')
 
 
@@ -1667,7 +1672,7 @@ def init():
 
     theme = conf.read_conf('General', 'theme')  # 主题
 
-    if not os.path.exists(f'{base_directory}/ui/{theme}/theme.json'):
+    if not os.path.exists(CW_HOME / 'ui' / str(theme) / 'theme.json'):
         logger.warning(f'主题 {theme} 不存在，使用默认主题')
         theme = 'default'
 
@@ -1754,9 +1759,11 @@ if __name__ == '__main__':
 
         if conf.read_conf('Other', 'initialstartup') == '1':  # 首次启动
             try:
-                conf.add_shortcut('ClassWidgets.exe', f'{base_directory}/img/favicon.ico')
-                conf.add_shortcut_to_startmenu(f'{base_directory}/ClassWidgets.exe',
-                                               f'{base_directory}/img/favicon.ico')
+                conf.add_shortcut('ClassWidgets.exe', str(CW_HOME / 'img/favicon.ico'))
+                conf.add_shortcut_to_startmenu(
+                    str(CW_HOME / 'ClassWidgets.exe'),
+                    str(CW_HOME / 'img/favicon.ico')
+                )
                 conf.write_conf('Other', 'initialstartup', '')
             except Exception as e:
                 logger.error(f'添加快捷方式失败：{e}')

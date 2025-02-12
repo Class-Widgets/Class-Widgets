@@ -8,9 +8,9 @@ import cses
 from datetime import datetime, timedelta
 from loguru import logger
 
+from basic_dirs import CONFIG_HOME
 import list as list_
 import conf
-from file import base_directory
 
 CSES_WEEKS_TEXTS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 CSES_WEEKS = [1, 2, 3, 4, 5, 6, 7]
@@ -51,10 +51,10 @@ class CSES_Converter:
         将CSES文件转换为Class Widgets格式
         """
         try:
-            with open(f'{base_directory}/config/default.json', 'r', encoding='utf-8') as file:  # 加载默认配置
+            with open(CONFIG_HOME / 'default.json', 'r', encoding='utf-8') as file:  # 加载默认配置
                 cw_format = json.load(file)
         except FileNotFoundError:
-            logger.error(f'File {base_directory}/config/default.json not found')
+            logger.error(f'File {CONFIG_HOME}/default.json not found')
             return False
 
         if not self.parser:
@@ -208,10 +208,10 @@ class CSES_Converter:
         """
         # 科目
         try:
-            with open(f'{base_directory}/config/data/subject.json', 'r', encoding='utf-8') as data:
+            with open(CONFIG_HOME / 'data/subject.json', 'r', encoding='utf-8') as data:
                 cw_subjects = json.load(data)
         except FileNotFoundError:
-            logger.error(f'File {base_directory}/config/data/subject.json not found')
+            logger.error(f'File {CONFIG_HOME}/data/subject.json not found')
             return False
 
         for subject_ in cw_subjects['subject_list']:

@@ -2,12 +2,13 @@ import json
 import os
 import sys
 import configparser as config
-from pathlib import Path
+
 from shutil import copy
 
+from basic_dirs import PLUGIN_HOME, CW_HOME, CONFIG_HOME
 from datetime import datetime
 from loguru import logger
-from file import base_directory, read_conf, write_conf, save_data_to_json, path
+from file import read_conf, write_conf, save_data_to_json, path
 
 import list
 
@@ -17,15 +18,13 @@ if os.name == 'nt':
 conf = config.ConfigParser()
 name = 'Class Widgets'
 
-PLUGINS_DIR = Path(base_directory) / 'plugins'
-
 # app 图标
 if os.name == 'nt':
-    app_icon = os.path.join(base_directory, 'img', 'favicon.ico')
+    app_icon = CW_HOME / 'img' / 'favicon.ico'
 elif os.name == 'darwin':
-    app_icon = os.path.join(base_directory, 'img', 'favicon.icns')
+    app_icon = CW_HOME / 'img' / 'favicon.ico'/'favicon.icns'
 else:
-    app_icon = os.path.join(base_directory, 'img', 'favicon.png')
+    app_icon = CW_HOME / 'img' / 'favicon.png'
 
 
 def load_from_json(filename):
@@ -35,7 +34,8 @@ def load_from_json(filename):
     :return: 返回从文件中加载的数据字典
     """
     try:
-        with open(f'{base_directory}/config/schedule/{filename}', 'r', encoding='utf-8') as file:
+        file_path = CONFIG_HOME / 'schedule' / str(filename)
+        with file_path.open('r', encoding='utf-8') as file:
             data = json.load(file)
             return data
     except Exception as e:
@@ -45,24 +45,29 @@ def load_from_json(filename):
 
 def load_theme_config(theme):
     try:
-        with open(f'{base_directory}/ui/{theme}/theme.json', 'r', encoding='utf-8') as file:
+        file_path = CW_HOME / 'ui' / str(theme) / 'theme.json'
+        with file_path.open('r', encoding='utf-8') as file:
             data = json.load(file)
             return data
     except FileNotFoundError:
         logger.warning(f"主题配置文件 {theme} 不存在，返回默认配置")
-        return f'{base_directory}/ui/default/theme.json'
+        # 未解之谜，为什么这东西要返回地址
+        return str(CW_HOME / 'ui/default/theme.json')
     except Exception as e:
         logger.error(f"加载主题数据时出错: {e}")
         return None
 
 
+PLUGIN_CONFIG_HOME = CONFIG_HOME / 'plugin.json'
+
+
 def load_plugin_config():
     try:
-        if os.path.exists(f'{base_directory}/config/plugin.json'):  # 如果配置文件存在
-            with open(f'{base_directory}/config/plugin.json', 'r', encoding='utf-8') as file:
+        if PLUGIN_CONFIG_HOME.exists():  # 如果配置文件存在
+            with PLUGIN_CONFIG_HOME.open('r', encoding='utf-8') as file:
                 data = json.load(file)
         else:
-            with open(f'{base_directory}/config/plugin.json', 'w', encoding='utf-8') as file:
+            with  PLUGIN_CONFIG_HOME.open('w', encoding='utf-8') as file:
                 data = {"enabled_plugins": []}
                 json.dump(data, file, ensure_ascii=False, indent=4)
         return data
@@ -75,7 +80,7 @@ def save_plugin_config(data):
     data_dict = load_plugin_config()
     data_dict.update(data)
     try:
-        with open(f'{base_directory}/config/plugin.json', 'w', encoding='utf-8') as file:
+        with PLUGIN_CONFIG_HOME.open('w', encoding='utf-8') as file:
             json.dump(data_dict, file, ensure_ascii=False, indent=4)
         return True
     except Exception as e:
@@ -85,8 +90,9 @@ def save_plugin_config(data):
 
 def save_installed_plugin(data):
     data = {"plugins": data}
+    file_path = PLUGIN_HOME / 'plugins_from_pp.json'
     try:
-        with open(f'{base_directory}/plugins/plugins_from_pp.json', 'w', encoding='utf-8') as file:
+        with file_path.open('w', encoding='utf-8') as file:
             json.dump(data, file, ensure_ascii=False, indent=4)
         return True
     except Exception as e:
@@ -95,8 +101,9 @@ def save_installed_plugin(data):
 
 
 def load_theme_width(theme):
+    file_path = CW_HOME / 'ui' / str(theme) / 'theme.json'
     try:
-        with open(f'{base_directory}/ui/{theme}/theme.json', 'r', encoding='utf-8') as file:
+        with file_path.open('r', encoding='utf-8') as file:
             data = json.load(file)
             return data['widget_width']
     except Exception as e:
@@ -267,16 +274,17 @@ def get_is_widget_in(widget='example.ui'):
 def save_widget_conf_to_json(new_data):
     # 初始化 data_dict 为一个空字典
     data_dict = {}
-    if os.path.exists(f'{base_directory}/config/widget.json'):
+    file_path = CONFIG_HOME / 'widget.json'
+    if file_path.exists():
         try:
-            with open(f'{base_directory}/config/widget.json', 'r', encoding='utf-8') as file:
+            with file_path.open('r', encoding='utf-8') as file:
                 data_dict = json.load(file)
         except Exception as e:
             print(f"读取现有数据时出错: {e}")
             return e
     data_dict.update(new_data)
     try:
-        with open(f'{base_directory}/config/widget.json', 'w', encoding='utf-8') as file:
+        with file_path.open('w', encoding='utf-8') as file:
             json.dump(data_dict, file, ensure_ascii=False, indent=4)
         return True
     except Exception as e:
@@ -286,10 +294,10 @@ def save_widget_conf_to_json(new_data):
 
 def load_plugins():  # 加载插件配置文件
     plugin_dict = {}
-    for folder in Path(PLUGINS_DIR).iterdir():
-        if folder.is_dir() and (folder / 'plugin.json').exists():
+    for folder in PLUGIN_HOME.iterdir():
+        if folder.is_dir() and (plugin_json := folder / 'plugin.json').exists():
             try:
-                with open(f'{base_directory}/plugins/{folder.name}/plugin.json', 'r', encoding='utf-8') as file:
+                with plugin_json.open('r', encoding='utf-8') as file:
                     data = json.load(file)
             except Exception as e:
                 logger.error(f"加载插件配置文件数据时出错，将跳过: {e}")  # 跳过奇怪的文件夹
@@ -305,7 +313,7 @@ def load_plugins():  # 加载插件配置文件
 
 def check_config():
     conf = config.ConfigParser()
-    with open(f'{base_directory}/config/default_config.json', 'r', encoding='utf-8') as file:  # 加载默认配置
+    with open(CW_HOME / 'config/default_config.json', 'r', encoding='utf-8') as file:  # 加载默认配置
         default_conf = json.load(file)
 
     if not os.path.exists('config.ini'):  # 如果配置文件不存在，则copy默认配置文件
@@ -317,7 +325,7 @@ def check_config():
             with open(path, 'w', encoding='utf-8') as configfile:
                 conf.write(configfile)
         logger.info("配置文件不存在，已创建并写入默认配置。")
-        copy(f'{base_directory}/config/default.json', f'{base_directory}/config/schedule/新课表 - 1.json')
+        copy(CW_HOME / 'config/default.json', CONFIG_HOME / 'schedule/新课表 - 1.json')
     else:
         with open(path, 'r', encoding='utf-8') as configfile:
             conf.read_file(configfile)
@@ -339,30 +347,28 @@ def check_config():
             except Exception as e:
                 logger.error(f"配置文件更新失败: {e}")
 
-        if not os.path.exists(f"{base_directory}/config/schedule/{read_conf('General', 'schedule')}"):  # 如果config.ini课程表不存在，则创建
+        default_schedule_path = CONFIG_HOME / 'schedule' / str(read_conf('General', 'schedule'))
+        if not default_schedule_path.exists():  # 如果config.ini课程表不存在，则创建
 
             schedule_config = []
             # 遍历目标目录下的所有文件
-            for file_name in os.listdir(f'{base_directory}/config/schedule'):
+            schedule_dir = CONFIG_HOME / 'schedule'
+            if not schedule_dir.exists():
+                schedule_dir.mkdir(parents=True, exist_ok=True)
+            for file_name in os.listdir(CONFIG_HOME / 'schedule'):
                 # 找json
                 if file_name.endswith('.json') and file_name != 'backup.json':
                     # 将文件路径添加到列表
                     schedule_config.append(file_name)
             if not schedule_config:
-                copy(f'{base_directory}/config/default.json', f'{base_directory}/config/schedule/{read_conf("General", "schedule")}')
+                copy(CW_HOME / 'config/default.json', default_schedule_path)
                 logger.info(f"课程表不存在，已创建默认课程表")
             else:
                 write_conf('General', 'schedule', schedule_config[0])
-        print(os.path.join(os.getcwd(), 'config', 'schedule'))
-
-    # 判断是否存在 Plugins 文件夹
-    plugins_dir = Path(base_directory) / 'plugins'
-    if not plugins_dir.exists():
-        plugins_dir.mkdir()
-        logger.info("Plugins 文件夹不存在，已创建。")
+        print(CONFIG_HOME / 'schedule')
 
     # 判断 Plugins 文件夹内是否存在 plugins_from_pp.json 文件
-    plugins_file = plugins_dir / 'plugins_from_pp.json'
+    plugins_file = PLUGIN_HOME / 'plugins_from_pp.json'
     if not plugins_file.exists():
         with open(plugins_file, 'w', encoding='utf-8') as file:
             # 使用 indent=4 来缩进，并确保数组元素在多行显示
