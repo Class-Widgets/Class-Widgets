@@ -716,7 +716,7 @@
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_14">
                 <property name="text">
-                 <string>若启用，在遇到下方设置的特定课程时自动隐藏</string>
+                 <string>若启用，在遇到下方设置的特定课程时自动隐藏，以英文逗号分隔</string>
                 </property>
                 <property name="wordWrap">
                  <bool>false</bool>
