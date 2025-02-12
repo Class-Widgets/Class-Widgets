@@ -1103,8 +1103,8 @@ class FloatingWidget(QWidget):  # 浮窗
         if (
             hasattr(self, "p_Position")
             and self.r_Position == self.p_Position
-            and not self.animating
-        ):  # 开启自动隐藏忽略点击事件
+            
+        ):  
             mgr.show_windows()
             self.close()
 
