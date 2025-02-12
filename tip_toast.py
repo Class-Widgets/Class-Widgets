@@ -62,7 +62,7 @@ class tip_toast(QWidget):
     ):
         super().__init__()
         self.audio_thread = None
-        uic.loadUi(f"{base_directory}/view/widget-toast-bar.ui", self)
+        uic.loadUi(f'{base_directory}/view/widget-toast-bar.ui', self)
 
         # 窗口位置
         if conf.read_conf('Toast', 'pin_on_top') == '1':
