@@ -12,7 +12,9 @@
     "enable_alt_schedule": 0,
     "blur_countdown": 0,
     "theme": "default",
-    "scale": 1
+    "scale": 1,
+    "excluded_lesson": 0,
+    "excluded_lessons": ""
   },
   "Toast": {
     "wave": 1,
