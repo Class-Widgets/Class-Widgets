@@ -34,7 +34,7 @@
     "prepare_class": "7065D8"
   },
   "Plugin": {
-    "version": 1,
+    "version": 2,
     "mirror": "gh_proxy",
     "auto_delay": 5,
     "auto_enable_plugin": 1

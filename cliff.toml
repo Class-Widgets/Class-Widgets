@@ -5,7 +5,7 @@ body = """
 {% for group, commits in commits | group_by(attribute="group") %}
 
     ### {{ group | upper_first }}
-    {% for commit in commits %}
+    {% for commit in commits | unique(attribute="message") %}
         - {% if commit.scope %}{{ commit.scope }}: {%- endif -%}{{ commit.message | upper_first }}\
           {% if commit.remote.username %} by @{{ commit.remote.username }}{%- endif -%}
           {% if commit.remote.pr_number %} in \
@@ -20,10 +20,11 @@ body = """
   ## 新贡献者
 {%- endif %}\
 {% for contributor in github.contributors | filter(attribute="is_first_time", value=true) %}
-  * @{{ contributor.username }} 第一次贡献
-    {%- if contributor.pr_number %} in \
-      [#{{ contributor.pr_number }}]({{ self::remote_url() }}/pull/{{ contributor.pr_number }}) \
-    {%- endif %}
+  * @{{ contributor.username }}  {%- if contributor.pr_number %} 在
+      [#{{ contributor.pr_number }}]({{ self::remote_url() }}/pull/{{ contributor.pr_number }})  \
+    {%- endif %}\
+         第一次贡献
+
 {%- endfor -%}
 {%- endif -%}
 

@@ -1,6 +1,5 @@
 import sys
 
-import pygame
 import os
 from PyQt5 import uic
 from PyQt5.QtCore import Qt, QPropertyAnimation, QRect, QEasingCurve, QTimer, QPoint, pyqtProperty
@@ -11,16 +10,18 @@ from qfluentwidgets import setThemeColor
 
 import conf
 from conf import base_directory
-import list
+import list_
+from file import config_center
+from play_audio import PlayAudio
 
 # 适配高DPI缩放
 QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
 QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
 
-prepare_class = conf.read_conf('Audio', 'prepare_class')
-attend_class = conf.read_conf('Audio', 'attend_class')
-finish_class = conf.read_conf('Audio', 'finish_class')
+prepare_class = config_center.read_conf('Audio', 'prepare_class')
+attend_class = config_center.read_conf('Audio', 'attend_class')
+finish_class = config_center.read_conf('Audio', 'finish_class')
 
 pushed_notification = False
 notification_contents = {"state": None, "lesson_name": None, "title": None, "subtitle": None, "content": None}
@@ -30,17 +31,15 @@ normal_color = '#56CFD8'
 
 window_list = []  # 窗口列表
 
-# 初始化pygame混音器
-pygame.mixer.init()
-
 
 class tip_toast(QWidget):
     def __init__(self, pos, width, state=1, lesson_name=None, title=None, subtitle=None, content=None, icon=None, duration=2000):
         super().__init__()
+        self.audio_thread = None
         uic.loadUi(f"{base_directory}/view/widget-toast-bar.ui", self)
 
         # 窗口位置
-        if conf.read_conf('Toast', 'pin_on_top') == '1':
+        if config_center.read_conf('Toast', 'pin_on_top') == '1':
             self.setWindowFlags(
                 Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.FramelessWindowHint |
                 Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
@@ -70,8 +69,8 @@ class tip_toast(QWidget):
             title_label.setText('活动开始')  # 修正文本，以适应不同场景
             subtitle_label.setText('当前课程')
             lesson.setText(lesson_name)  # 课程名
-            playsound(attend_class)
-            setThemeColor(f"#{conf.read_conf('Color', 'attend_class')}")  # 主题色
+            self.playsound(attend_class)
+            setThemeColor(f"#{config_center.read_conf('Color', 'attend_class')}")  # 主题色
         elif state == 0:
             logger.info('下课铃声显示')
             title_label.setText('下课')
@@ -80,28 +79,28 @@ class tip_toast(QWidget):
             else:
                 subtitle_label.hide()
             lesson.setText(lesson_name)  # 课程名
-            playsound(finish_class)
-            setThemeColor(f"#{conf.read_conf('Color', 'finish_class')}")
+            self.playsound(finish_class)
+            setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}")
         elif state == 2:
             logger.info('放学铃声显示')
             title_label.setText('放学')
             subtitle_label.setText('当前课程已结束')
             lesson.setText('')  # 课程名
-            playsound(finish_class)
-            setThemeColor(f"#{conf.read_conf('Color', 'finish_class')}")
+            self.playsound(finish_class)
+            setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}")
         elif state == 3:
             logger.info('预备铃声显示')
             title_label.setText('即将开始')  # 同上
             subtitle_label.setText('下一节')
             lesson.setText(lesson_name)
-            playsound(prepare_class)
-            setThemeColor(f"#{conf.read_conf('Color', 'prepare_class')}")
+            self.playsound(prepare_class)
+            setThemeColor(f"#{config_center.read_conf('Color', 'prepare_class')}")
         elif state == 4:
             logger.info(f'通知显示: {title}')
             title_label.setText(title)
             subtitle_label.setText(subtitle)
             lesson.setText(content)
-            playsound(prepare_class)
+            self.playsound(prepare_class)
 
         # 设置样式表
         if state == 1:  # 上课铃声
@@ -136,7 +135,7 @@ class tip_toast(QWidget):
 
         # 模糊效果
         self.blur_effect = QGraphicsBlurEffect(self)
-        if conf.read_conf('Toast', 'wave') == '1':
+        if config_center.read_conf('Toast', 'wave') == '1':
             backgnd.setGraphicsEffect(self.blur_effect)
 
         # 设置窗口初始大小
@@ -208,12 +207,20 @@ class tip_toast(QWidget):
         self.deleteLater()
         event.ignore()
 
+    def playsound(self, filename):
+        try:
+            file_path = os.path.join(base_directory, 'audio', filename)
+            self.audio_thread = PlayAudio(str(file_path))
+            self.audio_thread.start()
+        except Exception as e:
+            logger.error(f'播放音频文件失败：{e}')
+
 
 class wave_Effect(QWidget):
     def __init__(self, state=1):
         super().__init__()
 
-        if conf.read_conf('Toast', 'pin_on_top') == '1':
+        if config_center.read_conf('Toast', 'pin_on_top') == '1':
             self.setWindowFlags(
                 Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.FramelessWindowHint |
                 Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
@@ -295,17 +302,6 @@ class wave_Effect(QWidget):
         event.ignore()
 
 
-def playsound(filename):
-    try:
-        file_path = os.path.join(base_directory, 'audio', filename)
-        pygame.mixer.music.load(file_path)
-        volume = int(conf.read_conf('Audio', 'volume')) / 100
-        pygame.mixer.music.set_volume(volume)
-        pygame.mixer.music.play()
-    except Exception as e:
-        logger.error(f'读取音频文件出错：{e}')
-
-
 def generate_gradient_color(theme_color):  # 计算渐变色
     def adjust_color(color, factor):
         r = max(0, min(255, int(color.red() * (1 + factor))))
@@ -326,16 +322,16 @@ def main(state=1, lesson_name='', title='通知示例', subtitle='副标题',
 
     global start_x, start_y, total_width, height, radius, attend_class_color, finish_class_color, prepare_class_color
 
-    widgets = list.get_widget_config()
+    widgets = list_.get_widget_config()
     for widget in widgets:  # 检查组件
-        if widget not in list.widget_name:
+        if widget not in list_.widget_name:
             widgets.remove(widget)  # 移除不存在的组件(确保移除插件后不会出错)
 
-    attend_class_color = f"#{conf.read_conf('Color', 'attend_class')}"
-    finish_class_color = f"#{conf.read_conf('Color', 'finish_class')}"
-    prepare_class_color = f"#{conf.read_conf('Color', 'prepare_class')}"
+    attend_class_color = f"#{config_center.read_conf('Color', 'attend_class')}"
+    finish_class_color = f"#{config_center.read_conf('Color', 'finish_class')}"
+    prepare_class_color = f"#{config_center.read_conf('Color', 'prepare_class')}"
 
-    theme = conf.read_conf('General', 'theme')
+    theme = config_center.read_conf('General', 'theme')
     height = conf.load_theme_config(theme)['height']
     radius = conf.load_theme_config(theme)['radius']
 
@@ -348,14 +344,14 @@ def main(state=1, lesson_name='', title='通知示例', subtitle='副标题',
         try:
             widgets_width += conf.load_theme_width(theme)[widget]
         except KeyError:
-            widgets_width += list.widget_width[widget]
+            widgets_width += list_.widget_width[widget]
         except:
             widgets_width += 0
 
     total_width = widgets_width + spacing * (len(widgets) - 1)
 
     start_x = int((screen_width - total_width) / 2)
-    start_y = int(conf.read_conf('General', 'margin'))
+    start_y = int(config_center.read_conf('General', 'margin'))
 
     if state != 4:
         window = tip_toast((start_x, start_y), total_width, state, lesson_name, duration=duration)
@@ -374,18 +370,18 @@ def main(state=1, lesson_name='', title='通知示例', subtitle='副标题',
     window.show()
     window_list.append(window)
 
-    if conf.read_conf('Toast', 'wave') == '1':
+    if config_center.read_conf('Toast', 'wave') == '1':
         wave = wave_Effect(state)
         wave.show()
         window_list.append(wave)
 
 
 def detect_enable_toast(state=0):
-    if conf.read_conf('Toast', 'attend_class') != '1' and state == 1:
+    if config_center.read_conf('Toast', 'attend_class') != '1' and state == 1:
         return True
-    if conf.read_conf('Toast', 'finish_class') != '1' and state == 0:
+    if config_center.read_conf('Toast', 'finish_class') != '1' and state == 0 or state == 2:
         return True
-    if conf.read_conf('Toast', 'prepare_class') != '1' and state == 3:
+    if config_center.read_conf('Toast', 'prepare_class') != '1' and state == 3:
         return True
     else:
         return False
@@ -410,9 +406,9 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     main(
         state=4,  # 自定义通知
-        title='测试通知喵',
-        subtitle='By Rin.',
-        content='欢迎使用 ClassWidgets',
+        title='天气预报',
+        subtitle='',
+        content='1°~-3° | 3°~-3° | 9°~1°',
         icon='img/favicon.ico',
         duration=2000
     )

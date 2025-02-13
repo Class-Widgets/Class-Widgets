@@ -1,7 +1,6 @@
 import json
 import os
 import shutil
-import time
 import zipfile  # 解压插件zip
 from datetime import datetime
 
@@ -11,7 +10,9 @@ from loguru import logger
 
 import conf
 import utils
+import weather_db as db
 from conf import base_directory
+from file import config_center
 
 headers = {"User-Agent": "Mozilla/5.0", "Cache-Control": "no-cache"}  # 设置请求头
 # proxies = {"http": "http://127.0.0.1:10809", "https": "http://127.0.0.1:10809"}  # 加速访问
@@ -33,9 +34,9 @@ except Exception as e:
 for name in mirror_dict:
     mirror_list.append(name)
 
-if conf.read_conf('Plugin', 'mirror') not in mirror_list:  # 如果当前配置不在镜像列表中，则设置为默认镜像
+if config_center.read_conf('Plugin', 'mirror') not in mirror_list:  # 如果当前配置不在镜像列表中，则设置为默认镜像
     logger.warning(f"当前配置不在镜像列表中，设置为默认镜像: {mirror_list[0]}")
-    conf.write_conf('Plugin', 'mirror', mirror_list[0])
+    config_center.write_conf('Plugin', 'mirror', mirror_list[0])
 
 
 class getRepoFileList(QThread):  # 获取仓库文件目录
@@ -56,7 +57,7 @@ class getRepoFileList(QThread):  # 获取仓库文件目录
 
     def get_plugin_info(self):
         try:
-            mirror_url = mirror_dict[conf.read_conf('Plugin', 'mirror')]
+            mirror_url = mirror_dict[config_center.read_conf('Plugin', 'mirror')]
             url = f"{mirror_url}{self.download_url}"
             response = requests.get(url, proxies=proxies, headers=headers)  # 禁用代理
             if response.status_code == 200:
@@ -88,7 +89,7 @@ class getPluginInfo(QThread):  # 获取插件信息(json)
 
     def get_plugin_info(self):
         try:
-            mirror_url = mirror_dict[conf.read_conf('Plugin', 'mirror')]
+            mirror_url = mirror_dict[config_center.read_conf('Plugin', 'mirror')]
             url = f"{mirror_url}{self.download_url}"
             response = requests.get(url, proxies=proxies, headers=headers)  # 禁用代理
             if response.status_code == 200:
@@ -120,7 +121,7 @@ class getTags(QThread):  # 获取插件标签(json)
 
     def get_plugin_info(self):
         try:
-            mirror_url = mirror_dict[conf.read_conf('Plugin', 'mirror')]
+            mirror_url = mirror_dict[config_center.read_conf('Plugin', 'mirror')]
             url = f"{mirror_url}{self.download_url}"
             response = requests.get(url, proxies=proxies, headers=headers)  # 禁用代理
             if response.status_code == 200:
@@ -154,7 +155,7 @@ class getImg(QThread):  # 获取图片
 
     def get_banner(self):
         try:
-            mirror_url = mirror_dict[conf.read_conf('Plugin', 'mirror')]
+            mirror_url = mirror_dict[config_center.read_conf('Plugin', 'mirror')]
             url = f"{mirror_url}{self.download_url}"
             response = requests.get(url, proxies=proxies, headers=headers)
             if response.status_code == 200:
@@ -183,9 +184,9 @@ class getReadme(QThread):  # 获取README
 
     def get_readme(self):
         try:
-            mirror_url = mirror_dict[conf.read_conf('Plugin', 'mirror')]
+            mirror_url = mirror_dict[config_center.read_conf('Plugin', 'mirror')]
             url = f"{mirror_url}{self.download_url}"
-            print(url)
+            # print(url)
             response = requests.get(url, proxies=proxies)
             if response.status_code == 200:
                 return response.text
@@ -207,7 +208,8 @@ class VersionThread(QThread):  # 获取最新版本号
         version = self.get_latest_version()
         self.version_signal.emit(version)
 
-    def get_latest_version(self):
+    @staticmethod
+    def get_latest_version():
         url = "https://classwidgets.rinlit.cn/version.json"
         try:
             response = requests.get(url, proxies=proxies)
@@ -277,12 +279,15 @@ class DownloadAndExtract(QThread):  # 下载并解压插件
 
             self.status_signal.emit("DOWNLOADING")
             self.download_file(zip_path)
-            self.status_signal.emit("EXATRACTING")
+            self.status_signal.emit("EXTRACTING")
             self.extract_zip(zip_path)
             os.remove(zip_path)
             print(enabled_plugins)
 
-            if self.plugin_name not in enabled_plugins['enabled_plugins'] and conf.read_conf('Plugin', 'auto_enable_plugin') == '1':
+            if (
+                self.plugin_name not in enabled_plugins['enabled_plugins']
+                and config_center.read_conf('Plugin', 'auto_enable_plugin') == '1'
+            ):
                 logger.info(f"自动启用插件: {self.plugin_name}")
                 enabled_plugins['enabled_plugins'].append(self.plugin_name)
                 conf.save_plugin_config(enabled_plugins)
@@ -298,7 +303,7 @@ class DownloadAndExtract(QThread):  # 下载并解压插件
     def download_file(self, file_path):
         # time.sleep(555)  # 模拟下载时间
         try:
-            self.download_url = mirror_dict[conf.read_conf('Plugin', 'mirror')] + self.download_url
+            self.download_url = mirror_dict[config_center.read_conf('Plugin', 'mirror')] + self.download_url
             print(self.download_url)
             response = requests.get(self.download_url, stream=True, proxies=proxies)
             if response.status_code != 200:
@@ -358,8 +363,60 @@ def check_version(version):  # 检查更新
         )
         return False
 
-    channel = int(conf.read_conf("Other", "version_channel"))
+    channel = int(config_center.read_conf("Other", "version_channel"))
     new_version = version['version_release' if channel == 0 else 'version_beta']
 
-    if new_version != conf.read_conf("Other", "version"):
+    if new_version != config_center.read_conf("Other", "version"):
         utils.tray_icon.push_update_notification(f"新版本速递：{new_version}\n请在“设置”中了解更多。")
+
+
+class weatherReportThread(QThread):  # 获取最新天气信息
+    weather_signal = pyqtSignal(dict)
+
+    def __init__(self):
+        super().__init__()
+
+    def run(self):
+        try:
+            weather_data = self.get_weather_data()
+            self.weather_signal.emit(weather_data)
+        except Exception as e:
+            logger.error(f"触发天气信息失败: {e}")
+
+    @staticmethod
+    def get_weather_data():
+        location_key = config_center.read_conf('Weather', 'city')
+        days = 1
+        key = config_center.read_conf('Weather', 'api_key')
+        url = db.get_weather_url().format(location_key=location_key, days=days, key=key)
+        alert_url = db.get_weather_alert_url()
+        try:
+            data_group = {'now': {}, 'alert': {}}
+            response_now = requests.get(url, proxies=proxies)  # 禁用代理
+            if alert_url == 'NotSupported':
+                logger.warning(f"当前API不支持天气预警信息")
+            elif alert_url is None:
+                logger.warning(f"无单独天气预警信息API")
+            else:
+                alert_url = alert_url.format(location_key=location_key, key=key)
+                response_alert = requests.get(alert_url, proxies=proxies)
+
+                if response_alert.status_code == 200:
+                    data_alert = response_alert.json()
+                    data_group['alert'] = data_alert
+                else:
+                    logger.error(f"获取天气预警信息失败：{response_alert.status_code}")
+
+            if response_now.status_code == 200:
+                data = response_now.json()
+                data_group['now'] = data
+                return data_group
+            else:
+                logger.error(f"获取天气信息失败：{response_now.status_code}")
+                return {'error': {'info': {'value': '错误', 'unit': response_now.status_code}}}
+        except requests.exceptions.RequestException as e:  # 请求失败
+            logger.error(f"获取天气信息失败：{e}")
+            return {'error': {'info': {'value': '错误', 'unit': ''}}}
+        except Exception as e:
+            logger.error(f"获取天气信息失败：{e}")
+            return {'error': {'info': {'value': '错误', 'unit': ''}}}

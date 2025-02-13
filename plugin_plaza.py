@@ -17,9 +17,11 @@ from qfluentwidgets import MSFluentWindow, FluentIcon as fIcon, NavigationItemPo
     MessageBox, SwitchButton, SubtitleLabel
 
 import conf
-import list as l
+import list_ as l
 import network_thread as nt
 from conf import base_directory
+from file import config_center
+from plugin import p_loader
 from utils import restart, calculate_size
 
 # 适配高DPI缩放
@@ -42,7 +44,7 @@ installed_plugins = []  # 已安装插件（通过PluginPlaza获取）
 tags = ['示例', '信息展示', '学习', '测试', '工具', '自动化']  # 测试用TAG
 recommend_plugins = ['cw-example-plugin']  # 推荐插件（通过PluginPlaza获取）
 search_items = []
-SELF_PLUGIN_VERSION = conf.read_conf('Plugin', 'version')  # 自身版本号
+SELF_PLUGIN_VERSION = config_center.read_conf('Plugin', 'version')  # 自身版本号
 SEARCH_FIELDS = ["name", "description", "tag", "author"]  # 搜索字段
 
 
@@ -411,6 +413,11 @@ class PluginPlaza(MSFluentWindow):
         try:
             with open(CONF_PATH, 'r', encoding='utf-8') as file:
                 installed_plugins = json.load(file).get('plugins')
+            # 校验
+            for plugin in installed_plugins:
+                if plugin not in p_loader.plugins_name:
+                    logger.warning(f"已在插件广场安装的插件 {plugin} 未找到，可能已遭删除")
+                    installed_plugins.remove(plugin)
         except Exception as e:
             logger.error(f"读取已安装的插件失败: {e}")
         try:
@@ -510,15 +517,15 @@ class PluginPlaza(MSFluentWindow):
         # 选择代理
         select_mirror = self.settingsInterface.findChild(ComboBox, 'select_proxy')
         select_mirror.addItems(nt.mirror_list)
-        select_mirror.setCurrentIndex(nt.mirror_list.index(conf.read_conf('Plugin', 'mirror')))
+        select_mirror.setCurrentIndex(nt.mirror_list.index(config_center.read_conf('Plugin', 'mirror')))
         select_mirror.currentIndexChanged.connect(
-            lambda: conf.write_conf('Plugin', 'mirror', select_mirror.currentText()))
+            lambda: config_center.write_conf('Plugin', 'mirror', select_mirror.currentText()))
 
         # 开关自动启用插件
         auto_enable_plugin = self.settingsInterface.findChild(SwitchButton, 'auto_enable_plugin')
-        auto_enable_plugin.setChecked(int(conf.read_conf('Plugin', 'auto_enable_plugin')))
+        auto_enable_plugin.setChecked(int(config_center.read_conf('Plugin', 'auto_enable_plugin')))
         auto_enable_plugin.checkedChanged.connect(
-            lambda: conf.write_conf('Plugin', 'auto_enable_plugin', int(auto_enable_plugin.isChecked()))
+            lambda: config_center.write_conf('Plugin', 'auto_enable_plugin', int(auto_enable_plugin.isChecked()))
         )
 
     def setup_homeInterface(self):  # 初始化首页

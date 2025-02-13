@@ -12,6 +12,7 @@ config/plugin.json
 config/widget.json
 config/schedule/
 plugins/
+plugins/plugins_from_pp.json
 
 # Distribution / packaging
 .Python

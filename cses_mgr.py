@@ -3,16 +3,26 @@ CSES Format Support
 what is CSES: https://github.com/CSES-org/CSES
 """
 import json
+import typing
 import cses
 from datetime import datetime, timedelta
 from loguru import logger
 
-import list as list_
+import list_ as list_
 import conf
 from file import base_directory
 
 CSES_WEEKS_TEXTS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 CSES_WEEKS = [1, 2, 3, 4, 5, 6, 7]
+
+
+def _get_time(time: typing.Union[str, int]) -> datetime:
+    if isinstance(time, str):
+        return datetime.strptime(str(time), '%H:%M:%S')
+    elif isinstance(time, int):
+        return datetime.strptime(f'{int(time / 60 / 60)}:{int(time / 60 % 60)}:{time % 60}','%H:%M:%S')
+    else:
+        raise ValueError(f'需要 int 或 HH:MM:SS 类型，得到 {type(time)}，值为 {time}')
 
 
 class CSES_Converter:
@@ -72,18 +82,17 @@ class CSES_Converter:
 
                 # 节点
                 if class_ == classes[0]:
-                    time = [int(class_['start_time'].split(':')[0]), int(class_['start_time'].split(':')[1])]
-                    if time in part_list and weeks != 'odd' and weeks != 'even':  # 实现双周时间线
-                        continue  # 跳过重复的节点
-
-                    cw_format['part'][str(part_count)] = time
-                    cw_format['part_name'][str(part_count)] = f'Part {part_count}'
-                    part_count += 1
-                    part_list.append(time)
+                    raw_time = _get_time(class_['start_time'])
+                    time = [raw_time.hour, raw_time.minute]
+                    if time not in part_list:  # 跳过重复的(已创建的)节点
+                        cw_format['part'][str(part_count)] = time
+                        cw_format['part_name'][str(part_count)] = f'Part {part_count}'
+                        part_count += 1
+                        part_list.append(time)
 
                 # 时间线
-                start_time = datetime.strptime(class_['start_time'][:5], '%H:%M')
-                end_time = datetime.strptime(class_['end_time'][:5], '%H:%M')
+                start_time = _get_time(class_['start_time'])
+                end_time = _get_time(class_['end_time'])
                 class_count += 1
 
                 # 计算时长
@@ -162,8 +171,8 @@ class CSES_Converter:
                                 continue
 
                             class_dict['subject'] = subject
-                            class_dict['start_time'] = start_time.strftime('%H:%M')
-                            class_dict['end_time'] = end_time.strftime('%H:%M')
+                            class_dict['start_time'] = start_time.strftime('%H:%M:00')
+                            class_dict['end_time'] = end_time.strftime('%H:%M:00')
 
                             timelines_part[str(day)].append(class_dict)
                         if key[1] == part:  # 时间叠加counter
