@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>791</width>
-    <height>821</height>
+    <width>688</width>
+    <height>1309</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Form</string>
@@ -27,19 +33,12 @@
     <number>24</number>
    </property>
    <property name="bottomMargin">
-    <number>24</number>
+    <number>12</number>
    </property>
    <item>
     <widget class="TitleLabel" name="TitleLabel">
      <property name="text">
       <string>自定义</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="SubtitleLabel" name="SubtitleLabel">
-     <property name="text">
-      <string>小组件</string>
      </property>
     </widget>
    </item>
@@ -54,19 +53,6 @@
     </layout>
    </item>
    <item>
-    <widget class="CaptionLabel" name="CaptionLabel_3">
-     <property name="text">
-      <string>*对小组件的显示、隐藏和拖拽操作将在重启后生效。</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="SmoothScrollArea" name="ct_scroll">
      <property name="styleSheet">
       <string notr="true">background: transparent; border: none</string>
@@ -79,11 +65,24 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>743</width>
-        <height>1187</height>
+        <width>640</width>
+        <height>1244</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_9">
+       <item>
+        <widget class="CaptionLabel" name="CaptionLabel_3">
+         <property name="text">
+          <string>*对小组件的显示、隐藏和拖拽操作将在重启后生效。</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="ListWidget" name="widgets_list">
          <property name="sizePolicy">
@@ -177,6 +176,13 @@
           </widget>
          </item>
         </layout>
+       </item>
+       <item>
+        <widget class="SubtitleLabel" name="SubtitleLabel">
+         <property name="text">
+          <string>小组件</string>
+         </property>
+        </widget>
        </item>
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_3">

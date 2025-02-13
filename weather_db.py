@@ -3,8 +3,8 @@ import sqlite3
 import json
 from loguru import logger
 
-import conf
 from conf import base_directory
+from file import config_center
 
 path = f'{base_directory}/config/data/xiaomi_weather.db'
 api_config = json.load(open(f'{base_directory}/config/data/weather_api.json', encoding='utf-8'))
@@ -12,7 +12,8 @@ api_config = json.load(open(f'{base_directory}/config/data/weather_api.json', en
 
 def update_path():
     global path
-    path = f"{base_directory}/config/data/{api_config['weather_api_parameters'][conf.read_conf('Weather', 'api')]['database']}"
+    path = (f"{base_directory}/config/"
+            f"data/{api_config['weather_api_parameters'][config_center.read_conf('Weather', 'api')]['database']}")
 
 
 def search_by_name(search_term):
@@ -21,10 +22,10 @@ def search_by_name(search_term):
     cursor = conn.cursor()
 
     cursor.execute('SELECT * FROM citys WHERE name LIKE ?', ('%' + search_term + '%',))  # 模糊查询
-    citys_results = cursor.fetchall()
+    cities_results = cursor.fetchall()
     conn.close()
     result_list = []
-    for city in citys_results:
+    for city in cities_results:
         result_list.append(city[2])
     # 返回两个表的搜索结果
     return result_list
@@ -36,11 +37,11 @@ def search_code_by_name(search_term):
     cursor = conn.cursor()
 
     cursor.execute('SELECT * FROM citys WHERE name LIKE ?', ('%' + search_term + '%',))  # 模糊查询
-    citys_results = cursor.fetchall()
+    cities_results = cursor.fetchall()
     conn.close()
 
-    if citys_results:
-        result = citys_results[0][3]
+    if cities_results:
+        result = cities_results[0][3]
     else:
         result = 101010100  # 默认城市代码
     # 返回两个表的搜索结果
@@ -53,12 +54,12 @@ def search_by_num(search_term):
     cursor = conn.cursor()
 
     cursor.execute('SELECT * FROM citys WHERE city_num LIKE ?', ('%' + search_term + '%',))  # 模糊查询
-    citys_results = cursor.fetchall()
+    cities_results = cursor.fetchall()
 
     conn.close()
 
-    if citys_results:
-        result = citys_results[0][2]
+    if cities_results:
+        result = cities_results[0][2]
     else:
         result = '北京'  # 默认城市
     # 返回两个表的搜索结果
@@ -67,7 +68,7 @@ def search_by_num(search_term):
 
 def get_weather_by_code(code):  # 用代码获取天气描述
     weather_status = json.load(
-        open(f"{base_directory}/config/data/{conf.read_conf('Weather', 'api')}_status.json", encoding="utf-8"))
+        open(f"{base_directory}/config/data/{config_center.read_conf('Weather', 'api')}_status.json", encoding="utf-8"))
     for weather in weather_status['weatherinfo']:
         if str(weather['code']) == code:
             return weather['wea']
@@ -76,7 +77,7 @@ def get_weather_by_code(code):  # 用代码获取天气描述
 
 def get_weather_icon_by_code(code):  # 用代码获取天气图标
     weather_status = json.load(
-        open(f"{base_directory}/config/data/{conf.read_conf('Weather', 'api')}_status.json",
+        open(f"{base_directory}/config/data/{config_center.read_conf('Weather', 'api')}_status.json",
              encoding="utf-8")
     )
     weather_code = None
@@ -103,7 +104,7 @@ def get_weather_icon_by_code(code):  # 用代码获取天气图标
 def get_weather_stylesheet(code):  # 天气背景样式
     current_time = datetime.datetime.now()
     weather_status = json.load(
-        open(f"{base_directory}/config/data/{conf.read_conf('Weather', 'api')}_status.json", encoding="utf-8"))
+        open(f"{base_directory}/config/data/{config_center.read_conf('Weather', 'api')}_status.json", encoding="utf-8"))
     weather_code = '99'
     for weather in weather_status['weatherinfo']:
         if str(weather['code']) == code:
@@ -124,19 +125,39 @@ def get_weather_stylesheet(code):  # 天气背景样式
 
 
 def get_weather_url():
-    if conf.read_conf('Weather', 'api') in api_config['weather_api_list']:
-        return api_config['weather_api'][conf.read_conf('Weather', 'api')]
+    if config_center.read_conf('Weather', 'api') in api_config['weather_api_list']:
+        return api_config['weather_api'][config_center.read_conf('Weather', 'api')]
     else:
         return api_config['weather_api']['xiaomi_weather']
 
 
+def get_weather_alert_url():
+    if not api_config['weather_api_parameters'][config_center.read_conf('Weather', 'api')]['alerts']:
+        return 'NotSupported'
+    if config_center.read_conf('Weather', 'api') in api_config['weather_api_list']:
+        return api_config['weather_api_parameters'][config_center.read_conf('Weather', 'api')]['alerts']['url']
+    else:
+        return api_config['weather_api_parameters']['xiaomi_weather']['alerts']['url']
+
+
 def get_weather_code_by_description(value):
     weather_status = json.load(
-        open(f"{base_directory}/config/data/{conf.read_conf('Weather', 'api')}_status.json", encoding="utf-8"))
+        open(f"{base_directory}/config/data/{config_center.read_conf('Weather', 'api')}_status.json", encoding="utf-8"))
     for weather in weather_status['weatherinfo']:
         if str(weather['wea']) == value:
             return str(weather['code'])
     return '99'
+
+
+def get_alert_image(alert_type):
+    alerts_list = api_config['weather_api_parameters'][config_center.read_conf('Weather', 'api')]['alerts']['types']
+    return f'{base_directory}/img/weather/alerts/{alerts_list[alert_type]}'
+
+
+def is_supported_alert():
+    if not api_config['weather_api_parameters'][config_center.read_conf('Weather', 'api')]['alerts']:
+        return False
+    return True
 
 
 def get_weather_data(key='temp', weather_data=None):  # 获取天气数据
@@ -148,23 +169,32 @@ def get_weather_data(key='temp', weather_data=None):  # 获取天气数据
         key值可以为：temp、icon
     '''
     # 各个天气api的可访问值
-    api_parameters = api_config['weather_api_parameters'][conf.read_conf('Weather', 'api')]
-    parameter = api_parameters[key].split('.')
+    api_parameters = api_config['weather_api_parameters'][config_center.read_conf('Weather', 'api')]
+    if key == 'alert':
+        parameter = api_parameters['alerts']['type'].split('.')
+    else:
+        parameter = api_parameters[key].split('.')
     # 遍历获取值
     value = weather_data
-    if conf.read_conf('Weather', 'api') == 'amap_weather':
+    if config_center.read_conf('Weather', 'api') == 'amap_weather':
         value = weather_data['lives'][0][api_parameters[key]]
-    elif conf.read_conf('Weather', 'api') == 'qq_weather':
+    elif config_center.read_conf('Weather', 'api') == 'qq_weather':
         value = str(weather_data['result']['realtime'][0]['infos'][api_parameters[key]])
     else:
         for parameter in parameter:
+            if not value:
+                logger.warning(f'天气信息值{key}为空')
+                return None
+            if parameter == '0':
+                value = value[0]
+                continue
             if parameter in value:
                 value = value[parameter]
             else:
-                logger.error(f'获取天气参数失败，{parameter}不存在于{conf.read_conf("Weather", "api")}中')
+                logger.error(f'获取天气参数失败，{parameter}不存在于{config_center.read_conf("Weather", "api")}中')
                 return '错误'
     if key == 'temp':
-        value += '°C'
+        value += '°'
     elif key == 'icon':  # 修复此代码影响其他天气源的问题
         if api_parameters['return_desc']:  # 如果此api返回的是天气描述而不是代码
             value = get_weather_code_by_description(value)
@@ -176,10 +206,10 @@ if __name__ == '__main__':
     try:
         num_results = search_by_num('101310101')  # [2]城市名称
         print(num_results)
-        citys_results = search_by_name('上海')  # [3]城市代码
-        print(citys_results)
-        citys_results = search_code_by_name('上海')  # [3]城市代码
-        print(citys_results)
+        cities_results_ = search_by_name('上海')  # [3]城市代码
+        print(cities_results_)
+        cities_results_ = search_code_by_name('上海')  # [3]城市代码
+        print(cities_results_)
         get_weather_by_code(3)
     except Exception as e:
         print(e)
