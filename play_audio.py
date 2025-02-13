@@ -7,6 +7,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 from loguru import logger
 
 import conf
+from file import config_center
 from generate_speech import TTSEngine
 
 # 初始化pygame混音器
@@ -45,7 +46,7 @@ def play_audio(file_path: str, tts_delete_after: bool = False):
             raise IOError("音频文件写入超时")
 
         sound = pygame.mixer.Sound(file_path)
-        volume = int(conf.read_conf('Audio', 'volume')) / 100
+        volume = int(config_center.read_conf('Audio', 'volume')) / 100
         pygame.mixer.music.set_volume(volume)
         channel = sound.play()
         while channel.get_busy():

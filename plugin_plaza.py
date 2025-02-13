@@ -18,8 +18,9 @@ from qfluentwidgets import MSFluentWindow, FluentIcon as fIcon, NavigationItemPo
 
 from basic_dirs import CW_HOME, PLUGIN_HOME
 import conf
-import list as l
+import list_ as l
 import network_thread as nt
+from file import config_center
 from plugin import p_loader
 from utils import restart, calculate_size
 
@@ -43,7 +44,7 @@ installed_plugins = []  # 已安装插件（通过PluginPlaza获取）
 tags = ['示例', '信息展示', '学习', '测试', '工具', '自动化']  # 测试用TAG
 recommend_plugins = ['cw-example-plugin']  # 推荐插件（通过PluginPlaza获取）
 search_items = []
-SELF_PLUGIN_VERSION = conf.read_conf('Plugin', 'version')  # 自身版本号
+SELF_PLUGIN_VERSION = config_center.read_conf('Plugin', 'version')  # 自身版本号
 SEARCH_FIELDS = ["name", "description", "tag", "author"]  # 搜索字段
 
 
@@ -516,15 +517,15 @@ class PluginPlaza(MSFluentWindow):
         # 选择代理
         select_mirror = self.settingsInterface.findChild(ComboBox, 'select_proxy')
         select_mirror.addItems(nt.mirror_list)
-        select_mirror.setCurrentIndex(nt.mirror_list.index(conf.read_conf('Plugin', 'mirror')))
+        select_mirror.setCurrentIndex(nt.mirror_list.index(config_center.read_conf('Plugin', 'mirror')))
         select_mirror.currentIndexChanged.connect(
-            lambda: conf.write_conf('Plugin', 'mirror', select_mirror.currentText()))
+            lambda: config_center.write_conf('Plugin', 'mirror', select_mirror.currentText()))
 
         # 开关自动启用插件
         auto_enable_plugin = self.settingsInterface.findChild(SwitchButton, 'auto_enable_plugin')
-        auto_enable_plugin.setChecked(int(conf.read_conf('Plugin', 'auto_enable_plugin')))
+        auto_enable_plugin.setChecked(int(config_center.read_conf('Plugin', 'auto_enable_plugin')))
         auto_enable_plugin.checkedChanged.connect(
-            lambda: conf.write_conf('Plugin', 'auto_enable_plugin', int(auto_enable_plugin.isChecked()))
+            lambda: config_center.write_conf('Plugin', 'auto_enable_plugin', int(auto_enable_plugin.isChecked()))
         )
 
     def setup_homeInterface(self):  # 初始化首页

@@ -13,8 +13,6 @@
 
 <div align="center">
 
-![Repobeats](https://repobeats.axiom.co/api/embed/9d06f1435d1b14cb7837d1e863e55f24cc98df23.svg "Repobeats analytics image")
-
 [![星标](https://img.shields.io/github/stars/Class-Widgets/Class-Widgets?style=for-the-badge&color=orange&label=星标)](https://github.com/Class-Widgets/Class-Widgets)
 [![当前版本](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?style=for-the-badge&color=purple&label=当前版本)](https://github.com/Class-Widgets/Class-Widgets/releases/latest)
 [![测试版](https://img.shields.io/github/v/tag/Class-Widgets/Class-Widgets?include_prereleases&label=当前测试版&color=yellow&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets/releases)
@@ -86,11 +84,12 @@ Copyright © 2025 RinLit.
 - [和风天气图标](https://icons.qweather.com/)（部分图标已做修改）
 - [HarmonyOS Sans](https://developer.huawei.com/consumer/cn/design/resource/)
 
-### 贡献者
+### 贡献
 
 感谢以下同学为 Class Widgets 作出贡献。
 
 [![Contributors](http://contrib.nn.ci/api?repo=Class-Widgets/Class-Widgets&repo=Class-Widgets/plugin-plaza&repo=Class-Widgets/cw-interim-site)](https://github.com/Class-Widgets/Class-Widgets/graphs/contributors)
+![Repobeats](https://repobeats.axiom.co/api/embed/9d06f1435d1b14cb7837d1e863e55f24cc98df23.svg "Repobeats analytics image")
 
 如果您想要为 Class Widgets 作出贡献，请阅读[贡献指南](CONTRIBUTING.md)
 
@@ -108,7 +107,7 @@ Copyright © 2025 RinLit.
     </td>
     <td>
     Free code signing on Windows provided by <a href="https://signpath.io">SignPath.io</a>, certficate by <a href="https://signpath.org/">SignPath Foundation</a><br/>
-    由 <a href="https://signpath.io">SignPath.io</a> 提供代码签名，由 <a href="https://signpath.org">SignPath Foundation</a> 提供证书
+    由 <a href="https://signpath.io">SignPath.io</a> 提供 Windows 上的免费代码签名，由 <a href="https://signpath.org">SignPath Foundation</a> 提供证书
     </td>
   </tr>
 </table>

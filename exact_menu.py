@@ -9,12 +9,14 @@ from PyQt5.QtWidgets import QApplication, QScroller
 from loguru import logger
 from qfluentwidgets import FluentWindow, FluentIcon as fIcon, ComboBox, \
     PrimaryPushButton, Flyout, FlyoutAnimationType, InfoBarIcon, ListWidget, LineEdit, ToolButton, HyperlinkButton, \
-    SmoothScroll, SmoothScrollArea, Dialog
+    SmoothScrollArea, Dialog
 
-import conf
-import list
 from basic_dirs import CONFIG_HOME, CW_HOME
+from file import config_center, schedule_center
 from menu import SettingsMenu
+import conf
+import file
+import list_
 
 # 适配高DPI缩放
 QApplication.setHighDpiScaleFactorRoundingPolicy(
@@ -24,13 +26,12 @@ QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
 
 settings = None
 
-filename = conf.read_conf('General', 'schedule')
 current_week = dt.datetime.today().weekday()
 temp_schedule = {'schedule': {}, 'schedule_even': {}}
 
 
 def open_settings():
-    if conf.read_conf('Temp', 'temp_schedule'):
+    if config_center.read_conf('Temp', 'temp_schedule'):
         w = Dialog(
             "暂时无法使用“设置”",
             "由于您正在使用临时课表，将无法使用“设置”的课程表功能；\n若要启用“设置”，请重新启动 Class Widgets。"
@@ -73,7 +74,7 @@ class ExactMenu(FluentWindow):
         ex_scroll = self.findChild(SmoothScrollArea, 'ex_scroll')
         QScroller.grabGesture(ex_scroll, QScroller.LeftMouseButtonGesture)
         select_temp_week = self.findChild(ComboBox, 'select_temp_week')  # 选择替换日期
-        select_temp_week.addItems(list.week)
+        select_temp_week.addItems(list_.week)
         select_temp_week.setCurrentIndex(current_week)
         select_temp_week.currentIndexChanged.connect(self.refresh_schedule_list)  # 日期选择变化
 
@@ -82,7 +83,7 @@ class ExactMenu(FluentWindow):
         tmp_schedule_list.itemChanged.connect(self.upload_item)
 
         class_kind_combo = self.findChild(ComboBox, 'class_combo')  # 课程类型
-        class_kind_combo.addItems(list.class_kind)
+        class_kind_combo.addItems(list_.class_kind)
 
         set_button = self.findChild(ToolButton, 'set_button')
         set_button.setIcon(fIcon.EDIT)
@@ -94,24 +95,23 @@ class ExactMenu(FluentWindow):
         redirect_to_settings = self.findChild(HyperlinkButton, 'redirect_to_settings')
         redirect_to_settings.clicked.connect(open_settings)
 
-    def load_schedule(self):
-        global filename
-        filename = conf.read_conf('General', 'schedule')
+    @staticmethod
+    def load_schedule():
         if conf.get_week_type():
-            return conf.load_from_json(filename)['schedule_even'][str(current_week)]
+            return schedule_center.schedule_data['schedule_even'][str(current_week)]
         else:
-            return conf.load_from_json(filename)['schedule'][str(current_week)]
+            return schedule_center.schedule_data['schedule'][str(current_week)]
 
     def save_temp_conf(self):
         try:
             temp_week = self.findChild(ComboBox, 'select_temp_week')
             if temp_schedule != {'schedule': {}, 'schedule_even': {}}:
-                if conf.read_conf('Temp', 'temp_schedule') == '':  # 备份检测
-                    copy(CONFIG_HOME / 'schedule' / filename, CONFIG_HOME / 'config/schedule/backup.json')  # 备份课表配置
-                    logger.info(f'备份课表配置成功：已将 {filename} -备份至-> backup.json')
-                    conf.write_conf('Temp', 'temp_schedule', filename)
-                conf.save_data_to_json(temp_schedule, filename)
-            conf.write_conf('Temp', 'set_week', str(temp_week.currentIndex()))
+                if config_center.read_conf('Temp', 'temp_schedule') == '':  # 备份检测
+                    copy(CONFIG_HOME / 'schedule' / config_center.schedule_name, CONFIG_HOME / 'config/schedule/backup.json')  # 备份课表配置
+                    logger.info(f'备份课表配置成功：已将 {config_center.schedule_name} -备份至-> backup.json')
+                    config_center.write_conf('Temp', 'temp_schedule', config_center.schedule_name)
+                file.save_data_to_json(temp_schedule, config_center.schedule_name)
+            config_center.write_conf('Temp', 'set_week', str(temp_week.currentIndex()))
             Flyout.create(
                 icon=InfoBarIcon.SUCCESS,
                 title='保存成功',
@@ -138,16 +138,20 @@ class ExactMenu(FluentWindow):
         tmp_schedule_list = self.findChild(ListWidget, 'schedule_list')  # 换课列表
         tmp_schedule_list.clear()
         tmp_schedule_list.clearSelection()
-        if conf.read_conf('Temp', 'temp_schedule') == '':
+        if config_center.read_conf('Temp', 'temp_schedule') == '':
             if conf.get_week_type():
-                tmp_schedule_list.addItems(conf.load_from_json(filename)['schedule_even'][str(current_week)])
+                tmp_schedule_list.addItems(
+                    schedule_center.schedule_data['schedule_even'][str(current_week)]
+                )
             else:
-                tmp_schedule_list.addItems(conf.load_from_json(filename)['schedule'][str(current_week)])
+                tmp_schedule_list.addItems(
+                    schedule_center.schedule_data['schedule'][str(current_week)]
+                )
         else:
             if conf.get_week_type():
-                tmp_schedule_list.addItems(conf.load_from_json('backup.json')['schedule_even'][str(current_week)])
+                tmp_schedule_list.addItems(file.load_from_json('backup.json')['schedule_even'][str(current_week)])
             else:
-                tmp_schedule_list.addItems(conf.load_from_json('backup.json')['schedule'][str(current_week)])
+                tmp_schedule_list.addItems(file.load_from_json('backup.json')['schedule'][str(current_week)])
 
     def upload_item(self):
         global temp_schedule

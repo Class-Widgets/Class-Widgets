@@ -28,14 +28,14 @@ class PluginLoader:  # 插件加载器
                 module_name = f"{relative_path}.{folder.name}"
                 module = importlib.import_module(module_name)
 
-                if hasattr(module, 'Settings'):
+                if hasattr(module, 'Settings'):  # 设置页
                     plugin_class = getattr(module, "Settings")  # 获取 Plugin 类
                     # 实例化插件
                     self.plugins_settings[folder.name] = plugin_class(str(folder))
 
                 if not self.manager:
                     continue
-                if hasattr(module, 'Plugin'):
+                if hasattr(module, 'Plugin'):  # 插件入口
                     plugin_class = getattr(module, "Plugin")  # 获取 Plugin 类
                     # 实例化插件
                     self.plugins_dict[folder.name] = plugin_class(

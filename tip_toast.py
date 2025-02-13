@@ -8,9 +8,10 @@ from PyQt5.QtWidgets import QWidget, QApplication, QLabel, QFrame, QGraphicsBlur
 from loguru import logger
 from qfluentwidgets import setThemeColor
 
-from basic_dirs import CW_HOME
 import conf
-import list
+import list_
+from basic_dirs import CW_HOME
+from file import config_center
 from play_audio import PlayAudio
 
 # 适配高DPI缩放
@@ -18,9 +19,9 @@ QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPo
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
 QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
 
-prepare_class = conf.read_conf('Audio', 'prepare_class')
-attend_class = conf.read_conf('Audio', 'attend_class')
-finish_class = conf.read_conf('Audio', 'finish_class')
+prepare_class = config_center.read_conf('Audio', 'prepare_class')
+attend_class = config_center.read_conf('Audio', 'attend_class')
+finish_class = config_center.read_conf('Audio', 'finish_class')
 
 pushed_notification = False
 notification_contents = {"state": None, "lesson_name": None, "title": None, "subtitle": None, "content": None}
@@ -38,7 +39,7 @@ class tip_toast(QWidget):
         uic.loadUi(CW_HOME / "view/widget-toast-bar.ui", self)
 
         # 窗口位置
-        if conf.read_conf('Toast', 'pin_on_top') == '1':
+        if config_center.read_conf('Toast', 'pin_on_top') == '1':
             self.setWindowFlags(
                 Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.FramelessWindowHint |
                 Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
@@ -69,7 +70,7 @@ class tip_toast(QWidget):
             subtitle_label.setText('当前课程')
             lesson.setText(lesson_name)  # 课程名
             self.playsound(attend_class)
-            setThemeColor(f"#{conf.read_conf('Color', 'attend_class')}")  # 主题色
+            setThemeColor(f"#{config_center.read_conf('Color', 'attend_class')}")  # 主题色
         elif state == 0:
             logger.info('下课铃声显示')
             title_label.setText('下课')
@@ -79,21 +80,21 @@ class tip_toast(QWidget):
                 subtitle_label.hide()
             lesson.setText(lesson_name)  # 课程名
             self.playsound(finish_class)
-            setThemeColor(f"#{conf.read_conf('Color', 'finish_class')}")
+            setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}")
         elif state == 2:
             logger.info('放学铃声显示')
             title_label.setText('放学')
             subtitle_label.setText('当前课程已结束')
             lesson.setText('')  # 课程名
             self.playsound(finish_class)
-            setThemeColor(f"#{conf.read_conf('Color', 'finish_class')}")
+            setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}")
         elif state == 3:
             logger.info('预备铃声显示')
             title_label.setText('即将开始')  # 同上
             subtitle_label.setText('下一节')
             lesson.setText(lesson_name)
             self.playsound(prepare_class)
-            setThemeColor(f"#{conf.read_conf('Color', 'prepare_class')}")
+            setThemeColor(f"#{config_center.read_conf('Color', 'prepare_class')}")
         elif state == 4:
             logger.info(f'通知显示: {title}')
             title_label.setText(title)
@@ -134,7 +135,7 @@ class tip_toast(QWidget):
 
         # 模糊效果
         self.blur_effect = QGraphicsBlurEffect(self)
-        if conf.read_conf('Toast', 'wave') == '1':
+        if config_center.read_conf('Toast', 'wave') == '1':
             backgnd.setGraphicsEffect(self.blur_effect)
 
         # 设置窗口初始大小
@@ -208,7 +209,7 @@ class tip_toast(QWidget):
 
     def playsound(self, filename):
         try:
-            file_path = os.path.join(base_directory, 'audio', filename)
+            file_path = CW_HOME / 'audio' / str(filename)
             self.audio_thread = PlayAudio(str(file_path))
             self.audio_thread.start()
         except Exception as e:
@@ -219,7 +220,7 @@ class wave_Effect(QWidget):
     def __init__(self, state=1):
         super().__init__()
 
-        if conf.read_conf('Toast', 'pin_on_top') == '1':
+        if config_center.read_conf('Toast', 'pin_on_top') == '1':
             self.setWindowFlags(
                 Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.FramelessWindowHint |
                 Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
@@ -321,16 +322,16 @@ def main(state=1, lesson_name='', title='通知示例', subtitle='副标题',
 
     global start_x, start_y, total_width, height, radius, attend_class_color, finish_class_color, prepare_class_color
 
-    widgets = list.get_widget_config()
+    widgets = list_.get_widget_config()
     for widget in widgets:  # 检查组件
-        if widget not in list.widget_name:
+        if widget not in list_.widget_name:
             widgets.remove(widget)  # 移除不存在的组件(确保移除插件后不会出错)
 
-    attend_class_color = f"#{conf.read_conf('Color', 'attend_class')}"
-    finish_class_color = f"#{conf.read_conf('Color', 'finish_class')}"
-    prepare_class_color = f"#{conf.read_conf('Color', 'prepare_class')}"
+    attend_class_color = f"#{config_center.read_conf('Color', 'attend_class')}"
+    finish_class_color = f"#{config_center.read_conf('Color', 'finish_class')}"
+    prepare_class_color = f"#{config_center.read_conf('Color', 'prepare_class')}"
 
-    theme = conf.read_conf('General', 'theme')
+    theme = config_center.read_conf('General', 'theme')
     height = conf.load_theme_config(theme)['height']
     radius = conf.load_theme_config(theme)['radius']
 
@@ -343,14 +344,14 @@ def main(state=1, lesson_name='', title='通知示例', subtitle='副标题',
         try:
             widgets_width += conf.load_theme_width(theme)[widget]
         except KeyError:
-            widgets_width += list.widget_width[widget]
+            widgets_width += list_.widget_width[widget]
         except:
             widgets_width += 0
 
     total_width = widgets_width + spacing * (len(widgets) - 1)
 
     start_x = int((screen_width - total_width) / 2)
-    start_y = int(conf.read_conf('General', 'margin'))
+    start_y = int(config_center.read_conf('General', 'margin'))
 
     if state != 4:
         window = tip_toast((start_x, start_y), total_width, state, lesson_name, duration=duration)
@@ -369,18 +370,18 @@ def main(state=1, lesson_name='', title='通知示例', subtitle='副标题',
     window.show()
     window_list.append(window)
 
-    if conf.read_conf('Toast', 'wave') == '1':
+    if config_center.read_conf('Toast', 'wave') == '1':
         wave = wave_Effect(state)
         wave.show()
         window_list.append(wave)
 
 
 def detect_enable_toast(state=0):
-    if conf.read_conf('Toast', 'attend_class') != '1' and state == 1:
+    if config_center.read_conf('Toast', 'attend_class') != '1' and state == 1:
         return True
-    if conf.read_conf('Toast', 'finish_class') != '1' and state == 0 or state == 2:
+    if config_center.read_conf('Toast', 'finish_class') != '1' and state == 0 or state == 2:
         return True
-    if conf.read_conf('Toast', 'prepare_class') != '1' and state == 3:
+    if config_center.read_conf('Toast', 'prepare_class') != '1' and state == 3:
         return True
     else:
         return False

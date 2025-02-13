@@ -1,16 +1,16 @@
+from path import Path
+from shutil import copy
+import configparser as config
 import json
 import os
 import sys
-import configparser as config
 
-from shutil import copy
+from loguru import logger
 
 from basic_dirs import PLUGIN_HOME, CW_HOME, CONFIG_HOME
 from datetime import datetime
-from loguru import logger
-from file import read_conf, write_conf, save_data_to_json, path
-
-import list
+from file import path, config_center
+import list_
 
 if os.name == 'nt':
     from win32com.client import Dispatch
@@ -25,22 +25,6 @@ elif os.name == 'darwin':
     app_icon = CW_HOME / 'img' / 'favicon.ico'/'favicon.icns'
 else:
     app_icon = CW_HOME / 'img' / 'favicon.png'
-
-
-def load_from_json(filename):
-    """
-    从 JSON 文件中加载数据。
-    :param filename: 要加载的文件
-    :return: 返回从文件中加载的数据字典
-    """
-    try:
-        file_path = CONFIG_HOME / 'schedule' / str(filename)
-        with file_path.open('r', encoding='utf-8') as file:
-            data = json.load(file)
-            return data
-    except Exception as e:
-        logger.error(f"加载数据时出错: {e}")
-        return None
 
 
 def load_theme_config(theme):
@@ -108,21 +92,24 @@ def load_theme_width(theme):
             return data['widget_width']
     except Exception as e:
         logger.error(f"加载主题宽度时出错: {e}")
-        return list.widget_width
+        return list_.widget_width
 
 
 def is_temp_week():
-    if read_conf('Temp', 'set_week') is None or read_conf('Temp', 'set_week') == '':
+    if config_center.read_conf('Temp', 'set_week') is None or config_center.read_conf('Temp', 'set_week') == '':
         return False
     else:
-        return read_conf('Temp', 'set_week')
+        return config_center.read_conf('Temp', 'set_week')
 
 
 def is_temp_schedule():
-    if read_conf('Temp', 'temp_schedule') is None or read_conf('Temp', 'temp_schedule') == '':
+    if (
+        config_center.read_conf('Temp', 'temp_schedule') is None
+        or config_center.read_conf('Temp', 'temp_schedule') == ''
+    ):
         return False
     else:
-        return read_conf('Temp', 'temp_schedule')
+        return config_center.read_conf('Temp', 'temp_schedule')
 
 
 def add_shortcut_to_startmenu(file='', icon=''):
@@ -226,7 +213,7 @@ def remove_from_startup():
 
 
 def get_time_offset():  # 获取时差偏移
-    time_offset = read_conf('General', 'time_offset')
+    time_offset = config_center.read_conf('General', 'time_offset')
     if time_offset is None or time_offset == '' or time_offset == '0':
         return 0
     else:
@@ -234,7 +221,7 @@ def get_time_offset():  # 获取时差偏移
 
 
 def get_custom_countdown():  # 获取自定义倒计时
-    custom_countdown = read_conf('Date', 'countdown_date')
+    custom_countdown = config_center.read_conf('Date', 'countdown_date')
     if custom_countdown is None or custom_countdown == '':
         return '未设置'
     else:
@@ -250,8 +237,8 @@ def get_custom_countdown():  # 获取自定义倒计时
 
 
 def get_week_type():  # 获取单双周
-    if read_conf('Date', 'start_date') != '':
-        start_date = read_conf('Date', 'start_date')
+    if config_center.read_conf('Date', 'start_date') != '':
+        start_date = config_center.read_conf('Date', 'start_date')
         start_date = datetime.strptime(start_date, '%Y-%m-%d')
         today = datetime.now()
         week_num = (today - start_date).days // 7 + 1
@@ -264,7 +251,7 @@ def get_week_type():  # 获取单双周
 
 
 def get_is_widget_in(widget='example.ui'):
-    widgets_list = list.get_widget_config()
+    widgets_list = list_.get_widget_config()
     if widget in widgets_list:
         return True
     else:
@@ -312,43 +299,44 @@ def load_plugins():  # 加载插件配置文件
 
 
 def check_config():
-    conf = config.ConfigParser()
+    config_ = config.ConfigParser()
     with open(CW_HOME / 'config/default_config.json', 'r', encoding='utf-8') as file:  # 加载默认配置
         default_conf = json.load(file)
 
     if not os.path.exists('config.ini'):  # 如果配置文件不存在，则copy默认配置文件
-        conf.read_dict(default_conf)
+        config_.read_dict(default_conf)
         with open(path, 'w', encoding='utf-8') as configfile:
-            conf.write(configfile)
+            config_.write(configfile)
         if sys.platform != 'win32':
-            conf.set('General', 'hide_method', '2')
+            config_.set('General', 'hide_method', '2')
             with open(path, 'w', encoding='utf-8') as configfile:
-                conf.write(configfile)
+                config_.write(configfile)
         logger.info("配置文件不存在，已创建并写入默认配置。")
         copy(CW_HOME / 'config/default.json', CONFIG_HOME / 'schedule/新课表 - 1.json')
     else:
         with open(path, 'r', encoding='utf-8') as configfile:
-            conf.read_file(configfile)
+            config_.read_file(configfile)
 
-        if conf['Other']['version'] != default_conf['Other']['version']:  # 如果配置文件版本不同，则更新配置文件
+        if config_['Other']['version'] != default_conf['Other']['version']:  # 如果配置文件版本不同，则更新配置文件
             logger.info(f"配置文件版本不同，将重新适配")
             try:
                 for section, options in default_conf.items():
-                    if section not in conf:
-                        conf[section] = options
+                    if section not in config_:
+                        config_[section] = options
                     else:
                         for key, value in options.items():
-                            if key not in conf[section]:
-                                conf[section][key] = str(value)
-                conf.set('Other', 'version', default_conf['Other']['version'])
+                            if key not in config_[section]:
+                                config_[section][key] = str(value)
+                config_.set('Other', 'version', default_conf['Other']['version'])
                 with open(path, 'w', encoding='utf-8') as configfile:
-                    conf.write(configfile)
+                    config_.write(configfile)
                 logger.info(f"配置文件已更新")
             except Exception as e:
                 logger.error(f"配置文件更新失败: {e}")
 
-        default_schedule_path = CONFIG_HOME / 'schedule' / str(read_conf('General', 'schedule'))
-        if not default_schedule_path.exists():  # 如果config.ini课程表不存在，则创建
+        default_schedule_path = CONFIG_HOME / 'schedule' / str(config_['General']['schedule'])
+        if not default_schedule_path.exists():
+            '''如果config.ini课程表不存在，则创建'''
 
             schedule_config = []
             # 遍历目标目录下的所有文件
@@ -361,11 +349,14 @@ def check_config():
                     # 将文件路径添加到列表
                     schedule_config.append(file_name)
             if not schedule_config:
-                copy(CW_HOME / 'config/default.json', default_schedule_path)
-                logger.info(f"课程表不存在，已创建默认课程表")
+                copy(
+                    CW_HOME / 'config/default.json',
+                    CONFIG_HOME / 'schedule/{config_center.read_conf("General", "schedule")}'
+                )
+                logger.info("课程表不存在，已创建默认课程表")
             else:
-                write_conf('General', 'schedule', schedule_config[0])
-        print(CONFIG_HOME / 'schedule')
+                config_center.write_conf('General', 'schedule', schedule_config[0])
+        print(os.path.join(os.getcwd(), 'config', 'schedule'))
 
     # 判断 Plugins 文件夹内是否存在 plugins_from_pp.json 文件
     plugins_file = PLUGIN_HOME / 'plugins_from_pp.json'
