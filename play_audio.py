@@ -18,22 +18,23 @@ sound = None
 class PlayAudio(QThread):
     play_back_signal = pyqtSignal(bool)
 
-    def __init__(self, file_path: str, tts_delete_after: bool = False):
+    def __init__(self, file_path: str, tts_delete_after: bool = False, vol: int = -1):
         super().__init__()
         self.file_path = file_path
         self.tts_delete_after = tts_delete_after
+        self.vol = vol
 
     def run(self):
-        play_audio(self.file_path, self.tts_delete_after)
+        play_audio(self.file_path, self.tts_delete_after, self.vol)
         self.play_back_signal.emit(True)
 
 
-def play_audio(file_path: str, tts_delete_after: bool = False):
+def play_audio(file_path: str, tts_delete_after: bool = False, vol: int = -1):
     global sound
     try:
         if not os.path.exists(file_path):
             raise FileNotFoundError(f"音频文件不存在: {file_path}")
-
+        
         if not pygame.mixer.get_init():
             pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=2048)
 
@@ -46,8 +47,11 @@ def play_audio(file_path: str, tts_delete_after: bool = False):
             raise IOError("音频文件写入超时")
 
         sound = pygame.mixer.Sound(file_path)
-        volume = int(config_center.read_conf('Audio', 'volume')) / 100
-        pygame.mixer.music.set_volume(volume)
+        if vol == -1:
+            volume = int(config_center.read_conf('Audio', 'volume')) / 100
+        else:
+            volume = float(vol / 100)
+        sound.set_volume(volume)
         channel = sound.play()
         while channel.get_busy():
             pygame.time.wait(100)

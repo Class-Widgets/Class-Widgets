@@ -657,18 +657,20 @@ class PluginMethod:  # 插件方法
         )
 
     @staticmethod
-    def play_audio(file_path: str, tts_delete_after: bool = True):
+    def play_audio(file_path: str, tts_delete_after: bool = True, vol: int = -1):
         """
         播放音频文件
-
+    
         参数：
         file_path (str): 要播放的音频文件路径
         tts_delete_after (bool): 播放后是否删除文件（默认True）
-
+        vol (int): 音量大小（[-1,100]的整数，默认-1即读取主程序配置）
+    
         说明：
         - 删除操作有重试机制（3次尝试）
         """
-        play_audio(file_path, tts_delete_after)
+        play_audio(file_path, tts_delete_after, vol)
+
 
 
 class WidgetsManager:
