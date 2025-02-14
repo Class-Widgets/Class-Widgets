@@ -217,10 +217,10 @@ def get_part():
 
 def get_excluded_lessons():
     global excluded_lessons
-    if conf.read_conf('General', 'excluded_lesson') == "0":
+    if config_center.read_conf('General', 'excluded_lesson') == "0":
         excluded_lessons = []
         return 
-    excluded_lessons_raw = conf.read_conf('General', 'excluded_lessons')
+    excluded_lessons_raw = config_center.read_conf('General', 'excluded_lessons')
     excluded_lessons = excluded_lessons_raw.split(',') if excluded_lessons_raw != '' else []
 
 # 获取当前活动

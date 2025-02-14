@@ -834,13 +834,13 @@ class SettingsMenu(FluentWindow):
         # 最小化为浮窗
 
         switch_enable_exclude = self.adInterface.findChild(SwitchButton, 'switch_exclude_startup')
-        switch_enable_exclude.setChecked(int(conf.read_conf('General', 'excluded_lesson')))
+        switch_enable_exclude.setChecked(int(config_center.read_conf('General', 'excluded_lesson')))
         switch_enable_exclude.checkedChanged.connect(lambda checked: switch_checked('General', 'excluded_lesson', checked))
         # 允许排除课程
 
         exclude_lesson = self.adInterface.findChild(LineEdit, 'excluded_lessons')
-        exclude_lesson.setText(conf.read_conf('General', 'excluded_lessons'))
-        exclude_lesson.textChanged.connect(lambda: conf.write_conf('General', 'excluded_lessons', exclude_lesson.text()))
+        exclude_lesson.setText(config_center.read_conf('General', 'excluded_lessons'))
+        exclude_lesson.textChanged.connect(lambda: config_center.write_conf('General', 'excluded_lessons', exclude_lesson.text()))
         # 排除课程
 
         switch_enable_alt_schedule = self.adInterface.findChild(SwitchButton, 'switch_enable_alt_schedule')
