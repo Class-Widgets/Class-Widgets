@@ -64,4 +64,6 @@ def play_audio(file_path: str, tts_delete_after: bool = False):
         # 确保释放音频资源
         if 'sound' in locals():
             sound.stop()
-        pygame.mixer.quit()
+        if not pygame.mixer.get_busy:
+            pygame.mixer.quit()
+
