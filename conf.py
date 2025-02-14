@@ -230,7 +230,8 @@ def get_custom_countdown():  # 获取自定义倒计时
 
 def get_week_type(): 
     if (temp_schedule:=config_center.read_conf('Temp', 'set_schedule')) != '': # 获取单双周
-        return int(temp_schedule)
+        if temp_schedule != None:
+            return int(temp_schedule)
     if config_center.read_conf('Date', 'start_date') != '':
         start_date = config_center.read_conf('Date', 'start_date')
         start_date = datetime.strptime(start_date, '%Y-%m-%d')

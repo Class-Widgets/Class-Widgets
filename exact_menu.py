@@ -149,7 +149,7 @@ class ExactMenu(FluentWindow):
         tmp_schedule_list.clear()
         tmp_schedule_list.clearSelection()
         if config_center.read_conf('Temp', 'temp_schedule') == '':
-            if conf.get_week_type():
+            if current_schedule:
                 tmp_schedule_list.addItems(
                     schedule_center.schedule_data['schedule_even'][str(current_week)]
                 )
@@ -158,7 +158,7 @@ class ExactMenu(FluentWindow):
                     schedule_center.schedule_data['schedule'][str(current_week)]
                 )
         else:
-            if conf.get_week_type():
+            if current_schedule:
                 tmp_schedule_list.addItems(file.load_from_json('backup.json')['schedule_even'][str(current_week)])
             else:
                 tmp_schedule_list.addItems(file.load_from_json('backup.json')['schedule'][str(current_week)])

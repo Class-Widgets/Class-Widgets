@@ -219,7 +219,7 @@ def get_part():
 def get_current_lessons():  # 获取当前课程
     global current_lessons
     timeline = get_timeline_data()
-    if config_center.read_conf('General', 'enable_alt_schedule') == '1':
+    if config_center.read_conf('General', 'enable_alt_schedule') == '1' or conf.is_temp_week():
         try:
             if conf.get_week_type():
                 schedule = loaded_data.get('schedule_even')
