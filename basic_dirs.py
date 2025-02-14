@@ -9,7 +9,7 @@ CW_HOME = Path(__file__).parent
 if str(CW_HOME).endswith("MacOS"):
     CW_HOME = Path(__file__).absolute().parent.parent / "Resources"
 
-IS_NOT_PORTABLE = os.environ.get("CLASSWIDGETS_NOT_PORTABLE", "") != ""
+IS_PORTABLE = os.environ.get("CLASSWIDGETS_NOT_PORTABLE", "") == ""
 
 
 def _ensure_dir(path: Path) -> Path:
@@ -27,7 +27,7 @@ def _get_app_dir(
     xdg_fallback: str,
 ) -> Path:
     """获取应用目录的通用实现"""
-    if IS_NOT_PORTABLE:
+    if IS_PORTABLE:
         return _ensure_dir(CW_HOME / default_subdir)
 
     # 处理自定义路径
