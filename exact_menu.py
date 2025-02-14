@@ -79,7 +79,7 @@ class ExactMenu(FluentWindow):
         select_temp_week.currentIndexChanged.connect(self.refresh_schedule_list)  # 日期选择变化
 
         select_temp_schedule = self.findChild(ComboBox, 'select_temp_schedule')  # 选择替换课表
-        select_temp_schedule.addItems(list.week_type)
+        select_temp_schedule.addItems(list_.week_type)
         select_temp_schedule.setCurrentIndex(conf.get_week_type())
         select_temp_schedule.currentIndexChanged.connect(self.refresh_schedule_list) # 日期选择变化
 
