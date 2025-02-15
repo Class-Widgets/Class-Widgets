@@ -30,11 +30,15 @@ notification_contents = {"state": None, "lesson_name": None, "title": None, "sub
 normal_color = '#56CFD8'
 
 window_list = []  # 窗口列表
+active_windows = []
 
 
 class tip_toast(QWidget):
     def __init__(self, pos, width, state=1, lesson_name=None, title=None, subtitle=None, content=None, icon=None, duration=2000):
         super().__init__()
+        for w in active_windows[:]:
+            w.close()
+        active_windows.append(self)
         self.audio_thread = None
         uic.loadUi(f"{base_directory}/view/widget-toast-bar.ui", self)
 
@@ -201,6 +205,8 @@ class tip_toast(QWidget):
         self.opacity_animation_close.finished.connect(self.close)
 
     def closeEvent(self, event):
+        if self in active_windows:
+            active_windows.remove(self)
         global window_list
         # window_list.remove(self)
         self.hide()
@@ -295,6 +301,8 @@ class wave_Effect(QWidget):
         painter.drawEllipse(loc, self._radius, self._radius)
 
     def closeEvent(self, event):
+        if self in active_windows:
+            active_windows.remove(self)
         global window_list
         # window_list.remove(self)
         self.deleteLater()
