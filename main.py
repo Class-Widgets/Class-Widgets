@@ -1311,8 +1311,7 @@ class DesktopWidget(QWidget):  # 主要小组件
         # 设置窗口无边框和透明背景
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
-        if (config_center.read_conf('General', 'hide') == '2'
-                or config_center.read_conf('General', 'hide') == '1'):
+        if config_center.read_conf('General', 'hide') == '2':
             self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
 
         if config_center.read_conf('General', 'pin_on_top') == '1':  # 置顶
@@ -1667,7 +1666,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             return  # 右键不执行
         if config_center.read_conf('General', 'pin_on_top') == '2':  # 置底
             return  # 置底不执行
-        if config_center.read_conf('General', 'hide') != '2':  # 置顶
+        if config_center.read_conf('General', 'hide') == '0':  # 置顶
             if mgr.state:
                 mgr.decide_to_hide()
             else:
