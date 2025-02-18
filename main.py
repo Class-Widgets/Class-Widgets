@@ -1398,11 +1398,12 @@ class DesktopWidget(QWidget):  # 主要小组件
 
     @staticmethod
     def on_tray_icon_clicked(reason):  # 点击托盘图标隐藏
-        if reason == QSystemTrayIcon.ActivationReason.Trigger:
-            if mgr.state:
-                mgr.decide_to_hide()
-            else:
-                mgr.show_windows()
+        if config_center.read_conf('General', 'hide') == '0':
+            if reason == QSystemTrayIcon.ActivationReason.Trigger:
+                if mgr.state:
+                    mgr.decide_to_hide()
+                else:
+                    mgr.show_windows()
 
     def rightReleaseEvent(self, event):  # 右键事件
         event.ignore()
