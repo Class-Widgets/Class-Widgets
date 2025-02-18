@@ -843,6 +843,11 @@ class SettingsMenu(FluentWindow):
         exclude_lesson.textChanged.connect(lambda: config_center.write_conf('General', 'excluded_lessons', exclude_lesson.text()))
         # 排除课程
 
+        switch_enable_click = self.adInterface.findChild(SwitchButton, 'switch_enable_click')
+        switch_enable_click.setChecked(int(config_center.read_conf('General', 'enable_click')))
+        switch_enable_click.checkedChanged.connect(lambda checked: switch_checked('General', 'enable_click', checked))
+        # 允许点击
+
         switch_enable_alt_schedule = self.adInterface.findChild(SwitchButton, 'switch_enable_alt_schedule')
         switch_enable_alt_schedule.setChecked(int(config_center.read_conf('General', 'enable_alt_schedule')))
         switch_enable_alt_schedule.checkedChanged.connect(
