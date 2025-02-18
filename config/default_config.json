@@ -14,7 +14,8 @@
     "theme": "default",
     "scale": 1,
     "excluded_lesson": 0,
-    "excluded_lessons": ""
+    "excluded_lessons": "",
+    "enable_click": 1
   },
   "Toast": {
     "wave": 1,
