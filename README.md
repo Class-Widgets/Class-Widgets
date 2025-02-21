@@ -1,3 +1,5 @@
+> [!Warning]
+> Class Widgets 目前进入了维护期，暂时不会接受更多的feature。待我们调整好以后，将会继续开发课表软件。在此之间，我们仍然接受修复bug和添加新插件请求。
 > [!NOTE]
 > Class Widgets 有 QQ 群和 Discord 服务器啦！详见[此处](#社区)
 
