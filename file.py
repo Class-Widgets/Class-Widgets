@@ -8,10 +8,10 @@ from loguru import logger
 import configparser as config
 
 base_directory = os.path.dirname(os.path.abspath(__file__))
-
+'''
 if base_directory.endswith('MacOS'):
     base_directory = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)), 'Resources')
-
+'''
 path = f'{base_directory}/config.ini'
 
 

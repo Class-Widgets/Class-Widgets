@@ -26,5 +26,5 @@ pygame~=2.6.1
 packaging~=24.2
 PyGetWindow~=0.0.9
 edge-tts~=7.0.0
-pyttsx3==2.71
+pyttsx3==2.98
 git+https://github.com/SmartTeachCN/pycses.git
