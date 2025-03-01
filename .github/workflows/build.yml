@@ -44,7 +44,7 @@ jobs:
           branch: 'main'
       - name: Decide to stop
         if: ${{ steps.check-new-commits.outputs.has-new-commits != 'true' && github.event_name != 'workflow_dispatch' }}
-        runs: |
+        run: |
           echo "::warning title=Stop Workflow::No new commit today."
           stopMarker=$(uuidgen)
           echo "::stop-commands::$stopMarker"
