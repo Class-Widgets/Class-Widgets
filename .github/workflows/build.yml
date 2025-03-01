@@ -76,6 +76,7 @@ jobs:
           product-name: Class Widgets
           file-version: 1.1.7.1
           windows-icon-from-ico: ./img/favicon.ico
+          mingw64: on
       - name: Build (Linux)
         if: ${{ startsWith(matrix.os, 'ubuntu') }}
         uses: Nuitka/Nuitka-Action@main
