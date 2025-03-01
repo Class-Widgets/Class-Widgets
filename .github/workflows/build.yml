@@ -56,10 +56,10 @@ jobs:
           sudo ./llvm.sh 19 all
           wget https://github.com/rui314/mold/releases/download/v2.36.0/mold-2.36.0-x86_64-linux.tar.gz
           tar -xvf mold-2.36.0-x86_64-linux.tar.gz
-          cp mold-2.36.0-x86_64-linux/bin/* /usr/local/bin
-          cp -r mold-2.36.0-x86_64-linux/lib/* /usr/local/lib
-          cp -r mold-2.36.0-x86_64-linux/libexec/* /usr/local/libexec
-          cp -r mold-2.36.0-x86_64-linux/share/* /usr/local/share
+          sudo cp mold-2.36.0-x86_64-linux/bin/* /usr/local/bin
+          sudo cp -r mold-2.36.0-x86_64-linux/lib/* /usr/local/lib
+          sudo cp -r mold-2.36.0-x86_64-linux/libexec/* /usr/local/libexec
+          sudo cp -r mold-2.36.0-x86_64-linux/share/* /usr/local/share
       - name: Install Dependencies
         run: pip install -r requirements.txt
 
