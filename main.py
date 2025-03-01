@@ -1861,7 +1861,7 @@ def check_windows_maximize():  # 检查窗口是否最大化
             # 完全匹配和模糊匹配
             if (window.title not in excluded_titles and 
                 not any(kw in window.title for kw in excluded_keywords) and
-                window.process not in excluded_processes):
+                window._hWnd not in excluded_processes):
                 return True
     return False
 
