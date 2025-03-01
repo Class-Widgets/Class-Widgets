@@ -1846,8 +1846,9 @@ def check_windows_maximize():  # 检查窗口是否最大化
     excluded_titles = {
         'ResidentSideBar', # 希沃侧边栏
         'Program Manager', # Windows桌面
-        'Desktop', # Windows桌面
         '', #空标题
+        'explorer', # Windows桌面
+        'ScreenClippingHost', # 系统截图工具
         'SnippingTool', # 系统截图工具
     }
     # 包含以下关键词排除
