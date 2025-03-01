@@ -62,11 +62,6 @@ jobs:
       - name: Build (Windows)
         if: ${{ startsWith(matrix.os, 'windows') }}
         uses: Nuitka/Nuitka-Action@main
-        env:
-          PATH: mold-2.36.0-x86_64-linux:$PATH
-          CC: clang 
-          CXX: clang++ 
-          LDFLAGS: "-fuse-ld=mold"
         with:
           mode: standalone
           script-name: main.py
@@ -92,6 +87,11 @@ jobs:
       - name: Build (Linux)
         if: ${{ startsWith(matrix.os, 'ubuntu') }}
         uses: Nuitka/Nuitka-Action@main
+        env:
+          PATH: mold-2.36.0-x86_64-linux:$PATH
+          CC: clang 
+          CXX: clang++ 
+          LDFLAGS: "-fuse-ld=mold"
         with:
           mode: standalone
           script-name: main.py
