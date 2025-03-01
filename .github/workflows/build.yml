@@ -49,6 +49,7 @@ jobs:
       - name: Init zip folder
         run: mkdir zip
       - name: setup depandecies
+        if: ${{ startsWith(matrix.os, 'ubuntu') }}
         run: |
           wget https://apt.llvm.org/llvm.sh
           chmod +x llvm.sh
