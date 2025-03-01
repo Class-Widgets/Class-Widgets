@@ -1,15 +1,15 @@
 name: 构建
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
+  schedule:
+    - cron: "0 16 * * *"
   workflow_dispatch:
 
 concurrency:
   group: build-${{ github.ref }}
   cancel-in-progress: true
+
+permissions: read-all
  
 jobs:
   builder_matrix:
@@ -35,6 +35,19 @@ jobs:
             arch: x64
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Check for new commits today
+        id: check-new-commits
+        uses: adriangl/check-new-commits-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          seconds: 86400 # One day in seconds
+          branch: 'main'
+      - name: Decide to stop
+        if: ${{ steps.check-new-commits.outputs.has-new-commits != 'true' && github.event_name != 'workflow_dispatch' }}
+        runs: |
+          echo "::warning title=Stop Workflow::No new commit today."
+          stopMarker=$(uuidgen)
+          echo "::stop-commands::$stopMarker"
       - name: Checkout repository
         uses: actions/checkout@v4.2.2
       - name: Setup Python
