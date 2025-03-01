@@ -1842,26 +1842,26 @@ class DesktopWidget(QWidget):  # 主要小组件
 def check_windows_maximize():  # 检查窗口是否最大化
     if os.name != 'nt':
         return False
-    # 全字匹配以下关键词排除
-    excluded_titles = {
+    excluded_titles = {    # 标题栏全字匹配
         'ResidentSideBar', # 希沃侧边栏
         'Program Manager', # Windows桌面
-        '', #空标题
-        'explorer', # Windows桌面
-        'ScreenClippingHost', # 系统截图工具
         'SnippingTool', # 系统截图工具
     }
-    # 包含以下关键词排除
-    excluded_keywords = {
+    excluded_keywords = {  # 标题栏关键词排除
         'Overlay',
         'Snipping',
         'SideBar',
+    }
+    excluded_processes = { # 进程名全字排除
+        'explorer.exe',
+        'ScreenClippingHost.exe',
     }
     for window in pygetwindow.getAllWindows():
         if window.isMaximized:
             # 完全匹配和模糊匹配
             if (window.title not in excluded_titles and 
-                not any(kw in window.title for kw in excluded_keywords)):
+                not any(kw in window.title for kw in excluded_keywords) and
+                window.process not in excluded_processes):
                 return True
     return False
 
