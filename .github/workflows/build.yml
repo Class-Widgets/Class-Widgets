@@ -1,16 +1,16 @@
 name: 构建
 
 on:
-  push:
-    branches:
-      - main
-      - feat/nuitka
-  pull_request:
+  schedule:
+    - cron: "0 16 * * *"
   workflow_dispatch:
 
 concurrency:
   group: build-${{ github.ref }}
   cancel-in-progress: true
+
+permissions:
+  contents: write
  
 jobs:
   builder_matrix:
@@ -36,6 +36,19 @@ jobs:
             arch: x64
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Check for new commits today
+        id: check-new-commits
+        uses: adriangl/check-new-commits-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          seconds: 86400 # One day in seconds
+          branch: 'main'
+      - name: Decide to stop
+        if: ${{ steps.check-new-commits.outputs.has-new-commits != 'true' && github.event_name != 'workflow_dispatch' }}
+        run: |
+          echo "::warning title=Stop Workflow::No new commit today."
+          stopMarker=$(uuidgen)
+          echo "::stop-commands::$stopMarker"
       - name: Checkout repository
         uses: actions/checkout@v4.2.2
       - name: Setup Python
@@ -46,8 +59,10 @@ jobs:
           cache: 'pip'
           cache-dependency-path: |
             **/requirements*.txt
+
       - name: Init zip folder
         run: mkdir zip
+        
       - name: Install Linux-specific Dependencies
         if: ${{ startsWith(matrix.os, 'ubuntu') }}
         run: |
@@ -60,6 +75,7 @@ jobs:
           sudo cp -r mold-2.36.0-x86_64-linux/lib/* /usr/local/lib
           sudo cp -r mold-2.36.0-x86_64-linux/libexec/* /usr/local/libexec
           sudo cp -r mold-2.36.0-x86_64-linux/share/* /usr/local/share
+
       - name: Install Dependencies
         run: pip install -r requirements.txt
 
@@ -140,16 +156,19 @@ jobs:
           curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
           xcopy build\main.dist\* ClassWidgets\ /e/y
           ./zip -r -q "./zip/ClassWidgets-Windows-${{ matrix.arch }} (Unsigned).zip" ClassWidgets
+
       - name: Package (Linux)
         if: ${{ matrix.os == 'ubuntu-20.04' }}
         run: |
           cp -R build/main.dist ClassWidgets
           zip -r -q ./zip/ClassWidgets-Ubuntu20.04.zip ClassWidgets
+
       - name: Package (macOS)
         if: ${{ startsWith(matrix.os, 'macos') }}
         run: |
           cp -R build/main.app Class\ Widgets.app
           zip -r -q "./zip/Class Widgets-macOS-${{ matrix.arch }}.zip" Class\ Widgets.app
+
       - name: Upload unsigned application
         if: ${{ ( matrix.os != 'windows-latest' && github.event_name != 'pull_request' ) || github.event_name == 'pull_request' }}
         uses: actions/upload-artifact@v4.4.2
@@ -235,11 +254,13 @@ jobs:
             --include-data-dir=audio=audio \
             --include-data-files=LICENSE=LICENSE \
             --include-package=pyttsx3.drivers
+
       - name: Package (Debian)
         run: |
           cp -R main.dist ClassWidgets
           mkdir zip
           zip -r -q zip/ClassWidgets-Debian10.zip ClassWidgets
+
       - name: Upload
         uses: actions/upload-artifact@v4.4.2
         with:
