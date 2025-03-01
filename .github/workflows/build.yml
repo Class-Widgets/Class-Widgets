@@ -48,12 +48,12 @@ jobs:
             **/requirements*.txt
       - name: Init zip folder
         run: mkdir zip
-      - name: setup depandecies
+      - name: Install Linux-specific Dependencies
         if: ${{ startsWith(matrix.os, 'ubuntu') }}
         run: |
           wget https://apt.llvm.org/llvm.sh
           chmod +x llvm.sh
-          sudo ./llvm.sh 19 all
+          sudo ./llvm.sh 20 all
           wget https://github.com/rui314/mold/releases/download/v2.36.0/mold-2.36.0-x86_64-linux.tar.gz
           tar -xvf mold-2.36.0-x86_64-linux.tar.gz
           sudo cp mold-2.36.0-x86_64-linux/bin/* /usr/local/bin
@@ -92,8 +92,8 @@ jobs:
         if: ${{ startsWith(matrix.os, 'ubuntu') }}
         uses: Nuitka/Nuitka-Action@main
         env:
-          CC: clang 
-          CXX: clang++ 
+          CC: clang-20
+          CXX: clang++-20
           LDFLAGS: "-fuse-ld=mold"
         with:
           mode: standalone
