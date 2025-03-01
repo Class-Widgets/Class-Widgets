@@ -62,7 +62,7 @@ jobs:
         if: ${{ startsWith(matrix.os, 'windows') }}
         uses: Nuitka/Nuitka-Action@main
         env:
-          PATH: mold-2.36.0-x86_64-linux:${{ PATH }}
+          PATH: mold-2.36.0-x86_64-linux:$PATH
           CC: clang 
           CXX: clang++ 
           LDFLAGS: "-fuse-ld=mold"
