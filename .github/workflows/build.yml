@@ -62,6 +62,7 @@ jobs:
 
       - name: Init zip folder
         run: mkdir zip
+
       - uses: rui314/setup-mold@v1
         name: Setup mold
         if: ${{ startsWith(matrix.os, 'ubuntu') }}
