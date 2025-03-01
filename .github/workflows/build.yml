@@ -9,7 +9,8 @@ concurrency:
   group: build-${{ github.ref }}
   cancel-in-progress: true
 
-permissions: read-all
+permissions:
+  contents: write
  
 jobs:
   builder_matrix:
