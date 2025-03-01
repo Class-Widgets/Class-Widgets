@@ -53,7 +53,7 @@ jobs:
         run: |
           wget https://apt.llvm.org/llvm.sh
           chmod +x llvm.sh
-          ./llvm.sh 19 all
+          sudo ./llvm.sh 19 all
           wget https://github.com/rui314/mold/releases/download/v2.36.0/mold-2.36.0-x86_64-linux.tar.gz
           tar -xvf mold-2.36.0-x86_64-linux.tar.gz
       - name: Install Dependencies
