@@ -1,0 +1,13 @@
+{
+    "name": "值日生插件",
+    "description": "cw值日生插件",
+    "version": "0.0.1",
+    "plugin_ver": 1,
+    "author": "Peach",
+    "settings": false,
+
+    "url": "https://github.com/Welsonpeaches/cw-student-on-duty-plugin",
+    "branch": "main",
+
+    "update_date": "2025/1/4"
+}
