@@ -18,12 +18,8 @@ jobs:
       fail-fast: false
       matrix:
         arch: [ x86, x64, arm64 ]
-        os: [ ubuntu-latest, windows-latest, macos-13, macos-14 ]
+        os: [ windows-latest, macos-13, macos-14 ]
         exclude:
-          - os: ubuntu-latest
-            arch: x86
-          - os: ubuntu-latest
-            arch: arm64
           - os: macos-13
             arch: x86
           - os: macos-13
