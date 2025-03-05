@@ -162,17 +162,6 @@ jobs:
         with:
           name: windows-${{ matrix.arch }} (Unsigned single)
           path: ./ClassWidgets/ClassWidgets.exe
-      - name: Sign application (Test)
-        if: ${{ matrix.os == 'windows-latest' && github.event_name != 'pull_request' && 0 == 1}}
-        uses: signpath/github-action-submit-signing-request@v1.1
-        with:
-          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
-          organization-id: '2e13633d-4e7d-4462-9091-27536751c84c'
-          project-slug: 'Class-Widgets.git'
-          signing-policy-slug: 'test-signing'
-          github-artifact-id: '${{ steps.upload-unsigned-artifact.outputs.artifact-id }}'
-          wait-for-completion: true
-          output-artifact-directory: '.\ClassWidgets'
       - name: Sign application (Release)
         if: ${{ matrix.os == 'windows-latest' && startsWith(github.ref, 'refs/tags/') }}
         uses: signpath/github-action-submit-signing-request@v1.1
@@ -185,12 +174,12 @@ jobs:
           wait-for-completion: true
           output-artifact-directory: '.\ClassWidgets'
       - name: Recompress
-        if: ${{ matrix.os == 'windows-latest' && github.event_name != 'pull_request' }}
+        if: ${{ matrix.os == 'windows-latest' && github.event_name != 'pull_request' && startsWith(github.ref, 'refs/tags/') }}
         run: |
           del "zip/ClassWidgets-Windows-${{ matrix.arch }} (Unsigned).zip"
           ./zip -r -q zip/ClassWidgets-Windows-${{ matrix.arch }}.zip ClassWidgets
       - name: Upload signed application
-        if: ${{ matrix.os == 'windows-latest' && github.event_name != 'pull_request' }}
+        if: ${{ matrix.os == 'windows-latest' && github.event_name != 'pull_request' && startsWith(github.ref, 'refs/tags/') }}
         uses: actions/upload-artifact@v4.4.2
         with:
           name: windows-latest-${{ matrix.arch }}
