@@ -65,6 +65,16 @@ jobs:
       - name: Init zip folder
         run: mkdir zip
 
+      - uses: rui314/setup-mold@v1
+        name: Setup mold
+        if: ${{ startsWith(matrix.os, 'ubuntu') }}
+      - name: Install Linux-specific Dependencies
+        if: ${{ startsWith(matrix.os, 'ubuntu') }}
+        run: |
+          wget https://apt.llvm.org/llvm.sh
+          chmod +x llvm.sh
+          sudo ./llvm.sh 20 all
+
       - name: Install Dependencies
         run: pip install -r requirements.txt
 
@@ -95,6 +105,10 @@ jobs:
       - name: Build (Linux)
         if: ${{ startsWith(matrix.os, 'ubuntu') }}
         uses: Nuitka/Nuitka-Action@main
+        env:
+          CC: clang-20
+          CXX: clang++-20
+          LDFLAGS: "-fuse-ld=mold"
         with:
           mode: standalone
           script-name: main.py
