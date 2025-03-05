@@ -750,10 +750,12 @@ class WidgetsManager:
         self.spacing = conf.load_theme_config(theme)['spacing']
 
         self.get_start_pos()
+        cnt_all = {}
 
         # 添加小组件实例
         for w in range(len(self.widgets_list)):
-            widget = DesktopWidget(self, self.widgets_list[w], True if w == 0 else False)
+            cnt_all[self.widgets_list[w]] = cnt_all.get(self.widgets_list[w], -1) + 1
+            widget = DesktopWidget(self, self.widgets_list[w], True if w == 0 else False,cnt = cnt_all[self.widgets_list[w]], position=self.get_widget_pos("", w), widget_cnt = w)
             self.widgets.append(widget)
 
         self.create_widgets()
@@ -785,14 +787,14 @@ class WidgetsManager:
             # 调整窗口尺寸
             width = self.get_widget_width(widget.path)
             height = self.get_widgets_height()
-            pos_x = self.get_widget_pos(widget.path)[0]
+            pos_x = self.get_widget_pos(widget.path, widget.widget_cnt)[0]
             op = int(config_center.read_conf('General', 'opacity')) / 100
 
             if widget.animation is None:
                 widget.widget_transition(pos_x, width, height, op)
 
-    def get_widget_pos(self, path):  # 获取小组件位置
-        num = self.widgets_list.index(path)
+    def get_widget_pos(self, path, cnt=None):  # 获取小组件位置
+        num = self.widgets_list.index(path) if cnt is None else cnt
         self.get_start_pos()
         pos_x = self.start_pos_x + self.spacing * num
         for i in range(num):
@@ -1368,8 +1370,11 @@ class FloatingWidget(QWidget):  # 浮窗
 
 
 class DesktopWidget(QWidget):  # 主要小组件
-    def __init__(self, parent=WidgetsManager, path='widget-time.ui', enable_tray=False):
+    def __init__(self, parent=WidgetsManager, path='widget-time.ui', enable_tray=False, cnt=0, position=None, widget_cnt = None):
         super().__init__()
+
+        self.cnt = cnt
+        self.widget_cnt = widget_cnt
 
         self.tray_menu = None
 
@@ -1382,7 +1387,7 @@ class DesktopWidget(QWidget):  # 主要小组件
         self.last_color_mode = config_center.read_conf('General', 'color_mode')
         self.w = 100
 
-        self.position = parent.get_widget_pos(self.path)
+        self.position = parent.get_widget_pos(self.path) if position is None else position
         self.animation = None
         self.opacity_animation = None
 
@@ -1463,10 +1468,12 @@ class DesktopWidget(QWidget):  # 主要小组件
         if first_start:
             self.animate_window(self.position)
             self.setWindowOpacity(int(config_center.read_conf('General', 'opacity')) / 100)
+            print(f"{self.path},{self.position}")
         else:
             self.setWindowOpacity(0)
             self.animate_show_opacity()
             self.move(self.position[0], self.position[1])
+            print(f"{self.path},{self.position}")
             self.resize(self.w, self.height())
 
         self.update_data('')
@@ -1687,7 +1694,8 @@ class DesktopWidget(QWidget):  # 主要小组件
                 self.countdown_progress_bar.setValue(cd_list[2])
 
         if path == 'widget-countdown-custom.ui':  # 自定义倒计时
-            self.custom_title.setText(f'距离 {config_center.read_conf("Date", "cd_text_custom")} 还有')
+            conf.update_countdown(self.cnt)
+            self.custom_title.setText(f'距离 {conf.get_cd_text_custom()} 还有')
             self.custom_countdown.setText(conf.get_custom_countdown())
         self.update()
 
