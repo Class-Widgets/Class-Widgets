@@ -13,6 +13,9 @@ import signal
 
 share = QSharedMemory('ClassWidgets')
 
+# 共享内存操作超时时间（毫秒）
+SHARED_MEMORY_TIMEOUT = 1000
+
 
 def restart():
     logger.debug('重启程序')
@@ -78,6 +81,8 @@ def stop(status=0):
             logger.debug("分离共享内存: 成功")
         else:
             logger.warning("共享内存未附加")
+    except FileNotFoundError:
+        logger.warning('共享内存文件已被提前移除')
     except Exception as e:
         logger.error(f"分离共享内存失败: {e}")
         exit_application()
