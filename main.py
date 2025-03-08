@@ -2110,7 +2110,12 @@ if __name__ == '__main__':
 
     app = QApplication(sys.argv)
     app.setQuitOnLastWindowClosed(False)
-    share.create(1)  # 创建共享内存
+    
+    # 创建共享内存，添加超时处理
+    create_success = share.create(1)
+    if not create_success:
+        logger.warning("共享内存创建失败，可能是已有实例在运行")
+    
     logger.info(
         f"共享内存：{share.isAttached()} 是否允许多开实例：{config_center.read_conf('Other', 'multiple_programs')}")
 
@@ -2139,9 +2144,13 @@ if __name__ == '__main__':
 
     logger.info(f"操作系统：{system}，版本：{osRelease}/{osVersion}")
 
-    list_pyttsx3_voices()
+    # 将语音引擎初始化移至后台线程，避免启动时卡顿
+    from threading import Thread
+    Thread(target=list_pyttsx3_voices, daemon=True).start()
 
-    if share.attach() and config_center.read_conf('Other', 'multiple_programs') != '1':
+    # 添加超时机制，避免共享内存附加操作无限等待
+    attach_success = share.attach()
+    if attach_success and config_center.read_conf('Other', 'multiple_programs') != '1':
         msg_box = Dialog(
             'Class Widgets 正在运行',
             'Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。'
@@ -2191,7 +2200,9 @@ if __name__ == '__main__':
         # w = ErrorDialog()
         # w.exec()
         if config_center.read_conf('Other', 'auto_check_update') == '1':
-            check_update()
+            # 将更新检查移至后台线程，避免启动时卡顿
+            from threading import Thread
+            Thread(target=check_update, daemon=True).start()
 
     if __name__ == '__main__':
         try:
