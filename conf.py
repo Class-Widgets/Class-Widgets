@@ -4,6 +4,7 @@ import configparser as config
 from pathlib import Path
 
 from datetime import datetime
+import time
 from loguru import logger
 from file import base_directory, config_center
 
@@ -25,6 +26,8 @@ elif os.name == 'darwin':
 else:
     app_icon = os.path.join(base_directory, 'img', 'favicon.png')
 
+update_countdown_custom_last = 0
+countdown_cnt = 0
 
 def load_theme_config(theme):
     try:
@@ -210,14 +213,44 @@ def get_time_offset():  # 获取时差偏移
         return 0
     else:
         return int(time_offset)
-
-
-def get_custom_countdown():  # 获取自定义倒计时
-    custom_countdown = config_center.read_conf('Date', 'countdown_date')
-    if custom_countdown is None or custom_countdown == '':
+    
+def update_countdown(cnt):
+    global update_countdown_custom_last
+    global countdown_cnt
+    if (length:=len(config_center.read_conf('Date', 'cd_text_custom').split(','))) == 0:
+        countdown_cnt = -1
+    elif config_center.read_conf('Date', 'countdown_custom_mode') == '1':
+        countdown_cnt = cnt
+    elif (nowtime:=time.time()) - update_countdown_custom_last > int(config_center.read_conf('Date', 'countdown_upd_cd')):
+        update_countdown_custom_last = nowtime
+        countdown_cnt += 1
+        if countdown_cnt >= length:
+            countdown_cnt = 0 if length != 0 else -1
+        
+def get_cd_text_custom():
+    global countdown_cnt
+    if countdown_cnt == -1:
         return '未设置'
+    if countdown_cnt >= len(li:=config_center.read_conf('Date', 'cd_text_custom').split(',')):
+        return '未设置'
+    return li[countdown_cnt] if countdown_cnt >= 0 else ''
+
+
+def get_custom_countdown():
+    global countdown_cnt
+    if countdown_cnt == -1:
+        return '未设置'
+    li = config_center.read_conf('Date', 'countdown_date').split(',')
+    if countdown_cnt == -1 or countdown_cnt >= len(li):
+        return '未设置'  # 获取自定义倒计时
     else:
-        custom_countdown = datetime.strptime(custom_countdown, '%Y-%m-%d')
+        custom_countdown = li[countdown_cnt]
+        if custom_countdown == '':
+            return '未设置'
+        try:
+            custom_countdown = datetime.strptime(custom_countdown, '%Y-%m-%d')
+        except:
+            return '解析失败'
         if custom_countdown < datetime.now():
             return '0 天'
         else:
