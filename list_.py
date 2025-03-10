@@ -143,6 +143,8 @@ except Exception as e:
 
 not_exist_themes = []
 
+countdown_modes = ['轮播', '多小组件']
+
 for folder in theme_folder:
     try:
         json_file = json.load(open(f'{base_directory}/ui/{folder}/theme.json', 'r', encoding='utf-8'))
