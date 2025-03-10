@@ -4,7 +4,7 @@ from datetime import datetime
 from random import shuffle
 
 from PyQt5 import uic
-from PyQt5.QtCore import QSize, Qt, QTimer, QUrl, QStringListModel, pyqtSignal
+from PyQt5.QtCore import QSize, Qt, QTimer, QUrl, QStringListModel, pyqtSignal, QObject
 from PyQt5.QtGui import QIcon, QPixmap, QDesktopServices
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QGridLayout, QSpacerItem, QSizePolicy, QWidget, \
     QScroller, QCompleter
@@ -19,6 +19,27 @@ from qfluentwidgets import MSFluentWindow, FluentIcon as fIcon, NavigationItemPo
 import conf
 import list_ as l
 import network_thread as nt
+
+
+class PlazaDataWorker(QObject):
+    data_ready = pyqtSignal(dict)
+    
+    def get_pp_data(self):
+        try:
+            data = nt.PlazaRepoLoader().get_plugin_info()
+            self.data_ready.emit(data)
+        except Exception as e:
+            logger.error(f"获取插件数据失败: {e}")
+
+class BannerWorker(QObject):
+    banner_ready = pyqtSignal(list)
+    
+    def get_banner_img(self):
+        try:
+            banners = nt.load_banners()
+            self.banner_ready.emit(banners)
+        except Exception as e:
+            logger.error(f"获取Banner图片失败: {e}")
 from conf import base_directory
 from file import config_center
 from plugin import p_loader
@@ -434,8 +455,22 @@ class PluginPlaza(MSFluentWindow):
             load_local_plugins_version()  # 加载本地插件版本
             self.init_nav()
             self.init_window()
-            self.get_pp_data()
-            self.get_banner_img()
+            
+            # 创建数据加载线程
+            self.data_thread = QThread()
+            self.data_worker = PlazaDataWorker()
+            self.data_worker.data_ready.connect(self.set_tags_data)
+            self.data_worker.moveToThread(self.data_thread)
+            self.data_thread.started.connect(self.data_worker.get_pp_data)
+            self.data_thread.start()
+            
+            # 创建Banner加载线程
+            self.banner_thread = QThread()
+            self.banner_worker = BannerWorker()
+            self.banner_worker.banner_ready.connect(self.get_banner)
+            self.banner_worker.moveToThread(self.banner_thread)
+            self.banner_thread.started.connect(self.banner_worker.get_banner_img)
+            self.banner_thread.start()
         except Exception as e:
             logger.error(f'初始化插件广场时发生错误：{e}')
 
