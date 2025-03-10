@@ -40,7 +40,7 @@ class tip_toast(QWidget):
             w.close()
         active_windows.append(self)
         self.audio_thread = None
-        uic.loadUi(f"{base_directory}/view/widget-toast-bar.ui", self)
+        uic.loadUi(os.path.normpath(os.path.join(base_directory, "view", "widget-toast-bar.ui")), self)
 
         # 窗口位置
         if config_center.read_conf('Toast', 'pin_on_top') == '1':
@@ -215,7 +215,7 @@ class tip_toast(QWidget):
 
     def playsound(self, filename):
         try:
-            file_path = os.path.join(base_directory, 'audio', filename)
+            file_path = os.path.normpath(os.path.join(base_directory, 'audio', filename))
             self.audio_thread = PlayAudio(str(file_path))
             self.audio_thread.start()
         except Exception as e:
@@ -417,7 +417,7 @@ if __name__ == '__main__':
         title='天气预报',
         subtitle='',
         content='1°~-3° | 3°~-3° | 9°~1°',
-        icon='img/favicon.ico',
+        icon=os.path.normpath(os.path.join(base_directory, "img", "favicon.ico")),
         duration=2000
     )
     sys.exit(app.exec())

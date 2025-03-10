@@ -1,6 +1,7 @@
 import datetime as dt
 import sys
 from shutil import copy
+import os
 
 from PyQt5 import uic
 from PyQt5.QtCore import Qt
@@ -66,7 +67,7 @@ class ExtraMenu(FluentWindow):
     def __init__(self):
         super().__init__()
         self.menu = None
-        self.interface = uic.loadUi(f'{base_directory}/view/extra_menu.ui')
+        self.interface = uic.loadUi(os.path.normpath(os.path.join(base_directory, "view", "extra_menu.ui")))
         self.initUI()
         self.init_interface()
 
@@ -113,13 +114,14 @@ class ExtraMenu(FluentWindow):
             temp_schedule_set = self.findChild(ComboBox, 'select_temp_schedule')
             if temp_schedule != {'schedule': {}, 'schedule_even': {}}:
                 if config_center.read_conf('Temp', 'temp_schedule') == '':  # 备份检测
-                    copy(f'{base_directory}/config/schedule/{config_center.schedule_name}',
-                         f'{base_directory}/config/schedule/backup.json')  # 备份课表配置
+                    src_path = os.path.normpath(os.path.join(base_directory, "config", "schedule", config_center.schedule_name))
+                    dst_path = os.path.normpath(os.path.join(base_directory, "config", "schedule", "backup.json"))
+                    copy(src_path, dst_path)  # 备份课表配置
                     logger.info(f'备份课表配置成功：已将 {config_center.schedule_name} -备份至-> backup.json')
                     config_center.write_conf('Temp', 'temp_schedule', config_center.schedule_name)
                 file.save_data_to_json(temp_schedule, config_center.schedule_name)
             config_center.write_conf('Temp', 'set_week', str(temp_week.currentIndex()))
-            config_center.write_conf('Temp', 'set_schedule',str(temp_schedule_set.currentIndex()))
+            config_center.write_conf('Temp', 'set_schedule', str(temp_schedule_set.currentIndex()))
             Flyout.create(
                 icon=InfoBarIcon.SUCCESS,
                 title='保存成功',
@@ -202,7 +204,8 @@ class ExtraMenu(FluentWindow):
         self.resize(width, height)
 
         self.setWindowTitle('Class Widgets - 更多功能')
-        self.setWindowIcon(QIcon(f'{base_directory}/img/logo/favicon-exmenu.ico'))
+        icon_path = os.path.normpath(os.path.join(base_directory, "img", "logo", "favicon-exmenu.ico"))
+        self.setWindowIcon(QIcon(icon_path))
 
         self.addSubInterface(self.interface, fIcon.INFO, '更多设置')
 

@@ -18,7 +18,7 @@ headers = {"User-Agent": "Mozilla/5.0", "Cache-Control": "no-cache"}  # 设置�
 # proxies = {"http": "http://127.0.0.1:10809", "https": "http://127.0.0.1:10809"}  # 加速访问
 proxies = {"http": None, "https": None}
 
-MIRROR_PATH = f"{base_directory}/config/mirror.json"
+MIRROR_PATH = os.path.join(base_directory, "config", "mirror.json")
 PLAZA_REPO_URL = "https://raw.githubusercontent.com/Class-Widgets/plugin-plaza/"
 PLAZA_REPO_DIR = "https://api.github.com/repos/Class-Widgets/plugin-plaza/contents/"
 threads = []
@@ -148,7 +148,8 @@ class getImg(QThread):  # 获取图片
             if banner_data is not None:
                 self.repo_signal.emit(banner_data)
             else:
-                with open(f"{base_directory}/img/plaza/banner_pre.png", 'rb') as default_img:  # 读取默认图片
+                default_img_path = os.path.join(base_directory, "img", "plaza", "banner_pre.png")
+                with open(default_img_path, 'rb') as default_img:
                     self.repo_signal.emit(default_img.read())
         except Exception as e:
             logger.error(f"触发图片失败: {e}")

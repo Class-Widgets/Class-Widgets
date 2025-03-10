@@ -104,11 +104,10 @@ widget_name = {
 }
 
 try:  # 加载课程/主题配置文件
-    subject_info = json.load(open(f'{base_directory}/config/data/subject.json', 'r', encoding='utf-8'))
+    subject_info = json.load(open(os.path.normpath(os.path.join(base_directory, "config", "data", "subject.json")), 'r', encoding='utf-8'))
     subject_icon = subject_info['subject_icon']
     subject_abbreviation = subject_info['subject_abbreviation']
-    theme_folder = [f for f in os.listdir(f'{base_directory}/ui/')
-                    if os.path.isdir(os.path.join(f'{base_directory}/ui/', f))]
+    theme_folder = [f for f in os.listdir(os.path.normpath(os.path.join(base_directory, "ui"))) if os.path.isdir(os.path.join(base_directory, "ui", f))]
 except Exception as e:
     logger.error(f'加载课程/主题配置文件发生错误，使用默认配置：{e}')
     config_center.write_conf('General', 'theme', 'default')
@@ -145,7 +144,7 @@ not_exist_themes = []
 
 for folder in theme_folder:
     try:
-        json_file = json.load(open(f'{base_directory}/ui/{folder}/theme.json', 'r', encoding='utf-8'))
+        json_file = json.load(open(os.path.normpath(os.path.join(base_directory, "ui", folder, "theme.json")), 'r', encoding='utf-8'))
         theme_names.append(json_file['name'])
     except Exception as e:
         logger.error(f'加载主题文件 theme.json {folder} 发生错误，跳过：{e}')
@@ -171,7 +170,7 @@ def get_widget_names():
 
 def get_current_theme_num():
     for i in range(len(theme_folder)):
-        if not os.path.exists(f'{base_directory}/config/schedule/{theme_folder[i]}.json'):
+        if not os.path.exists(os.path.join(base_directory, "config", "schedule", f"{theme_folder[i]}.json")):
             return "default"
         if theme_folder[i] == config_center.read_conf('General', 'theme'):
             return i
@@ -194,9 +193,9 @@ def get_subject_abbreviation(key):
 # 学科图标
 def get_subject_icon(key):
     if key in subject_icon:
-        return f'{base_directory}/img/subject/{subject_icon[key]}.svg'
+        return os.path.join(base_directory, "img", "subject", f"{subject_icon[key]}.svg")
     else:
-        return f'{base_directory}/img/subject/self_study.svg'
+        return os.path.join(base_directory, "img", "subject", "self_study.svg")
 
 
 # 学科主题色
@@ -229,7 +228,8 @@ def return_default_schedule_number():
 
 
 def create_new_profile(filename):
-    copy(f'{base_directory}/config/default.json', f'{base_directory}/config/schedule/{filename}')
+    copy(os.path.join(base_directory, "config", "default.json"),
+         os.path.join(base_directory, "config", "schedule", filename))
 
 
 def import_schedule(filepath, filename):  # 导入课表
@@ -244,7 +244,7 @@ def import_schedule(filepath, filename):  # 导入课表
     # 保存文件
     try:
         print(check_data)
-        copy(filepath, f'{base_directory}/config/schedule/{filename}')
+        copy(filepath, os.path.join(base_directory, "config", "schedule", filename))
         save_data_to_json(checked_data, filename)
         config_center.write_conf('General', 'schedule', filename)
         return True
@@ -303,7 +303,7 @@ def convert_schedule(check_data):  # 转换课表
 
 def export_schedule(filepath, filename):  # 导出课表
     try:
-        copy(f'{base_directory}/config/schedule/{filename}', filepath)
+        copy(os.path.join(base_directory, "config", "schedule", filename), filepath)
         return True
     except Exception as e:
         logger.error(f"导出文件时出错: {e}")
@@ -312,11 +312,12 @@ def export_schedule(filepath, filename):  # 导出课表
 
 def get_widget_config():
     try:
-        if os.path.exists(f'{base_directory}/config/widget.json'):
-            with open(f'{base_directory}/config/widget.json', 'r', encoding='utf-8') as file:
+        widget_conf_path = os.path.join(base_directory, "config", "widget.json")
+        if os.path.exists(widget_conf_path):
+            with open(widget_conf_path, 'r', encoding='utf-8') as file:
                 data = json.load(file)
         else:
-            with open(f'{base_directory}/config/widget.json', 'w', encoding='utf-8') as file:
+            with open(widget_conf_path, 'w', encoding='utf-8') as file:
                 data = {'widgets': [
                     'widget-weather.ui', 'widget-countdown.ui', 'widget-current-activity.ui', 'widget-next-activity.ui'
                 ]}

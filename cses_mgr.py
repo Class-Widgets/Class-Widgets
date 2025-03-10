@@ -7,6 +7,7 @@ import typing
 import cses
 from datetime import datetime, timedelta
 from loguru import logger
+import os
 
 import list_ as list_
 import conf
@@ -51,10 +52,10 @@ class CSES_Converter:
         将CSES文件转换为Class Widgets格式
         """
         try:
-            with open(f'{base_directory}/config/default.json', 'r', encoding='utf-8') as file:  # 加载默认配置
+            with open(os.path.normpath(os.path.join(base_directory, "config", "default.json")), 'r', encoding='utf-8') as file:
                 cw_format = json.load(file)
         except FileNotFoundError:
-            logger.error(f'File {base_directory}/config/default.json not found')
+            logger.error(os.path.normpath(os.path.join(base_directory, "config", "default.json")) + ' not found')
             return False
 
         if not self.parser:
@@ -206,10 +207,11 @@ class CSES_Converter:
         """
         # 科目
         try:
-            with open(f'{base_directory}/config/data/subject.json', 'r', encoding='utf-8') as data:
+            with open(os.path.normpath(os.path.join(base_directory, "config", "data", "subject.json")),
+                      'r', encoding='utf-8') as data:
                 cw_subjects = json.load(data)
         except FileNotFoundError:
-            logger.error(f'File {base_directory}/config/data/subject.json not found')
+            logger.error(os.path.normpath(os.path.join(base_directory, "config", "data", "subject.json")) + ' not found')
             return False
 
         for subject_ in cw_subjects['subject_list']:
@@ -224,10 +226,10 @@ class CSES_Converter:
 
         if cw_path != './' and cw_data is None:  # 加载Class Widgets数据
             try:
-                with open(cw_path, 'r', encoding='utf-8') as data:
+                with open(os.path.normpath(cw_path), 'r', encoding='utf-8') as data:
                     cw_data = json.load(data)
             except FileNotFoundError:
-                logger.error(f'File {cw_path} not found')
+                logger.error(f'File {os.path.normpath(cw_path)} not found')
                 return False
         else:
             raise Exception("Please provide a path or a cw_data")

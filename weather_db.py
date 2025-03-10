@@ -1,19 +1,19 @@
 import datetime
 import sqlite3
 import json
+import os
 from loguru import logger
 
 from conf import base_directory
 from file import config_center
 
-path = f'{base_directory}/config/data/xiaomi_weather.db'
-api_config = json.load(open(f'{base_directory}/config/data/weather_api.json', encoding='utf-8'))
+path = os.path.normpath(os.path.join(base_directory, "config", "data", "xiaomi_weather.db"))
+api_config = json.load(open(os.path.normpath(os.path.join(base_directory, "config", "data", "weather_api.json")), encoding='utf-8'))
 
 
 def update_path():
     global path
-    path = (f"{base_directory}/config/"
-            f"data/{api_config['weather_api_parameters'][config_center.read_conf('Weather', 'api')]['database']}")
+    path = os.path.normpath(os.path.join(base_directory, "config", "data", api_config['weather_api_parameters'][config_center.read_conf('Weather', 'api')]['database']))
 
 
 def search_by_name(search_term):
@@ -68,7 +68,7 @@ def search_by_num(search_term):
 
 def get_weather_by_code(code):  # 用代码获取天气描述
     weather_status = json.load(
-        open(f"{base_directory}/config/data/{config_center.read_conf('Weather', 'api')}_status.json", encoding="utf-8"))
+        open(os.path.normpath(os.path.join(base_directory, "config", "data", f"{config_center.read_conf('Weather', 'api')}_status.json")), encoding="utf-8"))
     for weather in weather_status['weatherinfo']:
         if str(weather['code']) == code:
             return weather['wea']
@@ -77,7 +77,7 @@ def get_weather_by_code(code):  # 用代码获取天气描述
 
 def get_weather_icon_by_code(code):  # 用代码获取天气图标
     weather_status = json.load(
-        open(f"{base_directory}/config/data/{config_center.read_conf('Weather', 'api')}_status.json",
+        open(os.path.normpath(os.path.join(base_directory, "config", "data", f"{config_center.read_conf('Weather', 'api')}_status.json")),
              encoding="utf-8")
     )
     weather_code = None
@@ -93,18 +93,18 @@ def get_weather_icon_by_code(code):  # 用代码获取天气图标
             break
     if not weather_code:
         logger.error(f'未找到天气代码 {code}')
-        return f'{base_directory}/img/weather/99.svg'
+        return os.path.normpath(os.path.join(base_directory, "img", "weather", "99.svg"))
     # 根据天气和时间获取天气图标
     if weather_code in ('0', '1', '3', '13'):  # 晴、多云、阵雨、阵雪
         if current_time.hour < 6 or current_time.hour >= 18:  # 如果是夜间
-            return f'{base_directory}/img/weather/{weather_code}d.svg'
-    return f'{base_directory}/img/weather/{weather_code}.svg'
+            return os.path.normpath(os.path.join(base_directory, "img", "weather", f"{weather_code}d.svg"))
+    return os.path.normpath(os.path.join(base_directory, "img", "weather", f"{weather_code}.svg"))
 
 
 def get_weather_stylesheet(code):  # 天气背景样式
     current_time = datetime.datetime.now()
     weather_status = json.load(
-        open(f"{base_directory}/config/data/{config_center.read_conf('Weather', 'api')}_status.json", encoding="utf-8"))
+        open(os.path.normpath(os.path.join(base_directory, "config", "data", f"{config_center.read_conf('Weather', 'api')}_status.json")), encoding="utf-8"))
     weather_code = '99'
     for weather in weather_status['weatherinfo']:
         if str(weather['code']) == code:
@@ -117,11 +117,11 @@ def get_weather_stylesheet(code):  # 天气背景样式
     if weather_code in ('0', '1', '3', '99', '900'):  # 晴、多云、阵雨、未知
         if 6 <= current_time.hour < 18:  # 如果是日间
             # return 'spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(40, 60, 110, 255), stop:1 rgba(75, 175, 245, 255)'
-            return 'img/weather/bkg/day.png'
+            return os.path.normpath(os.path.join(base_directory, "img", "weather", "bkg", "day.png"))
         else:  # 如果是夜间
-            return 'img/weather/bkg/night.png'
+            return os.path.normpath(os.path.join(base_directory, "img", "weather", "bkg", "night.png"))
     # return 'spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(20, 60, 90, 255), stop:1 rgba(10, 20, 29, 255)'
-    return 'img/weather/bkg/rain.png'
+    return os.path.normpath(os.path.join(base_directory, "img", "weather", "bkg", "rain.png"))
 
 
 def get_weather_url():
@@ -142,7 +142,7 @@ def get_weather_alert_url():
 
 def get_weather_code_by_description(value):
     weather_status = json.load(
-        open(f"{base_directory}/config/data/{config_center.read_conf('Weather', 'api')}_status.json", encoding="utf-8"))
+        open(os.path.normpath(os.path.join(base_directory, "config", "data", f"{config_center.read_conf('Weather', 'api')}_status.json")), encoding="utf-8"))
     for weather in weather_status['weatherinfo']:
         if str(weather['wea']) == value:
             return str(weather['code'])
@@ -151,7 +151,7 @@ def get_weather_code_by_description(value):
 
 def get_alert_image(alert_type):
     alerts_list = api_config['weather_api_parameters'][config_center.read_conf('Weather', 'api')]['alerts']['types']
-    return f'{base_directory}/img/weather/alerts/{alerts_list[alert_type]}'
+    return os.path.normpath(os.path.join(base_directory, "img", "weather", "alerts", alerts_list[alert_type]))
 
 
 def is_supported_alert():

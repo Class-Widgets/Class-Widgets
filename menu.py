@@ -116,7 +116,7 @@ def switch_checked(section, key, checked):
 
 def get_theme_name():
     theme = config_center.read_conf('General', 'theme')
-    if os.path.exists(f'{base_directory}/ui/{theme}/theme.json'):
+    if os.path.exists(os.path.normpath(os.path.join(base_directory, 'ui', theme, 'theme.json'))):
         return theme
     else:
         return 'default'
@@ -402,15 +402,15 @@ class PluginCard(CardWidget):  # 插件卡片
                 enabled_plugins['enabled_plugins'].remove(self.plugin_dir)
                 conf.save_plugin_config(enabled_plugins)
             try:
-                with open(f"{base_directory}/plugins/plugins_from_pp.json", 'r', encoding='utf-8') as f:  # 移除插件广场安装记录
+                with open(os.path.normpath(os.path.join(base_directory, "plugins", "plugins_from_pp.json")), 'r', encoding='utf-8') as f:  # 移除插件广场安装记录
                     installed_plugins = json.load(f).get('plugins')
                     installed_plugins.remove(self.plugin_dir)
-                with open(f"{base_directory}/plugins/plugins_from_pp.json", 'w', encoding='utf-8') as f2:  # 移除插件广场安装记录
+                with open(os.path.normpath(os.path.join(base_directory, "plugins", "plugins_from_pp.json")), 'w', encoding='utf-8') as f2:  # 移除插件广场安装记录
                     json.dump({"plugins": installed_plugins}, f2, ensure_ascii=False, indent=4)
             except Exception as e:
                 logger.error(f"保存已安装插件失败：{e}")
             try:
-                rmtree(os.path.join(os.getcwd(), conf.PLUGINS_DIR, self.plugin_dir))  # 删除插件
+                rmtree(os.path.normpath(os.path.join(os.getcwd(), conf.PLUGINS_DIR, self.plugin_dir)))  # 删除插件
                 self.setParent(None)
                 self.deleteLater()  # 删除卡片
             except Exception as e:
@@ -477,25 +477,25 @@ class SettingsMenu(FluentWindow):
         self.version_thread = None
 
         # 创建子页面
-        self.spInterface = uic.loadUi(f'{base_directory}/view/menu/preview.ui')  # 预览
+        self.spInterface = uic.loadUi(os.path.normpath(os.path.join(base_directory, 'view', 'menu', 'preview.ui')))  # 预览
         self.spInterface.setObjectName("spInterface")
-        self.teInterface = uic.loadUi(f'{base_directory}/view/menu/timeline_edit.ui')  # 时间线编辑
+        self.teInterface = uic.loadUi(os.path.normpath(os.path.join(base_directory, 'view', 'menu', 'timeline_edit.ui')))  # 时间线编辑
         self.teInterface.setObjectName("teInterface")
-        self.seInterface = uic.loadUi(f'{base_directory}/view/menu/schedule_edit.ui')  # 课程表编辑
+        self.seInterface = uic.loadUi(os.path.normpath(os.path.join(base_directory, 'view', 'menu', 'schedule_edit.ui')))  # 课程表编辑
         self.seInterface.setObjectName("seInterface")
-        self.adInterface = uic.loadUi(f'{base_directory}/view/menu/advance.ui')  # 高级选项
+        self.adInterface = uic.loadUi(os.path.normpath(os.path.join(base_directory, 'view', 'menu', 'advance.ui')))  # 高级选项
         self.adInterface.setObjectName("adInterface")
-        self.ifInterface = uic.loadUi(f'{base_directory}/view/menu/about.ui')  # 关于
+        self.ifInterface = uic.loadUi(os.path.normpath(os.path.join(base_directory, 'view', 'menu', 'about.ui')))  # 关于
         self.ifInterface.setObjectName("ifInterface")
-        self.ctInterface = uic.loadUi(f'{base_directory}/view/menu/custom.ui')  # 自定义
+        self.ctInterface = uic.loadUi(os.path.normpath(os.path.join(base_directory, 'view', 'menu', 'custom.ui')))  # 自定义
         self.ctInterface.setObjectName("ctInterface")
-        self.cfInterface = uic.loadUi(f'{base_directory}/view/menu/configs.ui')  # 配置文件
+        self.cfInterface = uic.loadUi(os.path.normpath(os.path.join(base_directory, 'view', 'menu', 'configs.ui')))  # 配置文件
         self.cfInterface.setObjectName("cfInterface")
-        self.sdInterface = uic.loadUi(f'{base_directory}/view/menu/sound.ui')  # 通知
+        self.sdInterface = uic.loadUi(os.path.normpath(os.path.join(base_directory, 'view', 'menu', 'sound.ui')))  # 通知
         self.sdInterface.setObjectName("sdInterface")
-        self.hdInterface = uic.loadUi(f'{base_directory}/view/menu/help.ui')  # 帮助
+        self.hdInterface = uic.loadUi(os.path.normpath(os.path.join(base_directory, 'view', 'menu', 'help.ui')))  # 帮助
         self.hdInterface.setObjectName("hdInterface")
-        self.plInterface = uic.loadUi(f'{base_directory}/view/menu/plugin_mgr.ui')  # 插件
+        self.plInterface = uic.loadUi(os.path.normpath(os.path.join(base_directory, 'view', 'menu', 'plugin_mgr.ui')))  # 插件
         self.plInterface.setObjectName("plInterface")
 
         self.init_nav()
@@ -541,16 +541,16 @@ class SettingsMenu(FluentWindow):
 
         plugin_card_layout = self.findChild(QVBoxLayout, 'plugin_card_layout')
         open_plugin_folder = self.findChild(PushButton, 'open_plugin_folder')
-        open_plugin_folder.clicked.connect(lambda: open_dir(os.path.join(os.getcwd(), conf.PLUGINS_DIR)))  # 打开插件目录
+        open_plugin_folder.clicked.connect(lambda: open_dir(os.path.normpath(os.path.join(os.getcwd(), conf.PLUGINS_DIR))))  # 打开插件目录
 
         if not p_loader.plugins_settings:  # 若插件设置为空
             p_loader.load_plugins()  # 加载插件设置
 
         for plugin in plugin_dict:
             if (Path(conf.PLUGINS_DIR) / plugin / 'icon.png').exists():  # 若插件目录存在icon.png
-                icon_path = f'{base_directory}/plugins/{plugin}/icon.png'
+                icon_path = os.path.normpath(os.path.join(base_directory, 'plugins', plugin, 'icon.png'))
             else:
-                icon_path = f'{base_directory}/img/settings/plugin-icon.png'
+                icon_path = os.path.normpath(os.path.join(base_directory, 'img', 'settings', 'plugin-icon.png'))
             card = PluginCard(
                 icon=icon_path,
                 title=plugin_dict[plugin]['name'],
@@ -632,7 +632,7 @@ class SettingsMenu(FluentWindow):
         cf_export_schedule = self.findChild(PushButton, 'ex_schedule')
         cf_export_schedule.clicked.connect(self.cf_export_schedule)  # 导出课程表
         cf_open_schedule_folder = self.findChild(PushButton, 'open_schedule_folder')  # 打开课程表文件夹
-        cf_open_schedule_folder.clicked.connect(lambda: open_dir(os.path.join(os.path.abspath('.'), 'config/schedule')))
+        cf_open_schedule_folder.clicked.connect(lambda: open_dir(os.path.normpath(os.path.join(os.path.abspath('.'), 'config', 'schedule'))))
 
         cf_import_schedule_cses = self.findChild(PushButton, 'im_schedule_cses')
         cf_import_schedule_cses.clicked.connect(self.cf_import_schedule_cses)  # 导入课程表（CSES）
@@ -681,7 +681,7 @@ class SettingsMenu(FluentWindow):
         set_fc_color.clicked.connect(self.ct_set_fc_color)
 
         open_theme_folder = self.findChild(HyperlinkLabel, 'open_theme_folder')  # 打开主题文件夹
-        open_theme_folder.clicked.connect(lambda: open_dir(os.path.join(os.getcwd(), 'ui')))
+        open_theme_folder.clicked.connect(lambda: open_dir(os.path.normpath(os.path.join(os.getcwd(), 'ui'))))
 
         select_theme_combo = self.findChild(ComboBox, 'combo_theme_select')  # 主题选择
         select_theme_combo.addItems(list_.theme_names)
@@ -1204,7 +1204,7 @@ class SettingsMenu(FluentWindow):
         file_path, _ = QFileDialog.getOpenFileName(self, "选择文件", "", "CSES 通用课程表交换文件 (*.yaml)")
         if file_path:
             file_name = file_path.split("/")[-1]
-            save_path = f"{base_directory}/config/schedule/{file_name.replace('.yaml', '.json')}"
+            save_path = os.path.normpath(os.path.join(base_directory, "config", "schedule", file_name.replace('.yaml', '.json')))
 
             print(save_path)
             importer = CSES_Converter(file_path)
@@ -1243,7 +1243,7 @@ class SettingsMenu(FluentWindow):
         if file_path:
             exporter = CSES_Converter(file_path)
             exporter.load_generator()
-            if exporter.convert_to_cses(cw_path=f'{base_directory}/config/schedule/{config_center.schedule_name}'):
+            if exporter.convert_to_cses(cw_path=os.path.normpath(os.path.join(base_directory, "config", "schedule", config_center.schedule_name))):
                 alert = MessageBox('您已成功导出课程表配置文件',
                                    f'文件将导出于{file_path}', self)
                 alert.cancelButton.hide()
@@ -1315,22 +1315,22 @@ class SettingsMenu(FluentWindow):
             widgets_preview.addItem(left_spacer)
 
             theme_folder = config_center.read_conf("General", "theme")
-            if not os.path.exists(f'{base_directory}/ui/{theme_folder}/theme.json'):
+            if not os.path.exists(os.path.normpath(os.path.join(base_directory, 'ui', theme_folder, 'theme.json'))):
                 theme_folder = 'default'  # 主题文件夹不存在，使用默认主题
                 logger.warning(f'主题文件夹不存在，使用默认主题：{theme_folder}')
 
             for i in range(len(widget_config)):
                 widget_name = widget_config[i]
                 if isDarkTheme() and conf.load_theme_config(theme_folder)['support_dark_mode']:
-                    if os.path.exists(f'{base_directory}/ui/{theme_folder}/dark/preview/{widget_name[:-3]}.png'):
-                        path = f'{base_directory}/ui/{theme_folder}/dark/preview/{widget_name[:-3]}.png'
+                    if os.path.exists(os.path.normpath(os.path.join(base_directory, 'ui', theme_folder, 'dark', 'preview', f'{widget_name[:-3]}.png'))):
+                        path = os.path.normpath(os.path.join(base_directory, 'ui', theme_folder, 'dark', 'preview', f'{widget_name[:-3]}.png'))
                     else:
-                        path = f'{base_directory}/ui/{theme_folder}/dark/preview/widget-custom.png'
+                        path = os.path.normpath(os.path.join(base_directory, 'ui', theme_folder, 'dark', 'preview', 'widget-custom.png'))
                 else:
-                    if os.path.exists(f'ui/{theme_folder}/preview/{widget_name[:-3]}.png'):
-                        path = f'{base_directory}/ui/{theme_folder}/preview/{widget_name[:-3]}.png'
+                    if os.path.exists(os.path.normpath(os.path.join(base_directory, 'ui', theme_folder, 'preview', f'{widget_name[:-3]}.png'))):
+                        path = os.path.normpath(os.path.join(base_directory, 'ui', theme_folder, 'preview', f'{widget_name[:-3]}.png'))
                     else:
-                        path = f'{base_directory}/ui/{theme_folder}/preview/widget-custom.png'
+                        path = os.path.normpath(os.path.join(base_directory, 'ui', theme_folder, 'preview', 'widget-custom.png'))
 
                 label = ImageLabel()
                 label.setImage(path)
@@ -1346,8 +1346,8 @@ class SettingsMenu(FluentWindow):
             conf_name = self.findChild(LineEdit, 'conf_name')
             old_name = config_center.schedule_name
             new_name = conf_name.text()
-            os.rename(f'{base_directory}/config/schedule/{old_name}',
-                      f'{base_directory}/config/schedule/{new_name}.json')  # 重命名
+            os.rename(os.path.normpath(os.path.join(base_directory, 'config', 'schedule', old_name)),
+                      os.path.normpath(os.path.join(base_directory, 'config', 'schedule', f'{new_name}.json')))  # 重命名
             config_center.write_conf('General', 'schedule', f'{new_name}.json')
             config_center.schedule_name = new_name + '.json'
             conf_combo = self.findChild(ComboBox, 'conf_combo')
@@ -1967,7 +1967,7 @@ class SettingsMenu(FluentWindow):
         self.resize(width, height)
 
         self.setWindowTitle('Class Widgets - 设置')
-        self.setWindowIcon(QIcon(f'{base_directory}/img/logo/favicon-settings.ico'))
+        self.setWindowIcon(QIcon(os.path.normpath(os.path.join(base_directory, 'img', 'logo', 'favicon-settings.ico'))))
 
         self.init_font()  # 设置字体
 

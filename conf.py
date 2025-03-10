@@ -19,21 +19,22 @@ PLUGINS_DIR = Path(base_directory) / 'plugins'
 
 # app 图标
 if os.name == 'nt':
-    app_icon = os.path.join(base_directory, 'img', 'favicon.ico')
+    app_icon = os.path.normpath(os.path.join(base_directory, 'img', 'favicon.ico'))
 elif os.name == 'darwin':
-    app_icon = os.path.join(base_directory, 'img', 'favicon.icns')
+    app_icon = os.path.normpath(os.path.join(base_directory, 'img', 'favicon.icns'))
 else:
-    app_icon = os.path.join(base_directory, 'img', 'favicon.png')
+    app_icon = os.path.normpath(os.path.join(base_directory, 'img', 'favicon.png'))
 
 
 def load_theme_config(theme):
     try:
-        with open(f'{base_directory}/ui/{theme}/theme.json', 'r', encoding='utf-8') as file:
+        theme_path = os.path.normpath(os.path.join(base_directory, 'ui', theme, 'theme.json'))
+        with open(theme_path, 'r', encoding='utf-8') as file:
             data = json.load(file)
             return data
     except FileNotFoundError:
         logger.warning(f"主题配置文件 {theme} 不存在，返回默认配置")
-        return f'{base_directory}/ui/default/theme.json'
+        return os.path.normpath(os.path.join(base_directory, 'ui', 'default', 'theme.json'))
     except Exception as e:
         logger.error(f"加载主题数据时出错: {e}")
         return None
@@ -41,11 +42,12 @@ def load_theme_config(theme):
 
 def load_plugin_config():
     try:
-        if os.path.exists(f'{base_directory}/config/plugin.json'):  # 如果配置文件存在
-            with open(f'{base_directory}/config/plugin.json', 'r', encoding='utf-8') as file:
+        plugin_config_path = os.path.normpath(os.path.join(base_directory, "config", "plugin.json"))
+        if os.path.exists(plugin_config_path):
+            with open(plugin_config_path, 'r', encoding='utf-8') as file:
                 data = json.load(file)
         else:
-            with open(f'{base_directory}/config/plugin.json', 'w', encoding='utf-8') as file:
+            with open(plugin_config_path, 'w', encoding='utf-8') as file:
                 data = {"enabled_plugins": []}
                 json.dump(data, file, ensure_ascii=False, indent=4)
         return data
@@ -58,7 +60,8 @@ def save_plugin_config(data):
     data_dict = load_plugin_config()
     data_dict.update(data)
     try:
-        with open(f'{base_directory}/config/plugin.json', 'w', encoding='utf-8') as file:
+        config_path = os.path.normpath(os.path.join(base_directory, "config", "plugin.json"))
+        with open(config_path, 'w', encoding='utf-8') as file:
             json.dump(data_dict, file, ensure_ascii=False, indent=4)
         return True
     except Exception as e:
@@ -67,9 +70,9 @@ def save_plugin_config(data):
 
 
 def save_installed_plugin(data):
-    data = {"plugins": data}
     try:
-        with open(f'{base_directory}/plugins/plugins_from_pp.json', 'w', encoding='utf-8') as file:
+        plugin_pp_path = os.path.normpath(os.path.join(base_directory, "plugins", "plugins_from_pp.json"))
+        with open(plugin_pp_path, 'w', encoding='utf-8') as file:
             json.dump(data, file, ensure_ascii=False, indent=4)
         return True
     except Exception as e:
@@ -79,7 +82,8 @@ def save_installed_plugin(data):
 
 def load_theme_width(theme):
     try:
-        with open(f'{base_directory}/ui/{theme}/theme.json', 'r', encoding='utf-8') as file:
+        theme_path = os.path.normpath(os.path.join(base_directory, "ui", theme, "theme.json"))
+        with open(theme_path, 'r', encoding='utf-8') as file:
             data = json.load(file)
             return data['widget_width']
     except Exception as e:
@@ -168,7 +172,7 @@ def add_shortcut(file='', icon=''):
         logger.error(f"创建桌面快捷方式时出错: {e}")
 
 
-def add_to_startup(file_path=f'{base_directory}/ClassWidgets.exe', icon_path=''):  # 注册到开机启动
+def add_to_startup(file_path=os.path.normpath(os.path.join(base_directory, "ClassWidgets.exe")), icon_path=''):  # 注册到开机启动
     if os.name != 'nt':
         return
     if file_path == "":
@@ -254,18 +258,18 @@ def get_is_widget_in(widget='example.ui'):
 
 
 def save_widget_conf_to_json(new_data):
-    # 初始化 data_dict 为一个空字典
     data_dict = {}
-    if os.path.exists(f'{base_directory}/config/widget.json'):
+    widget_conf_path = os.path.normpath(os.path.join(base_directory, "config", "widget.json"))
+    if os.path.exists(widget_conf_path):
         try:
-            with open(f'{base_directory}/config/widget.json', 'r', encoding='utf-8') as file:
+            with open(widget_conf_path, 'r', encoding='utf-8') as file:
                 data_dict = json.load(file)
         except Exception as e:
             print(f"读取现有数据时出错: {e}")
             return e
     data_dict.update(new_data)
     try:
-        with open(f'{base_directory}/config/widget.json', 'w', encoding='utf-8') as file:
+        with open(widget_conf_path, 'w', encoding='utf-8') as file:
             json.dump(data_dict, file, ensure_ascii=False, indent=4)
         return True
     except Exception as e:
@@ -278,7 +282,8 @@ def load_plugins():  # 加载插件配置文件
     for folder in Path(PLUGINS_DIR).iterdir():
         if folder.is_dir() and (folder / 'plugin.json').exists():
             try:
-                with open(f'{base_directory}/plugins/{folder.name}/plugin.json', 'r', encoding='utf-8') as file:
+                plugin_path = os.path.normpath(os.path.join(base_directory, "plugins", folder.name, "plugin.json"))
+                with open(plugin_path, 'r', encoding='utf-8') as file:
                     data = json.load(file)
             except Exception as e:
                 logger.error(f"加载插件配置文件数据时出错，将跳过: {e}")  # 跳过奇怪的文件夹
