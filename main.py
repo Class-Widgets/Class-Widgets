@@ -1778,6 +1778,8 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.last_widgets = widgets
             logger.info(f'切换主题：{theme_}，颜色模式{color_mode}')
             mgr.clear_widgets()
+            self.init_ui(self.path)
+            self.init_font()
 
     def update_weather_data(self, weather_data):  # 更新天气数据(已兼容多api)
         global weather_name, temperature, weather_data_temp
@@ -2069,6 +2071,20 @@ def init_config():  # 重设配置文件
 
 
 def init():
+    global theme, radius, mgr, screen_width, first_start, fw
+    update_timer.remove_all_callbacks()
+
+    # 添加主题监听器
+    def on_theme_changed(new_theme):
+        global theme
+        theme = new_theme
+        logger.info(f'检测到主题切换：{theme}')
+        mgr.clear_widgets()
+        init()
+
+    config_center.add_listener('General', 'theme', on_theme_changed)
+
+    theme = config_center.read_conf('General', 'theme')
     global theme, radius, mgr, screen_width, first_start, fw
     update_timer.remove_all_callbacks()
 
