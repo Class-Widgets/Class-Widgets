@@ -8,11 +8,7 @@ from loguru import logger
 import configparser as config
 
 base_directory = os.path.dirname(os.path.abspath(__file__))
-'''
-if base_directory.endswith('MacOS'):
-    base_directory = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)), 'Resources')
-'''
-path = f'{base_directory}/config.ini'
+path = os.path.normpath(os.path.join(base_directory, "config.ini"))
 
 
 class ConfigCenter:
@@ -22,7 +18,7 @@ class ConfigCenter:
     def __init__(self):
         self.config = config.ConfigParser()
         self.config.read(path, encoding='utf-8')
-        with open(f'{base_directory}/config/default_config.json', encoding="utf-8") as default:
+        with open(os.path.normpath(os.path.join(base_directory, "config", "default_config.json")), encoding="utf-8") as default:
             self.default_data = json.load(default)
 
         self.check_config()
@@ -76,7 +72,7 @@ class ConfigCenter:
                 with open(path, 'w', encoding='utf-8') as configfile:
                     self.config.write(configfile)
             logger.info("配置文件不存在，已创建并写入默认配置。")
-            copy(f'{base_directory}/config/default.json', f'{base_directory}/config/schedule/新课表 - 1.json')
+            copy(os.path.normpath(os.path.join(base_directory, "config", "default.json")), os.path.normpath(os.path.join(base_directory, "config", "schedule", "新课表 - 1.json")))
         else:
             with open(path, 'r', encoding='utf-8') as configfile:
                 self.config.read_file(configfile)
@@ -98,19 +94,19 @@ class ConfigCenter:
                 except Exception as e:
                     logger.error(f"配置文件更新失败: {e}")
 
-            if not os.path.exists(f"{base_directory}/config/schedule/{self.read_conf('General', 'schedule')}"):
+            if not os.path.exists(os.path.normpath(os.path.join(base_directory, "config", "schedule", self.read_conf('General', 'schedule')))):
                 # 如果config.ini课程表不存在，则创建
 
                 schedule_config = []
                 # 遍历目标目录下的所有文件
-                for file_name in os.listdir(f'{base_directory}/config/schedule'):
+                for file_name in os.listdir(os.path.normpath(os.path.join(base_directory, "config", "schedule"))):
                     # 找json
                     if file_name.endswith('.json') and file_name != 'backup.json':
                         # 将文件路径添加到列表
                         schedule_config.append(file_name)
                 if not schedule_config:
-                    copy(f'{base_directory}/config/default.json',
-                         f'{base_directory}/config/schedule/{self.read_conf("General", "schedule")}')
+                    copy(os.path.normpath(os.path.join(base_directory, "config", "default.json")),
+                         os.path.normpath(os.path.join(base_directory, "config", "schedule", self.read_conf("General", "schedule"))))
                     logger.info(f"课程表不存在，已创建默认课程表")
                 else:
                     config_center.write_conf('General', 'schedule', schedule_config[0])
@@ -151,7 +147,7 @@ class ScheduleCenter:
 
         # 将更新后的数据保存回文件
         try:
-            with open(f'{base_directory}/config/schedule/{filename}', 'w', encoding='utf-8') as file:
+            with open(os.path.normpath(os.path.join(base_directory, "config", "schedule", filename)), 'w', encoding='utf-8') as file:
                 json.dump(self.schedule_data, file, ensure_ascii=False, indent=4)
             return f"数据已成功保存到 config/schedule/{filename}"
         except Exception as e:
@@ -165,7 +161,8 @@ def load_from_json(filename):
     :return: 返回从文件中加载的数据字典
     """
     try:
-        with open(f'{base_directory}/config/schedule/{filename}', 'r', encoding='utf-8') as file:
+        file_path = os.path.normpath(os.path.join(base_directory, "config", "schedule", filename))
+        with open(file_path, 'r', encoding='utf-8') as file:
             data = json.load(file)
             return data
     except Exception as e:
@@ -178,9 +175,9 @@ def save_data_to_json(new_data, filename):
     data_dict = {}
 
     # 如果文件存在，先读取文件中的现有数据
-    if os.path.exists(f'{base_directory}/config/schedule/{filename}'):
+    if os.path.exists(os.path.normpath(os.path.join(base_directory, "config", "schedule", filename))):
         try:
-            with open(f'{base_directory}/config/schedule/{filename}', 'r', encoding='utf-8') as file:
+            with open(os.path.normpath(os.path.join(base_directory, "config", "schedule", filename)), 'r', encoding='utf-8') as file:
                 data_dict = json.load(file)
         except Exception as e:
             logger.error(f"读取现有数据时出错: {e}")
@@ -190,7 +187,7 @@ def save_data_to_json(new_data, filename):
 
     # 将更新后的数据保存回文件
     try:
-        with open(f'{base_directory}/config/schedule/{filename}', 'w', encoding='utf-8') as file:
+        with open(os.path.normpath(os.path.join(base_directory, "config", "schedule", filename)), 'w', encoding='utf-8') as file:
             json.dump(data_dict, file, ensure_ascii=False, indent=4)
         return f"数据已成功保存到 config/schedule/{filename}"
     except Exception as e:

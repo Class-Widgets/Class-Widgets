@@ -2,6 +2,7 @@ import json
 import sys
 from datetime import datetime
 from random import shuffle
+import os
 
 from PyQt5 import uic
 from PyQt5.QtCore import QSize, Qt, QTimer, QUrl, QStringListModel, pyqtSignal
@@ -30,7 +31,7 @@ QApplication.setHighDpiScaleFactorRoundingPolicy(
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
 QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
 
-CONF_PATH = f"{base_directory}/plugins/plugins_from_pp.json"
+CONF_PATH = os.path.normpath(os.path.join(base_directory, "plugins", "plugins_from_pp.json"))
 PLAZA_REPO_URL = "https://raw.githubusercontent.com/Class-Widgets/plugin-plaza/"
 PLAZA_REPO_DIR = "https://api.github.com/repos/Class-Widgets/plugin-plaza/contents/Plugins"
 TEST_DOWNLOAD_LINK = "https://dldir1.qq.com/qqfile/qq/PCQQ9.7.17/QQ9.7.17.29225.exe"
@@ -283,7 +284,7 @@ class PluginDetailPage(MessageBoxBase):  # 插件详情页面
     def init_ui(self):
         # 加载ui文件
         self.temp_widget = QWidget()
-        uic.loadUi(f'{base_directory}/view/pp/plugin_detail.ui', self.temp_widget)
+        uic.loadUi(os.path.join(base_directory, "view", "pp", "plugin_detail.ui"), self.temp_widget)
         self.viewLayout.addWidget(self.temp_widget)
         self.viewLayout.setContentsMargins(0, 0, 0, 0)
         # 隐藏原有按钮
@@ -422,13 +423,13 @@ class PluginPlaza(MSFluentWindow):
         except Exception as e:
             logger.error(f"读取已安装的插件失败: {e}")
         try:
-            self.homeInterface = uic.loadUi(f'{base_directory}/view/pp/home.ui')  # 首页
+            self.homeInterface = uic.loadUi(os.path.join(base_directory, "view", "pp", "home.ui"))
             self.homeInterface.setObjectName("homeInterface")
-            self.latestsInterface = uic.loadUi(f'{base_directory}/view/pp/latests.ui')  # 最新更新
+            self.latestsInterface = uic.loadUi(os.path.join(base_directory, "view", "pp", "latests.ui"))
             self.latestsInterface.setObjectName("latestInterface")
-            self.settingsInterface = uic.loadUi(f'{base_directory}/view/pp/settings.ui')  # 设置
+            self.settingsInterface = uic.loadUi(os.path.join(base_directory, "view", "pp", "settings.ui"))
             self.settingsInterface.setObjectName("settingsInterface")
-            self.searchInterface = uic.loadUi(f'{base_directory}/view/pp/search.ui')  # 搜索
+            self.searchInterface = uic.loadUi(os.path.join(base_directory, "view", "pp", "search.ui"))
             self.searchInterface.setObjectName("searchInterface")
 
             load_local_plugins_version()  # 加载本地插件版本
@@ -736,7 +737,7 @@ class PluginPlaza(MSFluentWindow):
         self.setMinimumWidth(850)
         self.setMinimumHeight(500)
         self.setWindowTitle('插件广场')
-        self.setWindowIcon(QIcon(f'{base_directory}/img/pp_favicon.png'))
+        self.setWindowIcon(QIcon(os.path.join(base_directory, "img", "pp_favicon.png")))
 
         # 设置窗口大小
         size, pos = calculate_size()

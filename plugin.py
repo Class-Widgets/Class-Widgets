@@ -1,9 +1,11 @@
 import importlib
+import os
 from pathlib import Path
 
 from loguru import logger
 
 import conf
+from file import base_directory
 
 
 class PluginLoader:  # 插件加载器
@@ -30,7 +32,7 @@ class PluginLoader:  # 插件加载器
                 if hasattr(module, 'Settings'):  # 设置页
                     plugin_class = getattr(module, "Settings")  # 获取 Plugin 类
                     # 实例化插件
-                    self.plugins_settings[folder.name] = plugin_class(f'{conf.PLUGINS_DIR}/{folder.name}')
+                    self.plugins_settings[folder.name] = plugin_class(os.path.normpath(os.path.join(base_directory, conf.PLUGINS_DIR, folder.name)))
 
                 if not self.manager:
                     continue

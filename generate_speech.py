@@ -10,6 +10,7 @@ from typing import Optional
 import edge_tts
 import pyttsx3
 from loguru import logger
+from file import base_directory
 
 
 class TTSEngine:
@@ -315,3 +316,6 @@ def list_pyttsx3_voices():
                     f"\n   语言: {voice.languages[0] if voice.languages else '未知'}"
                     f"\n   性别: {voice.gender}"
                     f"\n" + "-" * 60)
+
+# 示例修改：将语音文件路径拼接
+speech_output = os.path.normpath(os.path.join(base_directory, "output", "speech.mp3"))
