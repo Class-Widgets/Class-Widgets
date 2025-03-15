@@ -627,6 +627,35 @@ class SettingsMenu(FluentWindow):
         spin_prepare_time.valueChanged.connect(self.save_prepare_time)  # 准备时间
 
     def setup_configs_interface(self):  # 配置界面
+        self.conf_combo = self.cfInterface.findChild(ComboBox, 'conf_combo')
+        self.conf_combo.clear()
+        self.conf_combo.addItems(list_.get_schedule_config())
+        self.conf_combo.setCurrentIndex(
+            list_.get_schedule_config().index(config_center.read_conf('General', 'schedule')))
+        self.conf_combo.currentIndexChanged.connect(self.ad_change_file)  # 切换配置文件
+
+        conf_name = self.cfInterface.findChild(LineEdit, 'conf_name')
+        conf_name.setText(config_center.schedule_name[:-5])
+        conf_name.textEdited.connect(self.ad_change_file_name)
+        
+        set_start_date = self.cfInterface.findChild(CalendarPicker, 'set_start_date')  # 日期
+        if config_center.read_conf('Date', 'start_date') != '':
+            set_start_date.setDate(QDate.fromString(config_center.read_conf('Date', 'start_date'), 'yyyy-M-d'))
+        set_start_date.dateChanged.connect(
+            lambda: config_center.write_conf('Date', 'start_date', set_start_date.date.toString('yyyy-M-d')))  # 开学日期
+
+        offset_spin = self.cfInterface.findChild(SpinBox, 'offset_spin')
+        offset_spin.setValue(int(config_center.read_conf('General', 'time_offset')))
+        offset_spin.valueChanged.connect(
+            lambda: config_center.write_conf('General', 'time_offset', str(offset_spin.value()))
+        ) 
+        
+        switch_enable_alt_schedule = self.cfInterface.findChild(SwitchButton, 'switch_enable_alt_schedule')
+        switch_enable_alt_schedule.setChecked(int(config_center.read_conf('General', 'enable_alt_schedule')))
+        switch_enable_alt_schedule.checkedChanged.connect(
+            lambda checked: switch_checked('General', 'enable_alt_schedule', checked)
+        )  
+
         cf_import_schedule = self.findChild(PushButton, 'im_schedule')
         cf_import_schedule.clicked.connect(self.cf_import_schedule)  # 导入课程表
         cf_export_schedule = self.findChild(PushButton, 'ex_schedule')
@@ -784,17 +813,6 @@ class SettingsMenu(FluentWindow):
             lambda: config_center.write_conf('General', 'margin', str(margin_spin.value()))
         )  # 保存边距设定
 
-        self.conf_combo = self.adInterface.findChild(ComboBox, 'conf_combo')
-        self.conf_combo.clear()
-        self.conf_combo.addItems(list_.get_schedule_config())
-        self.conf_combo.setCurrentIndex(
-            list_.get_schedule_config().index(config_center.read_conf('General', 'schedule')))
-        self.conf_combo.currentIndexChanged.connect(self.ad_change_file)  # 切换配置文件
-
-        conf_name = self.adInterface.findChild(LineEdit, 'conf_name')
-        conf_name.setText(config_center.schedule_name[:-5])
-        conf_name.textEdited.connect(self.ad_change_file_name)
-
         window_status_combo = self.adInterface.findChild(ComboBox, 'window_status_combo')
         window_status_combo.addItems(list_.window_status)
         window_status_combo.setCurrentIndex(int(config_center.read_conf('General', 'pin_on_top')))
@@ -847,13 +865,7 @@ class SettingsMenu(FluentWindow):
         switch_enable_click.setChecked(int(config_center.read_conf('General', 'enable_click')))
         switch_enable_click.checkedChanged.connect(lambda checked: switch_checked('General', 'enable_click', checked))
         # 允许点击
-
-        switch_enable_alt_schedule = self.adInterface.findChild(SwitchButton, 'switch_enable_alt_schedule')
-        switch_enable_alt_schedule.setChecked(int(config_center.read_conf('General', 'enable_alt_schedule')))
-        switch_enable_alt_schedule.checkedChanged.connect(
-            lambda checked: switch_checked('General', 'enable_alt_schedule', checked)
-        )  # 安全模式
-
+        
         switch_enable_safe_mode = self.adInterface.findChild(SwitchButton, 'switch_safe_mode')
         switch_enable_safe_mode.setChecked(int(config_center.read_conf('Other', 'safe_mode')))
         switch_enable_safe_mode.checkedChanged.connect(
@@ -875,18 +887,6 @@ class SettingsMenu(FluentWindow):
 
         button_clear_log = self.adInterface.findChild(PushButton, 'button_clear_log')
         button_clear_log.clicked.connect(self.clear_log)  # 清空日志
-
-        set_start_date = self.adInterface.findChild(CalendarPicker, 'set_start_date')  # 日期
-        if config_center.read_conf('Date', 'start_date') != '':
-            set_start_date.setDate(QDate.fromString(config_center.read_conf('Date', 'start_date'), 'yyyy-M-d'))
-        set_start_date.dateChanged.connect(
-            lambda: config_center.write_conf('Date', 'start_date', set_start_date.date.toString('yyyy-M-d')))  # 开学日期
-
-        offset_spin = self.adInterface.findChild(SpinBox, 'offset_spin')
-        offset_spin.setValue(int(config_center.read_conf('General', 'time_offset')))
-        offset_spin.valueChanged.connect(
-            lambda: config_center.write_conf('General', 'time_offset', str(offset_spin.value()))
-        )  # 保存时差偏移
 
         text_scale_factor = self.adInterface.findChild(LineEdit, 'text_scale_factor')
         text_scale_factor.setText(str(float(config_center.read_conf('General', 'scale')) * 100) + '%')  # 初始化缩放系数显示

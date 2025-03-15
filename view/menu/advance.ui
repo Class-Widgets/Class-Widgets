@@ -56,337 +56,10 @@
         <x>0</x>
         <y>0</y>
         <width>640</width>
-        <height>1646</height>
+        <height>1445</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_21">
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_5">
-         <property name="spacing">
-          <number>3</number>
-         </property>
-         <item>
-          <widget class="SubtitleLabel" name="SubtitleLabel_3">
-           <property name="text">
-            <string>课程</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="CardWidget" name="CardWidget_7">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>70</height>
-            </size>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_7">
-            <property name="leftMargin">
-             <number>16</number>
-            </property>
-            <property name="topMargin">
-             <number>16</number>
-            </property>
-            <property name="rightMargin">
-             <number>16</number>
-            </property>
-            <property name="bottomMargin">
-             <number>16</number>
-            </property>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_11">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="StrongBodyLabel" name="StrongBodyLabel_7">
-                <property name="text">
-                 <string>时差偏移</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="CaptionLabel" name="CaptionLabel_6">
-                <property name="text">
-                 <string>修正系统时间与学校铃声的时差，学校铃声慢于系统时间为正值，反之为负</string>
-                </property>
-                <property name="wordWrap">
-                 <bool>false</bool>
-                </property>
-                <property name="lightColor" stdset="0">
-                 <color alpha="150">
-                  <red>0</red>
-                  <green>0</green>
-                  <blue>0</blue>
-                 </color>
-                </property>
-                <property name="darkColor" stdset="0">
-                 <color alpha="200">
-                  <red>255</red>
-                  <green>255</green>
-                  <blue>255</blue>
-                 </color>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <widget class="SpinBox" name="offset_spin">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimum">
-               <number>-114514</number>
-              </property>
-              <property name="maximum">
-               <number>114514</number>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="CardWidget" name="CardWidget_3">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>70</height>
-            </size>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_5">
-            <property name="leftMargin">
-             <number>16</number>
-            </property>
-            <property name="topMargin">
-             <number>16</number>
-            </property>
-            <property name="rightMargin">
-             <number>16</number>
-            </property>
-            <property name="bottomMargin">
-             <number>16</number>
-            </property>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_6">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="StrongBodyLabel" name="StrongBodyLabel_5">
-                <property name="text">
-                 <string>选择课程表配置</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="CaptionLabel" name="CaptionLabel_2">
-                <property name="text">
-                 <string>课程表配置将存储于 本软件根目录\config\schedule 下</string>
-                </property>
-                <property name="wordWrap">
-                 <bool>false</bool>
-                </property>
-                <property name="lightColor" stdset="0">
-                 <color alpha="150">
-                  <red>0</red>
-                  <green>0</green>
-                  <blue>0</blue>
-                 </color>
-                </property>
-                <property name="darkColor" stdset="0">
-                 <color alpha="200">
-                  <red>255</red>
-                  <green>255</green>
-                  <blue>255</blue>
-                 </color>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <widget class="LineEdit" name="conf_name">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="ComboBox" name="conf_combo">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="CardWidget" name="CardWidget_8">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>70</height>
-            </size>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_8">
-            <property name="leftMargin">
-             <number>16</number>
-            </property>
-            <property name="topMargin">
-             <number>16</number>
-            </property>
-            <property name="rightMargin">
-             <number>16</number>
-            </property>
-            <property name="bottomMargin">
-             <number>16</number>
-            </property>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_13">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="StrongBodyLabel" name="StrongBodyLabel_8">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="text">
-                 <string>启用 单/双 周课表</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="CaptionLabel" name="CaptionLabel_8">
-                <property name="text">
-                 <string>若要启用此选项，需设定开学日期以计算</string>
-                </property>
-                <property name="wordWrap">
-                 <bool>false</bool>
-                </property>
-                <property name="lightColor" stdset="0">
-                 <color alpha="150">
-                  <red>0</red>
-                  <green>0</green>
-                  <blue>0</blue>
-                 </color>
-                </property>
-                <property name="darkColor" stdset="0">
-                 <color alpha="200">
-                  <red>255</red>
-                  <green>255</green>
-                  <blue>255</blue>
-                 </color>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <widget class="SwitchButton" name="switch_enable_alt_schedule" native="true">
-              <property name="onText" stdset="0">
-               <string>启用</string>
-              </property>
-              <property name="offText" stdset="0">
-               <string>关闭</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="CardWidget" name="CardWidget_9">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>70</height>
-            </size>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_9">
-            <property name="leftMargin">
-             <number>16</number>
-            </property>
-            <property name="topMargin">
-             <number>16</number>
-            </property>
-            <property name="rightMargin">
-             <number>16</number>
-            </property>
-            <property name="bottomMargin">
-             <number>16</number>
-            </property>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_12">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="StrongBodyLabel" name="StrongBodyLabel_9">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="text">
-                 <string>选取开学日期</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="CaptionLabel" name="CaptionLabel_7">
-                <property name="text">
-                 <string>将用于计算单/双周，开学日期需设置为开学第一周第一天（即周一）</string>
-                </property>
-                <property name="wordWrap">
-                 <bool>false</bool>
-                </property>
-                <property name="lightColor" stdset="0">
-                 <color alpha="150">
-                  <red>0</red>
-                  <green>0</green>
-                  <blue>0</blue>
-                 </color>
-                </property>
-                <property name="darkColor" stdset="0">
-                 <color alpha="200">
-                  <red>255</red>
-                  <green>255</green>
-                  <blue>255</blue>
-                 </color>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <widget class="CalendarPicker" name="set_start_date">
-              <property name="text">
-               <string>选取开学日期</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-        </layout>
-       </item>
        <item>
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
@@ -740,11 +413,11 @@
              </layout>
             </item>
             <item>
-             <widget class="SwitchButton" name="switch_exclude_startup" native="true">
-              <property name="onText" stdset="0">
+             <widget class="SwitchButton" name="switch_exclude_startup">
+              <property name="onText">
                <string>启用</string>
               </property>
-              <property name="offText" stdset="0">
+              <property name="offText">
                <string>禁用</string>
               </property>
              </widget>
@@ -820,7 +493,7 @@
               </item>
              </layout>
             </item>
-           <item>
+            <item>
              <widget class="LineEdit" name="excluded_lessons">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -911,15 +584,15 @@
                </layout>
               </item>
               <item>
-                <widget class="SwitchButton" name="switch_enable_click" native="true">
-                  <property name="onText" stdset="0">
-                  <string>启用</string>
-                  </property>
-                  <property name="offText" stdset="0">
-                  <string>禁用</string>
-                  </property>
-                </widget>
-                </item>
+               <widget class="SwitchButton" name="switch_enable_click">
+                <property name="onText">
+                 <string>启用</string>
+                </property>
+                <property name="offText">
+                 <string>禁用</string>
+                </property>
+               </widget>
+              </item>
              </layout>
             </item>
             <item>
@@ -1215,11 +888,11 @@
              </widget>
             </item>
             <item>
-             <widget class="SwitchButton" name="switch_startup" native="true">
-              <property name="onText" stdset="0">
+             <widget class="SwitchButton" name="switch_startup">
+              <property name="onText">
                <string>启用</string>
               </property>
-              <property name="offText" stdset="0">
+              <property name="offText">
                <string>禁用</string>
               </property>
              </widget>
@@ -1307,11 +980,11 @@
              </layout>
             </item>
             <item>
-             <widget class="SwitchButton" name="switch_safe_mode" native="true">
-              <property name="onText" stdset="0">
+             <widget class="SwitchButton" name="switch_safe_mode">
+              <property name="onText">
                <string>启用</string>
               </property>
-              <property name="offText" stdset="0">
+              <property name="offText">
                <string>禁用</string>
               </property>
              </widget>
@@ -1382,11 +1055,11 @@
              </layout>
             </item>
             <item>
-             <widget class="SwitchButton" name="switch_disable_log" native="true">
-              <property name="onText" stdset="0">
+             <widget class="SwitchButton" name="switch_disable_log">
+              <property name="onText">
                <string>启用</string>
               </property>
-              <property name="offText" stdset="0">
+              <property name="offText">
                <string>禁用</string>
               </property>
              </widget>
@@ -1529,14 +1202,14 @@
              </layout>
             </item>
             <item>
-             <widget class="SwitchButton" name="switch_multiple_programs" native="true">
-              <property name="text" stdset="0">
+             <widget class="SwitchButton" name="switch_multiple_programs">
+              <property name="text">
                <string>不允许</string>
               </property>
-              <property name="onText" stdset="0">
+              <property name="onText">
                <string>允许</string>
               </property>
-              <property name="offText" stdset="0">
+              <property name="offText">
                <string>不允许</string>
               </property>
              </widget>
@@ -1606,6 +1279,11 @@
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
+   <class>Slider</class>
+   <extends>QSlider</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
    <class>CardWidget</class>
    <extends>QFrame</extends>
    <header>qfluentwidgets</header>
@@ -1616,11 +1294,6 @@
    <extends>QScrollArea</extends>
    <header>qfluentwidgets</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>CalendarPicker</class>
-   <extends>QPushButton</extends>
-   <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
    <class>CaptionLabel</class>
@@ -1650,11 +1323,6 @@
   <customwidget>
    <class>SpinBox</class>
    <extends>QSpinBox</extends>
-   <header>qfluentwidgets</header>
-  </customwidget>
-  <customwidget>
-   <class>Slider</class>
-   <extends>QSlider</extends>
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
