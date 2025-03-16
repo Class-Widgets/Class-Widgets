@@ -1,3 +1,4 @@
+from PyQt5.QtCore import QSettings
 import json
 import os
 import configparser as config
