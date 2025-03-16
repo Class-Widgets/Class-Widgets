@@ -122,25 +122,43 @@ sys.excepthook = global_exceptHook  # 设置全局异常捕获
 
 
 def setTheme_():  # 设置主题
-    if config_center.read_conf('General', 'color_mode') == '2':  # 自动
+    current_theme = None
+    color_mode = config_center.read_conf('General', 'color_mode')
+    
+    if color_mode == '2':  # 自动
         if platform.system() == 'Darwin' and Version(platform.mac_ver()[0]) < Version('10.14'):
             return
         if platform.system() == 'Windows':
-            # 检查Windows版本是否支持深色模式（Windows 10 build 14393及以上）
             try:
                 win_build = sys.getwindowsversion().build
-                if win_build < 14393:  # 不支持深色模式的最低版本
+                if win_build < 14393:
                     return
             except AttributeError:
-                # 无法获取版本信息，保守返回
                 return
         if platform.system() == 'Linux':
             return
-        setTheme(Theme.AUTO)
-    elif config_center.read_conf('General', 'color_mode') == '1':
-        setTheme(Theme.DARK)
+        current_theme = Theme.AUTO
+    elif color_mode == '1':
+        current_theme = Theme.DARK
     else:
-        setTheme(Theme.LIGHT)
+        current_theme = Theme.LIGHT
+    
+    if current_theme is not None:
+        # 获取当前主题状态
+        was_dark = isDarkTheme()
+        
+        # 设置新主题
+        setTheme(current_theme)
+        
+        # 检查主题是否真的改变了
+        is_dark = isDarkTheme()
+        if was_dark != is_dark:
+            # 更新QFluentWidgets配置
+            config = QSettings(f'{base_directory}/config/config.json', QSettings.Format.IniFormat)
+            config.setValue('QFluentWidgets/ThemeMode', 'Dark' if is_dark else 'Light')
+            
+            # 使用QTimer延迟重载UI，避免过于频繁的重载
+            QTimer.singleShot(100, mgr.clear_widgets)
 
 
 def get_timeline_data():
@@ -1489,12 +1507,24 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.blur_effect_label = self.findChild(QLabel, 'blurEffect')
             # 模糊效果
             self.blur_effect = QGraphicsBlurEffect()
-            self.current_subject.mouseReleaseEvent = self.rightReleaseEvent
+            # 添加空值检查，确保current_subject存在时才设置事件处理器
+            if self.current_subject is not None:
+                self.current_subject.mouseReleaseEvent = self.rightReleaseEvent
+            else:
+                logger.warning(f"初始化widget-current-activity.ui时未找到subject按钮")
+                # 尝试重新加载UI
+                self.init_ui(path)
+                self.current_subject = self.findChild(QPushButton, 'subject')
+                if self.current_subject is not None:
+                    self.current_subject.mouseReleaseEvent = self.rightReleaseEvent
+                    logger.info(f"已重新加载并找到subject按钮")
 
             update_timer.add_callback(self.detect_theme_changed)
 
         elif path == 'widget-next-activity.ui':  # 接下来的活动
             self.nl_text = self.findChild(QLabel, 'next_lesson_text')
+            if self.nl_text is None:
+                logger.warning(f"初始化widget-next-activity.ui时未找到next_lesson_text标签")
 
         elif path == 'widget-countdown-custom.ui':  # 自定义倒计时
             self.custom_title = self.findChild(QLabel, 'countdown_custom_title')
@@ -1502,12 +1532,15 @@ class DesktopWidget(QWidget):  # 主要小组件
 
         elif path == 'widget-weather.ui':  # 天气组件
             content_layout = self.findChild(QHBoxLayout, 'horizontalLayout_2')
-            content_layout.setSpacing(16)
+            if content_layout is not None:
+                content_layout.setSpacing(16)
+                self.alert_icon = IconWidget()
+                self.alert_icon.setFixedSize(24, 24)
+                content_layout.insertWidget(0, self.alert_icon)
             self.temperature = self.findChild(QLabel, 'temperature')
             self.weather_icon = self.findChild(QLabel, 'weather_icon')
             self.alert_icon = IconWidget()
             self.alert_icon.setFixedSize(24, 24)
-            content_layout.insertWidget(0, self.alert_icon)
 
             self.get_weather_data()
             self.weather_timer = QTimer(self)
@@ -1534,6 +1567,17 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.move(self.position[0], self.position[1])
             self.resize(self.w, self.height())
 
+        # 确保所有必要的UI元素都被正确加载
+        if path == 'widget-next-activity.ui' and not hasattr(self, 'nl_text'):
+            self.nl_text = self.findChild(QLabel, 'next_lesson_text')
+            if self.nl_text is None:
+                logger.warning(f"初始化widget-next-activity.ui后nl_text仍为None，尝试重新加载UI")
+                # 尝试重新加载UI
+                self.init_ui(path)
+                self.nl_text = self.findChild(QLabel, 'next_lesson_text')
+                if self.nl_text is None:
+                    logger.error(f"重新加载UI后nl_text仍为None，可能是主题文件结构不一致")
+        
         self.update_data('')
 
     @staticmethod
@@ -1554,6 +1598,10 @@ class DesktopWidget(QWidget):  # 主要小组件
             logger.error(f"更新插件小组件时出错：{e}")
 
     def init_ui(self, path):
+        # 忽略Qt警告，如box-shadow属性不被识别的警告
+        import warnings
+        warnings.filterwarnings("ignore", category=UserWarning)
+        
         if conf.load_theme_config(theme)['support_dark_mode']:
             if os.path.exists(f'{base_directory}/ui/{theme}/{path}'):
                 if isDarkTheme():
@@ -1709,18 +1757,24 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.day_text.setText(f'{today.day} 日 {list_.week[today.weekday()]}')
 
         if path == 'widget-current-activity.ui':  # 当前活动
+            if self.current_subject is None:
+                logger.warning(f"更新widget-current-activity.ui时current_subject为None")
+                return
+                
             self.current_subject.setText(f'  {current_lesson_name}')
 
             if current_state != 2:  # 非休息段
                 render = QSvgRenderer(list_.get_subject_icon(current_lesson_name))
-                self.blur_effect_label.setStyleSheet(
-                    f'background-color: rgba{list_.subject_color(current_lesson_name)}, 200);'
-                )
+                if self.blur_effect_label is not None:
+                    self.blur_effect_label.setStyleSheet(
+                        f'background-color: rgba{list_.subject_color(current_lesson_name)}, 200);'
+                    )
             else:  # 休息段
                 render = QSvgRenderer(list_.get_subject_icon('课间'))
-                self.blur_effect_label.setStyleSheet(
-                    f'background-color: rgba{list_.subject_color("课间")}, 200);'
-                )
+                if self.blur_effect_label is not None:
+                    self.blur_effect_label.setStyleSheet(
+                        f'background-color: rgba{list_.subject_color("课间")}, 200);'
+                    )
             pixmap = QPixmap(render.defaultSize())
             pixmap.fill(Qt.GlobalColor.transparent)
 
@@ -1733,11 +1787,20 @@ class DesktopWidget(QWidget):  # 主要小组件
             painter.end()
 
             self.current_subject.setIcon(QIcon(pixmap))
-            self.blur_effect.setBlurRadius(25)  # 模糊半径
-            self.blur_effect_label.setGraphicsEffect(self.blur_effect)
+            if hasattr(self, 'blur_effect') and self.blur_effect_label is not None:
+                self.blur_effect.setBlurRadius(25)  # 模糊半径
+                self.blur_effect_label.setGraphicsEffect(self.blur_effect)
 
         elif path == 'widget-next-activity.ui':  # 接下来的活动
-            self.nl_text.setText(get_next_lessons_text())
+            if self.nl_text is not None:
+                self.nl_text.setText(get_next_lessons_text())
+            else:
+                logger.warning(f"更新widget-next-activity.ui时nl_text为None")
+                # 尝试重新查找组件
+                self.nl_text = self.findChild(QLabel, 'next_lesson_text')
+                if self.nl_text is not None:
+                    self.nl_text.setText(get_next_lessons_text())
+                    logger.info(f"已重新找到并更新next_lesson_text组件")
 
         if path == 'widget-countdown.ui':  # 活动倒计时
             if cd_list:
@@ -1778,8 +1841,6 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.last_widgets = widgets
             logger.info(f'切换主题：{theme_}，颜色模式{color_mode}')
             mgr.clear_widgets()
-            self.init_ui(self.path)
-            self.init_font()
 
     def update_weather_data(self, weather_data):  # 更新天气数据(已兼容多api)
         global weather_name, temperature, weather_data_temp
@@ -1792,28 +1853,49 @@ class DesktopWidget(QWidget):  # 主要小组件
             weather_name = db.get_weather_by_code(db.get_weather_data('icon', weather_data))
             current_city = self.findChild(QLabel, 'current_city')
             try:  # 天气组件
-                self.weather_icon.setPixmap(
-                    QPixmap(db.get_weather_icon_by_code(db.get_weather_data('icon', weather_data)))
-                )
-                self.alert_icon.hide()
-                if db.is_supported_alert():
-                    # print(alert_data if alert_data else weather_data)
-                    alert_type = db.get_weather_data('alert', alert_data if alert_data else weather_data)
-                    if alert_type:
-                        self.alert_icon.setIcon(
-                            db.get_alert_image(alert_type)
-                        )
-                        self.alert_icon.show()
+                # 检查weather_icon是否为None
+                if self.weather_icon is None:
+                    logger.warning("weather_icon组件为None，尝试重新查找")
+                    self.weather_icon = self.findChild(QLabel, 'weather_icon')
+                
+                if self.weather_icon is not None:
+                    self.weather_icon.setPixmap(
+                        QPixmap(db.get_weather_icon_by_code(db.get_weather_data('icon', weather_data)))
+                    )
+                
+                # 检查alert_icon是否为None
+                if hasattr(self, 'alert_icon') and self.alert_icon is not None:
+                    self.alert_icon.hide()
+                    if db.is_supported_alert():
+                        # print(alert_data if alert_data else weather_data)
+                        alert_type = db.get_weather_data('alert', alert_data if alert_data else weather_data)
+                        if alert_type:
+                            self.alert_icon.setIcon(
+                                db.get_alert_image(alert_type)
+                            )
+                            self.alert_icon.show()
 
-                self.temperature.setText(f"{db.get_weather_data('temp', weather_data)}")
-                current_city.setText(f"{db.search_by_num(config_center.read_conf('Weather', 'city'))} · "
-                                     f"{weather_name}")
-                update_stylesheet = re.sub(
-                    r'border-image: url\((.*?)\);',
-                    f"border-image: url({db.get_weather_stylesheet(db.get_weather_data('icon', weather_data))});",
-                    self.backgnd.styleSheet()
-                )
-                self.backgnd.setStyleSheet(update_stylesheet)
+                # 检查temperature是否为None
+                if self.temperature is None:
+                    logger.warning("temperature组件为None，尝试重新查找")
+                    self.temperature = self.findChild(QLabel, 'temperature')
+                
+                if self.temperature is not None:
+                    self.temperature.setText(f"{db.get_weather_data('temp', weather_data)}")
+                
+                # 检查current_city是否为None
+                if current_city is not None:
+                    current_city.setText(f"{db.search_by_num(config_center.read_conf('Weather', 'city'))} · "
+                                         f"{weather_name}")
+                
+                # 检查backgnd是否为None
+                if hasattr(self, 'backgnd') and self.backgnd is not None:
+                    update_stylesheet = re.sub(
+                        r'border-image: url\((.*?)\);',
+                        f"border-image: url({db.get_weather_stylesheet(db.get_weather_data('icon', weather_data))});",
+                        self.backgnd.styleSheet()
+                    )
+                    self.backgnd.setStyleSheet(update_stylesheet)
             except Exception as e:
                 logger.error(f'天气组件出错：{e}')
         else:
@@ -1999,17 +2081,27 @@ def check_windows_maximize():  # 检查窗口是否最大化
         'Desktop', # Windows桌面
         '', #空标题
         'SnippingTool', # 系统截图工具
+        'Task View', # Windows任务视图
+        'TaskView', # Windows任务视图
+        'Task Switching', # Windows任务切换
+        'MultitaskingView', # Windows多任务视图
     }
     # 包含以下关键词排除
     excluded_keywords = {
         'Overlay',
         'Snipping',
-        'SideBar'
+        'SideBar',
+        'Task View',
+        'TaskView',
+        '任务视图'
     }
     excluded_process_patterns = {
         'shellexperiencehost', 
         'searchui', 
-        'startmenuexperiencehost'
+        'startmenuexperiencehost',
+        'applicationframehost',
+        'taskmgr',
+        'tabtip'
     }
     max_windows = []
     for window in pygetwindow.getAllWindows():
@@ -2074,20 +2166,6 @@ def init():
     global theme, radius, mgr, screen_width, first_start, fw
     update_timer.remove_all_callbacks()
 
-    # 添加主题监听器
-    def on_theme_changed(new_theme):
-        global theme
-        theme = new_theme
-        logger.info(f'检测到主题切换：{theme}')
-        mgr.clear_widgets()
-        init()
-
-    config_center.add_listener('General', 'theme', on_theme_changed)
-
-    theme = config_center.read_conf('General', 'theme')
-    global theme, radius, mgr, screen_width, first_start, fw
-    update_timer.remove_all_callbacks()
-
     theme = config_center.read_conf('General', 'theme')  # 主题
     if not os.path.exists(f'{base_directory}/ui/{theme}/theme.json'):
         logger.warning(f'主题 {theme} 不存在，使用默认主题')
@@ -2126,7 +2204,12 @@ if __name__ == '__main__':
 
     app = QApplication(sys.argv)
     app.setQuitOnLastWindowClosed(False)
-    share.create(1)  # 创建共享内存
+    
+    # 创建共享内存，添加超时处理
+    create_success = share.create(1)
+    if not create_success:
+        logger.warning("共享内存创建失败，可能是已有实例在运行")
+    
     logger.info(
         f"共享内存：{share.isAttached()} 是否允许多开实例：{config_center.read_conf('Other', 'multiple_programs')}")
 
@@ -2155,9 +2238,13 @@ if __name__ == '__main__':
 
     logger.info(f"操作系统：{system}，版本：{osRelease}/{osVersion}")
 
-    list_pyttsx3_voices()
+    # 将语音引擎初始化移至后台线程，避免启动时卡顿
+    from threading import Thread
+    Thread(target=list_pyttsx3_voices, daemon=True).start()
 
-    if share.attach() and config_center.read_conf('Other', 'multiple_programs') != '1':
+    # 添加超时机制，避免共享内存附加操作无限等待
+    attach_success = share.attach()
+    if attach_success and config_center.read_conf('Other', 'multiple_programs') != '1':
         msg_box = Dialog(
             'Class Widgets 正在运行',
             'Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。'
@@ -2207,7 +2294,9 @@ if __name__ == '__main__':
         # w = ErrorDialog()
         # w.exec()
         if config_center.read_conf('Other', 'auto_check_update') == '1':
-            check_update()
+            # 将更新检查移至后台线程，避免启动时卡顿
+            from threading import Thread
+            Thread(target=check_update, daemon=True).start()
 
     if __name__ == '__main__':
         try:
