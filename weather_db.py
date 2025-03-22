@@ -36,15 +36,34 @@ def search_code_by_name(search_term):
     conn = sqlite3.connect(path)
     cursor = conn.cursor()
 
-    cursor.execute('SELECT * FROM citys WHERE name LIKE ?', ('%' + search_term + '%',))  # 模糊查询
-    cities_results = cursor.fetchall()
+    cursor.execute('SELECT * FROM citys WHERE name = ?', (search_term,))
+    exact_results = cursor.fetchall()
+    
+    if not exact_results:
+        cursor.execute('SELECT * FROM citys WHERE name LIKE ?', ('%' + search_term + '%',))
+        cities_results = cursor.fetchall()
+        
+        if not cities_results and '市' in search_term:
+            search_term_without_suffix = search_term.replace('市', '')
+            cursor.execute('SELECT * FROM citys WHERE name LIKE ?', ('%' + search_term_without_suffix + '%',))
+            cities_results = cursor.fetchall()
+    else:
+        cities_results = exact_results
+    
     conn.close()
 
     if cities_results:
+        # 多结果优先完全匹配,否则返回第一个
+        for city in cities_results:
+            if city[2] == search_term or city[2] == search_term + '市' or city[2] + '市' == search_term:
+                logger.debug(f"找到城市: {city[2]}，代码: {city[3]}")
+                return city[3]
         result = cities_results[0][3]
+        logger.debug(f"模糊找到城市: {cities_results[0][2]}，代码: {result}")
     else:
         result = 101010100  # 默认城市代码
-    # 返回两个表的搜索结果
+        logger.warning(f'未找到城市: {search_term}，使用默认城市代码')
+
     return result
 
 
