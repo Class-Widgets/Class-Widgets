@@ -1210,6 +1210,8 @@ class FloatingWidget(QWidget):  # 浮窗
                 """)
 
     def update_data(self):
+        time_color = QColor(f'#{config_center.read_conf("Color", "floating_time")}')
+        self.activity_countdown.setStyleSheet(f"color: {time_color.name()};")
         if self.animating:  # 执行动画时跳过更新
             return
         self.setWindowOpacity(int(config_center.read_conf('General', 'opacity')) / 100)  # 设置窗口透明度
@@ -1221,10 +1223,15 @@ class FloatingWidget(QWidget):  # 浮窗
         self.current_lesson_name_text.setText(current_lesson_name)
 
         if cd_list:  # 模糊倒计时
-            if cd_list[1] == '00:00':
-                self.activity_countdown.setText(f"< - 分钟")
-            else:
-                self.activity_countdown.setText(f"< {int(cd_list[1].split(':')[0]) + 1} 分钟")
+            blur_floating = config_center.read_conf('General', 'blur_floating_countdown') == '1'
+            if blur_floating:  # 模糊显示
+                if cd_list[1] == '00:00':
+                    self.activity_countdown.setText(f"< - 分钟")
+                else:
+                    minutes = int(cd_list[1].split(':')[0]) + 1
+                    self.activity_countdown.setText(f"< {minutes} 分钟")
+            else:  # 精确显示
+                self.activity_countdown.setText(cd_list[1])
             self.countdown_progress_bar.setValue(cd_list[2])
 
         self.adjustSize_animation()
