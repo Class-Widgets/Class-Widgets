@@ -103,6 +103,8 @@ widget_name = {
     'widget-weather.ui': '天气'
 }
 
+native_widget_name = [widget_name[i] for i in widget_name]
+
 try:  # 加载课程/主题配置文件
     subject_info = json.load(open(f'{base_directory}/config/data/subject.json', 'r', encoding='utf-8'))
     subject_icon = subject_info['subject_icon']

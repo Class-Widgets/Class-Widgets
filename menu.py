@@ -1147,7 +1147,8 @@ class SettingsMenu(FluentWindow):
     def ct_add_widget(self):
         widgets_list = self.findChild(ListWidget, 'widgets_list')
         widgets_combo = self.findChild(ComboBox, 'widgets_combo')
-        widgets_list.addItem(widgets_combo.currentText())
+        if widgets_combo.currentText() in list_.native_widget_name:
+            widgets_list.addItem(widgets_combo.currentText())
         self.ct_update_preview()
 
     def ct_remove_widget(self):
