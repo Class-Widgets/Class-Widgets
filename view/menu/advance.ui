@@ -56,7 +56,7 @@
         <x>0</x>
         <y>0</y>
         <width>640</width>
-        <height>1646</height>
+        <height>1790</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -298,11 +298,11 @@
              </layout>
             </item>
             <item>
-             <widget class="SwitchButton" name="switch_enable_alt_schedule" native="true">
-              <property name="onText" stdset="0">
+             <widget class="SwitchButton" name="switch_enable_alt_schedule">
+              <property name="onText">
                <string>启用</string>
               </property>
-              <property name="offText" stdset="0">
+              <property name="offText">
                <string>关闭</string>
               </property>
              </widget>
@@ -663,6 +663,13 @@
                 </property>
                </widget>
               </item>
+              <item>
+               <widget class="HyperlinkLabel" name="what_is_hide_mode_3">
+                <property name="text">
+                 <string>什么是灵活隐藏？</string>
+                </property>
+               </widget>
+              </item>
              </layout>
             </item>
             <item>
@@ -740,11 +747,11 @@
              </layout>
             </item>
             <item>
-             <widget class="SwitchButton" name="switch_exclude_startup" native="true">
-              <property name="onText" stdset="0">
+             <widget class="SwitchButton" name="switch_exclude_startup">
+              <property name="onText">
                <string>启用</string>
               </property>
-              <property name="offText" stdset="0">
+              <property name="offText">
                <string>禁用</string>
               </property>
              </widget>
@@ -820,7 +827,7 @@
               </item>
              </layout>
             </item>
-           <item>
+            <item>
              <widget class="LineEdit" name="excluded_lessons">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -911,15 +918,15 @@
                </layout>
               </item>
               <item>
-                <widget class="SwitchButton" name="switch_enable_click" native="true">
-                  <property name="onText" stdset="0">
-                  <string>启用</string>
-                  </property>
-                  <property name="offText" stdset="0">
-                  <string>禁用</string>
-                  </property>
-                </widget>
-                </item>
+               <widget class="SwitchButton" name="switch_enable_click">
+                <property name="onText">
+                 <string>启用</string>
+                </property>
+                <property name="offText">
+                 <string>禁用</string>
+                </property>
+               </widget>
+              </item>
              </layout>
             </item>
             <item>
@@ -1215,11 +1222,11 @@
              </widget>
             </item>
             <item>
-             <widget class="SwitchButton" name="switch_startup" native="true">
-              <property name="onText" stdset="0">
+             <widget class="SwitchButton" name="switch_startup">
+              <property name="onText">
                <string>启用</string>
               </property>
-              <property name="offText" stdset="0">
+              <property name="offText">
                <string>禁用</string>
               </property>
              </widget>
@@ -1307,11 +1314,11 @@
              </layout>
             </item>
             <item>
-             <widget class="SwitchButton" name="switch_safe_mode" native="true">
-              <property name="onText" stdset="0">
+             <widget class="SwitchButton" name="switch_safe_mode">
+              <property name="onText">
                <string>启用</string>
               </property>
-              <property name="offText" stdset="0">
+              <property name="offText">
                <string>禁用</string>
               </property>
              </widget>
@@ -1382,11 +1389,11 @@
              </layout>
             </item>
             <item>
-             <widget class="SwitchButton" name="switch_disable_log" native="true">
-              <property name="onText" stdset="0">
+             <widget class="SwitchButton" name="switch_disable_log">
+              <property name="onText">
                <string>启用</string>
               </property>
-              <property name="offText" stdset="0">
+              <property name="offText">
                <string>禁用</string>
               </property>
              </widget>
@@ -1529,14 +1536,14 @@
              </layout>
             </item>
             <item>
-             <widget class="SwitchButton" name="switch_multiple_programs" native="true">
-              <property name="text" stdset="0">
+             <widget class="SwitchButton" name="switch_multiple_programs">
+              <property name="text">
                <string>不允许</string>
               </property>
-              <property name="onText" stdset="0">
+              <property name="onText">
                <string>允许</string>
               </property>
-              <property name="offText" stdset="0">
+              <property name="offText">
                <string>不允许</string>
               </property>
              </widget>
@@ -1606,6 +1613,11 @@
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
+   <class>Slider</class>
+   <extends>QSlider</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
    <class>CardWidget</class>
    <extends>QFrame</extends>
    <header>qfluentwidgets</header>
@@ -1643,6 +1655,11 @@
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
+   <class>HyperlinkLabel</class>
+   <extends>QPushButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
    <class>LineEdit</class>
    <extends>QLineEdit</extends>
    <header>qfluentwidgets</header>
@@ -1650,11 +1667,6 @@
   <customwidget>
    <class>SpinBox</class>
    <extends>QSpinBox</extends>
-   <header>qfluentwidgets</header>
-  </customwidget>
-  <customwidget>
-   <class>Slider</class>
-   <extends>QSlider</extends>
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>

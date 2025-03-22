@@ -912,7 +912,9 @@ class SettingsMenu(FluentWindow):
                      text_scale_factor.setText(str(slider_scale_factor.value()) + '%'))
         )  # 保存缩放系数
 
-        what_is_hide_mode_3:HyperlinkButton = self.adInterface.findChild(HyperlinkButton, 'what_is_hide_mode_3')
+
+        what_is_hide_mode_3 = self.adInterface.findChild(HyperlinkLabel, 'what_is_hide_mode_3')
+  
         def what_is_hide_mode_3_clicked():
             w = MessageBox('灵活模式', '灵活模式为上课时自动隐藏，可手动改变隐藏状态，当前课程状态（上课/课间）改变后会清除手动隐藏状态，重新转为自动隐藏。', self)
             w.cancelButton.hide()
