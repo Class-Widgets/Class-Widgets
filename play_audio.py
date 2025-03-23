@@ -47,7 +47,7 @@ def play_audio(file_path: str, tts_delete_after: bool = False):
 
         sound = pygame.mixer.Sound(file_path)
         volume = int(config_center.read_conf('Audio', 'volume')) / 100
-        pygame.mixer.music.set_volume(volume)
+        sound.set_volume(volume)   #音量调整应用
         channel = sound.play()
         while channel.get_busy():
             pygame.time.wait(100)
@@ -64,4 +64,5 @@ def play_audio(file_path: str, tts_delete_after: bool = False):
         # 确保释放音频资源
         if 'sound' in locals():
             sound.stop()
-        pygame.mixer.quit()
+        if not pygame.mixer.music.get_busy():   #防止同时播放多个音频时异常中断
+            pygame.mixer.quit()
