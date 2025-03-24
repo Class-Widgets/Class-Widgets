@@ -217,7 +217,6 @@ def get_schedule_config():
         if file_name.endswith('.json') and file_name != 'backup.json':
             # 将文件路径添加到列表
             schedule_config.append(file_name)
-    schedule_config.append('添加新课表')
     return schedule_config
 
 
