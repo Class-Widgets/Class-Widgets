@@ -59,6 +59,7 @@ audio_cache = {} # 音频缓存
 # 预加载常用音频文件
 def preload_audio_files():
     try:
+        from file import base_directory
         audio_files = {
             'attend_class': os.path.join(base_directory, 'audio', config_center.read_conf('Audio', 'attend_class')),
             'finish_class': os.path.join(base_directory, 'audio', config_center.read_conf('Audio', 'finish_class')),
@@ -68,7 +69,7 @@ def preload_audio_files():
         for key, file_path in audio_files.items():
             if os.path.exists(file_path):
                 audio_cache[key] = pygame.mixer.Sound(file_path)
-                logger.debug(f'预加载音频文件: {key}')
+                logger.debug(f'成功预加载音频文件: {key}')
     except Exception as e:
         logger.error(f'预加载音频文件失败: {e}')
 

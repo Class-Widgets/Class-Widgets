@@ -217,8 +217,9 @@ class tip_toast(QWidget):
         try:
             file_path = os.path.join(base_directory, 'audio', filename)
             self.audio_thread = PlayAudio(str(file_path))
-            self.audio_thread.setPriority(QThread.HighestPriority)  # 设置优先级
             self.audio_thread.start()
+            if self.audio_thread.isRunning():
+                self.audio_thread.setPriority(QThread.HighestPriority)
         except Exception as e:
             logger.error(f'播放音频文件失败：{e}')
 
