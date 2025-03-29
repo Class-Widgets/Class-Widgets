@@ -1,0 +1,7 @@
+*.py text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.qml text eol=lf
+*.toml text eol=lf
+*.MD text eol=lf
+*.md text eol=lf

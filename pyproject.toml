@@ -1,0 +1,20 @@
+[project]
+name = "Class-Widgets"
+version = "2.0.0"
+description = "Class Widgets 2 Project"
+readme = "README.MD"
+requires-python = ">=3.13"
+dependencies = ["pydantic>=2.11.1", "pydantic-yaml>=1.4.0"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/class_widgets"]
+
+[tool.ruff.lint]
+select = ["I", "E", 'W', "F", "FLY002"]
+
+[project.scripts]
+class_widgets = "class_widgets.__main__:main"
