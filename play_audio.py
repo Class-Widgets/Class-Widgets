@@ -9,7 +9,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 from loguru import logger
 
 import conf
-from file import config_center
+from file import config_center, base_directory
 from generate_speech import TTSEngine
 
 system = platform.system()
