@@ -9,7 +9,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 from loguru import logger
 
 import conf
-from file import config_center
+from file import config_center, base_directory
 from generate_speech import TTSEngine
 
 system = platform.system()
@@ -68,7 +68,7 @@ def preload_audio_files():
         for key, file_path in audio_files.items():
             if os.path.exists(file_path):
                 audio_cache[key] = pygame.mixer.Sound(file_path)
-                logger.debug(f'预加载音频文件: {key}')
+                logger.debug(f'成功预加载音频文件: {key}')
     except Exception as e:
         logger.error(f'预加载音频文件失败: {e}')
 
