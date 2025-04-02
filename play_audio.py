@@ -9,7 +9,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 from loguru import logger
 
 import conf
-from file import config_center
+from file import config_center, base_directory
 from generate_speech import TTSEngine
 
 system = platform.system()
@@ -330,4 +330,5 @@ def play_audio(file_path: str, tts_delete_after: bool = False):
             # 确保释放音频资源
             if 'sound' in locals():
                 sound.stop()
-            pygame.mixer.quit()
+            if not pygame.mixer.music.get_busy():   #防止同时播放多个音频时异常中断
+                pygame.mixer.quit()
