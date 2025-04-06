@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>688</width>
+    <width>765</width>
     <height>1331</height>
    </rect>
   </property>
@@ -55,8 +55,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>640</width>
-        <height>1790</height>
+        <width>717</width>
+        <height>1812</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -929,6 +929,33 @@
               </item>
              </layout>
             </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="CardWidget" name="CardWidget_16">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>70</height>
+            </size>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_26">
+            <property name="spacing">
+             <number>16</number>
+            </property>
+            <property name="leftMargin">
+             <number>16</number>
+            </property>
+            <property name="topMargin">
+             <number>16</number>
+            </property>
+            <property name="rightMargin">
+             <number>16</number>
+            </property>
+            <property name="bottomMargin">
+             <number>16</number>
+            </property>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_14">
               <property name="spacing">
@@ -980,7 +1007,7 @@
                </layout>
               </item>
               <item>
-               <layout class="QVBoxLayout" name="verticalLayout_22">
+               <layout class="QVBoxLayout" name="verticalLayout_27">
                 <item>
                  <widget class="Slider" name="slider_scale_factor">
                   <property name="sizePolicy">
