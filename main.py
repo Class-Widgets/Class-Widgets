@@ -13,7 +13,7 @@ from shutil import copy
 from typing import Optional
 
 from PyQt5 import uic
-from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QRect, QEasingCurve, QSize, QPoint, QUrl, QObject
+from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QParallelAnimationGroup, QRect, QEasingCurve, QSize, QPoint, QUrl, QObject
 from PyQt5.QtGui import QColor, QIcon, QPixmap, QPainter, QDesktopServices
 from PyQt5.QtGui import QFontDatabase
 from PyQt5.QtSvg import QSvgRenderer
@@ -1536,6 +1536,30 @@ class DesktopWidget(QWidget):  # 主要小组件
         elif path == 'widget-countdown-day.ui':  # 自定义倒计时
             self.custom_title = self.findChild(QLabel, 'countdown_custom_title')
             self.custom_countdown = self.findChild(QLabel, 'custom_countdown')
+            
+            # 添加透明度效果支持
+            self.custom_title_effect = QGraphicsOpacityEffect(self.custom_title)
+            self.custom_title_effect.setOpacity(1.0)
+            self.custom_title.setGraphicsEffect(self.custom_title_effect)
+            self.custom_title.__setattr__("opacity", property(
+                lambda self: self.graphicsEffect().opacity(),
+                lambda self, value: self.graphicsEffect().setOpacity(value)
+            ))
+
+            self.custom_countdown_effect = QGraphicsOpacityEffect(self.custom_countdown)
+            self.custom_countdown_effect.setOpacity(1.0) 
+            self.custom_countdown.setGraphicsEffect(self.custom_countdown_effect)
+            self.custom_countdown.__setattr__("opacity", property(
+                lambda self: self.graphicsEffect().opacity(),
+                lambda self, value: self.graphicsEffect().setOpacity(value)
+            ))
+            
+            # 记录上一次显示的内容
+            self.last_countdown_title = ""
+            self.last_countdown_value = ""
+            
+            # 动画标记
+            self._countdown_animating = False
 
         elif path == 'widget-weather.ui':  # 天气组件
             content_layout = self.findChild(QHBoxLayout, 'horizontalLayout_2')
@@ -1816,9 +1840,15 @@ class DesktopWidget(QWidget):  # 主要小组件
 
         if path == 'widget-countdown-day.ui':  # 自定义倒计时
             conf.update_countdown(self.cnt)
-            self.custom_title.setText(f'距离 {conf.get_cd_text_custom()} 还有')
-            self.custom_countdown.setText(conf.get_custom_countdown())
-        self.update()
+            new_title = f'距离 {conf.get_cd_text_custom()} 还有'
+            new_value = conf.get_custom_countdown()
+            
+            # 如果内容有变化且不在动画中,执行过渡动画
+            if ((new_title != self.last_countdown_title or new_value != self.last_countdown_value) and
+                not self._countdown_animating):
+                self._animate_countdown_transition(new_title, new_value)
+                self.last_countdown_title = new_title
+                self.last_countdown_value = new_value
 
     def get_weather_data(self):
         logger.info('获取天气数据')
@@ -1909,6 +1939,108 @@ class DesktopWidget(QWidget):  # 主要小组件
             ex_menu.raise_()
             ex_menu.activateWindow()
 
+    def _animate_countdown_transition(self, new_title, new_value): #倒数日过渡动画
+        if self._countdown_animating:
+            return
+        
+        self._countdown_animating = True
+        
+        # 获取当前位置
+        title_pos = self.custom_title.pos()
+        countdown_pos = self.custom_countdown.pos()
+        
+        self.countdown_animation_group = QParallelAnimationGroup()
+        
+        # 标题淡出动画
+        self.title_fade_out = QPropertyAnimation(self.custom_title_effect, b"opacity")
+        self.title_fade_out.setDuration(400)
+        self.title_fade_out.setStartValue(1.0)
+        self.title_fade_out.setEndValue(0.0)
+        self.title_fade_out.setEasingCurve(QEasingCurve.Type.InOutCubic)
+        self.countdown_animation_group.addAnimation(self.title_fade_out)
+        
+        # 标题位移动画
+        self.title_pos_out = QPropertyAnimation(self.custom_title, b"pos")
+        self.title_pos_out.setDuration(400) 
+        self.title_pos_out.setStartValue(title_pos)
+        self.title_pos_out.setEndValue(QPoint(title_pos.x() + 6, title_pos.y()))
+        self.title_pos_out.setEasingCurve(QEasingCurve.Type.InOutCubic)
+        self.countdown_animation_group.addAnimation(self.title_pos_out)
+        
+        # 倒计时数值淡出动画
+        self.countdown_fade_out = QPropertyAnimation(self.custom_countdown_effect, b"opacity")
+        self.countdown_fade_out.setDuration(400)
+        self.countdown_fade_out.setStartValue(1.0)
+        self.countdown_fade_out.setEndValue(0.0)
+        self.countdown_fade_out.setEasingCurve(QEasingCurve.Type.InOutCubic)
+        self.countdown_animation_group.addAnimation(self.countdown_fade_out)
+        
+        # 倒计时数值位移动画
+        self.countdown_pos_out = QPropertyAnimation(self.custom_countdown, b"pos") 
+        self.countdown_pos_out.setDuration(400)
+        self.countdown_pos_out.setStartValue(countdown_pos)
+        self.countdown_pos_out.setEndValue(QPoint(countdown_pos.x() + 6, countdown_pos.y()))
+        self.countdown_pos_out.setEasingCurve(QEasingCurve.Type.InOutCubic)
+        self.countdown_animation_group.addAnimation(self.countdown_pos_out)
+        
+        def update_contents():
+            # 更新内容
+            self.custom_title.setText(new_title)
+            self.custom_countdown.setText(new_value)
+            
+            # 准备位置
+            self.custom_title.move(title_pos.x() - 6, title_pos.y())
+            self.custom_countdown.move(countdown_pos.x() - 6, countdown_pos.y())
+            
+            # 创建淡入动画组
+            self.fade_in_group = QParallelAnimationGroup()
+            
+            # 标题淡入动画
+            self.title_fade_in = QPropertyAnimation(self.custom_title_effect, b"opacity")
+            self.title_fade_in.setDuration(450)
+            self.title_fade_in.setStartValue(0.0)
+            self.title_fade_in.setEndValue(1.0)
+            self.title_fade_in.setEasingCurve(QEasingCurve.Type.OutCubic)
+            self.fade_in_group.addAnimation(self.title_fade_in)
+            
+            # 标题位移动画
+            self.title_pos_in = QPropertyAnimation(self.custom_title, b"pos")
+            self.title_pos_in.setDuration(450)
+            self.title_pos_in.setStartValue(QPoint(title_pos.x() - 6, title_pos.y()))
+            self.title_pos_in.setEndValue(title_pos)
+            self.title_pos_in.setEasingCurve(QEasingCurve.Type.OutCubic)
+            self.fade_in_group.addAnimation(self.title_pos_in)
+            
+            # 倒计时数值淡入动画
+            self.countdown_fade_in = QPropertyAnimation(self.custom_countdown_effect, b"opacity")
+            self.countdown_fade_in.setDuration(450)
+            self.countdown_fade_in.setStartValue(0.0)
+            self.countdown_fade_in.setEndValue(1.0)
+            self.countdown_fade_in.setEasingCurve(QEasingCurve.Type.OutCubic)
+            self.fade_in_group.addAnimation(self.countdown_fade_in)
+            
+            # 倒计时数值位移动画
+            self.countdown_pos_in = QPropertyAnimation(self.custom_countdown, b"pos")
+            self.countdown_pos_in.setDuration(450)
+            self.countdown_pos_in.setStartValue(QPoint(countdown_pos.x() - 6, countdown_pos.y()))
+            self.countdown_pos_in.setEndValue(countdown_pos)
+            self.countdown_pos_in.setEasingCurve(QEasingCurve.Type.OutCubic)
+            self.fade_in_group.addAnimation(self.countdown_pos_in)
+            
+            # 清理动画
+            def finish_animation():
+                self._countdown_animating = False
+                if hasattr(self, 'countdown_animation_group'):
+                    del self.countdown_animation_group
+                if hasattr(self, 'fade_in_group'):
+                    del self.fade_in_group
+            
+            self.fade_in_group.finished.connect(finish_animation)
+            self.fade_in_group.start()
+
+        self.countdown_animation_group.finished.connect(update_contents)
+        self.countdown_animation_group.start()
+    
     @staticmethod
     def cleanup_extra_menu():
         global ex_menu
