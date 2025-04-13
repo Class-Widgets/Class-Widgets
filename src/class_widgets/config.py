@@ -4,7 +4,7 @@ from typing import Literal
 
 from pydantic import BaseModel
 
-DEFAULT_ID = "default"
+DEFAULT_SUBJECT_ID = "default"
 
 
 class Weekdays(Enum):
@@ -30,8 +30,11 @@ class ClassInDay(BaseModel):
     end: time
 
 
+type SubjectId = str
+
+
 class ScheduleObject(BaseModel):
     version: Literal[2]
     start: date
-    subjects: dict[str, Subject]
+    subjects: dict[SubjectId, Subject]
     schedules: list[dict[Weekdays, list[ClassInDay]]]
