@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from datetime import date, datetime, time
-from multiprocessing import Pool, Process
-from multiprocessing.pool import Pool as PoolType
+from multiprocessing import JoinableQueue, Process
 
 from .config import DEFAULT_SUBJECT_ID, ClassInDay, ScheduleObject, Subject, Weekdays
 
@@ -53,72 +52,53 @@ class TimerPlugin:
     def timer_start_sync(self, ring: GlobalOffsetEventRing, start: datetime):
         pass
 
-    # def on_timer_start(self, ring: GlobalOffsetEventRing, start: datetime):
-    #     pass
-
     def course_start_sync(self, ctx: CourseCtx):
         pass
-
-    # def on_course_start(self, ctx: CourseCtx):
-    #     pass
 
     def update_sync(self, ctx: CourseCtx):
         """注意：请尽量避免在此方法内使用耗时操作，否则会阻塞其他事件的处理"""
         pass
 
-    # def on_update(self, ctx: CourseCtx):
-    #     pass
-
     def course_end_sync(self, ctx: CourseCtx):
         pass
 
-    # def on_course_end(self, ctx: CourseCtx):
-    #     pass
-
     def timer_stop_sync(self):
         pass
-
-    # def on_timer_stop(self):
-    #     pass
 
 
 class Timer:
     ring: GlobalOffsetEventRing
     start: datetime
-    __to_stop: bool = False
+    __to_stop: "JoinableQueue[bool]"
     __timer_loop: Process
-    __event_pool: PoolType
     __sum_offset: float
     plugins: list[TimerPlugin]
 
     def __init__(
         self, ring: GlobalOffsetEventRing, start: date, plugins: list[TimerPlugin]
     ):
+        """注意：课程环里要有课程，请提前手动确认"""
         self.ring = GlobalOffsetEventRing(ring.items.copy())
         self.start = datetime.combine(start, time())
         self.plugins = plugins
-        self.__timer_loop = Process(target=self.__inner_loop, args=(self.plugins,))
-        self.__event_pool = Pool()
-        self.__sum_offset = sum(event.time_offset for event in self.ring.items)
+        self.__ring_lenth = self.ring.items[-1].time_offset
+        self.__to_stop = JoinableQueue()
+        self.__timer_loop = Process(target=self.__main_loop, args=(self.plugins,))
         self.__timer_loop.start()
 
     def get_global_offset(self, now: datetime) -> float:
         # 因为 event ring 是从周一开始的，所以需要加上周一到现在的秒数
         return (
             (now - self.start).total_seconds() + self.start.weekday() * DAY
-        ) % self.__sum_offset
+        ) % self.__ring_lenth
 
-    def __inner_loop(self, plugins: list[TimerPlugin]):
+    def __main_loop(self, plugins: list[TimerPlugin]):
         # fp 瘾犯了，可惜 python 没有尾递归优化
         for plugin in plugins:
             plugin.timer_start_sync(self.ring, self.start)
-        # for plugin in plugins:
-        #     self.__event_pool.apply_async(
-        #         func=plugin.on_timer_start, args=(self.ring, self.start)
-        #     )
-        while not self.__to_stop:
+        while self.__to_stop.empty():
             for index, filtered_event in enumerate(self.ring.items):
-                if self.__to_stop:
+                if not self.__to_stop.empty():
                     break
                 now = datetime.now()
                 temp_offset = self.get_global_offset(now)
@@ -127,42 +107,27 @@ class Timer:
                 ctx = CourseCtx(now, index, self.ring, temp_offset, self.start)
                 for plugin in plugins:
                     plugin.course_start_sync(ctx)
-                # for plugin in plugins:
-                #     self.__event_pool.apply_async(
-                #         func=plugin.on_course_start, args=(ctx,)
-                #     )
-                while not self.__to_stop and temp_offset < filtered_event.time_offset:
+                while (
+                    self.__to_stop.empty() and temp_offset < filtered_event.time_offset
+                ):
                     now = datetime.now()
                     temp_offset = self.get_global_offset(now)
                     ctx = CourseCtx(now, index, self.ring, temp_offset, self.start)
                     for plugin in plugins:
                         plugin.update_sync(ctx)
-                    # for plugin in plugins:
-                    #     _ = self.__event_pool.apply_async(
-                    #         func=plugin.on_update, args=(ctx,)
-                    #     )
                 now = datetime.now()
                 temp_offset = self.get_global_offset(now)
                 ctx = CourseCtx(now, index, self.ring, temp_offset, self.start)
                 for plugin in plugins:
                     plugin.course_end_sync(ctx)
-                # for plugin in plugins:
-                #     self.__event_pool.apply_async(
-                #         func=plugin.on_course_end, args=(ctx,)
-                #     )
-        # for plugin in plugins:
-        #     plugin.timer_stop_sync()
-        # for plugin in plugins:
-        #     self.__event_pool.apply_async(func=plugin.on_timer_stop, args=())
 
     def stop(self):
-        self.__to_stop = True
-        self.__event_pool.close()
-        self.__timer_loop.terminate()
+        self.__to_stop.put(True)
+        self.__timer_loop.join()
         for plugin in self.plugins:
             plugin.timer_stop_sync()
-        # ?
         self.__timer_loop.close()
+        self.__to_stop = JoinableQueue()
 
 
 @dataclass

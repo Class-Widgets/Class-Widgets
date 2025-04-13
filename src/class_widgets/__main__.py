@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from datetime import date
 from multiprocessing import JoinableQueue, Process
 from time import sleep
@@ -16,18 +15,12 @@ from .course_timer_plugins import (
 )
 
 
-@dataclass
-class RV:
-    index: int
-    ctx: str
-
-
-def ui(length: int, q: JoinableQueue):  # type: ignore
+def ui(length: int, q: "JoinableQueue[tuple[int, str]]"):  # type: ignore
     # 根据 react reducer 做的超级简陋版
     acc = list("" for _ in range(length))
     while True:
-        now: RV = q.get()
-        acc[now.index] = now.ctx
+        now = q.get()
+        acc[now[0]] = now[1]
         print(" | ".join(acc))
         q.task_done()
 
@@ -42,7 +35,10 @@ def eta_to_str(eta: float):
 def main():
     schedule = parse_yaml_file_as(ScheduleObject, "schedule.full-example.yaml")
     global_event_ring = UnitOffsetEventRing.from_object(schedule).to_global()
-    q: JoinableQueue[RV] = JoinableQueue()
+    if len(global_event_ring.items) == 0:
+        print("课表里要有课")
+        return
+    q: "JoinableQueue[tuple[int, str]]" = JoinableQueue()
 
     def fmt(x: list[Subject]):
         return " ".join(
@@ -54,10 +50,10 @@ def main():
         schedule.start,
         [
             Sleep(0.5),
-            TodayAttendCourse(lambda x: q.put(RV(index=0, ctx=fmt(x)))),
+            TodayAttendCourse(lambda x: q.put((0, fmt(x)))),
             NowCourse(
                 lambda s, _sid, eta: q.put(
-                    RV(
+                    (
                         1,
                         (s.teacher if s.teacher else "无老师")
                         + "/"
@@ -69,8 +65,8 @@ def main():
                     )
                 )
             ),
-            TodayNotAttendCourse(lambda x: q.put(RV(2, fmt(x)))),
-            CountDownDate(date(2025, 5, 1), lambda x: q.put(RV(3, f"5/1 {x}天"))),
+            TodayNotAttendCourse(lambda x: q.put((2, fmt(x)))),
+            CountDownDate(date(2025, 5, 1), lambda x: q.put((3, f"5/1 {x}天"))),
         ],
     )
     Process(target=ui, args=(4, q), daemon=True).start()
