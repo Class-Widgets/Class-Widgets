@@ -446,6 +446,19 @@ def get_current_lesson_name():
                             current_state = 0
                         return
 
+def get_hide_status_from_current_state():
+    # 1 -> hide, 0 -> show
+    # 祝我体测满分啊（（
+    global current_state, current_lesson_name, excluded_lessons
+    # if current_state:
+    #     if not current_lesson_name in excluded_lessons:
+    #         return 0
+    #     else:
+    #         return 1
+    # else:
+    #     return 1
+    return current_state ^ (current_lesson_name in excluded_lessons)
+
 
 # 定义 RECT 结构体
 class RECT(ctypes.Structure):
@@ -762,7 +775,7 @@ class WidgetsManager:
         self.start_pos_x = 0  # 小组件起始位置
         self.start_pos_y = 0
 
-        self.hide_status = None
+        self.hide_status = None # [0] -> 在 current_state 设置的灵活隐藏， [1] -> 隐藏模式
 
     def sync_widget_animation(self, target_pos):
         for widget in self.widgets:
@@ -1705,10 +1718,10 @@ class DesktopWidget(QWidget):  # 主要小组件
             if reason == QSystemTrayIcon.ActivationReason.Trigger:
                 if mgr.state:
                     mgr.decide_to_hide()
-                    mgr.hide_status = (True, 1)
+                    mgr.hide_status = (current_state, 1)
                 else:
                     mgr.show_windows()
-                    mgr.hide_status = (True, 0)
+                    mgr.hide_status = (current_state, 0)
                 
 
 
@@ -1729,13 +1742,11 @@ class DesktopWidget(QWidget):  # 主要小组件
         get_current_lesson_name()
         get_excluded_lessons()
         get_next_lessons()
+        hide_status = get_hide_status_from_current_state()
 
         if (hide_mode:=config_center.read_conf('General', 'hide')) == '1':  # 上课自动隐藏
-            if current_state:
-                if not current_lesson_name in excluded_lessons:
-                    mgr.decide_to_hide()
-                else:
-                    mgr.show_windows()
+            if hide_status:
+                mgr.decide_to_hide()
             else:
                 mgr.show_windows()
         elif hide_mode == '2': # 最大化/全屏自动隐藏
@@ -1745,16 +1756,11 @@ class DesktopWidget(QWidget):  # 主要小组件
                 mgr.show_windows()
         elif hide_mode == '3': # 灵活隐藏
             if mgr.hide_status is None:
-                mgr.hide_status = (False, current_state)
-            elif mgr.hide_status[0] and mgr.hide_status[1] == current_state:
-                mgr.hide_status = (False, current_state)
-            elif not mgr.hide_status[0]:
-                mgr.hide_status = (False, current_state)
+                mgr.hide_status = (-1, hide_status)
+            elif mgr.hide_status[0] != current_state:
+                mgr.hide_status = (-1, hide_status)
             if mgr.hide_status[1]:
-                if not current_lesson_name in excluded_lessons:
-                    mgr.decide_to_hide()
-                else:
-                    mgr.show_windows()
+                mgr.decide_to_hide()
             else:
                 mgr.show_windows()
 
@@ -2029,10 +2035,11 @@ class DesktopWidget(QWidget):  # 主要小组件
         elif config_center.read_conf('General', 'hide') == '3':  # 隐藏
             if mgr.state:
                 mgr.decide_to_hide()
-                mgr.hide_status = (True, 1)
+                mgr.hide_status = (current_state, 1)
             else:
                 mgr.show_windows()
-                mgr.hide_status = (True, 0)
+                mgr.hide_status = (current_state, 0)
+                
             
         else:
             event.ignore()
