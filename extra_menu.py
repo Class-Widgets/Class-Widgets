@@ -118,6 +118,7 @@ class ExtraMenu(FluentWindow):
                     logger.info(f'备份课表配置成功：已将 {config_center.schedule_name} -备份至-> backup.json')
                     config_center.write_conf('Temp', 'temp_schedule', config_center.schedule_name)
                 file.save_data_to_json(temp_schedule, config_center.schedule_name)
+            schedule_center.update_schedule()
             config_center.write_conf('Temp', 'set_week', str(temp_week.currentIndex()))
             config_center.write_conf('Temp', 'set_schedule',str(temp_schedule_set.currentIndex()))
             Flyout.create(

@@ -2158,6 +2158,7 @@ def init_config():  # 重设配置文件
         copy(f'{base_directory}/config/schedule/backup.json',
              f'{base_directory}/config/schedule/{config_center.schedule_name}')
         config_center.write_conf('Temp', 'temp_schedule', '')
+        schedule_center.update_schedule()
 
 
 def init():
