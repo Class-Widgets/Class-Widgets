@@ -186,12 +186,16 @@ def get_weather_data(key='temp', weather_data=None):  # 获取天气数据
         return None
     '''
         根据key值获取weather_data中的对应值
-        key值可以为：temp、icon
+        key值可以为：temp、icon、alert_title
     '''
     # 各个天气api的可访问值
     api_parameters = api_config['weather_api_parameters'][config_center.read_conf('Weather', 'api')]
     if key == 'alert':
         parameter = api_parameters['alerts']['type'].split('.')
+    elif key == 'alert_title':
+        if 'alerts' not in api_parameters or 'title' not in api_parameters['alerts']:
+            return None
+        parameter = api_parameters['alerts']['title'].split('.')
     else:
         parameter = api_parameters[key].split('.')
     # 遍历获取值
