@@ -12,80 +12,93 @@ from file import base_directory, config_center
 import signal
 
 share = QSharedMemory('ClassWidgets')
-
+_stop_in_progress = False
 
 def restart():
     logger.debug('重启程序')
+    app = QApplication.instance()
+    if app:
+        try:
+            signal.signal(signal.SIGTERM, signal.SIG_DFL)
+            signal.signal(signal.SIGINT, signal.SIG_DFL)
+        except (AttributeError, ValueError):
+            pass
+        app.quit()
+        app.processEvents()
+
     if share.isAttached():
         share.detach()  # 释放共享内存
     os.execl(sys.executable, sys.executable, *sys.argv)
 
 def stop(status=0):
-    global share
-    if hasattr(stop, '_called'):
+    global share, update_timer, _stop_in_progress
+    if _stop_in_progress:
         return
-    stop._called = True
+    _stop_in_progress = True
 
-    def exit_application():
-        logger.debug("强制退出")
-        os._exit(status)
+    logger.debug('退出程序...')
 
-    def shutdown_handler(signum, frame):
-        logger.info(f'收到关闭信号: {signum}')
-        QApplication.instance().quit()
-
-    signal.signal(signal.SIGTERM, shutdown_handler)  # taskkill
-    signal.signal(signal.SIGINT, shutdown_handler)   # Ctrl+C
-    signal.signal(signal.SIGABRT, shutdown_handler)  # 异常中止
-    if os.name == 'posix':
-        signal.signal(signal.SIGQUIT, shutdown_handler)  # POSIX退出
-        signal.signal(signal.SIGHUP, shutdown_handler)   # 终端断开
-    # 强制终止所有子进程
-    try:
-        current_pid = os.getpid()
-        parent = psutil.Process(current_pid)
-        for child in parent.children(recursive=True):
-            try:
-                child.terminate()
-            except psutil.NoSuchProcess:
-                pass
-        gone, alive = psutil.wait_procs(parent.children(), timeout=3)
-    except Exception as e:
-        logger.error(f"终止子进程失败: {e}")
-
-    if 'update_timer' in globals():
+    if 'update_timer' in globals() and update_timer:
         try:
             update_timer.stop()
-            update_timer.deleteLater()
-        except RuntimeError as e:
-            logger.error(f"停止定时器失败: {e}")
+            update_timer = None
+        except Exception as e:
+            logger.warning(f"停止全局更新定时器时出错: {e}")
+
     app = QApplication.instance()
     if app:
         try:
-            app.exit(status)
-            for w in app.topLevelWidgets():
-                w.close()
-                w.deleteLater()
-            app.closeAllWindows()
-            app.quit()
-            QTimer.singleShot(1000, exit_application)  # 1秒后强制退出
-        except Exception as e:
-            logger.error(f"关闭窗口时出错: {e}")
+            signal.signal(signal.SIGTERM, signal.SIG_DFL)
+            signal.signal(signal.SIGINT, signal.SIG_DFL)
+        except (AttributeError, ValueError):
+            pass
+        app.quit()
     try:
-        if share.isAttached():
-            share.detach()
-            os.remove(share.nativeKey()) if os.name == 'posix' else None
-            logger.debug("分离共享内存: 成功")
-        else:
-            logger.warning("共享内存未附加")
-    except Exception as e:
-        logger.error(f"分离共享内存失败: {e}")
-        exit_application()
-    finally:
-        del share
-    logger.debug("程序退出")
-    sys.exit(status)
+        current_pid = os.getpid()
+        parent = psutil.Process(current_pid)
+        children = parent.children(recursive=True)
+        if children:
+            logger.debug(f"尝试终止 {len(children)} 个子进程...")
+            for child in children:
+                try:
+                    logger.debug(f"终止子进程 {child.pid}...")
+                    child.terminate()
+                except psutil.NoSuchProcess:
+                    logger.debug(f"子进程 {child.pid} 已不存在.")
+                    continue
+                except psutil.AccessDenied:
+                    logger.warning(f"无权限终止子进程 {child.pid}.")
+                    continue
+                except Exception as e:
+                    logger.warning(f"终止子进程 {child.pid} 时出错: {e}")
 
+            gone, alive = psutil.wait_procs(children, timeout=1.5)
+            if alive:
+                logger.warning(f"{len(alive)} 个子进程未在规定时间内终止，将强制终止...")
+                for p in alive:
+                    try:
+                        logger.debug(f"强制终止子进程 {p.pid}...")
+                        p.kill()
+                    except psutil.NoSuchProcess:
+                        logger.debug(f"子进程 {p.pid} 在强制终止前已消失.")
+                    except Exception as e:
+                        logger.error(f"强制终止子进程 {p.pid} 失败: {e}")
+    except psutil.NoSuchProcess:
+        logger.warning("无法获取当前进程信息，跳过子进程终止。")
+    except Exception as e:
+        logger.error(f"终止子进程时出现意外错误: {e}")
+
+    if 'share' in globals() and share:
+        try:
+            if share.isAttached():
+                share.detach()
+                logger.debug("共享内存已分离")
+        except Exception as e:
+            logger.error(f"分离共享内存时出错: {e}")
+
+    logger.debug(f"程序退出({status})")
+    if not app:
+        os._exit(status)
 
 def calculate_size(p_w=0.6, p_h=0.7):  # 计算尺寸
     screen_geometry = QApplication.primaryScreen().geometry()
@@ -132,51 +145,72 @@ class UnionUpdateTimer(QObject):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self._on_timeout)
         self.callbacks = []  # 存储所有的回调函数
+        self._is_running = False
 
     def _on_timeout(self):  # 超时
-        if QApplication.instance().closingDown():
-            sys.exit(0)
+        app = QApplication.instance()
+        if not app or app.closingDown():
+            if self.timer.isActive():
+                self.timer.stop()
             return
-        for callback in self.callbacks[:]:
-            try:
-                callback()
-            except RuntimeError as e:
-                logger.error(f"回调调用错误: {e}")
-                self.callbacks.remove(callback)
-        self._schedule_next()
+
+        # 使用最初的备份列表，防止遍历时修改
+        callbacks_copy = self.callbacks[:]
+        for callback in callbacks_copy:
+            if callback in self.callbacks:
+                try:
+                    callback()
+                except RuntimeError as e:
+                    logger.error(f"回调调用错误 (可能对象已删除): {e}")
+                    try:
+                        self.callbacks.remove(callback)
+                    except ValueError:
+                        pass
+                except Exception as e:
+                    logger.error(f"执行回调时发生未知错误: {e}")
+        if self._is_running:
+            self._schedule_next()
 
     def _schedule_next(self):
-        next_tick = dt.datetime.now().replace(microsecond=0) + dt.timedelta(seconds=1)
-        delay = int((next_tick - dt.datetime.now()).total_seconds() * 1000)
-        if delay < 0:
-            delay = 0
+        now = dt.datetime.now()
+        next_tick = now.replace(microsecond=0) + dt.timedelta(seconds=1)
+        delay = max(0, int((next_tick - now).total_seconds() * 1000))
         self.timer.start(delay)
 
-    def add_callback(self, callback):  # 添加回调
+    def add_callback(self, callback):
         if callback not in self.callbacks:
             self.callbacks.append(callback)
+            if not self._is_running:
+                self.start()
 
     def remove_callback(self, callback):
-        """ 移除回调函数 """
-        if callback in self.callbacks:
+        try:
             self.callbacks.remove(callback)
+        except ValueError:
+            pass
+        # if not self.callbacks and self._is_running:
+        #     self.stop() # 删除定时器
 
     def remove_all_callbacks(self):
-        """ 移除所有回调函数 """
         self.callbacks = []
+        # self.stop() # 删除定时器
 
-    def start(self):  # 启动定时器
-        self.timer.start(1000)
-        self._schedule_next()  # 计算下次触发时间
+    def start(self):
+        if not self._is_running:
+            logger.debug("启动 UnionUpdateTimer...")
+            self._is_running = True
+            self._schedule_next()
 
-    def stop(self):  # 停止
+    def stop(self):
+        self._is_running = False
         if self.timer:
             try:
-                self.timer.stop()
-                self.timer.deleteLater()
-            except RuntimeError:
-                logger.warning("计时器已被销毁，跳过停止操作")
-        self.remove_all_callbacks()  # 移除所有回调函数
+                if self.timer.isActive():
+                    self.timer.stop()
+            except RuntimeError as e:
+                logger.warning(f"停止 QTimer 时发生运行时错误: {e}")
+            except Exception as e:
+                logger.error(f"停止 QTimer 时发生未知错误: {e}")
 
 
 tray_icon = None

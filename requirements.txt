@@ -29,5 +29,3 @@ PyGetWindow~=0.0.9
 edge-tts~=7.0.0
 pyttsx3==2.98
 git+https://github.com/SmartTeachCN/pycses.git
-pycaw>=20230407; platform_system == "Windows"
-pulsectl>=22.3.2; platform_system == "Linux"

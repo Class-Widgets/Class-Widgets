@@ -26,6 +26,7 @@
     "attend_class": 1,
     "finish_class": 1,
     "prepare_class": 1,
+    "after_school": 1,
     "smooth_volume": 0
   },
   "Weather": {

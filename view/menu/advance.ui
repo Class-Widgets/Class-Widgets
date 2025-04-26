@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>688</width>
+    <width>765</width>
     <height>1331</height>
    </rect>
   </property>
@@ -55,8 +55,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>640</width>
-        <height>1790</height>
+        <width>717</width>
+        <height>1812</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -716,14 +716,14 @@
                  </sizepolicy>
                 </property>
                 <property name="text">
-                 <string>特定课程自动隐藏</string>
+                 <string>特定课程不自动隐藏</string>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_14">
                 <property name="text">
-                 <string>若启用，在遇到下方设置的特定课程时自动隐藏，以英文逗号分隔</string>
+                 <string>若启用，在遇到下方设置的特定课程时不会自动隐藏，以英文逗号分隔</string>
                 </property>
                 <property name="wordWrap">
                  <bool>false</bool>
@@ -804,7 +804,7 @@
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_14">
                 <property name="text">
-                 <string>配合 特定课程自动隐藏 使用</string>
+                 <string>配合 特定课程不自动隐藏 使用</string>
                 </property>
                 <property name="wordWrap">
                  <bool>false</bool>
@@ -893,8 +893,7 @@
                    <string>允许通过点击或触摸小组件方式控制小组件
 若启用，单击小组件可显示或隐藏小组件，右键小组件可打开额外选项
 若禁用，点击小组件等同于点击小组件后方的窗口
-* 重启后生效
-</string>
+* 重启后生效</string>
                   </property>
                   <property name="wordWrap">
                    <bool>false</bool>
@@ -929,6 +928,33 @@
               </item>
              </layout>
             </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="CardWidget" name="CardWidget_16">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>70</height>
+            </size>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_26">
+            <property name="spacing">
+             <number>16</number>
+            </property>
+            <property name="leftMargin">
+             <number>16</number>
+            </property>
+            <property name="topMargin">
+             <number>16</number>
+            </property>
+            <property name="rightMargin">
+             <number>16</number>
+            </property>
+            <property name="bottomMargin">
+             <number>16</number>
+            </property>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_14">
               <property name="spacing">
@@ -980,7 +1006,7 @@
                </layout>
               </item>
               <item>
-               <layout class="QVBoxLayout" name="verticalLayout_22">
+               <layout class="QVBoxLayout" name="verticalLayout_27">
                 <item>
                  <widget class="Slider" name="slider_scale_factor">
                   <property name="sizePolicy">

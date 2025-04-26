@@ -605,6 +605,11 @@ class SettingsMenu(FluentWindow):
         switch_enable_finish.checkedChanged.connect(lambda checked: switch_checked('Toast', 'finish_class', checked))
         # 下课提醒开关
 
+        switch_enable_finish = self.findChild(SwitchButton, 'switch_enable_schoolout')
+        switch_enable_finish.setChecked(int(config_center.read_conf('Toast', 'after_school')))
+        switch_enable_finish.checkedChanged.connect(lambda checked: switch_checked('Toast', 'after_school', checked))
+        # 放学提醒开关
+
         switch_enable_prepare = self.findChild(SwitchButton, 'switch_enable_prepare')
         switch_enable_prepare.setChecked(int(config_center.read_conf('Toast', 'prepare_class')))
         switch_enable_prepare.checkedChanged.connect(lambda checked: switch_checked('Toast', 'prepare_class', checked))
@@ -614,11 +619,6 @@ class SettingsMenu(FluentWindow):
         switch_enable_pin_toast.setChecked(int(config_center.read_conf('Toast', 'pin_on_top')))
         switch_enable_pin_toast.checkedChanged.connect(lambda checked: switch_checked('Toast', 'pin_on_top', checked))
         # 置顶开关
-
-        switch_smooth_volume = self.findChild(SwitchButton, 'switch_enable_pin_toast_2')
-        switch_smooth_volume.setChecked(int(config_center.read_conf('Toast', 'smooth_volume')))
-        switch_smooth_volume.checkedChanged.connect(lambda checked: switch_checked('Toast', 'smooth_volume', checked))
-        # 灵动通知开关
 
         slider_volume = self.findChild(Slider, 'slider_volume')
         slider_volume.setValue(int(config_center.read_conf('Audio', 'volume')))

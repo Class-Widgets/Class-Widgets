@@ -42,6 +42,12 @@ class tip_toast(QWidget):
         self.audio_thread = None
         uic.loadUi(f"{base_directory}/view/widget-toast-bar.ui", self)
 
+        try:
+            dpr = self.screen().devicePixelRatio() if self.screen() else QApplication.primaryScreen().devicePixelRatio()
+        except AttributeError:
+            dpr = QApplication.primaryScreen().devicePixelRatio()
+        dpr = max(1.0, dpr)
+
         # 窗口位置
         if config_center.read_conf('Toast', 'pin_on_top') == '1':
             self.setWindowFlags(
@@ -63,17 +69,20 @@ class tip_toast(QWidget):
         subtitle_label = self.findChild(QLabel, 'subtitle')
         icon_label = self.findChild(QLabel, 'icon')
 
+        sound_to_play = None
         if icon:
             pixmap = QPixmap(icon)
-            pixmap = pixmap.scaled(48, 48)
+            icon_size = int(48 * dpr)
+            pixmap = pixmap.scaled(icon_size, icon_size, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
             icon_label.setPixmap(pixmap)
+            icon_label.setFixedSize(icon_size, icon_size)
 
         if state == 1:
             logger.info('上课铃声显示')
             title_label.setText('活动开始')  # 修正文本，以适应不同场景
             subtitle_label.setText('当前课程')
             lesson.setText(lesson_name)  # 课程名
-            self.playsound(attend_class)
+            sound_to_play = attend_class
             setThemeColor(f"#{config_center.read_conf('Color', 'attend_class')}")  # 主题色
         elif state == 0:
             logger.info('下课铃声显示')
@@ -83,28 +92,28 @@ class tip_toast(QWidget):
             else:
                 subtitle_label.hide()
             lesson.setText(lesson_name)  # 课程名
-            self.playsound(finish_class)
+            sound_to_play = finish_class
             setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}")
         elif state == 2:
             logger.info('放学铃声显示')
             title_label.setText('放学')
             subtitle_label.setText('当前课程已结束')
             lesson.setText('')  # 课程名
-            self.playsound(finish_class)
+            sound_to_play = finish_class
             setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}")
         elif state == 3:
             logger.info('预备铃声显示')
             title_label.setText('即将开始')  # 同上
             subtitle_label.setText('下一节')
             lesson.setText(lesson_name)
-            self.playsound(prepare_class)
+            sound_to_play = prepare_class
             setThemeColor(f"#{config_center.read_conf('Color', 'prepare_class')}")
         elif state == 4:
             logger.info(f'通知显示: {title}')
             title_label.setText(title)
             subtitle_label.setText(subtitle)
             lesson.setText(content)
-            self.playsound(prepare_class)
+            sound_to_play = prepare_class
 
         # 设置样式表
         if state == 1:  # 上课铃声
@@ -142,9 +151,8 @@ class tip_toast(QWidget):
         if config_center.read_conf('Toast', 'wave') == '1':
             backgnd.setGraphicsEffect(self.blur_effect)
 
-        # 设置窗口初始大小
-        mini_size_x = 150
-        mini_size_y = 50
+        mini_size_x = 150 / dpr
+        mini_size_y = 50 / dpr
 
         self.timer = QTimer(self)
         self.timer.setSingleShot(True)
@@ -154,10 +162,9 @@ class tip_toast(QWidget):
         # 放大效果
         self.geometry_animation = QPropertyAnimation(self, b"geometry")
         self.geometry_animation.setDuration(750)  # 动画持续时间
-        self.geometry_animation.setStartValue(
-            QRect(int(start_x + mini_size_x / 2), int(start_y + mini_size_y / 2),
-                  total_width - mini_size_x, height - mini_size_y)
-        )
+        start_rect = QRect(int(start_x + mini_size_x / 2), int(start_y + mini_size_y / 2),
+                         int(total_width - mini_size_x), int(height - mini_size_y))
+        self.geometry_animation.setStartValue(start_rect)
         self.geometry_animation.setEndValue(QRect(start_x, start_y, total_width, height))
         self.geometry_animation.setEasingCurve(QEasingCurve.Type.OutCirc)
         self.geometry_animation.finished.connect(self.timer.start)
@@ -172,30 +179,40 @@ class tip_toast(QWidget):
         self.opacity_animation.setDuration(450)
         self.opacity_animation.setStartValue(0)
         self.opacity_animation.setEndValue(1)
+        self.opacity_animation.setEasingCurve(QEasingCurve.Type.InOutQuad)
+
+        if sound_to_play:
+            self.playsound(sound_to_play)
 
         self.geometry_animation.start()
         self.opacity_animation.start()
         self.blur_animation.start()
 
     def close_window(self):
-        mini_size_x = 120
-        mini_size_y = 20
+        try:
+            dpr = self.screen().devicePixelRatio() if self.screen() else QApplication.primaryScreen().devicePixelRatio()
+        except AttributeError:
+            dpr = QApplication.primaryScreen().devicePixelRatio()
+        dpr = max(1.0, dpr)
+        mini_size_x = 120 / dpr
+        mini_size_y = 20 / dpr
+
         # 放大效果
         self.geometry_animation_close = QPropertyAnimation(self, b"geometry")
-        self.geometry_animation_close.setDuration(400)  # 动画持续时间
+        self.geometry_animation_close.setDuration(500)  # 动画持续时间
         self.geometry_animation_close.setStartValue(QRect(start_x, start_y, total_width, height))
-        self.geometry_animation_close.setEndValue(
-            QRect(int(start_x + mini_size_x / 2), int(start_y + mini_size_y / 2),
-                  total_width - mini_size_x, height - mini_size_y))
-        self.geometry_animation_close.setEasingCurve(QEasingCurve.Type.InOutCirc)
+        end_rect = QRect(int(start_x + mini_size_x / 2), int(start_y + mini_size_y / 2),
+                       int(total_width - mini_size_x), int(height - mini_size_y))
+        self.geometry_animation_close.setEndValue(end_rect)
+        self.geometry_animation_close.setEasingCurve(QEasingCurve.Type.InOutQuad)
 
         self.blur_animation_close = QPropertyAnimation(self.blur_effect, b"blurRadius")
-        self.blur_animation_close.setDuration(450)
+        self.blur_animation_close.setDuration(500)
         self.blur_animation_close.setStartValue(0)
         self.blur_animation_close.setEndValue(30)
 
         self.opacity_animation_close = QPropertyAnimation(self, b"windowOpacity")
-        self.opacity_animation_close.setDuration(400)
+        self.opacity_animation_close.setDuration(500)
         self.opacity_animation_close.setStartValue(1)
         self.opacity_animation_close.setEndValue(0)
 
@@ -216,9 +233,12 @@ class tip_toast(QWidget):
     def playsound(self, filename):
         try:
             file_path = os.path.join(base_directory, 'audio', filename)
+            if self.audio_thread and self.audio_thread.isRunning():
+                self.audio_thread.quit()
+                self.audio_thread.wait()
             self.audio_thread = PlayAudio(str(file_path))
-            self.audio_thread.setPriority(QThread.HighestPriority)  # 设置优先级
             self.audio_thread.start()
+            self.audio_thread.setPriority(QThread.Priority.HighestPriority)  # 设置优先级
         except Exception as e:
             logger.error(f'播放音频文件失败：{e}')
 
@@ -240,7 +260,7 @@ class wave_Effect(QWidget):
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
         self._radius = 0
-        self.duration = 1150
+        self.duration = 1200
 
         if state == 1:
             self.color = QColor(attend_class_color)
@@ -275,12 +295,18 @@ class wave_Effect(QWidget):
         self.animation = QPropertyAnimation(self, b'radius')
         self.animation.setDuration(self.duration)
         self.animation.setStartValue(50)
-        self.animation.setEndValue(max(self.width(), self.height()) * 1.7)
-        self.animation.setEasingCurve(QEasingCurve.Type.InOutCirc)
+        try:
+            dpr = self.screen().devicePixelRatio() if self.screen() else QApplication.primaryScreen().devicePixelRatio()
+        except AttributeError:
+            dpr = QApplication.primaryScreen().devicePixelRatio()
+        dpr = max(1.0, dpr)
+        fixed_end_radius = 1000 * dpr # 动画效果值
+        self.animation.setEndValue(fixed_end_radius)
+        self.animation.setEasingCurve(QEasingCurve.Type.InOutQuad)
         self.animation.start()
 
         self.fade_animation = QPropertyAnimation(self, b'windowOpacity')
-        self.fade_animation.setDuration(self.duration - self.duration // 5)
+        self.fade_animation.setDuration(self.duration - 150)
 
         self.fade_animation.setKeyValues([  # 关键帧
             (0, 0),
@@ -288,7 +314,7 @@ class wave_Effect(QWidget):
             (1, 0)
         ])
 
-        self.fade_animation.setEasingCurve(QEasingCurve.Type.InOutCirc)
+        self.fade_animation.setEasingCurve(QEasingCurve.Type.InOutQuad)
         self.fade_animation.finished.connect(self.close)
         self.fade_animation.start()
 
@@ -347,7 +373,12 @@ def main(state=1, lesson_name='', title='通知示例', subtitle='副标题',
     screen_geometry = QApplication.primaryScreen().geometry()
     screen_width = screen_geometry.width()
     spacing = conf.load_theme_config(theme)['spacing']
-
+    try:
+        dpr = QApplication.primaryScreen().devicePixelRatio()
+    except AttributeError:
+        dpr = 1.0
+    dpr = max(1.0, dpr)
+ 
     widgets_width = 0
     for widget in widgets:  # 计算总宽度(兼容插件)
         try:
@@ -360,8 +391,9 @@ def main(state=1, lesson_name='', title='通知示例', subtitle='副标题',
     total_width = widgets_width + spacing * (len(widgets) - 1)
 
     start_x = int((screen_width - total_width) / 2)
-    start_y = int(config_center.read_conf('General', 'margin'))
-
+    margin_base = int(config_center.read_conf('General', 'margin'))
+    start_y = int(margin_base * dpr)
+ 
     if state != 4:
         window = tip_toast((start_x, start_y), total_width, state, lesson_name, duration=duration)
     else:
