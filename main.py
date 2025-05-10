@@ -581,54 +581,64 @@ def check_fullscreen():  # 检查是否全屏
         return False
     user32 = ctypes.windll.user32
     hwnd = user32.GetForegroundWindow()
-    if hwnd == 0 or hwnd == user32.GetDesktopWindow() or hwnd == user32.GetShellWindow():
+    if not hwnd:
         return False
-    # 获取窗口标题
-    title_buffer = ctypes.create_unicode_buffer(256)
-    user32.GetWindowTextW(hwnd, title_buffer, 256)
-    window_title = title_buffer.value.strip()
+    if hwnd == user32.GetDesktopWindow():
+        return False
+    if hwnd == user32.GetShellWindow():
+        return False
     pid = ctypes.c_ulong()
     user32.GetWindowThreadProcessId(hwnd, ctypes.byref(pid))
-    process_name = get_process_name(pid.value).lower()
+    process_name = get_process_name(pid.value)
     current_pid = os.getpid()
-    # 排除自身(强调特效)
+    # logger.debug(f"前景窗口句柄: {hwnd}, PID: {pid.value}, 进程名: {process_name}")
     if pid.value == current_pid:
         return False
-    # 排除系统进程
-    system_processes = {
-        'explorer.exe',  # 桌面
-        'shellexperiencehost.exe',
-        'searchui.exe',  # 搜索
-        'applicationframehost.exe'  # UWP组件
+    # 排除特定系统进程
+    excluded_system_processes = {
+        'explorer.exe',             # 文件资源管理器/桌面
+        'shellexperiencehost.exe',  # Shell体验主机 (开始菜单、操作中心)
+        'searchui.exe',             # Cortana/搜索界面
+        'applicationframehost.exe', # UWP应用框架
+        'systemsettings.exe',       # 设置
+        'taskmgr.exe'               # 任务管理器
     }
-    if process_name in system_processes:
+    if process_name in excluded_system_processes:
+        # logger.debug(f"前景窗口进程 '{process_name}' 在排除列表 (系统进程), 排除.")
         return False
-    # 排除系统窗口
-    system_windows = {
-        "",  # 无标题窗口
-        "program manager",  # 桌面窗口
-        "windows input experience",  # 输入面板
-        "msctfmonitor window",
-        "startmenuexperiencehost"  # 开始菜单
+    title_buffer = ctypes.create_unicode_buffer(256)
+    user32.GetWindowTextW(hwnd, title_buffer, 256)
+    window_title_lower = title_buffer.value.strip().lower()
+    # logger.debug(f"前景窗口标题: '{title_buffer.value}' (小写: '{window_title_lower}')")
+    # 排除特定窗口标题
+    excluded_system_window_titles = {
+        "program manager",            # 桌面窗口
+        "windows input experience",   # 输入法相关
+        "msctfmonitor window",        # 输入法相关
+        "startmenuexperiencehost"   # 开始菜单
     }
-    if window_title.lower() in system_windows:
+    if window_title_lower in excluded_system_window_titles:
+        logger.debug(f"  前景窗口标题 '{window_title_lower}' 在排除列表 (系统窗口), 排除.")
         return False
     rect = RECT()
     user32.GetWindowRect(hwnd, ctypes.byref(rect))
-    screen_rect = RECT()
-    user32.GetWindowRect(user32.GetDesktopWindow(), ctypes.byref(screen_rect))
-    is_fullscreen = (
-        rect.left <= screen_rect.left and
-        rect.top <= screen_rect.top and
-        rect.right >= screen_rect.right and
-        rect.bottom >= screen_rect.bottom
+    # 使用桌面窗口作为屏幕尺寸参考
+    screen_rect_desktop = RECT()
+    user32.GetWindowRect(user32.GetDesktopWindow(), ctypes.byref(screen_rect_desktop))
+    # logger.debug(f"窗口矩形: 左={rect.left}, 上={rect.top}, 右={rect.right}, 下={rect.bottom}")
+    # logger.debug(f"桌面矩形: 左={screen_rect_desktop.left}, 上={screen_rect_desktop.top}, 右={screen_rect_desktop.right}, 下={screen_rect_desktop.bottom}")
+    is_covering_screen = (
+        rect.left <= screen_rect_desktop.left and
+        rect.top <= screen_rect_desktop.top and
+        rect.right >= screen_rect_desktop.right and
+        rect.bottom >= screen_rect_desktop.bottom
     )
-    # 排除窗口大小必须占用屏幕95%,避免诈骗()
-    if is_fullscreen:
-        screen_area = (screen_rect.right - screen_rect.left) * (screen_rect.bottom - screen_rect.top)
+    if is_covering_screen:
+        screen_area = (screen_rect_desktop.right - screen_rect_desktop.left) * (screen_rect_desktop.bottom - screen_rect_desktop.top)
         window_area = (rect.right - rect.left) * (rect.bottom - rect.top)
-        return window_area >= screen_area * 0.95
-
+        is_fullscreen = window_area >= screen_area * 0.95
+        # logger.debug(f"覆盖屏幕: {is_covering_screen}, 窗口面积: {window_area}, 屏幕面积: {screen_area}, 是否全屏判断: {is_fullscreen}")
+        return is_fullscreen
     return False
 
 
@@ -1875,7 +1885,7 @@ class DesktopWidget(QWidget):  # 主要小组件
                             utils.update_timer.add_callback(self._ensure_topmost)
                             self._is_topmost_callback_added = True
                             self._ensure_topmost() # 立即执行一次确保初始置顶
-                            #logger.debug("已添加置顶定时回调。")
+                            # logger.debug("已添加置顶定时回调。")
                         else:
                             logger.warning("utils.update_timer 不可用，无法添加置顶回调。")
                     except Exception as e:
@@ -2588,76 +2598,111 @@ class DesktopWidget(QWidget):  # 主要小组件
 
 
 def check_windows_maximize():  # 检查窗口是否最大化
-    if os.name != 'nt':
+    if os.name != 'nt' or not pygetwindow:
+        # logger.debug("非Windows NT系统或pygetwindow未加载, 无法检查最大化.")
         return False
-    # 全字匹配以下关键词排除
-    excluded_titles = {
-        'ResidentSideBar', # 希沃侧边栏
-        'Program Manager', # Windows桌面
-        'Desktop', # Windows桌面
-        '', # 空标题
-        'SnippingTool', # 系统截图工具
+    # 需要排除的特定窗口标题 (全字匹配, 大小写不敏感)
+    excluded_titles_exact_lower = {
+        'residentsidebar',  # 希沃侧边栏
+        'program manager',  # Windows桌面
+        'desktop',          # Windows桌面 (备用)
+        'snippingtool',     # 系统截图工具
+        # '' 空标题不再默认排除
     }
-    # 包含以下关键词排除
-    excluded_keywords = {
-        'Overlay',
-        'Snipping',
-        'SideBar'
+    # 需要排除的标题中包含的关键词 (大小写不敏感)
+    excluded_keywords_in_title_lower = {
+        'overlay',
+        'snipping',
+        'sidebar',
+        'flyout' # qfluentwidgets的浮出控件
     }
-    excluded_process_patterns = {
-        'shellexperiencehost', 
-        'searchui', 
-        'startmenuexperiencehost'
+    # 需要排除的进程名 (全字或部分匹配, 大小写不敏感)
+    excluded_process_names_lower = {
+        'shellexperiencehost.exe',
+        'searchui.exe',
+        'startmenuexperiencehost.exe',
+        'applicationframehost.exe',
+        'systemsettings.exe',
+        'taskmgr.exe'
     }
-    max_windows = []
+    # 用户自定义的忽略进程列表 (全字匹配, 大小写不敏感)
+    # 例：easinote.exe 每行一个，用逗号分隔
+    ignored_process_names_for_maximize_lower = {
+        'easinote.exe'
+    }
+    
+    current_pid = os.getpid()
+
     try:
         all_windows = pygetwindow.getAllWindows()
     except Exception as e:
-        logger.error(f"获取窗口列表异常: {str(e)}")
+        logger.warning(f"获取窗口列表时发生错误 (pygetwindow): {str(e)}")
+        # logger.debug("获取窗口列表失败.")
         return False
+
     for window in all_windows:
         try:
-            # 检查窗口是否有效
             if not window._hWnd:
+                # logger.debug(f"窗口 '{getattr(window, 'title', 'N/A')}' 无效句柄, 跳过.")
                 continue
-            # 检查窗口是否可见且最大化
+            if not window.visible:
+                # logger.debug(f"窗口 '{window.title}' 不可见, 跳过.")
+                continue
+            if not window.isMaximized:
+                # logger.debug(f"窗口 '{window.title}' 未最大化, 跳过.")
+                continue
+            # logger.debug(f"发现可见且已最大化的窗口: '{window.title}' (句柄: {window._hWnd})")
             try:
-                is_valid = window.visible and window.isMaximized
-                # 获取窗口位置验证窗口存在性
-                window_rect = window.box
-                if not is_valid or not window_rect:
-                    continue
-            except Exception:
-                # 获取窗口属性失败，可能已关闭
+                hwnd_int = window._hWnd
+                pid_val = ctypes.c_ulong()
+                ctypes.windll.user32.GetWindowThreadProcessId(hwnd_int, ctypes.byref(pid_val))
+                win_pid = pid_val.value
+                if win_pid == 0:
+                    continue # 无效PID
+                process_name = psutil.Process(win_pid).name().lower()
+            except (psutil.NoSuchProcess, psutil.AccessDenied, AttributeError, ValueError, OSError) :
+                # logger.debug(f"无法获取窗口 '{title}' 的进程信息,跳过.")
                 continue
+            
+            if win_pid == current_pid:
+                # logger.debug(f"窗口 '{title}' (PID: {win_pid}, 进程: {process_name}) 是自身进程, 排除.")
+                continue
+
             title = window.title.strip()
-            pid = window._hWnd
-            process_name = get_process_name(pid).lower()
             title_lower = title.lower()
-            is_system_explorer = (
-                process_name == "explorer.exe" 
-                and (title in excluded_titles 
-                     or any(kw in title_lower for kw in excluded_keywords))
-            )
-            is_system_process = any(
-                pattern in process_name 
-                for pattern in excluded_process_patterns
-            )
-            has_excluded_keyword = any(
-                kw in title_lower for kw in excluded_keywords
-            )
-            if not (title in excluded_titles or is_system_explorer or is_system_process or has_excluded_keyword):
-                max_windows.append({
-                    'title': title,
-                    'process': process_name,
-                    'pid': pid,
-                    'rect': window.box
-                })
+
+            if process_name in ignored_process_names_for_maximize_lower:
+                # logger.debug(f"窗口 '{title}' (进程: {process_name}) 在忽略列表, 排除.")
+                continue
+
+            if process_name in excluded_process_names_lower:
+                # logger.debug(f"窗口 '{title}' (进程: {process_name}) 在排除的进程名列表, 排除.")
+                continue
+            
+            if title_lower in excluded_titles_exact_lower:
+                # logger.debug(f"窗口标题 '{title_lower}' 在排除列表, 排除.")
+                continue
+
+            if any(keyword in title_lower for keyword in excluded_keywords_in_title_lower):
+                # logger.debug(f"窗口标题 '{title_lower}' 包含排除的关键词, 排除.")
+                continue
+            
+            # 如果进程是 explorer.exe,但不是“资源管理器”则认为是特殊explorer(应该是桌面)
+            if process_name == 'explorer.exe':
+                if title_lower in excluded_titles_exact_lower or \
+                   any(keyword in title_lower for keyword in excluded_keywords_in_title_lower):
+                    # logger.debug(f"explorer.exe 窗口 '{title_lower}' 命中标题排除规则, 排除.")
+                    continue
+            # logger.debug(f"找到有效最大化窗口: '{title}' (PID: {win_pid}, 进程: {process_name}). 返回 True.")
+            return True
+
         except Exception as e:
-            logger.error(f"窗口处理异常: {str(e)}")
+            if window and hasattr(window, 'title'):
+                logger.debug(f"处理窗口 '{getattr(window, 'title', 'N/A')}' 时发生错误: {str(e)}")
+            else:
+                logger.debug(f"处理一个未知窗口时发生错误: {str(e)}")
             continue
-    # 如果有最大化窗口则返回True
-    return len(max_windows) > 0
+    return False
 
 
 
