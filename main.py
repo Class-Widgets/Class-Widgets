@@ -2780,7 +2780,7 @@ if __name__ == '__main__':
 
     logger.info(f"操作系统：{system}，版本：{osRelease}/{osVersion}")
 
-    list_pyttsx3_voices()
+    # list_pyttsx3_voices() # debug
 
     if share.attach() and config_center.read_conf('Other', 'multiple_programs') != '1':
         msg_box = Dialog(
