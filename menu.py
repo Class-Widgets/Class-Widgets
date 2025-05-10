@@ -1,6 +1,7 @@
 import datetime as dt
 import json
 import os
+import re
 import subprocess
 import sys
 from copy import deepcopy
@@ -189,7 +190,18 @@ def se_load_item():
 def cd_load_item():
     global countdown_dict
     text = config_center.read_conf('Date', 'cd_text_custom').split(',')
-    date = config_center.read_conf('Date', 'countdown_date').split(',')
+    date_str = config_center.read_conf('Date', 'countdown_date')
+
+    # 处理日期中可能包含的逗号（如日期后跟星期信息）
+    date = []
+    for item in date_str.split(','):
+        # 提取日期部分（格式为yyyy-M-d或yyyy-MM-dd）
+        date_match = re.match(r'(\d{4}-\d{1,2}-\d{1,2})', item.strip())
+        if date_match:
+            date.append(date_match.group(1))
+        else:
+            date.append(item.strip())
+
     if len(text) != len(date):
         countdown_dict = {"Err": f"len(cd_text_custom) (={len(text)}) != len(countdown_date) (={len(date)})"}
         raise Exception(
@@ -944,13 +956,16 @@ class SettingsMenu(FluentWindow):
         )  # 保存缩放系数
 
         what_is_hide_mode_3 = self.adInterface.findChild(HyperlinkLabel, 'what_is_hide_mode_3')
-  
+
         def what_is_hide_mode_3_clicked():
-            w = MessageBox('灵活模式', '灵活模式为上课时自动隐藏，可手动改变隐藏状态，当前课程状态（上课/课间）改变后会清除手动隐藏状态，重新转为自动隐藏。', self)
+            w = MessageBox('灵活模式',
+                           '灵活模式为上课时自动隐藏，可手动改变隐藏状态，当前课程状态（上课/课间）改变后会清除手动隐藏状态，重新转为自动隐藏。',
+                           self)
             w.cancelButton.hide()
             w.exec()
+
         what_is_hide_mode_3.clicked.connect(what_is_hide_mode_3_clicked)
-        
+
     def setup_schedule_edit(self):
         se_load_item()
         se_set_button = self.findChild(ToolButton, 'set_button')
@@ -1098,7 +1113,7 @@ class SettingsMenu(FluentWindow):
         if search_city_dialog.exec():
             selected_city = search_city_dialog.city_list.selectedItems()
             if selected_city:
-                config_center.write_conf('Weather', 'city', wd.search_code_by_name((selected_city[0].text(),'')))
+                config_center.write_conf('Weather', 'city', wd.search_code_by_name((selected_city[0].text(), '')))
 
     def show_license(self):
         license_dialog = licenseDialog(self)
@@ -1179,7 +1194,8 @@ class SettingsMenu(FluentWindow):
     def ct_add_widget(self):
         widgets_list = self.findChild(ListWidget, 'widgets_list')
         widgets_combo = self.findChild(ComboBox, 'widgets_combo')
-        if (not widgets_list.findItems(widgets_combo.currentText(), QtCore.Qt.MatchFlag.MatchExactly)) or widgets_combo.currentText() in list_.native_widget_name:
+        if (not widgets_list.findItems(widgets_combo.currentText(),
+                                       QtCore.Qt.MatchFlag.MatchExactly)) or widgets_combo.currentText() in list_.native_widget_name:
             widgets_list.addItem(widgets_combo.currentText())
         self.ct_update_preview()
 
@@ -2014,7 +2030,12 @@ class SettingsMenu(FluentWindow):
         for i in range(cd_countdown_list.count()):
             item = cd_countdown_list.item(i)
             text = item.text().split(' - ')
-            countdown_date.append(text[0])
+            # 提取日期部分，防止包含星期信息
+            date_match = re.match(r'(\d{4}-\d{1,2}-\d{1,2})', text[0].strip())
+            if date_match:
+                countdown_date.append(date_match.group(1))
+            else:
+                countdown_date.append(text[0].strip())
             cd_text_custom.append(text[1])
 
         Flyout.create(
