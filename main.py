@@ -25,46 +25,6 @@ from qfluentwidgets import Theme, setTheme, setThemeColor, SystemTrayMenu, Actio
     Dialog, ProgressRing, PlainTextEdit, ImageLabel, PushButton, InfoBarIcon, Flyout, FlyoutAnimationType, CheckBox, \
     PrimaryPushButton, IconWidget
 
-# patch: 由于 deregister 错误绑定造成的更改主题访问已删除元素
-import qfluentwidgets.common.style_sheet as qss
-
-class StyleSheetManager(qss.StyleSheetManager):
-
-    def register(self, source, widget: QWidget, reset=True):
-        from qfluentwidgets import StyleSheetFile, StyleSheetCompose, CustomStyleSheet
-        from qfluentwidgets.common.style_sheet import CustomStyleSheetWatcher, DirtyStyleSheetWatcher
-        """ register widget to manager
-
-        Parameters
-        ----------
-        source: str | StyleSheetBase
-            qss source, it could be:
-            * `str`: qss file path
-            * `StyleSheetBase`: style sheet instance
-
-        widget: QWidget
-            the widget to set style sheet
-
-        reset: bool
-            whether to reset the qss source
-        """
-        if isinstance(source, str):
-            source = StyleSheetFile(source)
-
-        if widget not in self.widgets:
-            widget.destroyed.connect(lambda: self.deregister(widget))
-            widget.installEventFilter(CustomStyleSheetWatcher(widget))
-            widget.installEventFilter(DirtyStyleSheetWatcher(widget))
-            self.widgets[widget] = StyleSheetCompose([source, CustomStyleSheet(widget)])
-
-        if not reset:
-            self.source(widget).add(source)
-        else:
-            self.widgets[widget] = StyleSheetCompose([source, CustomStyleSheet(widget)])
-
-qss.styleSheetManager = StyleSheetManager()
-# end of patch
-
 import conf
 import list_
 import tip_toast
