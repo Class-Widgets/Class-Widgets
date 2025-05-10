@@ -113,7 +113,7 @@ class ConfigCenter:
                          f'{base_directory}/config/schedule/{self.read_conf("General", "schedule")}')
                     logger.info(f"课程表不存在，已创建默认课程表")
                 else:
-                    config_center.write_conf('General', 'schedule', schedule_config[0])
+                    self.write_conf('General', 'schedule', schedule_config[0])
             print(os.path.join(os.getcwd(), 'config', 'schedule'))
 
         # 判断是否存在 Plugins 文件夹
@@ -143,7 +143,17 @@ class ScheduleCenter:
         """
         更新课程表
         """
-        self.schedule_data = load_from_json(config_center.schedule_name)
+        self.schedule_data:dict = load_from_json(config_center.schedule_name)
+        if self.schedule_data.get('url', None) is None:
+            self.schedule_data['url'] = 'local'
+            self.save_data(self.schedule_data, config_center.schedule_name)
+
+    def update_url(self, url):
+        """
+        更新课程表url
+        """
+        self.schedule_data['url'] = url
+        self.save_data(self.schedule_data, config_center.schedule_name)
 
     def save_data(self, new_data, filename):
         # 更新，添加或覆盖新的数据
@@ -156,6 +166,7 @@ class ScheduleCenter:
             return f"数据已成功保存到 config/schedule/{filename}"
         except Exception as e:
             logger.error(f"保存数据时出错: {e}")
+    
 
 
 def load_from_json(filename):

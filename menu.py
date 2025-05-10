@@ -6,12 +6,16 @@ import sys
 from copy import deepcopy
 from pathlib import Path
 from shutil import rmtree
+import re
 
 from PyQt5 import uic, QtCore
-from PyQt5.QtCore import Qt, QTime, QUrl, QDate, pyqtSignal
+from PyQt5.QtCore import Qt, QTime, QUrl, QDate, pyqtSignal, QSize
 from PyQt5.QtGui import QIcon, QDesktopServices, QColor
+# from PyQt5.QtPrintSupport import QPrinter
+from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtGui import QPainter
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidgetItem, QLabel, QHBoxLayout, QSizePolicy, \
-    QSpacerItem, QFileDialog, QVBoxLayout, QScroller
+    QSpacerItem, QFileDialog, QVBoxLayout, QScroller, QWidget, QListWidgetItem
 from packaging.version import Version
 from loguru import logger
 from qfluentwidgets import (
@@ -21,8 +25,10 @@ from qfluentwidgets import (
     CalendarPicker, BodyLabel, ColorDialog, isDarkTheme, TimeEdit, EditableComboBox, MessageBoxBase,
     SearchLineEdit, Slider, PlainTextEdit, ToolTipFilter, ToolTipPosition, RadioButton, HyperlinkLabel,
     PrimaryDropDownPushButton, Action, RoundMenu, CardWidget, ImageLabel, StrongBodyLabel,
-    TransparentDropDownToolButton, Dialog, SmoothScrollArea, TransparentToolButton, HyperlinkButton
+    TransparentDropDownToolButton, Dialog, SmoothScrollArea, TransparentToolButton, TableWidget, HyperlinkButton, DropDownToolButton
 )
+from qfluentwidgets.common import themeColor
+from qfluentwidgets.components.widgets import ListItemDelegate
 
 import conf
 import list_ as list_
@@ -33,7 +39,8 @@ import weather_db as wd
 from conf import base_directory
 from cses_mgr import CSES_Converter
 from file import config_center, schedule_center
-from network_thread import VersionThread
+import file
+from network_thread import VersionThread, scheduleThread
 from plugin import p_loader
 from plugin_plaza import PluginPlaza
 
@@ -449,7 +456,7 @@ class TextFieldMessageBox(MessageBoxBase):
     """ Custom message box """
 
     def __init__(
-            self, parent=None, title='标题', text='请输入内容', default_text='', enable_check=False):
+            self, parent=None, title='标题', text='请输入内容', default_text='', enable_check = False, check_func = None):
         super().__init__(parent)
         self.fail_color = (QColor('#c42b1c'), QColor('#ff99a4'))
         self.success_color = (QColor('#0f7b0f'), QColor('#6ccb5f'))
@@ -463,6 +470,7 @@ class TextFieldMessageBox(MessageBoxBase):
         self.tipsLabel = CaptionLabel()
         self.tipsLabel.setText('')
         self.yesButton.setText('确定')
+        self.check_func = check_func
 
         self.fieldLayout = QVBoxLayout()
         self.textField.setPlaceholderText(default_text)
@@ -490,6 +498,11 @@ class TextFieldMessageBox(MessageBoxBase):
         if f'{self.textField.text()}.json' in self.check_list:
             self.tipsLabel.setText('不可以和之前的课程名重复哦 o(TヘTo)')
             return
+        if not (self.check_func is None):
+            is_valid, message = self.check_func(self.textField.text())
+            if not is_valid:
+                self.tipsLabel.setText(message)
+                return 
 
         self.yesButton.setEnabled(True)
         self.tipsLabel.setTextColor(self.success_color[0], self.success_color[1])
@@ -662,20 +675,122 @@ class SettingsMenu(FluentWindow):
         spin_prepare_time.setValue(int(config_center.read_conf('Toast', 'prepare_minutes')))
         spin_prepare_time.valueChanged.connect(self.save_prepare_time)  # 准备时间
 
-    def setup_configs_interface(self):  # 配置界面
-        cf_import_schedule = self.findChild(PushButton, 'im_schedule')
-        cf_import_schedule.clicked.connect(self.cf_import_schedule)  # 导入课程表
-        cf_export_schedule = self.findChild(PushButton, 'ex_schedule')
-        cf_export_schedule.clicked.connect(self.cf_export_schedule)  # 导出课程表
-        cf_open_schedule_folder = self.findChild(PushButton, 'open_schedule_folder')  # 打开课程表文件夹
-        cf_open_schedule_folder.clicked.connect(lambda: open_dir(os.path.join(base_directory, 'config/schedule')))
+    class cfFileItem(QWidget, uic.loadUiType(f'{base_directory}/view/menu/file_item.ui')[0]):
+        def __init__(self, file_name='', file_path='local', id=None, parent=None):
+            super().__init__()
+            self.setupUi(self)
 
-        cf_import_schedule_cses = self.findChild(PushButton, 'im_schedule_cses')
-        cf_import_schedule_cses.clicked.connect(self.cf_import_schedule_cses)  # 导入课程表（CSES）
-        cf_export_schedule_cses = self.findChild(PushButton, 'ex_schedule_cses')
-        cf_export_schedule_cses.clicked.connect(self.cf_export_schedule_cses)  # 导出课程表（CSES）
-        cf_what_is_cses = self.findChild(HyperlinkButton, 'what_is')
-        cf_what_is_cses.setUrl(QUrl('https://github.com/CSES-org/CSES'))
+            self.url = file_path
+
+            if file_path.startswith('http://'):
+                file_path = file_path.replace('http://', '')
+            elif file_path.startswith('https://'):
+                file_path = file_path.replace('https://', '')
+
+            self.file_name = self.findChild(StrongBodyLabel, 'file_name')
+            self.file_name.setText(file_name)
+            self.file_path = self.findChild(BodyLabel, 'file_path')
+            self.file_path.setText(file_path)
+            self.file_path.setWordWrap(True)
+            
+            self.settings = self.findChild(DropDownToolButton, 'file_item_settings')
+            self.settings.setIcon(fIcon.SETTING)
+
+            menu = RoundMenu(parent=self.settings)
+            menu.addAction(Action(fIcon.SAVE, '导出', triggered=parent.cf_export_schedule))
+            menu.addAction(Action(fIcon.SAVE, '导出为 CSES', triggered=parent.cf_export_schedule_cses))
+
+            self.settings.setMenu(menu)
+
+            self.id = id
+
+    # patch: qfw 的 ListWidget 开多列除第一列外没有选中条
+    class cfCustomDelegate(ListItemDelegate):
+        def _drawIndicator(self, painter: QPainter, option, index):
+            # 计算绘制位置
+            x, y, h = option.rect.x(), option.rect.y(), option.rect.height()
+            ph = round(0.35*h if self.pressedRow == index.row() else 0.257*h)
+            painter.setBrush(themeColor())
+            painter.drawRoundedRect(x, ph + y, 3, h - 2*ph, 1.5, 1.5)
+    # end of patch
+
+    def cf_add_item(self, file_name, file_path, id):
+        item_widget = self.cfFileItem(file_name, file_path, id, self)
+        it = QListWidgetItem()
+        # 初始 sizeHint 只需定高，高度交给 gridSize 来控制宽度
+        it.setSizeHint(QSize(self.table.min_item_width, self.table.item_height))
+        self.table.addItem(it)
+        self.table.setItemWidget(it, item_widget)
+        return item_widget
+    
+    def setup_configs_interface(self):  # 配置界面
+        self.config_url = self.cfInterface.findChild(LineEdit, 'config_url')
+
+        self.config_download = self.cfInterface.findChild(PushButton, 'config_download')
+        self.config_download.clicked.connect(self.cf_load_schedule_from_db)  # 下载配置
+        
+        self.update_now = self.cfInterface.findChild(PushButton, 'config_update')
+        self.update_now.clicked.connect(self.cf_get_schedule)  # 更新当前
+
+        self.config_new = self.cfInterface.findChild(PushButton, 'config_new')
+        self.config_new.clicked.connect(self.cf_new_config)
+
+        self.config_upload = self.cfInterface.findChild(PushButton, 'config_upload')
+        self.config_upload.clicked.connect(self.cf_post_schedule)  # 上传配置
+
+        self.import_from_file = self.cfInterface.findChild(PushButton, 'config_import')
+        self.import_from_file.clicked.connect(self.cf_import_schedule)  # 从文件导入
+
+        # 用自定义的 UniformListWidget 替换原 table
+        old = self.cfInterface.findChild(ListWidget, 'config_table')
+        parent_layout = old.parent().layout()
+        idx = parent_layout.indexOf(old)
+        parent_layout.takeAt(idx)
+        old.deleteLater()
+
+        class UniformListWidget(ListWidget):
+            def __init__(self, min_item_width=300, item_height=60, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+                self.min_item_width = min_item_width
+                self.item_height = item_height
+                self.setFlow(self.LeftToRight)
+                self.setWrapping(True)
+                self.setMovement(self.Static)
+                self.setSpacing(4)
+                self.setContentsMargins(4,4,4,4)
+
+            def resizeEvent(self, e):
+                super().resizeEvent(e)
+                self._adjust_grid()
+
+            def _adjust_grid(self):
+                w = self.width()
+                m = self.contentsMargins()
+                w -= m.left()+m.right()
+                vsb = self.verticalScrollBar()
+                if vsb.isVisible(): w -= vsb.width()
+                sp = self.spacing()
+                cols = max(1, w // (self.min_item_width + sp))
+                cell_w = (w - sp*(cols-1)) // cols
+                self.setGridSize(QSize(cell_w, self.item_height))
+                self.doItemsLayout()
+
+        # 新建并插入
+        self.table = UniformListWidget(parent=self.cfInterface)
+        parent_layout.insertWidget(idx, self.table)
+
+        # 继续之前的逻辑
+        self.table.clear()
+        
+        config_list = list_.get_schedule_config()
+        self.cf_file_list = []
+        for i, cfg in enumerate(config_list):
+            url = file.load_from_json(cfg).get('url','local')
+            self.cf_file_list.append(self.cf_add_item(cfg, url, i))
+
+        cur = config_list.index(config_center.read_conf('General','schedule'))
+        self.table.setCurrentRow(cur)
+        self.table.currentRowChanged.connect(self.cf_change_file)
 
     def setup_customization_interface(self):
         ct_scroll = self.findChild(SmoothScrollArea, 'ct_scroll')  # 触摸屏适配
@@ -813,17 +928,6 @@ class SettingsMenu(FluentWindow):
         margin_spin.valueChanged.connect(
             lambda: config_center.write_conf('General', 'margin', str(margin_spin.value()))
         )  # 保存边距设定
-
-        self.conf_combo = self.adInterface.findChild(ComboBox, 'conf_combo')
-        self.conf_combo.clear()
-        self.conf_combo.addItems(list_.get_schedule_config())
-        self.conf_combo.setCurrentIndex(
-            list_.get_schedule_config().index(config_center.read_conf('General', 'schedule')))
-        self.conf_combo.currentIndexChanged.connect(self.ad_change_file)  # 切换配置文件
-
-        conf_name = self.adInterface.findChild(LineEdit, 'conf_name')
-        conf_name.setText(config_center.schedule_name[:-5])
-        conf_name.textEdited.connect(self.ad_change_file_name)
 
         window_status_combo = self.adInterface.findChild(ComboBox, 'window_status_combo')
         window_status_combo.addItems(list_.window_status)
@@ -1251,8 +1355,7 @@ class SettingsMenu(FluentWindow):
             if utils.tray_icon:
                 utils.tray_icon.push_update_notification(f"新版本速递：{new_version}")
 
-    def cf_import_schedule_cses(self):  # 导入课程表（CSES）
-        file_path, _ = QFileDialog.getOpenFileName(self, "选择文件", "", "CSES 通用课程表交换文件 (*.yaml)")
+    def cf_import_schedule_cses(self, file_path):  # 导入课程表（CSES）
         if file_path:
             file_name = file_path.split("/")[-1]
             save_path = f"{base_directory}/config/schedule/{file_name.replace('.yaml', '.json')}"
@@ -1272,9 +1375,9 @@ class SettingsMenu(FluentWindow):
             try:
                 with open(save_path, 'w', encoding='utf-8') as f:
                     json.dump(cw_data, f, ensure_ascii=False, indent=4)
-                    self.conf_combo.addItem(file_name.replace('.yaml', '.json'))
+                    self.cf_file_list.append(self.cf_add_item(file_name.replace('.yaml', '.json'),'local',len(self.cf_file_list)))
                     alert = MessageBox('您已成功导入 CSES 课程表配置文件',
-                                       '请在“高级选项”中手动切换您的配置文件。', self)
+                                       '请手动切换您的配置文件。', self)
                     alert.cancelButton.hide()
                     alert.buttonLayout.insertStretch(0, 1)
                     alert.exec()
@@ -1312,13 +1415,15 @@ class SettingsMenu(FluentWindow):
                     return 0
 
     def cf_import_schedule(self):  # 导入课程表
-        file_path, _ = QFileDialog.getOpenFileName(self, "选择文件", "", "Json 配置文件 (*.json)")
+        file_path, _ = QFileDialog.getOpenFileName(self, "选择文件", "", "支持的文件类型 (*.json *.yaml *.yml);;Json 配置文件 (*.json);;CSES 通用课程表交换文件 (*.yaml) (*.yaml *.yml)")
         if file_path:
+            if file_path.endswith('.yaml') or file_path.endswith('.yml'):
+                return self.cf_import_schedule_cses(file_path)
             file_name = file_path.split("/")[-1]
             if list_.import_schedule(file_path, file_name):
-                self.conf_combo.addItem(file_name)
+                self.cf_file_list.append(self.cf_add_item(file_name,'local',len(self.cf_file_list)))
                 alert = MessageBox('您已成功导入课程表配置文件',
-                                   '请在“高级选项”中手动切换您的配置文件。', self)
+                                   '请手动切换您的配置文件。', self)
                 alert.cancelButton.hide()  # 隐藏取消按钮，必须重启
                 alert.buttonLayout.insertStretch(0, 1)
             else:
@@ -1392,61 +1497,90 @@ class SettingsMenu(FluentWindow):
         except Exception as e:
             logger.error(f'更新预览界面时发生错误：{e}')
 
-    def ad_change_file_name(self):
+    def cf_new_config(self):
         try:
-            conf_name = self.findChild(LineEdit, 'conf_name')
-            old_name = config_center.schedule_name
-            new_name = conf_name.text()
-            os.rename(f'{base_directory}/config/schedule/{old_name}',
-                      f'{base_directory}/config/schedule/{new_name}.json')  # 重命名
+            def is_valid_filename(file_name):
+                # 检查是否为空
+                if not file_name.strip():
+                    return False, "文件名不能为空"
+                
+                # 检查非法字符
+                invalid_chars = r'[\\/:*?"<>|]'
+                if re.search(invalid_chars, file_name):
+                    return False, "文件名包含非法字符"
+                
+                # 检查长度
+                if len(file_name) > 255:
+                    return False, "文件名过长"
+                
+                # 检查保留名称
+                reserved_names = {"CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+                                "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"}
+                if file_name.upper() in reserved_names:
+                    return False, "文件名是保留名称"
+                
+                # 检查路径分隔符
+                if os.path.sep in file_name:
+                    return False, "文件名不能包含路径分隔符"
+                
+                return True, "文件名合法"
+            
+            n2_dialog = TextFieldMessageBox(
+                        self, '请输入新课表名称',
+                        '请命名您的课程表计划：', '新课表 - 1', list_.get_schedule_config(), is_valid_filename
+                    )
+            if not n2_dialog.exec():
+                return
+
+            new_name = n2_dialog.textField.text()
+
+            list_.create_new_profile(f'{new_name}.json')
             config_center.write_conf('General', 'schedule', f'{new_name}.json')
-            config_center.schedule_name = new_name + '.json'
-            conf_combo = self.findChild(ComboBox, 'conf_combo')
-            conf_combo.clear()
-            conf_combo.addItems(list_.get_schedule_config())
-            conf_combo.setCurrentIndex(list_.get_schedule_config().index(f'{new_name}.json'))
+            config_center.schedule_name = f'{new_name}.json'
+            schedule_center.update_schedule()
+            self.te_load_item()
+            self.te_upload_list()
+            self.te_update_parts_name()
+            se_load_item()
+            self.se_upload_list()
+            self.sp_fill_grid_row()
+
+            self.table.clear()
+            self.table.setViewMode(ListWidget.IconMode)  # 允许横向排列
+            self.table.setFlow(ListWidget.LeftToRight)  # 设置从左到右排列
+            self.table.setResizeMode(ListWidget.Adjust)  # 调整大小
+            self.table.setWrapping(True)  # 允许换行
+            self.table.setItemDelegate(self.cfCustomDelegate(self.table))
+
+            config_list = list_.get_schedule_config()
+            self.cf_file_list.clear()
+
+            for id in range(len(config_list)):
+                self.cf_file_list.append(self.cf_add_item(config_list[id],'local',id))
+
+            self.table.setCurrentRow(list_.get_schedule_config().index(f'{new_name}.json'))
+            self.table.currentRowChanged.connect(self.cf_change_file)
         except Exception as e:
-            print(f'修改课程文件名称时发生错误：{e}')
-            logger.error(f'修改课程文件名称时发生错误：{e}')
+            print(f'新建配置文件时发生错误：{e}')
+            logger.error(f'新建配置文件时发生错误：{e}')
 
-    def ad_change_file(self):  # 切换课程文件
+    def cf_change_file(self):  # 切换课程文件
         try:
-            conf_name = self.findChild(LineEdit, 'conf_name')
-            # 添加新课表
-            if self.conf_combo.currentText() == '添加新课表':
-                self.conf_combo.setCurrentIndex(-1)  # 取消
-                # new_name = f'新课表 - {list.return_default_schedule_number() + 1}'
-                n2_dialog = TextFieldMessageBox(
-                    self, '请输入新课表名称',
-                    '请命名您的课程表计划：', '新课表 - 1', list_.get_schedule_config()
-                )
-                if not n2_dialog.exec():
-                    return
 
-                new_name = n2_dialog.textField.text()
-                list_.create_new_profile(f'{new_name}.json')
-                self.conf_combo.clear()
-                self.conf_combo.addItems(list_.get_schedule_config())
-                config_center.write_conf('General', 'schedule', f'{new_name}.json')
-                self.conf_combo.setCurrentIndex(
-                    list_.get_schedule_config().index(config_center.read_conf('General', 'schedule')))
-                conf_name.setText(new_name)
-
-            elif self.conf_combo.currentText().endswith('.json'):
-                new_name = self.conf_combo.currentText()
+            if self.cf_file_list[self.table.currentIndex().row()].file_name.text():
+                new_name = self.cf_file_list[self.table.currentIndex().row()].file_name.text()
                 config_center.write_conf('General', 'schedule', new_name)
-                conf_name.setText(new_name[:-5])
 
             else:
-                logger.error(f'切换课程文件时列表选择异常：{self.conf_combo.currentText()}')
+                logger.error(f'切换课程文件时列表选择异常：{self.cf_file_list[self.table.currentIndex().row()].file_name.text()}')
                 Flyout.create(
                     icon=InfoBarIcon.ERROR,
                     title='错误！',
-                    content=f"列表选项异常！{self.conf_combo.currentText()}",
-                    target=self.conf_combo,
+                    content=f"列表选项异常！{self.cf_file_list[self.table.currentIndex().row()].file_name.text()}",
+                    target=self.table,
                     parent=self,
                     isClosable=True,
-                    aniType=FlyoutAnimationType.PULL_UP
+                    aniType=FlyoutAnimationType.DROP_DOWN
                 )
                 return
             global loaded_data
@@ -1463,6 +1597,89 @@ class SettingsMenu(FluentWindow):
         except Exception as e:
             print(f'切换配置文件时发生错误：{e}')
             logger.error(f'切换配置文件时发生错误：{e}')
+
+    def cf_get_schedule(self):
+        url = schedule_center.schedule_data.get('url', 'local')
+        if url == 'local':
+            w = MessageBox('此课表为本地课表', '如需使用网络获取课表，请上传。', self)
+            w.cancelButton.hide()
+            w.exec()
+            return
+        self.version_thread = scheduleThread(url)
+        self.version_thread.update_signal.connect(self.cf_receive_schedule)
+        self.version_thread.start()
+
+    def cf_receive_schedule(self, data):
+        schedule_center.save_data(data, config_center.schedule_name)
+        schedule_center.update_schedule()
+
+    def cf_load_schedule_from_db(self):
+        try:
+            self.config_url:LineEdit = self.cfInterface.findChild(LineEdit, 'config_url')
+            url = self.config_url.text()
+            if url == '':
+                w = MessageBox('请输入配置文件链接', '请输入配置文件链接', self)
+                w.cancelButton.hide()
+                w.exec()
+                return        
+            schedule_thread = scheduleThread(url)
+            schedule_thread.update_signal.connect(self.cf_receive_schedule_from_db)
+            schedule_thread.start()
+            self.config_url.setEnabled(False)
+            
+        except Exception as e:
+            logger.error(f'获取配置文件 {url} 时发生错误：{e}')
+    
+    def cf_receive_schedule_from_db(self, data):
+        if not (data.get('error', None) is None):
+            w = MessageBox('获取配置文件失败', data['error'], self)
+            w.cancelButton.hide()
+            w.exec()
+            self.config_url.setEnabled(True)
+            return
+        self.cf_new_config()
+        self.config_url = self.cfInterface.findChild(LineEdit, 'config_url')
+        url = self.config_url.text()
+        data['url'] = url
+        schedule_center.save_data(data, config_center.schedule_name)
+        self.config_url.setEnabled(True)
+        self.config_url.clear()
+
+    def cf_post_schedule(self):
+        url = self.cf_file_list[self.table.currentIndex().row()].url
+        try:
+            if url == '' or url == 'local':
+                n2_dialog = TextFieldMessageBox(
+                        self, '请输入课表链接',
+                        f'当前可缩写数据库：\n{list_.schedule_dbs}\n你可以使用缩写来代替完整的数据库链接', '')
+                if not n2_dialog.exec():
+                    return
+                url = n2_dialog.textField.text()
+
+                for db in list_.schedule_dbs:
+                    if url.startswith(db):
+                        url = url.replace(db, list_.schedule_dbs[db])
+                        break
+                
+                self.cf_file_list[self.table.currentIndex().row()].url = url
+                self.cf_file_list[self.table.currentIndex().row()].file_path.setText(url.replace('https://', '').replace('http://',''))
+                schedule_center.update_url(url)
+
+            schedule_thread = scheduleThread(url, 'POST', data=schedule_center.schedule_data)
+            schedule_thread.update_signal.connect(self.cf_receive_schedule_from_post)
+            schedule_thread.start()
+            
+        except Exception as e:
+            logger.error(f'上传配置文件 {url} 时发生错误：{e}')
+            w = MessageBox('上传配置文件失败', f"{e}", self)
+            w.cancelButton.hide()
+            w.exec()
+
+    def cf_receive_schedule_from_post(self, data):
+        if data.get('error', None):
+            w = MessageBox('上传配置文件失败', data['error'], self)
+            w.cancelButton.hide()
+            w.exec()
 
     def sp_fill_grid_row(self):  # 填充预览表格
         subtitle = self.findChild(SubtitleLabel, 'subtitle_file')
