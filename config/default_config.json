@@ -26,8 +26,11 @@
     "attend_class": 1,
     "finish_class": 1,
     "prepare_class": 1,
-    "after_school": 1,
-    "smooth_volume": 0
+    "after_school": 1
+  },
+  "TTS": {
+    "enable": 0,
+    "speed": 50
   },
   "Weather": {
     "city": 0,

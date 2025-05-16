@@ -1,5 +1,6 @@
 import os
 import time
+import pathlib # 导入 pathlib
 
 import pygame
 import pygame.mixer
@@ -27,12 +28,12 @@ class PlayAudio(QThread):
 
 
 def play_audio(file_path: str, tts_delete_after: bool = False):
-    # global sound # Removed global sound variable
-    sound = None # Use local variable
-    channel = None # Initialize channel
+    sound = None
+    channel = None
+    relative_path = os.path.relpath(file_path, conf.base_directory)
     try:
         if not os.path.exists(file_path):
-            raise FileNotFoundError(f"音频文件不存在: {file_path}")
+            raise FileNotFoundError(f"音频文件不存在: {relative_path}")
 
         if not pygame.mixer.get_init():
             try:
@@ -57,41 +58,42 @@ def play_audio(file_path: str, tts_delete_after: bool = False):
                 raise IOError("音频文件写入超时")
 
         try:
-            if file_path in sound_cache:
+            is_in_cache_dir = 'cache' in pathlib.Path(file_path).parts
+            if not is_in_cache_dir and file_path in sound_cache:
                 sound = sound_cache[file_path]
-                logger.debug(f'使用缓存音频: {file_path}')
+                logger.debug(f'调用缓存音频: {relative_path}')
             else:
                 sound = pygame.mixer.Sound(file_path)
-                sound_cache[file_path] = sound
-                logger.debug(f'缓存音频: {file_path}')
+                if not is_in_cache_dir:
+                    sound_cache[file_path] = sound
         except pygame.error as e_load:
-            logger.error(f"加载音频文件失败: {file_path} | 错误: {e_load}")
+            logger.error(f"加载音频文件失败: {relative_path} | 错误: {e_load}")
             return
 
         volume = int(config_center.read_conf('Audio', 'volume')) / 100
-        sound.set_volume(volume)  # 设置Sound对象的音量
+        sound.set_volume(volume)
         channel = sound.play()
         if channel:
-            channel.set_volume(volume)  # 设置Channel对象的音量
+            channel.set_volume(volume)
             while channel.get_busy():
                 pygame.time.wait(100)
         else:
-            logger.error(f"无法获取播放通道: {file_path}")
+            logger.error(f"无法获取播放通道: {relative_path}")
 
-        logger.debug(f'成功播放音频: {file_path}')
+        logger.debug(f'成功播放音频: {relative_path}')
 
         if tts_delete_after:
             tts = TTSEngine()
             tts.delete_audio_file(file_path)
 
     except FileNotFoundError as e:
-        logger.error(f'音频文件未找到 | 路径: {file_path} | 错误: {str(e)}')
+        logger.error(f'音频文件未找到 | 路径: {relative_path} | 错误: {str(e)}')
     except IOError as e:
-        logger.error(f'音频文件读取错误或超时 | 路径: {file_path} | 错误: {str(e)}')
+        logger.error(f'音频文件读取错误或超时 | 路径: {relative_path} | 错误: {str(e)}')
     except pygame.error as e:
-        logger.error(f'Pygame 播放错误 | 路径: {file_path} | 错误: {str(e)}')
+        logger.error(f'Pygame 播放错误 | 路径: {relative_path} | 错误: {str(e)}')
     except Exception as e:
-        logger.error(f'未知播放失败 | 路径: {file_path} | 错误: {str(e)}')
+        logger.error(f'未知播放失败 | 路径: {relative_path} | 错误: {str(e)}')
     finally:
         if channel:
              channel.stop()
