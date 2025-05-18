@@ -2087,7 +2087,11 @@ class DesktopWidget(QWidget):  # 主要小组件
             else:
                 mgr.show_windows()
         elif hide_mode == '2': # 最大化/全屏自动隐藏
-            if check_windows_maximize() or check_fullscreen():
+            specific_courses_no_hide_str = config_center.read_conf('General', 'specific_courses_no_hide')
+            specific_courses_no_hide_list = [course.strip() for course in specific_courses_no_hide_str.split(',') if course.strip()]
+            if current_state in specific_courses_no_hide_list:
+                mgr.show_windows()
+            elif check_windows_maximize() or check_fullscreen():
                 mgr.decide_to_hide()
             else:
                 mgr.show_windows()
