@@ -1,5 +1,5 @@
 > [!Warning]
-> Class Widgets *1* 目前完全由社区开发者进行开发，详见[此处](https://github.com/orgs/Class-Widgets/teams/community/members)
+> Class Widgets *1* 目前完全由社区开发者进行开发，详见[此处](https://github.com/Class-Widgets/Class-Widgets/graphs/contributors)
 
 > [!NOTE]
 > Class Widgets 有 QQ 群和 Discord 服务器啦！详见[此处](#社区)
