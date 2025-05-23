@@ -1,5 +1,7 @@
 > [!Warning]
-> Class Widgets *1* 目前完全由社区开发者进行开发，详见[此处](https://github.com/Class-Widgets/Class-Widgets/graphs/contributors)
+> Class Widgets *1* 目前完全由社区开发者进行开发
+> ![](https://cwclist.hpdnya.com/)
+> 有任何需要社区开发者帮忙的地方，请前往 QQ 群或提 issue
 
 > [!NOTE]
 > Class Widgets 有 QQ 群和 Discord 服务器啦！详见[此处](#社区)
