@@ -1,8 +1,7 @@
 > [!Warning]
 > Class Widgets *1* 目前完全由社区开发者进行开发
 > 
-> [![](https://avatars.githubusercontent.com/u/71167373?v=4&s=80)](https://github.com/pizeroLOL) [![](https://avatars.githubusercontent.com/u/120182813?v=4&s=80)](https://github.com/IsHPDuwu) [![](https://avatars.githubusercontent.com/u/121741105?v=4&s=80)](https://github.com/baiyao105) [![](https://avatars.githubusercontent.com/u/192969678?v=4&s=80)](https://github.com/Artist-MOBAI)
-
+> [![](https://github.com/pizeroLOL.png?size=80)](https://github.com/pizeroLOL) [![](https://github.com/IsHPDuwu.png?size=80)](https://github.com/IsHPDuwu) [![](https://github.com/baiyao105.png?size=80)](https://github.com/baiyao105) [![](https://github.com/Artist-MOBAI.png?size=80)](https://github.com/Artist-MOBAI)
 > 
 > 有任何需要社区开发者帮忙的地方，请前往 QQ 群或提 issue
 
