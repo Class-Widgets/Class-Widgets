@@ -507,19 +507,12 @@ def get_current_lesson_name():
                             current_state = 0
                         return
 
-def get_hide_status_from_current_state():
+def get_hide_status():
     # 1 -> hide, 0 -> show
     # 满分啦（
     # 祝所有用 Class Widgets 的、不用 Class Widgets 的学子体测满分啊（（
     global current_state, current_lesson_name, excluded_lessons
-    # if current_state:
-    #     if not current_lesson_name in excluded_lessons:
-    #         return 0
-    #     else:
-    #         return 1
-    # else:
-    #     return 1
-    return current_state ^ (current_lesson_name in excluded_lessons)
+    return 1 if {'1': current_state, '2': check_windows_maximize() or check_fullscreen(), '3': current_state}[config_center.read_conf('General', 'hide')] and not (current_lesson_name in excluded_lessons) else 0
 
 
 # 定义 RECT 结构体
@@ -2039,15 +2032,10 @@ class DesktopWidget(QWidget):  # 主要小组件
         get_current_lesson_name()
         get_excluded_lessons()
         get_next_lessons()
-        hide_status = get_hide_status_from_current_state()
+        hide_status = get_hide_status()
 
-        if (hide_mode:=config_center.read_conf('General', 'hide')) == '1':  # 上课自动隐藏
+        if (hide_mode:=config_center.read_conf('General', 'hide')) in ['1','2']:  # 上课自动隐藏
             if hide_status:
-                mgr.decide_to_hide()
-            else:
-                mgr.show_windows()
-        elif hide_mode == '2': # 最大化/全屏自动隐藏
-            if check_windows_maximize() or check_fullscreen():
                 mgr.decide_to_hide()
             else:
                 mgr.show_windows()
