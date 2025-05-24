@@ -1,0 +1,702 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TTSAdvancedSettings</class>
+ <widget class="QWidget" name="TTSAdvancedSettings">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>778</width>
+    <height>1053</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>TTS 高级设置</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background: transparent; border: none</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_Main">
+   <property name="spacing">
+    <number>18</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="SmoothScrollArea" name="scrollArea">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>758</width>
+        <height>1033</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_Scroll">
+       <property name="spacing">
+        <number>24</number>
+       </property>
+       <property name="leftMargin">
+        <number>24</number>
+       </property>
+       <property name="topMargin">
+        <number>24</number>
+       </property>
+       <property name="rightMargin">
+        <number>24</number>
+       </property>
+       <property name="bottomMargin">
+        <number>24</number>
+       </property>
+       <item>
+        <widget class="TitleLabel" name="TitleLabel">
+         <property name="text">
+          <string>TTS语音设置</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="SmoothScrollArea" name="sd_scroll">
+         <property name="styleSheet">
+          <string notr="true">background: transparent; border: none</string>
+         </property>
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents_2">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>740</width>
+            <height>972</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_9">
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_5">
+             <property name="spacing">
+              <number>3</number>
+             </property>
+             <item>
+              <widget class="CardWidget" name="CardWidget_13">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>70</height>
+                </size>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_14">
+                <property name="leftMargin">
+                 <number>16</number>
+                </property>
+                <property name="topMargin">
+                 <number>16</number>
+                </property>
+                <property name="rightMargin">
+                 <number>16</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>16</number>
+                </property>
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_18">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="StrongBodyLabel" name="StrongBodyLabel_14">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="text">
+                     <string>使用TTS语音</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="CaptionLabel" name="CaptionLabel_13">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="text">
+                     <string>启用后将在提醒后使用TTS播报信息  *若带Edge标识则需网络请求</string>
+                    </property>
+                    <property name="lightColor" stdset="0">
+                     <color alpha="150">
+                      <red>0</red>
+                      <green>0</green>
+                      <blue>0</blue>
+                     </color>
+                    </property>
+                    <property name="darkColor" stdset="0">
+                     <color alpha="200">
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
+                     </color>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="SwitchButton" name="switch_enable_tts">
+                  <property name="onText">
+                   <string>启用</string>
+                  </property>
+                  <property name="offText">
+                   <string>禁用</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="CardWidget" name="CardWidget_8">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>70</height>
+                </size>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_8">
+                <property name="leftMargin">
+                 <number>16</number>
+                </property>
+                <property name="topMargin">
+                 <number>16</number>
+                </property>
+                <property name="rightMargin">
+                 <number>16</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>16</number>
+                </property>
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_12">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="StrongBodyLabel" name="StrongBodyLabel_8">
+                    <property name="text">
+                     <string>TTS生成人</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="CaptionLabel" name="CaptionLabel_7">
+                    <property name="text">
+                     <string>用于生成TTS语音</string>
+                    </property>
+                    <property name="lightColor" stdset="0">
+                     <color alpha="150">
+                      <red>0</red>
+                      <green>0</green>
+                      <blue>0</blue>
+                     </color>
+                    </property>
+                    <property name="darkColor" stdset="0">
+                     <color alpha="200">
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
+                     </color>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="ComboBox" name="voice_selector"/>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="CardWidget" name="CardWidget_7">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>70</height>
+                </size>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_7">
+                <property name="leftMargin">
+                 <number>16</number>
+                </property>
+                <property name="topMargin">
+                 <number>16</number>
+                </property>
+                <property name="rightMargin">
+                 <number>16</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>16</number>
+                </property>
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_11">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="StrongBodyLabel" name="StrongBodyLabel_7">
+                    <property name="text">
+                     <string>语速调节</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="CaptionLabel" name="CaptionLabel_6">
+                    <property name="text">
+                     <string>调整TTS的播放速度</string>
+                    </property>
+                    <property name="lightColor" stdset="0">
+                     <color alpha="150">
+                      <red>0</red>
+                      <green>0</green>
+                      <blue>0</blue>
+                     </color>
+                    </property>
+                    <property name="darkColor" stdset="0">
+                     <color alpha="200">
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
+                     </color>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="Slider" name="slider_tts_speed">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>200</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="SubtitleLabel" name="SubtitleLabel_CustomText">
+               <property name="text">
+                <string>自定义播报文本</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="CardWidget" name="CardWidget_11">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>70</height>
+                </size>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_15">
+                <property name="leftMargin">
+                 <number>16</number>
+                </property>
+                <property name="topMargin">
+                 <number>16</number>
+                </property>
+                <property name="rightMargin">
+                 <number>16</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>16</number>
+                </property>
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_16">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="StrongBodyLabel" name="StrongBodyLabel_15">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="text">
+                     <string>活动开始时:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="LineEdit" name="text_attend_class">
+                    <property name="placeholderText">
+                     <string>例如：同学们好，现在开始{lesson_name}课。</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="CardWidget" name="CardWidget_14">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>70</height>
+                </size>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_16">
+                <property name="leftMargin">
+                 <number>16</number>
+                </property>
+                <property name="topMargin">
+                 <number>16</number>
+                </property>
+                <property name="rightMargin">
+                 <number>16</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>16</number>
+                </property>
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_20">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="StrongBodyLabel" name="StrongBodyLabel_16">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="text">
+                     <string>即将开始时 (预备铃):</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="LineEdit" name="text_prepare_class">
+                    <property name="placeholderText">
+                     <string>例如：距离{lesson_name}课还有{minutes}分钟，请做好准备。</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="CardWidget" name="CardWidget_15">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>70</height>
+                </size>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_17">
+                <property name="leftMargin">
+                 <number>16</number>
+                </property>
+                <property name="topMargin">
+                 <number>16</number>
+                </property>
+                <property name="rightMargin">
+                 <number>16</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>16</number>
+                </property>
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_21">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="StrongBodyLabel" name="StrongBodyLabel_17">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="text">
+                     <string>活动结束时:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="LineEdit" name="text_finish_class">
+                    <property name="placeholderText">
+                     <string>例如：{lesson_name}课结束，请同学们准备下一节课。</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="CardWidget" name="CardWidget_16">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>70</height>
+                </size>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_18">
+                <property name="leftMargin">
+                 <number>16</number>
+                </property>
+                <property name="topMargin">
+                 <number>16</number>
+                </property>
+                <property name="rightMargin">
+                 <number>16</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>16</number>
+                </property>
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_22">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="StrongBodyLabel" name="StrongBodyLabel_18">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="text">
+                     <string>放学时:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="LineEdit" name="text_after_school">
+                    <property name="placeholderText">
+                     <string>例如：放学时间到，请同学们整理好物品，安全离校。</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="CardWidget" name="CardWidget_17">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>70</height>
+                </size>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_19">
+                <property name="leftMargin">
+                 <number>16</number>
+                </property>
+                <property name="topMargin">
+                 <number>16</number>
+                </property>
+                <property name="rightMargin">
+                 <number>16</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>16</number>
+                </property>
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_23">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="StrongBodyLabel" name="StrongBodyLabel_19">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="text">
+                     <string>其他通知 (用于插件或手动触发):</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="LineEdit" name="text_notification">
+                    <property name="placeholderText">
+                     <string>例如：{title}，{content}</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="CardWidget" name="CardWidget_18">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>70</height>
+                </size>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_20">
+                <property name="leftMargin">
+                 <number>16</number>
+                </property>
+                <property name="topMargin">
+                 <number>16</number>
+                </property>
+                <property name="rightMargin">
+                 <number>16</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>16</number>
+                </property>
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_24">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="HyperlinkLabel" name="about_placeholder">
+                    <property name="text">
+                     <string>占位符说明</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ComboBox</class>
+   <extends>QPushButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>SwitchButton</class>
+   <extends>QWidget</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>Slider</class>
+   <extends>QSlider</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>CardWidget</class>
+   <extends>QFrame</extends>
+   <header>qfluentwidgets</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SmoothScrollArea</class>
+   <extends>QScrollArea</extends>
+   <header>qfluentwidgets</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CaptionLabel</class>
+   <extends>QLabel</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>StrongBodyLabel</class>
+   <extends>QLabel</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>SubtitleLabel</class>
+   <extends>QLabel</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>TitleLabel</class>
+   <extends>QLabel</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>HyperlinkLabel</class>
+   <extends>QPushButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

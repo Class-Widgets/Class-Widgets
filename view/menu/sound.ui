@@ -56,7 +56,7 @@
         <x>0</x>
         <y>0</y>
         <width>697</width>
-        <height>823</height>
+        <height>734</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -300,84 +300,6 @@
           </widget>
          </item>
          <item>
-          <widget class="CardWidget" name="CardWidget_11">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>70</height>
-            </size>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_10">
-            <property name="leftMargin">
-             <number>16</number>
-            </property>
-            <property name="topMargin">
-             <number>16</number>
-            </property>
-            <property name="rightMargin">
-             <number>16</number>
-            </property>
-            <property name="bottomMargin">
-             <number>16</number>
-            </property>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_16">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="StrongBodyLabel" name="StrongBodyLabel_10">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="text">
-                 <string>启用预备铃</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="CaptionLabel" name="CaptionLabel_11">
-                <property name="text">
-                 <string>启用后将在预备铃时弹窗且发出提示音提醒</string>
-                </property>
-                <property name="wordWrap">
-                 <bool>true</bool>
-                </property>
-                <property name="lightColor" stdset="0">
-                 <color alpha="150">
-                  <red>0</red>
-                  <green>0</green>
-                  <blue>0</blue>
-                 </color>
-                </property>
-                <property name="darkColor" stdset="0">
-                 <color alpha="200">
-                  <red>255</red>
-                  <green>255</green>
-                  <blue>255</blue>
-                 </color>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <widget class="SwitchButton" name="switch_enable_prepare">
-              <property name="onText">
-               <string>启用</string>
-              </property>
-              <property name="offText">
-               <string>禁用</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
           <widget class="CardWidget" name="CardWidget_8">
            <property name="minimumSize">
             <size>
@@ -412,14 +334,14 @@
                  </sizepolicy>
                 </property>
                 <property name="text">
-                 <string>预备铃</string>
+                 <string>启用预备铃</string>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_8">
                 <property name="text">
-                 <string>在正式上课前发出预备铃（输入提前的分钟数，若为0则禁用）</string>
+                 <string>在正式上课前发出预备铃（输入提前的分钟数）</string>
                 </property>
                 <property name="wordWrap">
                  <bool>true</bool>
@@ -452,6 +374,88 @@
               </property>
               <property name="maximum">
                <number>9</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="SwitchButton" name="switch_enable_prepare">
+              <property name="onText">
+               <string>启用</string>
+              </property>
+              <property name="offText">
+               <string>禁用</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="CardWidget" name="CardWidget_13">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>70</height>
+            </size>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_14">
+            <property name="leftMargin">
+             <number>16</number>
+            </property>
+            <property name="topMargin">
+             <number>16</number>
+            </property>
+            <property name="rightMargin">
+             <number>16</number>
+            </property>
+            <property name="bottomMargin">
+             <number>16</number>
+            </property>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_18">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="StrongBodyLabel" name="StrongBodyLabel_14">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>TTS语音播报</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="CaptionLabel" name="CaptionLabel_13">
+                <property name="text">
+                 <string>调整关于TTS语音合成相关选项</string>
+                </property>
+                <property name="lightColor" stdset="0">
+                 <color alpha="150">
+                  <red>0</red>
+                  <green>0</green>
+                  <blue>0</blue>
+                 </color>
+                </property>
+                <property name="darkColor" stdset="0">
+                 <color alpha="200">
+                  <red>255</red>
+                  <green>255</green>
+                  <blue>255</blue>
+                 </color>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="PushButton" name="TTS_PushButton">
+              <property name="text">
+               <string>TTS语音设置</string>
               </property>
              </widget>
             </item>

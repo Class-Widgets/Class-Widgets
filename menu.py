@@ -8,10 +8,10 @@ from pathlib import Path
 from shutil import rmtree
 
 from PyQt5 import uic, QtCore
-from PyQt5.QtCore import Qt, QTime, QUrl, QDate, pyqtSignal
+from PyQt5.QtCore import Qt, QTime, QUrl, QDate, pyqtSignal, QThread
 from PyQt5.QtGui import QIcon, QDesktopServices, QColor
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidgetItem, QLabel, QHBoxLayout, QSizePolicy, \
-    QSpacerItem, QFileDialog, QVBoxLayout, QScroller
+    QSpacerItem, QFileDialog, QVBoxLayout, QScroller, QWidget
 from packaging.version import Version
 from loguru import logger
 from qfluentwidgets import (
@@ -33,6 +33,7 @@ import weather_db
 import weather_db as wd
 from conf import base_directory
 from cses_mgr import CSES_Converter
+from generate_speech import get_tts_voices, get_voice_id_by_name, get_voice_name_by_id
 from file import config_center, schedule_center
 from network_thread import VersionThread
 from plugin import p_loader
@@ -497,11 +498,25 @@ class TextFieldMessageBox(MessageBoxBase):
         self.tipsLabel.setText('很好！就这样！ヾ(≧▽≦*)o')
 
 
+class TTSVoiceLoaderThread(QThread):
+    voicesLoaded = pyqtSignal(list)
+    errorOccurred = pyqtSignal(str)
+
+    def run(self):
+        try:
+            available_voices = get_tts_voices()
+            self.voicesLoaded.emit(available_voices)
+        except Exception as e:
+            logger.error(f"加载TTS语音列表时出错: {e}")
+            self.errorOccurred.emit(str(e))
+
+
 class SettingsMenu(FluentWindow):
     closed = pyqtSignal()
 
     def __init__(self):
         super().__init__()
+        self.tts_voice_loader_thread = None
         self.button_clear_log = None
         self.version_thread = None
 
@@ -662,6 +677,187 @@ class SettingsMenu(FluentWindow):
         spin_prepare_time = self.findChild(SpinBox, 'spin_prepare_class')
         spin_prepare_time.setValue(int(config_center.read_conf('Toast', 'prepare_minutes')))
         spin_prepare_time.valueChanged.connect(self.save_prepare_time)  # 准备时间
+
+        # TTS
+        tts_settings = self.findChild(PushButton, 'TTS_PushButton')
+        tts_settings.clicked.connect(self.open_tts_settings)
+        self.available_voices = None
+        
+        self.tts_voice_loader_thread = TTSVoiceLoaderThread()
+        self.tts_voice_loader_thread.voicesLoaded.connect(self.available_voices_cnt)
+        self.tts_voice_loader_thread.errorOccurred.connect(self.handle_tts_load_error)
+        self.tts_voice_loader_thread.finished.connect(self.tts_voice_loader_thread.deleteLater)
+
+        self.voice_selector = None
+        self.switch_enable_TTS = None
+
+    def available_voices_cnt(self, voices):
+        self.available_voices = voices
+        if hasattr(self, 'voice_selector') and self.voice_selector and hasattr(self, 'update_tts_voices'):
+            self.update_tts_voices(self.available_voices)
+
+    class TTSSettings(MessageBoxBase): 
+        def __init__(self, parent=None):
+            super().__init__(parent)
+            self.temp_widget = QWidget()
+            uic.loadUi(f'{base_directory}/view/menu/tts_settings.ui', self.temp_widget)
+            self.viewLayout.addWidget(self.temp_widget)
+
+            self.viewLayout.setContentsMargins(0, 0, 0, 0)
+            # 隐藏原有按钮
+            self.cancelButton.hide()
+            self.widget.setMinimumWidth(parent.width()//3*2)
+            self.widget.setMinimumHeight(parent.height())
+            switch_enable_TTS = self.widget.findChild(SwitchButton, 'switch_enable_tts')
+            slider_speed_tts = self.widget.findChild(Slider, 'slider_tts_speed') # 获取语速滑块
+            tts_enabled = int(config_center.read_conf('TTS', 'enable'))
+            switch_enable_TTS.setChecked(tts_enabled)
+            slider_speed_tts.setValue(int(config_center.read_conf('TTS', 'speed')))
+
+            switch_enable_TTS.checkedChanged.connect(parent.toggle_tts_settings)
+            slider_speed_tts.valueChanged.connect(parent.save_tts_speed)
+
+            voice_selector = self.widget.findChild(ComboBox, 'voice_selector')
+            voice_selector.clear()
+            voice_selector.addItem("加载中...", userData=None)
+            voice_selector.setEnabled(False)
+            switch_enable_TTS.setEnabled(False)
+
+            parent.voice_selector = self.widget.findChild(ComboBox, 'voice_selector')
+            parent.switch_enable_TTS = self.widget.findChild(SwitchButton, 'switch_enable_tts')
+
+            about_placeholder = self.widget.findChild(HyperlinkLabel, 'about_placeholder')
+            def about_placeholder_clicked():
+                w = MessageBox('目前可用占位符', '{lesson_name}: 开始&结束&下节的课程名', self)
+                w.cancelButton.hide()
+                w.exec()
+            about_placeholder.clicked.connect(about_placeholder_clicked)
+
+            if parent.available_voices is not None:
+                parent.update_tts_voices(parent.available_voices)
+            else:
+                voice_selector.clear()
+                voice_selector.addItem("加载中...", userData=None)
+                voice_selector.setEnabled(False)
+                switch_enable_TTS.setEnabled(False)
+
+            text_attend_class = self.widget.findChild(LineEdit, 'text_attend_class')
+            text_attend_class.setText(config_center.read_conf('TTS', 'attend_class'))
+            text_attend_class.textChanged.connect(lambda: config_center.write_conf('TTS', 'attend_class', text_attend_class.text()))
+
+            text_prepare_class = self.widget.findChild(LineEdit, 'text_prepare_class')
+            text_prepare_class.setText(config_center.read_conf('TTS', 'prepare_class'))
+            text_prepare_class.textChanged.connect(lambda: config_center.write_conf('TTS', 'prepare_class', text_prepare_class.text()))
+
+            text_finish_class = self.widget.findChild(LineEdit, 'text_finish_class')
+            text_finish_class.setText(config_center.read_conf('TTS', 'finish_class'))
+            text_finish_class.textChanged.connect(lambda: config_center.write_conf('TTS', 'finish_class', text_finish_class.text()))
+
+            text_after_school = self.widget.findChild(LineEdit, 'text_after_school')
+            text_after_school.setText(config_center.read_conf('TTS', 'after_school'))
+            text_after_school.textChanged.connect(lambda: config_center.write_conf('TTS', 'after_school', text_after_school.text()))
+
+            text_notification = self.widget.findChild(LineEdit, 'text_notification')
+            text_notification.setText(config_center.read_conf('TTS', 'otherwise'))
+            text_notification.textChanged.connect(lambda: config_center.write_conf('TTS', 'otherwise', text_notification.text()))
+
+
+    def open_tts_settings(self):
+        if self.available_voices is None:
+            if hasattr(self, 'tts_voice_loader_thread') and self.tts_voice_loader_thread:
+                if not self.tts_voice_loader_thread.isRunning():
+                    try:
+                        self.tts_voice_loader_thread.start()
+                    except RuntimeError:
+                        self.tts_voice_loader_thread = TTSVoiceLoaderThread()
+                        self.tts_voice_loader_thread.voicesLoaded.connect(self.available_voices_cnt)
+                        self.tts_voice_loader_thread.errorOccurred.connect(self.handle_tts_load_error)
+                        self.tts_voice_loader_thread.finished.connect(self.tts_voice_loader_thread.deleteLater)
+                        self.tts_voice_loader_thread.start()
+            else:
+                self.tts_voice_loader_thread = TTSVoiceLoaderThread()
+                self.tts_voice_loader_thread.voicesLoaded.connect(self.available_voices_cnt)
+                self.tts_voice_loader_thread.errorOccurred.connect(self.handle_tts_load_error)
+                self.tts_voice_loader_thread.finished.connect(self.tts_voice_loader_thread.deleteLater)
+                self.tts_voice_loader_thread.start()
+
+        self.TTSSettings(self).exec()
+
+    def toggle_tts_settings(self, checked):
+        switch_checked('TTS', 'enable', checked)
+        card_tts_speed = self.findChild(CardWidget, 'CardWidget_11')
+        voice_selector = self.findChild(ComboBox, 'voice_selector')
+        if card_tts_speed:
+            card_tts_speed.setVisible(checked) # 鬼知道为什么藏不住(不管了)
+        if voice_selector:
+            if voice_selector.count() > 0 and voice_selector.itemText(0) != "无可用语音" and voice_selector.itemText(0) != "加载中..." and voice_selector.itemText(0) != "加载失败":
+                voice_selector.setEnabled(checked)
+            else:
+                voice_selector.setEnabled(False)
+
+    def save_tts_speed(self, value):
+        config_center.write_conf('TTS', 'speed', str(value))
+
+    def update_tts_voices(self, available_voices):
+        voice_selector = self.voice_selector
+        switch_enable_TTS = self.switch_enable_TTS
+        voice_selector.clear()
+
+        if not available_voices:
+            logger.warning("未找到可用的TTS语音引擎或语音包")
+            voice_selector.addItem("无可用语音", userData=None)
+            voice_selector.setEnabled(False)
+            switch_enable_TTS.setEnabled(False)
+            card_tts_speed = self.findChild(CardWidget, 'CardWidget_11')
+            if card_tts_speed:
+                card_tts_speed.setVisible(False)
+            return
+
+        for voice in available_voices:
+            voice_selector.addItem(voice['name'], userData=voice['id'])
+        current_voice_id = config_center.read_conf('TTS', 'voice_id')
+        current_voice_name = get_voice_name_by_id(current_voice_id, available_voices)
+        if current_voice_name:
+            index_to_select = -1
+            for i in range(voice_selector.count()):
+                if voice_selector.itemData(i) == current_voice_id:
+                    index_to_select = i
+                    break
+            if index_to_select != -1:
+                voice_selector.setCurrentIndex(index_to_select)
+            else:
+                if available_voices:
+                    voice_selector.setCurrentIndex(0)
+                    first_voice_id = available_voices[0]['id']
+                    config_center.write_conf('TTS', 'voice_id', first_voice_id)
+        elif available_voices: # 默认选择
+            voice_selector.setCurrentIndex(0)
+            first_voice_id = available_voices[0]['id']
+            config_center.write_conf('TTS', 'voice_id', first_voice_id)
+        else: # 理论不会到这里
+             voice_selector.setEnabled(False)
+             switch_enable_TTS.setEnabled(False)
+             return
+
+        voice_selector.setEnabled(True)
+        switch_enable_TTS.setEnabled(True)
+
+        # 先断旧连接
+        try:
+            if voice_selector.receivers(voice_selector.currentTextChanged) > 0:
+                 voice_selector.currentTextChanged.disconnect()
+        except TypeError:
+            pass
+        voice_selector.currentTextChanged.connect(lambda name: config_center.write_conf('TTS', 'voice_id', voice_selector.currentData() or ''))
+
+    def handle_tts_load_error(self, error_message):
+        voice_selector = self.voice_selector
+        switch_enable_TTS = self.switch_enable_TTS
+        voice_selector.clear()
+        voice_selector.addItem("加载失败", userData=None)
+        voice_selector.setEnabled(False)
+        switch_enable_TTS.setEnabled(False)
+        logger.error(f"处理TTS语音加载错误: {error_message}")
 
     def setup_configs_interface(self):  # 配置界面
         cf_import_schedule = self.findChild(PushButton, 'im_schedule')
