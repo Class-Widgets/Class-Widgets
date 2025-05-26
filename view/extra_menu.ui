@@ -41,6 +41,9 @@
      <property name="styleSheet">
       <string notr="true">background: transparent; border: none</string>
      </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
      <property name="widgetResizable">
       <bool>true</bool>
      </property>
@@ -50,7 +53,7 @@
         <x>0</x>
         <y>0</y>
         <width>716</width>
-        <height>525</height>
+        <height>562</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -300,11 +303,6 @@
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
-   <class>HyperlinkButton</class>
-   <extends>PushButton</extends>
-   <header>qfluentwidgets</header>
-  </customwidget>
-  <customwidget>
    <class>PushButton</class>
    <extends>QPushButton</extends>
    <header>qfluentwidgets</header>
@@ -364,6 +362,11 @@
   <customwidget>
    <class>ListWidget</class>
    <extends>QListWidget</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>HyperlinkButton</class>
+   <extends>PushButton</extends>
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
