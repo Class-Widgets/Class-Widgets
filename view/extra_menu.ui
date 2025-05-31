@@ -153,7 +153,7 @@
          </size>
         </property>
         <property name="sizeAdjustPolicy">
-         <enum>QAbstractScrollArea::AdjustIgnored</enum>
+         <enum>QAbstractScrollArea::AdjustToContents</enum>
         </property>
         <property name="dragDropMode">
          <enum>QAbstractItemView::NoDragDrop</enum>
@@ -167,7 +167,29 @@
         <property name="isWrapping" stdset="0">
          <bool>false</bool>
         </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAsNeeded</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
        </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>10</height>
+         </size>
+        </property>
+       </spacer>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
@@ -296,6 +318,11 @@
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
+   <class>HyperlinkButton</class>
+   <extends>PushButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
    <class>PushButton</class>
    <extends>QPushButton</extends>
    <header>qfluentwidgets</header>
@@ -349,11 +376,6 @@
   <customwidget>
    <class>ListWidget</class>
    <extends>QListWidget</extends>
-   <header>qfluentwidgets</header>
-  </customwidget>
-  <customwidget>
-   <class>HyperlinkButton</class>
-   <extends>PushButton</extends>
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
