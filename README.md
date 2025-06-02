@@ -137,6 +137,32 @@ Copyright © 2025 RinLit.
 ## 社区
 我们目前开通了 [Discussions](https://github.com/orgs/Class-Widgets/discussions)、[QQ群](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380) 和 [Discord 服务器](https://discord.gg/EFF4PpqpqZ)。
 
+## ⚠️ 分发授权说明 / Distribution Policy
+
+本项目遵循 GNU 通用公共许可证 第 3 版（GPL-3.0），允许任何人在该许可条款下使用、修改和再分发本项目源代码。
+This project is licensed under the GNU General Public License v3.0 (GPL-3.0), which allows anyone to use, modify, and redistribute the source code under the terms of the license.
+
+然而，**未经本项目维护者事先书面许可，禁止执行以下行为**：
+However, the following actions are **explicitly prohibited without prior written permission** from the maintainers:
+
+* 将本项目或其构建版本上传至第三方平台（包括但不限于 winget、Homebrew、Snap、应用商店或其他软件分发平台）；
+
+  * Publishing this project or its compiled builds to third-party platforms — including but not limited to **winget**, **Homebrew**, **Snap**, **App Stores**, or any other software/package distribution service;
+
+* 使用本项目名称、图标或开发者身份冒充官方版本；
+
+  * Using this project's name, branding, or developer identity to **impersonate an official version**;
+
+* 修改功能、插入附加内容或重新打包，并以官方构建版本的名义进行分发。
+
+  * Altering the functionality, injecting additional components, or repackaging the software and distributing it as if it were an official build.
+
+> 所有未经授权的分发将被视为**非官方版本**，我们对其行为、安全性或法律合规性概不负责。
+> Any such unauthorized redistribution will be considered **non-official**, and we **do not take any responsibility** for the behavior, security, or legal compliance of such versions.
+
+如需获得分发授权，请通过我们上面给出的联系方式联系项目维护者，或在本仓库提交 Issue。
+To request permission for redistribution, please contact the project maintainers using the contact information provided above, or open an issue in this repository.
+
 ## 星标历史
  <picture>
    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Class-Widgets/Class-Widgets&type=Date&theme=dark" />
