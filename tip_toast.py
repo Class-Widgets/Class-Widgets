@@ -433,7 +433,7 @@ def detect_enable_toast(state=0):
 
 
 def push_notification(state=1, lesson_name='', title=None, subtitle=None,
-                      content=None):  # 推送通知
+                      content=None, icon=None, duration=2000):  # 推送通知
     global pushed_notification, notification_contents
     pushed_notification = True
     notification_contents = {
@@ -443,7 +443,7 @@ def push_notification(state=1, lesson_name='', title=None, subtitle=None,
         "subtitle": subtitle,
         "content": content
     }
-    main(state, lesson_name, title, subtitle, content)
+    main(state, lesson_name, title, subtitle, content, icon, duration)
     return notification_contents
 
 

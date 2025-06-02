@@ -786,7 +786,7 @@ class PluginMethod:  # 插件方法
     @staticmethod
     def send_notification(state=1, lesson_name='示例课程', title='通知示例', subtitle='副标题',
                           content='这是一条通知示例', icon=None, duration=2000):  # 发送通知
-        notification.main(state, lesson_name, title, subtitle, content, icon, duration)
+        notification.push_notification(state, lesson_name, title, subtitle, content, icon, duration)
 
     @staticmethod
     def subprocess_exec(title, action):  # 执行系统命令
