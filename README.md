@@ -104,6 +104,7 @@ Copyright © 2025 RinLit.
 
 感谢以下人员对本项目的支持。
 - [猞猁](http://dq6666.cn/)
+- [JerryQAQ](http://hub.rinlit.cn/)
 
 感谢以下赞助商对本项目的支持。
 
