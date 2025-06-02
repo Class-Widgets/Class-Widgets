@@ -180,3 +180,5 @@ cython_debug/
 
 # macOS's shit:
 .DS_Store
+/.vs
+/ui
