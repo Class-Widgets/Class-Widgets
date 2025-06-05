@@ -1,0 +1,2 @@
+main.py:371: error: expected an indented block after 'try' statement on line 370  [syntax]
+Found 1 error in 1 file (errors prevented further checking)
