@@ -25,143 +25,171 @@ from plugin import p_loader
 from utils import restart, calculate_size
 import platform
 from loguru import logger
+from typing import Dict, List, Optional, Any, Union, TYPE_CHECKING # Added for type hints
+
+if TYPE_CHECKING: # To avoid circular imports for type hints if PluginPlaza is parent
+    from __main__ import PluginPlaza as PluginPlazaParentType # Assuming PluginPlaza is in main or similar context
+else:
+    PluginPlazaParentType = QWidget # Fallback if not type checking
 
 # 适配高DPI缩放
 if platform.system() == 'Windows' and platform.release() not in ['7', 'XP', 'Vista']:
     QApplication.setHighDpiScaleFactorRoundingPolicy(
         Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
-    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
-    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling) # type: ignore
+    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps) # type: ignore
 else:
     logger.warning('不兼容的系统,跳过高DPI标识')
 
-CONF_PATH = f"{base_directory}/plugins/plugins_from_pp.json"
-PLAZA_REPO_URL = "https://raw.githubusercontent.com/Class-Widgets/plugin-plaza/"
-PLAZA_REPO_DIR = "https://api.github.com/repos/Class-Widgets/plugin-plaza/contents/Plugins"
-TEST_DOWNLOAD_LINK = "https://dldir1.qq.com/qqfile/qq/PCQQ9.7.17/QQ9.7.17.29225.exe"
+CONF_PATH: str = f"{base_directory}/plugins/plugins_from_pp.json" # type: ignore[attr-defined]
+PLAZA_REPO_URL: str = "https://raw.githubusercontent.com/Class-Widgets/plugin-plaza/"
+PLAZA_REPO_DIR: str = "https://api.github.com/repos/Class-Widgets/plugin-plaza/contents/Plugins"
+TEST_DOWNLOAD_LINK: str = "https://dldir1.qq.com/qqfile/qq/PCQQ9.7.17/QQ9.7.17.29225.exe"
 
-restart_tips_flag = False  # 重启提示
-plugins_data = {}  # 仓库插件信息
-local_plugins_version = {}  # 本地插件版本
-download_progress = []  # 下载线程
+restart_tips_flag: bool = False  # 重启提示
+plugins_data: Dict[str, Any] = {}  # 仓库插件信息
+local_plugins_version: Dict[str, str] = {}  # 本地插件版本
+download_progress: List[str] = []  # 下载线程 (stores plugin names being downloaded)
 
-installed_plugins = []  # 已安装插件（通过PluginPlaza获取）
-tags = ['示例', '信息展示', '学习', '测试', '工具', '自动化']  # 测试用TAG
-recommend_plugins = ['cw-example-plugin']  # 推荐插件（通过PluginPlaza获取）
-search_items = []
-SELF_PLUGIN_VERSION = config_center.read_conf('Plugin', 'version')  # 自身版本号
-SEARCH_FIELDS = ["name", "description", "tag", "author"]  # 搜索字段
+installed_plugins: List[str] = []  # 已安装插件（通过PluginPlaza获取）
+tags: List[str] = ['示例', '信息展示', '学习', '测试', '工具', '自动化']  # 测试用TAG
+recommend_plugins: List[str] = ['cw-example-plugin']  # 推荐插件（通过PluginPlaza获取）
+search_items: List[str] = [] # For search completer
+SELF_PLUGIN_VERSION: Optional[str] = config_center.read_conf('Plugin', 'version')  # type: ignore[no-untyped-call] # 自身版本号
+SEARCH_FIELDS: List[str] = ["name", "description", "tag", "author"]  # 搜索字段
 
 
 class TagLink(HyperlinkButton):  # 标签链接
-    def __init__(self, text, parent=None):
+    # parent is expected to be PluginPlaza instance, which has search_plugin attribute
+    def __init__(self, text: str, parent: Optional['PluginPlazaParentType'] = None) -> None: # Added types
         super().__init__(parent)
-        self.parent = parent
-        self.tag = text
+        self.parent_widget: Optional['PluginPlazaParentType'] = parent # Store parent safely
+        self.tag: str = text
         self.setText(text)
-        self.setIcon(fIcon.SEARCH)
+        self.setIcon(fIcon.SEARCH) # type: ignore[attr-defined]
 
         self.setFixedHeight(30)
         self.clicked.connect(self.search_tag)
 
-    def search_tag(self):
-        self.parent.search_plugin.setText(self.tag)
-        self.parent.search_plugin.searchSignal.emit(self.tag)  # 发射搜索信号
+    def search_tag(self) -> None: # Added return type
+        if self.parent_widget and hasattr(self.parent_widget, 'search_plugin'):
+            search_plugin_widget = getattr(self.parent_widget, 'search_plugin', None)
+            if isinstance(search_plugin_widget, SearchLineEdit) and hasattr(search_plugin_widget, 'searchSignal'):
+                search_plugin_widget.setText(self.tag)
+                search_plugin_widget.searchSignal.emit(self.tag) # type: ignore # searchSignal is dynamic
 
 
 class downloadProgressBar(InfoBar):  # 下载进度条(创建下载进程)
-    def __init__(self, url=TEST_DOWNLOAD_LINK, branch='main', name="Test", parent=None):
-        global download_progress
-        self.p_name = url.split('/')[4]  # repo
-        # user = url.split('/')[3]
-        self.name = name
-        self.url = f'{url}/archive/refs/heads/{branch}.zip'
+    download_thread: Optional[nt.DownloadAndExtract] # For storing the download thread
 
-        super().__init__(icon=fIcon.DOWNLOAD,
-                         title='',
+    def __init__(self, url: str = TEST_DOWNLOAD_LINK, branch: str = 'main', name: str = "Test", parent: Optional[QWidget] = None) -> None: # Added types
+        global download_progress # download_progress is List[str]
+
+        # Assuming url is like "https://github.com/user/repo"
+        url_parts: List[str] = url.split('/')
+        self.p_name: str = url_parts[4] if len(url_parts) >= 5 else "unknown_plugin" # repo name
+        self.name: str = name
+        self.url: str = f'{url}/archive/refs/heads/{branch}.zip'
+        self.download_thread = None # Initialize thread attribute
+
+        super().__init__(icon=fIcon.DOWNLOAD, # type: ignore[attr-defined]
+                         title='', # Title is set dynamically or not used
                          content=f"正在下载 {name} (～￣▽￣)～)",
-                         orient=Qt.Horizontal,
-                         isClosable=False,
-                         position=InfoBarPosition.TOP,
-                         duration=-1,
+                         orient=Qt.Horizontal, # type: ignore[attr-defined]
+                         isClosable=False, # User cannot close this type of InfoBar
+                         position=InfoBarPosition.TOP, # type: ignore[attr-defined]
+                         duration=-1, # Stays until closed programmatically
                          parent=parent
                          )
-        self.setCustomBackgroundColor('white', '#202020')
-        self.bar = ProgressBar()
+        self.setCustomBackgroundColor(QColor('white'), QColor('#202020')) # Use QColor
+        self.bar: ProgressBar = ProgressBar(self) # Parent to self
         self.bar.setFixedWidth(300)
-        self.cancelBtn = HyperlinkLabel()
+        self.cancelBtn: HyperlinkLabel = HyperlinkLabel(self) # Parent to self
         self.cancelBtn.setText("取消")
         self.cancelBtn.clicked.connect(self.cancelDownload)
         self.addWidget(self.bar)
         self.addWidget(self.cancelBtn)
 
         # 开始下载
+        if self.p_name not in download_progress: # Avoid duplicate downloads
+            download_progress.append(self.p_name)
+            self.download(self.url)
+        else:
+            logger.warning(f"插件 {self.p_name} 已在下载队列中。")
+            self.close() # Close this new progress bar if already downloading
 
-        download_progress.append(self.p_name)
-        self.download(self.url)
-
-    def download(self, url):  # 接受下载连接并开始任务
-        self.download_thread = nt.DownloadAndExtract(url, self.p_name)
-        # self.download_thread = nt.DownloadAndExtract(TEST_DOWNLOAD_LINK, self.p_name)
-        self.download_thread.progress_signal.connect(lambda progress: self.bar.setValue(int(progress)))  # 下载进度
-        self.download_thread.status_signal.connect(self.detect_status)  # 判断状态
+    def download(self, url: str) -> None:  # 接受下载连接并开始任务. Added types
+        self.download_thread = nt.DownloadAndExtract(url, self.p_name, parent=self) # Pass self as parent
+        self.download_thread.progress_signal.connect(lambda progress: self.bar.setValue(int(progress)))
+        self.download_thread.status_signal.connect(self.detect_status)
         self.download_thread.start()
 
-    def cancelDownload(self):
+    def cancelDownload(self) -> None: # Added return type
         global download_progress
-        download_progress.remove(self.p_name)
-        self.download_thread.stop()
-        self.download_thread.deleteLater()
+        if self.p_name in download_progress:
+            download_progress.remove(self.p_name)
+        if self.download_thread:
+            self.download_thread.stop() # Call custom stop method
+            # self.download_thread.deleteLater() # QThread handles its own cleanup often
         self.close()
 
-    def detect_status(self, status):
+    def detect_status(self, status: str) -> None: # Added types
+        # self.content is a property of InfoBar
         if status == "DOWNLOADING":
-            self.content = f"正在下载 {self.name} (～￣▽￣)～)"
+            self.setContent(f"正在下载 {self.name} (～￣▽￣)～)")
         elif status == "EXTRACTING":
-            self.content = f"正在解压 {self.name} ( •̀ ω •́ )✧)"
+            self.setContent(f"正在解压 {self.name} ( •̀ ω •́ )✧)")
         elif status == "DONE":
             self.download_finished()
+        elif status == "CANCELLED": # Handle cancellation
+            self.setContent(f"已取消下载 {self.name}")
+            # self.close() # Optionally close immediately or after a delay
         elif status.startswith("ERROR"):
-            self.download_error(status[6:])
+            self.download_error(status[6:]) # Remove "ERROR: " prefix
         else:
-            pass
+            pass # Unknown status
 
-    def download_finished(self):
-        global download_progress
-        download_progress.remove(self.p_name)
+    def download_finished(self) -> None: # Added return type
+        global download_progress, restart_tips_flag # restart_tips_flag is bool
+        if self.p_name in download_progress:
+             download_progress.remove(self.p_name)
         add2save_plugin(self.p_name)  # 保存到配置
-        self.download_thread.finished.emit()
-        self.download_thread.deleteLater()
 
-        InfoBar.success(
+        if self.download_thread:
+            self.download_thread.finished.emit() # Emit QThread's finished signal
+            # self.download_thread.deleteLater() # Let QThread manage its lifecycle if parented
+
+        InfoBar.success( # type: ignore[no-untyped-call]
             title='下载成功！',
             content=f"下载 {self.name} 成功！",
-            orient=Qt.Horizontal,
+            orient=Qt.Horizontal, # type: ignore[attr-defined]
             isClosable=True,
-            position=InfoBarPosition.TOP,
+            position=InfoBarPosition.TOP, # type: ignore[attr-defined]
             duration=5000,
-            parent=self.parent()
+            parent=self.parentWidget() # Use parentWidget() for InfoBar parent
         )
         if not restart_tips_flag:  # 重启提示
-            self.parent().restart_tips()
+            if isinstance(self.parentWidget(), PluginPlaza): # Check if parent is PluginPlaza
+                 self.parentWidget().restart_tips() # Call restart_tips on PluginPlaza instance
         self.close()
 
-    def download_error(self, error_info):
+    def download_error(self, error_info: str) -> None: # Added types
         global download_progress
-        download_progress.remove(self.p_name)
-        InfoBar.error(
+        if self.p_name in download_progress:
+            download_progress.remove(self.p_name)
+        InfoBar.error( # type: ignore[no-untyped-call]
             title='下载失败(っ °Д °;)っ',
             content=f"{error_info}",
-            orient=Qt.Horizontal,
+            orient=Qt.Horizontal, # type: ignore[attr-defined]
             isClosable=True,
-            position=InfoBarPosition.TOP,
+            position=InfoBarPosition.TOP, # type: ignore[attr-defined]
             duration=5000,
-            parent=self.parent()
+            parent=self.parentWidget() # Use parentWidget() for InfoBar parent
         )
         self.close()
 
 
-def install_plugin(parent, p_name, data):
+def install_plugin(parent: Optional[QWidget], p_name: str, data: Dict[str, Any]) -> bool: # Added types
     plugin_ver = str(data.get('plugin_ver'))
     if plugin_ver != SELF_PLUGIN_VERSION:  # 插件版本不匹配
         if plugin_ver > SELF_PLUGIN_VERSION:

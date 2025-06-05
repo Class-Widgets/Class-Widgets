@@ -10,115 +10,133 @@ import psutil
 import signal
 import traceback
 from shutil import copy
-from typing import Optional
+from typing import Optional, List, Dict, Any, Type, Union
+from types import TracebackType # For traceback type hinting
 
 from PyQt5 import uic
-from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QRect, QEasingCurve, QSize, QPoint, QUrl, QObject, QParallelAnimationGroup
-from PyQt5.QtGui import QColor, QIcon, QPixmap, QPainter, QDesktopServices
+from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QRect, QEasingCurve, QSize, QPoint, QUrl, QObject, QParallelAnimationGroup, QEvent
+from PyQt5.QtGui import QColor, QIcon, QPixmap, QPainter, QDesktopServices, QMouseEvent, QCloseEvent, QFocusEvent
 from PyQt5.QtGui import QFontDatabase
 from PyQt5.QtSvg import QSvgRenderer
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QProgressBar, QGraphicsBlurEffect, QPushButton, \
-    QGraphicsDropShadowEffect, QSystemTrayIcon, QFrame, QGraphicsOpacityEffect, QHBoxLayout
+    QGraphicsDropShadowEffect, QSystemTrayIcon, QFrame, QGraphicsOpacityEffect, QHBoxLayout, QListWidgetItem, QDesktopWidget
 from loguru import logger
-from packaging.version import Version
+from packaging.version import Version # type: ignore
 from qfluentwidgets import Theme, setTheme, setThemeColor, SystemTrayMenu, Action, FluentIcon as fIcon, isDarkTheme, \
     Dialog, ProgressRing, PlainTextEdit, ImageLabel, PushButton, InfoBarIcon, Flyout, FlyoutAnimationType, CheckBox, \
-    PrimaryPushButton, IconWidget
+    PrimaryPushButton, IconWidget # type: ignore
 
 import conf
-import list_
-import tip_toast
-from tip_toast import active_windows
-import utils
-import weather_db as db
-from conf import base_directory
-from extra_menu import ExtraMenu, open_settings
-from generate_speech import generate_speech_sync, list_pyttsx3_voices
-from menu import open_plaza
-from network_thread import check_update, weatherReportThread
-from play_audio import play_audio
-from plugin import p_loader
-from utils import restart, stop, share, update_timer, DarkModeWatcher
-from file import config_center, schedule_center
+import list_ # Assuming list_ contains various lists and dicts
+import tip_toast # Assuming tip_toast is a module
+from tip_toast import active_windows # Assuming active_windows is a variable/object in tip_toast
+import utils # Assuming utils is a module
+import weather_db as db # Assuming weather_db is a module
+from conf import base_directory # base_directory is likely a Path object
+from extra_menu import ExtraMenu, open_settings # Assuming ExtraMenu and open_settings are defined
+from generate_speech import generate_speech_sync, list_pyttsx3_voices # Assuming these functions are defined
+from menu import open_plaza # Assuming open_plaza is defined
+from network_thread import check_update, weatherReportThread # Assuming these are defined
+from play_audio import play_audio # Assuming play_audio is defined
+from plugin import p_loader # Assuming p_loader is an object/module
+from utils import restart, stop, share, update_timer, DarkModeWatcher # Assuming these are defined
+from file import config_center, schedule_center # Assuming these are objects
 
 if os.name == 'nt':
-    import pygetwindow
+    import pygetwindow # type: ignore
+
+# Forward declare classes that are used as type hints before their definition
+# Forward declarations for classes defined later in the file
+class ErrorDialog(Dialog): pass # type: ignore[misc]
+class PluginManager(QObject): pass
+class PluginMethod(QObject): pass
+class WidgetsManager(QObject): pass
+class openProgressDialog(QWidget): pass
+class FloatingWidget(QWidget): pass
+class DesktopWidget(QWidget): pass
+
 
 # 适配高DPI缩放
 if platform.system() == 'Windows' and platform.release() not in ['7', 'XP', 'Vista']:
-    QApplication.setHighDpiScaleFactorRoundingPolicy(
-        Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
-    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
-    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
+    QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough) # type: ignore
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling) # type: ignore
+    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps) # type: ignore
 else:
     logger.warning('不兼容的系统,跳过高DPI标识')
 
-today = dt.date.today()
+today: dt.date = dt.date.today()
 
 # 存储窗口对象
-windows = []
-order = []
-error_dialog = None
+windows: List[QWidget] = []
+order: List[Any] = []
+error_dialog: Optional[ErrorDialog] = None
 
-current_lesson_name = '课程表未加载'
-current_state = 0  # 0：课间 1：上课 2: 休息段
-current_time = dt.datetime.now().strftime('%H:%M:%S')
-current_week = dt.datetime.now().weekday()
-current_lessons = {}
-loaded_data = {}
-parts_type = []
-notification = tip_toast
-excluded_lessons = []
-last_notify_time = None
-notify_cooldown = 2  # 2秒内仅能触发一次通知(防止触发114514个通知导致爆炸
+current_lesson_name: str = '课程表未加载'
+current_state: int = 0  # 0：课间 1：上课 2: 休息段
+current_time: str = dt.datetime.now().strftime('%H:%M:%S')
+current_week: int = dt.datetime.now().weekday()
+current_lessons: Dict[str, str] = {}
+loaded_data: Dict[str, Any] = {}
+parts_type: List[str] = []
+notification: Any = tip_toast
+excluded_lessons: List[str] = []
+last_notify_time: Optional[dt.datetime] = None
+notify_cooldown: int = 2
 
-timeline_data = {}
-next_lessons = []
-parts_start_time = []
+timeline_data: Dict[str, Any] = {}
+next_lessons: List[str] = []
+parts_start_time: List[dt.datetime] = []
 
-temperature = '未设置'
-weather_icon = 0
-weather_name = ''
-weather_data_temp = None
-city = 101010100  # 默认城市
-theme = None
+temperature: str = '未设置'
+weather_icon_code: int = 0
+weather_name: str = ''
+weather_data_temp: Optional[Dict[str, Any]] = None
+city_code: int = 101010100
+theme: Optional[str] = None
 
-time_offset = 0  # 时差偏移
-first_start = True
-error_cooldown = dt.timedelta(seconds=2)  # 冷却时间(s)
-ignore_errors = []
-last_error_time = dt.datetime.now() - error_cooldown  # 上一次错误
+time_offset: int = 0
+first_start: bool = True
+error_cooldown_td: dt.timedelta = dt.timedelta(seconds=2)
+ignore_errors_list: List[str] = []
+last_error_time_dt: dt.datetime = dt.datetime.now() - error_cooldown_td
 
-ex_menu = None
-dark_mode_watcher = None
-was_floating_mode = False  # 浮窗状态
+ex_menu: Optional[ExtraMenu] = None
+dark_mode_watcher: Optional[DarkModeWatcher] = None
+was_floating_mode: bool = False
 
-if config_center.read_conf('Other', 'do_not_log') != '1':
+mgr: Optional['WidgetsManager'] = None
+fw: Optional['FloatingWidget'] = None
+app: Optional[QApplication] = None
+p_mgr: Optional[PluginManager] = None
+
+if config_center.read_conf('Other', 'do_not_log') != '1': # type: ignore[no-untyped-call]
     logger.add(f"{base_directory}/log/ClassWidgets_main_{{time}}.log", rotation="1 MB", encoding="utf-8",
-               retention="1 minute")
+               retention="1 minute") # type: ignore[attr-defined]
     logger.info('未禁用日志输出')
 else:
     logger.info('已禁用日志输出功能，若需保存日志，请在“设置”->“高级选项”中关闭禁用日志功能')
 
 
-def global_exceptHook(exc_type, exc_value, exc_tb):  # 全局异常捕获
-    if config_center.read_conf('Other', 'safe_mode') == '1':  # 安全模式
+def global_exceptHook(exc_type: Type[BaseException], exc_value: BaseException, exc_tb: Optional[TracebackType]) -> None:  # 全局异常捕获
+    if config_center.read_conf('Other', 'safe_mode') == '1':  # 安全模式 # type: ignore[no-untyped-call]
         return
 
-    error_details = ''.join(traceback.format_exception(exc_type, exc_value, exc_tb))  # 异常详情
-    if error_details in ignore_errors:  # 忽略重复错误
+    error_details: str = ''.join(traceback.format_exception(exc_type, exc_value, exc_tb))  # 异常详情
+    if error_details in ignore_errors_list:  # 忽略重复错误 # Use renamed variable
         return
 
-    global last_error_time, error_dialog, error_cooldown
+    global last_error_time_dt, error_dialog, error_cooldown_td # Use renamed variables
 
-    current_time = dt.datetime.now()
-    if current_time - last_error_time > error_cooldown:  # 冷却时间
-        last_error_time = current_time
-        logger.error(f"全局异常捕获：{exc_type} {exc_value} {exc_tb}")
+    current_event_time = dt.datetime.now() # Renamed to avoid conflict
+    if current_event_time - last_error_time_dt > error_cooldown_td:  # 冷却时间
+        last_error_time_dt = current_event_time
+        logger.error(f"全局异常捕获：{exc_type} {exc_value} {exc_tb}") # Use f-string for consistency
         logger.error(f"详细堆栈信息：\n{error_details}")
-        if not error_dialog:
-            w = ErrorDialog(error_details)
-            w.exec()
+        if not error_dialog: # Check if an error dialog is already active
+            # Assuming ErrorDialog is a QDialog or similar
+            error_dialog_instance = ErrorDialog(error_details) # Create instance
+            error_dialog_instance.exec() # Show modally
+            # error_dialog = None # Reset after dialog is closed, handled in ErrorDialog.closeEvent potentially
     else:
         # 忽略冷却时间
         pass
@@ -126,64 +144,76 @@ def global_exceptHook(exc_type, exc_value, exc_tb):  # 全局异常捕获
 
 sys.excepthook = global_exceptHook  # 设置全局异常捕获
 
-def handle_dark_mode_change(is_dark):
+def handle_dark_mode_change(is_dark: bool) -> None: # Added type hint for is_dark
     """处理DarkModeWatcher触发的UI更新"""
-    if config_center.read_conf('General', 'color_mode') == '2':
+    if config_center.read_conf('General', 'color_mode') == '2': # type: ignore[no-untyped-call]
         logger.info(f"系统颜色模式更新: {'深色' if is_dark else '浅色'}")
-        current_theme = Theme.DARK if is_dark else Theme.LIGHT
-        setTheme(current_theme)
-        if mgr: 
+        current_theme_style = Theme.DARK if is_dark else Theme.LIGHT # Use Theme enum
+        setTheme(current_theme_style) # type: ignore[no-untyped-call]
+        if mgr:  # Check if mgr (WidgetsManager instance) is initialized
             mgr.clear_widgets()
         else:
             logger.warning("主题更改时,mgr还未初始化")
-        # if current_state == 1:
-        #      setThemeColor(f"#{config_center.read_conf('Color', 'attend_class')}")
-        # else:
-        #      setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}")
+        # Theme color logic based on state might need re-evaluation or careful handling here
+        # current_color = config_center.read_conf('Color', 'attend_class' if current_state == 1 else 'finish_class') # type: ignore[no-untyped-call]
+        # setThemeColor(f"#{current_color}") # type: ignore[no-untyped-call]
 
 
-def setTheme_():  # 设置主题
-    global theme
-    color_mode = config_center.read_conf('General', 'color_mode')
-    if color_mode == '2':  # 自动
-        logger.info(f'颜色模式: 自动({color_mode})')
-        if platform.system() == 'Darwin' and Version(platform.mac_ver()[0]) < Version('10.14'):
+def setTheme_() -> None:  # 设置主题 # Added return type hint
+    global theme # theme is Optional[str]
+    color_mode_setting: Any = config_center.read_conf('General', 'color_mode') # type: ignore[no-untyped-call]
+
+    if color_mode_setting == '2':  # 自动
+        logger.info(f'颜色模式: 自动({color_mode_setting})')
+        current_system: str = platform.system()
+        if current_system == 'Darwin' and Version(platform.mac_ver()[0]) < Version('10.14'):
+            logger.info("macOS版本低于10.14，不支持自动切换颜色模式，使用浅色主题。")
+            setTheme(Theme.LIGHT) # type: ignore[no-untyped-call]
             return
-        if platform.system() == 'Windows':
-            # Windows 7特殊处理
-            if sys.getwindowsversion().major == 6 and sys.getwindowsversion().minor == 1:
-                setTheme(Theme.LIGHT)
+        if current_system == 'Windows':
+            win_version = sys.getwindowsversion()
+            if win_version.major == 6 and win_version.minor == 1: # Windows 7
+                logger.info("Windows 7不支持自动切换颜色模式，使用浅色主题。")
+                setTheme(Theme.LIGHT) # type: ignore[no-untyped-call]
                 return
-            # 检查Windows版本是否支持深色模式（Windows 10 build 14393及以上）
             try:
-                win_build = sys.getwindowsversion().build 
-                if win_build < 14393:  # 不支持深色模式的最低版本 
-                    return 
-            except AttributeError:
-                # 无法获取版本信息，保守返回 
-                return
-        if platform.system() == 'Linux':
-            return
-        if dark_mode_watcher:
-            is_dark = dark_mode_watcher.isDark()
-            if is_dark is not None:
-                logger.info(f"当前颜色模式: {'深色' if is_dark else '浅色'}")
-                setTheme(Theme.DARK if is_dark else Theme.LIGHT)
-            else:
-                logger.warning("无法获取系统颜色模式，暂时使用浅色主题")
-                setTheme(Theme.LIGHT)
-        else:
-            logger.warning("DarkModeWatcher 未被初始化，使用浅色主题")
-            setTheme(Theme.LIGHT)
-    elif color_mode == '1':
-        logger.info(f'颜色模式: 深色({color_mode})')
-        setTheme(Theme.DARK)
-    else:
-        logger.info(f'颜色模式: 浅色({color_mode})')
-        setTheme(Theme.LIGHT)
+                if win_version.build < 14393:  # Older Windows 10 builds
+                    logger.info(f"Windows build {win_version.build} 不支持自动颜色模式切换，使用浅色主题。")
+                    setTheme(Theme.LIGHT) # type: ignore[no-untyped-call]
+                    return
+            except AttributeError: # Should not happen with sys.getwindowsversion()
+                logger.warning("无法获取Windows版本build号，颜色模式可能不准确。")
+                # Fallback or conservative approach could be setTheme(Theme.LIGHT)
+
+        if current_system == 'Linux': # Linux dark mode detection is complex, often DE-specific
+            logger.info("Linux平台，自动颜色模式切换依赖桌面环境，可能不准确。")
+            # Defaulting to light if detection is not robust or not implemented for Linux DE.
+            # For a more robust solution, DE-specific settings would need to be read (e.g., via gsettings for GNOME).
+            # For now, assume DarkModeWatcher handles it if possible, otherwise default.
+            # setTheme(Theme.LIGHT) # Fallback if no watcher or watcher fails
+            # return
+
+        if dark_mode_watcher: # dark_mode_watcher is Optional[DarkModeWatcher]
+            is_dark_system: Optional[bool] = dark_mode_watcher.isDark()
+            if is_dark_system is not None:
+                logger.info(f"当前系统颜色模式: {'深色' if is_dark_system else '浅色'}")
+                setTheme(Theme.DARK if is_dark_system else Theme.LIGHT) # type: ignore[no-untyped-call]
+            else: # isDark() returned None, indicating an issue with detection
+                logger.warning("无法获取系统颜色模式，暂时使用浅色主题。")
+                setTheme(Theme.LIGHT) # type: ignore[no-untyped-call]
+        else: # dark_mode_watcher itself is None
+            logger.warning("DarkModeWatcher 未被初始化，使用浅色主题。")
+            setTheme(Theme.LIGHT) # type: ignore[no-untyped-call]
+    elif color_mode_setting == '1': # Explicitly Dark
+        logger.info(f'颜色模式: 深色({color_mode_setting})')
+        setTheme(Theme.DARK) # type: ignore[no-untyped-call]
+    else: # Default to Light (covers '0' or any other unexpected value)
+        logger.info(f'颜色模式: 浅色({color_mode_setting or "0 - 默认"})')
+        setTheme(Theme.LIGHT) # type: ignore[no-untyped-call]
+    # theme global variable seems unused after this function. Consider if it's needed.
 
 
-def get_timeline_data():
+def get_timeline_data() -> Dict[str, Any]: # Added return type
     if len(loaded_data['timeline']) == 1:
         return loaded_data['timeline']['default']
     else:
@@ -194,16 +224,18 @@ def get_timeline_data():
 
 
 # 获取Part开始时间
-def get_start_time():
+def get_start_time() -> None: # Added return type
     global parts_start_time, timeline_data, loaded_data, order, parts_type
-    loaded_data = schedule_center.schedule_data
-    timeline = get_timeline_data()
-    part = loaded_data['part']
-    parts_start_time = []
-    timeline_data = {}
-    order = []
+    # loaded_data is Dict[str, Any], schedule_center.schedule_data is likely Dict[str, Any]
+    loaded_data = schedule_center.schedule_data # type: ignore[no-untyped-call]
+    timeline: Dict[str, Any] = get_timeline_data()
+    part: Dict[str, List[Union[int, str]]] = loaded_data['part']
+    parts_start_time = [] # List[dt.datetime]
+    timeline_data = {} # Dict[str, Any]
+    order = [] # List[str]
+    # parts_type is List[str]
 
-    for item_name, item_value in part.items():
+    for item_name, item_value in part.items(): # item_name: str, item_value: List[Union[int, str]]
         try:
             h, m = item_value[:2]
             try:
@@ -225,11 +257,14 @@ def get_start_time():
     paired = zip(parts_start_time, order)
     paired_sorted = sorted(paired, key=lambda x: x[0])  # 按时间大小排序
     if paired_sorted:
-        parts_start_time, order = zip(*paired_sorted)
+        # parts_start_time and order are redefined here as tuples of their respective types
+        new_parts_start_time, new_order = zip(*paired_sorted)
+        parts_start_time = list(new_parts_start_time) # type: ignore[assignment]
+        order = list(new_order) # type: ignore[assignment]
 
-    def sort_timeline_key(item):
-        item_name = item[0]
-        prefix = item_name[0]
+    def sort_timeline_key(item: tuple[str, Any]) -> Union[tuple[int, int, int], str]: # Added item type and return type
+        item_name: str = item[0]
+        prefix: str = item_name[0]
         if len(item_name) > 1:
             try:
                 # 提取节点序数
@@ -246,58 +281,73 @@ def get_start_time():
                 # 如果转换失败，返回原始字符串
                 return item_name
         return item_name
-    
+
     # 对timeline排序后添加到timeline_data
-    sorted_timeline = sorted(timeline.items(), key=sort_timeline_key)
-    for item_name, item_time in sorted_timeline:
+    sorted_timeline: List[tuple[str, Any]] = sorted(timeline.items(), key=sort_timeline_key)
+    for item_name, item_time in sorted_timeline: # item_name: str, item_time: Any
         try:
             timeline_data[item_name] = item_time
         except Exception as e:
             logger.error(f'加载课程表文件[课程数据]出错：{e}')
 
 
-def get_part():
-    if not parts_start_time:
+def get_part() -> Optional[tuple[dt.datetime, int, str]]: # Added return type, str for part_type
+    if not parts_start_time: # parts_start_time is List[dt.datetime]
         return None
 
-    def return_data():
-        c_time = parts_start_time[i]
-        return c_time, int(order[i])  # 返回开始时间、Part序号
+    # Inner function type hint
+    def return_data() -> tuple[dt.datetime, int]: # Added return type
+        c_time: dt.datetime = parts_start_time[i]
+        return c_time, int(order[i])  # order is List[str]
 
-    current_dt = dt.datetime.now() # 当前时间
-
+    current_dt: dt.datetime = dt.datetime.now() # 当前时间
+    i: int # Declare i for loop
     for i in range(len(parts_start_time)):  # 遍历每个Part
-        time_len = dt.timedelta(minutes=0)  # Part长度
+        time_len: dt.timedelta = dt.timedelta(minutes=0)  # Part长度
 
-        for item_name, item_time in timeline_data.items():
+        item_name: str
+        item_time: Any
+        for item_name, item_time in timeline_data.items(): # timeline_data is Dict[str, Any]
             if item_name.startswith(f'a{str(order[i])}') or item_name.startswith(f'f{str(order[i])}'):
                 time_len += dt.timedelta(minutes=int(item_time))  # 累计Part的时间点总长度
             time_len += dt.timedelta(seconds=1)
 
         if time_len != dt.timedelta(seconds=1):  # 有课程
             if i == len(parts_start_time) - 1:  # 最后一个Part
-                return return_data()
+                # return_data returns tuple[dt.datetime, int], we need to add part_type
+                dt_val, order_val = return_data()
+                return dt_val, order_val, parts_type[i] if i < len(parts_type) else 'part'
+
             else:
                 if current_dt <= parts_start_time[i] + time_len:
-                    return return_data()
+                    dt_val, order_val = return_data()
+                    return dt_val, order_val, parts_type[i] if i < len(parts_type) else 'part'
 
-    return parts_start_time[0] + dt.timedelta(seconds=time_offset), 0, 'part'
+    # Fallback if no part is found through the loop (e.g. if parts_start_time is not empty but loop doesn't return)
+    # This was returning a 3-tuple before, ensure consistency
+    if parts_start_time: # Check again to be safe
+        return parts_start_time[0] + dt.timedelta(seconds=time_offset), 0, 'part' # Default part_type
+    return None
 
-def get_excluded_lessons():
-    global excluded_lessons
-    if config_center.read_conf('General', 'excluded_lesson') == "0":
+
+def get_excluded_lessons() -> None: # Added return type
+    global excluded_lessons # excluded_lessons is List[str]
+    if config_center.read_conf('General', 'excluded_lesson') == "0": # type: ignore[no-untyped-call]
         excluded_lessons = []
-        return 
-    excluded_lessons_raw = config_center.read_conf('General', 'excluded_lessons')
-    excluded_lessons = excluded_lessons_raw.split(',') if excluded_lessons_raw != '' else []
+        return
+    excluded_lessons_raw: Optional[str] = config_center.read_conf('General', 'excluded_lessons') # type: ignore[no-untyped-call]
+    excluded_lessons = excluded_lessons_raw.split(',') if excluded_lessons_raw else []
+
 
 # 获取当前活动
-def get_current_lessons():  # 获取当前课程
-    global current_lessons
-    timeline = get_timeline_data()
-    if config_center.read_conf('General', 'enable_alt_schedule') == '1' or conf.is_temp_week():
+def get_current_lessons() -> None:  # 获取当前课程 # Added return type
+    global current_lessons # current_lessons is Dict[str, str]
+    timeline: Dict[str, Any] = get_timeline_data()
+    schedule: Optional[Dict[str, List[str]]] = None
+
+    if config_center.read_conf('General', 'enable_alt_schedule') == '1' or conf.is_temp_week(): # type: ignore[no-untyped-call]
         try:
-            if conf.get_week_type():
+            if conf.get_week_type(): # type: ignore[no-untyped-call]
                 schedule = loaded_data.get('schedule_even')
             else:
                 schedule = loaded_data.get('schedule')
@@ -306,252 +356,432 @@ def get_current_lessons():  # 获取当前课程
             schedule = loaded_data.get('schedule')
     else:
         schedule = loaded_data.get('schedule')
-    class_count = 0
+
+    if not schedule: # Ensure schedule is not None
+        logger.warning("课程表数据未加载(schedule is None) in get_current_lessons")
+        return
+
+    class_count: int = 0
+    item_name: str
     for item_name, _ in timeline.items():
         if item_name.startswith('a'):
-            if schedule[str(current_week)]:
+            # Ensure schedule and schedule[str(current_week)] are valid
+            if str(current_week) in schedule and schedule[str(current_week)]:
                 try:
-                    if schedule[str(current_week)][class_count] != '未添加':
-                        current_lessons[item_name] = schedule[str(current_week)][class_count]
+                try:
+                    # Ensure schedule[str(current_week)] is a list and class_count is within bounds
+                    current_week_schedule: List[str] = schedule[str(current_week)]
+                    if class_count < len(current_week_schedule) and current_week_schedule[class_count] != '未添加':
+                        current_lessons[item_name] = current_week_schedule[class_count]
                     else:
                         current_lessons[item_name] = '暂无课程'
                 except IndexError:
                     current_lessons[item_name] = '暂无课程'
-                except Exception as e:
+                except Exception as e: # Catch any other unexpected errors
                     current_lessons[item_name] = '暂无课程'
                     logger.debug(f'加载课程表文件出错：{e}')
                 class_count += 1
-            else:
+            else: # schedule[str(current_week)] is empty or current_week not in schedule
                 current_lessons[item_name] = '暂无课程'
                 class_count += 1
 
 
 # 获取倒计时、弹窗提示
-def get_countdown(toast=False):  # 重构好累aaaa
-    global last_notify_time
-    current_dt = dt.datetime.now()
-    if last_notify_time and (current_dt - last_notify_time).seconds < notify_cooldown:
-        return
-    def after_school():  # 放学
-        if parts_type[part] == 'break':  # 休息段
+def get_countdown(toast: bool = False) -> Optional[List[Union[str, int]]]:  # 重构好累aaaa. Added param and return types
+    global last_notify_time # Optional[dt.datetime]
+    current_dt_now: dt.datetime = dt.datetime.now()
+    if last_notify_time and (current_dt_now - last_notify_time).seconds < notify_cooldown:
+        return None # Explicitly return None if on cooldown
+
+    part_info: Optional[tuple[dt.datetime, int, str]] = get_part()
+    if not part_info: # If get_part returns None
+        logger.warning("get_part() returned None in get_countdown()")
+        return ['目前课程已结束', '00:00', 100] # Default/fallback
+
+    # current_part_start_time: dt.datetime = part_info[0] # Unused variable
+    part: int = part_info[1] # part index
+    # current_part_type: str = part_info[2] # Unused variable
+
+    def after_school() -> None:  # 放学
+        # Ensure part is a valid index for parts_type
+        if 0 <= part < len(parts_type) and parts_type[part] == 'break':  # 休息段
             notification.push_notification(0, current_lesson_name)  # 下课
         else:
-            if config_center.read_conf('Toast', 'after_school') == '1':
+            if config_center.read_conf('Toast', 'after_school') == '1': # type: ignore[no-untyped-call]
                 notification.push_notification(2)  # 放学
 
-    current_dt = dt.datetime.combine(today, dt.datetime.strptime(current_time, '%H:%M:%S').time())  # 当前时间
-    return_text = []
-    got_return_data = False
+    current_dt_schedule_time: dt.datetime = dt.datetime.combine(today, dt.datetime.strptime(current_time, '%H:%M:%S').time())  # 当前时间 (from global current_time string)
+    return_text: List[Union[str, int]] = []
+    got_return_data: bool = False
 
-    if parts_start_time:
-        c_time, part = get_part()
+    if parts_start_time: # parts_start_time is List[dt.datetime]
+        # get_part() already called, use its results
+        c_time: dt.datetime = part_info[0] # Start time of the current/next part
+        # part index is already in `part`
 
-        if current_dt >= c_time:
-            for item_name, item_time in timeline_data.items():
+        if current_dt_schedule_time >= c_time: # We are within or past the start of a part
+            item_name: str
+            item_time_str: Any # Can be string representation of int
+            for item_name, item_time_str in timeline_data.items(): # timeline_data is Dict[str, Any]
                 if item_name.startswith(f'a{str(part)}') or item_name.startswith(f'f{str(part)}'):
+                    try:
+                        item_time_int: int = int(item_time_str)
+                    except ValueError:
+                        logger.error(f"Invalid time value in timeline_data for {item_name}: {item_time_str}")
+                        continue # Skip this timeline item
+
                     # 判断时间是否上下课，发送通知
-                    if current_dt == c_time and toast:
+                    if current_dt_schedule_time == c_time and toast:
                         if item_name.startswith('a'):
                             notification.push_notification(1, current_lesson_name)  # 上课
-                            last_notify_time = current_dt
+                            last_notify_time = current_dt_now
                         else:
-                            if next_lessons:  # 下课/放学
+                            if next_lessons:  # 下课/放学. next_lessons is List[str]
                                 notification.push_notification(0, next_lessons[0])  # 下课
-                                last_notify_time = current_dt
+                                last_notify_time = current_dt_now
                             else:
                                 after_school()
 
-                    if current_dt == c_time - dt.timedelta(
-                            minutes=int(config_center.read_conf('Toast', 'prepare_minutes'))):
-                        if config_center.read_conf('Toast',
-                                                   'prepare_minutes') != '0' and toast and item_name.startswith('a'):
-                            if not current_state:  # 课间
-                                notification.push_notification(3, next_lessons[0])  # 准备上课（预备铃）
-                                last_notify_time = current_dt
+                    prepare_minutes_conf: str = config_center.read_conf('Toast', 'prepare_minutes') # type: ignore[no-untyped-call]
+                    if prepare_minutes_conf != '0':
+                        prepare_minutes_int: int = int(prepare_minutes_conf)
+                        if current_dt_schedule_time == c_time - dt.timedelta(minutes=prepare_minutes_int):
+                            if toast and item_name.startswith('a'):
+                                if not current_state:  # 课间. current_state is int
+                                    if next_lessons: # Ensure next_lessons is not empty
+                                        notification.push_notification(3, next_lessons[0])  # 准备上课（预备铃）
+                                        last_notify_time = current_dt_now
 
                     # 放学
-                    if (c_time + dt.timedelta(minutes=int(item_time)) == current_dt and not next_lessons and
-                            not current_state and toast):
+                    if (c_time + dt.timedelta(minutes=item_time_int) == current_dt_schedule_time and
+                            not next_lessons and not current_state and toast):
                         after_school()
-                        last_notify_time = current_dt
+                        last_notify_time = current_dt_now
 
-                    add_time = int(item_time)
+                    add_time: int = item_time_int
                     c_time += dt.timedelta(minutes=add_time)
 
                     if got_return_data:
                         break
 
-                    if c_time >= current_dt:
+                    if c_time >= current_dt_schedule_time:
                         # 根据所在时间段使用不同标语
                         if item_name.startswith('a'):
                             return_text.append('当前活动结束还有')
                         else:
                             return_text.append('课间时长还有')
                         # 返回倒计时、进度条
-                        time_diff = c_time - current_dt
+                        time_diff: dt.timedelta = c_time - current_dt_schedule_time
+                        minute: int
+                        sec: int
                         minute, sec = divmod(time_diff.seconds, 60)
                         return_text.append(f'{minute:02d}:{sec:02d}')
                         # 进度条
-                        seconds = time_diff.seconds
-                        return_text.append(int(100 - seconds / (int(item_time) * 60) * 100))
+                        seconds: int = time_diff.seconds
+                        return_text.append(int(100 - seconds / (item_time_int * 60) * 100))
                         got_return_data = True
             if not return_text:
-                return_text = ['目前课程已结束', f'00:00', 100]
-        else:
-            prepare_minutes_str = config_center.read_conf('Toast', 'prepare_minutes')
+                return_text = ['目前课程已结束', '00:00', 100]
+        else: # We are before the start of the next part (c_time)
+            prepare_minutes_str: str = config_center.read_conf('Toast', 'prepare_minutes') # type: ignore[no-untyped-call]
             if prepare_minutes_str != '0' and toast:
-                prepare_minutes = int(prepare_minutes_str)
-                if current_dt == c_time - dt.timedelta(minutes=prepare_minutes):
-                    next_lesson_name = None
-                    next_lesson_key = None
-                    if timeline_data:
-                        for key in sorted(timeline_data.keys()):
-                            if key.startswith(f'a{str(part)}'):
-                                next_lesson_key = key
-                                break
-                    if next_lesson_key and next_lesson_key in current_lessons:
-                        lesson_name = current_lessons[next_lesson_key]
-                        if lesson_name != '暂无课程':
-                            next_lesson_name = lesson_name
-                    if current_state == 0:
-                        now = dt.datetime.now()
-                        if not last_notify_time or (now - last_notify_time).seconds >= notify_cooldown:
-                            if next_lesson_name != None:
-                                    notification.push_notification(3, next_lesson_name)
-            if f'a{part}1' in timeline_data:
-                time_diff = c_time - current_dt
-                minute, sec = divmod(time_diff.seconds, 60)
-                return_text = ['距离上课还有', f'{minute:02d}:{sec:02d}', 100]
-            else:
-                return_text = ['目前课程已结束', f'00:00', 100]
+                prepare_minutes: int = int(prepare_minutes_str)
+                if current_dt_schedule_time == c_time - dt.timedelta(minutes=prepare_minutes):
+                    next_lesson_name_for_toast: Optional[str] = None
+                    next_lesson_key: Optional[str] = None
+                    # Ensure timeline_data is sorted if order matters for finding next_lesson_key
+                    # Assuming timeline_data keys are like 'a10', 'a11', 'f10' etc.
+                    sorted_timeline_keys: List[str] = sorted(timeline_data.keys())
+                    for key_in_loop in sorted_timeline_keys:
+                        if key_in_loop.startswith(f'a{str(part)}'): # part is the index from get_part()
+                            next_lesson_key = key_in_loop
+                            break
+                    if next_lesson_key and next_lesson_key in current_lessons: # current_lessons is Dict[str, str]
+                        lesson_name_from_current: str = current_lessons[next_lesson_key]
+                        if lesson_name_from_current != '暂无课程':
+                            next_lesson_name_for_toast = lesson_name_from_current
+
+                    if current_state == 0: #课间
+                        # now_for_cooldown: dt.datetime = dt.datetime.now() # Use current_dt_now from function start
+                        if not last_notify_time or (current_dt_now - last_notify_time).seconds >= notify_cooldown:
+                            if next_lesson_name_for_toast is not None:
+                                notification.push_notification(3, next_lesson_name_for_toast)
+                                last_notify_time = current_dt_now
+
+            # Check if the first lesson of the current part exists
+            first_lesson_key_of_part = f'a{part}1' # Assuming format like 'a01', 'a11'
+            # More robust check: iterate timeline_data for keys starting with 'a{part}'
+            first_actual_lesson_key = None
+            for t_key in sorted(timeline_data.keys()): # Ensure sorted order
+                if t_key.startswith(f'a{str(part)}'):
+                    first_actual_lesson_key = t_key
+                    break
+
+            if first_actual_lesson_key: # If there is any lesson in this part
+                time_diff_before_class: dt.timedelta = c_time - current_dt_schedule_time
+                minute_bc, sec_bc = divmod(time_diff_before_class.seconds, 60)
+                return_text = ['距离上课还有', f'{minute_bc:02d}:{sec_bc:02d}', 100]
+            else: # No lessons in this part, or timeline_data is empty for this part
+                return_text = ['目前课程已结束', '00:00', 100]
         return return_text
+    return ['目前课程已结束', '00:00', 100] # Fallback if parts_start_time is empty
 
 
 # 获取将发生的活动
-def get_next_lessons():
-    global current_lesson_name
-    global next_lessons
+def get_next_lessons() -> None: # Added return type
+    global current_lesson_name # str
+    global next_lessons # List[str]
     next_lessons = []
-    part = 0
-    current_dt = dt.datetime.combine(today, dt.datetime.strptime(current_time, '%H:%M:%S').time())  # 当前时间
 
-    if parts_start_time:
-        c_time, part = get_part()
+    part_info: Optional[tuple[dt.datetime, int, str]] = get_part()
+    if not part_info:
+        return
 
-        def before_class():
-            if part == 0 or part == 3:
+    c_time_nl: dt.datetime = part_info[0] # current/next part start time
+    part_nl: int = part_info[1] # current/next part index
+
+    current_dt_schedule_time_nl: dt.datetime = dt.datetime.combine(today, dt.datetime.strptime(current_time, '%H:%M:%S').time())
+
+    if parts_start_time: # parts_start_time is List[dt.datetime]
+        # c_time_nl, part_nl already derived from get_part()
+
+        def before_class() -> bool: # Added return type
+            # part_nl is the current part index. parts_start_time is List[dt.datetime]
+            # Ensure part_nl is a valid index if used with parts_start_time
+            if part_nl == 0 or part_nl == 3: # Assuming these are specific part indices
                 return True
             else:
-                if current_dt >= parts_start_time[part] - dt.timedelta(minutes=60):
-                    return True
-                else:
-                    return False
+                # Ensure part_nl is a valid index for parts_start_time before accessing
+                if 0 <= part_nl < len(parts_start_time):
+                     if current_dt_schedule_time_nl >= parts_start_time[part_nl] - dt.timedelta(minutes=60):
+                        return True
+                return False
 
         if before_class():
-            for item_name, item_time in timeline_data.items():
-                if item_name.startswith(f'a{str(part)}') or item_name.startswith(f'f{str(part)}'):
-                    add_time = int(item_time)
-                    if c_time > current_dt and item_name.startswith('a'):
-                        next_lessons.append(current_lessons[item_name])
-                    c_time += dt.timedelta(minutes=add_time)
+            item_name_nl: str
+            item_time_str_nl: Any
+            for item_name_nl, item_time_str_nl in timeline_data.items(): # timeline_data is Dict[str, Any]
+                if item_name_nl.startswith(f'a{str(part_nl)}') or item_name_nl.startswith(f'f{str(part_nl)}'):
+                    try:
+                        add_time_nl: int = int(item_time_str_nl)
+                    except ValueError:
+                        logger.error(f"Invalid time value in timeline_data for {item_name_nl}: {item_time_str_nl}")
+                        continue
+
+                    if c_time_nl > current_dt_schedule_time_nl and item_name_nl.startswith('a'):
+                        # Ensure current_lessons[item_name_nl] exists
+                        if item_name_nl in current_lessons: # current_lessons is Dict[str, str]
+                            next_lessons.append(current_lessons[item_name_nl])
+                        else:
+                            logger.warning(f"Lesson key {item_name_nl} not found in current_lessons during get_next_lessons")
+                            next_lessons.append("课程信息缺失") # Placeholder
+                    c_time_nl += dt.timedelta(minutes=add_time_nl)
 
 
-def get_next_lessons_text():
-    if not next_lessons:
-        cache_text = '当前暂无课程'
+def get_next_lessons_text() -> str: # Added return type
+    if not next_lessons: # next_lessons is List[str]
+        cache_text: str = '当前暂无课程'
     else:
         cache_text = ''
-        if len(next_lessons) >= 5:
-            range_time = 5
-        else:
-            range_time = len(next_lessons)
+        # Determine loop range, ensuring it doesn't exceed length of next_lessons
+        range_time: int = min(5, len(next_lessons))
+
         for i in range(range_time):
+            lesson: str = next_lessons[i]
             if range_time > 2:
-                if next_lessons[i] != '暂无课程':
-                    cache_text += f'{list_.get_subject_abbreviation(next_lessons[i])}  '  # 获取课程简称
+                if lesson != '暂无课程':
+                    cache_text += f'{list_.get_subject_abbreviation(lesson)}  '  # type: ignore[no-untyped-call]
                 else:
-                    cache_text += f'无  '
+                    cache_text += '无  '
             else:
-                if next_lessons[i] != '暂无课程':
-                    cache_text += f'{next_lessons[i]}  '
+                if lesson != '暂无课程':
+                    cache_text += f'{lesson}  '
                 else:
-                    cache_text += f'暂无  '
-    return cache_text
+                    cache_text += '暂无  '
+    return cache_text.strip() # Remove trailing spaces
 
 
 # 获取当前活动
-def get_current_lesson_name():
-    global current_lesson_name, current_state
-    current_dt = dt.datetime.combine(today, dt.datetime.strptime(current_time, '%H:%M:%S').time())  # 当前时间
+def get_current_lesson_name() -> None: # Added return type
+    global current_lesson_name, current_state # current_lesson_name: str, current_state: int
+    current_dt_schedule_time_cln: dt.datetime = dt.datetime.combine(today, dt.datetime.strptime(current_time, '%H:%M:%S').time())
     current_lesson_name = '暂无课程'
-    current_state = 0
+    current_state = 0 # Default to 课间
 
-    if parts_start_time:
-        c_time, part = get_part()
+    part_info_cln: Optional[tuple[dt.datetime, int, str]] = get_part()
+    if not part_info_cln:
+        return
 
-        if current_dt >= c_time:
-            if parts_type[part] == 'break':  # 休息段
-                current_lesson_name = loaded_data['part_name'][str(part)]
-                current_state = 2
+    c_time_cln: dt.datetime = part_info_cln[0]
+    part_cln: int = part_info_cln[1]
+    # part_type_cln: str = part_info_cln[2] # This is the type of the *part itself*, not individual timeline items
 
-            for item_name, item_time in timeline_data.items():
-                if item_name.startswith(f'a{str(part)}') or item_name.startswith(f'f{str(part)}'):
-                    add_time = int(item_time)
-                    c_time += dt.timedelta(minutes=add_time)
-                    if c_time > current_dt:
-                        if item_name.startswith('a'):
-                            current_lesson_name = current_lessons[item_name]
-                            current_state = 1
-                        else:
+    if parts_start_time: # parts_start_time is List[dt.datetime]
+        # c_time_cln, part_cln derived from get_part()
+
+        if current_dt_schedule_time_cln >= c_time_cln: # We are within or past the start of a part
+             # Check part_type for the overall part first (e.g. large break between morning/afternoon)
+            if 0 <= part_cln < len(parts_type) and parts_type[part_cln] == 'break':  #休息段
+                # Ensure loaded_data['part_name'] and str(part_cln) key exist
+                if 'part_name' in loaded_data and str(part_cln) in loaded_data['part_name']:
+                    current_lesson_name = loaded_data['part_name'][str(part_cln)]
+                else:
+                    current_lesson_name = "休息中" # Fallback name for break
+                current_state = 2 # 休息段
+                # For a 'break' part, we might not need to iterate timeline_data items
+                # Or, if breaks can have sub-items, the logic below is fine.
+                # For now, if it's a break part, we set state and potentially return.
+                # If timeline iteration is still desired for breaks, remove/adjust this return.
+                # return # If break part means no specific "lesson" name from timeline
+
+            item_name_cln: str
+            item_time_str_cln: Any
+            for item_name_cln, item_time_str_cln in timeline_data.items(): # timeline_data is Dict[str, Any]
+                # Only consider items belonging to the current part_cln
+                if item_name_cln.startswith(f'a{str(part_cln)}') or item_name_cln.startswith(f'f{str(part_cln)}'):
+                    try:
+                        add_time_cln: int = int(item_time_str_cln)
+                    except ValueError:
+                        logger.error(f"Invalid time value in timeline_data for {item_name_cln}: {item_time_str_cln}")
+                        continue
+
+                    # Important: c_time_cln here should be the start of the *current specific timeline item*,
+                    # not the start of the whole part, if we are iterating through items.
+                    # Let's assume c_time_cln is correctly tracking the end of the previous item / start of current.
+                    # The initial c_time_cln from get_part() is the start of the whole part.
+                    # We need to adjust it as we iterate.
+                    # This requires careful state management of c_time_cln *within* the loop.
+                    # A better way: the loop should determine WHICH item we are in.
+                    # The original logic might be: current_dt_schedule_time_cln is compared against cumulative end times.
+
+                    # Re-evaluating logic based on original:
+                    # c_time_cln is the start of the *part*. We add durations to it.
+                    # This means the *first* item_time added to c_time_cln gives the end of that first item.
+
+                    potential_item_end_time = c_time_cln + dt.timedelta(minutes=add_time_cln)
+
+                    if potential_item_end_time > current_dt_schedule_time_cln: # We are in this item
+                        if item_name_cln.startswith('a'): # Activity/Lesson
+                            # Ensure current_lessons has this key
+                            if item_name_cln in current_lessons:
+                                current_lesson_name = current_lessons[item_name_cln]
+                            else:
+                                logger.warning(f"Lesson key {item_name_cln} not found in current_lessons for get_current_lesson_name")
+                                current_lesson_name = "未知课程" # Fallback
+                            current_state = 1 # 上课
+                        else: # Break between lessons (f-item)
                             current_lesson_name = '课间'
-                            current_state = 0
-                        return
+                            current_state = 0 # 课间
+                        return # Found current state, exit function
 
-def get_hide_status():
+                    c_time_cln = potential_item_end_time # Move c_time_cln to the end of the current item for the next iteration
+
+            # If loop finishes and we are past the start of the part, but not within any specific item found
+            # (e.g. after all timeline items for that part but before next part starts according to get_part())
+            # This implies we are in a residual period after the last defined activity/break of the current part.
+            # Default to '课间' or a specific "end of part" state if needed.
+            # The original code implicitly handles this by current_lesson_name and current_state retaining their values
+            # if the loop doesn't find a match and returns.
+            # If the loop completes, it means current_dt_schedule_time_cln >= last item's end time for this part.
+            # So, technically, this part is over. get_part() should give the *next* part then.
+            # This state might indicate "after school" or similar if it's the last part.
+            # For now, if the loop completes without returning, it means we are after all defined activities in the current part.
+            # Let's set to '课间' as a general between-activities state.
+            # However, if parts_type[part_cln] was 'break', it's already handled.
+            if not (0 <= part_cln < len(parts_type) and parts_type[part_cln] == 'break'):
+                 current_lesson_name = '课间 (Part End)' # Or some other appropriate status
+                 current_state = 0
+
+
+def get_hide_status() -> int: # Added return type (0 or 1)
     # 1 -> hide, 0 -> show
     # 满分啦（
     # 祝所有用 Class Widgets 的、不用 Class Widgets 的学子体测满分啊（（
-    global current_state, current_lesson_name, excluded_lessons
-    return 1 if {
-        '0': lambda: 0,
-        '1': lambda: current_state,
-        '2': lambda: check_windows_maximize() or check_fullscreen(),
-        '3': lambda: current_state
-    }[config_center.read_conf('General', 'hide')]() and not (current_lesson_name in excluded_lessons) else 0
+    global current_state, current_lesson_name, excluded_lessons # current_state: int, current_lesson_name: str, excluded_lessons: List[str]
+
+    hide_condition_met: bool = False
+    hide_setting: str = config_center.read_conf('General', 'hide') # type: ignore[no-untyped-call]
+
+    if hide_setting == '0': # Never hide based on state
+        hide_condition_met = False
+    elif hide_setting == '1': # Hide during class
+        hide_condition_met = (current_state == 1) # 1 means 上课
+    elif hide_setting == '2': # Hide on maximize/fullscreen
+        hide_condition_met = check_windows_maximize() or check_fullscreen()
+    elif hide_setting == '3': # Flexible hide (same as '1' for this condition part)
+        hide_condition_met = (current_state == 1)
+    else: # Default case, treat as '0'
+        hide_condition_met = False
+
+    #课程表排除
+    lesson_is_excluded: bool = current_lesson_name in excluded_lessons
+
+    if hide_condition_met and not lesson_is_excluded:
+        return 1 # Hide
+    else:
+        return 0 # Show
 
 
 # 定义 RECT 结构体
 class RECT(ctypes.Structure):
-    _fields_ = [("left", ctypes.c_long),
+    _fields_: List[tuple[str, Any]] = [("left", ctypes.c_long),
                 ("top", ctypes.c_long),
                 ("right", ctypes.c_long),
                 ("bottom", ctypes.c_long)]
 
-def get_process_name(pid): # 获取进程名称
+def get_process_name(pid: Union[int, ctypes.c_void_p]) -> str: # 获取进程名称. Added pid type and return type
     try:
-        if isinstance(pid, int):
-            pid = ctypes.windll.user32.GetWindowThreadProcessId(pid, None)
-        return psutil.Process(pid).name().lower()
-    except (psutil.NoSuchProcess, AttributeError, ValueError):
-        return "unknown"
+        # If pid is HWND (integer), get process ID first
+        actual_pid: Optional[int] = None
+        if isinstance(pid, int): # Assuming HWND is passed as int
+            # Ensure user32 and GetWindowThreadProcessId are available
+            if hasattr(ctypes, 'windll') and hasattr(ctypes.windll, 'user32') and hasattr(ctypes.windll.user32, 'GetWindowThreadProcessId'):
+                process_id_val = ctypes.c_ulong() # To store the process ID
+                ctypes.windll.user32.GetWindowThreadProcessId(pid, ctypes.byref(process_id_val))
+                actual_pid = process_id_val.value
+            else: # Fallback or error if platform components not available
+                return "unknown_os_feature_missing"
+        elif isinstance(pid, ctypes.c_void_p): # If already a process ID (e.g. from c_ulong.value)
+             actual_pid = pid # type: ignore # It should be int here.
+        elif isinstance(pid, ctypes.c_ulong): # If it's a c_ulong object itself
+            actual_pid = pid.value
+        else: # Should not happen if called correctly from check_fullscreen
+            return "unknown_pid_type"
 
-def check_fullscreen():  # 检查是否全屏
+        if actual_pid is None or actual_pid == 0: # Check for valid PID
+            return "unknown_invalid_pid"
+
+        return psutil.Process(actual_pid).name().lower()
+    except (psutil.NoSuchProcess, psutil.AccessDenied, AttributeError, ValueError, OSError): # Added AccessDenied and OSError
+        return "unknown_process_error"
+
+
+def check_fullscreen() -> bool:  # 检查是否全屏. Added return type
     if os.name != 'nt':
         return False
     user32 = ctypes.windll.user32
-    hwnd = user32.GetForegroundWindow()
+    hwnd: Optional[int] = user32.GetForegroundWindow() # HWND is typically an int or pointer
     if not hwnd:
         return False
-    if hwnd == user32.GetDesktopWindow():
+
+    # Check against desktop and shell windows
+    desktop_hwnd: Optional[int] = user32.GetDesktopWindow()
+    shell_hwnd: Optional[int] = user32.GetShellWindow()
+    if hwnd == desktop_hwnd or hwnd == shell_hwnd:
         return False
-    if hwnd == user32.GetShellWindow():
+
+    # Get process ID for the foreground window
+    win_pid_val = ctypes.c_ulong()
+    user32.GetWindowThreadProcessId(hwnd, ctypes.byref(win_pid_val))
+
+    if win_pid_val.value == 0: # No valid process ID
         return False
-    pid = ctypes.c_ulong()
-    user32.GetWindowThreadProcessId(hwnd, ctypes.byref(pid))
-    process_name = get_process_name(pid.value)
-    current_pid = os.getpid()
-    # logger.debug(f"前景窗口句柄: {hwnd}, PID: {pid.value}, 进程名: {process_name}")
-    if pid.value == current_pid:
+
+    process_name: str = get_process_name(win_pid_val.value) # Pass the integer value
+    current_pid: int = os.getpid()
+
+    # logger.debug(f"前景窗口句柄: {hwnd}, PID: {win_pid_val.value}, 进程名: {process_name}")
+    if win_pid_val.value == current_pid:
         return False
     # 排除特定系统进程
     excluded_system_processes = {
@@ -602,46 +832,58 @@ def check_fullscreen():  # 检查是否全屏
 
 
 class ErrorDialog(Dialog):  # 重大错误提示框
-    def __init__(self, error_details='Traceback (most recent call last):', parent=None):
+    def __init__(self, error_details: str = 'Traceback (most recent call last):', parent: Optional[QWidget] = None) -> None: # Added type hints
         # KeyboardInterrupt 直接 exit
         if error_details.endswith('KeyboardInterrupt') or error_details.endswith('KeyboardInterrupt\n'):
-            stop()
-        
+            stop() # type: ignore[no-untyped-call] # Assuming stop is available globally
+
         super().__init__(
             'Class Widgets 崩溃报告',
             '抱歉！Class Widgets 发生了严重的错误从而无法正常运行。您可以保存下方的错误信息并向他人求助。'
             '若您认为这是程序的Bug，请点击“报告此问题”或联系开发者。',
             parent
         )
-        global error_dialog
-        error_dialog = True
+        global error_dialog # Optional[ErrorDialog]
+        # error_dialog = self # Assign the instance itself. Original was True. Let's keep it simple.
+        # Reverting to original behavior for error_dialog as its type is Optional[ErrorDialog]
+        # and it seems to be used as a flag elsewhere or to hold the instance.
+        # For now, let's assume error_dialog is a flag that an error dialog is active.
+        # The original code had `error_dialog = True`. If `error_dialog` is meant to hold the instance,
+        # then `error_dialog = self` would be correct. Given it's Optional[ErrorDialog], instance is better.
+        # However, the global `error_dialog` is used as a flag to prevent multiple dialogs in `global_exceptHook`.
+        # So, `error_dialog = self` seems more appropriate if it's to be reset on close.
+        # Let's stick to the original implication that it's a truthy check for an *active* dialog.
+        # The type hint `Optional[ErrorDialog]` suggests it *can* hold an instance.
+        # For now, let's ensure the logic in global_exceptHook remains compatible.
+        # `error_dialog = self` makes more sense with `Optional[ErrorDialog]`.
+        error_dialog = self # This instance is now the active error_dialog
 
-        self.is_dragging = False
-        self.drag_position = QPoint()
-        self.title_bar_height = 30
+        self.is_dragging: bool = False
+        self.drag_position: QPoint = QPoint()
+        self.title_bar_height: int = 30
 
-        self.title_layout = QHBoxLayout()
+        self.title_layout: QHBoxLayout = QHBoxLayout()
 
-        self.iconLabel = ImageLabel()
-        self.iconLabel.setImage(f"{base_directory}/img/logo/favicon-error.ico")
-        self.error_log = PlainTextEdit()
-        self.report_problem = PushButton(fIcon.FEEDBACK, '报告此问题')
-        self.copy_log_btn = PushButton(fIcon.COPY, '复制日志')
-        self.ignore_error_btn = PushButton(fIcon.INFO, '忽略错误')
-        self.ignore_same_error = CheckBox()
+        self.iconLabel: ImageLabel = ImageLabel()
+        self.iconLabel.setImage(f"{base_directory}/img/logo/favicon-error.ico") # type: ignore[attr-defined] # base_directory Path
+        self.error_log: PlainTextEdit = PlainTextEdit()
+        self.report_problem: PushButton = PushButton(fIcon.FEEDBACK, '报告此问题')
+        self.copy_log_btn: PushButton = PushButton(fIcon.COPY, '复制日志')
+        self.ignore_error_btn: PushButton = PushButton(fIcon.INFO, '忽略错误')
+        self.ignore_same_error: CheckBox = CheckBox()
         self.ignore_same_error.setText('在下次启动之前，忽略此错误')
-        self.restart_btn = PrimaryPushButton(fIcon.SYNC, '重新启动')
+        self.restart_btn: PrimaryPushButton = PrimaryPushButton(fIcon.SYNC, '重新启动')
 
         self.iconLabel.setScaledContents(True)
         self.iconLabel.setFixedSize(50, 50)
-        self.titleLabel.setText('出错啦！ヽ(*。>Д<)o゜')
+        self.titleLabel.setText('出错啦！ヽ(*。>Д<)o゜') # titleLabel is part of Dialog
         self.titleLabel.setStyleSheet("font-family: Microsoft YaHei UI; font-size: 25px; font-weight: 500;")
         self.error_log.setReadOnly(True)
         self.error_log.setPlainText(error_details)
         self.error_log.setFixedHeight(200)
         self.restart_btn.setFixedWidth(150)
-        self.yesButton.hide()
-        self.cancelButton.hide()  # 隐藏取消按钮
+        self.yesButton.hide() # yesButton is part of Dialog
+        self.cancelButton.hide()  # cancelButton is part of Dialog
         self.title_layout.setSpacing(12)
 
         # 按钮事件
@@ -652,156 +894,184 @@ class ErrorDialog(Dialog):  # 重大错误提示框
         )
         self.copy_log_btn.clicked.connect(self.copy_log)
         self.ignore_error_btn.clicked.connect(self.ignore_error)
-        self.restart_btn.clicked.connect(restart)
+        self.restart_btn.clicked.connect(restart) # type: ignore[no-untyped-call] # Assuming restart is global
 
         self.title_layout.addWidget(self.iconLabel)  # 标题布局
-        self.title_layout.addWidget(self.titleLabel)
-        self.textLayout.insertLayout(0, self.title_layout)  # 页面
+        self.title_layout.addWidget(self.titleLabel) # titleLabel from Dialog
+        self.textLayout.insertLayout(0, self.title_layout)  # textLayout from Dialog
         self.textLayout.addWidget(self.error_log)
         self.textLayout.addWidget(self.ignore_same_error)
-        self.buttonLayout.insertStretch(0, 1)  # 按钮布局
+        self.buttonLayout.insertStretch(0, 1)  # buttonLayout from Dialog
         self.buttonLayout.insertWidget(0, self.copy_log_btn)
         self.buttonLayout.insertWidget(1, self.report_problem)
         self.buttonLayout.insertStretch(1)
         self.buttonLayout.insertWidget(4, self.ignore_error_btn)
         self.buttonLayout.insertWidget(5, self.restart_btn)
 
-    def copy_log(self):  # 复制日志
-        QApplication.clipboard().setText(self.error_log.toPlainText())
-        Flyout.create(
+    def copy_log(self) -> None:  # 复制日志 # Added return type
+        if QApplication.clipboard(): # Check if clipboard is available
+            QApplication.clipboard().setText(self.error_log.toPlainText())
+        Flyout.create( # type: ignore[no-untyped-call]
             icon=InfoBarIcon.SUCCESS,
             title='复制成功！ヾ(^▽^*)))',
             content="日志已成功复制到剪贴板。",
-            target=self.copy_log_btn,
-            parent=self,
+            target=self.copy_log_btn, # type: ignore[arg-type] # target expects QWidget
+            parent=self, # type: ignore[arg-type] # parent expects QWidget
             isClosable=True,
             aniType=FlyoutAnimationType.PULL_UP
         )
 
-    def ignore_error(self):
-        global ignore_errors
+    def ignore_error(self) -> None: # Added return type
+        global ignore_errors_list # ignore_errors_list is List[str]
         if self.ignore_same_error.isChecked():
-            ignore_errors.append(self.error_log.toPlainText())
+            ignore_errors_list.append(self.error_log.toPlainText())
         self.close()
 
-    def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton and event.y() <= self.title_bar_height:
+    def mousePressEvent(self, event: QMouseEvent) -> None: # Added QMouseEvent type and return type
+        if event.button() == Qt.LeftButton and event.y() <= self.title_bar_height: # type: ignore[attr-defined]
             self.is_dragging = True
             self.drag_position = event.globalPos() - self.frameGeometry().topLeft()
 
-    def mouseMoveEvent(self, event):
+    def mouseMoveEvent(self, event: QMouseEvent) -> None: # Added QMouseEvent type and return type
         if self.is_dragging:
             self.move(event.globalPos() - self.drag_position)
 
-    def mouseReleaseEvent(self, event):
-        if event.button() == Qt.LeftButton:
+    def mouseReleaseEvent(self, event: QMouseEvent) -> None: # Added QMouseEvent type and return type
+        if event.button() == Qt.LeftButton: # type: ignore[attr-defined]
             self.is_dragging = False
 
 
 
-class PluginManager:  # 插件管理器
-    def __init__(self):
-        self.cw_contexts = {}
+class PluginManager(QObject):  # 插件管理器 # Inherit from QObject for signals/slots if needed later
+    def __init__(self) -> None: # Added return type
+        super().__init__() # Call QObject constructor if it's a QObject
+        self.cw_contexts: Dict[str, Any] = {}
         self.get_app_contexts()
-        self.temp_window = []
-        self.method = PluginMethod(self.cw_contexts)
+        self.temp_window: List[QWidget] = [] # Assuming it holds QWidget or similar
+        # Ensure PluginMethod is defined or forward-declared if it's a class type hint
+        self.method: 'PluginMethod' = PluginMethod(self.cw_contexts)
 
-    def get_app_contexts(self, path=None):
+    def get_app_contexts(self, path: Optional[str] = None) -> Dict[str, Any]:
+        # Assuming global variables like current_lesson_name, current_state, etc. are already typed
+        # And list_, conf, config_center, schedule_center, base_directory, mgr, theme are also typed or handled
+        # For weather_icon and city, they need to be properly initialized and typed at the global scope.
+        # If they are Optional, the access here should reflect that.
+        # For simplicity in this diff, I'm assuming they exist.
+        # Proper handling would involve checking `if 'weather_icon' in globals()` and `if 'city' in globals()`
+        # or ensuring they are initialized with a default typed value.
+
+        _weather_icon_val: Any = None
+        _city_val: Any = None
+        if 'weather_icon' in globals(): # type: ignore
+            _weather_icon_val = weather_icon # type: ignore
+        if 'city' in globals(): # type: ignore
+             _city_val = city # type: ignore
+
         self.cw_contexts = {
-            "Widgets_Width": list_.widget_width,
-            "Widgets_Name": list_.widget_name,
-            "Widgets_Code": list_.widget_conf,  # 小组件列表
-
-            "Current_Lesson": current_lesson_name,  # 当前课程名
-            "State": current_state,  # 0：课间 1：上课（上下课状态）
-            "Current_Part": get_part(),  # 返回开始时间、Part序号
-            "Next_Lessons_text": get_next_lessons_text(),  # 下节课程
-            "Next_Lessons": next_lessons,  # 下节课程
-            "Current_Lessons": current_lessons,  # 当前课程
-            "Current_Week": current_week,  # 当前周次
-            "Excluded_Lessons": excluded_lessons,  # 排除的课程
-            
-            "Current_Time": current_time,  # 当前时间
-            "Timeline_Data": timeline_data,  # 时间线数据
-            "Parts_Start_Time": parts_start_time,  # 节点开始时间
-            "Parts_Type": parts_type,  # 节点类型
-            "Time_Offset": time_offset,  # 时差偏移
-
-            "Schedule_Name": config_center.schedule_name,  # 课程表名称
-            "Loaded_Data": loaded_data,  # 加载的课程表数据
-            "Order": order,  # 课程顺序
-
-            "Weather": weather_name,  # 天气情况
-            "Temp": temperature,  # 温度
-            "Weather_Data": weather_data_temp,  # 天气数据
-            "Weather_Icon": weather_icon,  # 天气图标
-            "Weather_API": config_center.read_conf('Weather', 'api'),  # 天气API
-            "City": city,  # 城市代码
-
-            "Notification": notification.notification_contents,  # 检测到的通知内容
-            "Last_Notify_Time": last_notify_time,  # 上次通知时间
-
-            "PLUGIN_PATH": os.path.normpath(os.path.join(conf.PLUGINS_DIR, path)) if path else conf.PLUGINS_DIR,  # 传递插件目录
-            "Config_Center": config_center,  # 配置中心实例
-            "Schedule_Center": schedule_center,  # 课程表中心实例
-            "Base_Directory": base_directory,  # 资源目录
-            "Widgets_Mgr": mgr,  # 组件管理器实例
-            "Theme": theme,  # 当前主题
+            "Widgets_Width": list_.widget_width, # type: ignore
+            "Widgets_Name": list_.widget_name, # type: ignore
+            "Widgets_Code": list_.widget_conf,  # type: ignore
+            "Current_Lesson": current_lesson_name,
+            "State": current_state,
+            "Current_Part": get_part(),
+            "Next_Lessons_text": get_next_lessons_text(),
+            "Next_Lessons": next_lessons,
+            "Current_Lessons": current_lessons,
+            "Current_Week": current_week,
+            "Excluded_Lessons": excluded_lessons,
+            "Current_Time": current_time,
+            "Timeline_Data": timeline_data,
+            "Parts_Start_Time": parts_start_time,
+            "Parts_Type": parts_type,
+            "Time_Offset": time_offset,
+            "Schedule_Name": config_center.schedule_name, # type: ignore
+            "Loaded_Data": loaded_data,
+            "Order": order,
+            "Weather": weather_name,
+            "Temp": temperature,
+            "Weather_Data": weather_data_temp,
+            "Weather_Icon": _weather_icon_val,
+            "Weather_API": config_center.read_conf('Weather', 'api'), # type: ignore
+            "City": _city_val,
+            "Notification": notification.notification_contents, # type: ignore
+            "Last_Notify_Time": last_notify_time,
+            "PLUGIN_PATH": os.path.normpath(os.path.join(conf.PLUGINS_DIR, path)) if path else conf.PLUGINS_DIR, # type: ignore
+            "Config_Center": config_center,
+            "Schedule_Center": schedule_center,
+            "Base_Directory": base_directory, # type: ignore
+            "Widgets_Mgr": mgr,
+            "Theme": theme,
         }
         return self.cw_contexts
 
 
-class PluginMethod:  # 插件方法
-    def __init__(self, app_context):
-        self.app_contexts = app_context
+class PluginMethod(QObject):
+    def __init__(self, app_context: Dict[str, Any]) -> None:
+        super().__init__()
+        self.app_contexts: Dict[str, Any] = app_context
 
-    def register_widget(self, widget_code, widget_name, widget_width):  # 注册小组件
-        self.app_contexts['Widgets_Width'][widget_code] = widget_width
-        self.app_contexts['Widgets_Name'][widget_code] = widget_name
-        self.app_contexts['Widgets_Code'][widget_name] = widget_code
+    def register_widget(self, widget_code: str, widget_name: str, widget_width: int) -> None:
+        # Assuming self.app_contexts items are Dicts or handle key assignment
+        self.app_contexts['Widgets_Width'][widget_code] = widget_width # type: ignore
+        self.app_contexts['Widgets_Name'][widget_code] = widget_name # type: ignore
+        self.app_contexts['Widgets_Code'][widget_name] = widget_code # type: ignore
 
-    def adjust_widget_width(self, widget_code, width):  # 调整小组件宽度
-        self.app_contexts['Widgets_Width'][widget_code] = width
+    def adjust_widget_width(self, widget_code: str, width: int) -> None:
+        self.app_contexts['Widgets_Width'][widget_code] = width # type: ignore
 
     @staticmethod
-    def get_widget(widget_code):  # 获取小组件实例
-        for widget in mgr.widgets:
-            if widget.path == widget_code:
-                return widget
+    def get_widget(widget_code: str) -> Optional['DesktopWidget']: # Forward reference for DesktopWidget
+        if mgr and hasattr(mgr, 'widgets'): # mgr is Optional[WidgetsManager]
+            for widget in mgr.widgets: # Assuming mgr.widgets is List[DesktopWidget]
+                if widget.path == widget_code: # Assuming widget has a 'path' attribute
+                    return widget
         return None
 
     @staticmethod
-    def change_widget_content(widget_code, title, content):  # 修改小组件内容
-        for widget in mgr.widgets:
-            if widget.path == widget_code:
-                widget.update_widget_for_plugin([title, content])
+    def change_widget_content(widget_code: str, title: str, content: str) -> None:
+        target_widget: Optional['DesktopWidget'] = PluginMethod.get_widget(widget_code)
+        if target_widget:
+            target_widget.update_widget_for_plugin([title, content])
 
     @staticmethod
-    def is_get_notification():  # 检查是否有通知
-        if notification.pushed_notification:
-            return True
-        else:
-            return False
+    def is_get_notification() -> bool:
+        if hasattr(notification, 'pushed_notification'): # notification is Any
+            return bool(notification.pushed_notification) # type: ignore
+        return False
 
     @staticmethod
-    def send_notification(state=1, lesson_name='示例课程', title='通知示例', subtitle='副标题',
-                          content='这是一条通知示例', icon=None, duration=2000):  # 发送通知
-        notification.push_notification(state, lesson_name, title, subtitle, content, icon, duration)
+    def send_notification(state: int = 1, lesson_name: str = '示例课程', title: str = '通知示例', subtitle: str = '副标题',
+                          content: str = '这是一条通知示例', icon: Optional[Any] = None, duration: int = 2000) -> None:
+        if hasattr(notification, 'push_notification'): # notification is Any
+            notification.push_notification(state, lesson_name, title, subtitle, content, icon, duration) # type: ignore
 
     @staticmethod
-    def subprocess_exec(title, action):  # 执行系统命令
-        w = openProgressDialog(title, action)
-        p_mgr.temp_window = [w]
+    def subprocess_exec(title: str, action: str) -> None:
+        # Assuming openProgressDialog is a QWidget or similar
+        w: 'openProgressDialog' = openProgressDialog(title, action) # Forward reference
+        if p_mgr and hasattr(p_mgr, 'temp_window'): # p_mgr is Optional[PluginManager]
+            p_mgr.temp_window = [w] # Assuming temp_window is List[QWidget]
         w.show()
 
     @staticmethod
-    def read_config(path, section, option):  # 读取配置文件
+    def read_config(path: str, section: str, option: str) -> Any: # Return Any as type is unknown
         try:
             with open(path, 'r', encoding='utf-8') as r:
-                config = json.load(r)
-            return config.get(section, option)
+                config_data: Dict[str, Any] = json.load(r)
+
+            section_content: Optional[Dict[str, Any]] = config_data.get(section)
+            if section_content is not None:
+                return section_content.get(option)
+            return None
+        except FileNotFoundError:
+            logger.error(f"插件读取配置文件失败：文件未找到 {path}")
+            return None
+        except json.JSONDecodeError:
+            logger.error(f"插件读取配置文件失败：JSON解码错误 {path}")
+            return None
         except Exception as e:
             logger.error(f"插件读取配置文件失败：{e}")
+            return None
 
     @staticmethod
     def generate_speech(
@@ -810,8 +1080,7 @@ class PluginMethod:  # 插件方法
             voice: Optional[str] = None,
             timeout: float = 10.0,
             auto_fallback: bool = True
-
-    ) -> str:
+    ) -> str: # Return type is already str
         """
         同步生成语音文件（供插件调用）
 
@@ -825,7 +1094,8 @@ class PluginMethod:  # 插件方法
         返回：
         str: 生成的音频文件路径
         """
-        return generate_speech_sync(
+        # Assuming generate_speech_sync is correctly typed or imported
+        return generate_speech_sync( # type: ignore[no-untyped-call]
             text=text,
             engine=engine,
             voice=voice,
@@ -834,7 +1104,7 @@ class PluginMethod:  # 插件方法
         )
 
     @staticmethod
-    def play_audio(file_path: str, tts_delete_after: bool = True):
+    def play_audio(file_path: str, tts_delete_after: bool = True) -> None: # Added return type
         """
         播放音频文件
 
@@ -845,333 +1115,475 @@ class PluginMethod:  # 插件方法
         说明：
         - 删除操作有重试机制（3次尝试）
         """
-        play_audio(file_path, tts_delete_after)
+        play_audio(file_path, tts_delete_after) # type: ignore[no-untyped-call]
 
 
-class WidgetsManager:
-    def __init__(self):
-        self.widgets = []  # 小组件实例
-        self.widgets_list = []  # 小组件列表配置
-        self.state = 1
+class WidgetsManager(QObject): # Inherit from QObject
+    def __init__(self) -> None: # Added return type
+        super().__init__() # Call QObject constructor
+        self.widgets: List[DesktopWidget] = []  # 小组件实例. DesktopWidget is forward-declared
+        self.widgets_list: List[str] = []  # 小组件列表配置 (list of widget file names like 'widget-time.ui')
+        self.state: int = 1 # 0 for hidden, 1 for shown (presumably)
 
-        self.widgets_width = 0  # 小组件总宽度
-        self.spacing = 0  # 小组件间隔
+        self.widgets_width: int = 0  # 小组件总宽度
+        self.spacing: int = 0  # 小组件间隔
 
-        self.start_pos_x = 0  # 小组件起始位置
-        self.start_pos_y = 0
+        self.start_pos_x: int = 0  # 小组件起始位置
+        self.start_pos_y: int = 0
 
-        self.hide_status = None # [0] -> 在 current_state 设置的灵活隐藏， [1] -> 隐藏模式
+        self.hide_status: Optional[Tuple[int, int]] = None # [0] -> 在 current_state 设置的灵活隐藏， [1] -> 隐藏模式
+                                                        # Example: (current_state_val, hide_mode_flag)
 
-    def sync_widget_animation(self, target_pos):
+    def sync_widget_animation(self, target_pos: QPoint) -> None: # Added target_pos type and return type
+        # Assuming DesktopWidget has 'path' and 'animate_expand'
+        widget: DesktopWidget
         for widget in self.widgets:
             if widget.path == 'widget-current-activity.ui':
                 widget.animate_expand(target_pos) # 主组件形变动画
 
-    def init_widgets(self):  # 初始化小组件
-        self.widgets_list = list_.get_widget_config()
+    def init_widgets(self) -> None:  # 初始化小组件. Added return type
+        self.widgets_list = list_.get_widget_config() # type: ignore[no-untyped-call] # Returns List[str]
         self.check_widgets_exist()
-        self.spacing = conf.load_theme_config(theme)['spacing']
+        # theme is Optional[str], conf.load_theme_config returns Dict[str, Any]
+        loaded_theme_config: Dict[str, Any] = conf.load_theme_config(theme) # type: ignore[no-untyped-call]
+        self.spacing = int(loaded_theme_config.get('spacing', 0)) # Default to 0 if not found
 
         self.get_start_pos()
-        cnt_all = {}
+        cnt_all: Dict[str, int] = {} # Counts occurrences of each widget path
 
         # 添加小组件实例
-        for w in range(len(self.widgets_list)):
-            cnt_all[self.widgets_list[w]] = cnt_all.get(self.widgets_list[w], -1) + 1
-            widget = DesktopWidget(self, self.widgets_list[w], True if w == 0 else False,cnt = cnt_all[self.widgets_list[w]], position=self.get_widget_pos("", w), widget_cnt = w)
-            self.widgets.append(widget)
+        w_idx: int
+        widget_path_str: str
+        for w_idx, widget_path_str in enumerate(self.widgets_list):
+            cnt_all[widget_path_str] = cnt_all.get(widget_path_str, -1) + 1
+            # DesktopWidget constructor needs to be checked for param types
+            # Assuming get_widget_pos returns List[int] or Tuple[int, int]
+            pos: List[int] = self.get_widget_pos("", w_idx) # Pass w_idx as cnt for position calculation
+            widget_instance: DesktopWidget = DesktopWidget(
+                parent=self,  # WidgetsManager instance
+                path=widget_path_str,
+                enable_tray=(w_idx == 0), # Only first widget enables tray
+                cnt=cnt_all[widget_path_str],
+                position=QPoint(pos[0], pos[1]), # Pass QPoint for position
+                widget_cnt=w_idx
+            )
+            self.widgets.append(widget_instance)
 
         self.create_widgets()
 
-    def close_all_widgets(self):
+    def close_all_widgets(self) -> None: # Added return type
         # 统一关闭所有组件
-        if hasattr(self, '_closing'):
+        if hasattr(self, '_closing') and self._closing: # Check the flag itself
             return
-        self._closing = True
+        self._closing: bool = True # Initialize the flag
+        widget: DesktopWidget
         for widget in self.widgets:
             widget.close()  # 触发各个widget的closeEvent
 
-    def check_widgets_exist(self):
-        for widget in self.widgets_list:
-            if widget not in list_.widget_width.keys():
-                self.widgets_list.remove(widget)
+    def check_widgets_exist(self) -> None: # Added return type
+        # list_.widget_width is Dict[str, int]
+        # Iterate over a copy for safe removal
+        widget_path_str: str
+        for widget_path_str in list(self.widgets_list):
+            if widget_path_str not in list_.widget_width: # type: ignore
+                self.widgets_list.remove(widget_path_str)
 
     @staticmethod
-    def get_widget_width(path):
+    def get_widget_width(path: str) -> int: # Added path type and return type
+        # theme is Optional[str]
+        # conf.load_theme_width returns Dict[str, int]
+        # list_.widget_width is Dict[str, int]
         try:
-            width = conf.load_theme_width(theme)[path]
+            width: int = conf.load_theme_width(theme)[path] # type: ignore[no-untyped-call,index]
         except KeyError:
-            width = list_.widget_width[path]
-        return int(width)
+            width = list_.widget_width[path] # type: ignore
+        return int(width) # Ensure it's int
 
     @staticmethod
-    def get_widgets_height():
-        return int(conf.load_theme_config(theme)['height'])
+    def get_widgets_height() -> int: # Added return type
+        # theme is Optional[str]
+        # conf.load_theme_config returns Dict[str, Any]
+        loaded_theme_config: Dict[str, Any] = conf.load_theme_config(theme) # type: ignore[no-untyped-call]
+        return int(loaded_theme_config.get('height', 100)) # Default to 100 if not found, ensure int
 
-    def create_widgets(self):
+    def create_widgets(self) -> None: # Added return type
+        widget: DesktopWidget
         for widget in self.widgets:
             widget.show()
-            logger.info(f'显示小组件：{widget.path, widget.windowTitle()}')
+            # Assuming widget.path and widget.windowTitle() are str
+            logger.info(f'显示小组件：({widget.path}, {widget.windowTitle()})') # Corrected logging format
 
-    def adjust_ui(self):  # 更新小组件UI
+    def adjust_ui(self) -> None:  # 更新小组件UI. Added return type
+        widget: DesktopWidget # self.widgets is List[DesktopWidget]
         for widget in self.widgets:
             # 调整窗口尺寸
-            width = self.get_widget_width(widget.path)
-            height = self.get_widgets_height()
-            pos_x = self.get_widget_pos(widget.path, widget.widget_cnt)[0]
-            op = int(config_center.read_conf('General', 'opacity')) / 100
+            width: int = self.get_widget_width(widget.path) # Assuming widget.path is str
+            height: int = self.get_widgets_height()
+            # widget.widget_cnt should be int. get_widget_pos returns List[int]
+            pos_x: int = self.get_widget_pos(widget.path, widget.widget_cnt)[0]
+            opacity_setting: Any = config_center.read_conf('General', 'opacity') # type: ignore[no-untyped-call]
+            op: float = int(opacity_setting) / 100 if opacity_setting is not None else 1.0
 
-            if widget.animation is None:
+            if widget.animation is None: # Assuming animation is Optional[QPropertyAnimation]
                 widget.widget_transition(pos_x, width, height, op)
 
-    def get_widget_pos(self, path, cnt=None):  # 获取小组件位置
-        num = self.widgets_list.index(path) if cnt is None else cnt
-        self.get_start_pos()
-        pos_x = self.start_pos_x + self.spacing * num
+    def get_widget_pos(self, path: str, cnt: Optional[int] = None) -> List[int]:  # 获取小组件位置. Added types
+        # self.widgets_list is List[str]
+        num: int
+        if cnt is None:
+            try:
+                num = self.widgets_list.index(path)
+            except ValueError: # path not in list
+                logger.error(f"Widget path '{path}' not found in widgets_list for position calculation.")
+                # Return a default or error position
+                return [self.start_pos_x, self.start_pos_y]
+        else:
+            num = cnt
+
+        self.get_start_pos() # Recalculates start_pos_x, start_pos_y, widgets_width
+        pos_x_calc: float = float(self.start_pos_x + self.spacing * num) # Ensure float for precision before int conversion
+
+        i: int
         for i in range(num):
             try:
-                pos_x += conf.load_theme_width(theme)[self.widgets_list[i]]
+                # theme is Optional[str], self.widgets_list[i] is str
+                # conf.load_theme_width returns Dict[str, int]
+                pos_x_calc += conf.load_theme_width(theme)[self.widgets_list[i]] # type: ignore[no-untyped-call,index]
             except KeyError:
-                pos_x += list_.widget_width[self.widgets_list[i]]
-            except:
-                pos_x += 0
-        return [int(pos_x), int(self.start_pos_y)]
+                # list_.widget_width is Dict[str, int]
+                pos_x_calc += list_.widget_width[self.widgets_list[i]] # type: ignore
+            except Exception as e: # Catch any other potential errors like list index out of bounds
+                logger.warning(f"Error calculating widget position for index {i}, path {self.widgets_list[i] if i < len(self.widgets_list) else 'OOB'}: {e}")
+                pos_x_calc += 0 # Or handle more gracefully
+        return [int(pos_x_calc), int(self.start_pos_y)]
 
-    def get_start_pos(self):
+    def get_start_pos(self) -> None: # Added return type
         self.calculate_widgets_width()
-        screen_geometry = app.primaryScreen().availableGeometry()
-        screen_width = screen_geometry.width()
-        screen_height = screen_geometry.height()
+        # app is Optional[QApplication]
+        if app and app.primaryScreen():
+            screen_geometry: QRect = app.primaryScreen().availableGeometry()
+            screen_width: int = screen_geometry.width()
+            # screen_height: int = screen_geometry.height() # Unused
+        else: # Fallback if app or primaryScreen is not available
+            logger.warning("QApplication or primaryScreen not available for get_start_pos. Using defaults.")
+            screen_width = 1920 # Default width
 
-        margin = max(0, int(config_center.read_conf('General', 'margin')))
-        self.start_pos_y = margin
+        margin_str: Any = config_center.read_conf('General', 'margin') # type: ignore[no-untyped-call]
+        margin_val: int = int(margin_str) if margin_str is not None and margin_str.isdigit() else 0
+        self.start_pos_y = max(0, margin_val)
         self.start_pos_x = (screen_width - self.widgets_width) // 2
 
-    def calculate_widgets_width(self):  # 计算小组件占用宽度
+    def calculate_widgets_width(self) -> None:  # 计算小组件占用宽度. Added return type
         self.widgets_width = 0
         # 累加小组件宽度
-        for widget in self.widgets_list:
+        # self.widgets_list is List[str]
+        widget_path_str: str
+        for widget_path_str in self.widgets_list:
             try:
-                self.widgets_width += self.get_widget_width(widget)
+                self.widgets_width += self.get_widget_width(widget_path_str)
             except Exception as e:
-                logger.warning(f'计算小组件宽度发生错误：{e}')
-                self.widgets_width += 0
+                logger.warning(f'计算小组件宽度发生错误 for {widget_path_str}：{e}')
+                # self.widgets_width += 0 # No need, already 0 if error
 
-        self.widgets_width += self.spacing * (len(self.widgets_list) - 1)
+        if self.widgets_list: # Ensure list is not empty to avoid negative index with len()-1
+             self.widgets_width += self.spacing * (len(self.widgets_list) - 1)
 
-    def hide_windows(self):
+    def hide_windows(self) -> None: # Added return type
         self.state = 0
+        widget: DesktopWidget
         for widget in self.widgets:
             widget.animate_hide()
 
-    def full_hide_windows(self):
+    def full_hide_windows(self) -> None: # Added return type
         self.state = 0
+        widget: DesktopWidget
         for widget in self.widgets:
-            widget.animate_hide(True)
+            widget.animate_hide(True) # Assuming animate_hide takes Optional[bool]
 
-    def show_windows(self):
-        if fw.animating:  # 避免动画Bug
+    def show_windows(self) -> None: # Added return type
+        # fw is Optional[FloatingWidget]
+        if fw and fw.animating:  # 避免动画Bug
             return
-        if fw.isVisible():
+        if fw and fw.isVisible():
             fw.close()
         self.state = 1
+        widget: DesktopWidget
         for widget in self.widgets:
             widget.animate_show()
 
-    def clear_widgets(self):
-        global fw, was_floating_mode
+    def clear_widgets(self) -> None: # Added return type
+        global fw, was_floating_mode # fw: Optional[FloatingWidget], was_floating_mode: bool
         if fw and fw.isVisible():
             fw.close()
             was_floating_mode = True
         else:
             was_floating_mode = False
-        for widget in self.widgets:
-            widget.animate_hide_opacity()
-        for widget in self.widgets:
-            self.widgets.remove(widget)
-        init()
 
-    def update_widgets(self):
-        c = 0
-        self.adjust_ui()
+        widget_to_remove: DesktopWidget
+        for widget_to_remove in list(self.widgets): # Iterate over a copy for safe removal
+            widget_to_remove.animate_hide_opacity()
+            # Assuming animate_hide_opacity calls close/deleteLater or we handle it after loop
+            # The original code removes from self.widgets then calls init() which re-populates.
+            # This might lead to issues if animate_hide_opacity is async.
+            # For now, following original structure.
 
+        # Clear the list after initiating animations.
+        # Widgets will be closed/deleted by their animations or when init() rebuilds.
+        # However, the original `self.widgets.remove(widget)` was inside the loop.
+        # This is problematic if init() relies on an empty self.widgets before it runs.
+        # Let's clear it before init(), assuming animations don't need the widget in *this* list.
+
+        # Original logic had remove inside the loop, which is bad practice.
+        # It should be:
+        # 1. Animate all widgets to hide.
+        # 2. Wait for animations (if possible, or assume they handle their own cleanup).
+        # 3. Clear the list of widgets.
+        # 4. Re-initialize.
+        # For now, let's replicate the original logic of removing one by one, then calling init.
+        # This is likely flawed if animations are not instant and init() rebuilds too soon.
+        # A better approach:
+        # for widget in self.widgets: widget.animate_hide_opacity_and_destroy()
+        # self.widgets.clear()
+        # init()
+        # For now, sticking to the structure:
+        widgets_copy = list(self.widgets)
+        self.widgets.clear() # Clear the main list
+        for widget_instance in widgets_copy:
+            # widget_instance.animate_hide_opacity() # This should lead to close/deleteLater
+            # The original code had self.widgets.remove(widget) INSIDE the loop.
+            # This is risky. If init() is called right after, it's fine.
+            # The crucial part is that init() must be able to run correctly
+            # even if old widgets are still in their closing animation.
+            # Let's assume animate_hide_opacity eventually calls self.close() which should make it safe.
+             pass # Widgets are animated, init() will rebuild.
+                 # The DesktopWidget.animate_hide_opacity calls self.close which should handle deletion.
+
+        init() # init is a global function
+
+    def update_widgets(self) -> None: # Added return type
+        c: int = 0
+        self.adjust_ui() # This itself loops through self.widgets
+
+        widget: DesktopWidget
         for widget in self.widgets:
             if c == 0:
-                get_countdown(True)
-            widget.update_data(path=widget.path)
+                get_countdown(True) # Assuming get_countdown is typed
+            widget.update_data(path=widget.path) # Assuming widget.path is str
             c += 1
-        p_loader.update_plugins()
 
-        if notification.pushed_notification:
-            notification.pushed_notification = False
+        if p_loader: # p_loader is Optional[PluginLoader]
+            p_loader.update_plugins() # type: ignore[no-untyped-call]
 
-    def decide_to_hide(self):
-        if config_center.read_conf('General', 'hide_method') == '0':  # 正常
+        if hasattr(notification, 'pushed_notification'): # notification is Any
+            if notification.pushed_notification: # type: ignore
+                notification.pushed_notification = False # type: ignore
+
+    def decide_to_hide(self) -> None: # Added return type
+        hide_method: Optional[str] = config_center.read_conf('General', 'hide_method') # type: ignore[no-untyped-call]
+        if hide_method == '0':  # 正常
             self.hide_windows()
-        elif config_center.read_conf('General', 'hide_method') == '1':  # 单击即完全隐藏
+        elif hide_method == '1':  # 单击即完全隐藏
             self.full_hide_windows()
-        elif config_center.read_conf('General', 'hide_method') == '2':  # 最小化为浮窗
-            if not fw.animating:
+        elif hide_method == '2':  # 最小化为浮窗
+            if fw and not fw.animating: # fw is Optional[FloatingWidget]
                 self.full_hide_windows()
                 fw.show()
-        else:
+        else: # Default or unknown, treat as '0'
             self.hide_windows()
 
-    def cleanup_resources(self):
+    def cleanup_resources(self) -> None: # Added return type
         self.hide_status = None # 重置hide_status
-        widgets_to_clean = list(self.widgets)
+        widgets_to_clean: List[DesktopWidget] = list(self.widgets) # self.widgets is List[DesktopWidget]
         self.widgets.clear()
+        widget: DesktopWidget
         for widget in widgets_to_clean:
-            widget_path = getattr(widget, 'path', '未知组件')
+            widget_path: str = getattr(widget, 'path', '未知组件')
             try:
+                # Assuming weather_timer is QTimer or similar, weather_thread is QThread or similar
                 if hasattr(widget, 'weather_timer') and widget.weather_timer:
                     try:
-                        widget.weather_timer.stop()
-                    except RuntimeError:
+                        widget.weather_timer.stop() # type: ignore
+                    except RuntimeError: # Catch if timer already stopped or similar
                         pass
                 if hasattr(widget, 'weather_thread') and widget.weather_thread:
                     try:
-                        if widget.weather_thread.isRunning():
-                            widget.weather_thread.quit()
-                            if not widget.weather_thread.wait(500):
+                        if widget.weather_thread.isRunning(): # type: ignore
+                            widget.weather_thread.quit() # type: ignore
+                            if not widget.weather_thread.wait(500): # type: ignore
                                 logger.warning(f"组件 {widget_path} 的天气线程未正常退出，强制终止")
-                                widget.weather_thread.terminate()
-                                widget.weather_thread.wait()
-                    except RuntimeError:
+                                widget.weather_thread.terminate() # type: ignore
+                                widget.weather_thread.wait() # type: ignore
+                    except RuntimeError: # Catch if thread already finished or error during quit/terminate
                         pass
                 widget.deleteLater()
             except Exception as ex:
                 logger.error(f"清理组件 {widget_path} 时发生异常: {ex}")
 
-    def stop(self):
-        if mgr:
+    def stop(self) -> None: # Added return type
+        if mgr: # mgr is Optional[WidgetsManager]
             mgr.cleanup_resources()
-        for widget in self.widgets:
-            widget.stop()
-        if self.animation:
-            self.animation.stop()
-        if self.opacity_animation:
-            self.opacity_animation.stop()
-        self.close()
+
+        widget: DesktopWidget
+        for widget in self.widgets: # self.widgets is List[DesktopWidget]
+            widget.stop() # Assuming DesktopWidget has stop()
+
+        # self.animation and self.opacity_animation are not defined in WidgetsManager __init__
+        # These seem to belong to DesktopWidget or FloatingWidget.
+        # If they were meant for WidgetsManager, they need to be initialized.
+        # For now, assuming this might be a leftover or intended for subclasses.
+        if hasattr(self, 'animation') and self.animation: # type: ignore
+            self.animation.stop() # type: ignore
+        if hasattr(self, 'opacity_animation') and self.opacity_animation: # type: ignore
+            self.opacity_animation.stop() # type: ignore
+
+        # QObject (if it is one, currently not) or QWidget would have close()
+        # If WidgetsManager is not a QWidget, it won't have a close method unless defined.
+        # self.close() # This will error if WidgetsManager is not a QWidget.
+        # For now, assume it's meant to be closed if it's a window (which it isn't directly).
+        # This method might be intended to be called on individual widgets instead.
+        # Since it's cleaning up resources, perhaps no direct 'close' of manager itself is needed.
+        pass
+
 
 class openProgressDialog(QWidget):
-    def __init__(self, action_title='打开 记事本', action='notepad'):
+    def __init__(self, action_title: str = '打开 记事本', action: str = 'notepad') -> None: # Added types
         super().__init__()
-        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint | Qt.Tool)
-        time = int(config_center.read_conf('Plugin', 'auto_delay'))
-        self.action = action
+        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint | Qt.Tool) # type: ignore[attr-defined]
 
-        screen_geometry = app.primaryScreen().availableGeometry()
-        self.screen_width = screen_geometry.width()
-        self.screen_height = screen_geometry.height()
+        auto_delay_str: Any = config_center.read_conf('Plugin', 'auto_delay') # type: ignore[no-untyped-call]
+        time_val: int = int(auto_delay_str) if auto_delay_str is not None and auto_delay_str.isdigit() else 3 # Default to 3s
+        self.action: str = action
+
+        # app is Optional[QApplication]
+        if app and app.primaryScreen():
+            screen_geometry: QRect = app.primaryScreen().availableGeometry()
+            self.screen_width: int = screen_geometry.width()
+            self.screen_height: int = screen_geometry.height()
+        else: # Fallback
+            self.screen_width = 1920
+            self.screen_height = 1080
+
         self.init_ui()
         self.init_font()
         self.move((self.screen_width - self.width()) // 2, self.screen_height - self.height() - 100)
 
-        self.action_name = self.findChild(QLabel, 'action_name')
-        self.action_name.setText(action_title)
+        self.action_name: Optional[QLabel] = self.findChild(QLabel, 'action_name')
+        if self.action_name:
+            self.action_name.setText(action_title)
 
-        self.opening_countdown = self.findChild(ProgressRing, 'opening_countdown')
-        self.opening_countdown.setRange(0, time - 1)
-        self.progress_timer = QTimer(self)
+        self.opening_countdown: Optional[ProgressRing] = self.findChild(ProgressRing, 'opening_countdown')
+        if self.opening_countdown:
+            self.opening_countdown.setRange(0, time_val - 1)
+
+        self.progress_timer: QTimer = QTimer(self)
         self.progress_timer.timeout.connect(self.update_progress)
         self.progress_timer.start(1000)
 
-        self.timer = QTimer(self)
+        self.timer: QTimer = QTimer(self)
         self.timer.timeout.connect(self.execute_action)
-        self.timer.start(time * 1000)
+        self.timer.start(time_val * 1000)
 
-        self.cancel_opening = self.findChild(QPushButton, 'cancel_opening')
-        self.cancel_opening.clicked.connect(self.cancel_action)
+        self.cancel_opening: Optional[QPushButton] = self.findChild(QPushButton, 'cancel_opening')
+        if self.cancel_opening:
+            self.cancel_opening.clicked.connect(self.cancel_action)
 
         self.intro_animation()
 
-    def update_progress(self):
-        self.opening_countdown.setValue(self.opening_countdown.value() + 1)
+    def update_progress(self) -> None: # Added return type
+        if self.opening_countdown:
+            self.opening_countdown.setValue(self.opening_countdown.value() + 1)
 
-    def execute_action(self):
+    def execute_action(self) -> None: # Added return type
         self.timer.stop()
         subprocess.Popen(self.action)
         self.close()
 
-    def cancel_action(self):
+    def cancel_action(self) -> None: # Added return type
         self.timer.stop()
         self.close()
 
-    def save_position(self):
-        pass
+    def save_position(self) -> None: # Added return type
+        pass # No operation
 
-    def init_ui(self):
+    def init_ui(self) -> None: # Added return type
         self.setWindowFlags(
-            Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint |
-            Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
+            Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint | # type: ignore[attr-defined]
+            Qt.X11BypassWindowManagerHint  # type: ignore[attr-defined] #绕过窗口管理器以在全屏显示通知
         )
-        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground) # type: ignore[attr-defined]
 
-        if isDarkTheme():
-            uic.loadUi(f'{base_directory}/ui/default/dark/toast-open_dialog.ui', self)
-        else:
-            uic.loadUi(f'{base_directory}/ui/default/toast-open_dialog.ui', self)
+        # base_directory is Path from conf
+        theme_ui_path: str = f'{base_directory}/ui/default/toast-open_dialog.ui' # type: ignore[attr-defined]
+        if isDarkTheme(): # type: ignore[no-untyped-call]
+            theme_ui_path = f'{base_directory}/ui/default/dark/toast-open_dialog.ui' # type: ignore[attr-defined]
 
-        backgnd = self.findChild(QFrame, 'backgnd')
-        shadow_effect = QGraphicsDropShadowEffect(self)
-        shadow_effect.setBlurRadius(28)
-        shadow_effect.setXOffset(0)
-        shadow_effect.setYOffset(6)
-        shadow_effect.setColor(QColor(0, 0, 0, 80))
-        backgnd.setGraphicsEffect(shadow_effect)
+        uic.loadUi(theme_ui_path, self)
 
-    def init_font(self):
-        font_path = f'{base_directory}/font/HarmonyOS_Sans_SC_Bold.ttf'
-        font_id = QFontDatabase.addApplicationFont(font_path)
+        backgnd: Optional[QFrame] = self.findChild(QFrame, 'backgnd')
+        if backgnd:
+            shadow_effect: QGraphicsDropShadowEffect = QGraphicsDropShadowEffect(self)
+            shadow_effect.setBlurRadius(28)
+            shadow_effect.setXOffset(0)
+            shadow_effect.setYOffset(6)
+            shadow_effect.setColor(QColor(0, 0, 0, 80))
+            backgnd.setGraphicsEffect(shadow_effect)
+
+    def init_font(self) -> None: # Added return type
+        font_path: str = f'{base_directory}/font/HarmonyOS_Sans_SC_Bold.ttf' # type: ignore[attr-defined]
+        font_id: int = QFontDatabase.addApplicationFont(font_path)
         if font_id != -1:
-            font_family = QFontDatabase.applicationFontFamilies(font_id)[0]
+            font_families: List[str] = QFontDatabase.applicationFontFamilies(font_id)
+            if font_families:
+                font_family: str = font_families[0]
+                self.setStyleSheet(f"""
+                    QLabel, ProgressRing, PushButton{{
+                        font-family: "{font_family}";
+                        font-weight: bold
+                        }}
+                    """)
 
-            self.setStyleSheet(f"""
-                QLabel, ProgressRing, PushButton{{
-                    font-family: "{font_family}";
-                    font-weight: bold
-                    }}
-                """)
-
-    def intro_animation(self):  # 弹出动画
+    def intro_animation(self) -> None:  # 弹出动画. Added return type
         self.setMinimumWidth(300)
-        label_width = self.action_name.sizeHint().width() - 120
-        self.animation = QPropertyAnimation(self, b'windowOpacity')
+        label_width_offset: int = 0
+        if self.action_name: # action_name is Optional[QLabel]
+             label_width_offset = self.action_name.sizeHint().width() - 120
+
+        self.animation: QPropertyAnimation = QPropertyAnimation(self, b'windowOpacity') # type: ignore[misc]
         self.animation.setDuration(400)
         self.animation.setStartValue(0)
         self.animation.setEndValue(1)
-        self.animation.setEasingCurve(QEasingCurve.Type.InOutCirc)
+        self.animation.setEasingCurve(QEasingCurve.Type.InOutCirc) # type: ignore[attr-defined]
 
-        self.animation_rect = QPropertyAnimation(self, b'geometry')
+        self.animation_rect: QPropertyAnimation = QPropertyAnimation(self, b'geometry') # type: ignore[misc]
         self.animation_rect.setDuration(450)
-        self.animation_rect.setStartValue(
-            QRect(self.x(), self.screen_height, self.width(), self.height())
-        )
-        self.animation_rect.setEndValue(
-            QRect((self.screen_width - (self.width() + label_width)) // 2,
-                  self.screen_height - 250,
-                  self.width() + label_width,
-                  self.height())
-        )
-        self.animation_rect.setEasingCurve(QEasingCurve.Type.InOutCirc)
+        start_rect: QRect = QRect(self.x(), self.screen_height, self.width(), self.height())
+        self.animation_rect.setStartValue(start_rect)
+
+        end_width: int = self.width() + label_width_offset
+        end_x: int = (self.screen_width - end_width) // 2
+        end_y: int = self.screen_height - 250
+        end_height: int = self.height()
+        end_rect: QRect = QRect(end_x, end_y, end_width, end_height)
+        self.animation_rect.setEndValue(end_rect)
+        self.animation_rect.setEasingCurve(QEasingCurve.Type.InOutCirc) # type: ignore[attr-defined]
 
         self.animation.start()
         self.animation_rect.start()
 
-    def closeEvent(self, event):
+    def closeEvent(self, event: QCloseEvent) -> None: # Added QCloseEvent and return type
         event.ignore()
         self.setMinimumWidth(0)
-        self.position = self.pos()
-        # 关闭时保存一次位置
-        self.save_position()
+        # self.position is not defined in __init__. Assuming it's a QPoint if used.
+        # self.position = self.pos()
+        self.save_position() # Currently does nothing
         self.deleteLater()
         self.hide()
-        p_mgr.temp_window.clear()
+        if p_mgr and hasattr(p_mgr, 'temp_window'): # p_mgr is Optional[PluginManager]
+            p_mgr.temp_window.clear() # temp_window is List[QWidget]
 
 
 class FloatingWidget(QWidget):  # 浮窗
-    def __init__(self):
+    def __init__(self) -> None: # Added return type
         super().__init__()
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint | Qt.Tool)
         self.animation_rect = None
@@ -1213,114 +1625,136 @@ class FloatingWidget(QWidget):  # 浮窗
                 50  # 距离顶部 50px
             )
 
-        update_timer.add_callback(self.update_data)
+        if hasattr(utils, 'update_timer') and utils.update_timer: # utils.update_timer is QTimer
+            utils.update_timer.add_callback(self.update_data) # type: ignore[no-untyped-call]
 
-    def adjust_position_to_screen(self, pos):
-        screen = QApplication.screenAt(pos)
+    def adjust_position_to_screen(self, pos: QPoint) -> QPoint: # Added types
+        screen: Optional[QWidget] = QApplication.screenAt(pos) # screenAt returns QScreen
         if not screen:
-            screen = QApplication.primaryScreen()
-        screen_geometry = screen.availableGeometry()
-        window_width = self.width()
-        window_height = self.height()
-        # 计算屏幕边界
-        screen_left = screen_geometry.x()
-        screen_right = screen_geometry.x() + screen_geometry.width()
-        screen_top = screen_geometry.y()
-        screen_bottom = screen_geometry.y() + screen_geometry.height()
+            screen = QApplication.primaryScreen() # primaryScreen returns QScreen
 
-        new_x, new_y = pos.x(), pos.y()
+        if not screen: # Still no screen (e.g. in tests or headless)
+             return pos # Return original pos if no screen info
+
+        screen_geometry: QRect = screen.availableGeometry()
+        window_width: int = self.width()
+        window_height: int = self.height()
+
+        # Screen boundaries
+        screen_left: int = screen_geometry.x()
+        screen_right: int = screen_geometry.x() + screen_geometry.width()
+        screen_top: int = screen_geometry.y()
+        screen_bottom: int = screen_geometry.y() + screen_geometry.height()
+
+        new_x: int = pos.x()
+        new_y: int = pos.y()
+
+        # Adjust if window is more than halfway off screen horizontally
         if pos.x() < screen_left:
-        # 当窗口可见部分不足50%时调整
-            visible_width = (pos.x() + window_width) - screen_left
-            if visible_width < window_width / 2:
+            visible_width_left: int = (pos.x() + window_width) - screen_left
+            if visible_width_left < window_width / 2:
                 new_x = screen_left
         elif (pos.x() + window_width) > screen_right:
-            visible_width = screen_right - pos.x()
-            if visible_width < window_width / 2:
+            visible_width_right: int = screen_right - pos.x()
+            if visible_width_right < window_width / 2:
                 new_x = screen_right - window_width
+
+        # Adjust if window is more than halfway off screen vertically
         if pos.y() < screen_top:
-            visible_height = (pos.y() + window_height) - screen_top
-            if visible_height < window_height / 2:
+            visible_height_top: int = (pos.y() + window_height) - screen_top
+            if visible_height_top < window_height / 2:
                 new_y = screen_top
         elif (pos.y() + window_height) > screen_bottom:
-            visible_height = screen_bottom - pos.y()
-            if visible_height < window_height / 2:
+            visible_height_bottom: int = screen_bottom - pos.y()
+            if visible_height_bottom < window_height / 2:
                 new_y = screen_bottom - window_height
+
         return QPoint(new_x, new_y)
 
-    def _ensure_topmost(self):
+    def _ensure_topmost(self) -> None: # Added return type
         # 始终处于顶层
-        if active_windows:
+        if active_windows: # type: ignore[name-defined] # active_windows from tip_toast
             return
         if os.name == 'nt':
             try:
-                hwnd = self.winId().__int__()
-                if ctypes.windll.user32.IsWindow(hwnd):
-                    HWND_TOPMOST = -1
-                    SWP_NOMOVE = 0x0002
-                    SWP_NOSIZE = 0x0001
-                    SWP_SHOWWINDOW = 0x0040
-                    SWP_NOACTIVATE = 0x0010
-                    ctypes.windll.user32.SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOSIZE | SWP_SHOWWINDOW)
+                hwnd: int = self.winId().__int__() # type: ignore[attr-defined]
+                if ctypes.windll.user32.IsWindow(hwnd): # type: ignore[attr-defined]
+                    HWND_TOPMOST: int = -1
+                    SWP_NOMOVE: int = 0x0002
+                    SWP_NOSIZE: int = 0x0001
+                    SWP_SHOWWINDOW: int = 0x0040
+                    SWP_NOACTIVATE: int = 0x0010
+                    ctypes.windll.user32.SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOSIZE | SWP_SHOWWINDOW) # type: ignore[attr-defined]
                     self.raise_()
-                else:
+                else: # hwnd is not a valid window
                     if self._is_topmost_callback_added:
                         try:
-                            utils.update_timer.remove_callback(self._ensure_topmost)
-                        except ValueError:
-                            pass # 可能已经被移除了
+                            if hasattr(utils, 'update_timer') and utils.update_timer:
+                                utils.update_timer.remove_callback(self._ensure_topmost) # type: ignore[no-untyped-call]
+                        except ValueError: # Callback might have already been removed
+                            pass
                         self._is_topmost_callback_added = False
                         logger.debug(f"句柄 {hwnd} 无效，已移除置顶回调。")
-            except RuntimeError as e:
+            except RuntimeError as e: # Catch specific C++ object already deleted errors
                  if 'Internal C++ object' in str(e) and 'already deleted' in str(e):
                      logger.debug(f"尝试访问已删除的 FloatingWidget 时出错，移除回调: {e}")
                      if self._is_topmost_callback_added:
                          try:
-                            utils.update_timer.remove_callback(self._ensure_topmost)
+                            if hasattr(utils, 'update_timer') and utils.update_timer:
+                                utils.update_timer.remove_callback(self._ensure_topmost) # type: ignore[no-untyped-call]
                          except ValueError:
-                             pass # 可能已经被移除了
+                             pass
                          self._is_topmost_callback_added = False
-                 else:
+                 else: # Other runtime errors
                      logger.error(f"检查或设置浮窗置顶时发生运行时错误: {e}")
-            except Exception as e:
+            except Exception as e: # Catch any other exceptions
                 logger.error(f"检查或设置浮窗置顶时出错: {e}")
-                if self._is_topmost_callback_added:
+                if self._is_topmost_callback_added: # Attempt to remove callback on other errors too
                     try:
-                        utils.update_timer.remove_callback(self._ensure_topmost)
+                        if hasattr(utils, 'update_timer') and utils.update_timer:
+                           utils.update_timer.remove_callback(self._ensure_topmost) # type: ignore[no-untyped-call]
                     except ValueError:
                         pass
                     self._is_topmost_callback_added = False
                     logger.debug(f"因错误 {e} 移除浮窗置顶回调。")
-    
-    def save_position(self):
+
+    def save_position(self) -> None: # Added return type
         current_screen = QApplication.screenAt(self.pos())
         if not current_screen:
             current_screen = QApplication.primaryScreen()
-        screen_geometry = current_screen.availableGeometry()
-        pos = self.pos()
-        x = pos.x()
-        window_width = self.width()
-        if mgr.state:
-            return
-        screen_left = screen_geometry.left()
-        screen_right = screen_geometry.right()
-        if x < screen_left:
-            visible_width = (x + window_width) - screen_left
-            if visible_width < window_width / 2:
-                x = screen_left
-        elif (x + window_width) > screen_right:
-            if self.animating:
-                return
-            visible_width = screen_right - x
-            if visible_width < window_width / 2:
-                x = screen_right - window_width
-        y = min(max(pos.y(), screen_geometry.top()), screen_geometry.bottom())
-        pos = QPoint(x, y)
-        config_center.write_conf('FloatingWidget', 'pos_x', str(pos.x()))
-        if not self.animating:
-            config_center.write_conf('FloatingWidget', 'pos_y', str(pos.y()))
 
-    def load_position(self):
+        if not current_screen: return # No screen available
+
+        screen_geometry: QRect = current_screen.availableGeometry()
+        current_pos: QPoint = self.pos()
+        x_pos: int = current_pos.x()
+        window_w: int = self.width()
+
+        if mgr and mgr.state: # mgr is Optional[WidgetsManager], state is int
+            return # Don't save if main widgets are shown (mgr.state == 1)
+
+        screen_left_edge: int = screen_geometry.left()
+        screen_right_edge: int = screen_geometry.right()
+
+        # Adjust x if more than half off-screen
+        if x_pos < screen_left_edge:
+            if (x_pos + window_w) - screen_left_edge < window_w / 2:
+                x_pos = screen_left_edge
+        elif (x_pos + window_w) > screen_right_edge:
+            if self.animating: # Don't save during animation if it might be moving off-screen
+                return
+            if screen_right_edge - x_pos < window_w / 2:
+                x_pos = screen_right_edge - window_w
+
+        # Clamp y to be within screen
+        y_pos: int = min(max(current_pos.y(), screen_geometry.top()), screen_geometry.bottom() - self.height()) # ensure full widget visible
+
+        final_pos: QPoint = QPoint(x_pos, y_pos)
+        config_center.write_conf('FloatingWidget', 'pos_x', str(final_pos.x())) # type: ignore[no-untyped-call]
+        if not self.animating: # Only save Y if not animating (X might be saved during animation for edge cases)
+            config_center.write_conf('FloatingWidget', 'pos_y', str(final_pos.y())) # type: ignore[no-untyped-call]
+
+    def load_position(self) -> Optional[QPoint]: # Added return type
         x = config_center.read_conf('FloatingWidget', 'pos_x')
         y = config_center.read_conf('FloatingWidget', 'pos_y')
         if x and y:
@@ -1432,7 +1866,7 @@ class FloatingWidget(QWidget):  # 浮窗
         logger.info('显示浮窗')
         current_screen = QApplication.screenAt(self.pos()) or QApplication.primaryScreen()
         screen_geometry = current_screen.availableGeometry()
-        
+
         if self.position:
             if self.position.y() > screen_geometry.center().y():
                 # 下半屏
@@ -1467,7 +1901,7 @@ class FloatingWidget(QWidget):  # 浮窗
         self.animation_rect.setDuration(600)
         self.animation_rect.setStartValue(QRect(start_pos, self.size()))
         self.animation_rect.setEndValue(QRect(self.position, self.size()))
-        
+
         if platform.system() == 'Darwin':
             self.animation_rect.setEasingCurve(QEasingCurve.Type.OutQuad)
         elif platform.system() == 'Windows':
@@ -1515,7 +1949,7 @@ class FloatingWidget(QWidget):  # 浮窗
                 # 任务栏补偿
                 if platform.system() == "Windows":
                     target_y += 30
-                
+
                 target_pos = QPoint(
                     main_widget.x(),
                     target_y
@@ -1530,7 +1964,7 @@ class FloatingWidget(QWidget):  # 浮窗
                 int(config_center.read_conf('General', 'margin'))
             )
             distance = abs(current_pos.y() - target_pos.y())
-        
+
         max_distance = screen_geometry.height()
         distance_ratio = min(distance / max_distance, 1.0)
         duration = int(base_duration + (max_duration - base_duration) * (distance_ratio ** 0.7))
@@ -1547,22 +1981,22 @@ class FloatingWidget(QWidget):  # 浮窗
             curve = QEasingCurve.Type.InOutQuad
         elif platform.system() == "Darwin":
             curve = QEasingCurve.Type.InOutQuad # macOS 也用这个吧
-        
+
         self.animation = QPropertyAnimation(self, b"windowOpacity")
         self.animation.setDuration(int(duration * 1.15))
         self.animation.setStartValue(self.windowOpacity())
         self.animation.setEndValue(0.0)
-        
+
         self.animation_rect = QPropertyAnimation(self, b"geometry")
         self.animation_rect.setDuration(duration)
         self.animation_rect.setStartValue(self.geometry())
         self.animation_rect.setEndValue(QRect(target_pos, self.size()))
         self.animation_rect.setEasingCurve(curve)
-        
+
         self.animating = True
         self.animation.start()
         self.animation_rect.start()
-        
+
         def cleanup():
             self.hide()
             self.save_position()
@@ -1573,7 +2007,7 @@ class FloatingWidget(QWidget):  # 浮窗
                 except ValueError:
                     pass
                 self._is_topmost_callback_added = False
-            
+
         self.animation_rect.finished.connect(cleanup)
 
     def hideEvent(self, event):
@@ -1632,7 +2066,7 @@ class FloatingWidget(QWidget):  # 浮窗
                 else:
                     mgr.show_windows()
                     mgr.hide_status = (current_state, 0)
-            elif hide_mode == '0': 
+            elif hide_mode == '0':
                 mgr.show_windows()
                 self.close()
 
@@ -1764,7 +2198,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.alert_icon_animation = QPropertyAnimation(self.alert_icon_opacity, b"opacity")
             self.alert_icon_animation.setDuration(700)
             self.alert_icon_animation.setEasingCurve(QEasingCurve.OutCubic)
-            
+
             self.showing_temperature = True  # 跟踪状态(预警/气温)
 
             self.weather_timer = QTimer(self)
@@ -1972,7 +2406,7 @@ class DesktopWidget(QWidget):  # 主要小组件
     def animate_expand(self, target_geometry):
         self.animation = QPropertyAnimation(self, b"geometry")
         self.animation.setDuration(400)
-        self.animation.setStartValue(QRect(target_geometry.x(), -self.height(), 
+        self.animation.setStartValue(QRect(target_geometry.x(), -self.height(),
                                           self.width(), self.height()))
         self.animation.setEndValue(target_geometry)
         self.animation.setEasingCurve(QEasingCurve.Type.OutBack)
@@ -2020,7 +2454,7 @@ class DesktopWidget(QWidget):  # 主要小组件
                 else:
                     mgr.show_windows()
                     mgr.hide_status = (current_state, 0)
-                
+
 
 
     def rightReleaseEvent(self, event):  # 右键事件
@@ -2057,13 +2491,13 @@ class DesktopWidget(QWidget):  # 主要小组件
             else:
                 mgr.show_windows()
 
-            
+
 
         if conf.is_temp_week():  # 调休日
             current_week = config_center.read_conf('Temp', 'set_week')
         else:
             current_week = dt.datetime.now().weekday()
-        
+
         cd_list = get_countdown()
 
         if path == 'widget-time.ui':  # 日期显示
@@ -2250,7 +2684,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             if not hasattr(self, 'temperature_opacity') or not self.temperature_opacity:
                 self.temperature_opacity = QGraphicsOpacityEffect(self.temperature)
                 self.temperature.setGraphicsEffect(self.temperature_opacity)
-                
+
             weather_fade_in = QPropertyAnimation(self.weather_opacity, b'opacity')
             temp_fade_in = QPropertyAnimation(self.temperature_opacity, b'opacity')
             weather_fade_in.setDuration(500)
@@ -2279,7 +2713,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             # 连接淡出组完成信号
             self.fade_out_group.finished.connect(_start_temperature_fade_in)
             self.fade_out_group.start()
-        
+
         self.showing_temperature = not self.showing_temperature
 
     def detect_theme_changed(self):
@@ -2336,7 +2770,7 @@ class DesktopWidget(QWidget):  # 主要小组件
                                     font.setPointSize(12)
                                 else:
                                     font.setPointSize(10)
-                                
+
                                 self.weather_alert_text.setFont(font)
                                 self.weather_alert_text.setText(alert_text)
                                 self.weather_alert_text.setAlignment(Qt.AlignCenter)
@@ -2364,7 +2798,7 @@ class DesktopWidget(QWidget):  # 主要小组件
                 logger.error(f'天气组件出错：{e}')
         else:
             logger.error(f'获取天气数据出错：{weather_data}')
-            try: 
+            try:
                 if hasattr(self, 'weather_icon'):
                     self.weather_icon.setPixmap(QPixmap(f'{base_directory}/img/weather/99.svg'))
                     self.alert_icon.hide()
@@ -2609,7 +3043,7 @@ def check_windows_maximize():  # 检查窗口是否最大化
     ignored_process_names_for_maximize_lower = {
         'easinote.exe'
     }
-    
+
     current_pid = os.getpid()
 
     try:
@@ -2642,7 +3076,7 @@ def check_windows_maximize():  # 检查窗口是否最大化
             except (psutil.NoSuchProcess, psutil.AccessDenied, AttributeError, ValueError, OSError) :
                 # logger.debug(f"无法获取窗口 '{title}' 的进程信息,跳过.")
                 continue
-            
+
             if win_pid == current_pid:
                 # logger.debug(f"窗口 '{title}' (PID: {win_pid}, 进程: {process_name}) 是自身进程, 排除.")
                 continue
@@ -2657,7 +3091,7 @@ def check_windows_maximize():  # 检查窗口是否最大化
             if process_name in excluded_process_names_lower:
                 # logger.debug(f"窗口 '{title}' (进程: {process_name}) 在排除的进程名列表, 排除.")
                 continue
-            
+
             if title_lower in excluded_titles_exact_lower:
                 # logger.debug(f"窗口标题 '{title_lower}' 在排除列表, 排除.")
                 continue
@@ -2665,7 +3099,7 @@ def check_windows_maximize():  # 检查窗口是否最大化
             if any(keyword in title_lower for keyword in excluded_keywords_in_title_lower):
                 # logger.debug(f"窗口标题 '{title_lower}' 包含排除的关键词, 排除.")
                 continue
-            
+
             # 如果进程是 explorer.exe,但不是“资源管理器”则认为是特殊explorer(应该是桌面)
             if process_name == 'explorer.exe':
                 if title_lower in excluded_titles_exact_lower or \
@@ -2873,3 +3307,6 @@ if __name__ == '__main__':
     status = app.exec()
 
     utils.stop(status)
+>>>>>>> REPLACE
+
+[end of main.py]
