@@ -22,17 +22,127 @@ on:
           - x86
           - x64
           - all
+
 concurrency:
   group: build-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
   contents: read
-  pull-requests: write
+  pull-requests: read
 
 jobs:
+  lint:
+    name: Python Syntax Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request_target'
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout PR (merge ref)
+        uses: actions/checkout@v4
+        with:
+          ref: refs/pull/${{ github.event.pull_request.number }}/merge
+          fetch-depth: 0
+          path: .
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.8"
+
+      - name: Cache Python dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-python-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-python-
+
+      - name: Install linters and tools
+        run: |
+          pip install ruff pylint pyright
+
+      - name: Detect changed Python files
+        id: changed
+        run: |
+          echo "🔍 获取改动 Python 文件..."
+          changed_files=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep '\.py$' || true)
+          echo "$changed_files" > changed_files.txt
+          echo "changed_files_json=$(echo "$changed_files" | jq -R -s -c 'split("\n") | map(select(. != ""))')" >> $GITHUB_OUTPUT
+          if [ -z "$changed_files" ]; then
+            echo "has_changed_files=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changed_files=true" >> $GITHUB_OUTPUT
+          fi
+          echo "$changed_files"
+
+      - name: Skip if no Python files changed
+        id: skip_lint_check
+        if: steps.changed.outputs.has_changed_files == 'false'
+        run: |
+          echo "✅ 没有 Python 文件改动，跳过检查"
+          echo "::set-output name=should_skip_lint::true"
+
+      - name: Run Ruff
+        if: steps.changed.outputs.has_changed_files == 'true'
+        uses: astral-sh/ruff-action@v3
+        continue-on-error: true
+        with:
+          args: check --select=E,F ${{ join(fromJson(steps.changed.outputs.changed_files_json), ' ') }}
+
+      - name: Run Pyright
+        if: steps.skip_lint_check.outputs.should_skip_lint != 'true'
+        uses: jakebailey/pyright-action@v2
+        continue-on-error: true
+        with:
+          pylance-version: latest-release
+          args: ${{ join(fromJson(steps.changed.outputs.changed_files_json), ' ') }}
+
+      - name: Run PyLint
+        if: steps.skip_lint_check.outputs.should_skip_lint != 'true'
+        continue-on-error: true
+        run: |
+          if [ -s changed_files.txt ]; then
+            pylint --errors-only $(cat changed_files.txt) > pylint_output.txt || true
+          else
+            echo "没有需要检查的Python文件" > pylint_output.txt
+          fi
+
+      - name: Read PyLint Output
+        id: pylint_output_read
+        if: steps.skip_lint_check.outputs.should_skip_lint != 'true'
+        run: |
+          echo '::group::读取 PyLint 输出内容'
+          if [ -f pylint_output.txt ] && [ -s pylint_output.txt ]; then
+            echo "output<<EOF" >> $GITHUB_OUTPUT
+            cat pylint_output.txt >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "output=没有需要检查的Python文件" >> $GITHUB_OUTPUT
+          fi
+          echo '::endgroup::'
+
+      - name: Post PyLint comment to PR
+        if: steps.skip_lint_check.outputs.should_skip_lint != 'true'
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            **🧪 PyLint 检查结果**
+            <details><summary>查看详情</summary>
+
+            ```
+            ${{ steps.changed.outputs.changed_files_json }}
+            ```
+            ```text
+            ${{ steps.pylint_output_read.outputs.output }}
+            ```
+
+            </details>
   build:
-    needs: lint
     strategy:
       fail-fast: false
       matrix:
@@ -42,42 +152,65 @@ jobs:
           - arch: x64
             os: windows-latest
     env:
-      BUILD_TRIGGERED: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' || github.event_name == 'workflow_dispatch' }}
+      BUILD_TRIGGERED: ${{ (github.event_name == 'pull_request' || github.event_name == 'pull_request_target' || github.event_name == 'workflow_dispatch') && 'true' || 'false' }}
     runs-on: ${{ matrix.os }}
     if: |
       github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' || github.event_name == 'pull_request_target'
     steps:
       - name: Skip build for ${{ matrix.arch }}
+        id: skip_check
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.architecture != 'all' && github.event.inputs.architecture != matrix.arch
-        run: echo "Skip build ${{ matrix.arch }}"
+        run: |
+          echo "Skip build ${{ matrix.arch }}"
+          echo "::set-output name=should_skip::true"
 
       - name: Checkout repository
-        if: env.BUILD_TRIGGERED && (github.event.inputs.architecture == 'all' || github.event.inputs.architecture == matrix.arch)
         uses: actions/checkout@v4.2.2
 
       - name: Setup Python
-        if: env.BUILD_TRIGGERED && (github.event.inputs.architecture == 'all' || github.event.inputs.architecture == matrix.arch)
+        if: steps.skip_check.outputs.should_skip != 'true'
         uses: actions/setup-python@v5.3.0
         with:
           python-version: '3.8.10'
           architecture: ${{ matrix.arch }}
 
       - name: Setup uv
-        if: env.BUILD_TRIGGERED && (github.event.inputs.architecture == 'all' || github.event.inputs.architecture == matrix.arch)
+        if: steps.skip_check.outputs.should_skip != 'true'
         uses: astral-sh/setup-uv@v4
 
+      - name: Cache Python dependencies
+        if: steps.skip_check.outputs.should_skip != 'true'
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/uv
+            .venv
+          key: ${{ runner.os }}-${{ matrix.arch }}-uv-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.arch }}-uv-
+
+      - name: Create venv and install dependencies
+        if: steps.skip_check.outputs.should_skip != 'true'
+        shell: pwsh
+        run: |
+          pwd
+          uv venv .venv
+          $env:UV_VENV_PATH = ".venv"
+          uv pip install -r requirements.txt
+          uv pip install pyinstaller
+
       - name: Prepare output directory
-        if: env.BUILD_TRIGGERED && (github.event.inputs.architecture == 'all' || github.event.inputs.architecture == matrix.arch)
+        if: steps.skip_check.outputs.should_skip != 'true'
         run: |
           if (Test-Path zip) { Remove-Item zip -Recurse -Force }
           mkdir zip
 
       - name: Set Build Info
-        if: env.BUILD_TRIGGERED && (github.event.inputs.architecture == 'all' || github.event.inputs.architecture == matrix.arch)
+        if: steps.skip_check.outputs.should_skip != 'true'
         shell: bash
         env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          PR_BRANCH: ${{ github.event.pull_request.head.repo.owner.login }}:${{ github.event.pull_request.head.ref }}
+          PR_NUMBER: ${{ github.event.pull_request.number || 0 }}
+          PR_BRANCH: ${{ github.event.pull_request.head.repo.owner.login || github.repository_owner }}:${{ github.event.pull_request.head.ref || github.ref_name }}
         run: |
           build_time=$(date -u -d "+8 hours" +"%Y-%m-%d %H:%M")
           build_commit="${GITHUB_SHA:0:7}"
@@ -92,7 +225,8 @@ jobs:
           elif [[ "${GITHUB_EVENT_NAME}" == "push" && ! "${GITHUB_REF}" =~ ^refs/tags/ ]]; then
             build_type="pyinstaller(Debug for Test)"
           fi
-          config_path="config/default_config.json"
+          config_path="${GITHUB_WORKSPACE}/config/default_config.json"
+          ls -l "$config_path"
           config_text=$(cat "$config_path")
           config_text="${config_text//__BUILD_TIME__/$build_time}"
           config_text="${config_text//__BUILD_COMMIT__/$build_commit}"
@@ -108,12 +242,11 @@ jobs:
           echo "🧪 BUILD_TYPE:  $build_type"
 
       - name: Run Windows build & package
-        if: env.BUILD_TRIGGERED && (github.event.inputs.architecture == 'all' || github.event.inputs.architecture == matrix.arch)
+        if: steps.skip_check.outputs.should_skip != 'true'
+        shell: pwsh
         run: |
           curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
-          uv venv
-          .venv\Scripts\activate
-          uv pip install -r requirements.txt pyinstaller
+          .\.venv\Scripts\activate
           pyinstaller main.py `
             -w `
             -i ./img/favicon.ico `
@@ -131,7 +264,7 @@ jobs:
           ./zip -r -q zip/ClassWidgets_${{ github.run_id }}-${{ matrix.arch }}.zip dist/ClassWidgets/*
 
       - name: Upload build artifact
-        if: env.BUILD_TRIGGERED && (github.event.inputs.architecture == 'all' || github.event.inputs.architecture == matrix.arch)
+        if: steps.skip_check.outputs.should_skip != 'true'
         uses: actions/upload-artifact@v4.4.2
         with:
           name: windows-${{ matrix.arch }}_debug_#${{ github.run_number }}
