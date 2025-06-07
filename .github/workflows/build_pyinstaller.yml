@@ -142,7 +142,6 @@ jobs:
             ```
 
             </details>
-
   build:
     strategy:
       fail-fast: false
