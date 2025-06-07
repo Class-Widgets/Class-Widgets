@@ -465,17 +465,28 @@ def get_next_lessons_text():
             range_time = 5
         else:
             range_time = len(next_lessons)
+        MAX_DISPLAY_LENGTH = 6
         for i in range(range_time):
-            if range_time > 2:
-                if next_lessons[i] != '暂无课程':
-                    cache_text += f'{list_.get_subject_abbreviation(next_lessons[i])}  '  # 获取课程简称
+            lesson_name = next_lessons[i]
+            display_name = ''
+            if lesson_name != '暂无课程':
+                if range_time > 2:
+                    abbreviation = list_.get_subject_abbreviation(lesson_name)
+                    if len(abbreviation) > MAX_DISPLAY_LENGTH:
+                        display_name = abbreviation[:MAX_DISPLAY_LENGTH-1] + '...'
+                    else:
+                        display_name = abbreviation
                 else:
-                    cache_text += f'无  '
+                    if len(lesson_name) > MAX_DISPLAY_LENGTH:
+                        display_name = lesson_name[:MAX_DISPLAY_LENGTH-1] + '...'
+                    else:
+                        display_name = lesson_name
             else:
-                if next_lessons[i] != '暂无课程':
-                    cache_text += f'{next_lessons[i]}  '
+                if range_time > 2:
+                    display_name = '无'
                 else:
-                    cache_text += f'暂无  '
+                    display_name = '暂无'
+            cache_text += f'{display_name}  '
     return cache_text
 
 
