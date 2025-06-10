@@ -1825,10 +1825,7 @@ class DesktopWidget(QWidget):  # 主要小组件
         # 设置窗口无边框和透明背景
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
-        if config_center.read_conf('General', 'hide') == '2' or (not int(config_center.read_conf('General', 'enable_click'))):
-            self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
-        else:
-            self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents, False)
+        self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents, config_center.read_conf('General', 'enable_click') == '0')
 
         if config_center.read_conf('General', 'pin_on_top') == '1':  # 置顶
             self.setWindowFlags(
