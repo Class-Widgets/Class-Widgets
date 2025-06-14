@@ -253,26 +253,26 @@ jobs:
           PR_BRANCH: ${{ github.event.pull_request.head.repo.owner.login || github.repository_owner }}:${{ github.event.pull_request.head.ref || github.ref_name }}
         run: |
           build_time=$(date -u -d "+8 hours" +"%Y-%m-%d %H:%M")
-          build_commit="${GITHUB_SHA:0:7}"
-          build_branch="${GITHUB_REF_NAME}"
-          if [[ "${GITHUB_EVENT_NAME}" == "pull_request" || "${GITHUB_EVENT_NAME}" == "pull_request_target" ]]; then
+          build_commit=$(echo "$GITHUB_SHA" | cut -c1-7)
+          build_branch="$GITHUB_REF_NAME"
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ] || [ "$GITHUB_EVENT_NAME" = "pull_request_target" ]; then
             build_branch="$PR_BRANCH"
           fi
-          build_runid="${GITHUB_RUN_ID}"
+          build_runid="$GITHUB_RUN_ID"
           build_type="pyinstaller"
-          if [[ "${GITHUB_EVENT_NAME}" == "pull_request" || "${GITHUB_EVENT_NAME}" == "pull_request_target" ]]; then
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ] || [ "$GITHUB_EVENT_NAME" = "pull_request_target" ]; then
             build_type="pyinstaller (Debug for PR-#${PR_NUMBER})"
-          elif [[ "${GITHUB_EVENT_NAME}" == "push" && ! "${GITHUB_REF}" =~ ^refs/tags/ ]]; then
+          elif [ "$GITHUB_EVENT_NAME" = "push" ] && ! echo "$GITHUB_REF" | grep -q '^refs/tags/'; then
             build_type="pyinstaller(Debug for Test)"
           fi
-          config_path="${GITHUB_WORKSPACE}/config/default_config.json"
+          config_path="$GITHUB_WORKSPACE/config/default_config.json"
           ls -l "$config_path"
           config_text=$(cat "$config_path")
-          config_text="${config_text//__BUILD_TIME__/$build_time}"
-          config_text="${config_text//__BUILD_COMMIT__/$build_commit}"
-          config_text="${config_text//__BUILD_BRANCH__/$build_branch}"
-          config_text="${config_text//__BUILD_RUNID__/$build_runid}"
-          config_text="${config_text//__BUILD_TYPE__/$build_type}"
+          config_text=$(echo "$config_text" | sed "s/__BUILD_TIME__/$build_time/g")
+          config_text=$(echo "$config_text" | sed "s/__BUILD_COMMIT__/$build_commit/g")
+          config_text=$(echo "$config_text" | sed "s/__BUILD_BRANCH__/$build_branch/g")
+          config_text=$(echo "$config_text" | sed "s/__BUILD_RUNID__/$build_runid/g")
+          config_text=$(echo "$config_text" | sed "s/__BUILD_TYPE__/$build_type/g")
           printf "%s" "$config_text" > "$config_path"
           echo "📜 写入的构建信息："
           echo "⏰ BUILD_TIME(UTC+8):   $build_time"
@@ -281,50 +281,50 @@ jobs:
           echo "🆔 RUN_ID:      $build_runid"
           echo "🧪 BUILD_TYPE:  $build_type"
 
-      - name: Run build & package
-        if: steps.skip_check.outputs.should_skip != 'true'
+      - name: Run Windows build & package
+        if: steps.skip_check.outputs.should_skip != 'true' && matrix.platform == 'windows'
+        shell: pwsh
+        run: |
+          curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
+          .\.venv\Scripts\activate
+          pyinstaller main.py `
+            -w `
+            -i ./img/favicon.ico `
+            -n ClassWidgets `
+            --contents-directory . `
+            --add-data config:config `
+            --add-data audio:audio `
+            --add-data img:img `
+            --add-data ui:ui `
+            --add-data font:font `
+            --add-data view:view `
+            --add-data LICENSE:. `
+            --add-data plugins:plugins `
+            --hidden-import darkdetect
+          ./zip -r -q zip/ClassWidgets_${{ github.run_id }}-${{ matrix.arch }}.zip dist/ClassWidgets/*
+
+      - name: Run macOS build & package
+        if: steps.skip_check.outputs.should_skip != 'true' && matrix.platform == 'macos'
         shell: bash
         run: |
-          if [ "${{ matrix.platform }}" = "windows" ]; then
-            # Windows build
-            curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
-            .\.venv\Scripts\activate
-            pyinstaller main.py `
-              -w `
-              -i ./img/favicon.ico `
-              -n ClassWidgets `
-              --contents-directory . `
-              --add-data config:config `
-              --add-data audio:audio `
-              --add-data img:img `
-              --add-data ui:ui `
-              --add-data font:font `
-              --add-data view:view `
-              --add-data LICENSE:. `
-              --add-data plugins:plugins `
-              --hidden-import darkdetect
-            ./zip -r -q zip/ClassWidgets_${{ github.run_id }}-${{ matrix.arch }}.zip dist/ClassWidgets/*
-          else
-            # macOS build
-            source .venv/bin/activate
-            pyinstaller main.py \
-              -w \
-              -i ./img/favicon.icns \
-              -n ClassWidgets \
-              --contents-directory . \
-              --add-data config:config \
-              --add-data audio:audio \
-              --add-data img:img \
-              --add-data ui:ui \
-              --add-data font:font \
-              --add-data view:view \
-              --add-data LICENSE:. \
-              --add-data plugins:plugins \
-              --hidden-import darkdetect
-            cd dist
-            zip -r ../zip/ClassWidgets_${{ github.run_id }}-${{ matrix.arch }}.zip ClassWidgets.app
-            cd ..
-          fi
+          source .venv/bin/activate
+          pyinstaller main.py \
+            -w \
+            -i ./img/favicon.icns \
+            -n ClassWidgets \
+            --contents-directory . \
+            --add-data config:config \
+            --add-data audio:audio \
+            --add-data img:img \
+            --add-data ui:ui \
+            --add-data font:font \
+            --add-data view:view \
+            --add-data LICENSE:. \
+            --add-data plugins:plugins \
+            --hidden-import darkdetect
+          cd dist
+          zip -r ../zip/ClassWidgets_${{ github.run_id }}-${{ matrix.arch }}.zip ClassWidgets.app
+          cd ..
 
       - name: Upload build artifact
         if: steps.skip_check.outputs.should_skip != 'true'
