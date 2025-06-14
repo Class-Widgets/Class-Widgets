@@ -1,20 +1,10 @@
 name: 临时构建 macOS (pyinstaller)
 
 on:
-  pull_request_target:
-    types: [opened, synchronize]
-    paths-ignore:      
-      - '**/*.md'
-      - '**/*.txt'
-      - '.gitignore'
-      - '.gitattributes'
-      - '.github/ISSUE_TEMPLATE/**'
-      - '.github/DISCUSSION_TEMPLATE/**'
-      - '.github/PULL_REQUEST_TEMPLATE*'
   workflow_dispatch:
     inputs:
       architecture:
-        description: '构建架构'
+        description: '构建架构 (x64, arm64, all)'
         required: true
         default: 'all'
         type: choice
@@ -22,6 +12,16 @@ on:
           - x64
           - arm64
           - all
+  pull_request_target:
+    types: [opened, synchronize]
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.txt'
+      - '.gitignore'
+      - '.gitattributes'
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/DISCUSSION_TEMPLATE/**'
+      - '.github/PULL_REQUEST_TEMPLATE*'
 
 concurrency:
   group: build-${{ github.ref }}
@@ -104,7 +104,11 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number || 0 }}
           PR_BRANCH: ${{ github.event.pull_request.head.repo.owner.login || github.repository_owner }}:${{ github.event.pull_request.head.ref || github.ref_name }}
         run: |
-          build_time=$(date -u -v+8H +"%Y-%m-%d %H:%M")
+          if [[ "$(uname)" == "Darwin" ]]; then
+            build_time=$(date -u -v+8H +"%Y-%m-%d %H:%M")
+          else
+            build_time=$(date -u -d "+8 hours" +"%Y-%m-%d %H:%M")
+          fi
           build_commit="${GITHUB_SHA:0:7}"
           build_branch="${GITHUB_REF_NAME}"
           if [[ "${GITHUB_EVENT_NAME}" == "pull_request" || "${GITHUB_EVENT_NAME}" == "pull_request_target" ]]; then
