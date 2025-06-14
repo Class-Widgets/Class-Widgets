@@ -24,7 +24,7 @@ on:
       - '.github/PULL_REQUEST_TEMPLATE*'
 
 concurrency:
-  group: build-${{ github.ref }}
+  group: build-macos-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
@@ -68,7 +68,7 @@ jobs:
         if: steps.skip_check.outputs.should_skip != 'true'
         uses: actions/setup-python@v5.3.0
         with:
-          python-version: '3.8.10'
+          python-version: '3.8.20'
           architecture: ${{ matrix.arch }}
 
       - name: Setup uv

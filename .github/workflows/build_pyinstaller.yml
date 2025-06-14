@@ -24,7 +24,7 @@ on:
           - all
 
 concurrency:
-  group: build-${{ github.ref }}
+  group: build-pyinstaller-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
