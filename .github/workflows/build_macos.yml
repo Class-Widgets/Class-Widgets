@@ -38,13 +38,9 @@ jobs:
       matrix:
         include:
           - arch: x64
-            os: macos-13
+            os: macos-15
           - arch: arm64
-            os: macos-13
-          - arch: x64
-            os: macos-14
-          - arch: arm64
-            os: macos-14
+            os: macos-15
     env:
       BUILD_TRIGGERED: ${{ (github.event_name == 'pull_request' || github.event_name == 'pull_request_target' || github.event_name == 'workflow_dispatch') && 'true' || 'false' }}
     runs-on: ${{ matrix.os }}
@@ -68,7 +64,7 @@ jobs:
         if: steps.skip_check.outputs.should_skip != 'true'
         uses: actions/setup-python@v5.3.0
         with:
-          python-version: '3.8.18'
+          python-version: '3.12.0'
           architecture: ${{ matrix.arch }}
 
       - name: Setup uv
