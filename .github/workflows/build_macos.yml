@@ -68,7 +68,7 @@ jobs:
         if: steps.skip_check.outputs.should_skip != 'true'
         uses: actions/setup-python@v5.3.0
         with:
-          python-version: '3.8.20'
+          python-version: '3.8.18'
           architecture: ${{ matrix.arch }}
 
       - name: Setup uv
