@@ -1,4 +1,4 @@
-name: 临时构建(pyinstaller) 多平台
+name: 临时构建(pyinstaller)
 
 on:
   pull_request_target:
@@ -13,24 +13,14 @@ on:
     - '.github/PULL_REQUEST_TEMPLATE*'
   workflow_dispatch:
     inputs:
-      platform:
-        description: '构建平台 (windows, macos, all)'
-        required: true
-        default: 'all'
-        type: choice
-        options:
-          - windows
-          - macos
-          - all
       architecture:
-        description: '构建架构 (x86, x64, arm64, all)'
+        description: '构建架构'
         required: true
         default: 'all'
         type: choice
         options:
           - x86
           - x64
-          - arm64
           - all
 
 concurrency:
@@ -109,13 +99,12 @@ jobs:
 
       - name: Run Pyright
         if: steps.skip_lint_check.outputs.should_skip_lint != 'true'
+        uses: jakebailey/pyright-action@v2
         continue-on-error: true
-        run: |
-          if [ -s changed_files.txt ]; then
-            npx pyright $(cat changed_files.txt)
-          else
-            echo "No changed files, skipping Pyright"
-          fi
+        with:
+          annotate: errors
+          pylance-version: latest-release
+          args: ${{ join(fromJson(steps.changed.outputs.changed_files_json), ' ') }}
 
       - name: Run PyLint
         if: steps.skip_lint_check.outputs.should_skip_lint != 'true'
@@ -164,36 +153,29 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - platform: windows
+          - arch: x86
             os: windows-latest
-            arch: x86
-          - platform: windows
+          - arch: x64
             os: windows-latest
-            arch: x64
-          - platform: macos
-            os: macos-latest
-            arch: arm64
-          - platform: macos
-            os: macos-latest
-            arch: x64
+          - arch: x64
+            os: macos-13
+          - arch: arm64
+            os: macos-13
+          - arch: x64
+            os: macos-14
+          - arch: arm64
+            os: macos-14
     env:
       BUILD_TRIGGERED: ${{ (github.event_name == 'pull_request' || github.event_name == 'pull_request_target' || github.event_name == 'workflow_dispatch') && 'true' || 'false' }}
     runs-on: ${{ matrix.os }}
     if: |
-      github.event_name == 'pull_request' || 
-      github.event_name == 'workflow_dispatch' || 
-      github.event_name == 'pull_request_target'
+      github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' || github.event_name == 'pull_request_target'
     steps:
-      - name: Skip build for ${{ matrix.platform }}-${{ matrix.arch }}
+      - name: Skip build for ${{ matrix.arch }}
         id: skip_check
-        if: |
-          github.event_name == 'workflow_dispatch' &&
-          (
-            (github.event.inputs.platform != 'all' && github.event.inputs.platform != matrix.platform) ||
-            (github.event.inputs.architecture != 'all' && github.event.inputs.architecture != matrix.arch)
-          )
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.architecture != 'all' && github.event.inputs.architecture != matrix.arch
         run: |
-          echo "Skip build ${{ matrix.platform }}-${{ matrix.arch }}"
+          echo "Skip build ${{ matrix.arch }}"
           echo "::set-output name=should_skip::true"
 
       - name: Checkout repository
@@ -204,7 +186,7 @@ jobs:
         uses: actions/setup-python@v5.3.0
         with:
           python-version: '3.8.10'
-          architecture: ${{ matrix.platform == 'windows' && matrix.arch || '' }}
+          architecture: ${{ matrix.arch }}
 
       - name: Setup uv
         if: steps.skip_check.outputs.should_skip != 'true'
@@ -223,27 +205,19 @@ jobs:
 
       - name: Create venv and install dependencies
         if: steps.skip_check.outputs.should_skip != 'true'
-        shell: bash
+        shell: pwsh
         run: |
           pwd
           uv venv .venv
-          if [ "${{ matrix.platform }}" = "windows" ]; then
-            .\.venv\Scripts\activate
-          else
-            source .venv/bin/activate
-          fi
+          $env:UV_VENV_PATH = ".venv"
           uv pip install -r requirements.txt
           uv pip install pyinstaller
 
       - name: Prepare output directory
         if: steps.skip_check.outputs.should_skip != 'true'
         run: |
-          if [ "${{ matrix.platform }}" = "windows" ]; then
-            if (Test-Path zip) { Remove-Item zip -Recurse -Force }
-            mkdir zip
-          else
-            mkdir -p zip
-          fi
+          if (Test-Path zip) { Remove-Item zip -Recurse -Force }
+          mkdir zip
 
       - name: Set Build Info
         if: steps.skip_check.outputs.should_skip != 'true'
@@ -253,26 +227,26 @@ jobs:
           PR_BRANCH: ${{ github.event.pull_request.head.repo.owner.login || github.repository_owner }}:${{ github.event.pull_request.head.ref || github.ref_name }}
         run: |
           build_time=$(date -u -d "+8 hours" +"%Y-%m-%d %H:%M")
-          build_commit=$(echo "$GITHUB_SHA" | cut -c1-7)
-          build_branch="$GITHUB_REF_NAME"
-          if [ "$GITHUB_EVENT_NAME" = "pull_request" ] || [ "$GITHUB_EVENT_NAME" = "pull_request_target" ]; then
+          build_commit="${GITHUB_SHA:0:7}"
+          build_branch="${GITHUB_REF_NAME}"
+          if [[ "${GITHUB_EVENT_NAME}" == "pull_request" || "${GITHUB_EVENT_NAME}" == "pull_request_target" ]]; then
             build_branch="$PR_BRANCH"
           fi
-          build_runid="$GITHUB_RUN_ID"
+          build_runid="${GITHUB_RUN_ID}"
           build_type="pyinstaller"
-          if [ "$GITHUB_EVENT_NAME" = "pull_request" ] || [ "$GITHUB_EVENT_NAME" = "pull_request_target" ]; then
+          if [[ "${GITHUB_EVENT_NAME}" == "pull_request" || "${GITHUB_EVENT_NAME}" == "pull_request_target" ]]; then
             build_type="pyinstaller (Debug for PR-#${PR_NUMBER})"
-          elif [ "$GITHUB_EVENT_NAME" = "push" ] && ! echo "$GITHUB_REF" | grep -q '^refs/tags/'; then
+          elif [[ "${GITHUB_EVENT_NAME}" == "push" && ! "${GITHUB_REF}" =~ ^refs/tags/ ]]; then
             build_type="pyinstaller(Debug for Test)"
           fi
-          config_path="$GITHUB_WORKSPACE/config/default_config.json"
+          config_path="${GITHUB_WORKSPACE}/config/default_config.json"
           ls -l "$config_path"
           config_text=$(cat "$config_path")
-          config_text=$(echo "$config_text" | sed "s/__BUILD_TIME__/$build_time/g")
-          config_text=$(echo "$config_text" | sed "s/__BUILD_COMMIT__/$build_commit/g")
-          config_text=$(echo "$config_text" | sed "s/__BUILD_BRANCH__/$build_branch/g")
-          config_text=$(echo "$config_text" | sed "s/__BUILD_RUNID__/$build_runid/g")
-          config_text=$(echo "$config_text" | sed "s/__BUILD_TYPE__/$build_type/g")
+          config_text="${config_text//__BUILD_TIME__/$build_time}"
+          config_text="${config_text//__BUILD_COMMIT__/$build_commit}"
+          config_text="${config_text//__BUILD_BRANCH__/$build_branch}"
+          config_text="${config_text//__BUILD_RUNID__/$build_runid}"
+          config_text="${config_text//__BUILD_TYPE__/$build_type}"
           printf "%s" "$config_text" > "$config_path"
           echo "📜 写入的构建信息："
           echo "⏰ BUILD_TIME(UTC+8):   $build_time"
@@ -282,7 +256,7 @@ jobs:
           echo "🧪 BUILD_TYPE:  $build_type"
 
       - name: Run Windows build & package
-        if: steps.skip_check.outputs.should_skip != 'true' && matrix.platform == 'windows'
+        if: steps.skip_check.outputs.should_skip != 'true' && startsWith(matrix.os, 'windows')
         shell: pwsh
         run: |
           curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
@@ -302,33 +276,32 @@ jobs:
             --add-data plugins:plugins `
             --hidden-import darkdetect
           ./zip -r -q zip/ClassWidgets_${{ github.run_id }}-${{ matrix.arch }}.zip dist/ClassWidgets/*
-
+      
       - name: Run macOS build & package
-        if: steps.skip_check.outputs.should_skip != 'true' && matrix.platform == 'macos'
+        if: steps.skip_check.outputs.should_skip != 'true' && startsWith(matrix.os, 'macos')
         shell: bash
         run: |
           source .venv/bin/activate
           pyinstaller main.py \
             -w \
             -i ./img/favicon.icns \
-            -n ClassWidgets \
+            -n "Class Widgets" \
             --contents-directory . \
-            --add-data config:config \
-            --add-data audio:audio \
-            --add-data img:img \
-            --add-data ui:ui \
-            --add-data font:font \
-            --add-data view:view \
-            --add-data LICENSE:. \
-            --add-data plugins:plugins \
+            --add-data "config:config" \
+            --add-data "audio:audio" \
+            --add-data "img:img" \
+            --add-data "ui:ui" \
+            --add-data "font:font" \
+            --add-data "view:view" \
+            --add-data "LICENSE:." \
+            --add-data "plugins:plugins" \
             --hidden-import darkdetect
-          cd dist
-          zip -r ../zip/ClassWidgets_${{ github.run_id }}-${{ matrix.arch }}.zip ClassWidgets.app
-          cd ..
+          cp -R dist/"Class Widgets.app" .
+          zip -r -q zip/ClassWidgets_${{ github.run_id }}-${{ matrix.arch }}.zip "Class Widgets.app"
 
       - name: Upload build artifact
         if: steps.skip_check.outputs.should_skip != 'true'
         uses: actions/upload-artifact@v4.4.2
         with:
-          name: ${{ matrix.platform }}-${{ matrix.arch }}_debug_#${{ github.run_number }}
+          name: ${{ matrix.os }}-${{ matrix.arch }}_debug_#${{ github.run_number }}
           path: zip
