@@ -2849,6 +2849,14 @@ if __name__ == '__main__':
 
     app = QApplication(sys.argv)
     app.setQuitOnLastWindowClosed(False)
+    
+    from menu import I18nManager
+    global_i18n_manager = I18nManager()
+    global_i18n_manager.init_from_config()
+    logger.debug(f"i18n加载,界面: {global_i18n_manager.get_current_language_view_name()},组件: {global_i18n_manager.get_current_language_widgets_name()}")
+    import menu
+    menu.global_i18n_manager = global_i18n_manager
+    
     share.create(1)  # 创建共享内存
     logger.info(
         f"共享内存：{share.isAttached()} 是否允许多开实例：{config_center.read_conf('Other', 'multiple_programs')}")
