@@ -157,14 +157,6 @@ jobs:
             os: windows-latest
           - arch: x64
             os: windows-latest
-          - arch: x64
-            os: macos-13
-          - arch: arm64
-            os: macos-13
-          - arch: x64
-            os: macos-14
-          - arch: arm64
-            os: macos-14
     env:
       BUILD_TRIGGERED: ${{ (github.event_name == 'pull_request' || github.event_name == 'pull_request_target' || github.event_name == 'workflow_dispatch') && 'true' || 'false' }}
     runs-on: ${{ matrix.os }}
@@ -256,7 +248,7 @@ jobs:
           echo "🧪 BUILD_TYPE:  $build_type"
 
       - name: Run Windows build & package
-        if: steps.skip_check.outputs.should_skip != 'true' && startsWith(matrix.os, 'windows')
+        if: steps.skip_check.outputs.should_skip != 'true'
         shell: pwsh
         run: |
           curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
@@ -276,32 +268,10 @@ jobs:
             --add-data plugins:plugins `
             --hidden-import darkdetect
           ./zip -r -q zip/ClassWidgets_${{ github.run_id }}-${{ matrix.arch }}.zip dist/ClassWidgets/*
-      
-      - name: Run macOS build & package
-        if: steps.skip_check.outputs.should_skip != 'true' && startsWith(matrix.os, 'macos')
-        shell: bash
-        run: |
-          source .venv/bin/activate
-          pyinstaller main.py \
-            -w \
-            -i ./img/favicon.icns \
-            -n "Class Widgets" \
-            --contents-directory . \
-            --add-data "config:config" \
-            --add-data "audio:audio" \
-            --add-data "img:img" \
-            --add-data "ui:ui" \
-            --add-data "font:font" \
-            --add-data "view:view" \
-            --add-data "LICENSE:." \
-            --add-data "plugins:plugins" \
-            --hidden-import darkdetect
-          cp -R dist/"Class Widgets.app" .
-          zip -r -q zip/ClassWidgets_${{ github.run_id }}-${{ matrix.arch }}.zip "Class Widgets.app"
 
       - name: Upload build artifact
         if: steps.skip_check.outputs.should_skip != 'true'
         uses: actions/upload-artifact@v4.4.2
         with:
-          name: ${{ matrix.os }}-${{ matrix.arch }}_debug_#${{ github.run_number }}
+          name: windows-${{ matrix.arch }}_debug_#${{ github.run_number }}
           path: zip
