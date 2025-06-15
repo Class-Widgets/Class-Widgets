@@ -1,0 +1,38 @@
+name: lint
+on:
+  push:
+    branches:
+      - main
+      - test/ci
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ruff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: astral-sh/ruff-action@v3
+        with:
+          args: check --select I,E,W,F,FLY002
+          src: "./."
+  pyright:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.8"
+      - name: setup dependencies
+        run: |
+          uv venv
+          source .venv/bin/activate
+          uv pip install -r requirements.txt
+      - uses: jakebailey/pyright-action@v2
+        with:
+          pylance-version: latest-release
