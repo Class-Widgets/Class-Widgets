@@ -19,7 +19,7 @@ pyqt5-stubs==5.15.6.0
 pywin32==306; platform_system == "Windows"
 psutil==5.9.5
 requests==2.32.4
-urllib3==2.2.3
+urllib3==2.5.0
 win32-setctime==1.1.0
 PyQtWebEngine~=5.15.7
 Markdown~=3.7
