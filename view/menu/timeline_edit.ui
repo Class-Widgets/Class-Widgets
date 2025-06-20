@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>733</width>
+    <width>781</width>
     <height>658</height>
    </rect>
   </property>
@@ -65,33 +65,33 @@
           </sizepolicy>
          </property>
          <property name="styleSheet">
-          <string notr="true">FluentLabelBase {
-    color: black;
-}
-
-HyperlinkLabel {
-    color: #009faa;
-    border: none;
-    background-color: transparent;
-    text-align: left;
-    padding: 0;
-    margin: 0;
-}
-
-HyperlinkLabel[underline=true] {
-    text-decoration: underline;
-}
-
-HyperlinkLabel[underline=false] {
-    text-decoration: none;
-}
-
-HyperlinkLabel:hover {
-    color: #007780;
-}
-
-HyperlinkLabel:pressed {
-    color: #00a7b3;
+          <string notr="true">FluentLabelBase {
+    color: black;
+}
+
+HyperlinkLabel {
+    color: #009faa;
+    border: none;
+    background-color: transparent;
+    text-align: left;
+    padding: 0;
+    margin: 0;
+}
+
+HyperlinkLabel[underline=true] {
+    text-decoration: underline;
+}
+
+HyperlinkLabel[underline=false] {
+    text-decoration: none;
+}
+
+HyperlinkLabel:hover {
+    color: #007780;
+}
+
+HyperlinkLabel:pressed {
+    color: #00a7b3;
 }
 FluentLabelBase{color:#7d000000}</string>
          </property>
@@ -252,6 +252,9 @@ FluentLabelBase{color:#7d000000}</string>
           <widget class="ToolButton" name="add_part_button"/>
          </item>
          <item>
+          <widget class="ToolButton" name="edit_button_2"/>
+         </item>
+         <item>
           <widget class="ToolButton" name="delete_part_button"/>
          </item>
         </layout>
@@ -293,33 +296,33 @@ FluentLabelBase{color:#7d000000}</string>
           </sizepolicy>
          </property>
          <property name="styleSheet">
-          <string notr="true">FluentLabelBase {
-    color: black;
-}
-
-HyperlinkLabel {
-    color: #009faa;
-    border: none;
-    background-color: transparent;
-    text-align: left;
-    padding: 0;
-    margin: 0;
-}
-
-HyperlinkLabel[underline=true] {
-    text-decoration: underline;
-}
-
-HyperlinkLabel[underline=false] {
-    text-decoration: none;
-}
-
-HyperlinkLabel:hover {
-    color: #007780;
-}
-
-HyperlinkLabel:pressed {
-    color: #00a7b3;
+          <string notr="true">FluentLabelBase {
+    color: black;
+}
+
+HyperlinkLabel {
+    color: #009faa;
+    border: none;
+    background-color: transparent;
+    text-align: left;
+    padding: 0;
+    margin: 0;
+}
+
+HyperlinkLabel[underline=true] {
+    text-decoration: underline;
+}
+
+HyperlinkLabel[underline=false] {
+    text-decoration: none;
+}
+
+HyperlinkLabel:hover {
+    color: #007780;
+}
+
+HyperlinkLabel:pressed {
+    color: #00a7b3;
 }
 FluentLabelBase{color:#7d000000}</string>
          </property>

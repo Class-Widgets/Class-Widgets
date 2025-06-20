@@ -1806,6 +1806,13 @@ class SettingsMenu(FluentWindow):
         te_name_edit = self.findChild(EditableComboBox, 'name_part_combo')  # 名称
         te_name_edit.addItems(list_.time)
 
+        te_edit_part_button = self.findChild(ToolButton, 'edit_button_2')  # 编辑节点开始时间
+        te_edit_part_button.setIcon(fIcon.EDIT)
+        te_edit_part_button.setToolTip('编辑节点开始时间')
+        te_edit_part_button.installEventFilter(
+            ToolTipFilter(te_edit_part_button, showDelay=300, position=ToolTipPosition.TOP))
+        te_edit_part_button.clicked.connect(self.te_edit_part_time)
+
         te_delete_part_button = self.findChild(ToolButton, 'delete_part_button')  # 删除节点
         te_delete_part_button.setIcon(fIcon.DELETE)
         te_delete_part_button.setToolTip('删除节点')
@@ -1854,7 +1861,54 @@ class SettingsMenu(FluentWindow):
         QScroller.grabGesture(te_timeline_list.viewport(), QScroller.LeftMouseButtonGesture)  # 触摸屏适配
         QScroller.grabGesture(part_list.viewport(), QScroller.LeftMouseButtonGesture)  # 触摸屏适配
         self.te_detect_item()
-        self.te_update_parts_name()  # 修复在启动时无法添加时段到下拉框的问题
+        self.te_update_parts_name()
+
+    def te_edit_part_time(self):
+        """编辑选中节点的开始时间"""
+        te_part_list = self.findChild(ListWidget, 'part_list')
+        te_part_time = self.findChild(TimeEdit, 'part_time')
+        selected_items = te_part_list.selectedItems()
+        if not selected_items:
+            Flyout.create(
+                icon=InfoBarIcon.WARNING,
+                title='请先选择一个节点 o(TヘTo)',
+                content='在编辑节点时间前，请先在左侧列表中选择要编辑的节点',
+                target=self.findChild(ToolButton, 'edit_button_2'),
+                parent=self,
+                isClosable=True,
+                aniType=FlyoutAnimationType.PULL_UP
+            )
+            return
+        selected_item = selected_items[0]
+        item_text = selected_item.text()
+        item_info = item_text.split(' - ')
+        if len(item_info) >= 3:
+            part_name = item_info[0]
+            part_type = item_info[2]
+            new_time = te_part_time.time().toString("h:mm")
+            new_text = f'{part_name} - {new_time} - {part_type}'
+            selected_item.setText(new_text)
+            self.te_detect_item()
+            self.te_update_parts_name()
+            Flyout.create(
+                icon=InfoBarIcon.SUCCESS,
+                title='节点时间已更新 ヾ(≧▽≦*)o',
+                content=f'节点 "{part_name}" 的开始时间已更新为 {new_time}',
+                target=self.findChild(ToolButton, 'edit_button_2'),
+                parent=self,
+                isClosable=True,
+                aniType=FlyoutAnimationType.PULL_UP
+            )
+        else:
+            Flyout.create(
+                icon=InfoBarIcon.ERROR,
+                title='节点格式异常 (╥﹏╥)',
+                content='选中的节点格式不正确，无法编辑',
+                target=self.findChild(ToolButton, 'edit_button_2'),
+                parent=self,
+                isClosable=True,
+                aniType=FlyoutAnimationType.PULL_UP
+            )
 
     def setup_schedule_preview(self):
         subtitle = self.findChild(SubtitleLabel, 'subtitle_file')
