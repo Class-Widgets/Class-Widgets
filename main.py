@@ -30,14 +30,15 @@ import list_
 import tip_toast
 from tip_toast import active_windows
 import utils
+import menu
 import weather as db
 from conf import base_directory
 from extra_menu import ExtraMenu, open_settings
 from generate_speech import generate_speech_sync, list_pyttsx3_voices
-from menu import open_plaza
-from network_thread import check_update
+from menu import open_plaza, I18nManager
 from weather import WeatherReportThread as weatherReportThread
 from weather import get_unified_weather_alerts, get_alert_image
+from network_thread import check_update
 from play_audio import play_audio
 from plugin import p_loader
 from utils import restart, stop, share, update_timer, DarkModeWatcher
@@ -2851,6 +2852,12 @@ if __name__ == '__main__':
 
     app = QApplication(sys.argv)
     app.setQuitOnLastWindowClosed(False)
+
+    global_i18n_manager = I18nManager()
+    global_i18n_manager.init_from_config()
+    logger.debug(f"i18n加载,界面: {global_i18n_manager.get_current_language_view_name()},组件: {global_i18n_manager.get_current_language_widgets_name()}")
+    menu.global_i18n_manager = global_i18n_manager
+    
     share.create(1)  # 创建共享内存
     logger.info(
         f"共享内存：{share.isAttached()} 是否允许多开实例：{config_center.read_conf('Other', 'multiple_programs')}")
