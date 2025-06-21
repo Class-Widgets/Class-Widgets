@@ -110,7 +110,6 @@ jobs:
             config=config
             font=font
             img=img
-            plugins=plugins
             ui=ui
             view=view
           include-package: |
@@ -133,7 +132,6 @@ jobs:
             config=config
             font=font
             img=img
-            plugins=plugins
             ui=ui
             view=view
           include-package: pyttsx3.drivers
@@ -270,7 +268,6 @@ jobs:
             --include-data-dir=ui=ui \
             --include-data-dir=view=view \
             --include-data-dir=config=config \
-            --include-data-dir=plugins=plugins \
             --include-data-dir=font=font \
             --include-data-dir=audio=audio \
             --include-data-files=LICENSE=LICENSE \

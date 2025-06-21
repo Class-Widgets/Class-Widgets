@@ -128,13 +128,13 @@ class ConfigCenter:
         plugins_dir = base_directory / 'plugins'
         if not plugins_dir.exists():
             plugins_dir.mkdir()
-            logger.info("Plugins 文件夹不存在，已创建。")
+            # logger.info("Plugins 文件夹不存在，已创建。")
 
         plugins_file = plugins_dir / 'plugins_from_pp.json'
         if not plugins_file.exists():
             with open(plugins_file, 'w', encoding='utf-8') as file:
                 json.dump({"plugins": []}, file, ensure_ascii=False, indent=4)
-            logger.info("plugins_from_pp.json 文件不存在，已创建。")
+            # logger.info("plugins_from_pp.json 文件不存在，已创建。")
 
     def _write_config_to_file(self):
         """将当前配置写入文件"""

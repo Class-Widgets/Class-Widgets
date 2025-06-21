@@ -339,6 +339,12 @@ class PluginCard(CardWidget):  # 插件卡片
             )
         menu_actions.append(
             Action(
+                fIcon.UPDATE, f'热重载“{title}”插件',
+                triggered=self.reload_plugin
+            )
+        )
+        menu_actions.append(
+            Action(
                 fIcon.DELETE, f'卸载“{title}”插件',
                 triggered=self.remove_plugin
             )
@@ -415,6 +421,30 @@ class PluginCard(CardWidget):  # 插件卡片
         w = PluginSettingsDialog(self.plugin_dir, self.parent)
         if w:
             w.exec()
+
+    def reload_plugin(self):
+        """热重载当前插件"""
+        success = p_loader.reload_plugin(self.plugin_dir)
+        if success:
+            InfoBar.success(
+                title='重载成功',
+                content=f'插件 "{self.title}" 已成功热重载！',
+                orient=Qt.Horizontal,
+                isClosable=True,
+                position=InfoBarPosition.BOTTOM_RIGHT,
+                duration=3000,
+                parent=self.window()
+            )
+        else:
+            InfoBar.error(
+                title='重载失败',
+                content=f'插件 "{self.title}" 热重载失败，请查看日志获取详细信息。',
+                orient=Qt.Horizontal,
+                isClosable=True,
+                position=InfoBarPosition.BOTTOM_RIGHT,
+                duration=5000,
+                parent=self.window()
+            )
 
     def remove_plugin(self):
         alert = MessageBox(f"您确定要删除插件“{self.title}”吗？", "删除此插件后，将无法恢复。", self.parent)
@@ -849,6 +879,37 @@ class SettingsMenu(FluentWindow):
             duration=3000,
             parent=self.window()
         )
+    
+    def reload_all_plugins(self):
+        """热重载所有插件"""
+        try:
+            p_loader.reload_all_plugins()
+            global plugin_dict, enabled_plugins
+            enabled_plugins = conf.load_plugin_config()
+            plugin_dict = conf.load_plugins()
+            self.load_plugin_cards()
+            self.update_plugin_count()
+            self.filter_plugins()
+            
+            InfoBar.success(
+                title='热重载完成',
+                content='所有插件已成功热重载',
+                orient=Qt.Horizontal,
+                isClosable=True,
+                position=InfoBarPosition.BOTTOM_RIGHT,
+                duration=3000,
+                parent=self.window()
+            )
+        except Exception as e:
+            InfoBar.error(
+                title='热重载失败 (╥﹏╥)',
+                content=f'热重载插件时出错: {str(e)}',
+                orient=Qt.Horizontal,
+                isClosable=True,
+                position=InfoBarPosition.BOTTOM_RIGHT,
+                duration=5000,
+                parent=self.window()
+            )
     
     def import_plugin_from_file(self):
         """从文件导入插件"""

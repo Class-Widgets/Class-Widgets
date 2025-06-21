@@ -151,7 +151,6 @@ jobs:
             --add-data "font:font" \
             --add-data "view:view" \
             --add-data "LICENSE:." \
-            --add-data "plugins:plugins" \
             --hidden-import darkdetect
           cp -R dist/"Class Widgets.app" .
           zip -r -q zip/ClassWidgets_${{ github.run_id }}-${{ matrix.arch }}.zip "Class Widgets.app"

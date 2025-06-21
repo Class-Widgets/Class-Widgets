@@ -2,6 +2,7 @@ import importlib
 import json
 from pathlib import Path
 import shutil
+import sys
 
 from loguru import logger
 
@@ -95,6 +96,48 @@ class PluginLoader:  # 插件加载器
         for plugin in self.plugins_dict.values():
             if hasattr(plugin, 'update'):
                 plugin.update(self.manager.get_app_contexts())
+
+    def reload_plugin(self, plugin_name):
+        """热重载单个插件"""
+        try:
+            if plugin_name in self.plugins_dict:
+                old_plugin = self.plugins_dict[plugin_name]
+                if hasattr(old_plugin, 'stop'):
+                    old_plugin.stop()
+                del self.plugins_dict[plugin_name]
+            if plugin_name in self.plugins_settings:
+                del self.plugins_settings[plugin_name]
+            relative_path = conf.PLUGINS_DIR.name
+            module_name = f"{relative_path}.{plugin_name}"
+            if module_name in sys.modules:
+                module = importlib.reload(sys.modules[module_name])
+            else:
+                module = importlib.import_module(module_name)
+            if hasattr(module, 'Settings'):
+                plugin_class = getattr(module, "Settings")
+                self.plugins_settings[plugin_name] = plugin_class(f'{conf.PLUGINS_DIR}/{plugin_name}')
+            if self.manager and hasattr(module, 'Plugin'):
+                plugin_class = getattr(module, "Plugin")
+                self.plugins_dict[plugin_name] = plugin_class(
+                    self.manager.get_app_contexts(plugin_name), self.manager.method
+                )
+            logger.success(f"插件 {plugin_name} 热重载成功")
+            return True
+        except Exception as e:
+            logger.error(f"插件 {plugin_name} 热重载失败: {e}")
+            return False
+    
+    def reload_all_plugins(self):
+        """热重载所有启用的插件"""
+        plugin_config = conf.load_plugin_config()
+        enabled_plugin_names = plugin_config.get('enabled_plugins', [])
+        success_count = 0
+        total_count = len(enabled_plugin_names)
+        for plugin_name in enabled_plugin_names:
+            if self.reload_plugin(plugin_name):
+                success_count += 1
+        logger.info(f"批量热重载完成: {success_count}/{total_count} 个插件重载成功")
+        return success_count, total_count
 
     def delete_plugin(self, plugin_name):
         plugin_dir = Path(conf.PLUGINS_DIR) / plugin_name
