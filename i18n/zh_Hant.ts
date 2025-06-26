@@ -117,8 +117,8 @@
         <location filename="../menu.py" line="628"/>
         <source>menu</source>
         <comment>menu</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>menu</numerusform>
         </translation>
     </message>
     <message>
@@ -1482,7 +1482,7 @@
     <message>
         <location filename="../view/pp/plugin_detail.ui" line="188"/>
         <source>|</source>
-        <translation type="unfinished"></translation>
+        <translation>|</translation>
     </message>
     <message>
         <location filename="../view/pp/plugin_detail.ui" line="215"/>
