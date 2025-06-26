@@ -8,6 +8,7 @@ from datetime import datetime
 import time
 from dateutil import parser
 from loguru import logger
+from basic_dirs import CW_HOME, THEME_DIRS
 from file import base_directory, config_center
 
 import list_
@@ -31,16 +32,20 @@ app_icon = base_directory / 'img' / (
 update_countdown_custom_last = 0
 countdown_cnt = 0
 
+
+def __load_json(path: Path) -> Dict[str, Any]:
+    with open(path, 'r', encoding='utf-8') as file:
+        return json.load(file)
+
+
 def load_theme_config(theme: str) -> Dict[str, Any]:
+    default_path = CW_HOME / 'ui' / 'default' / 'theme.json'
     try:
-        with open(base_directory / 'ui' / theme / 'theme.json', 'r', encoding='utf-8') as file:
-            data = json.load(file)
-            return data
+        dirs = (dir for theme_dir in THEME_DIRS if (dir := (theme_dir / theme / 'theme.json')).exists())
+        return __load_json(next(dirs, default_path))
     except Exception as e:
-        logger.error(f"加载主题数据时出错: {e}，返回默认主题")
-        with open(base_directory / 'ui' / 'default' / 'theme.json', 'r', encoding='utf-8') as file:
-            data = json.load(file)
-            return data
+        logger.error(f"加载主题数据时出错: {repr(e)}，返回默认主题")
+        return __load_json(default_path)
 
 
 def load_plugin_config() -> Optional[Dict[str, Any]]:
