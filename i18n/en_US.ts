@@ -162,7 +162,7 @@
         <comment>系统 TTS（pyttsx3）用的是系统自带的语音服务噢~
 您可以在系统设置里添加更多语音(*≧▽≦)</comment>
         <translation>System TTS (pyttsx3) uses the built-in voice service
-You can add more voice in system Settings (*≧▽≦)</translation>
+You can add more voice in system settings (*≧▽≦)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1555"/>
@@ -206,7 +206,7 @@ You can add more voice in system Settings (*≧▽≦)</translation>
         <location filename="../view/pp/search.ui" line="20"/>
         <location filename="../view/pp/settings.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="35"/>
@@ -1274,93 +1274,94 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
     <message>
         <location filename="../view/menu/sound.ui" line="41"/>
         <source>上下课提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>Class schedule alerts</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="103"/>
         <source>启用上课提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>Enable class start reminders</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="110"/>
         <source>启用后将在上课时弹窗且发出提示音提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>When enabled, a popup window will appear and a reminder sound will be played at the start of class</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="181"/>
         <source>启用下课提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>Enable class end reminders</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="188"/>
         <source>启用后将在下课时弹窗且发出提示音提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>When enabled, a popup window will appear and a reminder sound will be played at the end of class</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="259"/>
         <source>启用放学提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>Enable school dismissal reminders</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="266"/>
         <source>启用后将在放学时弹窗且发出提示音提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>When enabled, a popup window will appear and a reminder sound will be played at school dismissal</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="337"/>
         <source>启用预备铃</source>
-        <translation type="unfinished"></translation>
+        <translation>Enable preparatory bell</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="344"/>
         <source>在正式上课前发出预备铃（输入提前的分钟数）</source>
-        <translation type="unfinished"></translation>
+        <translation>Ring prep bell before class (input minutes ahead)</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="428"/>
         <source>TTS语音播报</source>
-        <translation type="unfinished"></translation>
+        <translation>TTS Voice Announcement</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="435"/>
         <source>调整关于TTS语音合成相关选项</source>
-        <translation type="unfinished"></translation>
+        <translation>Adjust TTS voice synthesis options</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="458"/>
         <source>TTS语音设置</source>
-        <translation type="unfinished"></translation>
+        <translation>TTS Voice Settings</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="494"/>
         <source>音量</source>
-        <translation type="unfinished"></translation>
+        <translation>Volume</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="501"/>
         <source>将调整提醒声音的音量大小</source>
-        <translation type="unfinished"></translation>
+        <translation>Adjust reminder sound volume</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="578"/>
         <source>是否置顶</source>
-        <translation type="unfinished"></translation>
+        <translation>Pin to top</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="585"/>
         <source>启用后将在提醒时置顶弹窗</source>
-        <translation type="unfinished"></translation>
+        <translation>When enabled, reminder popups will be pinned to the top</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="653"/>
         <source>启用强调特效</source>
-        <translation type="unfinished"></translation>
+        <translation>Enable emphasis effects</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="660"/>
         <source>启用后弹出提醒弹窗同时会有水波强调及模糊淡入淡出效果
 *可能影响性能</source>
-        <translation type="unfinished"></translation>
+        <translation>When enabled, reminder popups will have water ripple emphasis and fade effects.
+*May impact performance</translation>
     </message>
     <message>
         <location filename="../view/menu/subject.ui" line="35"/>
