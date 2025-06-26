@@ -15,7 +15,6 @@ from PyQt5.QtCore import QSharedMemory, QTimer, QObject, pyqtSignal, QThread
 from PyQt5 import QtCore
 import darkdetect
 import datetime as dt
-import winreg
 
 from file import base_directory, config_center
 import signal

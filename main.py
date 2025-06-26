@@ -860,7 +860,7 @@ class WidgetsManager:
     def init_widgets(self) -> None:  # 初始化小组件
         self.widgets_list = list_.get_widget_config()
         self.check_widgets_exist()
-        self.spacing = conf.load_theme_config(theme)['spacing']
+        self.spacing = conf.load_theme_config(theme).config.spacing
 
         self.get_start_pos()
         cnt_all = {}
@@ -896,7 +896,7 @@ class WidgetsManager:
 
     @staticmethod
     def get_widgets_height() -> int:
-        return int(conf.load_theme_config(theme)['height'])
+        return conf.load_theme_config(theme).config.height
 
     def create_widgets(self) -> None:
         for widget in self.widgets:
@@ -1319,13 +1319,16 @@ class FloatingWidget(QWidget):  # 浮窗
 
     def init_ui(self):
         setTheme_()
-        if os.path.exists(f'{base_directory}/ui/{theme}/widget-floating.ui'):
-            if isDarkTheme() and conf.load_theme_config(theme)['support_dark_mode']:
-                uic.loadUi(f'{base_directory}/ui/{theme}/dark/widget-floating.ui', self)
+        theme_info = conf.load_theme_config(str('default' if theme is None else theme))
+        theme_path = theme_info.path
+        theme_config = theme_info.config
+        if (theme_path / 'widget-floating.ui').exists():
+            if isDarkTheme() and theme_config.support_dark_mode:
+                uic.loadUi(theme_path / 'dark/widget-floating.ui', self)
             else:
-                uic.loadUi(f'{base_directory}/ui/{theme}/widget-floating.ui', self)
+                uic.loadUi(theme_path / 'widget-floating.ui', self)
         else:
-            if isDarkTheme() and conf.load_theme_config(theme)['support_dark_mode']:
+            if isDarkTheme() and theme_config.support_dark_mode:
                 uic.loadUi(f'{base_directory}/ui/default/dark/widget-floating.ui', self)
             else:
                 uic.loadUi(f'{base_directory}/ui/default/widget-floating.ui', self)
@@ -1655,9 +1658,9 @@ class DesktopWidget(QWidget):  # 主要小组件
 
         self.last_widgets = list_.get_widget_config()
         self.path = path
-
+        theme_config = conf.load_theme_config(str('default' if theme is None else theme)).config
         self.last_code = 101010100
-        self.radius = conf.load_theme_config(theme)['radius']
+        self.radius = theme_config.radius
         self.last_theme = config_center.read_conf('General', 'theme')
         self.last_color_mode = config_center.read_conf('General', 'color_mode')
         self.w = 100
@@ -1675,10 +1678,10 @@ class DesktopWidget(QWidget):  # 主要小组件
         self._is_topmost_callback_added = False # 添加一个标志来跟踪回调是否已添加
 
         try:
-            self.w = conf.load_theme_config(theme)['widget_width'][self.path]
+            self.w = theme_config.widget_width[self.path]
         except KeyError:
             self.w = list_.widget_width[self.path]
-        self.h = conf.load_theme_config(theme)['height']
+        self.h = theme_config.height
 
         init_config()
         self.init_ui(path)
@@ -1810,22 +1813,19 @@ class DesktopWidget(QWidget):  # 主要小组件
             logger.error(f"更新插件小组件时出错：{e}")
 
     def init_ui(self, path: str) -> None:
-        if conf.load_theme_config(theme)['support_dark_mode']:
-            if os.path.exists(f'{base_directory}/ui/{theme}/{path}'):
-                if isDarkTheme():
-                    uic.loadUi(f'{base_directory}/ui/{theme}/dark/{path}', self)
-                else:
-                    uic.loadUi(f'{base_directory}/ui/{theme}/{path}', self)
+        theme_info = conf.load_theme_config(str('default' if theme is None else theme))
+        theme_config = theme_info.config
+        theme_path = theme_info.path
+        if (theme_path / path).exists():
+            if theme_config.support_dark_mode and isDarkTheme():
+                uic.loadUi(theme_path / 'dark' / path, self)
             else:
-                if isDarkTheme():
-                    uic.loadUi(f'{base_directory}/ui/{theme}/dark/widget-base.ui', self)
-                else:
-                    uic.loadUi(f'{base_directory}/ui/{theme}/widget-base.ui', self)
+                uic.loadUi(theme_path / path, self)
         else:
-            if os.path.exists(f'{base_directory}/ui/{theme}/{path}'):
-                uic.loadUi(f'{base_directory}/ui/{theme}/{path}', self)
+            if theme_config.support_dark_mode and isDarkTheme():
+                uic.loadUi(theme_path / 'dark/widget-base.ui', self)
             else:
-                uic.loadUi(f'{base_directory}/ui/{theme}/widget-base.ui', self)
+                uic.loadUi(theme_path / 'widget-base.ui', self)
 
         # 设置窗口无边框和透明背景
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
@@ -1935,7 +1935,7 @@ class DesktopWidget(QWidget):  # 主要小组件
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
         # 添加阴影效果
-        if conf.load_theme_config(theme)['shadow']:  # 修改阴影问题
+        if conf.load_theme_config(str('default' if theme is None else theme)).config.shadow:  # 修改阴影问题
             shadow_effect = QGraphicsDropShadowEffect(self)
             shadow_effect.setBlurRadius(28)
             shadow_effect.setXOffset(0)
@@ -2075,8 +2075,9 @@ class DesktopWidget(QWidget):  # 主要小组件
 
             painter = QPainter(pixmap)
             render.render(painter)
-            if (isDarkTheme() and conf.load_theme_config(theme)['support_dark_mode']
-                    or isDarkTheme() and conf.load_theme_config(theme)['default_theme'] == 'dark'):  # 在暗色模式显示亮色图标
+            theme_config = conf.load_theme_config(str('default' if theme is None else theme)).config
+            if (isDarkTheme() and theme_config.support_dark_mode
+                    or isDarkTheme() and theme_config.default_theme == 'dark'):  # 在暗色模式显示亮色图标
                 painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_SourceIn)
                 painter.fillRect(pixmap.rect(), QColor("#FFFFFF"))
             painter.end()

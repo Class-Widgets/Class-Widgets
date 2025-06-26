@@ -1,16 +1,18 @@
 import json
 import os
 import configparser as config
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, Any, Optional, Union, List
+from typing import Dict, Any, Literal, Optional, Union, List
 
 from datetime import datetime
 import time
 from dateutil import parser
 from loguru import logger
+from pydantic import BaseModel
+
 from basic_dirs import CW_HOME, THEME_DIRS
 from file import base_directory, config_center
-
 import list_
 
 if os.name == 'nt':
@@ -33,19 +35,49 @@ update_countdown_custom_last = 0
 countdown_cnt = 0
 
 
-def __load_json(path: Path) -> Dict[str, Any]:
+class ThemeConfig(BaseModel):
+    name: str
+    support_dark_mode: bool
+    default_theme: Optional[Literal["dark", "light"]] = None
+    radius: str
+    spacing: int
+    shadow: bool
+    height: int
+    widget_width: Dict[str, int]
+
+
+@dataclass
+class ThemeInfo:
+    path: Path
+    config: ThemeConfig
+
+
+def __load_json(path: Path) -> ThemeConfig:
     with open(path, 'r', encoding='utf-8') as file:
-        return json.load(file)
+        return ThemeConfig.model_validate_json(file.read())
 
 
-def load_theme_config(theme: str) -> Dict[str, Any]:
+def load_theme_config(theme: str) -> ThemeInfo:
     default_path = CW_HOME / 'ui' / 'default' / 'theme.json'
     try:
-        dirs = (dir for theme_dir in THEME_DIRS if (dir := (theme_dir / theme / 'theme.json')).exists())
-        return __load_json(next(dirs, default_path))
+        config_path = next(
+            (
+                dir
+                for theme_dir in THEME_DIRS
+                if (dir := (theme_dir / theme / 'theme.json')).exists()
+            ),
+            default_path
+        )
+        return ThemeInfo(
+            path=config_path.parent,
+            config=__load_json(config_path)
+        )
     except Exception as e:
         logger.error(f"加载主题数据时出错: {repr(e)}，返回默认主题")
-        return __load_json(default_path)
+        return ThemeInfo(
+            path=default_path.parent,
+            config=__load_json(default_path)
+        )
 
 
 def load_plugin_config() -> Optional[Dict[str, Any]]:
@@ -106,7 +138,7 @@ def is_temp_week() -> Union[bool, str]:
 
 def is_temp_schedule() -> bool:
     return not (config_center.read_conf('Temp', 'temp_schedule') in [None, ''])
-    
+
 
 def add_shortcut_to_startmenu(file: str = '', icon: str = '') -> None:
     if os.name != 'nt':
@@ -193,7 +225,7 @@ def get_time_offset() -> int:  # 获取时差偏移
         return 0
     else:
         return int(time_offset)
-    
+
 def update_countdown(cnt: int) -> None:
     global update_countdown_custom_last
     global countdown_cnt
@@ -206,7 +238,7 @@ def update_countdown(cnt: int) -> None:
         countdown_cnt += 1
         if countdown_cnt >= length:
             countdown_cnt = 0 if length != 0 else -1
-        
+
 def get_cd_text_custom() -> str:
     global countdown_cnt
     if countdown_cnt == -1:
@@ -242,7 +274,7 @@ def get_custom_countdown() -> str:
             # )
 
 
-def get_week_type() -> int: 
+def get_week_type() -> int:
     if (temp_schedule := config_center.read_conf('Temp', 'set_schedule')) not in ('', None):  # 获取单双周
         return int(temp_schedule)
     start_date_str = config_center.read_conf('Date', 'start_date')

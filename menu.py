@@ -34,7 +34,7 @@ import tip_toast
 import utils
 import weather
 import weather as wd
-from conf import base_directory
+from conf import base_directory, load_theme_config
 from cses_mgr import CSES_Converter
 from generate_speech import get_tts_voices, get_voice_id_by_name, get_voice_name_by_id, get_available_engines
 import generate_speech
@@ -2232,25 +2232,25 @@ class SettingsMenu(FluentWindow):
             widgets_preview.addItem(left_spacer)
 
             theme_folder = config_center.read_conf("General", "theme")
-            if not os.path.exists(f'{base_directory}/ui/{theme_folder}/theme.json'):
-                theme_folder = 'default'  # 主题文件夹不存在，使用默认主题
-                logger.warning(f'主题文件夹不存在，使用默认主题：{theme_folder}')
-
+            theme_info = load_theme_config(str(theme_folder))
+            theme_config = theme_info.config
+            theme_path = theme_info.path
             for i in range(len(widget_config)):
-                widget_name = widget_config[i]
-                if isDarkTheme() and conf.load_theme_config(theme_folder)['support_dark_mode']:
-                    if os.path.exists(f'{base_directory}/ui/{theme_folder}/dark/preview/{widget_name[:-3]}.png'):
-                        path = f'{base_directory}/ui/{theme_folder}/dark/preview/{widget_name[:-3]}.png'
+                widget_name: str = widget_config[i] # type: ignore
+                preview_path = theme_path / f'preview/{widget_name[:-3]}.png'
+                if isDarkTheme() and theme_config.support_dark_mode:
+                    if (theme_path / 'dark' / preview_path).exists():
+                        path = theme_path / 'dark' / preview_path
                     else:
-                        path = f'{base_directory}/ui/{theme_folder}/dark/preview/widget-custom.png'
+                        path = theme_path / 'dark/preview/widget-custom.png'
                 else:
-                    if os.path.exists(f'ui/{theme_folder}/preview/{widget_name[:-3]}.png'):
-                        path = f'{base_directory}/ui/{theme_folder}/preview/{widget_name[:-3]}.png'
+                    if (theme_path / preview_path).exists():
+                        path = theme_path / preview_path
                     else:
-                        path = f'{base_directory}/ui/{theme_folder}/preview/widget-custom.png'
+                        path = theme_path / 'preview/widget-custom.png'
 
                 label = ImageLabel()
-                label.setImage(path)
+                label.setImage(str(path))
                 widgets_preview.addWidget(label)
                 widget_config[i] = label
             right_spacer = QSpacerItem(20, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
