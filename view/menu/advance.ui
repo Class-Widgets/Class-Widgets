@@ -56,7 +56,7 @@
         <x>0</x>
         <y>0</y>
         <width>717</width>
-        <height>2051</height>
+        <height>2037</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -662,7 +662,7 @@
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>16777215</width>
+                 <width>225</width>
                  <height>135</height>
                 </size>
                </property>
@@ -713,7 +713,7 @@
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>16777215</width>
+                 <width>225</width>
                  <height>135</height>
                 </size>
                </property>
@@ -764,7 +764,7 @@
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>16777215</width>
+                 <width>225</width>
                  <height>135</height>
                 </size>
                </property>
