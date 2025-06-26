@@ -1239,37 +1239,37 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="35"/>
         <source>课程表编辑</source>
-        <translation type="unfinished"></translation>
+        <translation>Schedule edit</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="85"/>
         <source>选择星期</source>
-        <translation type="unfinished"></translation>
+        <translation>Choose the day of the week</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="137"/>
         <source>选择单/双周课表</source>
-        <translation type="unfinished"></translation>
+        <translation>Choose a single/bi-weekly schedule</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="144"/>
         <source>若要启用双周课表，请在“高级选项”中 启用单双周课表和设置开学日期</source>
-        <translation type="unfinished"></translation>
+        <translation>To enable bi-weekly schedules, enable bi-weekly schedules and set a start date in Advanced Options</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="173"/>
         <source>复制单周课表</source>
-        <translation type="unfinished"></translation>
+        <translation>Copy from single-weekly schedule</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="221"/>
         <source>快速添加课程</source>
-        <translation type="unfinished"></translation>
+        <translation>Add courses</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="271"/>
         <source>下一天</source>
-        <translation type="unfinished"></translation>
+        <translation>Next day</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="41"/>
