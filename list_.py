@@ -8,67 +8,70 @@ from typing import Dict, Any, List, Optional, Union
 from loguru import logger
 from file import base_directory, config_center, save_data_to_json
 
-week = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-week_type = ['单周', '双周']
-part_type = ['节点', '休息段']
-window_status = ['无', '置于顶部', '置于底部']
-color_mode = ['浅色', '深色', '跟随系统']
-hide_mode = ['无', '上课时自动隐藏', '窗口最大化时隐藏', '灵活隐藏']
-non_nt_hide_mode = ['无', '上课时自动隐藏']
-version_channel = ['正式版 (Release)', '测试版 (Beta)']
+from PyQt5.QtCore import QCoreApplication
+tr = QCoreApplication.translate
+
+week = [tr("list", '周一'), tr("list", '周二'), tr("list", '周三'), tr("list", '周四'), tr("list", '周五'), tr("list", '周六'), tr("list", '周日')]
+week_type = [tr("list", '单周'), tr("list", '双周')]
+part_type = [tr("list", '节点'), tr("list", '休息段')]
+window_status = [tr("list", '无'), tr("list", '置于顶部'), tr("list", '置于底部')]
+color_mode = [tr("list", '浅色'), tr("list", '深色'), tr("list", '跟随系统')]
+hide_mode = [tr("list", '无'), tr("list", '上课时自动隐藏'), tr("list", '窗口最大化时隐藏'), tr("list", '灵活隐藏')]
+non_nt_hide_mode = [tr("list", '无'), tr("list", '上课时自动隐藏')]
+version_channel = [tr("list", '正式版 (Release)'), tr("list", '测试版 (Beta)')]
 
 theme_folder = []
 theme_names = []
 
 subject = {
-    '语文': '(255, 151, 135',  # 红
-    '数学': '(105, 84, 255',  # 蓝
-    '英语': '(236, 135, 255',  # 粉
-    '生物': '(68, 200, 94',  # 绿
-    '地理': '(80, 214, 200',  # 浅蓝
-    '政治': '(255, 110, 110',  # 红
-    '历史': '(180, 130, 85',  # 棕
-    '物理': '(130, 85, 180',  # 紫
-    '化学': '(84, 135, 190',  # 蓝
-    '美术': '(0, 186, 255',  # 蓝
-    '音乐': '(255, 101, 158',  # 红
-    '体育': '(255, 151, 135',  # 红
-    '信息技术': '(84, 135, 190',  # 蓝
-    '电脑': '(84, 135, 190',  # 蓝
-    '课程表未加载': '(255, 151, 135',  # 红
+    tr("list", '语文'): '(255, 151, 135',  # 红
+    tr("list", '数学'): '(105, 84, 255',  # 蓝
+    tr("list", '英语'): '(236, 135, 255',  # 粉
+    tr("list", '生物'): '(68, 200, 94',  # 绿
+    tr("list", '地理'): '(80, 214, 200',  # 浅蓝
+    tr("list", '政治'): '(255, 110, 110',  # 红
+    tr("list", '历史'): '(180, 130, 85',  # 棕
+    tr("list", '物理'): '(130, 85, 180',  # 紫
+    tr("list", '化学'): '(84, 135, 190',  # 蓝
+    tr("list", '美术'): '(0, 186, 255',  # 蓝
+    tr("list", '音乐'): '(255, 101, 158',  # 红
+    tr("list", '体育'): '(255, 151, 135',  # 红
+    tr("list", '信息技术'): '(84, 135, 190',  # 蓝
+    tr("list", '电脑'): '(84, 135, 190',  # 蓝
+    tr("list", '课程表未加载'): '(255, 151, 135',  # 红
 
-    '班会': '(255, 151, 135',  # 红
-    '自习': '(115, 255, 150',  # 绿
-    '课间': '(135, 255, 191',  # 绿
-    '大课间': '(255, 151, 135',  # 红
-    '放学': '(84, 255, 101',  # 绿
-    '暂无课程': '(84, 255, 101',  # 绿
+    tr("list", '班会'): '(255, 151, 135',  # 红
+    tr("list", '自习'): '(115, 255, 150',  # 绿
+    tr("list", '课间'): '(135, 255, 191',  # 绿
+    tr("list", '大课间'): '(255, 151, 135',  # 红
+    tr("list", '放学'): '(84, 255, 101',  # 绿
+    tr("list", '暂无课程'): '(84, 255, 101',  # 绿
 }
 
 schedule_dir = os.path.join(base_directory, 'config', 'schedule')
 
-class_activity = ['课程', '课间']
-time = ['上午', '下午', '晚修']
+class_activity = [tr("list", '课程'), tr("list", '课间')]
+time = [tr("list", '上午'), tr("list", '下午'), tr("list", '晚修')]
 class_kind = [
-    '自定义',
-    '语文',
-    '数学',
-    '英语',
-    '政治',
-    '历史',
-    '生物',
-    '地理',
-    '物理',
-    '化学',
-    '体育',
-    '班会',
-    '自习',
-    '早读',
-    '大课间',
-    '美术',
-    '音乐',
-    '心理',
-    '信息技术'
+    tr("list", '自定义'),
+    tr("list", '语文'),
+    tr("list", '数学'),
+    tr("list", '英语'),
+    tr("list", '政治'),
+    tr("list", '历史'),
+    tr("list", '生物'),
+    tr("list", '地理'),
+    tr("list", '物理'),
+    tr("list", '化学'),
+    tr("list", '体育'),
+    tr("list", '班会'),
+    tr("list", '自习'),
+    tr("list", '早读'),
+    tr("list", '大课间'),
+    tr("list", '美术'),
+    tr("list", '音乐'),
+    tr("list", '心理'),
+    tr("list", '信息技术')
 ]
 
 default_widgets = [
@@ -88,24 +91,27 @@ widget_width = {  # 默认宽度
 }
 
 widget_conf = {
-    '当前日期': 'widget-time.ui',
-    '活动倒计时': 'widget-countdown.ui',
-    '当前活动': 'widget-current-activity.ui',
-    '更多活动': 'widget-next-activity.ui',
-    '倒计日': 'widget-countdown-day.ui',
-    '天气': 'widget-weather.ui'
+    tr("list", '当前日期'): 'widget-time.ui',
+    tr("list", '活动倒计时'): 'widget-countdown.ui',
+    tr("list", '当前活动'): 'widget-current-activity.ui',
+    tr("list", '更多活动'): 'widget-next-activity.ui',
+    tr("list", '倒计日'): 'widget-countdown-day.ui',
+    tr("list", '天气'): 'widget-weather.ui'
 }
 
 widget_name = {
-    'widget-time.ui': '当前日期',
-    'widget-countdown.ui': '活动倒计时',
-    'widget-current-activity.ui': '当前活动',
-    'widget-next-activity.ui': '更多活动',
-    'widget-countdown-day.ui': '倒计日',
-    'widget-weather.ui': '天气'
+    'widget-time.ui': tr("list", '当前日期'),
+    'widget-countdown.ui': tr("list", '活动倒计时'),
+    'widget-current-activity.ui': tr("list", '当前活动'),
+    'widget-next-activity.ui': tr("list", '更多活动'),
+    'widget-countdown-day.ui': tr("list", '倒计日'),
+    'widget-weather.ui': tr("list", '天气')
 }
 
 native_widget_name = [widget_name[i] for i in widget_name]
+
+
+not_exist_themes = []
 
 try:  # 加载课程/主题配置文件
     subject_info = json.load(open(f'{base_directory}/config/data/subject.json', 'r', encoding='utf-8'))
@@ -117,37 +123,35 @@ except Exception as e:
     logger.error(f'加载课程/主题配置文件发生错误，使用默认配置：{e}')
     config_center.write_conf('General', 'theme', 'default')
     subject_icon = {
-        '语文': 'chinese',
-        '数学': 'math',
-        '英语': 'abc',
-        '生物': 'biology',
-        '地理': 'geography',
-        '政治': 'chinese',
-        '历史': 'history',
-        '物理': 'physics',
-        '化学': 'chemistry',
-        '美术': 'art',
-        '音乐': 'music',
-        '体育': 'pe',
-        '信息技术': 'it',
-        '电脑': 'it',
-        '课程表未加载': 'xmark',
+        tr("list", '语文'): 'chinese',
+        tr("list", '数学'): 'math',
+        tr("list", '英语'): 'abc',
+        tr("list", '生物'): 'biology',
+        tr("list", '地理'): 'geography',
+        tr("list", '政治'): 'chinese',
+        tr("list", '历史'): 'history',
+        tr("list", '物理'): 'physics',
+        tr("list", '化学'): 'chemistry',
+        tr("list", '美术'): 'art',
+        tr("list", '音乐'): 'music',
+        tr("list", '体育'): 'pe',
+        tr("list", '信息技术'): 'it',
+        tr("list", '电脑'): 'it',
+        tr("list", '课程表未加载'): 'xmark',
 
-        '班会': 'meeting',
-        '自习': 'self_study',
-        '课间': 'break',
-        '大课间': 'pe',
-        '放学': 'after_school',
-        '暂无课程': 'break',
+        tr("list", '班会'): 'meeting',
+        tr("list", '自习'): 'self_study',
+        tr("list", '课间'): 'break',
+        tr("list", '大课间'): 'pe',
+        tr("list", '放学'): 'after_school',
+        tr("list", '暂无课程'): 'break',
     }
     # 简称
     subject_abbreviation = {
-        '历史': '史'
+        tr("list", '历史'): '史'
     }
 
-not_exist_themes = []
-
-countdown_modes = ['轮播', '多小组件']
+countdown_modes = [tr("list", '轮播'), tr("list", '多小组件')]
 
 for folder in theme_folder:
     try:

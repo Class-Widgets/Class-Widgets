@@ -43,7 +43,6 @@ from network_thread import VersionThread
 from plugin import p_loader
 from plugin_plaza import PluginPlaza
 
-
 from PyQt5.QtCore import QCoreApplication
 tr = QCoreApplication.translate
 
