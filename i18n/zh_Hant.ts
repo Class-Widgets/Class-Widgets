@@ -1999,69 +1999,75 @@ Json 配置文件 (*.json)</translation>
         <comment>课程表文件导出失败，
 可能为文件损坏，请将此情况反馈给开发者。</comment>
         <translation>SettingsMenu
-課程時間表文件導出失敗
+課程時間表文件導出失敗，
 可能是文件損壞，請將本情況反饋到開發團隊。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2342"/>
         <source>版本号：获取失败！</source>
-        <translation type="unfinished"></translation>
+        <translation>無法獲取版本號！</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2343"/>
         <location filename="../menu.py" line="2344"/>
         <location filename="../menu.py" line="2345"/>
         <source>获取失败！</source>
-        <translation type="unfinished"></translation>
+        <translation>獲取失敗!</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2349"/>
         <source>version</source>
         <comment>检查更新失败！</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu 檢查更新失敗!</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2350"/>
         <source>version</source>
         <comment>检查更新失败！
 {data}</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu
+檢查更新失敗!
+{data}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2365"/>
         <source>版本号：{local_version}
 已是最新版本！</source>
-        <translation type="unfinished"></translation>
+        <translation>版本號：{local_version} 
+已是最新版本!</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2370"/>
         <source>版本号：{local_version}
 可更新版本: {new_version}</source>
-        <translation type="unfinished"></translation>
+        <translation>版本號：{local_version} 
+可更新版本：{new_version}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2376"/>
         <source>version</source>
         <comment>新版本速递：{new_version}</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu
+新版本：{new_version}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2379"/>
         <location filename="../menu.py" line="2439"/>
         <source>menu</source>
         <comment>选择文件</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu 選擇文件</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2379"/>
         <source>menu</source>
         <comment>CSES 通用课程表交换文件 (*.yaml)</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu
+CSES 通用課程時間表交換文件(*.yaml)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2389"/>
         <source>转换失败！</source>
-        <translation type="unfinished"></translation>
+        <translation>轉換失敗!</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2392"/>
@@ -2069,21 +2075,25 @@ Json 配置文件 (*.json)</translation>
         <comment>课程表文件转换失败！
 可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
 详情请查看Log日志，日志位于./log/下。</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu
+課程表檔案轉換失敗！
+可能是格式錯誤或檔案已損壞，請確認該檔案是否為正確的 CSES 課程表檔案。
+詳情請查看紀錄，紀錄位於 ./log/ 目錄下。</translation>
     </message>
     <message numerus="yes">
         <location filename="../menu.py" line="2401"/>
         <source>menu</source>
         <comment>您已成功导入 CSES 课程表配置文件</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>SettingsMenu
+你已成功導入 CSES 課程表設定檔案。</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../menu.py" line="2407"/>
         <location filename="../menu.py" line="2450"/>
         <source>导入失败！</source>
-        <translation type="unfinished"></translation>
+        <translation>導入失敗!</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2410"/>
@@ -2091,17 +2101,20 @@ Json 配置文件 (*.json)</translation>
         <comment>课程表文件导入失败！
 可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
 详情请查看Log日志，日志位于./log/下。</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu
+課程表檔案匯入失敗！
+可能是格式錯誤或檔案已損壞，請確認該檔案是否為正確的 CSES 課程表檔案。
+詳情請查看紀錄，紀錄位於 ./log/ 目錄下。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2444"/>
         <source>您已成功导入课程表配置文件</source>
-        <translation type="unfinished"></translation>
+        <translation>你已成功導入課程時間表文件</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2445"/>
         <source>请在“高级选项”中手动切换您的配置文件。</source>
-        <translation type="unfinished"></translation>
+        <translation>請在“進階選項”中手動切換你的配置檔案。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2453"/>
@@ -2109,7 +2122,10 @@ Json 配置文件 (*.json)</translation>
         <comment>课程表文件导入失败！
 可能为格式错误或文件损坏，请检查此文件是否为 Class Widgets 课程表文件。
 详情请查看Log日志，日志位于./log/下。</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu
+課程表檔案導入失敗！
+可能是格式錯誤或檔案已損壞，請確認該檔案是否為 Class Widgets 課程表檔案。
+詳情請查看紀錄，紀錄位於 ./log/ 目錄下。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2468"/>
@@ -2117,236 +2133,245 @@ Json 配置文件 (*.json)</translation>
         <location filename="../menu.py" line="2883"/>
         <location filename="../menu.py" line="3191"/>
         <source>保存成功</source>
-        <translation type="unfinished"></translation>
+        <translation>儲存成功</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2469"/>
         <source>menu</source>
         <comment>已保存至 ./config/widget.json</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu
+已儲存至 ./config/widget.json</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2543"/>
         <source>请输入新课表名称</source>
-        <translation type="unfinished"></translation>
+        <translation>請輸入新課表的名稱</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2544"/>
         <source>请命名您的课程表计划：</source>
-        <translation type="unfinished"></translation>
+        <translation>請命名你的課程時間表計畫:</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2544"/>
         <source>新课表 - 1</source>
-        <translation type="unfinished"></translation>
+        <translation>新課程時間表 - 1</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2569"/>
         <source>错误！</source>
-        <translation type="unfinished"></translation>
+        <translation>錯誤!</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2570"/>
         <source>menu</source>
         <comment>列表选项异常！{data}</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu
+列表選項異常！{data}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2646"/>
         <source>预览  -  [调休] {schedule_name}</source>
-        <translation type="unfinished"></translation>
+        <translation>預覽 - [調休] {schedule_name}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2648"/>
         <source>预览  -  {schedule_name}</source>
-        <translation type="unfinished"></translation>
+        <translation>預覽 - {schedule_name}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2656"/>
         <source>未添加</source>
-        <translation type="unfinished"></translation>
+        <translation>未新增</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2698"/>
         <source>{data}分钟</source>
-        <translation type="unfinished"></translation>
+        <translation>{data}分鐘</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2702"/>
         <location filename="../menu.py" line="2856"/>
         <source>课程</source>
-        <translation type="unfinished"></translation>
+        <translation>課程</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2804"/>
         <location filename="../menu.py" line="2884"/>
         <source>menu</source>
         <comment>已保存至 ./config/schedule/{schedule_name}</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu
+已儲存至 ./config/schedule/{schedule_name}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2839"/>
         <source>休息段</source>
-        <translation type="unfinished"></translation>
+        <translation>休息段</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2859"/>
         <location filename="../menu.py" line="3019"/>
         <location filename="../menu.py" line="3024"/>
         <source>课间</source>
-        <translation type="unfinished"></translation>
+        <translation>課間</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2894"/>
         <source>保存失败!</source>
-        <translation type="unfinished"></translation>
+        <translation>儲存失敗!</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2895"/>
         <source>menu</source>
         <comment>{e}
 保存失败，请将 ./log/ 中的日志提交给开发者以反馈问题。</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu
+{e}
+儲存失敗，請將 ./log/ 中的紀錄提交給開發者以反映問題。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2932"/>
         <source>无法添加时间线 o(TヘTo)</source>
-        <translation type="unfinished"></translation>
+        <translation>無法新增時間綫 o(TヘTo)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2933"/>
         <source>在添加时间线前，先任意添加一个节点</source>
-        <translation type="unfinished"></translation>
+        <translation>在新增時間綫前，先任意新增一個節點</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2941"/>
         <source>{class_activity} - {spin_time}分钟 - {time_period}</source>
-        <translation type="unfinished"></translation>
+        <translation>{class_activity} - {spin_time}分鐘 - {time_period}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2958"/>
         <source>没办法继续添加了 o(TヘTo)</source>
-        <translation type="unfinished"></translation>
+        <translation>無辦法繼續添加 o(TヘTo)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2959"/>
         <source>Class Widgets 最多只能添加10个“节点”！</source>
-        <translation type="unfinished"></translation>
+        <translation>Class Widgets 最多只能添加10個“節點”!</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2969"/>
         <source>menu</source>
         <comment>您确定要删除这个时段吗？</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu 您確定要刪除此時段嗎？</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2969"/>
         <source>menu</source>
         <comment>删除该节点后，将一并删除该节点下所有课程安排，且无法恢复。</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu
+刪除該節點後，會連同該節點下所有課程安排一併刪除，且無法復原。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2970"/>
         <source>删除</source>
-        <translation type="unfinished"></translation>
+        <translation>刪除</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2994"/>
         <source>取消</source>
-        <translation type="unfinished"></translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3149"/>
         <source>未添加-{data}</source>
-        <translation type="unfinished"></translation>
+        <translation>未新增-{data}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3192"/>
         <source>menu</source>
         <comment>已保存至 ./config.ini</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu
+已儲存至 ./config.ini</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3257"/>
         <source>课表预览</source>
-        <translation type="unfinished"></translation>
+        <translation>課表預覽</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3258"/>
         <source>时间线编辑</source>
-        <translation type="unfinished"></translation>
+        <translation>時間綫編輯</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3259"/>
         <source>课程表编辑</source>
-        <translation type="unfinished"></translation>
+        <translation>課程時間表編輯</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3260"/>
         <source>倒计日编辑</source>
-        <translation type="unfinished"></translation>
+        <translation>倒計日編輯</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3261"/>
         <source>配置文件</source>
-        <translation type="unfinished"></translation>
+        <translation>配置檔案</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3263"/>
         <source>帮助</source>
-        <translation type="unfinished"></translation>
+        <translation>幫助</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3264"/>
         <source>插件</source>
-        <translation type="unfinished"></translation>
+        <translation>插件</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3266"/>
         <source>自定义</source>
-        <translation type="unfinished"></translation>
+        <translation>自訂</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3267"/>
         <source>提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>提醒</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3268"/>
         <source>高级选项</source>
-        <translation type="unfinished"></translation>
+        <translation>進階選項</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3269"/>
         <source>关于本产品</source>
-        <translation type="unfinished"></translation>
+        <translation>關於本產品</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3293"/>
         <source>Class Widgets - 设置</source>
-        <translation type="unfinished"></translation>
+        <translation>Class Widgets - 設定</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3310"/>
         <source>界面语言切换成功 ♪(´▽｀)</source>
-        <translation type="unfinished"></translation>
+        <translation>介面語言切換成功 ♪(´▽｀)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3311"/>
         <source>menu</source>
         <comment>界面语言已切换为 {selected_lang_name}
 新语言将在重启程序后完全生效</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu
+介面語言已切換至 {selected_lang_name}
+新語言將於重啟程式後完全生效</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3332"/>
         <source>界面语言切换失败 (＃°Д°)</source>
-        <translation type="unfinished"></translation>
+        <translation>介面語言切換失敗 (＃°Д°)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3333"/>
         <source>无法加载选定的界面语言包，请检查翻译文件是否存在</source>
-        <translation type="unfinished"></translation>
+        <translation>無法載入所選的介面語言包，請檢查翻譯檔案是否存在</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3336"/>
@@ -2354,61 +2379,65 @@ Json 配置文件 (*.json)</translation>
         <location filename="../menu.py" line="3390"/>
         <location filename="../menu.py" line="3400"/>
         <source>确定</source>
-        <translation type="unfinished"></translation>
+        <translation>確定</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3340"/>
         <source>menu</source>
         <comment>界面语言切换时出错: {e}</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu
+介面語言切換時出錯：{e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3342"/>
         <source>界面语言切换出错 (＃°Д°)</source>
-        <translation type="unfinished"></translation>
+        <translation>介面語言切換出錯 (＃°Д°)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3343"/>
         <source>切换界面语言时发生错误: {e}</source>
-        <translation type="unfinished"></translation>
+        <translation>切換介面語言時出現錯誤: {e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3363"/>
         <source>组件语言切换成功 ♪(´▽｀)</source>
-        <translation type="unfinished"></translation>
+        <translation>組件語言切換成功 ♪(´▽｀)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3364"/>
         <source>menu</source>
         <comment>组件语言已切换为 {selected_lang_name}
 新语言将在重启程序后完全生效</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu
+組件語言已切換至 {selected_lang_name}
+新語言將於重啟程式後完全生效</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3386"/>
         <source>组件语言切换失败 (｡•́︿•̀｡)</source>
-        <translation type="unfinished"></translation>
+        <translation>組件語言切換失敗 (｡•́︿•̀｡)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3387"/>
         <source>无法加载选定的组件语言包，请检查翻译文件是否存在</source>
-        <translation type="unfinished"></translation>
+        <translation>無法載入所選的組件語言包，請檢查翻譯檔案是否存在</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3394"/>
         <source>menu</source>
         <comment>组件语言切换时出错: {e}</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu
+組件語言切換時出錯：{e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3396"/>
         <source>组件语言切换出错 (｡•́︿•̀｡)</source>
-        <translation type="unfinished"></translation>
+        <translation>組件語言切換出錯 (｡•́︿•̀｡)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3397"/>
         <source>切换组件语言时发生错误: {e}</source>
-        <translation type="unfinished"></translation>
+        <translation>切換組件語言時發生錯誤: {e}</translation>
     </message>
 </context>
 <context>
@@ -2416,132 +2445,132 @@ Json 配置文件 (*.json)</translation>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="14"/>
         <source>TTS 高级设置</source>
-        <translation type="unfinished"></translation>
+        <translation>TTS 進階設置</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="86"/>
         <source>TTS语音设置</source>
-        <translation type="unfinished"></translation>
+        <translation>TTS語音設置</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="130"/>
         <source>使用TTS语音</source>
-        <translation type="unfinished"></translation>
+        <translation>使用TTS語音</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="143"/>
         <source>启用后将在提醒后使用TTS播报信息</source>
-        <translation type="unfinished"></translation>
+        <translation>啟用後將會在提醒後使用TTS播報信息</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="166"/>
         <source>启用</source>
-        <translation type="unfinished"></translation>
+        <translation>啟用</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="169"/>
         <source>禁用</source>
-        <translation type="unfinished"></translation>
+        <translation>停用</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="208"/>
         <source>TTS生成引擎</source>
-        <translation type="unfinished"></translation>
+        <translation>TTS生成引擎</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="215"/>
         <source>选择用于生成TTS语音的引擎</source>
-        <translation type="unfinished"></translation>
+        <translation>選擇用於生成TTS語音的引擎</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="252"/>
         <source>温馨提示</source>
-        <translation type="unfinished"></translation>
+        <translation>溫馨提示</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="290"/>
         <source>TTS生成人</source>
-        <translation type="unfinished"></translation>
+        <translation>TTS生成人</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="297"/>
         <source>用于生成TTS语音所用的语音id</source>
-        <translation type="unfinished"></translation>
+        <translation>用於生成TTS語音所用的語音id</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="368"/>
         <source>语速调节</source>
-        <translation type="unfinished"></translation>
+        <translation>語速調節</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="375"/>
         <source>调整TTS的播放速度</source>
-        <translation type="unfinished"></translation>
+        <translation>調整TTS的播放速度</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="420"/>
         <source>自定义播报文本</source>
-        <translation type="unfinished"></translation>
+        <translation>自訂播報文本</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="459"/>
         <source>活动开始时:</source>
-        <translation type="unfinished"></translation>
+        <translation>活動開始時:</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="466"/>
         <source>例如：同学们好，现在开始{lesson_name}课。</source>
-        <translation type="unfinished"></translation>
+        <translation>例如：同學你哋好，依家開始{lesson_name}課。</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="510"/>
         <source>即将开始时 (预备铃):</source>
-        <translation type="unfinished"></translation>
+        <translation>即將開始(預備鈴):</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="517"/>
         <source>例如：距离{lesson_name}课还有{minutes}分钟，请做好准备。</source>
-        <translation type="unfinished"></translation>
+        <translation>例如：距離{lesson_name}課仲有{minutes}分鐘，請做好準備。</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="561"/>
         <source>活动结束时:</source>
-        <translation type="unfinished"></translation>
+        <translation>活動結束時:</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="568"/>
         <source>例如：{lesson_name}课结束，请同学们准备下一节课。</source>
-        <translation type="unfinished"></translation>
+        <translation>例如：{lesson_name}課結束，请同学们准备下一堂课。</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="612"/>
         <source>放学时:</source>
-        <translation type="unfinished"></translation>
+        <translation>放學時:</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="619"/>
         <source>例如：放学时间到，请同学们整理好物品，安全离校。</source>
-        <translation type="unfinished"></translation>
+        <translation>例如：放學時間到。</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="663"/>
         <source>其他通知 (用于插件或手动触发):</source>
-        <translation type="unfinished"></translation>
+        <translation>其他通知(用於插件或者手動觸發):</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="670"/>
         <source>例如：{title}，{content}</source>
-        <translation type="unfinished"></translation>
+        <translation>例如：{title}，{content}</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="704"/>
         <source>可用占位符</source>
-        <translation type="unfinished"></translation>
+        <translation>可用佔位符</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="717"/>
         <source>预览</source>
-        <translation type="unfinished"></translation>
+        <translation>預覽</translation>
     </message>
 </context>
 <context>
@@ -2550,12 +2579,12 @@ Json 配置文件 (*.json)</translation>
         <location filename="../menu.py" line="1306"/>
         <source>base</source>
         <comment>加载中...</comment>
-        <translation type="unfinished"></translation>
+        <translation>TTSSettings 載入中...</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1323"/>
         <source>小语法?</source>
-        <translation type="unfinished"></translation>
+        <translation>小語法?</translation>
     </message>
     <message numerus="yes">
         <location filename="../menu.py" line="1328"/>
@@ -2566,73 +2595,80 @@ Json 配置文件 (*.json)</translation>
 - `{title}`: 通知标题 (例如：重要通知) *其他
 - `{content}`: 通知内容 (例如：这是一条测试通知) *其他
 </comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>TTSSettings
+可使用以下佔位符以動態插入資料：
+- `{lesson_name}`: 開始／結束／下一節的課堂名稱（例如：資訊科技）
+- `{minutes}`: 分鐘數（例如：5）＊其他用途
+- `{title}`: 通知標題（例如：重要通知）＊其他用途
+- `{content}`: 通知內容（例如：這是一條測試通知）＊其他用途</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../menu.py" line="1365"/>
         <source>上课提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>上堂提醒</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1366"/>
         <source>下课提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>落堂提醒</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1367"/>
         <source>预备提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>預備提醒</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1368"/>
         <source>放学提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>放學提醒</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1369"/>
         <source>其他提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>其他提醒</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1377"/>
         <source>信息技术</source>
-        <translation type="unfinished"></translation>
+        <translation>資訊科技</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1379"/>
         <source>通知</source>
-        <translation type="unfinished"></translation>
+        <translation>通知</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1381"/>
         <source>这是一条测试通知ヾ(≧▽≦*)o</source>
-        <translation type="unfinished"></translation>
+        <translation>呢個係一條測試通知ヾ(≧▽≦*)o</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1422"/>
         <source>tts</source>
         <comment>TTS预览失败</comment>
-        <translation type="unfinished"></translation>
+        <translation>TTSSettings TTS預覽失敗</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1423"/>
         <source>tts</source>
         <comment>启动TTS预览时出错: {e}</comment>
-        <translation type="unfinished"></translation>
+        <translation>TTSSettings
+啟動 TTS 預覽時出錯: {e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1431"/>
         <source>tts</source>
         <comment>TTS生成失败</comment>
-        <translation type="unfinished"></translation>
+        <translation>TTSSettings TTS生成失敗</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1432"/>
         <source>tts</source>
         <comment>生成或播放语音时出错: {error_message}</comment>
-        <translation type="unfinished"></translation>
+        <translation>TTSSettings
+產生或播放語音時出錯: {error_message}</translation>
     </message>
 </context>
 <context>
@@ -2640,17 +2676,17 @@ Json 配置文件 (*.json)</translation>
     <message>
         <location filename="../menu.py" line="706"/>
         <source>确定</source>
-        <translation type="unfinished"></translation>
+        <translation>確定</translation>
     </message>
     <message>
         <location filename="../menu.py" line="729"/>
         <source>不能为空值啊 ( •̀ ω •́ )✧</source>
-        <translation type="unfinished"></translation>
+        <translation>不能為空值 ( •̀ ω •́ )✧</translation>
     </message>
     <message>
         <location filename="../menu.py" line="732"/>
         <source>不可以和之前的课程名重复哦 o(TヘTo)</source>
-        <translation type="unfinished"></translation>
+        <translation>不可以和之前的課程名重複 o(TヘTo)</translation>
     </message>
 </context>
 </TS>
