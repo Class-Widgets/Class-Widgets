@@ -1998,7 +1998,9 @@ Json 配置文件 (*.json)</translation>
         <source>menu</source>
         <comment>课程表文件导出失败，
 可能为文件损坏，请将此情况反馈给开发者。</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu
+課程時間表文件導出失敗
+可能是文件損壞，請將本情況反饋到開發團隊。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2342"/>
