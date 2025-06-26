@@ -7,149 +7,149 @@
         <location filename="../menu.py" line="314"/>
         <source>menu</source>
         <comment>无法打开文件夹</comment>
-        <translation type="unfinished"></translation>
+        <translation>フォルダーを開けません</translation>
     </message>
     <message>
         <location filename="../menu.py" line="314"/>
         <source>menu</source>
         <comment>Class Widgets 在您的系统下不支持自动打开文件夹，请手动打开以下地址：
 {path}</comment>
-        <translation type="unfinished"></translation>
+        <translation>Class Widgets は自動でﾌｫﾙﾀﾞｰを開けません。以下のパスを手動で開いてください。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="316"/>
         <location filename="../menu.py" line="469"/>
         <source>menu</source>
         <comment>好</comment>
-        <translation type="unfinished"></translation>
+        <translation>はい</translation>
     </message>
     <message>
         <location filename="../menu.py" line="371"/>
         <source>menu</source>
         <comment>未添加</comment>
-        <translation type="unfinished"></translation>
+        <translation>未追加</translation>
     </message>
     <message>
         <location filename="../menu.py" line="422"/>
         <source>menu</source>
         <comment>搜索城市</comment>
-        <translation type="unfinished"></translation>
+        <translation>都市を検索（都道府県）</translation>
     </message>
     <message>
         <location filename="../menu.py" line="423"/>
         <source>menu</source>
         <comment>请输入当地城市名进行搜索</comment>
-        <translation type="unfinished"></translation>
+        <translation>お住まいの都市名を入力して検索してください</translation>
     </message>
     <message>
         <location filename="../menu.py" line="424"/>
         <source>menu</source>
         <comment>选择此城市</comment>
-        <translation type="unfinished"></translation>
+        <translation>この都市を選択</translation>
     </message>
     <message>
         <location filename="../menu.py" line="425"/>
         <source>menu</source>
         <comment>取消</comment>
-        <translation type="unfinished"></translation>
+        <translation>ｷｬﾝｾﾙ</translation>
     </message>
     <message>
         <location filename="../menu.py" line="427"/>
         <source>menu</source>
         <comment>输入城市名</comment>
-        <translation type="unfinished"></translation>
+        <translation>都市名を入力</translation>
     </message>
     <message>
         <location filename="../menu.py" line="467"/>
         <source>menu</source>
         <comment>软件许可协议</comment>
-        <translation type="unfinished"></translation>
+        <translation>ソフトウェア使用許諾契約書</translation>
     </message>
     <message>
         <location filename="../menu.py" line="468"/>
         <source>menu</source>
         <comment>此项目 (Class Widgets) 基于 GPL-3.0 许可证授权发布，详情请参阅：</comment>
-        <translation type="unfinished"></translation>
+        <translation>本ﾌﾟﾛｼﾞｪｸﾄ（Class Widgets）はGPL-3.0ﾗｲｾﾝｽで提供。詳細は以下参照：</translation>
     </message>
     <message>
         <location filename="../menu.py" line="537"/>
         <source>menu</source>
         <comment>打开“{title}”插件文件夹</comment>
-        <translation type="unfinished"></translation>
+        <translation>「{title}」ﾌﾟﾗｸﾞｲﾝﾌｫﾙﾀﾞｰを開く</translation>
     </message>
     <message>
         <location filename="../menu.py" line="544"/>
         <source>menu</source>
         <comment>访问“{title}”插件页面</comment>
-        <translation type="unfinished"></translation>
+        <translation>「{title}」ﾌﾟﾗｸﾞｲﾝページにアクセス</translation>
     </message>
     <message>
         <location filename="../menu.py" line="550"/>
         <source>menu</source>
         <comment>卸载“{title}”插件</comment>
-        <translation type="unfinished"></translation>
+        <translation>「{title}」ﾌﾟﾗｸﾞｲﾝをｱﾝｲﾝｽﾄｰﾙする</translation>
     </message>
     <message>
         <location filename="../menu.py" line="568"/>
         <source>menu</source>
         <comment>此插件被临时禁用,重启后将尝试重新加载</comment>
-        <translation type="unfinished"></translation>
+        <translation>このﾌﾟﾗｸﾞｲﾝは一時的に無効化されています。再起動後に再度リロードを試みます。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="569"/>
         <source>menu</source>
         <comment>{title} (已临时禁用)</comment>
-        <translation type="unfinished"></translation>
+        <translation>「{title}」（一時無効）</translation>
     </message>
     <message>
         <location filename="../menu.py" line="582"/>
         <source>menu</source>
         <comment>禁用</comment>
-        <translation type="unfinished"></translation>
+        <translation>無効化</translation>
     </message>
     <message>
         <location filename="../menu.py" line="583"/>
         <source>menu</source>
         <comment>启用</comment>
-        <translation type="unfinished"></translation>
+        <translation>有効化</translation>
     </message>
     <message numerus="yes">
         <location filename="../menu.py" line="628"/>
         <source>menu</source>
         <comment>menu</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>メニュー</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../menu.py" line="653"/>
         <source>menu</source>
         <comment>我再想想……</comment>
-        <translation type="unfinished"></translation>
+        <translation>もう少し考えますね…</translation>
     </message>
     <message>
         <location filename="../menu.py" line="668"/>
         <source>menu</source>
         <comment>卸载成功</comment>
-        <translation type="unfinished"></translation>
+        <translation>ｱﾝｲﾝｽﾄｰﾙ成功</translation>
     </message>
     <message>
         <location filename="../menu.py" line="669"/>
         <source>menu</source>
         <comment>插件 “{title}” 已卸载。请重启 Class Widgets 以完全移除。</comment>
-        <translation type="unfinished"></translation>
+        <translation>ﾌﾟﾗｸﾞｲﾝ「{title}」はアンインストールされました。完全に削除するには Class Widgets を再起動してください。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="679"/>
         <source>menu</source>
         <comment>卸载失败</comment>
-        <translation type="unfinished"></translation>
+        <translation>ｱﾝｲﾝｽﾄｰﾙ失敗</translation>
     </message>
     <message>
         <location filename="../menu.py" line="680"/>
         <source>menu</source>
         <comment>卸载插件 “{title}” 时出错，请查看日志获取详细信息。</comment>
-        <translation type="unfinished"></translation>
+        <translation>ﾌﾟﾗｸﾞｲﾝ「{title}」のｱﾝｲﾝｽﾄｰﾙ中にエラーが発生しました。詳細はログを確認してください。</translation>
     </message>
 </context>
 <context>
@@ -159,25 +159,25 @@
         <source>tts</source>
         <comment>系统 TTS（pyttsx3）用的是系统自带的语音服务噢~
 您可以在系统设置里添加更多语音(*≧▽≦)</comment>
-        <translation type="unfinished"></translation>
+        <translation>CustomMessageBox システムのTTS（pyttsx3）は、システム標準の音声サービスを使用しています〜 システム設定でさらに多くの音声を追加できますよ(*≧▽≦)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1555"/>
         <source>tts</source>
         <comment>打开Windows语音设置</comment>
-        <translation type="unfinished"></translation>
+        <translation>CustomMessageBox Windowsの音声設定を開く</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1560"/>
         <location filename="../menu.py" line="1569"/>
         <source>知道啦~</source>
-        <translation type="unfinished"></translation>
+        <translation>わかった〜！</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1568"/>
         <source>tts</source>
         <comment>这个语音引擎还没有提示信息呢~(・ω&lt;)</comment>
-        <translation type="unfinished"></translation>
+        <translation>CustomMessageBox この音声エンジンにはまだメッセージがありません〜(・ω&lt;)</translation>
     </message>
 </context>
 <context>
@@ -203,43 +203,43 @@
         <location filename="../view/pp/search.ui" line="20"/>
         <location filename="../view/pp/settings.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="35"/>
         <source>额外选项</source>
-        <translation type="unfinished"></translation>
+        <translation>追加オプション</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="45"/>
         <source>调休</source>
-        <translation type="unfinished"></translation>
+        <translation>振替休日</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="84"/>
         <source>设置调休星期</source>
-        <translation type="unfinished"></translation>
+        <translation>振替休日日付設定</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="91"/>
         <source>将替换当前调休日的课程表为选定星期</source>
-        <translation type="unfinished"></translation>
+        <translation>振替日の時間割を選択曜日に置換</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="128"/>
         <source>换课</source>
-        <translation type="unfinished"></translation>
+        <translation>授業振替</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="135"/>
         <source>临时替换当天的课程，重启后失效</source>
-        <translation type="unfinished"></translation>
+        <translation>当日の授業を一時的に置き換えます。再起動後は無効。</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="208"/>
         <location filename="../view/menu/schedule_edit.ui" line="294"/>
         <source>课程/活动</source>
-        <translation type="unfinished"></translation>
+        <translation>授業／ｲﾍﾞﾝﾄ</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="234"/>
