@@ -7,14 +7,14 @@
         <location filename="../menu.py" line="314"/>
         <source>menu</source>
         <comment>无法打开文件夹</comment>
-        <translation type="unfinished"></translation>
+        <translation>menu</translation>
     </message>
     <message>
         <location filename="../menu.py" line="314"/>
         <source>menu</source>
         <comment>Class Widgets 在您的系统下不支持自动打开文件夹，请手动打开以下地址：
 {path}</comment>
-        <translation type="unfinished"></translation>
+        <translation>menu</translation>
     </message>
     <message>
         <location filename="../menu.py" line="316"/>
