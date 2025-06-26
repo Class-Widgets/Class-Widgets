@@ -118,8 +118,9 @@
         <location filename="../menu.py" line="628"/>
         <source>menu</source>
         <comment>menu</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>menu</numerusform>
+            <numerusform>menus</numerusform>
         </translation>
     </message>
     <message>
