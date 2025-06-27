@@ -817,58 +817,58 @@
     <message>
         <location filename="../view/menu/advance.ui" line="71"/>
         <source>课程</source>
-        <translation type="unfinished"></translation>
+        <translation>课是天课是地课是Widget</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="104"/>
         <source>时差偏移</source>
-        <translation type="unfinished"></translation>
+        <translation>铃声咋慢了</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="111"/>
         <source>修正系统时间与学校铃声的时差，学校铃声慢于系统时间为正值，反之为负</source>
-        <translation type="unfinished"></translation>
+        <translation>cnm学校还要电教委员给你擦屁股</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="182"/>
         <source>选择课程表配置</source>
-        <translation type="unfinished"></translation>
+        <translation>课程表自助餐</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="189"/>
         <source>课程表配置将存储于 本软件根目录\config\schedule 下</source>
-        <translation type="unfinished"></translation>
+        <translation>自己找去存储地方</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="270"/>
         <source>启用 单/双 周课表</source>
-        <translation type="unfinished"></translation>
+        <translation>我们学校有双周课表吗</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="277"/>
         <source>若要启用此选项，需设定开学日期以计算</source>
-        <translation type="unfinished"></translation>
+        <translation>我不知道开学日期来判断双周课表，难道靠猜吗</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="306"/>
         <source>关闭</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenAI</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="348"/>
         <location filename="../view/menu/advance.ui" line="381"/>
         <source>选取开学日期</source>
-        <translation type="unfinished"></translation>
+        <translation>不是假期过这么快？</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="355"/>
         <source>将用于计算单/双周，开学日期需设置为开学第一周第一天（即周一）</source>
-        <translation type="unfinished"></translation>
+        <translation>不然我只能靠猜来给你双周课表了</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="395"/>
         <source>外观</source>
-        <translation type="unfinished"></translation>
+        <translation>可爱的Widgets们</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="402"/>
@@ -878,99 +878,99 @@
     <message>
         <location filename="../view/menu/advance.ui" line="409"/>
         <source>在此处您可以修改界面所显示的语言</source>
-        <translation type="unfinished"></translation>
+        <translation>feat/i18n</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="492"/>
         <source>组件语言</source>
-        <translation type="unfinished"></translation>
+        <translation>自动汉化（存疑</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="499"/>
         <source>选择你所需要组件显示的语言</source>
-        <translation type="unfinished"></translation>
+        <translation>请选择梗体中文。</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="566"/>
         <source>界面语言</source>
-        <translation type="unfinished"></translation>
+        <translation>照样是梗体中文。</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="573"/>
         <source>选择你所需要界面显示的语言</source>
-        <translation type="unfinished"></translation>
+        <translation>反正大概率选梗体中文就完了（？）</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="608"/>
         <source>隐藏方式</source>
-        <translation type="unfinished"></translation>
+        <translation>今日推荐</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="615"/>
         <source>隐藏方式将会修改单击隐藏和自动隐藏的行为，可按需更改（重启后生效）</source>
-        <translation type="unfinished"></translation>
+        <translation>你爱几把干啥就干啥，反正世界不爆炸（重启）你也看不到</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="689"/>
         <source>默认</source>
-        <translation type="unfinished"></translation>
+        <translation>默默的认真，简称默认</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="740"/>
         <source>全部隐藏</source>
-        <translation type="unfinished"></translation>
+        <translation>扫键，但是全good</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="791"/>
         <source>最小化为浮窗（推荐）</source>
-        <translation type="unfinished"></translation>
+        <translation>最推荐</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="802"/>
         <location filename="../view/menu/advance.ui" line="1479"/>
         <location filename="../view/menu/plugin_mgr.ui" line="637"/>
         <source>其他</source>
-        <translation type="unfinished"></translation>
+        <translation>吉他（和我组一辈子乐队吧..?）</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="844"/>
         <source>自动隐藏</source>
-        <translation type="unfinished"></translation>
+        <translation>666 这个入开了自动Hide</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="851"/>
         <source>选择你需要的自动隐藏方式</source>
-        <translation type="unfinished"></translation>
+        <translation>选择困难症别过来</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="875"/>
         <source>什么是灵活隐藏？</source>
-        <translation type="unfinished"></translation>
+        <translation>这时就有人要问了：</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="925"/>
         <source>特定课程不自动隐藏</source>
-        <translation type="unfinished"></translation>
+        <translation>给喜欢 Widget 的学科老师（填学科）开特权</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="932"/>
         <source>若启用，在遇到下方设置的特定课程时不会自动隐藏，以英文逗号分隔</source>
-        <translation type="unfinished"></translation>
+        <translation>别他妈用全角，半角那么难切换吗</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1006"/>
         <source>不自动隐藏的课程</source>
-        <translation type="unfinished"></translation>
+        <translation>特权课程</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1013"/>
         <source>配合 特定课程不自动隐藏 使用</source>
-        <translation type="unfinished"></translation>
+        <translation>现在套餐（+特定课程不自动隐藏）只需114.514$</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1092"/>
         <source>允许点击或触摸小组件</source>
-        <translation type="unfinished"></translation>
+        <translation>阿洛娜同款点击认证😋</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1099"/>
@@ -978,23 +978,27 @@
 若启用，单击小组件可显示或隐藏小组件，右键小组件可打开额外选项
 若禁用，点击小组件等同于点击小组件后方的窗口
 * 重启后生效</source>
-        <translation type="unfinished"></translation>
+        <translation>我草我把阿洛娜戳坏了怎么办🤗
+没事，重启就行。
+* 或者关闭以穿透
+（阿洛娜补药9蓝1金啊啊啊😭）</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1183"/>
         <source>自定义缩放</source>
-        <translation type="unfinished"></translation>
+        <translation>Widgets 也可以变大变高！</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1190"/>
         <source>更改自定义缩放系数百分比（重启后生效）
 *不建议使用 180% 以上的值，这可能会导致显示异常</source>
-        <translation type="unfinished"></translation>
+        <translation>宇宙大爆炸以后就可以生效了。
+180%以上可能导致 Widgets 比 宇宙 大。</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1287"/>
         <source>置顶/置底小组件</source>
-        <translation type="unfinished"></translation>
+        <translation>两个极端（最不极端的小组件（？）</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1300"/>
