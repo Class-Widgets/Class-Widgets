@@ -3505,7 +3505,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../menu.py" line="653"/>
         <source>我再想想……</source>
-        <translation>我再諗諗......</translation>
+        <translation>我再諗諗...…</translation>
     </message>
     <message>
         <location filename="../menu.py" line="668"/>
