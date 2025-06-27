@@ -283,67 +283,67 @@ The new language will take full effect after restarting the program</translation
         <location filename="../list_.py" line="14"/>
         <source>list</source>
         <comment>周一</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Monday</translation>
     </message>
     <message>
         <location filename="../list_.py" line="14"/>
         <source>list</source>
         <comment>周二</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Tuesday</translation>
     </message>
     <message>
         <location filename="../list_.py" line="14"/>
         <source>list</source>
         <comment>周三</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Wednesday</translation>
     </message>
     <message>
         <location filename="../list_.py" line="14"/>
         <source>list</source>
         <comment>周四</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Thursday</translation>
     </message>
     <message>
         <location filename="../list_.py" line="14"/>
         <source>list</source>
         <comment>周五</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Friday</translation>
     </message>
     <message>
         <location filename="../list_.py" line="14"/>
         <source>list</source>
         <comment>周六</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Saturday</translation>
     </message>
     <message>
         <location filename="../list_.py" line="15"/>
         <source>list</source>
         <comment>周日</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Sunday</translation>
     </message>
     <message>
         <location filename="../list_.py" line="15"/>
         <source>list</source>
         <comment>单周</comment>
-        <translation type="unfinished">list</translation>
+        <translation>single-week</translation>
     </message>
     <message>
         <location filename="../list_.py" line="16"/>
         <source>list</source>
         <comment>双周</comment>
-        <translation type="unfinished">list</translation>
+        <translation>even week</translation>
     </message>
     <message>
         <location filename="../list_.py" line="16"/>
         <source>list</source>
         <comment>节点</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Node</translation>
     </message>
     <message>
         <location filename="../list_.py" line="17"/>
         <source>list</source>
         <comment>休息段</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Break</translation>
     </message>
     <message>
         <location filename="../list_.py" line="17"/>
@@ -351,68 +351,68 @@ The new language will take full effect after restarting the program</translation
         <location filename="../list_.py" line="20"/>
         <source>list</source>
         <comment>无</comment>
-        <translation type="unfinished">list</translation>
+        <translation>None</translation>
     </message>
     <message>
         <location filename="../list_.py" line="17"/>
         <source>list</source>
         <comment>置于顶部</comment>
-        <translation type="unfinished">list</translation>
+        <translation>On top</translation>
     </message>
     <message>
         <location filename="../list_.py" line="18"/>
         <source>list</source>
         <comment>置于底部</comment>
-        <translation type="unfinished">list</translation>
+        <translation>On bottom</translation>
     </message>
     <message>
         <location filename="../list_.py" line="18"/>
         <source>list</source>
         <comment>浅色</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Light</translation>
     </message>
     <message>
         <location filename="../list_.py" line="18"/>
         <source>list</source>
         <comment>深色</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Dark</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>list</source>
         <comment>跟随系统</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Follow system</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <location filename="../list_.py" line="21"/>
         <source>list</source>
         <comment>上课时自动隐藏</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Auto hide in class</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>list</source>
         <comment>窗口最大化时隐藏</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Auto hide when maximized</translation>
     </message>
     <message>
         <location filename="../list_.py" line="20"/>
         <source>list</source>
         <comment>灵活隐藏</comment>
-        <translation type="unfinished">list</translation>
+        <translation>flexible hiding</translation>
     </message>
     <message>
         <location filename="../list_.py" line="21"/>
         <source>list</source>
         <comment>正式版 (Release)</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Release</translation>
     </message>
     <message>
         <location filename="../list_.py" line="23"/>
         <source>list</source>
         <comment>测试版 (Beta)</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Beta</translation>
     </message>
     <message>
         <location filename="../list_.py" line="27"/>
@@ -420,7 +420,7 @@ The new language will take full effect after restarting the program</translation
         <location filename="../list_.py" line="126"/>
         <source>list</source>
         <comment>语文</comment>
-        <translation type="unfinished">list</translation>
+        <translation>English</translation>
     </message>
     <message>
         <location filename="../list_.py" line="28"/>
@@ -428,7 +428,7 @@ The new language will take full effect after restarting the program</translation
         <location filename="../list_.py" line="127"/>
         <source>list</source>
         <comment>数学</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Math</translation>
     </message>
     <message>
         <location filename="../list_.py" line="29"/>
@@ -436,7 +436,7 @@ The new language will take full effect after restarting the program</translation
         <location filename="../list_.py" line="128"/>
         <source>list</source>
         <comment>英语</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Chinese</translation>
     </message>
     <message>
         <location filename="../list_.py" line="30"/>
@@ -444,7 +444,7 @@ The new language will take full effect after restarting the program</translation
         <location filename="../list_.py" line="129"/>
         <source>list</source>
         <comment>生物</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Biology</translation>
     </message>
     <message>
         <location filename="../list_.py" line="31"/>
@@ -452,7 +452,7 @@ The new language will take full effect after restarting the program</translation
         <location filename="../list_.py" line="130"/>
         <source>list</source>
         <comment>地理</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Geography</translation>
     </message>
     <message>
         <location filename="../list_.py" line="32"/>
@@ -460,7 +460,7 @@ The new language will take full effect after restarting the program</translation
         <location filename="../list_.py" line="131"/>
         <source>list</source>
         <comment>政治</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Politics</translation>
     </message>
     <message>
         <location filename="../list_.py" line="33"/>
@@ -469,7 +469,7 @@ The new language will take full effect after restarting the program</translation
         <location filename="../list_.py" line="151"/>
         <source>list</source>
         <comment>历史</comment>
-        <translation type="unfinished">list</translation>
+        <translation>History</translation>
     </message>
     <message>
         <location filename="../list_.py" line="34"/>
@@ -477,7 +477,7 @@ The new language will take full effect after restarting the program</translation
         <location filename="../list_.py" line="133"/>
         <source>list</source>
         <comment>物理</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Physics</translation>
     </message>
     <message>
         <location filename="../list_.py" line="35"/>
@@ -485,7 +485,7 @@ The new language will take full effect after restarting the program</translation
         <location filename="../list_.py" line="134"/>
         <source>list</source>
         <comment>化学</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Chemisty</translation>
     </message>
     <message>
         <location filename="../list_.py" line="36"/>
@@ -493,7 +493,7 @@ The new language will take full effect after restarting the program</translation
         <location filename="../list_.py" line="135"/>
         <source>list</source>
         <comment>美术</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Art</translation>
     </message>
     <message>
         <location filename="../list_.py" line="37"/>
@@ -501,7 +501,7 @@ The new language will take full effect after restarting the program</translation
         <location filename="../list_.py" line="136"/>
         <source>list</source>
         <comment>音乐</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Music</translation>
     </message>
     <message>
         <location filename="../list_.py" line="38"/>
@@ -509,7 +509,7 @@ The new language will take full effect after restarting the program</translation
         <location filename="../list_.py" line="137"/>
         <source>list</source>
         <comment>体育</comment>
-        <translation type="unfinished">list</translation>
+        <translation>P.E.</translation>
     </message>
     <message>
         <location filename="../list_.py" line="39"/>
@@ -517,21 +517,21 @@ The new language will take full effect after restarting the program</translation
         <location filename="../list_.py" line="138"/>
         <source>list</source>
         <comment>信息技术</comment>
-        <translation type="unfinished">list</translation>
+        <translation>I.T.</translation>
     </message>
     <message>
         <location filename="../list_.py" line="40"/>
         <location filename="../list_.py" line="139"/>
         <source>list</source>
         <comment>电脑</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Computer</translation>
     </message>
     <message>
         <location filename="../list_.py" line="41"/>
         <location filename="../list_.py" line="140"/>
         <source>list</source>
         <comment>课程表未加载</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Schedule not loaded</translation>
     </message>
     <message>
         <location filename="../list_.py" line="43"/>
@@ -539,7 +539,7 @@ The new language will take full effect after restarting the program</translation
         <location filename="../list_.py" line="142"/>
         <source>list</source>
         <comment>班会</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Class meeting</translation>
     </message>
     <message>
         <location filename="../list_.py" line="44"/>
@@ -547,7 +547,7 @@ The new language will take full effect after restarting the program</translation
         <location filename="../list_.py" line="143"/>
         <source>list</source>
         <comment>自习</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Study period</translation>
     </message>
     <message>
         <location filename="../list_.py" line="45"/>
@@ -555,7 +555,7 @@ The new language will take full effect after restarting the program</translation
         <location filename="../list_.py" line="144"/>
         <source>list</source>
         <comment>课间</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Break</translation>
     </message>
     <message>
         <location filename="../list_.py" line="46"/>
@@ -563,117 +563,117 @@ The new language will take full effect after restarting the program</translation
         <location filename="../list_.py" line="145"/>
         <source>list</source>
         <comment>大课间</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Long recess</translation>
     </message>
     <message>
         <location filename="../list_.py" line="47"/>
         <location filename="../list_.py" line="146"/>
         <source>list</source>
         <comment>放学</comment>
-        <translation type="unfinished">list</translation>
+        <translation>After school</translation>
     </message>
     <message>
         <location filename="../list_.py" line="48"/>
         <location filename="../list_.py" line="147"/>
         <source>list</source>
         <comment>暂无课程</comment>
-        <translation type="unfinished">list</translation>
+        <translation>No class</translation>
     </message>
     <message>
         <location filename="../list_.py" line="53"/>
         <source>list</source>
         <comment>课程</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Course</translation>
     </message>
     <message>
         <location filename="../list_.py" line="54"/>
         <source>list</source>
         <comment>上午</comment>
-        <translation type="unfinished">list</translation>
+        <translation>a.m.</translation>
     </message>
     <message>
         <location filename="../list_.py" line="54"/>
         <source>list</source>
         <comment>下午</comment>
-        <translation type="unfinished">list</translation>
+        <translation>p.m.</translation>
     </message>
     <message>
         <location filename="../list_.py" line="55"/>
         <source>list</source>
         <comment>晚修</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Evening prep</translation>
     </message>
     <message>
         <location filename="../list_.py" line="56"/>
         <source>list</source>
         <comment>自定义</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Custom</translation>
     </message>
     <message>
         <location filename="../list_.py" line="69"/>
         <source>list</source>
         <comment>早读</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Morning reading</translation>
     </message>
     <message>
         <location filename="../list_.py" line="73"/>
         <source>list</source>
         <comment>心理</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Psycholoigy</translation>
     </message>
     <message>
         <location filename="../list_.py" line="94"/>
         <location filename="../list_.py" line="103"/>
         <source>list</source>
         <comment>当前日期</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Current date</translation>
     </message>
     <message>
         <location filename="../list_.py" line="95"/>
         <location filename="../list_.py" line="104"/>
         <source>list</source>
         <comment>活动倒计时</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Countdown</translation>
     </message>
     <message>
         <location filename="../list_.py" line="96"/>
         <location filename="../list_.py" line="105"/>
         <source>list</source>
         <comment>当前活动</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Current Activity</translation>
     </message>
     <message>
         <location filename="../list_.py" line="97"/>
         <location filename="../list_.py" line="106"/>
         <source>list</source>
         <comment>更多活动</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Upcoming Activities</translation>
     </message>
     <message>
         <location filename="../list_.py" line="98"/>
         <location filename="../list_.py" line="107"/>
         <source>list</source>
         <comment>倒计日</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Day Countdown</translation>
     </message>
     <message>
         <location filename="../list_.py" line="99"/>
         <location filename="../list_.py" line="111"/>
         <source>list</source>
         <comment>天气</comment>
-        <translation type="unfinished">list</translation>
+        <translation>­Weather</translation>
     </message>
     <message>
         <location filename="../list_.py" line="154"/>
         <source>list</source>
         <comment>轮播</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Carousel</translation>
     </message>
     <message>
         <location filename="../list_.py" line="156"/>
         <source>list</source>
         <comment>多小组件</comment>
-        <translation type="unfinished">list</translation>
+        <translation>Multiple widgets</translation>
     </message>
 </context>
 <context>
@@ -1771,12 +1771,12 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="137"/>
         <source>选择单/双周课表</source>
-        <translation>Choose a single/bi-weekly schedule</translation>
+        <translation>Choose a odd/even weekly schedule</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="144"/>
         <source>若要启用双周课表，请在“高级选项”中 启用单双周课表和设置开学日期</source>
-        <translation>To enable bi-weekly schedules, enable bi-weekly schedules and set a start date in Advanced Options</translation>
+        <translation>To enable even weekly schedules, enable bi-weekly schedules and set a start date in Advanced Options</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="173"/>
@@ -2178,7 +2178,7 @@ It will take effect after restarting the application.</translation>
     <message>
         <location filename="../menu.py" line="1207"/>
         <source>https://classwidgets.rinlit.cn/docs-user/</source>
-        <translation type="unfinished">https://classwidgets.rinlit.cn/docs-user/</translation>
+        <translation>https://classwidgets.rinlit.cn/docs-user/</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1246"/>
@@ -2324,7 +2324,7 @@ Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, 
     <message>
         <location filename="../menu.py" line="2002"/>
         <source>编辑课程</source>
-        <translation>Edit Course</translation>
+        <translation>Editing Course</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2008"/>
@@ -2426,69 +2426,69 @@ Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, 
         <location filename="../menu.py" line="2228"/>
         <location filename="../menu.py" line="2248"/>
         <source>已清空所有日志文件，约 {size} KB</source>
-        <translation type="unfinished">All log files cleared, approximately {size} KB</translation>
+        <translation>All log files cleared, approximately {size} KB</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2238"/>
         <source>日志目录下为空，已清理完成。</source>
-        <translation type="unfinished">Log directory is empty; cleanup complete.</translation>
+        <translation>Log directory is empty; cleanup complete.</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2258"/>
         <source>清除日志失败：{e}</source>
-        <translation type="unfinished">Failed to clear logs: {e}</translation>
+        <translation>Failed to clear logs: {e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2297"/>
         <source>更改上课时主题色</source>
-        <translation type="unfinished">Change In-Class Theme Color</translation>
+        <translation>Change In-Class Theme Color</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2303"/>
         <source>更改课间时主题色</source>
-        <translation type="unfinished">Change Break Time Theme Color</translation>
+        <translation>Change Break Time Theme Color</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2309"/>
         <source>更改浮窗时间颜色</source>
-        <translation type="unfinished">Change Floating Window Time Color</translation>
+        <translation>Change Floating Window Time Color</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2315"/>
         <source>保存文件</source>
-        <translation type="unfinished">Save</translation>
+        <translation>Save</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2316"/>
         <location filename="../menu.py" line="2439"/>
         <source>Json 配置文件 (*.json)</source>
-        <translation type="unfinished">JSON Configuration File (*.json)</translation>
+        <translation>JSON Configuration File (*.json)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2329"/>
         <location filename="../menu.py" line="2432"/>
         <source>课程表文件导出失败，
 可能为文件损坏，请将此情况反馈给开发者。</source>
-        <translation type="unfinished">Failed to export timetable file.
+        <translation>Failed to export timetable file.
 The file may be corrupted. Please report this issue to the developer.</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2379"/>
         <location filename="../menu.py" line="2439"/>
         <source>选择文件</source>
-        <translation type="unfinished">Select File</translation>
+        <translation>Select File</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2379"/>
         <source>CSES 通用课程表交换文件 (*.yaml)</source>
-        <translation type="unfinished">CSES Generic Timetable Exchange File (*.yaml)</translation>
+        <translation>CSES Generic Timetable Exchange File (*.yaml)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2392"/>
         <source>课程表文件转换失败！
 可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
 详情请查看Log日志，日志位于./log/下。</source>
-        <translation type="unfinished">Timetable file conversion failed!
+        <translation>Timetable file conversion failed!
 This may be due to incorrect format or file corruption. Please check if this is a valid CSES timetable file.
 For details, please see the log located in ./log/.</translation>
     </message>
@@ -2496,14 +2496,14 @@ For details, please see the log located in ./log/.</translation>
         <location filename="../menu.py" line="2401"/>
         <source>您已成功导入 CSES 课程表配置文件</source>
         <comment>请在“高级选项”中手动切换您的配置文件。</comment>
-        <translation type="unfinished">Successfully imported CSES timetable configuration file</translation>
+        <translation>Successfully imported CSES timetable configuration file</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2410"/>
         <source>课程表文件导入失败！
 可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
 详情请查看Log日志，日志位于./log/下。</source>
-        <translation type="unfinished">Failed to import timetable file!
+        <translation>Failed to import timetable file!
 This may be due to incorrect format or file corruption. Please check if this is a valid CSES timetable file.
 For details, please see the log located in ./log/.</translation>
     </message>
@@ -2512,64 +2512,64 @@ For details, please see the log located in ./log/.</translation>
         <source>课程表文件导入失败！
 可能为格式错误或文件损坏，请检查此文件是否为 Class Widgets 课程表文件。
 详情请查看Log日志，日志位于./log/下。</source>
-        <translation type="unfinished">Failed to import timetable file!
+        <translation>Failed to import timetable file!
 This may be due to incorrect format or file corruption. Please check if this is a valid Class Widgets timetable file.
 For details, please see the log located in ./log/.</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2469"/>
         <source>已保存至 ./config/widget.json</source>
-        <translation type="unfinished">Saved to ./config/widget.json</translation>
+        <translation>Saved to ./config/widget.json</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2570"/>
         <source>列表选项异常！{data}</source>
-        <translation type="unfinished">List option exception! {data}</translation>
+        <translation>List option exception! {data}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2804"/>
         <location filename="../menu.py" line="2884"/>
         <source>已保存至 ./config/schedule/{schedule_name}</source>
-        <translation type="unfinished">Saved to ./config/schedule/{schedule_name}</translation>
+        <translation>Saved to ./config/schedule/{schedule_name}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2895"/>
         <source>{e}
 保存失败，请将 ./log/ 中的日志提交给开发者以反馈问题。</source>
-        <translation type="unfinished">{e}
+        <translation>{e}
 Save failed. Please submit the logs in ./log/ to the developer to report the issue.</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2969"/>
         <source>您确定要删除这个时段吗？</source>
-        <translation type="unfinished">Are you sure you want to delete this time slot?</translation>
+        <translation>Are you sure you want to delete this time slot?</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2969"/>
         <source>删除该节点后，将一并删除该节点下所有课程安排，且无法恢复。</source>
-        <translation type="unfinished">Deleting this node will also delete all associated course schedules under it, and this action cannot be undone.</translation>
+        <translation>Deleting this node will also delete all associated course schedules under it, and this action cannot be undone.</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3192"/>
         <source>已保存至 ./config.ini</source>
-        <translation type="unfinished">Saved to ./config.ini</translation>
+        <translation>Saved to ./config.ini</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3311"/>
         <source>界面语言已切换为 {selected_lang_name}
 新语言将在重启程序后完全生效</source>
-        <translation type="unfinished">Interface language has been switched to {selected_lang_name}.
+        <translation>Interface language has been switched to {selected_lang_name}.
 The new language will take full effect after restarting the program</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3340"/>
         <source>界面语言切换时出错: {e}</source>
-        <translation type="unfinished">Error switching interface language: {e}</translation>
+        <translation>Error switching interface language: {e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3394"/>
         <source>组件语言切换时出错: {e}</source>
-        <translation type="unfinished">Error switching component language: {e}</translation>
+        <translation>Error switching component language: {e}</translation>
     </message>
     <message>
         <source>menu</source>
