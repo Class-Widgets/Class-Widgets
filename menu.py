@@ -90,9 +90,9 @@ class I18nManager:
         """todo:获取的优化修正"""
         language_names = {
             'zh_CN': '简体中文',
-            'zh_TW': '繁體中文',
+            'zh_Hant': '繁體中文（HK）',
             'en_US': 'English',
-            'ja_JP': '日本語',
+            'ja': '日本語',
             'ko_KR': '한국어',
             'fr_FR': 'Français',
             'de_DE': 'Deutsch',
@@ -1200,7 +1200,7 @@ class SettingsMenu(FluentWindow):
         open_by_browser = self.findChild(PushButton, 'open_by_browser')
         open_by_browser.setIcon(fIcon.LINK)
         open_by_browser.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(
-            self.tr('menu', 
+            self.tr(
             'https://classwidgets.rinlit.cn/docs-user/'
             )
         )))
@@ -2224,7 +2224,7 @@ class SettingsMenu(FluentWindow):
                 Flyout.create(
                     icon=InfoBarIcon.SUCCESS,
                     title=self.tr('已清除日志'),
-                    content=self.tr('menu', "已清空所有日志文件，约 {size} KB").format(size=size),
+                    content=self.tr("已清空所有日志文件，约 {size} KB").format(size=size),
                     target=self.button_clear_log,
                     parent=self,
                     isClosable=True,
@@ -2234,7 +2234,7 @@ class SettingsMenu(FluentWindow):
                 Flyout.create(
                     icon=InfoBarIcon.INFORMATION,
                     title=self.tr('未找到日志'),
-                    content=self.tr('menu', "日志目录下为空，已清理完成。"),
+                    content=self.tr("日志目录下为空，已清理完成。"),
                     target=self.button_clear_log,
                     parent=self,
                     isClosable=True,
@@ -2244,7 +2244,7 @@ class SettingsMenu(FluentWindow):
             Flyout.create(
                 icon=InfoBarIcon.SUCCESS,
                 title=self.tr('已清除日志'),
-                content=self.tr('menu', "已清空所有日志文件，约 {size} KB").format(size=size),
+                content=self.tr("已清空所有日志文件，约 {size} KB").format(size=size),
                 target=self.button_clear_log,
                 parent=self,
                 isClosable=True,
@@ -2254,7 +2254,7 @@ class SettingsMenu(FluentWindow):
             Flyout.create(
                 icon=InfoBarIcon.ERROR,
                 title=self.tr('清除日志失败！'),
-                content=self.tr('menu', "清除日志失败：{e}").format(e=f"{e}"),
+                content=self.tr("清除日志失败：{e}").format(e=f"{e}"),
                 target=self.button_clear_log,
                 parent=self,
                 isClosable=True,
@@ -2293,26 +2293,26 @@ class SettingsMenu(FluentWindow):
 
     def ct_set_ac_color(self):
         current_color = QColor(f'#{config_center.read_conf("Color", "attend_class")}')
-        w = ColorDialog(current_color, self.tr('menu', "更改上课时主题色"), self, enableAlpha=False)
+        w = ColorDialog(current_color, self.tr("更改上课时主题色"), self, enableAlpha=False)
         w.colorChanged.connect(lambda color: config_center.write_conf('Color', 'attend_class', color.name()[1:]))
         w.exec()
 
     def ct_set_fc_color(self):
         current_color = QColor(f'#{config_center.read_conf("Color", "finish_class")}')
-        w = ColorDialog(current_color, self.tr('menu', "更改课间时主题色"), self, enableAlpha=False)
+        w = ColorDialog(current_color, self.tr("更改课间时主题色"), self, enableAlpha=False)
         w.colorChanged.connect(lambda color: config_center.write_conf('Color', 'finish_class', color.name()[1:]))
         w.exec()
 
     def ct_set_floating_time_color(self):
         current_color = QColor(f'#{config_center.read_conf("Color", "floating_time")}')
-        w = ColorDialog(current_color, self.tr('menu', "更改浮窗时间颜色"), self, enableAlpha=False)
+        w = ColorDialog(current_color, self.tr("更改浮窗时间颜色"), self, enableAlpha=False)
         w.colorChanged.connect(lambda color: config_center.write_conf('Color', 'floating_time', color.name()[1:]))
         w.exec()
         self.ct_update_preview()
 
     def cf_export_schedule(self):  # 导出课程表
-        file_path, _ = QFileDialog.getSaveFileName(self, self.tr('menu', "保存文件"), config_center.schedule_name,
-                                                   self.tr('menu', "Json 配置文件 (*.json)"))
+        file_path, _ = QFileDialog.getSaveFileName(self, self.tr("保存文件"), config_center.schedule_name,
+                                                   self.tr("Json 配置文件 (*.json)"))
         if file_path:
             if list_.export_schedule(file_path, config_center.schedule_name):
                 alert = MessageBox(self.tr('您已成功导出课程表配置文件'),
@@ -2324,7 +2324,7 @@ class SettingsMenu(FluentWindow):
             else:
                 print('导出失败！')
                 alert = MessageBox(self.tr('导出失败！'),
-                                   self.tr('menu', '课程表文件导出失败，\n'
+                                   self.tr('课程表文件导出失败，\n'
                                    '可能为文件损坏，请将此情况反馈给开发者。'), self)
                 alert.cancelButton.hide()
                 alert.buttonLayout.insertStretch(0, 1)
@@ -2375,7 +2375,7 @@ class SettingsMenu(FluentWindow):
                 utils.tray_icon.push_update_notification(self.tr('version', "新版本速递：{new_version}").format(new_version=new_version))
 
     def cf_import_schedule_cses(self):  # 导入课程表（CSES）
-        file_path, _ = QFileDialog.getOpenFileName(self, self.tr('menu', "选择文件"), "", self.tr('menu', "CSES 通用课程表交换文件 (*.yaml)"))
+        file_path, _ = QFileDialog.getOpenFileName(self, self.tr("选择文件"), "", self.tr("CSES 通用课程表交换文件 (*.yaml)"))
         if file_path:
             file_name = file_path.split("/")[-1]
             save_path = f"{base_directory}/config/schedule/{file_name.replace('.yaml', '.json')}"
@@ -2386,7 +2386,7 @@ class SettingsMenu(FluentWindow):
             cw_data = importer.convert_to_cw()
             if not cw_data:
                 alert = MessageBox(self.tr('转换失败！'),
-                                   self.tr('menu', '课程表文件转换失败！\n'
+                                   self.tr('课程表文件转换失败！\n'
                                    '可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。\n'
                                    '详情请查看Log日志，日志位于./log/下。'), self)
                 alert.cancelButton.hide()  # 隐藏取消按钮
@@ -2396,7 +2396,7 @@ class SettingsMenu(FluentWindow):
                 with open(save_path, 'w', encoding='utf-8') as f:
                     json.dump(cw_data, f, ensure_ascii=False, indent=4)
                     self.conf_combo.addItem(file_name.replace('.yaml', '.json'))
-                    alert = MessageBox(self.tr('menu', '您已成功导入 CSES 课程表配置文件',
+                    alert = MessageBox(self.tr('您已成功导入 CSES 课程表配置文件',
                                        '请在“高级选项”中手动切换您的配置文件。'), self)
                     alert.cancelButton.hide()
                     alert.buttonLayout.insertStretch(0, 1)
@@ -2404,7 +2404,7 @@ class SettingsMenu(FluentWindow):
             except Exception as e:
                 logger.error(f'导入课程表时发生错误：{e}')
                 alert = MessageBox(self.tr('导入失败！'),
-                                   self.tr('menu', '课程表文件导入失败！\n'
+                                   self.tr('课程表文件导入失败！\n'
                                    '可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。\n'
                                    '详情请查看Log日志，日志位于./log/下。'), self)
                 alert.cancelButton.hide()  # 隐藏取消按钮
@@ -2427,7 +2427,7 @@ class SettingsMenu(FluentWindow):
             else:
                 print('导出失败！')
                 alert = MessageBox(self.tr('导出失败！'),
-                                   self.tr('menu', '课程表文件导出失败，\n'
+                                   self.tr('课程表文件导出失败，\n'
                                    '可能为文件损坏，请将此情况反馈给开发者。'), self)
                 alert.cancelButton.hide()
                 alert.buttonLayout.insertStretch(0, 1)
@@ -2435,7 +2435,7 @@ class SettingsMenu(FluentWindow):
                     return 0
 
     def cf_import_schedule(self):  # 导入课程表
-        file_path, _ = QFileDialog.getOpenFileName(self, self.tr('menu', "选择文件"), "", self.tr('menu', "Json 配置文件 (*.json)"))
+        file_path, _ = QFileDialog.getOpenFileName(self, self.tr("选择文件"), "", self.tr("Json 配置文件 (*.json)"))
         if file_path:
             file_name = file_path.split("/")[-1]
             if list_.import_schedule(file_path, file_name):
@@ -2447,7 +2447,7 @@ class SettingsMenu(FluentWindow):
             else:
                 print('导入失败！')
                 alert = MessageBox(self.tr('导入失败！'),
-                                   self.tr('menu', '课程表文件导入失败！\n'
+                                   self.tr('课程表文件导入失败！\n'
                                    '可能为格式错误或文件损坏，请检查此文件是否为 Class Widgets 课程表文件。\n'
                                    '详情请查看Log日志，日志位于./log/下。'), self)
                 alert.cancelButton.hide()  # 隐藏取消按钮
@@ -2465,7 +2465,7 @@ class SettingsMenu(FluentWindow):
             Flyout.create(
                 icon=InfoBarIcon.SUCCESS,
                 title=self.tr('保存成功'),
-                content=self.tr('menu', "已保存至 ./config/widget.json"),
+                content=self.tr("已保存至 ./config/widget.json"),
                 target=self.findChild(PrimaryPushButton, 'save_config'),
                 parent=self,
                 isClosable=True,
@@ -2566,7 +2566,7 @@ class SettingsMenu(FluentWindow):
                 Flyout.create(
                     icon=InfoBarIcon.ERROR,
                     title=self.tr('错误！'),
-                    content=self.tr('menu', "列表选项异常！{data}").format(data=self.conf_combo.currentText()),
+                    content=self.tr("列表选项异常！{data}").format(data=self.conf_combo.currentText()),
                     target=self.conf_combo,
                     parent=self,
                     isClosable=True,
@@ -2800,7 +2800,7 @@ class SettingsMenu(FluentWindow):
             Flyout.create(
                 icon=InfoBarIcon.SUCCESS,
                 title=self.tr('保存成功'),
-                content=self.tr('menu', "已保存至 ./config/schedule/{schedule_name}").format(schedule_name=config_center.schedule_name),
+                content=self.tr("已保存至 ./config/schedule/{schedule_name}").format(schedule_name=config_center.schedule_name),
                 target=self.findChild(PrimaryPushButton, 'save_schedule'),
                 parent=self,
                 isClosable=True,
@@ -2880,7 +2880,7 @@ class SettingsMenu(FluentWindow):
             Flyout.create(
                 icon=InfoBarIcon.SUCCESS,
                 title=self.tr('保存成功'),
-                content=self.tr('menu', "已保存至 ./config/schedule/{schedule_name}").format(schedule_name=config_center.schedule_name),
+                content=self.tr("已保存至 ./config/schedule/{schedule_name}").format(schedule_name=config_center.schedule_name),
                 target=self.findChild(PrimaryPushButton, 'save'),
                 parent=self,
                 isClosable=True,
@@ -2891,7 +2891,7 @@ class SettingsMenu(FluentWindow):
             Flyout.create(
                 icon=InfoBarIcon.ERROR,
                 title=self.tr('保存失败!'),
-                content=self.tr('menu', "{e}\n保存失败，请将 ./log/ 中的日志提交给开发者以反馈问题。").format(e=f"{e}"),
+                content=self.tr("{e}\n保存失败，请将 ./log/ 中的日志提交给开发者以反馈问题。").format(e=f"{e}"),
                 target=self.findChild(PrimaryPushButton, 'save'),
                 parent=self,
                 isClosable=True,
@@ -2965,7 +2965,7 @@ class SettingsMenu(FluentWindow):
         self.te_update_parts_name()
 
     def te_delete_part(self):
-        alert = MessageBox(self.tr('menu', "您确定要删除这个时段吗？"), self.tr('menu', "删除该节点后，将一并删除该节点下所有课程安排，且无法恢复。"), self)
+        alert = MessageBox(self.tr("您确定要删除这个时段吗？"), self.tr("删除该节点后，将一并删除该节点下所有课程安排，且无法恢复。"), self)
         alert.yesButton.setText(self.tr('删除'))
         alert.yesButton.setStyleSheet("""
         PushButton{
@@ -3188,7 +3188,7 @@ class SettingsMenu(FluentWindow):
         Flyout.create(
             icon=InfoBarIcon.SUCCESS,
             title=self.tr('保存成功'),
-            content=self.tr('menu',"已保存至 ./config.ini"),
+            content=self.tr("已保存至 ./config.ini"),
             target=self.findChild(PrimaryPushButton, 'save_countdown'),
             parent=self,
             isClosable=True,
@@ -3306,7 +3306,7 @@ class SettingsMenu(FluentWindow):
                     if success:
                         config_center.write_conf('General', 'language_view', selected_lang_code)
                         title =self.tr('界面语言切换成功 ♪(´▽｀)')
-                        content = self.tr('menu','界面语言已切换为 {selected_lang_name}\n' \
+                        content = self.tr('界面语言已切换为 {selected_lang_name}\n' \
                                 '新语言将在重启程序后完全生效').format(selected_lang_name=selected_lang_name)
                         flyout = Flyout.create(title=title,
                                                content=content,
@@ -3336,7 +3336,7 @@ class SettingsMenu(FluentWindow):
                         msg_box.cancelButton.hide()
                         msg_box.exec()
         except Exception as e:
-            logger.error(self.tr('menu',"界面语言切换时出错: {e}").format(e=f"{e}"))
+            logger.error(self.tr("界面语言切换时出错: {e}").format(e=f"{e}"))
             msg_box = MessageBox(
                 self.tr('界面语言切换出错 (＃°Д°)'),
                 self.tr('切换界面语言时发生错误: {e}').format(e=f"{e}"),
@@ -3390,7 +3390,7 @@ class SettingsMenu(FluentWindow):
                         msg_box.cancelButton.hide()
                         msg_box.exec()
         except Exception as e:
-            logger.error(self.tr('menu',"组件语言切换时出错: {e}").format(e=f"{e}"))
+            logger.error(self.tr("组件语言切换时出错: {e}").format(e=f"{e}"))
             msg_box = MessageBox(
                 self.tr('组件语言切换出错 (｡•́︿•̀｡)'),
                 self.tr('切换组件语言时发生错误: {e}').format(e=f"{e}"),
