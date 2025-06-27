@@ -129,7 +129,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../view/widget-toast-bar.ui" line="170"/>
         <source>英语</source>
-        <translation>English</translation>
+        <translation>Chinese</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="35"/>
@@ -1515,7 +1515,7 @@ It will take effect after restarting the application.</translation>
         <location filename="../menu.py" line="1249"/>
         <location filename="../menu.py" line="1251"/>
         <source>信息技术</source>
-        <translation>IT</translation>
+        <translation>I.T.</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1248"/>
@@ -2540,8 +2540,16 @@ Error occurred while switching component language: {e}</translation>
 - `{content}`: 通知内容 (例如：这是一条测试通知) *其他
 </comment>
         <translation>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform>Information can be inserted dynamically using the following placeholders:
+- &apos;{lesson_name}&apos; : start &amp; end &amp; next course name (e.g. Information Technology)
+- &apos;{minutes}&apos; : Number of minutes (ex: 5) * Other
+- &apos;{title}&apos; : notification title (e.g. important notification) * others
+- &apos;{content}&apos; : the content of the notification (ex: it&apos;s a test notification) * others</numerusform>
+            <numerusform>Information can be inserted dynamically using the following placeholders:
+- &apos;{lesson_name}&apos; : start &amp; end &amp; next course name (e.g. Information Technology)
+- &apos;{minutes}&apos; : Number of minutes (ex: 5) * Other
+- &apos;{title}&apos; : notification title (e.g. important notification) * others
+- &apos;{content}&apos; : the content of the notification (ex: it&apos;s a test notification) * others</numerusform>
         </translation>
     </message>
     <message>
@@ -2572,7 +2580,7 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../menu.py" line="1377"/>
         <source>信息技术</source>
-        <translation>ICT</translation>
+        <translation>I.T.</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1379"/>
@@ -2684,7 +2692,7 @@ Error generating or playing audio: {error_message}</translation>
     <message>
         <source>休息段</source>
         <comment>休息段</comment>
-        <translation>Break</translation>
+        <translation>Break period</translation>
     </message>
     <message>
         <source>无</source>
@@ -2969,12 +2977,12 @@ Error generating or playing audio: {error_message}</translation>
     <message>
         <location filename="../list_.py" line="17"/>
         <source>节点</source>
-        <translation></translation>
+        <translation>Node</translation>
     </message>
     <message>
         <location filename="../list_.py" line="18"/>
         <source>休息段</source>
-        <translation></translation>
+        <translation>Break period</translation>
     </message>
     <message>
         <location filename="../list_.py" line="18"/>
@@ -3053,7 +3061,7 @@ Error generating or playing audio: {error_message}</translation>
         <location filename="../list_.py" line="60"/>
         <location filename="../list_.py" line="129"/>
         <source>英语</source>
-        <translation></translation>
+        <translation>Chinese</translation>
     </message>
     <message>
         <location filename="../list_.py" line="31"/>
@@ -3124,7 +3132,7 @@ Error generating or playing audio: {error_message}</translation>
         <location filename="../list_.py" line="78"/>
         <location filename="../list_.py" line="139"/>
         <source>信息技术</source>
-        <translation></translation>
+        <translation>I.T.</translation>
     </message>
     <message>
         <location filename="../list_.py" line="41"/>
