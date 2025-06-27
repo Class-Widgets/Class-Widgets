@@ -383,120 +383,129 @@
     </message>
     <message>
         <source>list</source>
-        <translation type="unfinished"></translation>
+        <translation>list</translation>
     </message>
     <message>
         <source>https://classwidgets.rinlit.cn/docs-user/</source>
-        <translation type="unfinished"></translation>
+        <translation>https://classwidgets.rinlit.cn/docs-user/</translation>
     </message>
     <message>
         <source>已清空所有日志文件，约 {size} KB</source>
-        <translation type="unfinished"></translation>
+        <translation>All log files cleared, approximately {size} KB</translation>
     </message>
     <message>
         <source>日志目录下为空，已清理完成。</source>
-        <translation type="unfinished"></translation>
+        <translation>Log directory is empty; cleanup complete.</translation>
     </message>
     <message>
         <source>清除日志失败：{e}</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to clear logs: {e}</translation>
     </message>
     <message>
         <source>更改上课时主题色</source>
-        <translation type="unfinished"></translation>
+        <translation>Change In-Class Theme Color</translation>
     </message>
     <message>
         <source>更改课间时主题色</source>
-        <translation type="unfinished"></translation>
+        <translation>Change Break Time Theme Color</translation>
     </message>
     <message>
         <source>更改浮窗时间颜色</source>
-        <translation type="unfinished"></translation>
+        <translation>Change Floating Window Time Color</translation>
     </message>
     <message>
         <source>保存文件</source>
-        <translation type="unfinished"></translation>
+        <translation>Save</translation>
     </message>
     <message>
         <source>Json 配置文件 (*.json)</source>
-        <translation type="unfinished"></translation>
+        <translation>JSON Configuration File (*.json)</translation>
     </message>
     <message>
         <source>课程表文件导出失败，
 可能为文件损坏，请将此情况反馈给开发者。</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to export timetable file.
+The file may be corrupted. Please report this issue to the developer.</translation>
     </message>
     <message>
         <source>选择文件</source>
-        <translation type="unfinished"></translation>
+        <translation>Select File</translation>
     </message>
     <message>
         <source>CSES 通用课程表交换文件 (*.yaml)</source>
-        <translation type="unfinished"></translation>
+        <translation>CSES Generic Timetable Exchange File (*.yaml)</translation>
     </message>
     <message>
         <source>课程表文件转换失败！
 可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
 详情请查看Log日志，日志位于./log/下。</source>
-        <translation type="unfinished"></translation>
+        <translation>Timetable file conversion failed!
+This may be due to incorrect format or file corruption. Please check if this is a valid CSES timetable file.
+For details, please see the log located in ./log/.</translation>
     </message>
     <message>
         <source>您已成功导入 CSES 课程表配置文件</source>
-        <translation type="unfinished"></translation>
+        <translation>Successfully imported CSES timetable configuration file</translation>
     </message>
     <message>
         <source>课程表文件导入失败！
 可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
 详情请查看Log日志，日志位于./log/下。</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to import timetable file!
+This may be due to incorrect format or file corruption. Please check if this is a valid CSES timetable file.
+For details, please see the log located in ./log/.</translation>
     </message>
     <message>
         <source>课程表文件导入失败！
 可能为格式错误或文件损坏，请检查此文件是否为 Class Widgets 课程表文件。
 详情请查看Log日志，日志位于./log/下。</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to import timetable file!
+This may be due to incorrect format or file corruption. Please check if this is a valid Class Widgets timetable file.
+For details, please see the log located in ./log/.</translation>
     </message>
     <message>
         <source>已保存至 ./config/widget.json</source>
-        <translation type="unfinished"></translation>
+        <translation>Saved to ./config/widget.json</translation>
     </message>
     <message>
         <source>列表选项异常！{data}</source>
-        <translation type="unfinished"></translation>
+        <translation>List option exception! {data}</translation>
     </message>
     <message>
         <source>已保存至 ./config/schedule/{schedule_name}</source>
-        <translation type="unfinished"></translation>
+        <translation>Saved to ./config/schedule/{schedule_name}</translation>
     </message>
     <message>
         <source>{e}
 保存失败，请将 ./log/ 中的日志提交给开发者以反馈问题。</source>
-        <translation type="unfinished"></translation>
+        <translation>{e}
+Save failed. Please submit the logs in ./log/ to the developer to report the issue.</translation>
     </message>
     <message>
         <source>您确定要删除这个时段吗？</source>
-        <translation type="unfinished"></translation>
+        <translation>Are you sure you want to delete this time slot?</translation>
     </message>
     <message>
         <source>删除该节点后，将一并删除该节点下所有课程安排，且无法恢复。</source>
-        <translation type="unfinished"></translation>
+        <translation>Deleting this node will also delete all associated course schedules under it, and this action cannot be undone.</translation>
     </message>
     <message>
         <source>已保存至 ./config.ini</source>
-        <translation type="unfinished"></translation>
+        <translation>Saved to ./config.ini</translation>
     </message>
     <message>
         <source>界面语言已切换为 {selected_lang_name}
 新语言将在重启程序后完全生效</source>
-        <translation type="unfinished"></translation>
+        <translation>Interface language has been switched to {selected_lang_name}.
+The new language will take full effect after restarting the program</translation>
     </message>
     <message>
         <source>界面语言切换时出错: {e}</source>
-        <translation type="unfinished"></translation>
+        <translation>Error switching interface language: {e}</translation>
     </message>
     <message>
         <source>组件语言切换时出错: {e}</source>
-        <translation type="unfinished"></translation>
+        <translation>Error switching component language: {e}</translation>
     </message>
 </context>
 <context>
@@ -2143,7 +2152,7 @@ Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, 
     <message>
         <location filename="../menu.py" line="2002"/>
         <source>编辑课程</source>
-        <translation type="unfinished"></translation>
+        <translation>Edit Course</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2008"/>
@@ -2552,147 +2561,153 @@ For details, see Log, located under./log/.</translation>
         <source>menu</source>
         <comment>{e}
 保存失败，请将 ./log/ 中的日志提交给开发者以反馈问题。</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu
+{e}
+Save failed. Please submit the logs from ./log/ to the developer for troubleshooting.</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2932"/>
         <source>无法添加时间线 o(TヘTo)</source>
-        <translation type="unfinished"></translation>
+        <translation>Unable to add timeline o(TヘTo)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2933"/>
         <source>在添加时间线前，先任意添加一个节点</source>
-        <translation type="unfinished"></translation>
+        <translation>Please add a node before adding a timeline.</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2941"/>
         <source>{class_activity} - {spin_time}分钟 - {time_period}</source>
-        <translation type="unfinished"></translation>
+        <translation>{class_activity} – {spin_time} minutes – {time_period}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2958"/>
         <source>没办法继续添加了 o(TヘTo)</source>
-        <translation type="unfinished"></translation>
+        <translation>Can’t add any more o(TヘTo)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2959"/>
         <source>Class Widgets 最多只能添加10个“节点”！</source>
-        <translation type="unfinished"></translation>
+        <translation>Class Widgets allows a maximum of 10 nodes!</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2969"/>
         <source>menu</source>
         <comment>您确定要删除这个时段吗？</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu Are you sure you want to delete this time period?</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2969"/>
         <source>menu</source>
         <comment>删除该节点后，将一并删除该节点下所有课程安排，且无法恢复。</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu
+Deleting this node will also remove all associated course schedules. This action cannot be undone.</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2970"/>
         <source>删除</source>
-        <translation type="unfinished"></translation>
+        <translation>Remove</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2994"/>
         <source>取消</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3149"/>
         <source>未添加-{data}</source>
-        <translation type="unfinished"></translation>
+        <translation>Not added - {data}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3192"/>
         <source>menu</source>
         <comment>已保存至 ./config.ini</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu
+Saved to ./config.ini</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3257"/>
         <source>课表预览</source>
-        <translation type="unfinished"></translation>
+        <translation>Schedule Preview</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3258"/>
         <source>时间线编辑</source>
-        <translation type="unfinished"></translation>
+        <translation>Editing the Timeline</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3259"/>
         <source>课程表编辑</source>
-        <translation type="unfinished"></translation>
+        <translation>Editing the Course Schedule</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3260"/>
         <source>倒计日编辑</source>
-        <translation type="unfinished"></translation>
+        <translation>Editing the Countdown</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3261"/>
         <source>配置文件</source>
-        <translation type="unfinished"></translation>
+        <translation>Configuration File</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3263"/>
         <source>帮助</source>
-        <translation type="unfinished"></translation>
+        <translation>Help</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3264"/>
         <source>插件</source>
-        <translation type="unfinished"></translation>
+        <translation>Plugin</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3266"/>
         <source>自定义</source>
-        <translation type="unfinished"></translation>
+        <translation>Custom</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3267"/>
         <source>提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>Notification</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3268"/>
         <source>高级选项</source>
-        <translation type="unfinished"></translation>
+        <translation>Advanced Options</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3269"/>
         <source>关于本产品</source>
-        <translation type="unfinished"></translation>
+        <translation>About This Product</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3293"/>
         <source>Class Widgets - 设置</source>
-        <translation type="unfinished"></translation>
+        <translation>Class Widgets – Settings</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3310"/>
         <source>界面语言切换成功 ♪(´▽｀)</source>
-        <translation type="unfinished"></translation>
+        <translation>Interface language switched successfully ♪(´▽｀)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3311"/>
         <source>menu</source>
         <comment>界面语言已切换为 {selected_lang_name}
 新语言将在重启程序后完全生效</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu
+The interface language has been switched to {selected_lang_name}.
+The new language will take full effect after restarting the application.</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3332"/>
         <source>界面语言切换失败 (＃°Д°)</source>
-        <translation type="unfinished"></translation>
+        <translation>Interface language switch failed (＃°Д°)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3333"/>
         <source>无法加载选定的界面语言包，请检查翻译文件是否存在</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to load the selected interface language pack. Please check if the translation file exists</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3336"/>
@@ -2700,61 +2715,65 @@ For details, see Log, located under./log/.</translation>
         <location filename="../menu.py" line="3390"/>
         <location filename="../menu.py" line="3400"/>
         <source>确定</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3340"/>
         <source>menu</source>
         <comment>界面语言切换时出错: {e}</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu
+Error occurred while switching interface language: {e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3342"/>
         <source>界面语言切换出错 (＃°Д°)</source>
-        <translation type="unfinished"></translation>
+        <translation>Interface language switch error (＃°Д°)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3343"/>
         <source>切换界面语言时发生错误: {e}</source>
-        <translation type="unfinished"></translation>
+        <translation>An error occurred while switching the interface language: {e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3363"/>
         <source>组件语言切换成功 ♪(´▽｀)</source>
-        <translation type="unfinished"></translation>
+        <translation>Component language switched successfully ♪(´▽｀)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3364"/>
         <source>menu</source>
         <comment>组件语言已切换为 {selected_lang_name}
 新语言将在重启程序后完全生效</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu
+The component language has been switched to {selected_lang_name}.
+The new language will take full effect after restarting the application</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3386"/>
         <source>组件语言切换失败 (｡•́︿•̀｡)</source>
-        <translation type="unfinished"></translation>
+        <translation>Component language switch failed (｡•́︿•̀｡)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3387"/>
         <source>无法加载选定的组件语言包，请检查翻译文件是否存在</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to load the selected component language pack. Please verify that the translation file exists</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3394"/>
         <source>menu</source>
         <comment>组件语言切换时出错: {e}</comment>
-        <translation type="unfinished"></translation>
+        <translation>SettingsMenu
+Error occurred while switching component language: {e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3396"/>
         <source>组件语言切换出错 (｡•́︿•̀｡)</source>
-        <translation type="unfinished"></translation>
+        <translation>Component language switch error (｡•́︿•̀｡)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3397"/>
         <source>切换组件语言时发生错误: {e}</source>
-        <translation type="unfinished"></translation>
+        <translation>An error occurred while switching the component language: {e}</translation>
     </message>
 </context>
 <context>
@@ -2762,132 +2781,132 @@ For details, see Log, located under./log/.</translation>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="14"/>
         <source>TTS 高级设置</source>
-        <translation type="unfinished"></translation>
+        <translation>TTS Advanced Settings</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="86"/>
         <source>TTS语音设置</source>
-        <translation type="unfinished"></translation>
+        <translation>TTS Voice Settings</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="130"/>
         <source>使用TTS语音</source>
-        <translation type="unfinished"></translation>
+        <translation>Use TTS Voice</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="143"/>
         <source>启用后将在提醒后使用TTS播报信息</source>
-        <translation type="unfinished"></translation>
+        <translation>When enabled, TTS will announce information after reminders</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="166"/>
         <source>启用</source>
-        <translation type="unfinished"></translation>
+        <translation>Enable</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="169"/>
         <source>禁用</source>
-        <translation type="unfinished"></translation>
+        <translation>Disable</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="208"/>
         <source>TTS生成引擎</source>
-        <translation type="unfinished"></translation>
+        <translation>TTS Engine</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="215"/>
         <source>选择用于生成TTS语音的引擎</source>
-        <translation type="unfinished"></translation>
+        <translation>Select the engine used to generate TTS voice</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="252"/>
         <source>温馨提示</source>
-        <translation type="unfinished"></translation>
+        <translation>Friendly Reminder</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="290"/>
         <source>TTS生成人</source>
-        <translation type="unfinished"></translation>
+        <translation>TTS Generator</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="297"/>
         <source>用于生成TTS语音所用的语音id</source>
-        <translation type="unfinished"></translation>
+        <translation>The voice ID used to generate TTS speech</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="368"/>
         <source>语速调节</source>
-        <translation type="unfinished"></translation>
+        <translation>Speech Rate Adjustment</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="375"/>
         <source>调整TTS的播放速度</source>
-        <translation type="unfinished"></translation>
+        <translation>Adjust the playback speed of the TTS</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="420"/>
         <source>自定义播报文本</source>
-        <translation type="unfinished"></translation>
+        <translation>Custom Broadcast Text</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="459"/>
         <source>活动开始时:</source>
-        <translation type="unfinished"></translation>
+        <translation>At Event Start:</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="466"/>
         <source>例如：同学们好，现在开始{lesson_name}课。</source>
-        <translation type="unfinished"></translation>
+        <translation>Example: &quot;Hello everyone, we are now starting the {lesson_name} class.&quot;</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="510"/>
         <source>即将开始时 (预备铃):</source>
-        <translation type="unfinished"></translation>
+        <translation>About to Start (Preparation Bell):</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="517"/>
         <source>例如：距离{lesson_name}课还有{minutes}分钟，请做好准备。</source>
-        <translation type="unfinished"></translation>
+        <translation>Example: &quot;There are {minutes} minutes left until the {lesson_name} class begins. Please get ready.&quot;</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="561"/>
         <source>活动结束时:</source>
-        <translation type="unfinished"></translation>
+        <translation>At Event End:</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="568"/>
         <source>例如：{lesson_name}课结束，请同学们准备下一节课。</source>
-        <translation type="unfinished"></translation>
+        <translation>Example: &quot;The {lesson_name} class has ended. Please get ready for the next lesson.&quot;</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="612"/>
         <source>放学时:</source>
-        <translation type="unfinished"></translation>
+        <translation>At Dismissal:</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="619"/>
         <source>例如：放学时间到，请同学们整理好物品，安全离校。</source>
-        <translation type="unfinished"></translation>
+        <translation>Example: &quot;It&apos;s dismissal time. Please gather your belongings and leave the school safely.&quot;</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="663"/>
         <source>其他通知 (用于插件或手动触发):</source>
-        <translation type="unfinished"></translation>
+        <translation>Other Notifications (for plugins or manual triggers):</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="670"/>
         <source>例如：{title}，{content}</source>
-        <translation type="unfinished"></translation>
+        <translation>Example: {title}, {content}</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="704"/>
         <source>可用占位符</source>
-        <translation type="unfinished"></translation>
+        <translation>Available Placeholders</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="717"/>
         <source>预览</source>
-        <translation type="unfinished"></translation>
+        <translation>Preview</translation>
     </message>
 </context>
 <context>
@@ -2896,12 +2915,12 @@ For details, see Log, located under./log/.</translation>
         <location filename="../menu.py" line="1306"/>
         <source>base</source>
         <comment>加载中...</comment>
-        <translation type="unfinished"></translation>
+        <translation>TTSSettings Loading...</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1323"/>
         <source>小语法?</source>
-        <translation type="unfinished"></translation>
+        <translation>lightweight grammar</translation>
     </message>
     <message numerus="yes">
         <location filename="../menu.py" line="1328"/>
@@ -2912,73 +2931,86 @@ For details, see Log, located under./log/.</translation>
 - `{title}`: 通知标题 (例如：重要通知) *其他
 - `{content}`: 通知内容 (例如：这是一条测试通知) *其他
 </comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>TTS Settings
+You can use the following placeholders to dynamically insert information:
+- `{lesson_name}`: Lesson name** for start, end, and next lesson (e.g., Information Technology)
+- `{minutes}`: Number of minutes** (e.g., 5) *Other
+- `{title}`: Notification title** (e.g., Important Notification) *Other
+- `{content}`: Notification content** (e.g., This is a test notification)   Other</numerusform>
+            <numerusform>TTS Settings
+You can use the following placeholders to dynamically insert information:
+- `{lesson_name}`: Lesson name** for start, end, and next lesson (e.g., Information Technology)
+- `{minutes}`: Number of minutes** (e.g., 5) *Other
+- `{title}`: Notification title** (e.g., Important Notification) *Other
+- `{content}`: Notification content** (e.g., This is a test notification)   Other</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../menu.py" line="1365"/>
         <source>上课提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>Class Reminder</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1366"/>
         <source>下课提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>Class Dismissal Reminder</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1367"/>
         <source>预备提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>Preparation Reminder</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1368"/>
         <source>放学提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>School Dismissal Reminder</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1369"/>
         <source>其他提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>Other Reminders</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1377"/>
         <source>信息技术</source>
-        <translation type="unfinished"></translation>
+        <translation>ICT</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1379"/>
         <source>通知</source>
-        <translation type="unfinished"></translation>
+        <translation>Notification</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1381"/>
         <source>这是一条测试通知ヾ(≧▽≦*)o</source>
-        <translation type="unfinished"></translation>
+        <translation>This is a test notificationヾ(≧▽≦*)o</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1422"/>
         <source>tts</source>
         <comment>TTS预览失败</comment>
-        <translation type="unfinished"></translation>
+        <translation>TTSSettings TTS Preview Failed</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1423"/>
         <source>tts</source>
         <comment>启动TTS预览时出错: {e}</comment>
-        <translation type="unfinished"></translation>
+        <translation>TTSSettings
+Error launching TTS preview: {e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1431"/>
         <source>tts</source>
         <comment>TTS生成失败</comment>
-        <translation type="unfinished"></translation>
+        <translation>TTSSettings TTS Generation Failed</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1432"/>
         <source>tts</source>
         <comment>生成或播放语音时出错: {error_message}</comment>
-        <translation type="unfinished"></translation>
+        <translation>TTSSettings
+Error generating or playing audio: {error_message}</translation>
     </message>
 </context>
 <context>
@@ -2986,17 +3018,17 @@ For details, see Log, located under./log/.</translation>
     <message>
         <location filename="../menu.py" line="706"/>
         <source>确定</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirm</translation>
     </message>
     <message>
         <location filename="../menu.py" line="729"/>
         <source>不能为空值啊 ( •̀ ω •́ )✧</source>
-        <translation type="unfinished"></translation>
+        <translation>Cannot be empty ( •̀ ω •́ )✧</translation>
     </message>
     <message>
         <location filename="../menu.py" line="732"/>
         <source>不可以和之前的课程名重复哦 o(TヘTo)</source>
-        <translation type="unfinished"></translation>
+        <translation>Cannot duplicate existing lesson names o(TヘTo)</translation>
     </message>
 </context>
 </TS>
