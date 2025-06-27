@@ -317,7 +317,7 @@ def export_schedule(filepath: str, filename: str) -> bool:  # 导出课表
         return False
 
 
-def get_widget_config() -> Dict[str, Any]:
+def get_widget_config() -> List[str]:
     try:
         if os.path.exists(f'{base_directory}/config/widget.json'):
             with open(f'{base_directory}/config/widget.json', 'r', encoding='utf-8') as file:
