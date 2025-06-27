@@ -94,17 +94,17 @@
         <location filename="../view/extra_menu.ui" line="234"/>
         <location filename="../view/menu/schedule_edit.ui" line="320"/>
         <source>自定义课程</source>
-        <translation type="unfinished"></translation>
+        <translation>カスタム授業</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="280"/>
         <source>*所有更改在重启后重置</source>
-        <translation type="unfinished"></translation>
+        <translation>※すべての変更は再起動後にリセットされます</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="287"/>
         <source>浏览更多设置</source>
-        <translation type="unfinished"></translation>
+        <translation>その他の設定を表示</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="306"/>
@@ -113,64 +113,64 @@
         <location filename="../view/menu/subject.ui" line="89"/>
         <location filename="../view/menu/timeline_edit.ui" line="520"/>
         <source>保存</source>
-        <translation type="unfinished"></translation>
+        <translation>保存</translation>
     </message>
     <message>
         <location filename="../view/widget-toast-bar.ui" line="123"/>
         <source>上课</source>
-        <translation type="unfinished"></translation>
+        <translation>授業</translation>
     </message>
     <message>
         <location filename="../view/widget-toast-bar.ui" line="151"/>
         <source>当前课程</source>
-        <translation type="unfinished"></translation>
+        <translation>現在の授業</translation>
     </message>
     <message>
         <location filename="../view/widget-toast-bar.ui" line="170"/>
         <source>英语</source>
-        <translation type="unfinished"></translation>
+        <translation>英語</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="35"/>
         <source>关于</source>
-        <translation type="unfinished"></translation>
+        <translation>概要</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="118"/>
         <source>Class Widgets</source>
-        <translation type="unfinished"></translation>
+        <translation>Class Widgets</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="128"/>
         <source>Class Widgets 是一款能显示当前课程的桌面组件App。其提供了直观的图形化课程表编辑和美观的桌面组件。</source>
-        <translation type="unfinished"></translation>
+        <translation>Class Widgets は現在の授業を表示するﾃﾞｽｸﾄｯﾌﾟｳｨｼﾞｪｯﾄｱﾌﾟﾘで、直感的な時間割編集と美しいｳｨｼﾞｪｯﾄを備えています。</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="232"/>
         <source>版本号:获取失败！</source>
-        <translation type="unfinished"></translation>
+        <translation>バージョン番号取得失敗！</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="259"/>
         <source>编译日期</source>
-        <translation type="unfinished"></translation>
+        <translation>ｺﾝﾊﾟｲﾙ日付</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="266"/>
         <location filename="../view/menu/about.ui" line="303"/>
         <location filename="../view/menu/about.ui" line="340"/>
         <source>获取失败！</source>
-        <translation type="unfinished"></translation>
+        <translation>取得失敗！</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="296"/>
         <source>Build Commit</source>
-        <translation type="unfinished"></translation>
+        <translation>Build Commit</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="333"/>
         <source>Build UUID</source>
-        <translation type="unfinished"></translation>
+        <translation>Build UUID</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="359"/>
