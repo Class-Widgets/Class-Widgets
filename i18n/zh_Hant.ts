@@ -3401,131 +3401,131 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../menu.py" line="314"/>
         <source>无法打开文件夹</source>
-        <translation type="unfinished">未能開啟資料夾</translation>
+        <translation>未能開啟資料夾</translation>
     </message>
     <message>
         <location filename="../menu.py" line="314"/>
         <source>Class Widgets 在您的系统下不支持自动打开文件夹，请手动打开以下地址：
 {path}</source>
-        <translation type="unfinished">Class Widgets 未能在你的系統中自動開啟資料夾，請手動開啟以下位置：{path}</translation>
+        <translation>Class Widgets 未能在你的系統中自動開啟資料夾，請手動開啟以下位置：{path}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="316"/>
         <location filename="../menu.py" line="469"/>
         <source>好</source>
-        <translation type="unfinished">好</translation>
+        <translation>好</translation>
     </message>
     <message>
         <location filename="../menu.py" line="371"/>
         <source>未添加</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../menu.py" line="422"/>
         <source>搜索城市</source>
-        <translation type="unfinished">搜尋城市</translation>
+        <translation>搜尋城市</translation>
     </message>
     <message>
         <location filename="../menu.py" line="423"/>
         <source>请输入当地城市名进行搜索</source>
-        <translation type="unfinished">請輸入當地城市名稱以進行搜尋</translation>
+        <translation>請輸入當地城市名稱以進行搜尋</translation>
     </message>
     <message>
         <location filename="../menu.py" line="424"/>
         <source>选择此城市</source>
-        <translation type="unfinished">選擇此城市</translation>
+        <translation>選擇此城市</translation>
     </message>
     <message>
         <location filename="../menu.py" line="425"/>
         <source>取消</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../menu.py" line="427"/>
         <source>输入城市名</source>
-        <translation type="unfinished">請輸入城市名稱</translation>
+        <translation>請輸入城市名稱</translation>
     </message>
     <message>
         <location filename="../menu.py" line="467"/>
         <source>软件许可协议</source>
-        <translation type="unfinished">軟件許可協議</translation>
+        <translation>軟件許可協議</translation>
     </message>
     <message>
         <location filename="../menu.py" line="468"/>
         <source>此项目 (Class Widgets) 基于 GPL-3.0 许可证授权发布，详情请参阅：</source>
-        <translation type="unfinished">本項目（Class Widgets）以 GPL-3.0 許可證授權發佈，更多請參閱：</translation>
+        <translation>本項目（Class Widgets）以 GPL-3.0 許可證授權發佈，更多請參閱：</translation>
     </message>
     <message>
         <location filename="../menu.py" line="537"/>
         <source>打开“{title}”插件文件夹</source>
-        <translation type="unfinished">打開“{title}”插件資料夾</translation>
+        <translation>打開“{title}”插件資料夾</translation>
     </message>
     <message>
         <location filename="../menu.py" line="544"/>
         <source>访问“{title}”插件页面</source>
-        <translation type="unfinished">瀏覽“{title}”插件頁面</translation>
+        <translation>瀏覽“{title}”插件頁面</translation>
     </message>
     <message>
         <location filename="../menu.py" line="550"/>
         <source>卸载“{title}”插件</source>
-        <translation type="unfinished">卸載“{title}”插件</translation>
+        <translation>卸載“{title}”插件</translation>
     </message>
     <message>
         <location filename="../menu.py" line="568"/>
         <source>此插件被临时禁用,重启后将尝试重新加载</source>
-        <translation type="unfinished">本插件被暫時停用,重啟後將會嘗試重新加載</translation>
+        <translation>本插件被暫時停用,重啟後將會嘗試重新加載</translation>
     </message>
     <message>
         <location filename="../menu.py" line="569"/>
         <source>{title} (已临时禁用)</source>
-        <translation type="unfinished">{title}已暫時停用</translation>
+        <translation>{title}已暫時停用</translation>
     </message>
     <message>
         <location filename="../menu.py" line="582"/>
         <source>禁用</source>
-        <translation type="unfinished">停用</translation>
+        <translation>停用</translation>
     </message>
     <message>
         <location filename="../menu.py" line="583"/>
         <source>启用</source>
-        <translation type="unfinished">啟用</translation>
+        <translation>啟用</translation>
     </message>
     <message>
         <location filename="../menu.py" line="628"/>
         <source>menu</source>
         <comment>您确定要删除插件“{title}”吗？</comment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../menu.py" line="628"/>
         <source>menu</source>
         <comment>删除此插件后，将无法恢复。</comment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../menu.py" line="653"/>
         <source>我再想想……</source>
-        <translation type="unfinished">我再諗諗......</translation>
+        <translation>我再諗諗......</translation>
     </message>
     <message>
         <location filename="../menu.py" line="668"/>
         <source>卸载成功</source>
-        <translation type="unfinished">卸載成功</translation>
+        <translation>卸載成功</translation>
     </message>
     <message>
         <location filename="../menu.py" line="669"/>
         <source>插件 “{title}” 已卸载。请重启 Class Widgets 以完全移除。</source>
-        <translation type="unfinished">插件“{title}”已卸載。請重啟 Class Widgets 以完成移除程式</translation>
+        <translation>插件“{title}”已卸載。請重啟 Class Widgets 以完成移除程式</translation>
     </message>
     <message>
         <location filename="../menu.py" line="679"/>
         <source>卸载失败</source>
-        <translation type="unfinished">卸載失敗</translation>
+        <translation>卸載失敗</translation>
     </message>
     <message>
         <location filename="../menu.py" line="680"/>
         <source>卸载插件 “{title}” 时出错，请查看日志获取详细信息。</source>
-        <translation type="unfinished">卸載插件“{title}”時出錯，請查閱紀錄以獲取詳細資料</translation>
+        <translation>卸載插件“{title}”時出錯，請查閱紀錄以獲取詳細資料</translation>
     </message>
 </context>
 </TS>
