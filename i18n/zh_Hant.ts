@@ -1501,7 +1501,7 @@
     <message>
         <source>menu</source>
         <comment>https://classwidgets.rinlit.cn/docs-user/</comment>
-        <translation type="vanished">SettingsMenu
+        <translation>SettingsMenu
 https://classwidgets.rinlit.cn/docs-user/</translation>
     </message>
     <message>
@@ -1906,7 +1906,7 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
     <message>
         <source>menu</source>
         <comment>已清空所有日志文件，约 {size} KB</comment>
-        <translation type="vanished">SettingsMenu
+        <translation>SettingsMenu
 已清空所有的紀錄文件，約 {size} KB</translation>
     </message>
     <message>
@@ -1917,7 +1917,7 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
     <message>
         <source>menu</source>
         <comment>日志目录下为空，已清理完成。</comment>
-        <translation type="vanished">SettingsMenu
+        <translation>SettingsMenu
 紀錄目錄下為空，已清理完成。</translation>
     </message>
     <message>
@@ -1928,7 +1928,7 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
     <message>
         <source>menu</source>
         <comment>清除日志失败：{e}</comment>
-        <translation type="vanished">SettingsMenu 清除紀錄失敗：{e}</translation>
+        <translation>SettingsMenu 清除紀錄失敗：{e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2290"/>
@@ -1943,27 +1943,27 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
     <message>
         <source>menu</source>
         <comment>更改上课时主题色</comment>
-        <translation type="vanished">SettingsMenu 更改上堂時主題色</translation>
+        <translation>SettingsMenu 更改上堂時主題色</translation>
     </message>
     <message>
         <source>menu</source>
         <comment>更改课间时主题色</comment>
-        <translation type="vanished">SettingsMenu 更改課間時主題色</translation>
+        <translation>SettingsMenu 更改課間時主題色</translation>
     </message>
     <message>
         <source>menu</source>
         <comment>更改浮窗时间颜色</comment>
-        <translation type="vanished">SettingsMenu 更改視窗時間的顏色</translation>
+        <translation>SettingsMenu 更改視窗時間的顏色</translation>
     </message>
     <message>
         <source>menu</source>
         <comment>保存文件</comment>
-        <translation type="vanished">SettingsMenu 儲存文件</translation>
+        <translation>SettingsMenu 儲存文件</translation>
     </message>
     <message>
         <source>menu</source>
         <comment>Json 配置文件 (*.json)</comment>
-        <translation type="vanished">SettingsMenu
+        <translation>SettingsMenu
 Json 設定檔 (*.json)</translation>
     </message>
     <message>
@@ -1988,7 +1988,7 @@ Json 設定檔 (*.json)</translation>
         <source>menu</source>
         <comment>课程表文件导出失败，
 可能为文件损坏，请将此情况反馈给开发者。</comment>
-        <translation type="vanished">SettingsMenu
+        <translation>SettingsMenu
 課程時間表文件導出失敗，
 可能是文件損壞，請將本情況反饋到開發團隊。</translation>
     </message>
@@ -2043,12 +2043,12 @@ Json 設定檔 (*.json)</translation>
     <message>
         <source>menu</source>
         <comment>选择文件</comment>
-        <translation type="vanished">SettingsMenu 選擇文件</translation>
+        <translation>SettingsMenu 選擇文件</translation>
     </message>
     <message>
         <source>menu</source>
         <comment>CSES 通用课程表交换文件 (*.yaml)</comment>
-        <translation type="vanished">SettingsMenu
+        <translation>SettingsMenu
 CSES 通用課程時間表交換文件(*.yaml)</translation>
     </message>
     <message>
@@ -2061,7 +2061,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <comment>课程表文件转换失败！
 可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
 详情请查看Log日志，日志位于./log/下。</comment>
-        <translation type="vanished">SettingsMenu
+        <translation>SettingsMenu
 課程表檔案轉換失敗！
 可能是格式錯誤或檔案已損壞，請確認該檔案是否為正確的 CSES 課程表檔案。
 更多請查閱紀錄，紀錄位於 ./log/ 目錄下。</translation>
@@ -2077,7 +2077,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <comment>课程表文件导入失败！
 可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
 详情请查看Log日志，日志位于./log/下。</comment>
-        <translation type="vanished">SettingsMenu
+        <translation>SettingsMenu
 課程表檔案匯入失敗！
 可能是格式錯誤或檔案已損壞，請確認該檔案是否為正確的 CSES 課程表檔案。
 更多請查閱紀錄，紀錄位於 ./log/ 目錄下。</translation>
@@ -2097,7 +2097,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <comment>课程表文件导入失败！
 可能为格式错误或文件损坏，请检查此文件是否为 Class Widgets 课程表文件。
 详情请查看Log日志，日志位于./log/下。</comment>
-        <translation type="vanished">SettingsMenu
+        <translation>SettingsMenu
 課程表檔案導入失敗！
 可能是格式錯誤或檔案已損壞，請確認該檔案是否為 Class Widgets 課程表檔案。
 更多請查閱紀錄，紀錄位於 ./log/ 目錄下。</translation>
@@ -2113,7 +2113,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <source>menu</source>
         <comment>已保存至 ./config/widget.json</comment>
-        <translation type="vanished">SettingsMenu
+        <translation>SettingsMenu
 已儲存至 ./config/widget.json</translation>
     </message>
     <message>
@@ -2139,7 +2139,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <source>menu</source>
         <comment>列表选项异常！{data}</comment>
-        <translation type="vanished">SettingsMenu
+        <translation>SettingsMenu
 列表選項異常！{data}</translation>
     </message>
     <message>
@@ -2171,7 +2171,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <source>menu</source>
         <comment>已保存至 ./config/schedule/{schedule_name}</comment>
-        <translation type="vanished">SettingsMenu
+        <translation>SettingsMenu
 已儲存至 ./config/schedule/{schedule_name}</translation>
     </message>
     <message>
@@ -2195,7 +2195,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <source>menu</source>
         <comment>{e}
 保存失败，请将 ./log/ 中的日志提交给开发者以反馈问题。</comment>
-        <translation type="vanished">SettingsMenu
+        <translation>SettingsMenu
 {e}
 儲存失敗，請將 ./log/ 中的紀錄提交給開發者以反映問題。</translation>
     </message>
@@ -2227,12 +2227,12 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <source>menu</source>
         <comment>您确定要删除这个时段吗？</comment>
-        <translation type="vanished">SettingsMenu 您確定要刪除此時段嗎？</translation>
+        <translation>SettingsMenu 您確定要刪除此時段嗎？</translation>
     </message>
     <message>
         <source>menu</source>
         <comment>删除该节点后，将一并删除该节点下所有课程安排，且无法恢复。</comment>
-        <translation type="vanished">SettingsMenu
+        <translation>SettingsMenu
 刪除該節點後，會連同該節點下所有課程安排一併刪除，且無法復原。</translation>
     </message>
     <message>
@@ -2253,7 +2253,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <source>menu</source>
         <comment>已保存至 ./config.ini</comment>
-        <translation type="vanished">SettingsMenu
+        <translation>SettingsMenu
 已儲存至 ./config.ini</translation>
     </message>
     <message>
@@ -2325,7 +2325,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <source>menu</source>
         <comment>界面语言已切换为 {selected_lang_name}
 新语言将在重启程序后完全生效</comment>
-        <translation type="vanished">SettingsMenu
+        <translation>SettingsMenu
 介面語言已切換至 {selected_lang_name}
 新語言將於重啟程式後完全生效</translation>
     </message>
@@ -2350,7 +2350,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <source>menu</source>
         <comment>界面语言切换时出错: {e}</comment>
-        <translation type="vanished">SettingsMenu
+        <translation>SettingsMenu
 介面語言切換時出錯：{e}</translation>
     </message>
     <message>
@@ -2390,7 +2390,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <source>menu</source>
         <comment>组件语言切换时出错: {e}</comment>
-        <translation type="vanished">SettingsMenu
+        <translation>SettingsMenu
 組件語言切換時出錯：{e}</translation>
     </message>
     <message>
@@ -2653,292 +2653,292 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <source>周一</source>
         <comment>周一</comment>
-        <translation type="vanished">禮拜一</translation>
+        <translation>禮拜一</translation>
     </message>
     <message>
         <source>周二</source>
         <comment>周二</comment>
-        <translation type="vanished">禮拜二</translation>
+        <translation>禮拜二</translation>
     </message>
     <message>
         <source>周三</source>
         <comment>周三</comment>
-        <translation type="vanished">禮拜三</translation>
+        <translation>禮拜三</translation>
     </message>
     <message>
         <source>周四</source>
         <comment>周四</comment>
-        <translation type="vanished">禮拜四</translation>
+        <translation>禮拜四</translation>
     </message>
     <message>
         <source>周五</source>
         <comment>周五</comment>
-        <translation type="vanished">禮拜五</translation>
+        <translation>禮拜五</translation>
     </message>
     <message>
         <source>周六</source>
         <comment>周六</comment>
-        <translation type="vanished">禮拜六</translation>
+        <translation>禮拜六</translation>
     </message>
     <message>
         <source>周日</source>
         <comment>周日</comment>
-        <translation type="vanished">禮拜七</translation>
+        <translation>禮拜七</translation>
     </message>
     <message>
         <source>单周</source>
         <comment>单周</comment>
-        <translation type="vanished">單週</translation>
+        <translation>單週</translation>
     </message>
     <message>
         <source>双周</source>
         <comment>双周</comment>
-        <translation type="vanished">雙周</translation>
+        <translation>雙周</translation>
     </message>
     <message>
         <source>节点</source>
         <comment>节点</comment>
-        <translation type="vanished">節點</translation>
+        <translation>節點</translation>
     </message>
     <message>
         <source>休息段</source>
         <comment>休息段</comment>
-        <translation type="vanished">休息時間</translation>
+        <translation>休息時間</translation>
     </message>
     <message>
         <source>无</source>
         <comment>无</comment>
-        <translation type="vanished">無</translation>
+        <translation>無</translation>
     </message>
     <message>
         <source>置于顶部</source>
         <comment>置于顶部</comment>
-        <translation type="vanished">置頂</translation>
+        <translation>置頂</translation>
     </message>
     <message>
         <source>置于底部</source>
         <comment>置于底部</comment>
-        <translation type="vanished">置底</translation>
+        <translation>置底</translation>
     </message>
     <message>
         <source>浅色</source>
         <comment>浅色</comment>
-        <translation type="vanished">淺色</translation>
+        <translation>淺色</translation>
     </message>
     <message>
         <source>深色</source>
         <comment>深色</comment>
-        <translation type="vanished">深色</translation>
+        <translation>深色</translation>
     </message>
     <message>
         <source>跟随系统</source>
         <comment>跟随系统</comment>
-        <translation type="vanished">跟從系統</translation>
+        <translation>跟從系統</translation>
     </message>
     <message>
         <source>上课时自动隐藏</source>
         <comment>上课时自动隐藏</comment>
-        <translation type="vanished">上堂時自動隱藏</translation>
+        <translation>上堂時自動隱藏</translation>
     </message>
     <message>
         <source>窗口最大化时隐藏</source>
         <comment>窗口最大化时隐藏</comment>
-        <translation type="vanished">窗口最大化時隱藏</translation>
+        <translation>窗口最大化時隱藏</translation>
     </message>
     <message>
         <source>灵活隐藏</source>
         <comment>灵活隐藏</comment>
-        <translation type="vanished">靈活隱藏</translation>
+        <translation>靈活隱藏</translation>
     </message>
     <message>
         <source>正式版 (Release)</source>
         <comment>正式版 (Release)</comment>
-        <translation type="vanished">正式版 (Release)</translation>
+        <translation>正式版 (Release)</translation>
     </message>
     <message>
         <source>测试版 (Beta)</source>
         <comment>测试版 (Beta)</comment>
-        <translation type="vanished">測試版 (Beta)</translation>
+        <translation>測試版 (Beta)</translation>
     </message>
     <message>
         <source>语文</source>
         <comment>语文</comment>
-        <translation type="vanished">中國語文</translation>
+        <translation>中國語文</translation>
     </message>
     <message>
         <source>数学</source>
         <comment>数学</comment>
-        <translation type="vanished">數學</translation>
+        <translation>數學</translation>
     </message>
     <message>
         <source>英语</source>
         <comment>英语</comment>
-        <translation type="vanished">英國語文</translation>
+        <translation>英國語文</translation>
     </message>
     <message>
         <source>生物</source>
         <comment>生物</comment>
-        <translation type="vanished">生物</translation>
+        <translation>生物</translation>
     </message>
     <message>
         <source>地理</source>
         <comment>地理</comment>
-        <translation type="vanished">地理</translation>
+        <translation>地理</translation>
     </message>
     <message>
         <source>政治</source>
         <comment>政治</comment>
-        <translation type="vanished">公民與社會發展</translation>
+        <translation>公民與社會發展</translation>
     </message>
     <message>
         <source>历史</source>
         <comment>历史</comment>
-        <translation type="vanished">歷史</translation>
+        <translation>歷史</translation>
     </message>
     <message>
         <source>物理</source>
         <comment>物理</comment>
-        <translation type="vanished">Physics</translation>
+        <translation>Physics</translation>
     </message>
     <message>
         <source>化学</source>
         <comment>化学</comment>
-        <translation type="vanished">Chemistry</translation>
+        <translation>Chemistry</translation>
     </message>
     <message>
         <source>美术</source>
         <comment>美术</comment>
-        <translation type="vanished">美術</translation>
+        <translation>美術</translation>
     </message>
     <message>
         <source>音乐</source>
         <comment>音乐</comment>
-        <translation type="vanished">音樂</translation>
+        <translation>音樂</translation>
     </message>
     <message>
         <source>体育</source>
         <comment>体育</comment>
-        <translation type="vanished">體育</translation>
+        <translation>體育</translation>
     </message>
     <message>
         <source>信息技术</source>
         <comment>信息技术</comment>
-        <translation type="vanished">ICT</translation>
+        <translation>ICT</translation>
     </message>
     <message>
         <source>电脑</source>
         <comment>电脑</comment>
-        <translation type="vanished">電腦</translation>
+        <translation>電腦</translation>
     </message>
     <message>
         <source>课程表未加载</source>
         <comment>课程表未加载</comment>
-        <translation type="vanished">課程時間表未加載</translation>
+        <translation>課程時間表未加載</translation>
     </message>
     <message>
         <source>班会</source>
         <comment>班会</comment>
-        <translation type="vanished">班會</translation>
+        <translation>班會</translation>
     </message>
     <message>
         <source>自习</source>
         <comment>自习</comment>
-        <translation type="vanished">自修</translation>
+        <translation>自修</translation>
     </message>
     <message>
         <source>课间</source>
         <comment>课间</comment>
-        <translation type="vanished">課間</translation>
+        <translation>課間</translation>
     </message>
     <message>
         <source>大课间</source>
         <comment>大课间</comment>
-        <translation type="vanished">大課間</translation>
+        <translation>大課間</translation>
     </message>
     <message>
         <source>放学</source>
         <comment>放学</comment>
-        <translation type="vanished">放學</translation>
+        <translation>放學</translation>
     </message>
     <message>
         <source>暂无课程</source>
         <comment>暂无课程</comment>
-        <translation type="vanished">暫無課程</translation>
+        <translation>暫無課程</translation>
     </message>
     <message>
         <source>课程</source>
         <comment>课程</comment>
-        <translation type="vanished">課程</translation>
+        <translation>課程</translation>
     </message>
     <message>
         <source>上午</source>
         <comment>上午</comment>
-        <translation type="vanished">上晝</translation>
+        <translation>上晝</translation>
     </message>
     <message>
         <source>下午</source>
         <comment>下午</comment>
-        <translation type="vanished">下晝</translation>
+        <translation>下晝</translation>
     </message>
     <message>
         <source>晚修</source>
         <comment>晚修</comment>
-        <translation type="vanished">晚修</translation>
+        <translation>晚修</translation>
     </message>
     <message>
         <source>自定义</source>
         <comment>自定义</comment>
-        <translation type="vanished">自訂</translation>
+        <translation>自訂</translation>
     </message>
     <message>
         <source>早读</source>
         <comment>早读</comment>
-        <translation type="vanished">晨讀</translation>
+        <translation>晨讀</translation>
     </message>
     <message>
         <source>心理</source>
         <comment>心理</comment>
-        <translation type="vanished">心理</translation>
+        <translation>心理</translation>
     </message>
     <message>
         <source>当前日期</source>
         <comment>当前日期</comment>
-        <translation type="vanished">當前日期</translation>
+        <translation>當前日期</translation>
     </message>
     <message>
         <source>活动倒计时</source>
         <comment>活动倒计时</comment>
-        <translation type="vanished">活動倒計時</translation>
+        <translation>活動倒計時</translation>
     </message>
     <message>
         <source>当前活动</source>
         <comment>当前活动</comment>
-        <translation type="vanished">當前活動</translation>
+        <translation>當前活動</translation>
     </message>
     <message>
         <source>更多活动</source>
         <comment>更多活动</comment>
-        <translation type="vanished">更多活動</translation>
+        <translation>更多活動</translation>
     </message>
     <message>
         <source>倒计日</source>
         <comment>倒计日</comment>
-        <translation type="vanished">倒計日</translation>
+        <translation>倒計日</translation>
     </message>
     <message>
         <source>天气</source>
         <comment>天气</comment>
-        <translation type="vanished">天氣</translation>
+        <translation>天氣</translation>
     </message>
     <message>
         <source>轮播</source>
         <comment>轮播</comment>
-        <translation type="vanished">輪播</translation>
+        <translation>輪播</translation>
     </message>
     <message>
         <source>多小组件</source>
         <comment>多小组件</comment>
-        <translation type="vanished">多小組件</translation>
+        <translation>多小組件</translation>
     </message>
     <message>
         <location filename="../list_.py" line="14"/>
@@ -3284,119 +3284,119 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <source>无法打开文件夹</source>
         <comment>无法打开文件夹</comment>
-        <translation type="vanished">未能開啟資料夾</translation>
+        <translation>未能開啟資料夾</translation>
     </message>
     <message>
         <source>Class Widgets 在您的系统下不支持自动打开文件夹，请手动打开以下地址：
 {path}</source>
         <comment>Class Widgets 在您的系统下不支持自动打开文件夹，请手动打开以下地址：
 {path}</comment>
-        <translation type="vanished">Class Widgets 未能在你的系統中自動開啟資料夾，請手動開啟以下位置：{path}</translation>
+        <translation>Class Widgets 未能在你的系統中自動開啟資料夾，請手動開啟以下位置：{path}</translation>
     </message>
     <message>
         <source>好</source>
         <comment>好</comment>
-        <translation type="vanished">好</translation>
+        <translation>好</translation>
     </message>
     <message>
         <source>未添加</source>
         <comment>未添加</comment>
-        <translation type="vanished">尚未新增</translation>
+        <translation>尚未新增</translation>
     </message>
     <message>
         <source>搜索城市</source>
         <comment>搜索城市</comment>
-        <translation type="vanished">搜尋城市</translation>
+        <translation>搜尋城市</translation>
     </message>
     <message>
         <source>请输入当地城市名进行搜索</source>
         <comment>请输入当地城市名进行搜索</comment>
-        <translation type="vanished">請輸入當地城市名稱以進行搜尋</translation>
+        <translation>請輸入當地城市名稱以進行搜尋</translation>
     </message>
     <message>
         <source>选择此城市</source>
         <comment>选择此城市</comment>
-        <translation type="vanished">選擇此城市</translation>
+        <translation>選擇此城市</translation>
     </message>
     <message>
         <source>取消</source>
         <comment>取消</comment>
-        <translation type="vanished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>输入城市名</source>
         <comment>输入城市名</comment>
-        <translation type="vanished">請輸入城市名稱</translation>
+        <translation>請輸入城市名稱</translation>
     </message>
     <message>
         <source>软件许可协议</source>
         <comment>软件许可协议</comment>
-        <translation type="vanished">軟件許可協議</translation>
+        <translation>軟件許可協議</translation>
     </message>
     <message>
         <source>此项目 (Class Widgets) 基于 GPL-3.0 许可证授权发布，详情请参阅：</source>
         <comment>此项目 (Class Widgets) 基于 GPL-3.0 许可证授权发布，详情请参阅：</comment>
-        <translation type="vanished">本項目（Class Widgets）以 GPL-3.0 許可證授權發佈，更多請參閱：</translation>
+        <translation>本項目（Class Widgets）以 GPL-3.0 許可證授權發佈，更多請參閱：</translation>
     </message>
     <message>
         <source>打开“{title}”插件文件夹</source>
         <comment>打开“{title}”插件文件夹</comment>
-        <translation type="vanished">打開“{title}”插件資料夾</translation>
+        <translation>打開“{title}”插件資料夾</translation>
     </message>
     <message>
         <source>访问“{title}”插件页面</source>
         <comment>访问“{title}”插件页面</comment>
-        <translation type="vanished">瀏覽“{title}”插件頁面</translation>
+        <translation>瀏覽“{title}”插件頁面</translation>
     </message>
     <message>
         <source>卸载“{title}”插件</source>
         <comment>卸载“{title}”插件</comment>
-        <translation type="vanished">卸載“{title}”插件</translation>
+        <translation>卸載“{title}”插件</translation>
     </message>
     <message>
         <source>此插件被临时禁用,重启后将尝试重新加载</source>
         <comment>此插件被临时禁用,重启后将尝试重新加载</comment>
-        <translation type="vanished">本插件被暫時停用,重啟後將會嘗試重新加載</translation>
+        <translation>本插件被暫時停用,重啟後將會嘗試重新加載</translation>
     </message>
     <message>
         <source>{title} (已临时禁用)</source>
         <comment>{title} (已临时禁用)</comment>
-        <translation type="vanished">{title}已暫時停用</translation>
+        <translation>{title}已暫時停用</translation>
     </message>
     <message>
         <source>禁用</source>
         <comment>禁用</comment>
-        <translation type="vanished">停用</translation>
+        <translation>停用</translation>
     </message>
     <message>
         <source>启用</source>
         <comment>启用</comment>
-        <translation type="vanished">啟用</translation>
+        <translation>啟用</translation>
     </message>
     <message>
         <source>我再想想……</source>
         <comment>我再想想……</comment>
-        <translation type="vanished">我再諗諗......</translation>
+        <translation>我再諗諗......</translation>
     </message>
     <message>
         <source>卸载成功</source>
         <comment>卸载成功</comment>
-        <translation type="vanished">卸載成功</translation>
+        <translation>卸載成功</translation>
     </message>
     <message>
         <source>插件 “{title}” 已卸载。请重启 Class Widgets 以完全移除。</source>
         <comment>插件 “{title}” 已卸载。请重启 Class Widgets 以完全移除。</comment>
-        <translation type="vanished">插件“{title}”已卸載。請重啟 Class Widgets 以完成移除程式</translation>
+        <translation>插件“{title}”已卸載。請重啟 Class Widgets 以完成移除程式</translation>
     </message>
     <message>
         <source>卸载失败</source>
         <comment>卸载失败</comment>
-        <translation type="vanished">卸載失敗</translation>
+        <translation>卸載失敗</translation>
     </message>
     <message>
         <source>卸载插件 “{title}” 时出错，请查看日志获取详细信息。</source>
         <comment>卸载插件 “{title}” 时出错，请查看日志获取详细信息。</comment>
-        <translation type="vanished">卸載插件“{title}”時出錯，請查閱紀錄以獲取詳細資料</translation>
+        <translation>卸載插件“{title}”時出錯，請查閱紀錄以獲取詳細資料</translation>
     </message>
     <message>
         <location filename="../menu.py" line="314"/>

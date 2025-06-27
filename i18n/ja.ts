@@ -2795,119 +2795,119 @@
     <message>
         <source>无法打开文件夹</source>
         <comment>无法打开文件夹</comment>
-        <translation type="vanished">フォルダーを開けません</translation>
+        <translation>フォルダーを開けません</translation>
     </message>
     <message>
         <source>Class Widgets 在您的系统下不支持自动打开文件夹，请手动打开以下地址：
 {path}</source>
         <comment>Class Widgets 在您的系统下不支持自动打开文件夹，请手动打开以下地址：
 {path}</comment>
-        <translation type="vanished">Class Widgets は自動でﾌｫﾙﾀﾞｰを開けません。以下のパスを手動で開いてください。</translation>
+        <translation>Class Widgets は自動でﾌｫﾙﾀﾞｰを開けません。以下のパスを手動で開いてください。</translation>
     </message>
     <message>
         <source>好</source>
         <comment>好</comment>
-        <translation type="vanished">はい</translation>
+        <translation>はい</translation>
     </message>
     <message>
         <source>未添加</source>
         <comment>未添加</comment>
-        <translation type="vanished">未追加</translation>
+        <translation>未追加</translation>
     </message>
     <message>
         <source>搜索城市</source>
         <comment>搜索城市</comment>
-        <translation type="vanished">都市を検索（都道府県）</translation>
+        <translation>都市を検索（都道府県）</translation>
     </message>
     <message>
         <source>请输入当地城市名进行搜索</source>
         <comment>请输入当地城市名进行搜索</comment>
-        <translation type="vanished">お住まいの都市名を入力して検索してください</translation>
+        <translation>お住まいの都市名を入力して検索してください</translation>
     </message>
     <message>
         <source>选择此城市</source>
         <comment>选择此城市</comment>
-        <translation type="vanished">この都市を選択</translation>
+        <translation>この都市を選択</translation>
     </message>
     <message>
         <source>取消</source>
         <comment>取消</comment>
-        <translation type="vanished">ｷｬﾝｾﾙ</translation>
+        <translation>ｷｬﾝｾﾙ</translation>
     </message>
     <message>
         <source>输入城市名</source>
         <comment>输入城市名</comment>
-        <translation type="vanished">都市名を入力</translation>
+        <translation>都市名を入力</translation>
     </message>
     <message>
         <source>软件许可协议</source>
         <comment>软件许可协议</comment>
-        <translation type="vanished">ソフトウェア使用許諾契約書</translation>
+        <translation>ソフトウェア使用許諾契約書</translation>
     </message>
     <message>
         <source>此项目 (Class Widgets) 基于 GPL-3.0 许可证授权发布，详情请参阅：</source>
         <comment>此项目 (Class Widgets) 基于 GPL-3.0 许可证授权发布，详情请参阅：</comment>
-        <translation type="vanished">本ﾌﾟﾛｼﾞｪｸﾄ（Class Widgets）はGPL-3.0ﾗｲｾﾝｽで提供。詳細は以下参照：</translation>
+        <translation>本ﾌﾟﾛｼﾞｪｸﾄ（Class Widgets）はGPL-3.0ﾗｲｾﾝｽで提供。詳細は以下参照：</translation>
     </message>
     <message>
         <source>打开“{title}”插件文件夹</source>
         <comment>打开“{title}”插件文件夹</comment>
-        <translation type="vanished">「{title}」ﾌﾟﾗｸﾞｲﾝﾌｫﾙﾀﾞｰを開く</translation>
+        <translation>「{title}」ﾌﾟﾗｸﾞｲﾝﾌｫﾙﾀﾞｰを開く</translation>
     </message>
     <message>
         <source>访问“{title}”插件页面</source>
         <comment>访问“{title}”插件页面</comment>
-        <translation type="vanished">「{title}」ﾌﾟﾗｸﾞｲﾝページにアクセス</translation>
+        <translation>「{title}」ﾌﾟﾗｸﾞｲﾝページにアクセス</translation>
     </message>
     <message>
         <source>卸载“{title}”插件</source>
         <comment>卸载“{title}”插件</comment>
-        <translation type="vanished">「{title}」ﾌﾟﾗｸﾞｲﾝをｱﾝｲﾝｽﾄｰﾙする</translation>
+        <translation>「{title}」ﾌﾟﾗｸﾞｲﾝをｱﾝｲﾝｽﾄｰﾙする</translation>
     </message>
     <message>
         <source>此插件被临时禁用,重启后将尝试重新加载</source>
         <comment>此插件被临时禁用,重启后将尝试重新加载</comment>
-        <translation type="vanished">このﾌﾟﾗｸﾞｲﾝは一時的に無効化されています。再起動後に再度リロードを試みます。</translation>
+        <translation>このﾌﾟﾗｸﾞｲﾝは一時的に無効化されています。再起動後に再度リロードを試みます。</translation>
     </message>
     <message>
         <source>{title} (已临时禁用)</source>
         <comment>{title} (已临时禁用)</comment>
-        <translation type="vanished">「{title}」（一時無効）</translation>
+        <translation>「{title}」（一時無効）</translation>
     </message>
     <message>
         <source>禁用</source>
         <comment>禁用</comment>
-        <translation type="vanished">無効化</translation>
+        <translation>無効化</translation>
     </message>
     <message>
         <source>启用</source>
         <comment>启用</comment>
-        <translation type="vanished">有効化</translation>
+        <translation>有効化</translation>
     </message>
     <message>
         <source>我再想想……</source>
         <comment>我再想想……</comment>
-        <translation type="vanished">もう少し考えますね…</translation>
+        <translation>もう少し考えますね…</translation>
     </message>
     <message>
         <source>卸载成功</source>
         <comment>卸载成功</comment>
-        <translation type="vanished">ｱﾝｲﾝｽﾄｰﾙ成功</translation>
+        <translation>ｱﾝｲﾝｽﾄｰﾙ成功</translation>
     </message>
     <message>
         <source>插件 “{title}” 已卸载。请重启 Class Widgets 以完全移除。</source>
         <comment>插件 “{title}” 已卸载。请重启 Class Widgets 以完全移除。</comment>
-        <translation type="vanished">ﾌﾟﾗｸﾞｲﾝ「{title}」はアンインストールされました。完全に削除するには Class Widgets を再起動してください。</translation>
+        <translation>ﾌﾟﾗｸﾞｲﾝ「{title}」はアンインストールされました。完全に削除するには Class Widgets を再起動してください。</translation>
     </message>
     <message>
         <source>卸载失败</source>
         <comment>卸载失败</comment>
-        <translation type="vanished">ｱﾝｲﾝｽﾄｰﾙ失敗</translation>
+        <translation>ｱﾝｲﾝｽﾄｰﾙ失敗</translation>
     </message>
     <message>
         <source>卸载插件 “{title}” 时出错，请查看日志获取详细信息。</source>
         <comment>卸载插件 “{title}” 时出错，请查看日志获取详细信息。</comment>
-        <translation type="vanished">ﾌﾟﾗｸﾞｲﾝ「{title}」のｱﾝｲﾝｽﾄｰﾙ中にエラーが発生しました。詳細はログを確認してください。</translation>
+        <translation>ﾌﾟﾗｸﾞｲﾝ「{title}」のｱﾝｲﾝｽﾄｰﾙ中にエラーが発生しました。詳細はログを確認してください。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="314"/>

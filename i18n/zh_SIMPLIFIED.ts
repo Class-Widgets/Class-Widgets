@@ -2458,292 +2458,292 @@
     <message>
         <source>周一</source>
         <comment>周一</comment>
-        <translation type="vanished">忙死Day</translation>
+        <translation>忙死Day</translation>
     </message>
     <message>
         <source>周二</source>
         <comment>周二</comment>
-        <translation type="vanished">求死Day</translation>
+        <translation>求死Day</translation>
     </message>
     <message>
         <source>周三</source>
         <comment>周三</comment>
-        <translation type="vanished">未死Day</translation>
+        <translation>未死Day</translation>
     </message>
     <message>
         <source>周四</source>
         <comment>周四</comment>
-        <translation type="vanished">受死Day</translation>
+        <translation>受死Day</translation>
     </message>
     <message>
         <source>周五</source>
         <comment>周五</comment>
-        <translation type="vanished">福来Day</translation>
+        <translation>福来Day</translation>
     </message>
     <message>
         <source>周六</source>
         <comment>周六</comment>
-        <translation type="vanished">洒脱Day</translation>
+        <translation>洒脱Day</translation>
     </message>
     <message>
         <source>周日</source>
         <comment>周日</comment>
-        <translation type="vanished">伤Day</translation>
+        <translation>伤Day</translation>
     </message>
     <message>
         <source>单周</source>
         <comment>单周</comment>
-        <translation type="vanished">丹州</translation>
+        <translation>丹州</translation>
     </message>
     <message>
         <source>双周</source>
         <comment>双周</comment>
-        <translation type="vanished">双舟</translation>
+        <translation>双舟</translation>
     </message>
     <message>
         <source>节点</source>
         <comment>节点</comment>
-        <translation type="vanished">节·</translation>
+        <translation>节·</translation>
     </message>
     <message>
         <source>休息段</source>
         <comment>休息段</comment>
-        <translation type="vanished">暴风雨前的宁静</translation>
+        <translation>暴风雨前的宁静</translation>
     </message>
     <message>
         <source>无</source>
         <comment>无</comment>
-        <translation type="vanished">虚空</translation>
+        <translation>虚空</translation>
     </message>
     <message>
         <source>置于顶部</source>
         <comment>置于顶部</comment>
-        <translation type="vanished">灵魂沙气泡柱</translation>
+        <translation>灵魂沙气泡柱</translation>
     </message>
     <message>
         <source>置于底部</source>
         <comment>置于底部</comment>
-        <translation type="vanished">熔岩气泡柱</translation>
+        <translation>熔岩气泡柱</translation>
     </message>
     <message>
         <source>浅色</source>
         <comment>浅色</comment>
-        <translation type="vanished">白人</translation>
+        <translation>白人</translation>
     </message>
     <message>
         <source>深色</source>
         <comment>深色</comment>
-        <translation type="vanished">黑人(man)</translation>
+        <translation>黑人(man)</translation>
     </message>
     <message>
         <source>跟随系统</source>
         <comment>跟随系统</comment>
-        <translation type="vanished">当然是听Windows娘的啦！</translation>
+        <translation>当然是听Windows娘的啦！</translation>
     </message>
     <message>
         <source>上课时自动隐藏</source>
         <comment>上课时自动隐藏</comment>
-        <translation type="vanished">地下党👀</translation>
+        <translation>地下党👀</translation>
     </message>
     <message>
         <source>窗口最大化时隐藏</source>
         <comment>窗口最大化时隐藏</comment>
-        <translation type="vanished">唔..太大了装不下了</translation>
+        <translation>唔..太大了装不下了</translation>
     </message>
     <message>
         <source>灵活隐藏</source>
         <comment>灵活隐藏</comment>
-        <translation type="vanished">左右反复横跳</translation>
+        <translation>左右反复横跳</translation>
     </message>
     <message>
         <source>正式版 (Release)</source>
         <comment>正式版 (Release)</comment>
-        <translation type="vanished">Github上的群友belike</translation>
+        <translation>Github上的群友belike</translation>
     </message>
     <message>
         <source>测试版 (Beta)</source>
         <comment>测试版 (Beta)</comment>
-        <translation type="vanished">Cwc里的群友belike</translation>
+        <translation>Cwc里的群友belike</translation>
     </message>
     <message>
         <source>语文</source>
         <comment>语文</comment>
-        <translation type="vanished">零音LyRin</translation>
+        <translation>零音LyRin</translation>
     </message>
     <message>
         <source>数学</source>
         <comment>数学</comment>
-        <translation type="vanished">干冰DryIce</translation>
+        <translation>干冰DryIce</translation>
     </message>
     <message>
         <source>英语</source>
         <comment>英语</comment>
-        <translation type="vanished">现在是~试音环节</translation>
+        <translation>现在是~试音环节</translation>
     </message>
     <message>
         <source>生物</source>
         <comment>生物</comment>
-        <translation type="vanished">Rinlit</translation>
+        <translation>Rinlit</translation>
     </message>
     <message>
         <source>地理</source>
         <comment>地理</comment>
-        <translation type="vanished">哇还有插入</translation>
+        <translation>哇还有插入</translation>
     </message>
     <message>
         <source>政治</source>
         <comment>政治</comment>
-        <translation type="vanished">放暑假后的QQ群</translation>
+        <translation>放暑假后的QQ群</translation>
     </message>
     <message>
         <source>历史</source>
         <comment>历史</comment>
-        <translation type="vanished">Rin写的代码</translation>
+        <translation>Rin写的代码</translation>
     </message>
     <message>
         <source>物理</source>
         <comment>物理</comment>
-        <translation type="vanished">HardCore大爷</translation>
+        <translation>HardCore大爷</translation>
     </message>
     <message>
         <source>化学</source>
         <comment>化学</comment>
-        <translation type="vanished">加纳</translation>
+        <translation>加纳</translation>
     </message>
     <message>
         <source>美术</source>
         <comment>美术</comment>
-        <translation type="vanished">只有一位落榜美术生</translation>
+        <translation>只有一位落榜美术生</translation>
     </message>
     <message>
         <source>音乐</source>
         <comment>音乐</comment>
-        <translation type="vanished">仲夏萤火之夜</translation>
+        <translation>仲夏萤火之夜</translation>
     </message>
     <message>
         <source>体育</source>
         <comment>体育</comment>
-        <translation type="vanished">当老师说让排头跑慢点时</translation>
+        <translation>当老师说让排头跑慢点时</translation>
     </message>
     <message>
         <source>信息技术</source>
         <comment>信息技术</comment>
-        <translation type="vanished">技术宅改变世界！</translation>
+        <translation>技术宅改变世界！</translation>
     </message>
     <message>
         <source>电脑</source>
         <comment>电脑</comment>
-        <translation type="vanished">💻</translation>
+        <translation>💻</translation>
     </message>
     <message>
         <source>课程表未加载</source>
         <comment>课程表未加载</comment>
-        <translation type="vanished">货呢？</translation>
+        <translation>货呢？</translation>
     </message>
     <message>
         <source>班会</source>
         <comment>班会</comment>
-        <translation type="vanished">提前适应开会</translation>
+        <translation>提前适应开会</translation>
     </message>
     <message>
         <source>自习</source>
         <comment>自习</comment>
-        <translation type="vanished">小纸条大作战</translation>
+        <translation>小纸条大作战</translation>
     </message>
     <message>
         <source>课间</source>
         <comment>课间</comment>
-        <translation type="vanished">下课准时刷新的npc</translation>
+        <translation>下课准时刷新的npc</translation>
     </message>
     <message>
         <source>大课间</source>
         <comment>大课间</comment>
-        <translation type="vanished">大</translation>
+        <translation>大</translation>
     </message>
     <message>
         <source>放学</source>
         <comment>放学</comment>
-        <translation type="vanished">我是走读生</translation>
+        <translation>我是走读生</translation>
     </message>
     <message>
         <source>暂无课程</source>
         <comment>暂无课程</comment>
-        <translation type="vanished">你为啥不配置课程</translation>
+        <translation>你为啥不配置课程</translation>
     </message>
     <message>
         <source>课程</source>
         <comment>课程</comment>
-        <translation type="vanished">78</translation>
+        <translation>78</translation>
     </message>
     <message>
         <source>上午</source>
         <comment>上午</comment>
-        <translation type="vanished">猫儿宁</translation>
+        <translation>猫儿宁</translation>
     </message>
     <message>
         <source>下午</source>
         <comment>下午</comment>
-        <translation type="vanished">艾弗特怒</translation>
+        <translation>艾弗特怒</translation>
     </message>
     <message>
         <source>晚修</source>
         <comment>晚修</comment>
-        <translation type="vanished">小纸条大作战2.0</translation>
+        <translation>小纸条大作战2.0</translation>
     </message>
     <message>
         <source>自定义</source>
         <comment>自定义</comment>
-        <translation type="vanished">创造模式</translation>
+        <translation>创造模式</translation>
     </message>
     <message>
         <source>早读</source>
         <comment>早读</comment>
-        <translation type="vanished">衡水中学专用</translation>
+        <translation>衡水中学专用</translation>
     </message>
     <message>
         <source>心理</source>
         <comment>心理</comment>
-        <translation type="vanished">我有玉玉症</translation>
+        <translation>我有玉玉症</translation>
     </message>
     <message>
         <source>当前日期</source>
         <comment>当前日期</comment>
-        <translation type="vanished">当日</translation>
+        <translation>当日</translation>
     </message>
     <message>
         <source>活动倒计时</source>
         <comment>活动倒计时</comment>
-        <translation type="vanished">幸福倒计时</translation>
+        <translation>幸福倒计时</translation>
     </message>
     <message>
         <source>当前活动</source>
         <comment>当前活动</comment>
-        <translation type="vanished">活跃的当前</translation>
+        <translation>活跃的当前</translation>
     </message>
     <message>
         <source>更多活动</source>
         <comment>更多活动</comment>
-        <translation type="vanished">我们需要更多</translation>
+        <translation>我们需要更多</translation>
     </message>
     <message>
         <source>倒计日</source>
         <comment>倒计日</comment>
-        <translation type="vanished">压迫感</translation>
+        <translation>压迫感</translation>
     </message>
     <message>
         <source>天气</source>
         <comment>天气</comment>
-        <translation type="vanished">今天是个好日子啊（喜</translation>
+        <translation>今天是个好日子啊（喜</translation>
     </message>
     <message>
         <source>轮播</source>
         <comment>轮播</comment>
-        <translation type="vanished">论剑</translation>
+        <translation>论剑</translation>
     </message>
     <message>
         <source>多小组件</source>
         <comment>多小组件</comment>
-        <translation type="vanished">多多多多多多多多多多多多</translation>
+        <translation>多多多多多多多多多多多多</translation>
     </message>
     <message>
         <location filename="../list_.py" line="14"/>
@@ -3089,114 +3089,114 @@
     <message>
         <source>无法打开文件夹</source>
         <comment>无法打开文件夹</comment>
-        <translation type="vanished">文件无法打开夹子</translation>
+        <translation>文件无法打开夹子</translation>
     </message>
     <message>
         <source>Class Widgets 在您的系统下不支持自动打开文件夹，请手动打开以下地址：
 {path}</source>
         <comment>Class Widgets 在您的系统下不支持自动打开文件夹，请手动打开以下地址：
 {path}</comment>
-        <translation type="vanished">请打开 {path}，因为这是主人的命令😋</translation>
+        <translation>请打开 {path}，因为这是主人的命令😋</translation>
     </message>
     <message>
         <source>好</source>
         <comment>好</comment>
-        <translation type="vanished">是个人物👍</translation>
+        <translation>是个人物👍</translation>
     </message>
     <message>
         <source>未添加</source>
         <comment>未添加</comment>
-        <translation type="vanished">添加，但是未</translation>
+        <translation>添加，但是未</translation>
     </message>
     <message>
         <source>搜索城市</source>
         <comment>搜索城市</comment>
-        <translation type="vanished">盒武器对照表搜寻器</translation>
+        <translation>盒武器对照表搜寻器</translation>
     </message>
     <message>
         <source>请输入当地城市名进行搜索</source>
         <comment>请输入当地城市名进行搜索</comment>
-        <translation type="vanished">别让我找到你😈</translation>
+        <translation>别让我找到你😈</translation>
     </message>
     <message>
         <source>选择此城市</source>
         <comment>选择此城市</comment>
-        <translation type="vanished">选择核弹爆炸范围</translation>
+        <translation>选择核弹爆炸范围</translation>
     </message>
     <message>
         <source>取消</source>
         <comment>取消</comment>
-        <translation type="vanished">跑路</translation>
+        <translation>跑路</translation>
     </message>
     <message>
         <source>输入城市名</source>
         <comment>输入城市名</comment>
-        <translation type="vanished">输入你的位置</translation>
+        <translation>输入你的位置</translation>
     </message>
     <message>
         <source>软件许可协议</source>
         <comment>软件许可协议</comment>
-        <translation type="vanished">星怒条约</translation>
+        <translation>星怒条约</translation>
     </message>
     <message>
         <source>打开“{title}”插件文件夹</source>
         <comment>打开“{title}”插件文件夹</comment>
-        <translation type="vanished">Can Can Need({title})</translation>
+        <translation>Can Can Need({title})</translation>
     </message>
     <message>
         <source>访问“{title}”插件页面</source>
         <comment>访问“{title}”插件页面</comment>
-        <translation type="vanished">一睹芳容{title}</translation>
+        <translation>一睹芳容{title}</translation>
     </message>
     <message>
         <source>卸载“{title}”插件</source>
         <comment>卸载“{title}”插件</comment>
-        <translation type="vanished">抛弃{title}</translation>
+        <translation>抛弃{title}</translation>
     </message>
     <message>
         <source>此插件被临时禁用,重启后将尝试重新加载</source>
         <comment>此插件被临时禁用,重启后将尝试重新加载</comment>
-        <translation type="vanished">这个入被请喝茶了，毁灭世界（重启）来救她吧（？）</translation>
+        <translation>这个入被请喝茶了，毁灭世界（重启）来救她吧（？）</translation>
     </message>
     <message>
         <source>{title} (已临时禁用)</source>
         <comment>{title} (已临时禁用)</comment>
-        <translation type="vanished">{title} 被请喝茶了</translation>
+        <translation>{title} 被请喝茶了</translation>
     </message>
     <message>
         <source>禁用</source>
         <comment>禁用</comment>
-        <translation type="vanished">Connection Lost. You are permanently banned from this server!</translation>
+        <translation>Connection Lost. You are permanently banned from this server!</translation>
     </message>
     <message>
         <source>启用</source>
         <comment>启用</comment>
-        <translation type="vanished">警告：一旦打开了这个盒子，就再也无法回头了。*你真的准备好了吗？？*</translation>
+        <translation>警告：一旦打开了这个盒子，就再也无法回头了。*你真的准备好了吗？？*</translation>
     </message>
     <message>
         <source>我再想想……</source>
         <comment>我再想想……</comment>
-        <translation type="vanished">我反悔了</translation>
+        <translation>我反悔了</translation>
     </message>
     <message>
         <source>卸载成功</source>
         <comment>卸载成功</comment>
-        <translation type="vanished">sudo rm -rf  /* 成功</translation>
+        <translation>sudo rm -rf  /* 成功</translation>
     </message>
     <message>
         <source>插件 “{title}” 已卸载。请重启 Class Widgets 以完全移除。</source>
         <comment>插件 “{title}” 已卸载。请重启 Class Widgets 以完全移除。</comment>
-        <translation type="vanished">你的电脑被我清空了，重启就彻底炸了😈</translation>
+        <translation>你的电脑被我清空了，重启就彻底炸了😈</translation>
     </message>
     <message>
         <source>卸载失败</source>
         <comment>卸载失败</comment>
-        <translation type="vanished">你似乎忘记chmod了🤔（？）</translation>
+        <translation>你似乎忘记chmod了🤔（？）</translation>
     </message>
     <message>
         <source>卸载插件 “{title}” 时出错，请查看日志获取详细信息。</source>
         <comment>卸载插件 “{title}” 时出错，请查看日志获取详细信息。</comment>
-        <translation type="vanished">无法使{title}跑路，去拿着辞退书（日志）去找清汤大老爷（issue）</translation>
+        <translation>无法使{title}跑路，去拿着辞退书（日志）去找清汤大老爷（issue）</translation>
     </message>
     <message>
         <location filename="../menu.py" line="314"/>
