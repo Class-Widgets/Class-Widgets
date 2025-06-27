@@ -119,16 +119,6 @@ def save_installed_plugin(data: List[Any]) -> bool:
         return False
 
 
-def load_theme_width(theme: str) -> int:
-    try:
-        with open(base_directory / 'ui' / theme / 'theme.json', 'r', encoding='utf-8') as file:
-            data = json.load(file)
-            return data['widget_width']
-    except Exception as e:
-        logger.error(f"加载主题宽度时出错: {e}")
-        return list_.widget_width
-
-
 def is_temp_week() -> Union[bool, str]:
     if config_center.read_conf('Temp', 'set_week') is None or config_center.read_conf('Temp', 'set_week') == '':
         return False

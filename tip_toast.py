@@ -499,12 +499,7 @@ def main(state: int = 1, lesson_name: str = '', title: str = '通知示例', sub
  
     widgets_width = 0
     for widget in widgets:  # 计算总宽度(兼容插件)
-        try:
-            widgets_width += conf.load_theme_width(theme)
-        except KeyError:
-            widgets_width += list_.widget_width[widget]
-        except:
-            widgets_width += 0
+        widgets_width += theme_config.widget_width.get(widget, list_.widget_width.get(widget, 0))
 
     total_width = widgets_width + spacing * (len(widgets) - 1)
 

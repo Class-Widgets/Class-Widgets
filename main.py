@@ -33,7 +33,7 @@ import tip_toast
 from tip_toast import active_windows
 import utils
 import weather as db
-from conf import base_directory
+from conf import base_directory, load_theme_config
 from extra_menu import ExtraMenu, open_settings
 from generate_speech import generate_speech_sync, list_pyttsx3_voices
 from menu import open_plaza
@@ -888,11 +888,12 @@ class WidgetsManager:
 
     @staticmethod
     def get_widget_width(path: str) -> int:
-        try:
-            width = conf.load_theme_width(theme)[path]
-        except KeyError:
-            width = list_.widget_width[path]
-        return int(width)
+        return (
+            load_theme_config(str('default' if theme is None else theme))
+            .config
+            .widget_width
+            .get(path, list_.widget_width.get(path, 0))
+        )
 
     @staticmethod
     def get_widgets_height() -> int:
@@ -919,12 +920,14 @@ class WidgetsManager:
         self.get_start_pos()
         pos_x = self.start_pos_x + self.spacing * num
         for i in range(num):
-            try:
-                pos_x += conf.load_theme_width(theme)[self.widgets_list[i]]
-            except KeyError:
-                pos_x += list_.widget_width[self.widgets_list[i]]
-            except:
-                pos_x += 0
+            widget = self.widgets_list[i]
+            pos_x += (
+                conf
+                .load_theme_config(str('default' if theme is None else theme))
+                .config
+                .widget_width
+                .get(widget, list_.widget_width.get(widget, 0))
+            )
         return [int(pos_x), int(self.start_pos_y)]
 
     def get_start_pos(self) -> None:
