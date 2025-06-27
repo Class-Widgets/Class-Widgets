@@ -3023,4 +3023,120 @@
         <translation type="unfinished"></translation>
     </message>
 </context>
+<context>
+    <name></name>
+    <message>
+        <source>https://classwidgets.rinlit.cn/docs-user/</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>已清空所有日志文件，约 {size} KB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>日志目录下为空，已清理完成。</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>清除日志失败：{e}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>更改上课时主题色</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>更改课间时主题色</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>更改浮窗时间颜色</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>保存文件</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Json 配置文件 (*.json)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>课程表文件导出失败，
+可能为文件损坏，请将此情况反馈给开发者。</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>选择文件</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CSES 通用课程表交换文件 (*.yaml)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>课程表文件转换失败！
+可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
+详情请查看Log日志，日志位于./log/下。</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>您已成功导入 CSES 课程表配置文件</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>课程表文件导入失败！
+可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
+详情请查看Log日志，日志位于./log/下。</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>课程表文件导入失败！
+可能为格式错误或文件损坏，请检查此文件是否为 Class Widgets 课程表文件。
+详情请查看Log日志，日志位于./log/下。</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>已保存至 ./config/widget.json</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>列表选项异常！{data}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>已保存至 ./config/schedule/{schedule_name}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>{e}
+保存失败，请将 ./log/ 中的日志提交给开发者以反馈问题。</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>您确定要删除这个时段吗？</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>删除该节点后，将一并删除该节点下所有课程安排，且无法恢复。</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>已保存至 ./config.ini</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>界面语言已切换为 {selected_lang_name}
+新语言将在重启程序后完全生效</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>界面语言切换时出错: {e}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>组件语言切换时出错: {e}</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>
