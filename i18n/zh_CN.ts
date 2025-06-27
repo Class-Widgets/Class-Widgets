@@ -2033,8 +2033,7 @@
     </message>
     <message>
         <location filename="../menu.py" line="1206"/>
-        <source>menu</source>
-        <comment>https://classwidgets.rinlit.cn/docs-user/</comment>
+        <source>https://classwidgets.rinlit.cn/docs-user/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2279,8 +2278,141 @@
     <message>
         <location filename="../menu.py" line="2227"/>
         <location filename="../menu.py" line="2247"/>
-        <source>menu</source>
-        <comment>已清空所有日志文件，约 {size} KB</comment>
+        <source>已清空所有日志文件，约 {size} KB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="2237"/>
+        <source>日志目录下为空，已清理完成。</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="2257"/>
+        <source>清除日志失败：{e}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="2296"/>
+        <source>更改上课时主题色</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="2302"/>
+        <source>更改课间时主题色</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="2308"/>
+        <source>更改浮窗时间颜色</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="2314"/>
+        <source>保存文件</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="2315"/>
+        <location filename="../menu.py" line="2438"/>
+        <source>Json 配置文件 (*.json)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="2328"/>
+        <location filename="../menu.py" line="2431"/>
+        <source>课程表文件导出失败，
+可能为文件损坏，请将此情况反馈给开发者。</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="2378"/>
+        <location filename="../menu.py" line="2438"/>
+        <source>选择文件</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="2378"/>
+        <source>CSES 通用课程表交换文件 (*.yaml)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="2391"/>
+        <source>课程表文件转换失败！
+可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
+详情请查看Log日志，日志位于./log/下。</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="2400"/>
+        <source>您已成功导入 CSES 课程表配置文件</source>
+        <comment>请在“高级选项”中手动切换您的配置文件。</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="2409"/>
+        <source>课程表文件导入失败！
+可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
+详情请查看Log日志，日志位于./log/下。</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="2452"/>
+        <source>课程表文件导入失败！
+可能为格式错误或文件损坏，请检查此文件是否为 Class Widgets 课程表文件。
+详情请查看Log日志，日志位于./log/下。</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="2468"/>
+        <source>已保存至 ./config/widget.json</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="2569"/>
+        <source>列表选项异常！{data}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="2803"/>
+        <location filename="../menu.py" line="2883"/>
+        <source>已保存至 ./config/schedule/{schedule_name}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="2894"/>
+        <source>{e}
+保存失败，请将 ./log/ 中的日志提交给开发者以反馈问题。</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="2968"/>
+        <source>您确定要删除这个时段吗？</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="2968"/>
+        <source>删除该节点后，将一并删除该节点下所有课程安排，且无法恢复。</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="3191"/>
+        <source>已保存至 ./config.ini</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="3310"/>
+        <source>界面语言已切换为 {selected_lang_name}
+新语言将在重启程序后完全生效</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="3339"/>
+        <source>界面语言切换时出错: {e}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="3393"/>
+        <source>组件语言切换时出错: {e}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2289,20 +2421,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../menu.py" line="2237"/>
-        <source>menu</source>
-        <comment>日志目录下为空，已清理完成。</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../menu.py" line="2256"/>
         <source>清除日志失败！</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="2257"/>
-        <source>menu</source>
-        <comment>清除日志失败：{e}</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2313,37 +2433,6 @@
     <message>
         <location filename="../menu.py" line="2289"/>
         <source>至少需要保留两个小组件。</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="2296"/>
-        <source>menu</source>
-        <comment>更改上课时主题色</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="2302"/>
-        <source>menu</source>
-        <comment>更改课间时主题色</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="2308"/>
-        <source>menu</source>
-        <comment>更改浮窗时间颜色</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="2314"/>
-        <source>menu</source>
-        <comment>保存文件</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="2315"/>
-        <location filename="../menu.py" line="2438"/>
-        <source>menu</source>
-        <comment>Json 配置文件 (*.json)</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2362,14 +2451,6 @@
         <location filename="../menu.py" line="2326"/>
         <location filename="../menu.py" line="2429"/>
         <source>导出失败！</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="2328"/>
-        <location filename="../menu.py" line="2431"/>
-        <source>menu</source>
-        <comment>课程表文件导出失败，
-可能为文件损坏，请将此情况反馈给开发者。</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2416,51 +2497,14 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../menu.py" line="2378"/>
-        <location filename="../menu.py" line="2438"/>
-        <source>menu</source>
-        <comment>选择文件</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="2378"/>
-        <source>menu</source>
-        <comment>CSES 通用课程表交换文件 (*.yaml)</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../menu.py" line="2388"/>
         <source>转换失败！</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../menu.py" line="2391"/>
-        <source>menu</source>
-        <comment>课程表文件转换失败！
-可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
-详情请查看Log日志，日志位于./log/下。</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../menu.py" line="2400"/>
-        <source>menu</source>
-        <comment>您已成功导入 CSES 课程表配置文件</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message>
         <location filename="../menu.py" line="2406"/>
         <location filename="../menu.py" line="2449"/>
         <source>导入失败！</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="2409"/>
-        <source>menu</source>
-        <comment>课程表文件导入失败！
-可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
-详情请查看Log日志，日志位于./log/下。</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2474,25 +2518,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../menu.py" line="2452"/>
-        <source>menu</source>
-        <comment>课程表文件导入失败！
-可能为格式错误或文件损坏，请检查此文件是否为 Class Widgets 课程表文件。
-详情请查看Log日志，日志位于./log/下。</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../menu.py" line="2467"/>
         <location filename="../menu.py" line="2802"/>
         <location filename="../menu.py" line="2882"/>
         <location filename="../menu.py" line="3190"/>
         <source>保存成功</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="2468"/>
-        <source>menu</source>
-        <comment>已保存至 ./config/widget.json</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2513,12 +2543,6 @@
     <message>
         <location filename="../menu.py" line="2568"/>
         <source>错误！</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="2569"/>
-        <source>menu</source>
-        <comment>列表选项异常！{data}</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2548,13 +2572,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../menu.py" line="2803"/>
-        <location filename="../menu.py" line="2883"/>
-        <source>menu</source>
-        <comment>已保存至 ./config/schedule/{schedule_name}</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../menu.py" line="2838"/>
         <source>休息段</source>
         <translation type="unfinished"></translation>
@@ -2569,13 +2586,6 @@
     <message>
         <location filename="../menu.py" line="2893"/>
         <source>保存失败!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="2894"/>
-        <source>menu</source>
-        <comment>{e}
-保存失败，请将 ./log/ 中的日志提交给开发者以反馈问题。</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2604,18 +2614,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../menu.py" line="2968"/>
-        <source>menu</source>
-        <comment>您确定要删除这个时段吗？</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="2968"/>
-        <source>menu</source>
-        <comment>删除该节点后，将一并删除该节点下所有课程安排，且无法恢复。</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../menu.py" line="2969"/>
         <source>删除</source>
         <translation type="unfinished"></translation>
@@ -2628,12 +2626,6 @@
     <message>
         <location filename="../menu.py" line="3148"/>
         <source>未添加-{data}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="3191"/>
-        <source>menu</source>
-        <comment>已保存至 ./config.ini</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2702,13 +2694,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../menu.py" line="3310"/>
-        <source>menu</source>
-        <comment>界面语言已切换为 {selected_lang_name}
-新语言将在重启程序后完全生效</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../menu.py" line="3331"/>
         <source>界面语言切换失败 (＃°Д°)</source>
         <translation type="unfinished"></translation>
@@ -2724,12 +2709,6 @@
         <location filename="../menu.py" line="3389"/>
         <location filename="../menu.py" line="3399"/>
         <source>确定</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="3339"/>
-        <source>menu</source>
-        <comment>界面语言切换时出错: {e}</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2762,12 +2741,6 @@
     <message>
         <location filename="../menu.py" line="3386"/>
         <source>无法加载选定的组件语言包，请检查翻译文件是否存在</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="3393"/>
-        <source>menu</source>
-        <comment>组件语言切换时出错: {e}</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
