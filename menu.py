@@ -91,6 +91,7 @@ class I18nManager:
         language_names = {
             'zh_CN': '简体中文',
             'zh_Hant': '繁體中文（HK）',
+            'zh_SIMPLIFIED': '梗体中文',
             'en_US': 'English',
             'ja': '日本語',
             'ko_KR': '한국어',
