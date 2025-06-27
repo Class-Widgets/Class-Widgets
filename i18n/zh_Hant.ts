@@ -69,7 +69,7 @@
         <location filename="../menu.py" line="468"/>
         <source>menu</source>
         <comment>此项目 (Class Widgets) 基于 GPL-3.0 许可证授权发布，详情请参阅：</comment>
-        <translation>本項目（Class Widgets）以 GPL-3.0 許可證授權發佈，詳情請參閱：</translation>
+        <translation>本項目（Class Widgets）以 GPL-3.0 許可證授權發佈，更多請參閱：</translation>
     </message>
     <message>
         <location filename="../menu.py" line="537"/>
@@ -381,120 +381,129 @@
     </message>
     <message>
         <source>list</source>
-        <translation type="unfinished"></translation>
+        <translation>list</translation>
     </message>
     <message>
         <source>https://classwidgets.rinlit.cn/docs-user/</source>
-        <translation type="unfinished"></translation>
+        <translation>https://classwidgets.rinlit.cn/docs-user/</translation>
     </message>
     <message>
         <source>已清空所有日志文件，约 {size} KB</source>
-        <translation type="unfinished"></translation>
+        <translation>已清空所有的紀錄文件，大小約 {size} KB</translation>
     </message>
     <message>
         <source>日志目录下为空，已清理完成。</source>
-        <translation type="unfinished"></translation>
+        <translation>紀錄目錄下為空，已清理完成。</translation>
     </message>
     <message>
         <source>清除日志失败：{e}</source>
-        <translation type="unfinished"></translation>
+        <translation>清除紀錄失敗：{e}</translation>
     </message>
     <message>
         <source>更改上课时主题色</source>
-        <translation type="unfinished"></translation>
+        <translation>更換上堂時主題色</translation>
     </message>
     <message>
         <source>更改课间时主题色</source>
-        <translation type="unfinished"></translation>
+        <translation>更換課間時的主題色</translation>
     </message>
     <message>
         <source>更改浮窗时间颜色</source>
-        <translation type="unfinished"></translation>
+        <translation>更改視窗時間顏色</translation>
     </message>
     <message>
         <source>保存文件</source>
-        <translation type="unfinished"></translation>
+        <translation>儲存文件</translation>
     </message>
     <message>
         <source>Json 配置文件 (*.json)</source>
-        <translation type="unfinished"></translation>
+        <translation>Json 設定檔 (*.json)</translation>
     </message>
     <message>
         <source>课程表文件导出失败，
 可能为文件损坏，请将此情况反馈给开发者。</source>
-        <translation type="unfinished"></translation>
+        <translation>課程時間表文件導出失敗，
+可能是文件損壞，請將本情況反饋到開發者團隊。</translation>
     </message>
     <message>
         <source>选择文件</source>
-        <translation type="unfinished"></translation>
+        <translation>選擇檔案</translation>
     </message>
     <message>
         <source>CSES 通用课程表交换文件 (*.yaml)</source>
-        <translation type="unfinished"></translation>
+        <translation>CSES 通用課程時間表交換文件 (*.yaml)</translation>
     </message>
     <message>
         <source>课程表文件转换失败！
 可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
 详情请查看Log日志，日志位于./log/下。</source>
-        <translation type="unfinished"></translation>
+        <translation>課程時間表文件轉換失敗！
+可能是格式錯誤或者文件損壞，請檢查本文件是否為正確的 CSES 課程時間表文件。
+更多請查閱Log紀錄，紀錄位於./log/。</translation>
     </message>
     <message>
         <source>您已成功导入 CSES 课程表配置文件</source>
-        <translation type="unfinished"></translation>
+        <translation>你已成功導入 CSES課程時間表設定檔</translation>
     </message>
     <message>
         <source>课程表文件导入失败！
 可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
 详情请查看Log日志，日志位于./log/下。</source>
-        <translation type="unfinished"></translation>
+        <translation>課程時間表文件導入失敗！
+可能是格式錯誤或者文件損壞，請檢查導入文件是否為正確的 CSES 課程時間表文件。
+更多請查閱Log紀錄，日誌位於./log/。</translation>
     </message>
     <message>
         <source>课程表文件导入失败！
 可能为格式错误或文件损坏，请检查此文件是否为 Class Widgets 课程表文件。
 详情请查看Log日志，日志位于./log/下。</source>
-        <translation type="unfinished"></translation>
+        <translation>課程時間表文件導入失敗！
+可能是格式錯誤或者文件損壞，請檢查導入文件是否為 Class Widgets 的課程時間表文件。
+更多請查閱Log紀錄，日誌位於./log/。</translation>
     </message>
     <message>
         <source>已保存至 ./config/widget.json</source>
-        <translation type="unfinished"></translation>
+        <translation>已儲存至 ./config/widget.json</translation>
     </message>
     <message>
         <source>列表选项异常！{data}</source>
-        <translation type="unfinished"></translation>
+        <translation>列表選項出現錯誤！{data}</translation>
     </message>
     <message>
         <source>已保存至 ./config/schedule/{schedule_name}</source>
-        <translation type="unfinished"></translation>
+        <translation>已儲存至 ./config/schedule/{schedule_name}</translation>
     </message>
     <message>
         <source>{e}
 保存失败，请将 ./log/ 中的日志提交给开发者以反馈问题。</source>
-        <translation type="unfinished"></translation>
+        <translation>{e}
+儲存失敗，請將 ./log/中的紀錄發送到開發者團隊。</translation>
     </message>
     <message>
         <source>您确定要删除这个时段吗？</source>
-        <translation type="unfinished"></translation>
+        <translation>你確定要刪除這個時間段嗎?</translation>
     </message>
     <message>
         <source>删除该节点后，将一并删除该节点下所有课程安排，且无法恢复。</source>
-        <translation type="unfinished"></translation>
+        <translation>刪除節點後，將一併刪除節點下的所有課程安排，且無法回覆。</translation>
     </message>
     <message>
         <source>已保存至 ./config.ini</source>
-        <translation type="unfinished"></translation>
+        <translation>已儲存至 ./config.ini</translation>
     </message>
     <message>
         <source>界面语言已切换为 {selected_lang_name}
 新语言将在重启程序后完全生效</source>
-        <translation type="unfinished"></translation>
+        <translation>介面語言已切換為 {selected_lang_name}
+新語言將會在重啟後完全生效</translation>
     </message>
     <message>
         <source>界面语言切换时出错: {e}</source>
-        <translation type="unfinished"></translation>
+        <translation>介面語言切換時出現錯誤: {e}</translation>
     </message>
     <message>
         <source>组件语言切换时出错: {e}</source>
-        <translation type="unfinished"></translation>
+        <translation>組件語言切換時出現錯誤: {e}</translation>
     </message>
 </context>
 <context>
@@ -1035,7 +1044,7 @@
     <message>
         <location filename="../view/menu/configs.ui" line="35"/>
         <source>配置文件</source>
-        <translation>配置文件</translation>
+        <translation>設定檔</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="65"/>
@@ -1972,7 +1981,7 @@
         <location filename="../menu.py" line="1128"/>
         <location filename="../menu.py" line="1169"/>
         <source>插件配置文件格式错误</source>
-        <translation>插件配置文件格式錯誤</translation>
+        <translation>插件設定檔格式錯誤</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1131"/>
@@ -1982,7 +1991,7 @@
     <message>
         <location filename="../menu.py" line="1137"/>
         <source>无效的插件文件：缺少 plugin.json 配置文件</source>
-        <translation>無效的插件文件：缺少 plugin.json 配置文件</translation>
+        <translation>無效的插件文件：缺少 plugin.json 設定檔</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1166"/>
@@ -2317,13 +2326,13 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
         <source>menu</source>
         <comment>Json 配置文件 (*.json)</comment>
         <translation>SettingsMenu
-Json 配置文件 (*.json)</translation>
+Json 設定檔 (*.json)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2319"/>
         <location filename="../menu.py" line="2422"/>
         <source>您已成功导出课程表配置文件</source>
-        <translation>你已成功導出課程時間表配置文件</translation>
+        <translation>你已成功導出課程時間表設定檔</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2320"/>
@@ -2423,7 +2432,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <translation>SettingsMenu
 課程表檔案轉換失敗！
 可能是格式錯誤或檔案已損壞，請確認該檔案是否為正確的 CSES 課程表檔案。
-詳情請查看紀錄，紀錄位於 ./log/ 目錄下。</translation>
+更多請查閱紀錄，紀錄位於 ./log/ 目錄下。</translation>
     </message>
     <message numerus="yes">
         <location filename="../menu.py" line="2401"/>
@@ -2449,7 +2458,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <translation>SettingsMenu
 課程表檔案匯入失敗！
 可能是格式錯誤或檔案已損壞，請確認該檔案是否為正確的 CSES 課程表檔案。
-詳情請查看紀錄，紀錄位於 ./log/ 目錄下。</translation>
+更多請查閱紀錄，紀錄位於 ./log/ 目錄下。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2444"/>
@@ -2459,7 +2468,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../menu.py" line="2445"/>
         <source>请在“高级选项”中手动切换您的配置文件。</source>
-        <translation>請在“進階選項”中手動切換你的配置檔案。</translation>
+        <translation>請在“進階選項”中手動切換你的設定檔。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2453"/>
@@ -2470,7 +2479,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <translation>SettingsMenu
 課程表檔案導入失敗！
 可能是格式錯誤或檔案已損壞，請確認該檔案是否為 Class Widgets 課程表檔案。
-詳情請查看紀錄，紀錄位於 ./log/ 目錄下。</translation>
+更多請查閱紀錄，紀錄位於 ./log/ 目錄下。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2468"/>
@@ -2657,7 +2666,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../menu.py" line="3261"/>
         <source>配置文件</source>
-        <translation>配置檔案</translation>
+        <translation>設定檔</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3263"/>
