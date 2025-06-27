@@ -44,8 +44,6 @@ from plugin import p_loader
 from plugin_plaza import PluginPlaza
 
 from PyQt5.QtCore import QCoreApplication
-tr = QCoreApplication.translate
-
 class I18nManager:
     """i18n"""
     def __init__(self):
@@ -256,6 +254,8 @@ QApplication.setHighDpiScaleFactorRoundingPolicy(
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
 QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
 
+from PyQt5.QtCore import QCoreApplication
+
 global_i18n_manager = None
 
 today = dt.date.today()
@@ -311,9 +311,9 @@ def open_dir(path: str):
         subprocess.run(['xdg-open', path])
     else:
         msg_box = Dialog(
-            tr('menu','无法打开文件夹'), tr('menu','Class Widgets 在您的系统下不支持自动打开文件夹，请手动打开以下地址：\n{path}').format(path=path)
+            QCoreApplication.translate('menu','无法打开文件夹'), QCoreApplication.translate('menu','Class Widgets 在您的系统下不支持自动打开文件夹，请手动打开以下地址：\n{path}').format(path=path)
         )
-        msg_box.yesButton.setText(tr('menu','好'))
+        msg_box.yesButton.setText(QCoreApplication.translate('menu','好'))
         msg_box.cancelButton.hide()
         msg_box.buttonLayout.insertStretch(0, 1)
         msg_box.setFixedWidth(550)
@@ -367,7 +367,7 @@ def load_schedule_dict(schedule, part, part_name):
                     period = part_name[str(item_name[1])]
                     all_class.append(f'{prefix}-{period}')
                 except IndexError or ValueError:  # 未设置值
-                    prefix = tr('menu','未添加')
+                    prefix = QCoreApplication.translate('menu','未添加')
                     period = part_name[str(item_name[1])]
                     all_class.append(f'{prefix}-{period}')
                 count[int(item_name[1])] += 1
@@ -419,12 +419,12 @@ class selectCity(MessageBoxBase):  # 选择城市
         subtitle_label = BodyLabel()
         self.search_edit = SearchLineEdit()
 
-        title_label.setText(tr('menu','搜索城市'))
-        subtitle_label.setText(tr('menu','请输入当地城市名进行搜索'))
-        self.yesButton.setText(tr('menu','选择此城市'))  # 按钮组件汉化
-        self.cancelButton.setText(tr('menu','取消'))
+        title_label.setText(QCoreApplication.translate('menu','搜索城市'))
+        subtitle_label.setText(QCoreApplication.translate('menu','请输入当地城市名进行搜索'))
+        self.yesButton.setText(QCoreApplication.translate('menu','选择此城市'))  # 按钮组件汉化
+        self.cancelButton.setText(QCoreApplication.translate('menu','取消'))
 
-        self.search_edit.setPlaceholderText(tr('menu','输入城市名'))
+        self.search_edit.setPlaceholderText(QCoreApplication.translate('menu','输入城市名'))
         self.search_edit.setClearButtonEnabled(True)
         self.search_edit.textChanged.connect(self.search_city)
 
@@ -464,9 +464,9 @@ class licenseDialog(MessageBoxBase):  # 显示软件许可协议
         subtitle_label = BodyLabel()
         self.license_text = PlainTextEdit()
 
-        title_label.setText(tr('menu','软件许可协议'))
-        subtitle_label.setText(tr('menu','此项目 (Class Widgets) 基于 GPL-3.0 许可证授权发布，详情请参阅：'))
-        self.yesButton.setText(tr('menu','好'))  # 按钮组件汉化
+        title_label.setText(QCoreApplication.translate('menu','软件许可协议'))
+        subtitle_label.setText(QCoreApplication.translate('menu','此项目 (Class Widgets) 基于 GPL-3.0 许可证授权发布，详情请参阅：'))
+        self.yesButton.setText(QCoreApplication.translate('menu','好'))  # 按钮组件汉化
         self.cancelButton.hide()
         self.buttonLayout.insertStretch(0, 1)
         self.license_text.setPlainText(open('LICENSE', 'r', encoding='utf-8').read())
@@ -534,20 +534,20 @@ class PluginCard(CardWidget):  # 插件卡片
 
         menu_actions = [
             Action(
-                fIcon.FOLDER, tr('menu','打开“{title}”插件文件夹').format(title=title),
+                fIcon.FOLDER, QCoreApplication.translate('menu','打开“{title}”插件文件夹').format(title=title),
                 triggered=lambda: open_dir(os.path.join(base_directory, conf.PLUGINS_DIR, self.plugin_dir))
             )
         ]
         if self.url:
             menu_actions.append(
                 Action(
-                    fIcon.LINK, tr('menu','访问“{title}”插件页面').format(title=title),
+                    fIcon.LINK, QCoreApplication.translate('menu','访问“{title}”插件页面').format(title=title),
                     triggered=lambda: QDesktopServices.openUrl(QUrl(self.url))
                 )
             )
         menu_actions.append(
             Action(
-                fIcon.DELETE, tr('menu','卸载“{title}”插件').format(title=title),
+                fIcon.DELETE, QCoreApplication.translate('menu','卸载“{title}”插件').format(title=title),
                 triggered=self.remove_plugin
             )
         )
@@ -565,8 +565,8 @@ class PluginCard(CardWidget):  # 插件卡片
         if is_temp_disabled:
             self.enableButton.setEnabled(False)
             self.enableButton.setChecked(False)
-            self.enableButton.setToolTip(tr('menu','此插件被临时禁用,重启后将尝试重新加载'))
-            self.titleLabel.setText(tr('menu','{title} (已临时禁用)').format(title=title))
+            self.enableButton.setToolTip(QCoreApplication.translate('menu','此插件被临时禁用,重启后将尝试重新加载'))
+            self.titleLabel.setText(QCoreApplication.translate('menu','{title} (已临时禁用)').format(title=title))
             self.titleLabel.setStyleSheet('color: #999999;')
 
         self.setFixedHeight(73)
@@ -579,8 +579,8 @@ class PluginCard(CardWidget):  # 插件卡片
         self.versionLabel.setTextColor("#999999", "#999999")
         self.authorLabel.setTextColor("#606060", "#d2d2d2")
         self.enableButton.checkedChanged.connect(self.set_enable)
-        self.enableButton.setOffText(tr('menu','禁用'))
-        self.enableButton.setOnText(tr('menu','启用'))
+        self.enableButton.setOffText(QCoreApplication.translate('menu','禁用'))
+        self.enableButton.setOnText(QCoreApplication.translate('menu','启用'))
         self.moreButton.setMenu(self.moreMenu)
         self.settingsBtn.setIcon(fIcon.SETTING)
         self.settingsBtn.clicked.connect(self.show_settings)
@@ -625,7 +625,7 @@ class PluginCard(CardWidget):  # 插件卡片
             w.exec()
 
     def remove_plugin(self):
-        alert = MessageBox(tr('menu','menu', "您确定要删除插件“{title}”吗？").format(title=self.title), tr('menu','menu', "删除此插件后，将无法恢复。"), self.parent)
+        alert = MessageBox(QCoreApplication.translate('menu','menu', "您确定要删除插件“{title}”吗？").format(title=self.title), QCoreApplication.translate('menu','menu', "删除此插件后，将无法恢复。"), self.parent)
         alert.yesButton.setText('永久删除')
         alert.yesButton.setStyleSheet("""
                 PushButton{
@@ -650,7 +650,7 @@ class PluginCard(CardWidget):  # 插件卡片
                     border: 1px solid #DB5359;
                 }
             """)
-        alert.cancelButton.setText(tr('menu','我再想想……'))
+        alert.cancelButton.setText(QCoreApplication.translate('menu','我再想想……'))
         if alert.exec():
             success = p_loader.delete_plugin(self.plugin_dir)
             if success:
@@ -665,8 +665,8 @@ class PluginCard(CardWidget):  # 插件卡片
                     logger.error(f"更新已安装插件列表失败: {e}")
 
                 InfoBar.success(
-                    title=tr('menu','卸载成功'),
-                    content=tr('menu','插件 “{title}” 已卸载。请重启 Class Widgets 以完全移除。').format(title=self.title),
+                    title=QCoreApplication.translate('menu','卸载成功'),
+                    content=QCoreApplication.translate('menu','插件 “{title}” 已卸载。请重启 Class Widgets 以完全移除。').format(title=self.title),
                     orient=Qt.Horizontal,
                     isClosable=True,
                     position=InfoBarPosition.BOTTOM_RIGHT,
@@ -676,8 +676,8 @@ class PluginCard(CardWidget):  # 插件卡片
                 self.deleteLater()  # 删除卡片
             else:
                 InfoBar.error(
-                    title=tr('menu','卸载失败'),
-                    content=tr('menu','卸载插件 “{title}” 时出错，请查看日志获取详细信息。').format(title=self.title),
+                    title=QCoreApplication.translate('menu','卸载失败'),
+                    content=QCoreApplication.translate('menu','卸载插件 “{title}” 时出错，请查看日志获取详细信息。').format(title=self.title),
                     orient=Qt.Horizontal,
                     isClosable=True,
                     position=InfoBarPosition.BOTTOM_RIGHT,

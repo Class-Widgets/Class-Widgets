@@ -2856,6 +2856,10 @@ if __name__ == '__main__':
 
     global_i18n_manager = I18nManager()
     global_i18n_manager.init_from_config()
+
+    import importlib
+    importlib.reload(list_)
+    
     logger.debug(f"i18n加载,界面: {global_i18n_manager.get_current_language_view_name()},组件: {global_i18n_manager.get_current_language_widgets_name()}")
     menu.global_i18n_manager = global_i18n_manager
     

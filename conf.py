@@ -10,8 +10,6 @@ from dateutil import parser
 from loguru import logger
 from file import base_directory, config_center
 
-import list_
-
 if os.name == 'nt':
     from win32com.client import Dispatch
 
@@ -89,6 +87,7 @@ def load_theme_width(theme: str) -> int:
             return data['widget_width']
     except Exception as e:
         logger.error(f"加载主题宽度时出错: {e}")
+        import list_
         return list_.widget_width
 
 
@@ -258,6 +257,7 @@ def get_week_type() -> int:
 
 
 def get_is_widget_in(widget: str = 'example.ui') -> bool:
+    import list_
     widgets_list = list_.get_widget_config()
     return widget in widgets_list
 

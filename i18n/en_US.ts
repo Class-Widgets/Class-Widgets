@@ -2,681 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
-    <name></name>
-    <message>
-        <location filename="../menu.py" line="314"/>
-        <source>menu</source>
-        <comment>无法打开文件夹</comment>
-        <translation>Unable to open folder</translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="314"/>
-        <source>menu</source>
-        <comment>Class Widgets 在您的系统下不支持自动打开文件夹，请手动打开以下地址：
-{path}</comment>
-        <translation>Class Widgets does not support automatic folder opening in your system, please manually open the following address:
-{path}</translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="316"/>
-        <location filename="../menu.py" line="469"/>
-        <source>menu</source>
-        <comment>好</comment>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="371"/>
-        <source>menu</source>
-        <comment>未添加</comment>
-        <translation>Not added</translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="422"/>
-        <source>menu</source>
-        <comment>搜索城市</comment>
-        <translation>Searching for a city</translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="423"/>
-        <source>menu</source>
-        <comment>请输入当地城市名进行搜索</comment>
-        <translation>Please enter your local city name to search</translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="424"/>
-        <source>menu</source>
-        <comment>选择此城市</comment>
-        <translation>Select this city</translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="425"/>
-        <source>menu</source>
-        <comment>取消</comment>
-        <translation>Cancel</translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="427"/>
-        <source>menu</source>
-        <comment>输入城市名</comment>
-        <translation>Enter city name</translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="467"/>
-        <source>menu</source>
-        <comment>软件许可协议</comment>
-        <translation>Software License Agreement</translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="468"/>
-        <source>menu</source>
-        <comment>此项目 (Class Widgets) 基于 GPL-3.0 许可证授权发布，详情请参阅：</comment>
-        <translation>This project (Class Widgets) is licensed under the GPL-3.0 license. For details, see:</translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="537"/>
-        <source>menu</source>
-        <comment>打开“{title}”插件文件夹</comment>
-        <translation>Open the &quot;{title}&quot; plugin folder</translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="544"/>
-        <source>menu</source>
-        <comment>访问“{title}”插件页面</comment>
-        <translation>Visit the &quot;{title}&quot; plugin page</translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="550"/>
-        <source>menu</source>
-        <comment>卸载“{title}”插件</comment>
-        <translation>Uninstall &quot;{title}&quot; plugin</translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="568"/>
-        <source>menu</source>
-        <comment>此插件被临时禁用,重启后将尝试重新加载</comment>
-        <translation>This plugin is temporarily disabled and will try to reload after restarting</translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="569"/>
-        <source>menu</source>
-        <comment>{title} (已临时禁用)</comment>
-        <translation>{title} (Temporarily disabled)</translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="582"/>
-        <source>menu</source>
-        <comment>禁用</comment>
-        <translation>Disable</translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="583"/>
-        <source>menu</source>
-        <comment>启用</comment>
-        <translation>Enable</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../menu.py" line="628"/>
-        <source>menu</source>
-        <comment>menu</comment>
-        <translation>
-            <numerusform>menu</numerusform>
-            <numerusform>menus</numerusform>
-        </translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="653"/>
-        <source>menu</source>
-        <comment>我再想想……</comment>
-        <translation>Think again...</translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="668"/>
-        <source>menu</source>
-        <comment>卸载成功</comment>
-        <translation>Uninstall successfully</translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="669"/>
-        <source>menu</source>
-        <comment>插件 “{title}” 已卸载。请重启 Class Widgets 以完全移除。</comment>
-        <translation>Plugin &apos;{title}&apos; has been uninstalled. Please restart the Class Widgets to remove them completely.</translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="679"/>
-        <source>menu</source>
-        <comment>卸载失败</comment>
-        <translation>Uninstallation failed</translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="680"/>
-        <source>menu</source>
-        <comment>卸载插件 “{title}” 时出错，请查看日志获取详细信息。</comment>
-        <translation>An error occurred while uninstalling the plugin &apos;{title}&apos;. Please check the log for details.</translation>
-    </message>
-    <message>
-        <source>list</source>
-        <translation type="obsolete">list</translation>
-    </message>
-    <message>
-        <source>https://classwidgets.rinlit.cn/docs-user/</source>
-        <translation type="vanished">https://classwidgets.rinlit.cn/docs-user/</translation>
-    </message>
-    <message>
-        <source>已清空所有日志文件，约 {size} KB</source>
-        <translation type="vanished">All log files cleared, approximately {size} KB</translation>
-    </message>
-    <message>
-        <source>日志目录下为空，已清理完成。</source>
-        <translation type="vanished">Log directory is empty; cleanup complete.</translation>
-    </message>
-    <message>
-        <source>清除日志失败：{e}</source>
-        <translation type="vanished">Failed to clear logs: {e}</translation>
-    </message>
-    <message>
-        <source>更改上课时主题色</source>
-        <translation type="vanished">Change In-Class Theme Color</translation>
-    </message>
-    <message>
-        <source>更改课间时主题色</source>
-        <translation type="vanished">Change Break Time Theme Color</translation>
-    </message>
-    <message>
-        <source>更改浮窗时间颜色</source>
-        <translation type="vanished">Change Floating Window Time Color</translation>
-    </message>
-    <message>
-        <source>保存文件</source>
-        <translation type="vanished">Save</translation>
-    </message>
-    <message>
-        <source>Json 配置文件 (*.json)</source>
-        <translation type="vanished">JSON Configuration File (*.json)</translation>
-    </message>
-    <message>
-        <source>课程表文件导出失败，
-可能为文件损坏，请将此情况反馈给开发者。</source>
-        <translation type="vanished">Failed to export timetable file.
-The file may be corrupted. Please report this issue to the developer.</translation>
-    </message>
-    <message>
-        <source>选择文件</source>
-        <translation type="vanished">Select File</translation>
-    </message>
-    <message>
-        <source>CSES 通用课程表交换文件 (*.yaml)</source>
-        <translation type="vanished">CSES Generic Timetable Exchange File (*.yaml)</translation>
-    </message>
-    <message>
-        <source>课程表文件转换失败！
-可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
-详情请查看Log日志，日志位于./log/下。</source>
-        <translation type="vanished">Timetable file conversion failed!
-This may be due to incorrect format or file corruption. Please check if this is a valid CSES timetable file.
-For details, please see the log located in ./log/.</translation>
-    </message>
-    <message>
-        <source>您已成功导入 CSES 课程表配置文件</source>
-        <translation type="vanished">Successfully imported CSES timetable configuration file</translation>
-    </message>
-    <message>
-        <source>课程表文件导入失败！
-可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
-详情请查看Log日志，日志位于./log/下。</source>
-        <translation type="vanished">Failed to import timetable file!
-This may be due to incorrect format or file corruption. Please check if this is a valid CSES timetable file.
-For details, please see the log located in ./log/.</translation>
-    </message>
-    <message>
-        <source>课程表文件导入失败！
-可能为格式错误或文件损坏，请检查此文件是否为 Class Widgets 课程表文件。
-详情请查看Log日志，日志位于./log/下。</source>
-        <translation type="vanished">Failed to import timetable file!
-This may be due to incorrect format or file corruption. Please check if this is a valid Class Widgets timetable file.
-For details, please see the log located in ./log/.</translation>
-    </message>
-    <message>
-        <source>已保存至 ./config/widget.json</source>
-        <translation type="vanished">Saved to ./config/widget.json</translation>
-    </message>
-    <message>
-        <source>列表选项异常！{data}</source>
-        <translation type="vanished">List option exception! {data}</translation>
-    </message>
-    <message>
-        <source>已保存至 ./config/schedule/{schedule_name}</source>
-        <translation type="vanished">Saved to ./config/schedule/{schedule_name}</translation>
-    </message>
-    <message>
-        <source>{e}
-保存失败，请将 ./log/ 中的日志提交给开发者以反馈问题。</source>
-        <translation type="vanished">{e}
-Save failed. Please submit the logs in ./log/ to the developer to report the issue.</translation>
-    </message>
-    <message>
-        <source>您确定要删除这个时段吗？</source>
-        <translation type="vanished">Are you sure you want to delete this time slot?</translation>
-    </message>
-    <message>
-        <source>删除该节点后，将一并删除该节点下所有课程安排，且无法恢复。</source>
-        <translation type="vanished">Deleting this node will also delete all associated course schedules under it, and this action cannot be undone.</translation>
-    </message>
-    <message>
-        <source>已保存至 ./config.ini</source>
-        <translation type="vanished">Saved to ./config.ini</translation>
-    </message>
-    <message>
-        <source>界面语言已切换为 {selected_lang_name}
-新语言将在重启程序后完全生效</source>
-        <translation type="vanished">Interface language has been switched to {selected_lang_name}.
-The new language will take full effect after restarting the program</translation>
-    </message>
-    <message>
-        <source>界面语言切换时出错: {e}</source>
-        <translation type="vanished">Error switching interface language: {e}</translation>
-    </message>
-    <message>
-        <source>组件语言切换时出错: {e}</source>
-        <translation type="vanished">Error switching component language: {e}</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="14"/>
-        <source>list</source>
-        <comment>周一</comment>
-        <translation>Monday</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="14"/>
-        <source>list</source>
-        <comment>周二</comment>
-        <translation>Tuesday</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="14"/>
-        <source>list</source>
-        <comment>周三</comment>
-        <translation>Wednesday</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="14"/>
-        <source>list</source>
-        <comment>周四</comment>
-        <translation>Thursday</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="14"/>
-        <source>list</source>
-        <comment>周五</comment>
-        <translation>Friday</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="14"/>
-        <source>list</source>
-        <comment>周六</comment>
-        <translation>Saturday</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="15"/>
-        <source>list</source>
-        <comment>周日</comment>
-        <translation>Sunday</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="15"/>
-        <source>list</source>
-        <comment>单周</comment>
-        <translation>single-week</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="16"/>
-        <source>list</source>
-        <comment>双周</comment>
-        <translation>even week</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="16"/>
-        <source>list</source>
-        <comment>节点</comment>
-        <translation>Node</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="17"/>
-        <source>list</source>
-        <comment>休息段</comment>
-        <translation>Break</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="17"/>
-        <location filename="../list_.py" line="19"/>
-        <location filename="../list_.py" line="20"/>
-        <source>list</source>
-        <comment>无</comment>
-        <translation>None</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="17"/>
-        <source>list</source>
-        <comment>置于顶部</comment>
-        <translation>On top</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="18"/>
-        <source>list</source>
-        <comment>置于底部</comment>
-        <translation>On bottom</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="18"/>
-        <source>list</source>
-        <comment>浅色</comment>
-        <translation>Light</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="18"/>
-        <source>list</source>
-        <comment>深色</comment>
-        <translation>Dark</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="19"/>
-        <source>list</source>
-        <comment>跟随系统</comment>
-        <translation>Follow system</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="19"/>
-        <location filename="../list_.py" line="21"/>
-        <source>list</source>
-        <comment>上课时自动隐藏</comment>
-        <translation>Auto hide in class</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="19"/>
-        <source>list</source>
-        <comment>窗口最大化时隐藏</comment>
-        <translation>Auto hide when maximized</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="20"/>
-        <source>list</source>
-        <comment>灵活隐藏</comment>
-        <translation>flexible hiding</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="21"/>
-        <source>list</source>
-        <comment>正式版 (Release)</comment>
-        <translation>Release</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="23"/>
-        <source>list</source>
-        <comment>测试版 (Beta)</comment>
-        <translation>Beta</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="27"/>
-        <location filename="../list_.py" line="57"/>
-        <location filename="../list_.py" line="126"/>
-        <source>list</source>
-        <comment>语文</comment>
-        <translation>English</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="28"/>
-        <location filename="../list_.py" line="58"/>
-        <location filename="../list_.py" line="127"/>
-        <source>list</source>
-        <comment>数学</comment>
-        <translation>Math</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="29"/>
-        <location filename="../list_.py" line="59"/>
-        <location filename="../list_.py" line="128"/>
-        <source>list</source>
-        <comment>英语</comment>
-        <translation>Chinese</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="30"/>
-        <location filename="../list_.py" line="62"/>
-        <location filename="../list_.py" line="129"/>
-        <source>list</source>
-        <comment>生物</comment>
-        <translation>Biology</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="31"/>
-        <location filename="../list_.py" line="63"/>
-        <location filename="../list_.py" line="130"/>
-        <source>list</source>
-        <comment>地理</comment>
-        <translation>Geography</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="32"/>
-        <location filename="../list_.py" line="60"/>
-        <location filename="../list_.py" line="131"/>
-        <source>list</source>
-        <comment>政治</comment>
-        <translation>Politics</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="33"/>
-        <location filename="../list_.py" line="61"/>
-        <location filename="../list_.py" line="132"/>
-        <location filename="../list_.py" line="151"/>
-        <source>list</source>
-        <comment>历史</comment>
-        <translation>History</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="34"/>
-        <location filename="../list_.py" line="64"/>
-        <location filename="../list_.py" line="133"/>
-        <source>list</source>
-        <comment>物理</comment>
-        <translation>Physics</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="35"/>
-        <location filename="../list_.py" line="65"/>
-        <location filename="../list_.py" line="134"/>
-        <source>list</source>
-        <comment>化学</comment>
-        <translation>Chemisty</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="36"/>
-        <location filename="../list_.py" line="71"/>
-        <location filename="../list_.py" line="135"/>
-        <source>list</source>
-        <comment>美术</comment>
-        <translation>Art</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="37"/>
-        <location filename="../list_.py" line="72"/>
-        <location filename="../list_.py" line="136"/>
-        <source>list</source>
-        <comment>音乐</comment>
-        <translation>Music</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="38"/>
-        <location filename="../list_.py" line="66"/>
-        <location filename="../list_.py" line="137"/>
-        <source>list</source>
-        <comment>体育</comment>
-        <translation>P.E.</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="39"/>
-        <location filename="../list_.py" line="77"/>
-        <location filename="../list_.py" line="138"/>
-        <source>list</source>
-        <comment>信息技术</comment>
-        <translation>I.T.</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="40"/>
-        <location filename="../list_.py" line="139"/>
-        <source>list</source>
-        <comment>电脑</comment>
-        <translation>Computer</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="41"/>
-        <location filename="../list_.py" line="140"/>
-        <source>list</source>
-        <comment>课程表未加载</comment>
-        <translation>Schedule not loaded</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="43"/>
-        <location filename="../list_.py" line="67"/>
-        <location filename="../list_.py" line="142"/>
-        <source>list</source>
-        <comment>班会</comment>
-        <translation>Class meeting</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="44"/>
-        <location filename="../list_.py" line="68"/>
-        <location filename="../list_.py" line="143"/>
-        <source>list</source>
-        <comment>自习</comment>
-        <translation>Study period</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="45"/>
-        <location filename="../list_.py" line="54"/>
-        <location filename="../list_.py" line="144"/>
-        <source>list</source>
-        <comment>课间</comment>
-        <translation>Break</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="46"/>
-        <location filename="../list_.py" line="70"/>
-        <location filename="../list_.py" line="145"/>
-        <source>list</source>
-        <comment>大课间</comment>
-        <translation>Long recess</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="47"/>
-        <location filename="../list_.py" line="146"/>
-        <source>list</source>
-        <comment>放学</comment>
-        <translation>After school</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="48"/>
-        <location filename="../list_.py" line="147"/>
-        <source>list</source>
-        <comment>暂无课程</comment>
-        <translation>No class</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="53"/>
-        <source>list</source>
-        <comment>课程</comment>
-        <translation>Course</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="54"/>
-        <source>list</source>
-        <comment>上午</comment>
-        <translation>a.m.</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="54"/>
-        <source>list</source>
-        <comment>下午</comment>
-        <translation>p.m.</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="55"/>
-        <source>list</source>
-        <comment>晚修</comment>
-        <translation>Evening prep</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="56"/>
-        <source>list</source>
-        <comment>自定义</comment>
-        <translation>Custom</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="69"/>
-        <source>list</source>
-        <comment>早读</comment>
-        <translation>Morning reading</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="73"/>
-        <source>list</source>
-        <comment>心理</comment>
-        <translation>Psycholoigy</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="94"/>
-        <location filename="../list_.py" line="103"/>
-        <source>list</source>
-        <comment>当前日期</comment>
-        <translation>Current date</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="95"/>
-        <location filename="../list_.py" line="104"/>
-        <source>list</source>
-        <comment>活动倒计时</comment>
-        <translation>Countdown</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="96"/>
-        <location filename="../list_.py" line="105"/>
-        <source>list</source>
-        <comment>当前活动</comment>
-        <translation>Current Activity</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="97"/>
-        <location filename="../list_.py" line="106"/>
-        <source>list</source>
-        <comment>更多活动</comment>
-        <translation>Upcoming Activities</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="98"/>
-        <location filename="../list_.py" line="107"/>
-        <source>list</source>
-        <comment>倒计日</comment>
-        <translation>Day Countdown</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="99"/>
-        <location filename="../list_.py" line="111"/>
-        <source>list</source>
-        <comment>天气</comment>
-        <translation>­Weather</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="154"/>
-        <source>list</source>
-        <comment>轮播</comment>
-        <translation>Carousel</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="156"/>
-        <source>list</source>
-        <comment>多小组件</comment>
-        <translation>Multiple widgets</translation>
-    </message>
-</context>
-<context>
     <name>CustomMessageBox</name>
     <message>
         <location filename="../menu.py" line="1553"/>
@@ -2726,14 +2051,6 @@ Updatable version: {new_version}</translation>
 This may be a malformed or corrupted file. Please check whether this file is the correct CSES course schedule file.
 For details, see Log, located under./log/.</translation>
     </message>
-    <message numerus="yes">
-        <source>menu</source>
-        <comment>您已成功导入 CSES 课程表配置文件</comment>
-        <translation type="vanished">
-            <numerusform>Successfully imported the CSES file</numerusform>
-            <numerusform>Successfully imported the CSES file</numerusform>
-        </translation>
-    </message>
     <message>
         <location filename="../menu.py" line="2407"/>
         <location filename="../menu.py" line="2450"/>
@@ -3222,19 +2539,9 @@ Error occurred while switching component language: {e}</translation>
 - `{title}`: 通知标题 (例如：重要通知) *其他
 - `{content}`: 通知内容 (例如：这是一条测试通知) *其他
 </comment>
-        <translation>
-            <numerusform>TTS Settings
-You can use the following placeholders to dynamically insert information:
-- `{lesson_name}`: Lesson name** for start, end, and next lesson (e.g., Information Technology)
-- `{minutes}`: Number of minutes** (e.g., 5) *Other
-- `{title}`: Notification title** (e.g., Important Notification) *Other
-- `{content}`: Notification content** (e.g., This is a test notification)   Other</numerusform>
-            <numerusform>TTS Settings
-You can use the following placeholders to dynamically insert information:
-- `{lesson_name}`: Lesson name** for start, end, and next lesson (e.g., Information Technology)
-- `{minutes}`: Number of minutes** (e.g., 5) *Other
-- `{title}`: Notification title** (e.g., Important Notification) *Other
-- `{content}`: Notification content** (e.g., This is a test notification)   Other</numerusform>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -3320,6 +2627,888 @@ Error generating or playing audio: {error_message}</translation>
         <location filename="../menu.py" line="732"/>
         <source>不可以和之前的课程名重复哦 o(TヘTo)</source>
         <translation>Cannot duplicate existing lesson names o(TヘTo)</translation>
+    </message>
+</context>
+<context>
+    <name>list_</name>
+    <message>
+        <source>周一</source>
+        <comment>周一</comment>
+        <translation type="vanished">Monday</translation>
+    </message>
+    <message>
+        <source>周二</source>
+        <comment>周二</comment>
+        <translation type="vanished">Tuesday</translation>
+    </message>
+    <message>
+        <source>周三</source>
+        <comment>周三</comment>
+        <translation type="vanished">Wednesday</translation>
+    </message>
+    <message>
+        <source>周四</source>
+        <comment>周四</comment>
+        <translation type="vanished">Thursday</translation>
+    </message>
+    <message>
+        <source>周五</source>
+        <comment>周五</comment>
+        <translation type="vanished">Friday</translation>
+    </message>
+    <message>
+        <source>周六</source>
+        <comment>周六</comment>
+        <translation type="vanished">Saturday</translation>
+    </message>
+    <message>
+        <source>周日</source>
+        <comment>周日</comment>
+        <translation type="vanished">Sunday</translation>
+    </message>
+    <message>
+        <source>单周</source>
+        <comment>单周</comment>
+        <translation type="vanished">single-week</translation>
+    </message>
+    <message>
+        <source>双周</source>
+        <comment>双周</comment>
+        <translation type="vanished">even week</translation>
+    </message>
+    <message>
+        <source>节点</source>
+        <comment>节点</comment>
+        <translation type="vanished">Node</translation>
+    </message>
+    <message>
+        <source>休息段</source>
+        <comment>休息段</comment>
+        <translation type="vanished">Break</translation>
+    </message>
+    <message>
+        <source>无</source>
+        <comment>无</comment>
+        <translation type="vanished">None</translation>
+    </message>
+    <message>
+        <source>置于顶部</source>
+        <comment>置于顶部</comment>
+        <translation type="vanished">On top</translation>
+    </message>
+    <message>
+        <source>置于底部</source>
+        <comment>置于底部</comment>
+        <translation type="vanished">On bottom</translation>
+    </message>
+    <message>
+        <source>浅色</source>
+        <comment>浅色</comment>
+        <translation type="vanished">Light</translation>
+    </message>
+    <message>
+        <source>深色</source>
+        <comment>深色</comment>
+        <translation type="vanished">Dark</translation>
+    </message>
+    <message>
+        <source>跟随系统</source>
+        <comment>跟随系统</comment>
+        <translation type="vanished">Follow system</translation>
+    </message>
+    <message>
+        <source>上课时自动隐藏</source>
+        <comment>上课时自动隐藏</comment>
+        <translation type="vanished">Auto hide in class</translation>
+    </message>
+    <message>
+        <source>窗口最大化时隐藏</source>
+        <comment>窗口最大化时隐藏</comment>
+        <translation type="vanished">Auto hide when maximized</translation>
+    </message>
+    <message>
+        <source>灵活隐藏</source>
+        <comment>灵活隐藏</comment>
+        <translation type="vanished">flexible hiding</translation>
+    </message>
+    <message>
+        <source>正式版 (Release)</source>
+        <comment>正式版 (Release)</comment>
+        <translation type="vanished">Release</translation>
+    </message>
+    <message>
+        <source>测试版 (Beta)</source>
+        <comment>测试版 (Beta)</comment>
+        <translation type="vanished">Beta</translation>
+    </message>
+    <message>
+        <source>语文</source>
+        <comment>语文</comment>
+        <translation type="vanished">English</translation>
+    </message>
+    <message>
+        <source>数学</source>
+        <comment>数学</comment>
+        <translation type="vanished">Math</translation>
+    </message>
+    <message>
+        <source>英语</source>
+        <comment>英语</comment>
+        <translation type="vanished">Chinese</translation>
+    </message>
+    <message>
+        <source>生物</source>
+        <comment>生物</comment>
+        <translation type="vanished">Biology</translation>
+    </message>
+    <message>
+        <source>地理</source>
+        <comment>地理</comment>
+        <translation type="vanished">Geography</translation>
+    </message>
+    <message>
+        <source>政治</source>
+        <comment>政治</comment>
+        <translation type="vanished">Politics</translation>
+    </message>
+    <message>
+        <source>历史</source>
+        <comment>历史</comment>
+        <translation type="vanished">History</translation>
+    </message>
+    <message>
+        <source>物理</source>
+        <comment>物理</comment>
+        <translation type="vanished">Physics</translation>
+    </message>
+    <message>
+        <source>化学</source>
+        <comment>化学</comment>
+        <translation type="vanished">Chemisty</translation>
+    </message>
+    <message>
+        <source>美术</source>
+        <comment>美术</comment>
+        <translation type="vanished">Art</translation>
+    </message>
+    <message>
+        <source>音乐</source>
+        <comment>音乐</comment>
+        <translation type="vanished">Music</translation>
+    </message>
+    <message>
+        <source>体育</source>
+        <comment>体育</comment>
+        <translation type="vanished">P.E.</translation>
+    </message>
+    <message>
+        <source>信息技术</source>
+        <comment>信息技术</comment>
+        <translation type="vanished">I.T.</translation>
+    </message>
+    <message>
+        <source>电脑</source>
+        <comment>电脑</comment>
+        <translation type="vanished">Computer</translation>
+    </message>
+    <message>
+        <source>课程表未加载</source>
+        <comment>课程表未加载</comment>
+        <translation type="vanished">Schedule not loaded</translation>
+    </message>
+    <message>
+        <source>班会</source>
+        <comment>班会</comment>
+        <translation type="vanished">Class meeting</translation>
+    </message>
+    <message>
+        <source>自习</source>
+        <comment>自习</comment>
+        <translation type="vanished">Study period</translation>
+    </message>
+    <message>
+        <source>课间</source>
+        <comment>课间</comment>
+        <translation type="vanished">Break</translation>
+    </message>
+    <message>
+        <source>大课间</source>
+        <comment>大课间</comment>
+        <translation type="vanished">Long recess</translation>
+    </message>
+    <message>
+        <source>放学</source>
+        <comment>放学</comment>
+        <translation type="vanished">After school</translation>
+    </message>
+    <message>
+        <source>暂无课程</source>
+        <comment>暂无课程</comment>
+        <translation type="vanished">No class</translation>
+    </message>
+    <message>
+        <source>课程</source>
+        <comment>课程</comment>
+        <translation type="vanished">Course</translation>
+    </message>
+    <message>
+        <source>上午</source>
+        <comment>上午</comment>
+        <translation type="vanished">a.m.</translation>
+    </message>
+    <message>
+        <source>下午</source>
+        <comment>下午</comment>
+        <translation type="vanished">p.m.</translation>
+    </message>
+    <message>
+        <source>晚修</source>
+        <comment>晚修</comment>
+        <translation type="vanished">Evening prep</translation>
+    </message>
+    <message>
+        <source>自定义</source>
+        <comment>自定义</comment>
+        <translation type="vanished">Custom</translation>
+    </message>
+    <message>
+        <source>早读</source>
+        <comment>早读</comment>
+        <translation type="vanished">Morning reading</translation>
+    </message>
+    <message>
+        <source>心理</source>
+        <comment>心理</comment>
+        <translation type="vanished">Psycholoigy</translation>
+    </message>
+    <message>
+        <source>当前日期</source>
+        <comment>当前日期</comment>
+        <translation type="vanished">Current date</translation>
+    </message>
+    <message>
+        <source>活动倒计时</source>
+        <comment>活动倒计时</comment>
+        <translation type="vanished">Countdown</translation>
+    </message>
+    <message>
+        <source>当前活动</source>
+        <comment>当前活动</comment>
+        <translation type="vanished">Current Activity</translation>
+    </message>
+    <message>
+        <source>更多活动</source>
+        <comment>更多活动</comment>
+        <translation type="vanished">Upcoming Activities</translation>
+    </message>
+    <message>
+        <source>倒计日</source>
+        <comment>倒计日</comment>
+        <translation type="vanished">Day Countdown</translation>
+    </message>
+    <message>
+        <source>天气</source>
+        <comment>天气</comment>
+        <translation type="vanished">­Weather</translation>
+    </message>
+    <message>
+        <source>轮播</source>
+        <comment>轮播</comment>
+        <translation type="vanished">Carousel</translation>
+    </message>
+    <message>
+        <source>多小组件</source>
+        <comment>多小组件</comment>
+        <translation type="vanished">Multiple widgets</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="14"/>
+        <source>周一</source>
+        <translation type="unfinished">Monday</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="14"/>
+        <source>周二</source>
+        <translation type="unfinished">Tuesday</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="14"/>
+        <source>周三</source>
+        <translation type="unfinished">Wednesday</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="14"/>
+        <source>周四</source>
+        <translation type="unfinished">Thursday</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="14"/>
+        <source>周五</source>
+        <translation type="unfinished">Friday</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="14"/>
+        <source>周六</source>
+        <translation type="unfinished">Saturday</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="15"/>
+        <source>周日</source>
+        <translation type="unfinished">Sunday</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="16"/>
+        <source>单周</source>
+        <translation type="unfinished">single-week</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="17"/>
+        <source>双周</source>
+        <translation type="unfinished">even week</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="17"/>
+        <source>节点</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="18"/>
+        <source>休息段</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="18"/>
+        <location filename="../list_.py" line="20"/>
+        <location filename="../list_.py" line="21"/>
+        <source>无</source>
+        <translation type="unfinished">None</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="18"/>
+        <source>置于顶部</source>
+        <translation type="unfinished">On top</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="19"/>
+        <source>置于底部</source>
+        <translation type="unfinished">On bottom</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="19"/>
+        <source>浅色</source>
+        <translation type="unfinished">Light</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="19"/>
+        <source>深色</source>
+        <translation type="unfinished">Dark</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="20"/>
+        <source>跟随系统</source>
+        <translation type="unfinished">Follow system</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="20"/>
+        <location filename="../list_.py" line="22"/>
+        <source>上课时自动隐藏</source>
+        <translation type="unfinished">Auto hide in class</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="20"/>
+        <source>窗口最大化时隐藏</source>
+        <translation type="unfinished">Auto hide when maximized</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="21"/>
+        <source>灵活隐藏</source>
+        <translation type="unfinished">flexible hiding</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="22"/>
+        <source>正式版 (Release)</source>
+        <translation type="unfinished">Release</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="24"/>
+        <source>测试版 (Beta)</source>
+        <translation type="unfinished">Beta</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="28"/>
+        <location filename="../list_.py" line="58"/>
+        <location filename="../list_.py" line="127"/>
+        <source>语文</source>
+        <translation type="unfinished">English</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="29"/>
+        <location filename="../list_.py" line="59"/>
+        <location filename="../list_.py" line="128"/>
+        <source>数学</source>
+        <translation type="unfinished">Math</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="30"/>
+        <location filename="../list_.py" line="60"/>
+        <location filename="../list_.py" line="129"/>
+        <source>英语</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="31"/>
+        <location filename="../list_.py" line="63"/>
+        <location filename="../list_.py" line="130"/>
+        <source>生物</source>
+        <translation type="unfinished">Biology</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="32"/>
+        <location filename="../list_.py" line="64"/>
+        <location filename="../list_.py" line="131"/>
+        <source>地理</source>
+        <translation type="unfinished">Geography</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="33"/>
+        <location filename="../list_.py" line="61"/>
+        <location filename="../list_.py" line="132"/>
+        <source>政治</source>
+        <translation type="unfinished">Politics</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="34"/>
+        <location filename="../list_.py" line="62"/>
+        <location filename="../list_.py" line="133"/>
+        <location filename="../list_.py" line="152"/>
+        <source>历史</source>
+        <translation type="unfinished">History</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="35"/>
+        <location filename="../list_.py" line="65"/>
+        <location filename="../list_.py" line="134"/>
+        <source>物理</source>
+        <translation type="unfinished">Physics</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="36"/>
+        <location filename="../list_.py" line="66"/>
+        <location filename="../list_.py" line="135"/>
+        <source>化学</source>
+        <translation type="unfinished">Chemisty</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="37"/>
+        <location filename="../list_.py" line="72"/>
+        <location filename="../list_.py" line="136"/>
+        <source>美术</source>
+        <translation type="unfinished">Art</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="38"/>
+        <location filename="../list_.py" line="73"/>
+        <location filename="../list_.py" line="137"/>
+        <source>音乐</source>
+        <translation type="unfinished">Music</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="39"/>
+        <location filename="../list_.py" line="67"/>
+        <location filename="../list_.py" line="138"/>
+        <source>体育</source>
+        <translation type="unfinished">P.E.</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="40"/>
+        <location filename="../list_.py" line="78"/>
+        <location filename="../list_.py" line="139"/>
+        <source>信息技术</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="41"/>
+        <location filename="../list_.py" line="140"/>
+        <source>电脑</source>
+        <translation type="unfinished">Computer</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="42"/>
+        <location filename="../list_.py" line="141"/>
+        <source>课程表未加载</source>
+        <translation type="unfinished">Schedule not loaded</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="44"/>
+        <location filename="../list_.py" line="68"/>
+        <location filename="../list_.py" line="143"/>
+        <source>班会</source>
+        <translation type="unfinished">Class meeting</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="45"/>
+        <location filename="../list_.py" line="69"/>
+        <location filename="../list_.py" line="144"/>
+        <source>自习</source>
+        <translation type="unfinished">Study period</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="46"/>
+        <location filename="../list_.py" line="55"/>
+        <location filename="../list_.py" line="145"/>
+        <source>课间</source>
+        <translation type="unfinished">Break</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="47"/>
+        <location filename="../list_.py" line="71"/>
+        <location filename="../list_.py" line="146"/>
+        <source>大课间</source>
+        <translation type="unfinished">Long recess</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="48"/>
+        <location filename="../list_.py" line="147"/>
+        <source>放学</source>
+        <translation type="unfinished">After school</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="49"/>
+        <location filename="../list_.py" line="148"/>
+        <source>暂无课程</source>
+        <translation type="unfinished">No class</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="54"/>
+        <source>课程</source>
+        <translation type="unfinished">Course</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="55"/>
+        <source>上午</source>
+        <translation type="unfinished">a.m.</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="55"/>
+        <source>下午</source>
+        <translation type="unfinished">p.m.</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="56"/>
+        <source>晚修</source>
+        <translation type="unfinished">Evening prep</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="57"/>
+        <source>自定义</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="70"/>
+        <source>早读</source>
+        <translation type="unfinished">Morning reading</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="74"/>
+        <source>心理</source>
+        <translation type="unfinished">Psycholoigy</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="95"/>
+        <location filename="../list_.py" line="104"/>
+        <source>当前日期</source>
+        <translation type="unfinished">Current date</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="96"/>
+        <location filename="../list_.py" line="105"/>
+        <source>活动倒计时</source>
+        <translation type="unfinished">Countdown</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="97"/>
+        <location filename="../list_.py" line="106"/>
+        <source>当前活动</source>
+        <translation type="unfinished">Current Activity</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="98"/>
+        <location filename="../list_.py" line="107"/>
+        <source>更多活动</source>
+        <translation type="unfinished">Upcoming Activities</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="99"/>
+        <location filename="../list_.py" line="108"/>
+        <source>倒计日</source>
+        <translation type="unfinished">Day Countdown</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="100"/>
+        <location filename="../list_.py" line="112"/>
+        <source>天气</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="155"/>
+        <source>轮播</source>
+        <translation type="unfinished">Carousel</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="157"/>
+        <source>多小组件</source>
+        <translation type="unfinished">Multiple widgets</translation>
+    </message>
+</context>
+<context>
+    <name>menu</name>
+    <message>
+        <source>无法打开文件夹</source>
+        <comment>无法打开文件夹</comment>
+        <translation type="vanished">Unable to open folder</translation>
+    </message>
+    <message>
+        <source>Class Widgets 在您的系统下不支持自动打开文件夹，请手动打开以下地址：
+{path}</source>
+        <comment>Class Widgets 在您的系统下不支持自动打开文件夹，请手动打开以下地址：
+{path}</comment>
+        <translation type="vanished">Class Widgets does not support automatic folder opening in your system, please manually open the following address:
+{path}</translation>
+    </message>
+    <message>
+        <source>好</source>
+        <comment>好</comment>
+        <translation type="vanished">OK</translation>
+    </message>
+    <message>
+        <source>未添加</source>
+        <comment>未添加</comment>
+        <translation type="vanished">Not added</translation>
+    </message>
+    <message>
+        <source>搜索城市</source>
+        <comment>搜索城市</comment>
+        <translation type="vanished">Searching for a city</translation>
+    </message>
+    <message>
+        <source>请输入当地城市名进行搜索</source>
+        <comment>请输入当地城市名进行搜索</comment>
+        <translation type="vanished">Please enter your local city name to search</translation>
+    </message>
+    <message>
+        <source>选择此城市</source>
+        <comment>选择此城市</comment>
+        <translation type="vanished">Select this city</translation>
+    </message>
+    <message>
+        <source>取消</source>
+        <comment>取消</comment>
+        <translation type="vanished">Cancel</translation>
+    </message>
+    <message>
+        <source>输入城市名</source>
+        <comment>输入城市名</comment>
+        <translation type="vanished">Enter city name</translation>
+    </message>
+    <message>
+        <source>软件许可协议</source>
+        <comment>软件许可协议</comment>
+        <translation type="vanished">Software License Agreement</translation>
+    </message>
+    <message>
+        <source>此项目 (Class Widgets) 基于 GPL-3.0 许可证授权发布，详情请参阅：</source>
+        <comment>此项目 (Class Widgets) 基于 GPL-3.0 许可证授权发布，详情请参阅：</comment>
+        <translation type="vanished">This project (Class Widgets) is licensed under the GPL-3.0 license. For details, see:</translation>
+    </message>
+    <message>
+        <source>打开“{title}”插件文件夹</source>
+        <comment>打开“{title}”插件文件夹</comment>
+        <translation type="vanished">Open the &quot;{title}&quot; plugin folder</translation>
+    </message>
+    <message>
+        <source>访问“{title}”插件页面</source>
+        <comment>访问“{title}”插件页面</comment>
+        <translation type="vanished">Visit the &quot;{title}&quot; plugin page</translation>
+    </message>
+    <message>
+        <source>卸载“{title}”插件</source>
+        <comment>卸载“{title}”插件</comment>
+        <translation type="vanished">Uninstall &quot;{title}&quot; plugin</translation>
+    </message>
+    <message>
+        <source>此插件被临时禁用,重启后将尝试重新加载</source>
+        <comment>此插件被临时禁用,重启后将尝试重新加载</comment>
+        <translation type="vanished">This plugin is temporarily disabled and will try to reload after restarting</translation>
+    </message>
+    <message>
+        <source>{title} (已临时禁用)</source>
+        <comment>{title} (已临时禁用)</comment>
+        <translation type="vanished">{title} (Temporarily disabled)</translation>
+    </message>
+    <message>
+        <source>禁用</source>
+        <comment>禁用</comment>
+        <translation type="vanished">Disable</translation>
+    </message>
+    <message>
+        <source>启用</source>
+        <comment>启用</comment>
+        <translation type="vanished">Enable</translation>
+    </message>
+    <message>
+        <source>我再想想……</source>
+        <comment>我再想想……</comment>
+        <translation type="vanished">Think again...</translation>
+    </message>
+    <message>
+        <source>卸载成功</source>
+        <comment>卸载成功</comment>
+        <translation type="vanished">Uninstall successfully</translation>
+    </message>
+    <message>
+        <source>插件 “{title}” 已卸载。请重启 Class Widgets 以完全移除。</source>
+        <comment>插件 “{title}” 已卸载。请重启 Class Widgets 以完全移除。</comment>
+        <translation type="vanished">Plugin &apos;{title}&apos; has been uninstalled. Please restart the Class Widgets to remove them completely.</translation>
+    </message>
+    <message>
+        <source>卸载失败</source>
+        <comment>卸载失败</comment>
+        <translation type="vanished">Uninstallation failed</translation>
+    </message>
+    <message>
+        <source>卸载插件 “{title}” 时出错，请查看日志获取详细信息。</source>
+        <comment>卸载插件 “{title}” 时出错，请查看日志获取详细信息。</comment>
+        <translation type="vanished">An error occurred while uninstalling the plugin &apos;{title}&apos;. Please check the log for details.</translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="314"/>
+        <source>无法打开文件夹</source>
+        <translation type="unfinished">Unable to open folder</translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="314"/>
+        <source>Class Widgets 在您的系统下不支持自动打开文件夹，请手动打开以下地址：
+{path}</source>
+        <translation type="unfinished">Class Widgets does not support automatic folder opening in your system, please manually open the following address:
+{path}</translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="316"/>
+        <location filename="../menu.py" line="469"/>
+        <source>好</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="371"/>
+        <source>未添加</source>
+        <translation type="unfinished">Not added</translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="422"/>
+        <source>搜索城市</source>
+        <translation type="unfinished">Searching for a city</translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="423"/>
+        <source>请输入当地城市名进行搜索</source>
+        <translation type="unfinished">Please enter your local city name to search</translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="424"/>
+        <source>选择此城市</source>
+        <translation type="unfinished">Select this city</translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="425"/>
+        <source>取消</source>
+        <translation type="unfinished">Cancel</translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="427"/>
+        <source>输入城市名</source>
+        <translation type="unfinished">Enter city name</translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="467"/>
+        <source>软件许可协议</source>
+        <translation type="unfinished">Software License Agreement</translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="468"/>
+        <source>此项目 (Class Widgets) 基于 GPL-3.0 许可证授权发布，详情请参阅：</source>
+        <translation type="unfinished">This project (Class Widgets) is licensed under the GPL-3.0 license. For details, see:</translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="537"/>
+        <source>打开“{title}”插件文件夹</source>
+        <translation type="unfinished">Open the &quot;{title}&quot; plugin folder</translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="544"/>
+        <source>访问“{title}”插件页面</source>
+        <translation type="unfinished">Visit the &quot;{title}&quot; plugin page</translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="550"/>
+        <source>卸载“{title}”插件</source>
+        <translation type="unfinished">Uninstall &quot;{title}&quot; plugin</translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="568"/>
+        <source>此插件被临时禁用,重启后将尝试重新加载</source>
+        <translation type="unfinished">This plugin is temporarily disabled and will try to reload after restarting</translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="569"/>
+        <source>{title} (已临时禁用)</source>
+        <translation type="unfinished">{title} (Temporarily disabled)</translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="582"/>
+        <source>禁用</source>
+        <translation type="unfinished">Disable</translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="583"/>
+        <source>启用</source>
+        <translation type="unfinished">Enable</translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="628"/>
+        <source>menu</source>
+        <comment>您确定要删除插件“{title}”吗？</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="628"/>
+        <source>menu</source>
+        <comment>删除此插件后，将无法恢复。</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="653"/>
+        <source>我再想想……</source>
+        <translation type="unfinished">Think again...</translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="668"/>
+        <source>卸载成功</source>
+        <translation type="unfinished">Uninstall successfully</translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="669"/>
+        <source>插件 “{title}” 已卸载。请重启 Class Widgets 以完全移除。</source>
+        <translation type="unfinished">Plugin &apos;{title}&apos; has been uninstalled. Please restart the Class Widgets to remove them completely.</translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="679"/>
+        <source>卸载失败</source>
+        <translation type="unfinished">Uninstallation failed</translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="680"/>
+        <source>卸载插件 “{title}” 时出错，请查看日志获取详细信息。</source>
+        <translation type="unfinished">An error occurred while uninstalling the plugin &apos;{title}&apos;. Please check the log for details.</translation>
     </message>
 </context>
 </TS>
