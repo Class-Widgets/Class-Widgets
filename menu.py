@@ -28,6 +28,7 @@ from qfluentwidgets import (
     TransparentDropDownToolButton, Dialog, SmoothScrollArea, TransparentToolButton, HyperlinkButton, HyperlinkLabel, themeColor
 )
 
+from basic_dirs import THEME_HOME
 import conf
 import list_ as list_
 import tip_toast
@@ -124,11 +125,7 @@ def switch_checked(section, key, checked):
 
 
 def get_theme_name():
-    theme = config_center.read_conf('General', 'theme')
-    if os.path.exists(f'{base_directory}/ui/{theme}/theme.json'):
-        return theme
-    else:
-        return 'default'
+    return load_theme_config(config_center.read_conf('General', 'theme')).path.name
 
 
 def load_schedule_dict(schedule, part, part_name):
@@ -1496,7 +1493,7 @@ class SettingsMenu(FluentWindow):
         set_floating_time_color.clicked.connect(self.ct_set_floating_time_color)
 
         open_theme_folder = self.findChild(HyperlinkLabel, 'open_theme_folder')  # 打开主题文件夹
-        open_theme_folder.clicked.connect(lambda: open_dir(os.path.join(base_directory, 'ui')))
+        open_theme_folder.clicked.connect(lambda: open_dir(str(THEME_HOME)))
 
         select_theme_combo = self.findChild(ComboBox, 'combo_theme_select')  # 主题选择
         select_theme_combo.addItems(list_.theme_names)

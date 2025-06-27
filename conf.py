@@ -1,19 +1,18 @@
+import configparser as config
 import json
 import os
-import configparser as config
-from dataclasses import dataclass
-from pathlib import Path
-from typing import Dict, Any, Literal, Optional, Union, List
-
-from datetime import datetime
 import time
+from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Union
+
 from dateutil import parser
 from loguru import logger
-from pydantic import BaseModel
 
-from basic_dirs import CW_HOME, THEME_DIRS
-from file import base_directory, config_center
 import list_
+from basic_dirs import CW_HOME, THEME_DIRS
+from data_model import ThemeConfig, ThemeInfo
+from file import base_directory, config_center
 
 if os.name == 'nt':
     from win32com.client import Dispatch
@@ -33,23 +32,6 @@ app_icon = base_directory / 'img' / (
 
 update_countdown_custom_last = 0
 countdown_cnt = 0
-
-
-class ThemeConfig(BaseModel):
-    name: str
-    support_dark_mode: bool
-    default_theme: Optional[Literal["dark", "light"]] = None
-    radius: str
-    spacing: int
-    shadow: bool
-    height: int
-    widget_width: Dict[str, int]
-
-
-@dataclass
-class ThemeInfo:
-    path: Path
-    config: ThemeConfig
 
 
 def __load_json(path: Path) -> ThemeConfig:
