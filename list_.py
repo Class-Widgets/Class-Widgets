@@ -3,12 +3,12 @@ import os
 from copy import deepcopy
 from pathlib import Path
 from shutil import copy
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
 
 from loguru import logger
 
-from data_model import ThemeConfig, ThemeInfo
 from basic_dirs import THEME_DIRS
+from data_model import ThemeConfig, ThemeInfo
 from file import base_directory, config_center, save_data_to_json
 
 week = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
@@ -128,13 +128,23 @@ def validate_theme(folder: Path) -> Optional[ThemeInfo]:
         logger.error(f'验证主题配置文件发生错误：{e}')
         return None
 
+
+def __collect_themes(it: Iterable[Tuple[str, ThemeInfo]]) -> Dict[str, ThemeInfo]:
+    themes: Dict[str, ThemeInfo] = {}
+    for name, info in it:
+        if name in themes:
+            logger.warning(f'主题 {name} - {themes[name].path} 已存在，{info.path} 将覆盖原有配置')
+        themes[name] = info
+    return themes
+
+
 try:  # 加载课程/主题配置文件
     subject_info = json.load(open(f'{base_directory}/config/data/subject.json', 'r', encoding='utf-8'))
     subject_icon = subject_info['subject_icon']
     subject_abbreviation = subject_info['subject_abbreviation']
-    __theme = dict(
+    __theme = __collect_themes(
         (dir.name, info)
-        for root_dir in reversed(THEME_DIRS) 
+        for root_dir in reversed(THEME_DIRS)
         for dir in root_dir.iterdir()
         if (info := validate_theme(dir)) is not None
     )
