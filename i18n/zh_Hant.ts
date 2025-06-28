@@ -227,11 +227,11 @@
     <message>
         <location filename="../view/menu/about.ui" line="668"/>
         <location filename="../view/menu/advance.ui" line="221"/>
-        <location filename="../view/menu/advance.ui" line="1082"/>
-        <location filename="../view/menu/advance.ui" line="1252"/>
-        <location filename="../view/menu/advance.ui" line="1583"/>
-        <location filename="../view/menu/advance.ui" line="1675"/>
-        <location filename="../view/menu/advance.ui" line="1750"/>
+        <location filename="../view/menu/advance.ui" line="1008"/>
+        <location filename="../view/menu/advance.ui" line="1178"/>
+        <location filename="../view/menu/advance.ui" line="1509"/>
+        <location filename="../view/menu/advance.ui" line="1601"/>
+        <location filename="../view/menu/advance.ui" line="1676"/>
         <location filename="../view/menu/sound.ui" line="136"/>
         <location filename="../view/menu/sound.ui" line="214"/>
         <location filename="../view/menu/sound.ui" line="292"/>
@@ -244,11 +244,11 @@
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="671"/>
-        <location filename="../view/menu/advance.ui" line="1085"/>
-        <location filename="../view/menu/advance.ui" line="1255"/>
-        <location filename="../view/menu/advance.ui" line="1586"/>
-        <location filename="../view/menu/advance.ui" line="1678"/>
-        <location filename="../view/menu/advance.ui" line="1753"/>
+        <location filename="../view/menu/advance.ui" line="1011"/>
+        <location filename="../view/menu/advance.ui" line="1181"/>
+        <location filename="../view/menu/advance.ui" line="1512"/>
+        <location filename="../view/menu/advance.ui" line="1604"/>
+        <location filename="../view/menu/advance.ui" line="1679"/>
         <location filename="../view/menu/sound.ui" line="139"/>
         <location filename="../view/menu/sound.ui" line="217"/>
         <location filename="../view/menu/sound.ui" line="295"/>
@@ -349,90 +349,88 @@
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="484"/>
-        <location filename="../view/menu/advance.ui" line="690"/>
         <source>界面语言</source>
         <translation>介面語言</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="491"/>
-        <location filename="../view/menu/advance.ui" line="697"/>
         <source>选择你所需要界面显示的语言</source>
         <translation>選擇你所需的介面顯示語言</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="732"/>
+        <location filename="../view/menu/advance.ui" line="658"/>
         <source>隐藏方式</source>
         <translation>隱藏方式</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="739"/>
+        <location filename="../view/menu/advance.ui" line="665"/>
         <source>隐藏方式将会修改单击隐藏和自动隐藏的行为，可按需更改（重启后生效）</source>
         <translation>隱藏方式將會更改單擊隱藏及自動隱藏的行為，可按需求調整（重啟後生效）</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="813"/>
+        <location filename="../view/menu/advance.ui" line="739"/>
         <source>默认</source>
         <translation>預設</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="864"/>
+        <location filename="../view/menu/advance.ui" line="790"/>
         <source>全部隐藏</source>
         <translation>全部隱藏</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="915"/>
+        <location filename="../view/menu/advance.ui" line="841"/>
         <source>最小化为浮窗（推荐）</source>
         <translation>最小化為視窗（建議使用）</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="926"/>
-        <location filename="../view/menu/advance.ui" line="1603"/>
+        <location filename="../view/menu/advance.ui" line="852"/>
+        <location filename="../view/menu/advance.ui" line="1529"/>
         <location filename="../view/menu/plugin_mgr.ui" line="637"/>
         <source>其他</source>
         <translation>其他</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="968"/>
+        <location filename="../view/menu/advance.ui" line="894"/>
         <source>自动隐藏</source>
         <translation>自動隱藏</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="975"/>
+        <location filename="../view/menu/advance.ui" line="901"/>
         <source>选择你需要的自动隐藏方式</source>
         <translation>選擇你需要的自動隱藏方式</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="999"/>
+        <location filename="../view/menu/advance.ui" line="925"/>
         <source>什么是灵活隐藏？</source>
         <translation>甚麼是靈活隱藏?</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1049"/>
+        <location filename="../view/menu/advance.ui" line="975"/>
         <source>特定课程不自动隐藏</source>
         <translation>特定課程不會自動隱藏</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1056"/>
+        <location filename="../view/menu/advance.ui" line="982"/>
         <source>若启用，在遇到下方设置的特定课程时不会自动隐藏，以英文逗号分隔</source>
         <translation>若啟用，在下方設置的特定課程時不會自動隱藏，請使用英文逗號分隔</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1130"/>
+        <location filename="../view/menu/advance.ui" line="1056"/>
         <source>不自动隐藏的课程</source>
         <translation>不會自動隱藏的課程</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1137"/>
+        <location filename="../view/menu/advance.ui" line="1063"/>
         <source>配合 特定课程不自动隐藏 使用</source>
         <translation>連同 特定課程不會自動隱藏 使用</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1216"/>
+        <location filename="../view/menu/advance.ui" line="1142"/>
         <source>允许点击或触摸小组件</source>
         <translation>可以點按或觸碰小組件</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1223"/>
+        <location filename="../view/menu/advance.ui" line="1149"/>
         <source>允许通过点击或触摸小组件方式控制小组件
 若启用，单击小组件可显示或隐藏小组件，右键小组件可打开额外选项
 若禁用，点击小组件等同于点击小组件后方的窗口
@@ -443,98 +441,98 @@
 *重啟後生效</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1307"/>
+        <location filename="../view/menu/advance.ui" line="1233"/>
         <source>自定义缩放</source>
         <translation>可自定縮放</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1314"/>
+        <location filename="../view/menu/advance.ui" line="1240"/>
         <source>更改自定义缩放系数百分比（重启后生效）
 *不建议使用 180% 以上的值，这可能会导致显示异常</source>
         <translation>可自定縮放百分比（重啟後生效）
 *不建議使用 180% 以上的值，有可能會導致顯示出現問題</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1411"/>
+        <location filename="../view/menu/advance.ui" line="1337"/>
         <source>置顶/置底小组件</source>
         <translation>置頂/置底小組件</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1424"/>
+        <location filename="../view/menu/advance.ui" line="1350"/>
         <source>更改小组件的窗口状态（重启后生效）
 *开启“置底”功能时，将会禁用“单击隐藏小组件”</source>
         <translation>更改小組件的窗口狀態（重啟後生效）
 *使用“置底”功能時，將會停用“單按隱藏小組件”</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1483"/>
+        <location filename="../view/menu/advance.ui" line="1409"/>
         <source>边距大小</source>
         <translation>邊框大小</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1490"/>
+        <location filename="../view/menu/advance.ui" line="1416"/>
         <source>设定桌面组件离屏幕边缘的大小（单位：px）</source>
         <translation>設定桌面距離螢幕邊框的大小（單位：px）</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1542"/>
+        <location filename="../view/menu/advance.ui" line="1468"/>
         <source>启动</source>
         <translation>啟動</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1576"/>
+        <location filename="../view/menu/advance.ui" line="1502"/>
         <source>开机自启动</source>
         <translation>開機時自動啟動</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1642"/>
+        <location filename="../view/menu/advance.ui" line="1568"/>
         <source>安全模式</source>
         <translation>安全模式</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1649"/>
+        <location filename="../view/menu/advance.ui" line="1575"/>
         <source>若启用，Class Widgets 将在程序崩溃时自动忽略，并不再弹出窗口；以免影响教学任务。</source>
         <translation>若啟用，Class Widgets 將會在程式崩潰時自動忽略，並不再彈出窗口；以免影響教學正常進行。</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1720"/>
+        <location filename="../view/menu/advance.ui" line="1646"/>
         <source>禁用日志</source>
         <translation>停用紀錄</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1727"/>
+        <location filename="../view/menu/advance.ui" line="1653"/>
         <source>若启用，应用将不再会保存日志到本地</source>
         <translation>若啟用，應用程式將會不再儲存紀錄到本機</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1795"/>
-        <location filename="../view/menu/advance.ui" line="1825"/>
+        <location filename="../view/menu/advance.ui" line="1721"/>
+        <location filename="../view/menu/advance.ui" line="1751"/>
         <source>清空日志</source>
         <translation>清空紀錄</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1802"/>
+        <location filename="../view/menu/advance.ui" line="1728"/>
         <source>将会清空 软件根目录下log. 的所有内容</source>
         <translation>將會清空 程式根目錄下log. 的所有內容</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1867"/>
+        <location filename="../view/menu/advance.ui" line="1793"/>
         <source>允许程序多开</source>
         <translation>允許程式多開</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1874"/>
+        <location filename="../view/menu/advance.ui" line="1800"/>
         <source>程序多开后可能出现未知的问题，请谨慎使用</source>
         <translation>程式多開後可能出現未知的問題，謹慎使用</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1897"/>
-        <location filename="../view/menu/advance.ui" line="1903"/>
+        <location filename="../view/menu/advance.ui" line="1823"/>
+        <location filename="../view/menu/advance.ui" line="1829"/>
         <source>不允许</source>
         <translation>不允許</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1900"/>
+        <location filename="../view/menu/advance.ui" line="1826"/>
         <source>允许</source>
         <translation>允許</translation>
     </message>
