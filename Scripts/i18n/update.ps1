@@ -16,7 +16,10 @@ if ($uiFiles.Count -gt 0) {
     $allFiles += $uiFiles.FullName
 }
 
-# 生成 ./i18n/zh_CN.ts
-if ($allFiles.Count -gt 0) {
-    & $lupdatePath $allFiles -ts ./i18n/zh_CN.ts
+# 遍历 ./i18n 目录下所有 .ts 文件，批量更新
+$tsFiles = Get-ChildItem -Path ./i18n -Filter *.ts -File
+foreach ($tsFile in $tsFiles) {
+    if ($allFiles.Count -gt 0) {
+        & $lupdatePath $allFiles -ts $tsFile.FullName
+    }
 }
