@@ -543,32 +543,32 @@ If disabled, clicking a widget is equivalent to clicking the window behind the w
     <message>
         <location filename="../view/menu/configs.ui" line="71"/>
         <source>使用 {db}:{id} 格式从预设数据库获取，或输入完整 url</source>
-        <translation type="unfinished"></translation>
+        <translation>Get from a preset database using the {db}:{id} format, or enter the full url</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="78"/>
         <source>下载</source>
-        <translation type="unfinished"></translation>
+        <translation>Download</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="85"/>
         <source>更新当前</source>
-        <translation type="unfinished"></translation>
+        <translation>Update current</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="92"/>
         <source>上传当前</source>
-        <translation type="unfinished"></translation>
+        <translation>Upload current</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="99"/>
         <source>新建</source>
-        <translation type="unfinished"></translation>
+        <translation>New</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="106"/>
         <source>导入</source>
-        <translation type="unfinished"></translation>
+        <translation>Import</translation>
     </message>
     <message>
         <location filename="../view/menu/preview.ui" line="35"/>
@@ -958,12 +958,12 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
     <message>
         <location filename="../view/menu/help.ui" line="236"/>
         <source>什么是 CSES？</source>
-        <translation type="unfinished"></translation>
+        <translation>What is CSES?</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="240"/>
         <source>https://github.com/CSES-org/CSES</source>
-        <translation type="unfinished"></translation>
+        <translation>https://github.com/CSES-org/CSES</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="257"/>
@@ -1414,12 +1414,12 @@ But make sure that the plugins you need in the plugin square are secure.</transl
     <message>
         <location filename="../view/menu/file_item.ui" line="89"/>
         <source>File name</source>
-        <translation type="unfinished"></translation>
+        <translation>File name</translation>
     </message>
     <message>
         <location filename="../view/menu/file_item.ui" line="99"/>
         <source>file url file url file url file url file url file url </source>
-        <translation type="unfinished"></translation>
+        <translation>file url file url file url file url file url file url </translation>
     </message>
 </context>
 <context>
@@ -1811,13 +1811,14 @@ Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, 
     <message>
         <location filename="../menu.py" line="2528"/>
         <source>导入成功！</source>
-        <translation type="unfinished"></translation>
+        <translation>Import successful!</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2530"/>
         <source>课程表文件导入成功！
 请手动切换您的配置文件。</source>
-        <translation type="unfinished"></translation>
+        <translation>Timetable file imported successfully!
+Please switch to your configuration file manually.</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2550"/>
@@ -1834,7 +1835,7 @@ The file may be corrupted. Please report this issue to the developer.</translati
     <message>
         <location filename="../menu.py" line="2553"/>
         <source>支持的文件类型 (*.json *.yaml *.yml);;Json 配置文件 (*.json);;CSES 通用课程表交换文件 (*.yaml) (*.yaml *.yml)</source>
-        <translation type="unfinished"></translation>
+        <translation>Supported file types (*.json *.yaml *.yml);;JSON configuration file (*.json);;CSES file (*.yaml) (.*yaml *.yml)</translation>
     </message>
     <message>
         <source>CSES 通用课程表交换文件 (*.yaml)</source>
@@ -2563,11 +2564,12 @@ Error occurred while switching component language: {e}</translation>
 - `{title}`: 通知标题 (例如：重要通知) *其他
 - `{content}`: 通知内容 (例如：这是一条测试通知) *其他
 </source>
-        <translation type="unfinished">Information can be inserted dynamically using the following placeholders:
+        <translation>Information can be inserted dynamically using the following placeholders:
 - &apos;{lesson_name}&apos; : start &amp; end &amp; next course name (e.g. Information Technology)
 - &apos;{minutes}&apos; : Number of minutes (ex: 5) * Other
 - &apos;{title}&apos; : notification title (e.g. important notification) * others
-- &apos;{content}&apos; : the content of the notification (ex: it&apos;s a test notification) * others</translation>
+- &apos;{content}&apos; : the content of the notification (ex: it&apos;s a test notification) * others
+</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1377"/>
@@ -2652,7 +2654,7 @@ Error generating or playing audio: {error_message}</translation>
     <message>
         <location filename="../menu.py" line="750"/>
         <source>很好！就这样！ヾ(≧▽≦*)o</source>
-        <translation type="unfinished"></translation>
+        <translation>Great! Just like that!ヾ(≧▽≦)o*</translation>
     </message>
 </context>
 <context>
