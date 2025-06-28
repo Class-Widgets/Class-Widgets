@@ -11,7 +11,7 @@
     </message>
     <message>
         <location filename="../menu.py" line="1567"/>
-<source>打开Windows语音设置</source>
+        <source>打开Windows语音设置</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -22,7 +22,7 @@
     </message>
     <message>
         <location filename="../menu.py" line="1580"/>
-<source>这个语音引擎还没有提示信息呢~(・ω&lt;)</source>
+        <source>这个语音引擎还没有提示信息呢~(・ω&lt;)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1508,12 +1508,13 @@
         <location filename="../menu.py" line="1474"/>
         <location filename="../menu.py" line="1491"/>
         <location filename="../menu.py" line="1596"/>
+        <location filename="../menu.py" line="1613"/>
         <source>未启用</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../menu.py" line="1549"/>
-<source>引擎小提示</source>
+        <source>引擎小提示</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1532,22 +1533,17 @@
     <message>
         <location filename="../menu.py" line="1596"/>
         <location filename="../menu.py" line="1641"/>
-<source>无可用语音</source>
+        <source>无可用语音</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../menu.py" line="1607"/>
-<source>请选择引擎</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="1613"/>
-<source>未启用</source>
+        <source>请选择引擎</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../menu.py" line="1693"/>
-<source>TTS语音加载失败</source>
+        <source>TTS语音加载失败</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2285,7 +2281,7 @@
         <source>小语法?</source>
         <translation type="unfinished"></translation>
     </message>
-    <message numerus="yes">
+    <message>
         <location filename="../menu.py" line="1340"/>
         <source>可以使用以下占位符来动态插入信息：
 - `{lesson_name}`: 开始&amp;结束&amp;下节的课程名(例如：信息技术)
@@ -2293,9 +2289,7 @@
 - `{title}`: 通知标题 (例如：重要通知) *其他
 - `{content}`: 通知内容 (例如：这是一条测试通知) *其他
 </source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../menu.py" line="1377"/>
@@ -2339,22 +2333,22 @@
     </message>
     <message>
         <location filename="../menu.py" line="1434"/>
-<source>TTS预览失败</source>
+        <source>TTS预览失败</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../menu.py" line="1435"/>
-<source>启动TTS预览时出错: {e}</source>
+        <source>启动TTS预览时出错: {e}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../menu.py" line="1443"/>
-<source>TTS生成失败</source>
+        <source>TTS生成失败</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../menu.py" line="1444"/>
-<source>生成或播放语音时出错: {error_message}</source>
+        <source>生成或播放语音时出错: {error_message}</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
