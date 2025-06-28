@@ -2046,7 +2046,7 @@
     <message>
         <location filename="../menu.py" line="3517"/>
         <source>配置文件</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">课表.json</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3519"/>
