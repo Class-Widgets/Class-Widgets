@@ -101,7 +101,7 @@
         <x>0</x>
         <y>0</y>
         <width>673</width>
-        <height>688</height>
+        <height>691</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_26">
@@ -220,6 +220,24 @@
              <property name="url">
               <url>
                <string>https://www.yuque.com/rinlit/cw-docs-dev</string>
+              </url>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="HyperlinkButton" name="HyperlinkButton_9">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>什么是 CSES？</string>
+             </property>
+             <property name="url">
+              <url>
+               <string>https://github.com/CSES-org/CSES</string>
               </url>
              </property>
             </widget>

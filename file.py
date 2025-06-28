@@ -259,9 +259,19 @@ class ScheduleCenter:
         """
         更新课程表
         """
-        self.schedule_data = load_from_json(self.config_center.read_conf('General', 'schedule'))
+        self.schedule_data:dict = load_from_json(self.config_center.read_conf('General', 'schedule'))
         if 'timeline' not in self.schedule_data:
             self.schedule_data['timeline'] = {}
+        if self.schedule_data.get('url', None) is None:
+            self.schedule_data['url'] = 'local'
+            self.save_data(self.schedule_data, config_center.schedule_name)
+
+    def update_url(self, url):
+        """
+        更新课程表url
+        """
+        self.schedule_data['url'] = url
+        self.save_data(self.schedule_data, config_center.schedule_name)
 
     def save_data(self, new_data: Dict[str, Any], filename: str) -> Optional[str]:
         if 'timeline' in new_data and isinstance(new_data['timeline'], dict):

@@ -16,6 +16,7 @@ import weather as db
 from weather import WeatherReportThread as weatherReportThread
 from conf import base_directory
 from file import config_center
+import list_
 
 headers = {"User-Agent": "Mozilla/5.0", "Cache-Control": "no-cache"}  # 设置请求头
 # proxies = {"http": "http://127.0.0.1:10809", "https": "http://127.0.0.1:10809"}  # 加速访问
@@ -421,3 +422,63 @@ def check_version(version: Dict[str, Any]) -> bool:  # 检查更新
     logger.debug(f"服务端版本: {Version(server_version)}，本地版本: {Version(local_version)}")
     if Version(server_version) > Version(local_version):
         utils.tray_icon.push_update_notification(f"新版本速递：{server_version}\n请在“设置”中了解更多。")
+
+
+class scheduleThread(QThread):  # 获取课表
+    update_signal = pyqtSignal(dict)
+
+    def __init__(self,url:str, method:str='GET', data:dict=None):
+        super().__init__()
+        self.url = url
+        self.method = method
+        self.data = data
+
+        for db in list_.schedule_dbs:
+            if self.url.startswith(db):
+                self.url = self.url.replace(db, list_.schedule_dbs[db])
+                break
+
+    def run(self):
+        # 获取
+        if self.method == 'GET':
+            data = self.get_schedule()
+        elif self.method == 'POST':
+            data = self.post_schedule()
+        else:
+            data = {'error': "method not supported"}
+        
+        if not isinstance(data, dict):
+            logger.error(f"获取课表失败，返回数据不是字典类型: {data}")
+            data = {'error': "获取课表失败，返回数据不是字典类型"}
+        # 发射信号
+        self.update_signal.emit(data)
+
+    def get_schedule(self):
+        try:
+            logger.info(f"正在获取课表 {self.url}")
+            response = requests.get(self.url, proxies=proxies, timeout=30)
+            logger.debug(f"课表 {self.url} 请求响应: {response.status_code}")
+            if response.status_code == 200:
+                data = response.json()
+                return json.loads(data.get('data', "{'error': f\"没有 data 项\"}"))
+            else:
+                logger.error(f"无法获取课表 {self.url} 错误代码：{response.status_code}，响应内容: {response.text}")
+                return {'error': f"请求失败，错误代码：{response.status_code}"}
+        except Exception as e:
+            logger.error(f"请求失败，错误详情：{str(e)}")
+            return {"error": f"请求失败\n{str(e)}"}
+        
+    def post_schedule(self):
+        try:
+            logger.info(f"正在上传课表 {self.url}")
+            response = requests.post(self.url, proxies=proxies, timeout=30, json={"data": json.dumps(self.data)})
+            logger.debug(f"课表 {self.url} 请求响应: {response.status_code}")
+            if response.status_code == 200:
+                data = response.json()
+                return json.loads(data.get('data', "{'error': f\"没有 data 项\"}"))
+            else:
+                logger.error(f"无法上传课表 {self.url} 错误代码：{response.status_code}，响应内容: {response.text}")
+                return {'error': f"请求失败，错误代码：{response.status_code}"}
+        except Exception as e:
+            logger.error(f"请求失败，错误详情：{str(e)}")
+            return {"error": f"请求失败\n{str(e)}"}
