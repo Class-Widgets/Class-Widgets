@@ -1315,7 +1315,7 @@ class SettingsMenu(FluentWindow):
 
             voice_selector = self.widget.findChild(ComboBox, 'voice_selector')
             voice_selector.clear()
-            voice_selector.addItem(self.tr('base', "加载中..."), userData=None)
+            voice_selector.addItem(self.tr("加载中..."), userData=None)
             voice_selector.setEnabled(False)
             switch_enable_TTS.setEnabled(False)
 
@@ -1333,7 +1333,7 @@ class SettingsMenu(FluentWindow):
             self.tts_vocab_button = self.widget.findChild(PushButton, 'tts_vocab_button')
             def show_vocab_note():
                 w = MessageBox(self.tr('小语法?'),
-                               self.tr('tts', '可以使用以下占位符来动态插入信息：\n'\
+                               self.tr('可以使用以下占位符来动态插入信息：\n'\
                                '- `{lesson_name}`: 开始&结束&下节的课程名(例如：信息技术)\n'\
                                '- `{minutes}`: 分钟数 (例如：5) *其他\n'\
                                '- `{title}`: 通知标题 (例如：重要通知) *其他\n'\
@@ -1431,8 +1431,8 @@ class SettingsMenu(FluentWindow):
                 logger.error(f"启动TTS预览线程失败: {str(e)}")
                 from qfluentwidgets import MessageBox
                 MessageBox(
-                    self.tr('tts', "TTS预览失败"),
-                    self.tr('tts', "启动TTS预览时出错: {e}").format(e=f"{e}"),
+                    self.tr("TTS预览失败"),
+                    self.tr("启动TTS预览时出错: {e}").format(e=f"{e}"),
                     self
                 ).exec()
                 
@@ -1440,8 +1440,8 @@ class SettingsMenu(FluentWindow):
             logger.error(f"TTS生成预览失败: {error_message}")
             from qfluentwidgets import MessageBox
             MessageBox(
-                self.tr('tts', "TTS生成失败"),
-                self.tr('tts', "生成或播放语音时出错: {error_message}").format(error_message),
+                self.tr("TTS生成失败"),
+                self.tr("生成或播放语音时出错: {error_message}").format(error_message),
                 self
             ).exec()
 
@@ -1454,12 +1454,12 @@ class SettingsMenu(FluentWindow):
 
         if tts_enabled:
             self.voice_selector.clear()
-            self.voice_selector.addItem(self.tr('base', "加载中..."), userData=None)
+            self.voice_selector.addItem(self.tr("加载中..."), userData=None)
             self.voice_selector.setEnabled(False)
             self.switch_enable_TTS.setEnabled(True)
         else:
             self.voice_selector.clear()
-            self.voice_selector.addItem(self.tr('base', "未启用"), userData=None)
+            self.voice_selector.addItem(self.tr("未启用"), userData=None)
             self.voice_selector.setEnabled(False)
             self.switch_enable_TTS.setEnabled(True)
 
@@ -1471,7 +1471,7 @@ class SettingsMenu(FluentWindow):
             self.load_tts_voices_for_engine(current_selected_engine_in_selector)
         else:
             self.voice_selector.clear()
-            self.voice_selector.addItem(self.tr('base', "未启用"), userData=None)
+            self.voice_selector.addItem(self.tr("未启用"), userData=None)
             self.voice_selector.setEnabled(False)
             self.switch_enable_TTS.setEnabled(True)
 
@@ -1488,12 +1488,12 @@ class SettingsMenu(FluentWindow):
     def load_tts_voices_for_engine(self, engine_key):
         if config_center.read_conf('TTS', 'enable') == '0':
             self.voice_selector.clear()
-            self.voice_selector.addItem(self.tr('base', "未启用"), userData=None)
+            self.voice_selector.addItem(self.tr("未启用"), userData=None)
             self.voice_selector.setEnabled(False)
             self.switch_enable_TTS.setEnabled(True)
             return
         self.voice_selector.clear()
-        self.voice_selector.addItem(self.tr('base', "加载中..."), userData=None)
+        self.voice_selector.addItem(self.tr("加载中..."), userData=None)
         self.voice_selector.setEnabled(False)
         if hasattr(self, 'TTSSettingsDialog') and self.TTSSettingsDialog.isVisible():
             self.switch_enable_TTS.setEnabled(False) # 临时禁用TTS开关
@@ -1545,10 +1545,10 @@ class SettingsMenu(FluentWindow):
             return
 
         current_engine_key = self.engine_selector.currentData()
-        title = self.tr('tts', "引擎小提示")
+        title = self.tr("引擎小提示")
         message = ""
         if current_engine_key == "edge":
-            message = (self.tr('tts', "Edge TTS 需要联网才能正常发声哦~\n"
+            message = (self.tr("Edge TTS 需要联网才能正常发声哦~\n"
                        "请确保网络连接,不然会说不出话来(>﹏<)\n"
                        "* 可能会有一定的延迟,耐心等待一下~"))
             w = MessageBox(title, message, self.TTSSettingsDialog if hasattr(self, 'TTSSettingsDialog') and self.TTSSettingsDialog else self.parent_menu)
@@ -1561,10 +1561,10 @@ class SettingsMenu(FluentWindow):
                     super().__init__(parent)
                     self.titleLabel = StrongBodyLabel(title, self)
                     self.contentLabel = BodyLabel(
-                        self.tr('tts', "系统 TTS（pyttsx3）用的是系统自带的语音服务噢~\n"
+                        self.tr("系统 TTS（pyttsx3）用的是系统自带的语音服务噢~\n"
                         "您可以在系统设置里添加更多语音(*≧▽≦)"), 
                         self)
-                    self.hyperlinkLabel = HyperlinkLabel(self.tr('tts', "打开Windows语音设置"), self)
+                    self.hyperlinkLabel = HyperlinkLabel(self.tr("打开Windows语音设置"), self)
                     self.hyperlinkLabel.clicked.connect(self._open_settings)
                     self.viewLayout.addWidget(self.titleLabel)
                     self.viewLayout.addWidget(self.contentLabel)
@@ -1576,7 +1576,7 @@ class SettingsMenu(FluentWindow):
             w = CustomMessageBox(self.TTSSettingsDialog if hasattr(self, 'TTSSettingsDialog') and self.TTSSettingsDialog else self.parent_menu)
             w.exec()
         else:
-            message = self.tr('tts', "这个语音引擎还没有提示信息呢~(・ω<)")
+            message = self.tr("这个语音引擎还没有提示信息呢~(・ω<)")
             w = MessageBox(title, message, self.TTSSettingsDialog if hasattr(self, 'TTSSettingsDialog') and self.TTSSettingsDialog else self.parent_menu)
             w.yesButton.setText(self.tr('知道啦~'))
             w.cancelButton.hide()
@@ -1593,9 +1593,9 @@ class SettingsMenu(FluentWindow):
         card_tts_speed.setVisible(checked)
         if checked:
             self.engine_selector.setEnabled(True)
-            if self.voice_selector.itemText(0) in [self.tr('base', "未启用"),self.tr('base', "加载失败"),self.tr('tts',  "无可用语音")] or self.voice_selector.count() == 0:
+            if self.voice_selector.itemText(0) in [self.tr("未启用"),self.tr("加载失败"),self.tr( "无可用语音")] or self.voice_selector.count() == 0:
                 self.voice_selector.clear()
-                self.voice_selector.addItem(self.tr('base', "加载中..."), userData=None)
+                self.voice_selector.addItem(self.tr("加载中..."), userData=None)
             self.voice_selector.setEnabled(False)
             self.switch_enable_TTS.setEnabled(False)
             current_engine = self.engine_selector.currentData()
@@ -1604,13 +1604,13 @@ class SettingsMenu(FluentWindow):
             else:
                 logger.warning("TTS启用但未选择引擎，无法加载语音")
                 self.voice_selector.clear()
-                self.voice_selector.addItem(self.tr('tts', "请选择引擎"), userData=None)
+                self.voice_selector.addItem(self.tr("请选择引擎"), userData=None)
                 self.voice_selector.setEnabled(False)
                 self.switch_enable_TTS.setEnabled(True)
         else:
             self.engine_selector.setEnabled(False)
             self.voice_selector.clear()
-            self.voice_selector.addItem(self.tr('tts', "未启用"), userData=None)
+            self.voice_selector.addItem(self.tr("未启用"), userData=None)
             self.voice_selector.setEnabled(False)
             self.switch_enable_TTS.setEnabled(True)
             if self.tts_voice_loader_thread and self.tts_voice_loader_thread.isRunning():
@@ -1636,9 +1636,9 @@ class SettingsMenu(FluentWindow):
 
         if not available_voices:
             logger.warning("未找到可用的TTS语音引擎或语音包")
-            if voice_selector.count() == 0 or voice_selector.itemText(0) == self.tr('base', "加载中..."):
+            if voice_selector.count() == 0 or voice_selector.itemText(0) == self.tr("加载中..."):
                 voice_selector.clear()
-                voice_selector.addItem(self.tr('tts', "无可用语音") , userData=None)
+                voice_selector.addItem(self.tr("无可用语音") , userData=None)
                 voice_selector.setEnabled(False)
             switch_enable_TTS.setEnabled(True)
             card_tts_speed = self.findChild(CardWidget, 'CardWidget_7')
@@ -1685,12 +1685,12 @@ class SettingsMenu(FluentWindow):
         voice_selector = self.voice_selector
         switch_enable_TTS = self.switch_enable_TTS
         voice_selector.clear()
-        voice_selector.addItem(self.tr('base', "加载失败"), userData=None)
+        voice_selector.addItem(self.tr("加载失败"), userData=None)
         voice_selector.setEnabled(False)
         logger.error(f"处理TTS语音加载错误: {error_message}")
         if self.TTSSettingsDialog and not self.TTSSettingsDialog.isHidden():
             parent_widget = self.TTSSettingsDialog if isinstance(self.TTSSettingsDialog, QWidget) else self
-            MessageBox(self.tr('tts', "TTS语音加载失败"), self.tr('tts', "加载TTS语音时发生错误:\n{error_message}").format(error_message=error_message), parent_widget)
+            MessageBox(self.tr("TTS语音加载失败"), self.tr("加载TTS语音时发生错误:\n{error_message}").format(error_message=error_message), parent_widget)
 
     class cfFileItem(QWidget, uic.loadUiType(f'{base_directory}/view/menu/file_item.ui')[0]):
         def __init__(self, file_name='', file_path='local', id=None, parent=None):

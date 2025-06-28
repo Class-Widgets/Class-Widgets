@@ -5,17 +5,15 @@
     <name>CustomMessageBox</name>
     <message>
         <location filename="../menu.py" line="1565"/>
-        <source>tts</source>
-        <comment>系统 TTS（pyttsx3）用的是系统自带的语音服务噢~
-您可以在系统设置里添加更多语音(*≧▽≦)</comment>
+        <source>系统 TTS（pyttsx3）用的是系统自带的语音服务噢~
+您可以在系统设置里添加更多语音(*≧▽≦)</source>
         <translation>CustomMessageBox
 系統 TTS（pyttsx3）使用的是系統內建的語音服務喔～
 你可以在系統設定中新增更多語音 (*≧▽≦)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1567"/>
-        <source>tts</source>
-        <comment>打开Windows语音设置</comment>
+<source>打开Windows语音设置</source>
         <translation>CustomMessageBox
 打開Windows語音設定</translation>
     </message>
@@ -27,8 +25,7 @@
     </message>
     <message>
         <location filename="../menu.py" line="1580"/>
-        <source>tts</source>
-        <comment>这个语音引擎还没有提示信息呢~(・ω&lt;)</comment>
+<source>这个语音引擎还没有提示信息呢~(・ω&lt;)</source>
         <translation>CustomMessageBox
 本語音引擎尚未提供提示訊息</translation>
     </message>
@@ -1593,31 +1590,27 @@ https://classwidgets.rinlit.cn/docs-user/</translation>
         <location filename="../menu.py" line="1496"/>
         <location filename="../menu.py" line="1598"/>
         <location filename="../menu.py" line="1640"/>
-        <source>base</source>
-        <comment>加载中...</comment>
-        <translation>SettingsMenu 加中...</translation>
+        <source>加载中...</source>
+        <translation>加中...</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1462"/>
         <location filename="../menu.py" line="1474"/>
         <location filename="../menu.py" line="1491"/>
         <location filename="../menu.py" line="1596"/>
-        <source>base</source>
-        <comment>未启用</comment>
-        <translation>SettingsMenu 未啟用</translation>
+        <source>未启用</source>
+        <translation>未啟用</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1549"/>
-        <source>tts</source>
-        <comment>引擎小提示</comment>
-        <translation>SettingsMenu 引擎小提示</translation>
+<source>引擎小提示</source>
+        <translation>引擎小提示</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1553"/>
-        <source>tts</source>
-        <comment>Edge TTS 需要联网才能正常发声哦~
+        <source>Edge TTS 需要联网才能正常发声哦~
 请确保网络连接,不然会说不出话来(&gt;﹏&lt;)
-* 可能会有一定的延迟,耐心等待一下~</comment>
+* 可能会有一定的延迟,耐心等待一下~</source>
         <translation>SettingsMenu
 Edge TTS需要連結互聯網才能發出聲音喔～
 Edge TTS 需要連接互聯網才能正常發聲喔～
@@ -1627,40 +1620,34 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
     <message>
         <location filename="../menu.py" line="1596"/>
         <location filename="../menu.py" line="1688"/>
-        <source>base</source>
-        <comment>加载失败</comment>
-        <translation>SettingsMenu 加載失敗</translation>
+        <source>加载失败</source>
+        <translation>加載失敗</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1596"/>
         <location filename="../menu.py" line="1641"/>
-        <source>tts</source>
-        <comment>无可用语音</comment>
-        <translation>SettingsMenu 無可用語音</translation>
+<source>无可用语音</source>
+        <translation>無可用語音</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1607"/>
-        <source>tts</source>
-        <comment>请选择引擎</comment>
-        <translation>SettingsMenu 請選擇引擎</translation>
+<source>请选择引擎</source>
+        <translation>請選擇引擎</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1613"/>
-        <source>tts</source>
-        <comment>未启用</comment>
-        <translation>SettingsMenu 未啟用</translation>
+<source>未启用</source>
+        <translation>未啟用</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1693"/>
-        <source>tts</source>
-        <comment>TTS语音加载失败</comment>
-        <translation>SettingsMenu TTS語音加載失敗</translation>
+<source>TTS语音加载失败</source>
+        <translation>TTS語音加載失敗</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1693"/>
-        <source>tts</source>
-        <comment>加载TTS语音时发生错误:
-{error_message}</comment>
+        <source>加载TTS语音时发生错误:
+{error_message}</source>
         <translation>SettingsMenu
 載入 TTS 語音時發生錯誤：
 {error_message}</translation>
@@ -1975,7 +1962,7 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
     <message>
         <source>menu</source>
         <comment>清除日志失败：{e}</comment>
-        <translation type="vanished">SettingsMenu 清除紀錄失敗：{e}</translation>
+        <translation type="vanished">清除紀錄失敗：{e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2420"/>
@@ -1990,22 +1977,22 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
     <message>
         <source>menu</source>
         <comment>更改上课时主题色</comment>
-        <translation type="vanished">SettingsMenu 更改上堂時主題色</translation>
+        <translation type="vanished">更改上堂時主題色</translation>
     </message>
     <message>
         <source>menu</source>
         <comment>更改课间时主题色</comment>
-        <translation type="vanished">SettingsMenu 更改課間時主題色</translation>
+        <translation type="vanished">更改課間時主題色</translation>
     </message>
     <message>
         <source>menu</source>
         <comment>更改浮窗时间颜色</comment>
-        <translation type="vanished">SettingsMenu 更改視窗時間的顏色</translation>
+        <translation type="vanished">更改視窗時間的顏色</translation>
     </message>
     <message>
         <source>menu</source>
         <comment>保存文件</comment>
-        <translation type="vanished">SettingsMenu 儲存文件</translation>
+        <translation type="vanished">儲存文件</translation>
     </message>
     <message>
         <source>menu</source>
@@ -2054,7 +2041,7 @@ Json 設定檔 (*.json)</translation>
         <location filename="../menu.py" line="2475"/>
         <source>version</source>
         <comment>检查更新失败！</comment>
-        <translation>SettingsMenu 檢查更新失敗!</translation>
+        <translation>檢查更新失敗!</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2476"/>
@@ -2089,7 +2076,7 @@ Json 設定檔 (*.json)</translation>
     <message>
         <source>menu</source>
         <comment>选择文件</comment>
-        <translation type="vanished">SettingsMenu 選擇文件</translation>
+        <translation type="vanished">選擇文件</translation>
     </message>
     <message>
         <source>menu</source>
@@ -2270,7 +2257,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <source>menu</source>
         <comment>您确定要删除这个时段吗？</comment>
-        <translation type="vanished">SettingsMenu 您確定要刪除此時段嗎？</translation>
+        <translation type="vanished">您確定要刪除此時段嗎？</translation>
     </message>
     <message>
         <source>menu</source>
@@ -2584,9 +2571,8 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <name>TTSSettings</name>
     <message>
         <location filename="../menu.py" line="1318"/>
-        <source>base</source>
-        <comment>加载中...</comment>
-        <translation>TTSSettings 載入中...</translation>
+        <source>加载中...</source>
+        <translation>載入中...</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1335"/>
@@ -2595,13 +2581,12 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     </message>
     <message numerus="yes">
         <location filename="../menu.py" line="1340"/>
-        <source>tts</source>
-        <comment>可以使用以下占位符来动态插入信息：
+        <source>可以使用以下占位符来动态插入信息：
 - `{lesson_name}`: 开始&amp;结束&amp;下节的课程名(例如：信息技术)
 - `{minutes}`: 分钟数 (例如：5) *其他
 - `{title}`: 通知标题 (例如：重要通知) *其他
 - `{content}`: 通知内容 (例如：这是一条测试通知) *其他
-</comment>
+</source>
         <translation>
             <numerusform></numerusform>
         </translation>
@@ -2648,27 +2633,23 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1434"/>
-        <source>tts</source>
-        <comment>TTS预览失败</comment>
-        <translation>TTSSettings TTS預覽失敗</translation>
+<source>TTS预览失败</source>
+        <translation>TTS預覽失敗</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1435"/>
-        <source>tts</source>
-        <comment>启动TTS预览时出错: {e}</comment>
+<source>启动TTS预览时出错: {e}</source>
         <translation>TTSSettings
 啟動 TTS 預覽時出錯: {e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1443"/>
-        <source>tts</source>
-        <comment>TTS生成失败</comment>
-        <translation>TTSSettings TTS生成失敗</translation>
+<source>TTS生成失败</source>
+        <translation>TTS生成失敗</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1444"/>
-        <source>tts</source>
-        <comment>生成或播放语音时出错: {error_message}</comment>
+<source>生成或播放语音时出错: {error_message}</source>
         <translation>TTSSettings
 產生或播放語音時出錯: {error_message}</translation>
     </message>

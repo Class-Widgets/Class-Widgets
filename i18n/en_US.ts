@@ -5,16 +5,14 @@
     <name>CustomMessageBox</name>
     <message>
         <location filename="../menu.py" line="1565"/>
-        <source>tts</source>
-        <comment>系统 TTS（pyttsx3）用的是系统自带的语音服务噢~
-您可以在系统设置里添加更多语音(*≧▽≦)</comment>
+        <source>系统 TTS（pyttsx3）用的是系统自带的语音服务噢~
+您可以在系统设置里添加更多语音(*≧▽≦)</source>
         <translation>System TTS (pyttsx3) uses the built-in voice service
 You can add more voice in system settings (*≧▽≦)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1567"/>
-        <source>tts</source>
-        <comment>打开Windows语音设置</comment>
+        <source>打开Windows语音设置</source>
         <translation>Open Windows Voice Settings Chinese</translation>
     </message>
     <message>
@@ -25,8 +23,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1580"/>
-        <source>tts</source>
-        <comment>这个语音引擎还没有提示信息呢~(・ω&lt;)</comment>
+        <source>这个语音引擎还没有提示信息呢~(・ω&lt;)</source>
         <translation>The voice engine doesn&apos;t have any prompts yet.</translation>
     </message>
 </context>
@@ -1589,8 +1586,7 @@ It will take effect after restarting the application.</translation>
         <location filename="../menu.py" line="1496"/>
         <location filename="../menu.py" line="1598"/>
         <location filename="../menu.py" line="1640"/>
-        <source>base</source>
-        <comment>加载中...</comment>
+        <source>加载中...</source>
         <translation>Loading...</translation>
     </message>
     <message>
@@ -1598,22 +1594,19 @@ It will take effect after restarting the application.</translation>
         <location filename="../menu.py" line="1474"/>
         <location filename="../menu.py" line="1491"/>
         <location filename="../menu.py" line="1596"/>
-        <source>base</source>
-        <comment>未启用</comment>
+        <source>未启用</source>
         <translation>Disabled</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1549"/>
-        <source>tts</source>
-        <comment>引擎小提示</comment>
+        <source>引擎小提示</source>
         <translation>Engine Tips</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1553"/>
-        <source>tts</source>
-        <comment>Edge TTS 需要联网才能正常发声哦~
+        <source>Edge TTS 需要联网才能正常发声哦~
 请确保网络连接,不然会说不出话来(&gt;﹏&lt;)
-* 可能会有一定的延迟,耐心等待一下~</comment>
+* 可能会有一定的延迟,耐心等待一下~</source>
         <translation>Edge TTS requires an Internet connection to sound properly
 Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, haze &lt;)
 * There may be some delay, so be patient</translation>
@@ -1621,40 +1614,34 @@ Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, 
     <message>
         <location filename="../menu.py" line="1596"/>
         <location filename="../menu.py" line="1688"/>
-        <source>base</source>
-        <comment>加载失败</comment>
+        <source>加载失败</source>
         <translation>Load failed</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1596"/>
         <location filename="../menu.py" line="1641"/>
-        <source>tts</source>
-        <comment>无可用语音</comment>
+<source>无可用语音</source>
         <translation>No voice available</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1607"/>
-        <source>tts</source>
-        <comment>请选择引擎</comment>
+<source>请选择引擎</source>
         <translation>Please select an engine</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1613"/>
-        <source>tts</source>
-        <comment>未启用</comment>
+<source>未启用</source>
         <translation>Disabled</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1693"/>
-        <source>tts</source>
-        <comment>TTS语音加载失败</comment>
+<source>TTS语音加载失败</source>
         <translation>TTS voice loading failed</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1693"/>
-        <source>tts</source>
-        <comment>加载TTS语音时发生错误:
-{error_message}</comment>
+        <source>加载TTS语音时发生错误:
+{error_message}</source>
         <translation>Error loading TTS voice:
 {error_message}</translation>
     </message>
@@ -2564,8 +2551,7 @@ Error occurred while switching component language: {e}</translation>
     <name>TTSSettings</name>
     <message>
         <location filename="../menu.py" line="1318"/>
-        <source>base</source>
-        <comment>加载中...</comment>
+        <source>加载中...</source>
         <translation>TTSSettings Loading...</translation>
     </message>
     <message>
@@ -2575,13 +2561,12 @@ Error occurred while switching component language: {e}</translation>
     </message>
     <message numerus="yes">
         <location filename="../menu.py" line="1340"/>
-        <source>tts</source>
-        <comment>可以使用以下占位符来动态插入信息：
+        <source>可以使用以下占位符来动态插入信息：
 - `{lesson_name}`: 开始&amp;结束&amp;下节的课程名(例如：信息技术)
 - `{minutes}`: 分钟数 (例如：5) *其他
 - `{title}`: 通知标题 (例如：重要通知) *其他
 - `{content}`: 通知内容 (例如：这是一条测试通知) *其他
-</comment>
+</source>
         <translation>
             <numerusform>Information can be inserted dynamically using the following placeholders:
 - &apos;{lesson_name}&apos; : start &amp; end &amp; next course name (e.g. Information Technology)
@@ -2637,27 +2622,23 @@ Error occurred while switching component language: {e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1434"/>
-        <source>tts</source>
-        <comment>TTS预览失败</comment>
+<source>TTS预览失败</source>
         <translation>TTSSettings TTS Preview Failed</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1435"/>
-        <source>tts</source>
-        <comment>启动TTS预览时出错: {e}</comment>
+<source>启动TTS预览时出错: {e}</source>
         <translation>TTSSettings
 Error launching TTS preview: {e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1443"/>
-        <source>tts</source>
-        <comment>TTS生成失败</comment>
+<source>TTS生成失败</source>
         <translation>TTSSettings TTS Generation Failed</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1444"/>
-        <source>tts</source>
-        <comment>生成或播放语音时出错: {error_message}</comment>
+<source>生成或播放语音时出错: {error_message}</source>
         <translation>TTSSettings
 Error generating or playing audio: {error_message}</translation>
     </message>
