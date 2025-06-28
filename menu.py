@@ -34,13 +34,14 @@ from qfluentwidgets import (
 from qfluentwidgets.common import themeColor
 from qfluentwidgets.components.widgets import ListItemDelegate
 
+from basic_dirs import THEME_HOME
 import conf
 import list_ as list_
 import tip_toast
 import utils
 import weather
 import weather as wd
-from conf import base_directory
+from conf import base_directory, load_theme_config
 from cses_mgr import CSES_Converter
 from generate_speech import get_tts_voices, get_voice_id_by_name, get_voice_name_by_id, get_available_engines
 import generate_speech
@@ -343,11 +344,7 @@ def switch_checked(section, key, checked):
 
 
 def get_theme_name():
-    theme = config_center.read_conf('General', 'theme')
-    if os.path.exists(f'{base_directory}/ui/{theme}/theme.json'):
-        return theme
-    else:
-        return 'default'
+    return load_theme_config(config_center.read_conf('General', 'theme')).path.name
 
 
 def load_schedule_dict(schedule, part, part_name):
@@ -1872,7 +1869,7 @@ class SettingsMenu(FluentWindow):
         set_floating_time_color.clicked.connect(self.ct_set_floating_time_color)
 
         open_theme_folder = self.findChild(HyperlinkLabel, 'open_theme_folder')  # 打开主题文件夹
-        open_theme_folder.clicked.connect(lambda: open_dir(os.path.join(base_directory, 'ui')))
+        open_theme_folder.clicked.connect(lambda: open_dir(str(THEME_HOME)))
 
         select_theme_combo = self.findChild(ComboBox, 'combo_theme_select')  # 主题选择
         select_theme_combo.addItems(list_.theme_names)
@@ -2611,25 +2608,25 @@ class SettingsMenu(FluentWindow):
             widgets_preview.addItem(left_spacer)
 
             theme_folder = config_center.read_conf("General", "theme")
-            if not os.path.exists(f'{base_directory}/ui/{theme_folder}/theme.json'):
-                theme_folder = 'default'  # 主题文件夹不存在，使用默认主题
-                logger.warning(f'主题文件夹不存在，使用默认主题：{theme_folder}')
-
+            theme_info = load_theme_config(str(theme_folder))
+            theme_config = theme_info.config
+            theme_path = theme_info.path
             for i in range(len(widget_config)):
-                widget_name = widget_config[i]
-                if isDarkTheme() and conf.load_theme_config(theme_folder)['support_dark_mode']:
-                    if os.path.exists(f'{base_directory}/ui/{theme_folder}/dark/preview/{widget_name[:-3]}.png'):
-                        path = f'{base_directory}/ui/{theme_folder}/dark/preview/{widget_name[:-3]}.png'
+                widget_name: str = widget_config[i] # type: ignore
+                preview_path = theme_path / f'preview/{widget_name[:-3]}.png'
+                if isDarkTheme() and theme_config.support_dark_mode:
+                    if (theme_path / 'dark' / preview_path).exists():
+                        path = theme_path / 'dark' / preview_path
                     else:
-                        path = f'{base_directory}/ui/{theme_folder}/dark/preview/widget-custom.png'
+                        path = theme_path / 'dark/preview/widget-custom.png'
                 else:
-                    if os.path.exists(f'ui/{theme_folder}/preview/{widget_name[:-3]}.png'):
-                        path = f'{base_directory}/ui/{theme_folder}/preview/{widget_name[:-3]}.png'
+                    if (theme_path / preview_path).exists():
+                        path = theme_path / preview_path
                     else:
-                        path = f'{base_directory}/ui/{theme_folder}/preview/widget-custom.png'
+                        path = theme_path / 'preview/widget-custom.png'
 
                 label = ImageLabel()
-                label.setImage(path)
+                label.setImage(str(path))
                 widgets_preview.addWidget(label)
                 widget_config[i] = label
             right_spacer = QSpacerItem(20, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)

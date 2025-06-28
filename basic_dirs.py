@@ -6,8 +6,8 @@ from loguru import logger
 APP_NAME = "Class Widgets"
 CW_HOME = Path(__file__).parent
 
-if str(CW_HOME).endswith("MacOS"):
-    CW_HOME = Path(__file__).absolute().parent.parent / "Resources"
+# if str(CW_HOME).endswith("MacOS"):
+#     CW_HOME = Path(__file__).absolute().parent.parent / "Resources"
 
 IS_PORTABLE = os.environ.get("CLASSWIDGETS_NOT_PORTABLE", "") == ""
 
@@ -75,3 +75,12 @@ PLUGIN_HOME = _get_app_dir(
     xdg_env_var="XDG_DATA_HOME",
     xdg_fallback=".local/share",
 )
+THEME_HOME = _get_app_dir(
+    purpose="THEME",
+    default_subdir="ui",
+    win_env_var="APPDATA",
+    mac_subpath="Library/Application Support",
+    xdg_env_var="XDG_DATA_HOME",
+    xdg_fallback=".local/share",
+)
+THEME_DIRS = [THEME_HOME] if IS_PORTABLE else [CW_HOME / "ui", THEME_HOME]

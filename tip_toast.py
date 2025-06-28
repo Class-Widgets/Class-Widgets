@@ -484,12 +484,13 @@ def main(state: int = 1, lesson_name: str = '', title: str = '通知示例', sub
     prepare_class_color = f"#{config_center.read_conf('Color', 'prepare_class')}"
 
     theme = config_center.read_conf('General', 'theme')
-    height = conf.load_theme_config(theme)['height']
-    radius = conf.load_theme_config(theme)['radius']
+    theme_config = conf.load_theme_config(theme).config
+    height = theme_config.height
+    radius = theme_config.radius
 
     screen_geometry = QApplication.primaryScreen().geometry()
     screen_width = screen_geometry.width()
-    spacing = conf.load_theme_config(theme)['spacing']
+    spacing = theme_config.spacing
     try:
         dpr = QApplication.primaryScreen().devicePixelRatio()
     except AttributeError:
@@ -498,12 +499,7 @@ def main(state: int = 1, lesson_name: str = '', title: str = '通知示例', sub
  
     widgets_width = 0
     for widget in widgets:  # 计算总宽度(兼容插件)
-        try:
-            widgets_width += conf.load_theme_width(theme)[widget]
-        except KeyError:
-            widgets_width += list_.widget_width[widget]
-        except:
-            widgets_width += 0
+        widgets_width += theme_config.widget_width.get(widget, list_.widget_width.get(widget, 0))
 
     total_width = widgets_width + spacing * (len(widgets) - 1)
 
