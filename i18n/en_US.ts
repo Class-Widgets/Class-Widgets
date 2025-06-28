@@ -317,7 +317,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../view/menu/advance.ui" line="355"/>
         <source>将用于计算单/双周，开学日期需设置为开学第一周第一天（即周一）</source>
-        <translation>It will be used to calculate odd/even weeks. The start date of the school term needs to be set as the first day of the first week of school (i.e., Monday)</translation>
+        <translation>It will be used to calculate single/even weeks. The start date of the school term needs to be set as the first day of the first week of school (i.e., Monday)</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="395"/>
@@ -1096,7 +1096,7 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="137"/>
         <source>选择单/双周课表</source>
-        <translation>Choose a odd/even weekly schedule</translation>
+        <translation>Choose a single/even weekly schedule</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="144"/>
@@ -1106,7 +1106,7 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="173"/>
         <source>复制单周课表</source>
-        <translation>Copy from single-weekly schedule</translation>
+        <translation>Copy from single weekly schedule</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="221"/>
@@ -2677,7 +2677,7 @@ Error generating or playing audio: {error_message}</translation>
     <message>
         <source>单周</source>
         <comment>单周</comment>
-        <translation>single-week</translation>
+        <translation>single week</translation>
     </message>
     <message>
         <source>双周</source>
@@ -2967,7 +2967,7 @@ Error generating or playing audio: {error_message}</translation>
     <message>
         <location filename="../list_.py" line="16"/>
         <source>单周</source>
-        <translation>single-week</translation>
+        <translation>single week</translation>
     </message>
     <message>
         <location filename="../list_.py" line="17"/>
