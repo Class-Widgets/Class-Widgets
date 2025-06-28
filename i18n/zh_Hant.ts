@@ -546,32 +546,32 @@
     <message>
         <location filename="../view/menu/configs.ui" line="71"/>
         <source>使用 {db}:{id} 格式从预设数据库获取，或输入完整 url</source>
-        <translation type="unfinished"></translation>
+        <translation>使用 {db}:{id} 格式從預設資料庫獲取，或者輸入完整的url</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="78"/>
         <source>下载</source>
-        <translation type="unfinished"></translation>
+        <translation>下載</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="85"/>
         <source>更新当前</source>
-        <translation type="unfinished"></translation>
+        <translation>更新目前</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="92"/>
         <source>上传当前</source>
-        <translation type="unfinished"></translation>
+        <translation>上傳目前</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="99"/>
         <source>新建</source>
-        <translation type="unfinished"></translation>
+        <translation>新建</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="106"/>
         <source>导入</source>
-        <translation type="unfinished"></translation>
+        <translation>導入</translation>
     </message>
     <message>
         <location filename="../view/menu/preview.ui" line="35"/>
@@ -961,7 +961,7 @@
     <message>
         <location filename="../view/menu/help.ui" line="236"/>
         <source>什么是 CSES？</source>
-        <translation type="unfinished"></translation>
+        <translation>甚麼是 CSES</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="240"/>
