@@ -279,7 +279,8 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../view/menu/advance.ui" line="111"/>
         <source>修正系统时间与学校铃声的时差，学校铃声慢于系统时间为正值，反之为负</source>
-        <translation>Correct the time difference between the system time and the ringtone. If the school ringtone is slower than the system time, it is positive; otherwise, it is negative</translation>
+        <translation>Correct the time difference between the system time and the ringtone.
+If the school ringtone is slower than the system time, it is positive; otherwise, it is negative</translation>
     </message>
     <message>
         <source>选择课程表配置</source>
@@ -313,7 +314,8 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../view/menu/advance.ui" line="273"/>
         <source>将用于计算单/双周，开学日期需设置为开学第一周第一天（即周一）</source>
-        <translation>It will be used to calculate single/even weeks. The start date of the school term needs to be set as the first day of the first week of school (i.e., Monday)</translation>
+        <translation>It will be used to calculate single/even weeks.
+The start date of the school term needs to be set as the first day of the first week of school (i.e., Monday)</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="313"/>
@@ -2219,7 +2221,7 @@ Save failed. Please submit the logs from ./log/ to the developer for troubleshoo
     <message>
         <location filename="../menu.py" line="3197"/>
         <source>{class_activity} - {spin_time}分钟 - {time_period}</source>
-        <translation>{class_activity} – {spin_time} minutes – {time_period}</translation>
+        <translation>{class_activity} - {spin_time} minutes - {time_period}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3214"/>
@@ -2321,7 +2323,7 @@ Saved to ./config.ini</translation>
     <message>
         <location filename="../menu.py" line="3549"/>
         <source>Class Widgets - 设置</source>
-        <translation>Class Widgets – Settings</translation>
+        <translation>Class Widgets - Settings</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3566"/>

@@ -1337,7 +1337,7 @@ class SettingsMenu(FluentWindow):
                                '- `{lesson_name}`: 开始&结束&下节的课程名(例如：信息技术)\n'\
                                '- `{minutes}`: 分钟数 (例如：5) *其他\n'\
                                '- `{title}`: 通知标题 (例如：重要通知) *其他\n'\
-                               '- `{content}`: 通知内容 (例如：这是一条测试通知) *其他\n', self))
+                               '- `{content}`: 通知内容 (例如：这是一条测试通知) *其他\n'), self)
                 w.cancelButton.hide()
                 w.exec()
             self.tts_vocab_button.clicked.connect(show_vocab_note)
@@ -3108,7 +3108,7 @@ class SettingsMenu(FluentWindow):
                     item_text = data_timeline_dict[week][i]
                     item_info = item_text.split(' - ')
                     item_name = ''
-                    if item_info[0] == self.tr('课程'):
+                    if item_info[0] == self.tr('课程'): # 'Course - 40 minutes - a.m.'
                         item_name += 'a'
                         lesson_num += 1
                     if item_info[0] == self.tr('课间'):
@@ -3124,7 +3124,7 @@ class SettingsMenu(FluentWindow):
                         counter[counter_key] += 1
 
                     item_name += str(lesson_num - sum(counter[:counter_key]))  # 课程序数
-                    item_time = item_info[1][0:len(item_info[1]) - 2]
+                    item_time = item_info[1].replace(self.tr('分钟'), '')  # 获取时间
                     data_dict['timeline'][str(week)][item_name] = item_time
 
             schedule_center.save_data(data_dict, config_center.schedule_name)
