@@ -683,7 +683,7 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
     <message>
         <location filename="../view/menu/custom.ui" line="41"/>
         <source>自定义</source>
-        <translation>Customization</translation>
+        <translation>Custom</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="76"/>
@@ -2901,7 +2901,7 @@ Error generating or playing audio: {error_message}</translation>
     </message>
     <message>
         <source>自定义</source>
-        <comment>自定义</comment>
+        <comment>Custom</comment>
         <translation type="vanished">Custom</translation>
     </message>
     <message>
@@ -3234,7 +3234,7 @@ Error generating or playing audio: {error_message}</translation>
     <message>
         <location filename="../list_.py" line="57"/>
         <source>自定义</source>
-        <translation></translation>
+        <translation>Custom</translation>
     </message>
     <message>
         <location filename="../list_.py" line="70"/>
