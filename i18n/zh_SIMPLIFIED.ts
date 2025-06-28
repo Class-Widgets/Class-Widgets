@@ -323,7 +323,7 @@
         <location filename="../view/menu/advance.ui" line="320"/>
         <location filename="../view/menu/advance.ui" line="526"/>
         <source>界面文字</source>
-        <translation type="unfinished"></translation>
+        <translation>蚊子</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="327"/>
@@ -459,216 +459,217 @@
         <location filename="../view/menu/advance.ui" line="1424"/>
         <source>更改小组件的窗口状态（重启后生效）
 *开启“置底”功能时，将会禁用“单击隐藏小组件”</source>
-        <translation type="unfinished"></translation>
+        <translation>处于两个极端（重启后0%概率非不会不生效）
+会造成单击隐藏小组件的连锁反应</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1483"/>
         <source>边距大小</source>
-        <translation type="unfinished"></translation>
+        <translation>距边打胶</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1490"/>
         <source>设定桌面组件离屏幕边缘的大小（单位：px）</source>
-        <translation type="unfinished"></translation>
+        <translation>设定长度</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1542"/>
         <source>启动</source>
-        <translation type="unfinished"></translation>
+        <translation>__，启动！</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1576"/>
         <source>开机自启动</source>
-        <translation type="unfinished"></translation>
+        <translation>拖慢你的开机时间</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1642"/>
         <source>安全模式</source>
-        <translation type="unfinished"></translation>
+        <translation>不被甩锅模式</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1649"/>
         <source>若启用，Class Widgets 将在程序崩溃时自动忽略，并不再弹出窗口；以免影响教学任务。</source>
-        <translation type="unfinished"></translation>
+        <translation>如果启用了，你不会因为在上课时崩溃而被老师骂。</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1720"/>
         <source>禁用日志</source>
-        <translation type="unfinished"></translation>
+        <translation>闭眼开车</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1727"/>
         <source>若启用，应用将不再会保存日志到本地</source>
-        <translation type="unfinished"></translation>
+        <translation>若启用，你就不知道bug怎么产生的了</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1795"/>
         <location filename="../view/menu/advance.ui" line="1825"/>
         <source>清空日志</source>
-        <translation type="unfinished"></translation>
+        <translation>清理作案现场</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1802"/>
         <source>将会清空 软件根目录下log. 的所有内容</source>
-        <translation type="unfinished"></translation>
+        <translation>rm -rf ./log</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1867"/>
         <source>允许程序多开</source>
-        <translation type="unfinished"></translation>
+        <translation>两个cw，三个cw，n个cw</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1874"/>
         <source>程序多开后可能出现未知的问题，请谨慎使用</source>
-        <translation type="unfinished"></translation>
+        <translation>没测试，慎用</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1897"/>
         <location filename="../view/menu/advance.ui" line="1903"/>
         <source>不允许</source>
-        <translation type="unfinished"></translation>
+        <translation>№</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1900"/>
         <source>允许</source>
-        <translation type="unfinished"></translation>
+        <translation>好的</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="41"/>
         <source>配置文件</source>
-        <translation type="unfinished"></translation>
+        <translation>课表.json</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="71"/>
         <source>使用 {db}:{id} 格式从预设数据库获取，或输入完整 url</source>
-        <translation type="unfinished"></translation>
+        <translation>欸，你换新的服务器了啊，旧的呢？</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="78"/>
         <source>下载</source>
-        <translation type="unfinished"></translation>
+        <translation>p2p高速下载</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="85"/>
         <source>更新当前</source>
-        <translation type="unfinished"></translation>
+        <translation>拉（取）</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="92"/>
         <source>上传当前</source>
-        <translation type="unfinished"></translation>
+        <translation>我要上！</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="99"/>
         <source>新建</source>
-        <translation type="unfinished"></translation>
+        <translation>新的</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="106"/>
         <source>导入</source>
-        <translation type="unfinished"></translation>
+        <translation>入</translation>
     </message>
     <message>
         <location filename="../view/menu/preview.ui" line="35"/>
         <location filename="../view/menu/schedule_edit.ui" line="44"/>
         <source>课程表</source>
-        <translation type="unfinished"></translation>
+        <translation>课程桌子</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="470"/>
         <source>使用“资源管理器”打开</source>
-        <translation type="unfinished"></translation>
+        <translation>打开位置</translation>
     </message>
     <message>
         <location filename="../view/menu/countdown_custom_edit.ui" line="35"/>
         <source>自定义倒计时编辑</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑鸡汤⏲</translation>
     </message>
     <message>
         <location filename="../view/menu/countdown_custom_edit.ui" line="44"/>
         <source>自定义倒计时</source>
-        <translation type="unfinished"></translation>
+        <translation>自定义的鸡汤</translation>
     </message>
     <message>
         <location filename="../view/menu/countdown_custom_edit.ui" line="87"/>
         <source>自定义文本</source>
-        <translation type="unfinished"></translation>
+        <translation>自定义励志语</translation>
     </message>
     <message>
         <location filename="../view/menu/countdown_custom_edit.ui" line="113"/>
         <source>选择日期</source>
-        <translation type="unfinished"></translation>
+        <translation>选择日（对象）</translation>
     </message>
     <message>
         <location filename="../view/menu/countdown_custom_edit.ui" line="132"/>
         <source>选定一个日期</source>
-        <translation type="unfinished"></translation>
+        <translation>选择一个日</translation>
     </message>
     <message>
         <location filename="../view/menu/countdown_custom_edit.ui" line="161"/>
         <source>倒计时模式</source>
-        <translation type="unfinished"></translation>
+        <translation>压迫感级别</translation>
     </message>
     <message>
         <location filename="../view/menu/countdown_custom_edit.ui" line="184"/>
         <source>轮播间隔（秒）</source>
-        <translation type="unfinished"></translation>
+        <translation>闪动（秒）</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="41"/>
         <source>自定义</source>
-        <translation type="unfinished">创造模式</translation>
+        <translation>创造模式</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="76"/>
         <source>*对小组件的显示、隐藏和拖拽操作将在重启后生效。</source>
-        <translation type="unfinished"></translation>
+        <translation>大爆炸后生效</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="137"/>
         <source>选择小组件</source>
-        <translation type="unfinished"></translation>
+        <translation>选择方块</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="167"/>
         <source>  添加  </source>
-        <translation type="unfinished"></translation>
+        <translation>  甲甲  </translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="174"/>
         <source>  移除  </source>
-        <translation type="unfinished"></translation>
+        <translation>  尖尖  </translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="183"/>
         <source>小组件</source>
-        <translation type="unfinished"></translation>
+        <translation>Tap</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="195"/>
         <location filename="../view/menu/custom.ui" line="238"/>
         <source>主题</source>
-        <translation type="unfinished"></translation>
+        <translation>这个我</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="205"/>
         <source>打开“主题”文件夹</source>
-        <translation type="unfinished"></translation>
+        <translation>开启“这个我”夹子</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="245"/>
         <source>将用于更改小组件的样式（重启后生效）</source>
-        <translation type="unfinished"></translation>
+        <translation>改变我的样式（大爆炸之后</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="307"/>
         <source>颜色模式</source>
-        <translation type="unfinished"></translation>
+        <translation>涩爆了</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="314"/>
         <source>将改变应用的浅/深色外观</source>
-        <translation type="unfinished"></translation>
+        <translation>更改肤色</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="376"/>
