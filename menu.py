@@ -68,7 +68,10 @@ class I18nManager:
             if main_i18n_dir.exists():
                 for ts_file in main_i18n_dir.glob('*.ts'):
                     lang_code = ts_file.stem
-                    self.available_languages_view[lang_code] = self._get_language_display_name(lang_code)
+                    if name:=self._get_language_display_name(lang_code):
+                        self.available_languages_view[lang_code] = name
+                    else:
+                        logger.warning(f"{lang_code} 未做完全的语言支持，不显示。")
 
             ui_dir = Path(conf.base_directory) / 'ui'
             if ui_dir.exists():
@@ -96,19 +99,19 @@ class I18nManager:
         language_names = {
             'zh_CN': '简体中文',
             'zh_Hant': '繁體中文（HK）',
-            'zh_SIMPLIFIED': '梗体中文',
+            # 'zh_SIMPLIFIED': '梗体中文',
             'en_US': 'English',
-            'ja': '日本語',
-            'ko_KR': '한국어',
-            'fr_FR': 'Français',
-            'de_DE': 'Deutsch',
-            'es_ES': 'Español',
-            'ru_RU': 'Русский',
-            'pt_BR': 'Português (Brasil)',
-            'it_IT': 'Italiano',
-            'ar_SA': 'العربية'
+            # 'ja': '日本語',
+            # 'ko_KR': '한국어',
+            # 'fr_FR': 'Français',
+            # 'de_DE': 'Deutsch',
+            # 'es_ES': 'Español',
+            # 'ru_RU': 'Русский',
+            # 'pt_BR': 'Português (Brasil)',
+            # 'it_IT': 'Italiano',
+            # 'ar_SA': 'العربية'
         }
-        return language_names.get(lang_code, lang_code)
+        return language_names.get(lang_code, None)
         
     def get_available_languages_view(self):
         """获取可用界面语言列表"""

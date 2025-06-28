@@ -3280,7 +3280,7 @@ Error generating or playing audio: {error_message}</translation>
         <location filename="../list_.py" line="100"/>
         <location filename="../list_.py" line="112"/>
         <source>天气</source>
-        <translation></translation>
+        <translation>Weather</translation>
     </message>
     <message>
         <location filename="../list_.py" line="158"/>
