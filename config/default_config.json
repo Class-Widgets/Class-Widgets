@@ -17,7 +17,9 @@
     "excluded_lesson": 0,
     "excluded_lessons": "",
     "enable_click": 1,
-    "enable_display_full_next_lessons": 1
+    "enable_display_full_next_lessons": 1,
+    "language_widgets": "zh-CN",
+    "language_view": "zh-CN"
   },
   "Toast": {
     "wave": 1,
