@@ -961,12 +961,12 @@
     <message>
         <location filename="../view/menu/help.ui" line="236"/>
         <source>什么是 CSES？</source>
-        <translation>甚麼是 CSES</translation>
+        <translation>甚麼是 CSES?</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="240"/>
         <source>https://github.com/CSES-org/CSES</source>
-        <translation type="unfinished"></translation>
+        <translation>https://github.com/CSES-org/CSES</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="257"/>
@@ -1417,12 +1417,12 @@
     <message>
         <location filename="../view/menu/file_item.ui" line="89"/>
         <source>File name</source>
-        <translation type="unfinished"></translation>
+        <translation>File name</translation>
     </message>
     <message>
         <location filename="../view/menu/file_item.ui" line="99"/>
         <source>file url file url file url file url file url file url </source>
-        <translation type="unfinished"></translation>
+        <translation>file url file url file url file url file url file url </translation>
     </message>
 </context>
 <context>
@@ -1818,13 +1818,14 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
     <message>
         <location filename="../menu.py" line="2528"/>
         <source>导入成功！</source>
-        <translation type="unfinished"></translation>
+        <translation>導入成功!</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2530"/>
         <source>课程表文件导入成功！
 请手动切换您的配置文件。</source>
-        <translation type="unfinished"></translation>
+        <translation>課程時間表文檔導入成功! 
+請手動切換設定檔。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2550"/>
@@ -1841,7 +1842,7 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
     <message>
         <location filename="../menu.py" line="2553"/>
         <source>支持的文件类型 (*.json *.yaml *.yml);;Json 配置文件 (*.json);;CSES 通用课程表交换文件 (*.yaml) (*.yaml *.yml)</source>
-        <translation type="unfinished"></translation>
+        <translation>支援的檔案類型 (*.json *.yaml *.yml);;Json 設定檔案 (*.json);;CSES 通用課程時間表交換檔案 (*.yaml) (*.yaml *.yml)</translation>
     </message>
     <message>
         <source>CSES 通用课程表交换文件 (*.yaml)</source>
@@ -2583,7 +2584,12 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
 - `{title}`: 通知标题 (例如：重要通知) *其他
 - `{content}`: 通知内容 (例如：这是一条测试通知) *其他
 </source>
-        <translation type="unfinished"></translation>
+        <translation>可使用以下佔位符以動態插入資料：
+-`{lesson_name}`：課堂開始、結束或下一堂的課堂名稱（例如：ICT）
+-`{minutes}`：分鐘數（例如：5）*其他用途
+-`{title}`：通知標題（例如：重要通知）*其他用途
+-`{content}`：通知內容（例如：這是一則測試通知）*其他用途
+</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1377"/>
@@ -2668,7 +2674,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../menu.py" line="750"/>
         <source>很好！就这样！ヾ(≧▽≦*)o</source>
-        <translation type="unfinished"></translation>
+        <translation>好正呀！就係咁喇～ヾ(≧▽≦*)o</translation>
     </message>
 </context>
 <context>
