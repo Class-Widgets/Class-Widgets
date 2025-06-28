@@ -1979,6 +1979,11 @@
         <translation type="unfinished">下课准时刷新的npc</translation>
     </message>
     <message>
+        <location filename="../menu.py" line="3127"/>
+        <source>分钟</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../menu.py" line="3150"/>
         <source>保存失败!</source>
         <translation type="unfinished"></translation>

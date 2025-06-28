@@ -1896,6 +1896,11 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
         <translation>已儲存至 ./config/schedule/{schedule_name}</translation>
     </message>
     <message>
+        <location filename="../menu.py" line="3127"/>
+        <source>分钟</source>
+        <translation>分鐘</translation>
+    </message>
+    <message>
         <location filename="../menu.py" line="3151"/>
         <source>{e}
 保存失败，请将 ./log/ 中的日志提交给开发者以反馈问题。</source>

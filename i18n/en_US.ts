@@ -1891,6 +1891,11 @@ For details, please see the log located in ./log/.</translation>
         <translation>Saved to ./config/schedule/{schedule_name}</translation>
     </message>
     <message>
+        <location filename="../menu.py" line="3127"/>
+        <source>分钟</source>
+        <translation>minute(s)</translation>
+    </message>
+    <message>
         <location filename="../menu.py" line="3151"/>
         <source>{e}
 保存失败，请将 ./log/ 中的日志提交给开发者以反馈问题。</source>
@@ -2221,7 +2226,7 @@ Save failed. Please submit the logs from ./log/ to the developer for troubleshoo
     <message>
         <location filename="../menu.py" line="3197"/>
         <source>{class_activity} - {spin_time}分钟 - {time_period}</source>
-        <translation>{class_activity} - {spin_time} minutes - {time_period}</translation>
+        <translation>{class_activity} - {spin_time} minute(s) - {time_period}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3214"/>
