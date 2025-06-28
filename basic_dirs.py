@@ -83,4 +83,4 @@ THEME_HOME = _get_app_dir(
     xdg_env_var="XDG_DATA_HOME",
     xdg_fallback=".local/share",
 )
-THEME_DIRS = [THEME_HOME] if IS_PORTABLE else [THEME_HOME, CW_HOME / "ui"]
+THEME_DIRS = [THEME_HOME] if IS_PORTABLE else [CW_HOME / "ui", THEME_HOME]
