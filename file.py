@@ -1,36 +1,33 @@
+import configparser
 import json
 import os
 import sys
 from pathlib import Path
 from shutil import copy
-from typing import Dict, Any, Optional, Union, Callable, List
+from typing import Any, Callable, Dict, List, Optional, Union
 
 from loguru import logger
-import configparser
 from packaging.version import Version
-import json
-
 
 base_directory = Path(os.path.dirname(os.path.abspath(__file__)))
-'''
+"""
 if str(base_directory).endswith('MacOS'):
     base_directory = (base_directory.parent / 'Resources').resolve()
-'''
-config_path = base_directory / 'config.ini'
-
-
+"""
+config_path = base_directory / "config.ini"
 
 
 class ConfigCenter:
     """
     Config中心
     """
+
     def __init__(self, base_directory: Path, schedule_update_callback: Optional[Callable[[], None]] = None) -> None:
         self.base_directory = base_directory
         self.config_version = 1
-        self.config_file_name = 'config.ini'
+        self.config_file_name = "config.ini"
         self.user_config_path = self.base_directory / self.config_file_name
-        self.default_config_path = self.base_directory / 'config' / 'default_config.json'
+        self.default_config_path = self.base_directory / "config" / "default_config.json"
         self.config = configparser.ConfigParser()
         self.default_data: Dict[str, Any] = {}
         self.schedule_update_callback = schedule_update_callback
@@ -39,7 +36,7 @@ class ConfigCenter:
         self._load_user_config()
         self._check_and_migrate_config()
 
-        self.schedule_name = self.read_conf('General', 'schedule')
+        self.schedule_name = self.read_conf("General", "schedule")
         self.old_schedule_name = self.schedule_name
 
     def _load_default_config(self) -> None:
@@ -50,38 +47,40 @@ class ConfigCenter:
         except Exception as e:
             logger.error(f"加载默认配置文件失败: {e}")
             self.default_data = {}
-            from qfluentwidgets import Dialog
-            from PyQt5.QtWidgets import QApplication
             import sys
+
+            from PyQt5.QtWidgets import QApplication
+            from qfluentwidgets import Dialog
+
             app = QApplication.instance() or QApplication(sys.argv)
             dlg = Dialog(
-                'Class Widgets 启动失败w(ﾟДﾟ)w',
-                f'加载默认配置文件失败,请检查文件完整性或尝试重新安装。\n错误信息: {e}'
+                "Class Widgets 启动失败w(ﾟДﾟ)w", f"加载默认配置文件失败,请检查文件完整性或尝试重新安装。\n错误信息: {e}"
             )
-            dlg.yesButton.setText('好')
+            dlg.yesButton.setText("好")
             dlg.cancelButton.hide()
             dlg.buttonLayout.insertStretch(0, 1)
             dlg.setFixedWidth(550)
             dlg.exec()
             import utils
+
             utils.stop(0)
 
     def _load_user_config(self) -> None:
         """加载用户配置文件"""
         try:
-            self.config.read(self.user_config_path, encoding='utf-8')
+            self.config.read(self.user_config_path, encoding="utf-8")
         except Exception as e:
             logger.error(f"加载配置文件失败: {e}")
 
     def _initialize_config(self) -> None:
         """初始化配置文件（当配置文件不存在时）"""
-        logger.debug("配置文件不存在，已创建并写入默认配置。")
+        logger.debug("配置文件不存在, 已创建并写入默认配置。")
         self.config.read_dict(self.default_data)
         self._write_config_to_file()
-        if sys.platform != 'win32':
-            self.config.set('General', 'hide_method', '2')
+        if sys.platform != "win32":
+            self.config.set("General", "hide_method", "2")
             self._write_config_to_file()
-        copy(base_directory / 'config' / 'default.json', base_directory / 'config' / 'schedule' / '新课表 - 1.json')
+        copy(base_directory / "config" / "default.json", base_directory / "config" / "schedule" / "新课表 - 1.json")
 
     def _migrate_config(self) -> None:
         """迁移配置文件（当配置文件版本不一致时）"""
@@ -100,9 +99,9 @@ class ConfigCenter:
                             self.config[section][key] = str(value)
                             logger.debug(f"添加新的配置项: {section}.{key}")
 
-            version_from_default = self.default_data.get('Version', {}).get('version')
+            version_from_default = self.default_data.get("Version", {}).get("version")
             if version_from_default:
-                self.config.set('Version', 'version', version_from_default)
+                self.config.set("Version", "version", version_from_default)
             self._write_config_to_file()
             logger.success(f"配置文件已更新")
         except Exception as e:
@@ -112,72 +111,77 @@ class ConfigCenter:
         """执行特定的配置迁移规则"""
         migration_rules = [
             {
-                'old_section': 'General',
-                'old_key': 'time_offset',
-                'new_section': 'Time', 
-                'new_key': 'time_offset',
-                'remove_old': True
+                "old_section": "General",
+                "old_key": "time_offset",
+                "new_section": "Time",
+                "new_key": "time_offset",
+                "remove_old": True,
             },
             {
-                'old_section': 'Other',
-                'old_key': 'auto_check_update',
-                'new_section': 'Version',
-                'new_key': 'auto_check_update', 
-                'remove_old': True
-            }
+                "old_section": "Other",
+                "old_key": "auto_check_update",
+                "new_section": "Version",
+                "new_key": "auto_check_update",
+                "remove_old": True,
+            },
         ]
         self.migrate_config(migration_rules=migration_rules)
 
     def _check_schedule_config(self) -> None:
         """检查课程表配置文件"""
-        schedule_dir = base_directory / 'config' / 'schedule'
-        schedule_name = self.read_conf('General', 'schedule', '新课表 - 1.json')
+        schedule_dir = base_directory / "config" / "schedule"
+        schedule_name = self.read_conf("General", "schedule", "新课表 - 1.json")
         current_schedule_file = schedule_dir / schedule_name
 
         if not current_schedule_file.exists():
             schedule_config = []
             for file_name in schedule_dir.iterdir():
-                if file_name.suffix == '.json' and file_name.name != 'backup.json':
+                if file_name.suffix == ".json" and file_name.name != "backup.json":
                     schedule_config.append(file_name.name)
             if not schedule_config:
-                copy(base_directory / 'config' / 'default.json',
-                     schedule_dir / schedule_name)
+                copy(base_directory / "config" / "default.json", schedule_dir / schedule_name)
                 logger.info(f"课程表不存在,已创建默认课程表")
             else:
-                self.write_conf('General', 'schedule', schedule_config[0])
-        print(Path.cwd() / 'config' / 'schedule')
+                self.write_conf("General", "schedule", schedule_config[0])
+        print(Path.cwd() / "config" / "schedule")
 
     def _check_plugins_directory(self) -> None:
         """检查插件目录和文件"""
-        plugins_dir = base_directory / 'plugins'
+        plugins_dir = base_directory / "plugins"
         if not plugins_dir.exists():
             plugins_dir.mkdir()
-            logger.info("Plugins 文件夹不存在，已创建。")
+            logger.info("Plugins 文件夹不存在, 已创建。")
 
-        plugins_file = plugins_dir / 'plugins_from_pp.json'
+        plugins_file = plugins_dir / "plugins_from_pp.json"
         if not plugins_file.exists():
-            with open(plugins_file, 'w', encoding='utf-8') as file:
+            with open(plugins_file, "w", encoding="utf-8") as file:
                 json.dump({"plugins": []}, file, ensure_ascii=False, indent=4)
-            logger.info("plugins_from_pp.json 文件不存在，已创建。")
+            logger.info("plugins_from_pp.json 文件不存在, 已创建。")
 
     def _write_config_to_file(self) -> None:
         """将当前配置写入文件"""
-        with open(self.user_config_path, 'w', encoding='utf-8') as configfile:
+        with open(self.user_config_path, "w", encoding="utf-8") as configfile:
             self.config.write(configfile)
 
-    def migrate_config_item(self, old_section: str, old_key: str, new_section: str, new_key: str, 
-                           transform_func: Optional[Callable[[Any], Any]] = None, 
-                           remove_old: bool = True) -> bool:
+    def migrate_config_item(
+        self,
+        old_section: str,
+        old_key: str,
+        new_section: str,
+        new_key: str,
+        transform_func: Optional[Callable[[Any], Any]] = None,
+        remove_old: bool = True,
+    ) -> bool:
         """配置项迁移函数
-        
+
         Args:
             old_section: 原配置节名
             old_key: 原配置键名
             new_section: 新配置节名
             new_key: 新配置键名
-            transform_func: 值转换函数，可选
-            remove_old: 是否删除原配置项，默认True
-            
+            transform_func: 值转换函数, 可选
+            remove_old: 是否删除原配置项, 默认True
+
         Returns:
             bool: 迁移是否成功
         """
@@ -191,7 +195,9 @@ class ConfigCenter:
                 self.config.add_section(new_section)
                 logger.debug(f"创建新配置节: {new_section}")
             self.config[new_section][new_key] = str(new_value)
-            logger.debug(f"配置项迁移: {old_section}.{old_key} -> {new_section}.{new_key} (值: {old_value} -> {new_value})")
+            logger.debug(
+                f"配置项迁移: {old_section}.{old_key} -> {new_section}.{new_key} (值: {old_value} -> {new_value})"
+            )
             if remove_old:
                 del self.config[old_section][old_key]
                 logger.debug(f"已删除原配置项: {old_section}.{old_key}")
@@ -202,10 +208,17 @@ class ConfigCenter:
         except Exception as e:
             logger.error(f"配置项迁移失败 {old_section}.{old_key} -> {new_section}.{new_key}: {e}")
             return False
-    
-    def migrate_config(self, old_section: str = None, old_key: str = None, new_section: str = None, 
-                       new_key: str = None, transform_func: Optional[Callable[[Any], Any]] = None, 
-                       remove_old: bool = True, migration_rules: Optional[List[Dict[str, Any]]] = None) -> Union[bool, Dict[str, bool]]:
+
+    def migrate_config(
+        self,
+        old_section: Optional[str] = None,
+        old_key: Optional[str] = None,
+        new_section: Optional[str] = None,
+        new_key: Optional[str] = None,
+        transform_func: Optional[Callable[[Any], Any]] = None,
+        remove_old: bool = True,
+        migration_rules: Optional[List[Dict[str, Any]]] = None,
+    ) -> Union[bool, Dict[str, bool]]:
         """配置迁移
 
         Args:
@@ -214,20 +227,20 @@ class ConfigCenter:
             old_key: 原配置键名
             new_section: 新配置节名
             new_key: 新配置键名
-            transform_func: 值转换函数，可选
-            remove_old: 是否删除原配置项，默认True
+            transform_func: 值转换函数, 可选
+            remove_old: 是否删除原配置项, 默认True
             # 批量迁移参数
-            migration_rules: 迁移规则列表，每个规则为字典，包含:
+            migration_rules: 迁移规则列表, 每个规则为字典, 包含:
                 - old_section: 原配置节
                 - old_key: 原配置键
                 - new_section: 新配置节
                 - new_key: 新配置键
                 - transform_func: 转换函数 (可选)
                 - remove_old: 是否删除原配置 (可选,默认True)
-                
+
         Returns:
-            Union[bool, Dict[str, bool]]: 单个迁移返回bool，批量迁移返回Dict[str, bool]
-            
+            Union[bool, Dict[str, bool]]: 单个迁移返回bool, 批量迁移返回Dict[str, bool]
+
         Raises:
             ValueError: 当参数不正确时抛出异常
         """
@@ -237,24 +250,25 @@ class ConfigCenter:
             return self._batch_migrate_internal(migration_rules)
         if not all([old_section, old_key, new_section, new_key]):
             raise ValueError("需提供完整参数")
-        result = self.migrate_config_item(old_section, old_key, new_section, new_key, 
-                                         transform_func, remove_old)
+        # 类型断言, 确保参数不为None
+        assert old_section is not None and old_key is not None and new_section is not None and new_key is not None
+        result = self.migrate_config_item(old_section, old_key, new_section, new_key, transform_func, remove_old)
         if result:
             self._write_config_to_file()
         return result
-    
+
     def _batch_migrate_internal(self, migration_rules: List[Dict[str, Any]]) -> Dict[str, bool]:
         results = {}
         for i, rule in enumerate(migration_rules):
             rule_name = f"{rule['old_section']}.{rule['old_key']}->{rule['new_section']}.{rule['new_key']}"
             try:
                 success = self.migrate_config_item(
-                    old_section=rule['old_section'],
-                    old_key=rule['old_key'],
-                    new_section=rule['new_section'],
-                    new_key=rule['new_key'],
-                    transform_func=rule.get('transform_func'),
-                    remove_old=rule.get('remove_old', True)
+                    old_section=rule["old_section"],
+                    old_key=rule["old_key"],
+                    new_section=rule["new_section"],
+                    new_key=rule["new_key"],
+                    transform_func=rule.get("transform_func"),
+                    remove_old=rule.get("remove_old", True),
                 )
                 results[rule_name] = success
             except Exception as e:
@@ -271,19 +285,19 @@ class ConfigCenter:
             self._initialize_config()
         else:
             self._load_user_config()
-    
-            if 'Version' in self.config:
-                user_config_version_str = self.config['Version'].get('version', '0.0.0')
-            else:
-                user_config_version_str = '0.0.0'
 
-            default_config_version_str = self.default_data.get('Version', {}).get('version', '0.0.0')
+            if "Version" in self.config:
+                user_config_version_str = self.config["Version"].get("version", "0.0.0")
+            else:
+                user_config_version_str = "0.0.0"
+
+            default_config_version_str = self.default_data.get("Version", {}).get("version", "0.0.0")
 
             try:
                 user_config_version = Version(user_config_version_str)
             except ValueError:
                 logger.warning(f"配置文件中的版本号 '{user_config_version_str}' 无效")
-                user_config_version = Version('0.0.0')
+                user_config_version = Version("0.0.0")
 
             try:
                 default_config_version = Version(default_config_version_str)
@@ -291,7 +305,9 @@ class ConfigCenter:
                 logger.error(f"默认配置文件中的版本号 '{default_config_version_str}' 无效")
                 return
             if user_config_version < default_config_version:
-                logger.debug(f"检测到配置文件版本不一致或缺失 (配置版本: {user_config_version}, 默认版本: {default_config_version})，正在执行配置迁移...")
+                logger.debug(
+                    f"检测到配置文件版本不一致或缺失 (配置版本: {user_config_version}, 默认版本: {default_config_version}), 正在执行配置迁移..."
+                )
                 self._migrate_config()
                 self._write_config_to_file()
         self._check_schedule_config()
@@ -302,16 +318,16 @@ class ConfigCenter:
         try:
             self._load_user_config()
 
-            new_schedule_name = self.read_conf('General', 'schedule')
+            new_schedule_name = self.read_conf("General", "schedule")
             if new_schedule_name != self.old_schedule_name:
-                logger.info(f'已切换到课程表: {new_schedule_name}')
+                logger.info(f"已切换到课程表: {new_schedule_name}")
 
                 self.old_schedule_name = new_schedule_name
         except Exception as e:
-            logger.error(f'更新配置文件时出错: {e}')
+            logger.error(f"更新配置文件时出错: {e}")
 
-    def read_conf(self, section: str = 'General', key: str = '', fallback: Any = None) -> Union[str, Any]:
-        """读取配置项，并根据默认配置中的类型信息进行转换"""
+    def read_conf(self, section: str = "General", key: str = "", fallback: Any = None) -> Union[str, Any]:
+        """读取配置项, 并根据默认配置中的类型信息进行转换"""
         if section not in self.config and section not in self.default_data:
             logger.warning(f"配置节未找到: Section='{section}'")
             if not key:
@@ -368,7 +384,7 @@ class ConfigCenter:
             elif value_type == "float":
                 return float(value)
             elif value_type == "list":
-                return [item.strip() for item in str(value).split(',')]
+                return [item.strip() for item in str(value).split(",")]
             elif value_type == "json":
                 return json.loads(str(value))
             else:
@@ -393,7 +409,7 @@ class ConfigCenter:
         if section not in self.config:
             self.config.add_section(section)
         self.config[section][key] = str(value)
-        with open(self.user_config_path, 'w', encoding='utf-8') as configfile:
+        with open(self.user_config_path, "w", encoding="utf-8") as configfile:
             self.config.write(configfile)
 
 
@@ -401,6 +417,7 @@ class ScheduleCenter:
     """
     课程表中心
     """
+
     def __init__(self, config_center_instance: ConfigCenter) -> None:
         self.config_center = config_center_instance
         self.schedule_data: Dict[str, Any] = {}
@@ -410,35 +427,35 @@ class ScheduleCenter:
         """
         更新课程表
         """
-        self.schedule_data = load_from_json(self.config_center.read_conf('General', 'schedule'))
-        if 'timeline' not in self.schedule_data:
-            self.schedule_data['timeline'] = {}
-        if self.schedule_data.get('url', None) is None:
-            self.schedule_data['url'] = 'local'
+        self.schedule_data = load_from_json(self.config_center.read_conf("General", "schedule"))
+        if "timeline" not in self.schedule_data:
+            self.schedule_data["timeline"] = {}
+        if self.schedule_data.get("url", None) is None:
+            self.schedule_data["url"] = "local"
             self.save_data(self.schedule_data, config_center.schedule_name)
 
     def update_url(self, url: str) -> None:
         """
         更新课程表url
         """
-        self.schedule_data['url'] = url
+        self.schedule_data["url"] = url
         self.save_data(self.schedule_data, config_center.schedule_name)
 
     def save_data(self, new_data: Dict[str, Any], filename: str) -> Optional[str]:
-        if 'timeline' in new_data and isinstance(new_data['timeline'], dict):
-            if 'timeline' in self.schedule_data and isinstance(self.schedule_data['timeline'], dict):
-                self.schedule_data['timeline'].update(new_data['timeline'])
+        if "timeline" in new_data and isinstance(new_data["timeline"], dict):
+            if "timeline" in self.schedule_data and isinstance(self.schedule_data["timeline"], dict):
+                self.schedule_data["timeline"].update(new_data["timeline"])
             else:
-                self.schedule_data['timeline'] = new_data['timeline']
+                self.schedule_data["timeline"] = new_data["timeline"]
             temp_new_data = new_data.copy()
-            del temp_new_data['timeline']
+            del temp_new_data["timeline"]
             self.schedule_data.update(temp_new_data)
         else:
             self.schedule_data.update(new_data)
 
         # 将更新后的数据保存回文件
         try:
-            with open(base_directory / 'config' / 'schedule' / filename, 'w', encoding='utf-8') as file:
+            with open(base_directory / "config" / "schedule" / filename, "w", encoding="utf-8") as file:
                 json.dump(self.schedule_data, file, ensure_ascii=False, indent=4)
             return f"数据已成功保存到 config/schedule/{filename}"
         except Exception as e:
@@ -453,7 +470,7 @@ def load_from_json(filename: str) -> Dict[str, Any]:
     :return: 返回从文件中加载的数据字典
     """
     try:
-        with open(base_directory / 'config' / 'schedule' / filename, 'r', encoding='utf-8') as file:
+        with open(base_directory / "config" / "schedule" / filename, "r", encoding="utf-8") as file:
             data: Dict[str, Any] = json.load(file)
         return data
     except FileNotFoundError:
@@ -474,7 +491,7 @@ def save_data_to_json(data: Dict[str, Any], filename: str) -> None:
     :param filename: 要保存到的文件
     """
     try:
-        with open(base_directory / 'config' / 'schedule' / filename, 'w', encoding='utf-8') as file:
+        with open(base_directory / "config" / "schedule" / filename, "w", encoding="utf-8") as file:
             json.dump(data, file, ensure_ascii=False, indent=4)
     except Exception as e:
         logger.error(f"保存数据到 JSON 文件时出错: {e}")

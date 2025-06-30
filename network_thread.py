@@ -1,22 +1,21 @@
-import os
 import json
+import os
 import shutil
 import zipfile  # 解压插件zip
 from datetime import datetime
-from typing import Optional, Union, List, Tuple, Dict, Any
+from typing import Any, Dict, List, Optional, Tuple
 
 import requests
-from PyQt5.QtCore import QThread, pyqtSignal, QEventLoop
 from loguru import logger
 from packaging.version import Version
+from PyQt5.QtCore import QThread, pyqtSignal
 
 import conf
+import list_
 import utils
 import weather as db
-from weather import WeatherReportThread as weatherReportThread
 from conf import base_directory
 from file import config_center
-import list_
 
 headers = {"User-Agent": "Mozilla/5.0", "Cache-Control": "no-cache"}  # 设置请求头
 # proxies = {"http": "http://127.0.0.1:10809", "https": "http://127.0.0.1:10809"}  # 加速访问
@@ -25,7 +24,7 @@ proxies = {"http": None, "https": None}
 MIRROR_PATH = f"{base_directory}/config/mirror.json"
 PLAZA_REPO_URL = "https://raw.githubusercontent.com/Class-Widgets/plugin-plaza/"
 PLAZA_REPO_DIR = "https://api.github.com/repos/Class-Widgets/plugin-plaza/contents/"
-threads = []
+threads: List[QThread] = []
 
 # 读取镜像配置
 mirror_list = []
@@ -34,12 +33,14 @@ try:
         mirror_dict = json.load(file).get('gh_mirror')
 except Exception as e:
     logger.error(f"读取镜像配置失败: {e}")
+    mirror_dict = {}
 
-for name in mirror_dict:
-    mirror_list.append(name)
+if mirror_dict:
+    for name in mirror_dict:
+        mirror_list.append(name)
 
-if config_center.read_conf('Plugin', 'mirror') not in mirror_list:  # 如果当前配置不在镜像列表中，则设置为默认镜像
-    logger.warning(f"当前配置不在镜像列表中，设置为默认镜像: {mirror_list[0]}")
+if config_center.read_conf('Plugin', 'mirror') not in mirror_list:  # 如果当前配置不在镜像列表中, 则设置为默认镜像
+    logger.warning(f"当前配置不在镜像列表中, 设置为默认镜像: {mirror_list[0]}")
     config_center.write_conf('Plugin', 'mirror', mirror_list[0])
 
 
@@ -210,7 +211,8 @@ class getCity(QThread):
     def run(self) -> None:
         try:
             city_data = self.get_city()
-            config_center.write_conf('Weather', 'city', db.search_code_by_name(city_data))
+            city_name = city_data[0] if city_data[0] else city_data[1]  # 优先使用城市名，如果为空则使用区县名
+            config_center.write_conf('Weather', 'city', db.search_code_by_name(city_name))
         except Exception as e:
             logger.error(f"获取城市失败: {e}")
 
@@ -228,9 +230,9 @@ class getCity(QThread):
                     logger.error(f"获取城市失败：{data['message']}")
                     return ('', '')
             else:
-                logger.error(f"获取城市失败：{req.status_code}")    
+                logger.error(f"获取城市失败：{req.status_code}")
                 return ('', '')
-            
+
         except Exception as e:
             logger.error(f"获取城市失败：{e}")
             return ('', '')
@@ -244,7 +246,7 @@ class VersionThread(QThread):  # 获取最新版本号
     def run(self) -> None:
         version = self.get_latest_version()
         self.version_signal.emit(version)
-    
+
     @classmethod
     def is_running(cls) -> bool:
         return cls._instance_running
@@ -260,15 +262,15 @@ class VersionThread(QThread):  # 获取最新版本号
                 data = response.json()
                 return data
             else:
-                logger.error(f"无法获取版本信息 错误代码：{response.status_code}，响应内容: {response.text}")
-                return {'error': f"请求失败，错误代码：{response.status_code}"}
+                logger.error(f"无法获取版本信息 错误代码：{response.status_code}, 响应内容: {response.text}")
+                return {'error': f"请求失败, 错误代码：{response.status_code}"}
         except requests.exceptions.RequestException as e:
-            logger.error(f"请求失败，错误详情：{str(e)}")
+            logger.error(f"请求失败, 错误详情：{str(e)}")
             return {"error": f"请求失败\n{str(e)}"}
 
 
 class getDownloadUrl(QThread):
-    # 定义信号，通知下载进度或完成
+    # 定义信号, 通知下载进度或完成
     geturl_signal = pyqtSignal(str)
 
     def __init__(self, username: str, repo: str) -> None:
@@ -287,11 +289,11 @@ class getDownloadUrl(QThread):
                         asset_url = asset['browser_download_url']
                         self.geturl_signal.emit(asset_url)
             elif response.status_code == 403:  # 触发API限制
-                logger.warning("到达Github API限制，请稍后再试")
+                logger.warning("到达Github API限制, 请稍后再试")
                 response = requests.get('https://api.github.com/users/octocat', proxies=proxies)
                 reset_time = response.headers.get('X-RateLimit-Reset')
                 reset_time = datetime.fromtimestamp(int(reset_time))
-                self.geturl_signal.emit(f"ERROR: 由于请求次数过多，到达Github API限制，请在{reset_time.minute}分钟后再试")
+                self.geturl_signal.emit(f"ERROR: 由于请求次数过多, 到达Github API限制, 请在{reset_time.minute}分钟后再试")
             else:
                 logger.error(f"网络连接错误：{response.status_code}")
         except Exception as e:
@@ -351,7 +353,7 @@ class DownloadAndExtract(QThread):  # 下载并解压插件
             print(self.download_url)
             response = requests.get(self.download_url, stream=True, proxies=proxies)
             if response.status_code != 200:
-                logger.error(f"插件下载失败，错误代码: {response.status_code}")
+                logger.error(f"插件下载失败, 错误代码: {response.status_code}")
                 self.status_signal.emit(f'ERROR: 网络连接错误：{response.status_code}')
                 return
 
@@ -391,12 +393,12 @@ def check_update() -> None:
     global threads
 
     if VersionThread.is_running():
-        logger.debug("已存在版本检查线程在运行，跳过本检查")
+        logger.debug("已存在版本检查线程在运行, 跳过本检查")
         return
-    
+
     # 清理已终止的线程
     threads = [t for t in threads if t.isRunning()]
-    
+
     # 创建新的版本检查线程
     version_thread = VersionThread()
     threads.append(version_thread)
@@ -415,11 +417,11 @@ def check_version(version: Dict[str, Any]) -> bool:  # 检查更新
             f"检查更新失败！\n{version['error']}"
         )
         return False
-    
+
     channel = int(config_center.read_conf("Version", "version_channel"))
     server_version = version['version_release' if channel == 0 else 'version_beta']
     local_version = config_center.read_conf("Version", "version")
-    logger.debug(f"服务端版本: {Version(server_version)}，本地版本: {Version(local_version)}")
+    logger.debug(f"服务端版本: {Version(server_version)}, 本地版本: {Version(local_version)}")
     if Version(server_version) > Version(local_version):
         utils.tray_icon.push_update_notification(f"新版本速递：{server_version}\n请在“设置”中了解更多。")
 
@@ -427,7 +429,7 @@ def check_version(version: Dict[str, Any]) -> bool:  # 检查更新
 class scheduleThread(QThread):  # 获取课表
     update_signal = pyqtSignal(dict)
 
-    def __init__(self,url:str, method:str='GET', data:dict=None):
+    def __init__(self, url: str, method: str = 'GET', data: Optional[Dict[str, Any]] = None) -> None:
         super().__init__()
         self.url = url
         self.method = method
@@ -438,7 +440,7 @@ class scheduleThread(QThread):  # 获取课表
                 self.url = self.url.replace(db, list_.schedule_dbs[db])
                 break
 
-    def run(self):
+    def run(self) -> None:
         # 获取
         if self.method == 'GET':
             data = self.get_schedule()
@@ -446,10 +448,10 @@ class scheduleThread(QThread):  # 获取课表
             data = self.post_schedule()
         else:
             data = {'error': "method not supported"}
-        
+
         if not isinstance(data, dict):
-            logger.error(f"获取课表失败，返回数据不是字典类型: {data}")
-            data = {'error': "获取课表失败，返回数据不是字典类型"}
+            logger.error(f"获取课表失败, 返回数据不是字典类型: {data}")
+            data = {'error': "获取课表失败, 返回数据不是字典类型"}
         # 发射信号
         self.update_signal.emit(data)
 
@@ -462,12 +464,12 @@ class scheduleThread(QThread):  # 获取课表
                 data = response.json()
                 return json.loads(data.get('data', "{'error': f\"没有 data 项\"}"))
             else:
-                logger.error(f"无法获取课表 {self.url} 错误代码：{response.status_code}，响应内容: {response.text}")
-                return {'error': f"请求失败，错误代码：{response.status_code}"}
+                logger.error(f"无法获取课表 {self.url} 错误代码：{response.status_code}, 响应内容: {response.text}")
+                return {'error': f"请求失败, 错误代码：{response.status_code}"}
         except Exception as e:
-            logger.error(f"请求失败，错误详情：{str(e)}")
+            logger.error(f"请求失败, 错误详情：{str(e)}")
             return {"error": f"请求失败\n{str(e)}"}
-        
+
     def post_schedule(self):
         try:
             logger.info(f"正在上传课表 {self.url}")
@@ -477,8 +479,8 @@ class scheduleThread(QThread):  # 获取课表
                 data = response.json()
                 return json.loads(data.get('data', "{'error': f\"没有 data 项\"}"))
             else:
-                logger.error(f"无法上传课表 {self.url} 错误代码：{response.status_code}，响应内容: {response.text}")
-                return {'error': f"请求失败，错误代码：{response.status_code}"}
+                logger.error(f"无法上传课表 {self.url} 错误代码：{response.status_code}, 响应内容: {response.text}")
+                return {'error': f"请求失败, 错误代码：{response.status_code}"}
         except Exception as e:
-            logger.error(f"请求失败，错误详情：{str(e)}")
+            logger.error(f"请求失败, 错误详情：{str(e)}")
             return {"error": f"请求失败\n{str(e)}"}

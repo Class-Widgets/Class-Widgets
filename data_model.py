@@ -1,8 +1,8 @@
-from typing import Optional, Literal
-from pydantic import BaseModel
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Literal, Optional
+
+from pydantic import BaseModel
 
 
 class ThemeConfig(BaseModel):

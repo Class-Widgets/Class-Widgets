@@ -1,40 +1,41 @@
-import sys
-
 import os
+import os
+import platform
+import sys
 from collections import defaultdict
-from typing import Optional, Union, List, Tuple, Dict, Any
-from PyQt5 import uic
-from PyQt5.QtCore import Qt, QPropertyAnimation, QRect, QEasingCurve, QTimer, QPoint, pyqtProperty, QThread
-from PyQt5.QtGui import QColor, QPainter, QBrush, QPixmap
-from PyQt5.QtWidgets import QWidget, QApplication, QLabel, QFrame, QGraphicsBlurEffect
+from typing import Any, Dict, List, Optional, Tuple
+
 from loguru import logger
+from PyQt5 import uic
+from PyQt5.QtCore import QEasingCurve, QPoint, QPropertyAnimation, QRect, Qt, QThread, QTimer, pyqtProperty
+from PyQt5.QtGui import QBrush, QColor, QPainter, QPixmap
+from PyQt5.QtWidgets import QApplication, QFrame, QGraphicsBlurEffect, QLabel, QWidget
 from qfluentwidgets import setThemeColor
 
 import conf
-from conf import base_directory
 import list_
+from conf import base_directory
 from file import config_center
+from generate_speech import generate_speech_sync
 from play_audio import PlayAudio, play_audio
-from generate_speech import generate_speech_sync, get_voice_id_by_name
-import platform
 
 # 适配高DPI缩放
-if platform.system() == 'Windows' and platform.release() not in ['7', 'XP', 'Vista']:
+if platform.system() == "Windows" and platform.release() not in ["7", "XP", "Vista"]:
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
     QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
     QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
 else:
-    logger.warning('不兼容的系统,跳过高DPI标识')
+    logger.warning("不兼容的系统,跳过高DPI标识")
 
-prepare_class = config_center.read_conf('Audio', 'prepare_class')
-attend_class = config_center.read_conf('Audio', 'attend_class')
-finish_class = config_center.read_conf('Audio', 'finish_class')
+prepare_class = config_center.read_conf("Audio", "prepare_class")
+attend_class = config_center.read_conf("Audio", "attend_class")
+finish_class = config_center.read_conf("Audio", "finish_class")
 
 pushed_notification = False
 notification_contents = {"state": None, "lesson_name": None, "title": None, "subtitle": None, "content": None}
 
 # 波纹效果
-normal_color = '#56CFD8'
+normal_color = "#56CFD8"
 
 window_list = []  # 窗口列表
 active_windows = []
@@ -43,19 +44,20 @@ tts_is_playing = False  # TTS播放状态标志
 
 class TTSAudioThread(QThread):
     """TTS线程"""
+
     def __init__(self, text: str, voice_id: str) -> None:
         super().__init__()
         self.text = text
         self.voice_id = voice_id
 
     def run(self) -> None:
-        self.setPriority(QThread.Priority.LowPriority) # TTS优先级可以低一些
+        self.setPriority(QThread.Priority.LowPriority)  # TTS优先级可以低一些
         global tts_is_playing
         if tts_is_playing:
             logger.warning("TTS 已经播放")
             return
 
-        engine_type = self.voice_id.split(':')[0] if self.voice_id else None
+        engine_type = self.voice_id.split(":")[0] if self.voice_id else None
         if engine_type == "pyttsx3" and platform.system() != "Windows":
             logger.warning("当前系统不是Windows,pyttsx3跳过TTS生成")
             return
@@ -75,17 +77,32 @@ class TTSAudioThread(QThread):
 
 
 class tip_toast(QWidget):
-    def __init__(self, pos: Tuple[int, int], width: int, state: int = 1, lesson_name: Optional[str] = None, title: Optional[str] = None, subtitle: Optional[str] = None, content: Optional[str] = None, icon: Optional[str] = None, duration: int = 2000) -> None:
+    def __init__(
+        self,
+        pos: Tuple[int, int],
+        width: int,
+        state: int = 1,
+        lesson_name: Optional[str] = None,
+        title: Optional[str] = None,
+        subtitle: Optional[str] = None,
+        content: Optional[str] = None,
+        icon: Optional[str] = None,
+        duration: int = 2000,
+    ) -> None:
         super().__init__()
         for w in active_windows[:]:
             w.close()
         active_windows.append(self)
         self.audio_thread = None
-        if hasattr(tip_toast, 'active_tts_thread') and tip_toast.active_tts_thread and tip_toast.active_tts_thread.isRunning():
+        if (
+            hasattr(tip_toast, "active_tts_thread")
+            and tip_toast.active_tts_thread
+            and tip_toast.active_tts_thread.isRunning()
+        ):
             logger.debug("已有TTS线程正在运行")
             self.tts_audio_thread = None
         else:
-            self.tts_audio_thread = None 
+            self.tts_audio_thread = None
             tip_toast.active_tts_thread = None
 
         uic.loadUi(f"{base_directory}/view/widget-toast-bar.ui", self)
@@ -97,147 +114,144 @@ class tip_toast(QWidget):
         dpr = max(1.0, dpr)
 
         # 窗口位置
-        if config_center.read_conf('Toast', 'pin_on_top') == '1':
+        if config_center.read_conf("Toast", "pin_on_top") == "1":
             self.setWindowFlags(
-                Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.FramelessWindowHint |
-                Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
+                Qt.WindowType.WindowStaysOnTopHint
+                | Qt.WindowType.FramelessWindowHint
+                | Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
             )
         else:
-            self.setWindowFlags(
-                Qt.WindowType.WindowStaysOnBottomHint | Qt.WindowType.FramelessWindowHint
-            )
+            self.setWindowFlags(Qt.WindowType.WindowStaysOnBottomHint | Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.move(pos[0], pos[1])
         self.resize(width, height)
 
         # 标题
-        title_label = self.findChild(QLabel, 'title')
-        backgnd = self.findChild(QFrame, 'backgnd')
-        lesson = self.findChild(QLabel, 'lesson')
-        subtitle_label = self.findChild(QLabel, 'subtitle')
-        icon_label = self.findChild(QLabel, 'icon')
+        title_label = self.findChild(QLabel, "title")
+        backgnd = self.findChild(QFrame, "backgnd")
+        lesson = self.findChild(QLabel, "lesson")
+        subtitle_label = self.findChild(QLabel, "subtitle")
+        icon_label = self.findChild(QLabel, "icon")
 
         sound_to_play = None
-        tts_text = None # TTS文本
-        tts_enabled = config_center.read_conf('TTS', 'enable')
+        tts_text = None  # TTS文本
+        tts_enabled = config_center.read_conf("TTS", "enable")
         if tts_enabled is None:
-            tts_enabled = ''
-        tts_enabled = tts_enabled == '1'
-        tts_voice_id = config_center.read_conf('TTS', 'voice_id')
+            tts_enabled = ""
+        tts_enabled = tts_enabled == "1"
+        tts_voice_id = config_center.read_conf("TTS", "voice_id")
         if tts_voice_id is None:
-            tts_voice_id = ''
+            tts_voice_id = ""
 
         if icon:
             pixmap = QPixmap(icon)
             icon_size = int(48 * dpr)
-            pixmap = pixmap.scaled(icon_size, icon_size, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+            pixmap = pixmap.scaled(
+                icon_size, icon_size, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation
+            )
             icon_label.setPixmap(pixmap)
             icon_label.setFixedSize(icon_size, icon_size)
 
-        prepare_minutes = config_center.read_conf('Toast', 'prepare_minutes')
-        format_values = defaultdict(str, {
-            'lesson_name': '',
-            'minutes': '',
-            'title': '',
-            'content': ''
-        })
+        prepare_minutes = config_center.read_conf("Toast", "prepare_minutes")
+        format_values = defaultdict(str, {"lesson_name": "", "minutes": "", "title": "", "content": ""})
 
         if state == 1:
-            logger.info('上课铃声显示')
-            title_label.setText('活动开始')  # 修正文本，以适应不同场景
-            subtitle_label.setText('当前课程')
+            logger.info("上课铃声显示")
+            title_label.setText("活动开始")  # 修正文本, 以适应不同场景
+            subtitle_label.setText("当前课程")
             lesson.setText(lesson_name)  # 课程名
             sound_to_play = attend_class
-            format_values['lesson_name'] = lesson_name
-            tts_text = config_center.read_conf('TTS', 'attend_class').format_map(format_values)
+            format_values["lesson_name"] = lesson_name
+            tts_text = config_center.read_conf("TTS", "attend_class").format_map(format_values)
             setThemeColor(f"#{config_center.read_conf('Color', 'attend_class')}")  # 主题色
         elif state == 0:
-            logger.info('下课铃声显示')
-            title_label.setText('下课')
+            logger.info("下课铃声显示")
+            title_label.setText("下课")
             if lesson_name:
-                subtitle_label.setText('即将进行')
+                subtitle_label.setText("即将进行")
             else:
                 subtitle_label.hide()
             lesson.setText(lesson_name)  # 课程名
             sound_to_play = finish_class
-            format_values['lesson_name'] = lesson_name
-            tts_text = config_center.read_conf('TTS', 'finish_class').format_map(format_values)
+            format_values["lesson_name"] = lesson_name
+            tts_text = config_center.read_conf("TTS", "finish_class").format_map(format_values)
             setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}")
         elif state == 2:
-            logger.info('放学铃声显示')
-            title_label.setText('放学')
-            subtitle_label.setText('当前课程已结束')
-            lesson.setText('')  # 课程名
+            logger.info("放学铃声显示")
+            title_label.setText("放学")
+            subtitle_label.setText("当前课程已结束")
+            lesson.setText("")  # 课程名
             sound_to_play = finish_class
-            tts_text = config_center.read_conf('TTS', 'after_school').format_map(format_values)
+            tts_text = config_center.read_conf("TTS", "after_school").format_map(format_values)
             setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}")
         elif state == 3:
-            logger.info('预备铃声显示')
-            title_label.setText('即将开始')  # 同上
-            subtitle_label.setText('下一节')
+            logger.info("预备铃声显示")
+            title_label.setText("即将开始")  # 同上
+            subtitle_label.setText("下一节")
             lesson.setText(lesson_name)
             sound_to_play = prepare_class
-            format_values['lesson_name'] = lesson_name
-            format_values['minutes'] = prepare_minutes
-            tts_text = config_center.read_conf('TTS', 'prepare_class').format_map(format_values)
+            format_values["lesson_name"] = lesson_name
+            format_values["minutes"] = prepare_minutes
+            tts_text = config_center.read_conf("TTS", "prepare_class").format_map(format_values)
             setThemeColor(f"#{config_center.read_conf('Color', 'prepare_class')}")
         elif state == 4:
-            logger.info(f'通知显示: {title}')
+            logger.info(f"通知显示: {title}")
             title_label.setText(title)
             subtitle_label.setText(subtitle)
             lesson.setText(content)
             sound_to_play = prepare_class
-            format_values['title'] = title
-            format_values['content'] = content
-            tts_text = config_center.read_conf('TTS', 'otherwise').format_map(format_values)
+            format_values["title"] = title
+            format_values["content"] = content
+            tts_text = config_center.read_conf("TTS", "otherwise").format_map(format_values)
 
         global tts_is_playing
         if tts_enabled and tts_text and tts_voice_id:
             logger.info(f"生成TTS: '{tts_text}',语音ID: {tts_voice_id}")
             if tts_is_playing:
-                 logger.warning("TTS已经在播放")
+                logger.warning("TTS已经在播放")
             else:
                 self.tts_audio_thread = TTSAudioThread(tts_text, tts_voice_id)
                 self.tts_audio_thread.start()
         elif tts_enabled and tts_text and not tts_voice_id:
-             logger.warning(f"TTS已启用,但未能根据 '{tts_voice_id}' 找到有效的语音ID")
+            logger.warning(f"TTS已启用,但未能根据 '{tts_voice_id}' 找到有效的语音ID")
         elif tts_enabled and not tts_text:
-             logger.warning("TTS已启用,但当前没有文本供生成")
+            logger.warning("TTS已启用,但当前没有文本供生成")
 
         # 设置样式表
         if state == 1:  # 上课铃声
             bg_color = [  # 1为正常、2为渐变亮色部分、3为渐变暗色部分
                 generate_gradient_color(attend_class_color)[0],
                 generate_gradient_color(attend_class_color)[1],
-                generate_gradient_color(attend_class_color)[2]
+                generate_gradient_color(attend_class_color)[2],
             ]
         elif state == 0 or state == 2:  # 下课铃声
             bg_color = [
                 generate_gradient_color(finish_class_color)[0],
                 generate_gradient_color(finish_class_color)[1],
-                generate_gradient_color(finish_class_color)[2]
+                generate_gradient_color(finish_class_color)[2],
             ]
         elif state == 3:  # 预备铃声
             bg_color = [
                 generate_gradient_color(prepare_class_color)[0],
                 generate_gradient_color(prepare_class_color)[1],
-                generate_gradient_color(prepare_class_color)[2]
+                generate_gradient_color(prepare_class_color)[2],
             ]
         elif state == 4:  # 通知铃声
-            bg_color = ['rgba(110, 190, 210, 255)', 'rgba(110, 190, 210, 255)', 'rgba(90, 210, 215, 255)']
+            bg_color = ["rgba(110, 190, 210, 255)", "rgba(110, 190, 210, 255)", "rgba(90, 210, 215, 255)"]
         else:
-            bg_color = ['rgba(110, 190, 210, 255)', 'rgba(110, 190, 210, 255)', 'rgba(90, 210, 215, 255)']
+            bg_color = ["rgba(110, 190, 210, 255)", "rgba(110, 190, 210, 255)", "rgba(90, 210, 215, 255)"]
 
-        backgnd.setStyleSheet(f'font-weight: bold; border-radius: {radius}; '
-                              'background-color: qlineargradient('
-                              'spread:pad, x1:0, y1:0, x2:1, y2:1,'
-                              f' stop:0 {bg_color[1]}, stop:0.5 {bg_color[0]}, stop:1 {bg_color[2]}'
-                              ');'
-                              )
+        backgnd.setStyleSheet(
+            f"font-weight: bold; border-radius: {radius}; "
+            "background-color: qlineargradient("
+            "spread:pad, x1:0, y1:0, x2:1, y2:1,"
+            f" stop:0 {bg_color[1]}, stop:0.5 {bg_color[0]}, stop:1 {bg_color[2]}"
+            ");"
+        )
 
         # 模糊效果
         self.blur_effect = QGraphicsBlurEffect(self)
-        if config_center.read_conf('Toast', 'wave') == '1':
+        if config_center.read_conf("Toast", "wave") == "1":
             backgnd.setGraphicsEffect(self.blur_effect)
 
         mini_size_x = 150 / dpr
@@ -251,8 +265,12 @@ class tip_toast(QWidget):
         # 放大效果
         self.geometry_animation = QPropertyAnimation(self, b"geometry")
         self.geometry_animation.setDuration(750)  # 动画持续时间
-        start_rect = QRect(int(start_x + mini_size_x / 2), int(start_y + mini_size_y / 2),
-                         int(total_width - mini_size_x), int(height - mini_size_y))
+        start_rect = QRect(
+            int(start_x + mini_size_x / 2),
+            int(start_y + mini_size_y / 2),
+            int(total_width - mini_size_x),
+            int(height - mini_size_y),
+        )
         self.geometry_animation.setStartValue(start_rect)
         self.geometry_animation.setEndValue(QRect(start_x, start_y, total_width, height))
         self.geometry_animation.setEasingCurve(QEasingCurve.Type.OutCirc)
@@ -274,18 +292,18 @@ class tip_toast(QWidget):
             self.playsound(sound_to_play)
 
         # 检查并播放TTS
-        if config_center.read_conf('TTS', 'enable') == '1' and tts_text:
-            voice_id = config_center.read_conf('TTS', 'voice_id')
+        if config_center.read_conf("TTS", "enable") == "1" and tts_text:
+            voice_id = config_center.read_conf("TTS", "voice_id")
             if voice_id is None:
-                voice_id = ''
+                voice_id = ""
             if self.tts_audio_thread and self.tts_audio_thread.isRunning():
                 try:
                     self.tts_audio_thread.quit()
-                    self.tts_audio_thread.wait(1000) # 等待最多1秒
+                    self.tts_audio_thread.wait(1000)  # 等待最多1秒
                 except Exception as e:
                     logger.warning(f"停止旧TTS线程时出错: {e}")
             self.tts_audio_thread = TTSAudioThread(tts_text, voice_id)
-            # 稍微延迟启动TTS，避免和提示音重叠太近
+            # 稍微延迟启动TTS, 避免和提示音重叠太近
             QTimer.singleShot(500, self.tts_audio_thread.start)
 
         self.geometry_animation.start()
@@ -305,8 +323,12 @@ class tip_toast(QWidget):
         self.geometry_animation_close = QPropertyAnimation(self, b"geometry")
         self.geometry_animation_close.setDuration(500)  # 动画持续时间
         self.geometry_animation_close.setStartValue(QRect(start_x, start_y, total_width, height))
-        end_rect = QRect(int(start_x + mini_size_x / 2), int(start_y + mini_size_y / 2),
-                       int(total_width - mini_size_x), int(height - mini_size_y))
+        end_rect = QRect(
+            int(start_x + mini_size_x / 2),
+            int(start_y + mini_size_y / 2),
+            int(total_width - mini_size_x),
+            int(height - mini_size_y),
+        )
         self.geometry_animation_close.setEndValue(end_rect)
         self.geometry_animation_close.setEasingCurve(QEasingCurve.Type.InOutQuad)
 
@@ -331,13 +353,13 @@ class tip_toast(QWidget):
                 self.audio_thread.quit()
                 self.audio_thread.wait(500)
             except Exception as e:
-                 logger.warning(f"关闭窗口时停止提示音线程出错: {e}")
+                logger.warning(f"关闭窗口时停止提示音线程出错: {e}")
         if self.tts_audio_thread and self.tts_audio_thread.isRunning():
             try:
                 self.tts_audio_thread.quit()
                 self.tts_audio_thread.wait(1000)
             except Exception as e:
-                 logger.warning(f"关闭窗口时停止TTS线程出错: {e}")
+                logger.warning(f"关闭窗口时停止TTS线程出错: {e}")
 
         if self in active_windows:
             active_windows.remove(self)
@@ -349,7 +371,7 @@ class tip_toast(QWidget):
 
     def playsound(self, filename: str) -> None:
         try:
-            file_path = os.path.join(base_directory, 'audio', filename)
+            file_path = os.path.join(base_directory, "audio", filename)
             if self.audio_thread and self.audio_thread.isRunning():
                 self.audio_thread.quit()
                 self.audio_thread.wait()
@@ -357,22 +379,24 @@ class tip_toast(QWidget):
             self.audio_thread.start()
             self.audio_thread.setPriority(QThread.Priority.HighestPriority)  # 设置优先级
         except Exception as e:
-            logger.error(f'播放音频文件失败：{e}')
+            logger.error(f"播放音频文件失败：{e}")
 
 
 class wave_Effect(QWidget):
     def __init__(self, state: int = 1) -> None:
         super().__init__()
 
-        if config_center.read_conf('Toast', 'pin_on_top') == '1':
+        if config_center.read_conf("Toast", "pin_on_top") == "1":
             self.setWindowFlags(
-                Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.FramelessWindowHint |
-                Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
+                Qt.WindowType.WindowStaysOnTopHint
+                | Qt.WindowType.FramelessWindowHint
+                | Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
             )
         else:
             self.setWindowFlags(
-                Qt.WindowType.WindowStaysOnBottomHint | Qt.WindowType.FramelessWindowHint |
-                Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
+                Qt.WindowType.WindowStaysOnBottomHint
+                | Qt.WindowType.FramelessWindowHint
+                | Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
             )
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
@@ -409,7 +433,7 @@ class wave_Effect(QWidget):
         self.update()
 
     def showAnimation(self) -> None:
-        self.animation = QPropertyAnimation(self, b'radius')
+        self.animation = QPropertyAnimation(self, b"radius")
         self.animation.setDuration(self.duration)
         self.animation.setStartValue(50)
         try:
@@ -417,19 +441,21 @@ class wave_Effect(QWidget):
         except AttributeError:
             dpr = QApplication.primaryScreen().devicePixelRatio()
         dpr = max(1.0, dpr)
-        fixed_end_radius = 1000 * dpr # 动画效果值
+        fixed_end_radius = 1000 * dpr  # 动画效果值
         self.animation.setEndValue(fixed_end_radius)
         self.animation.setEasingCurve(QEasingCurve.Type.InOutQuad)
         self.animation.start()
 
-        self.fade_animation = QPropertyAnimation(self, b'windowOpacity')
+        self.fade_animation = QPropertyAnimation(self, b"windowOpacity")
         self.fade_animation.setDuration(self.duration - 150)
 
-        self.fade_animation.setKeyValues([  # 关键帧
-            (0, 0),
-            (0.06, 0.9),
-            (1, 0)
-        ])
+        self.fade_animation.setKeyValues(
+            [  # 关键帧
+                (0, 0),
+                (0.06, 0.9),
+                (1, 0),
+            ]
+        )
 
         self.fade_animation.setEasingCurve(QEasingCurve.Type.InOutQuad)
         self.fade_animation.finished.connect(self.close)
@@ -460,15 +486,22 @@ def generate_gradient_color(theme_color: str) -> List[str]:  # 计算渐变色
         g = max(0, min(255, int(color.green() * (1 + factor))))
         b = max(0, min(255, int(color.blue() * (1 + factor))))
         # return QColor(r, g, b)
-        return f'rgba({r}, {g}, {b}, 255)'
+        return f"rgba({r}, {g}, {b}, 255)"
 
     color = QColor(theme_color)
     gradient = [adjust_color(color, 0), adjust_color(color, 0.24), adjust_color(color, -0.11)]
     return gradient
 
 
-def main(state: int = 1, lesson_name: str = '', title: str = '通知示例', subtitle: str = '副标题',
-         content: str = '这是一条通知示例', icon: Optional[str] = None, duration: int = 2000) -> None:  # 0:下课铃声 1:上课铃声 2:放学铃声 3:预备铃 4:其他
+def main(
+    state: int = 1,
+    lesson_name: str = "",
+    title: str = "通知示例",
+    subtitle: str = "副标题",
+    content: str = "这是一条通知示例",
+    icon: Optional[str] = None,
+    duration: int = 2000,
+) -> None:  # 0:下课铃声 1:上课铃声 2:放学铃声 3:预备铃 4:其他
     if detect_enable_toast(state):
         return
 
@@ -483,7 +516,7 @@ def main(state: int = 1, lesson_name: str = '', title: str = '通知示例', sub
     finish_class_color = f"#{config_center.read_conf('Color', 'finish_class')}"
     prepare_class_color = f"#{config_center.read_conf('Color', 'prepare_class')}"
 
-    theme = config_center.read_conf('General', 'theme')
+    theme = config_center.read_conf("General", "theme")
     theme_config = conf.load_theme_config(theme).config
     height = theme_config.height
     radius = theme_config.radius
@@ -496,7 +529,7 @@ def main(state: int = 1, lesson_name: str = '', title: str = '通知示例', sub
     except AttributeError:
         dpr = 1.0
     dpr = max(1.0, dpr)
- 
+
     widgets_width = 0
     for widget in widgets:  # 计算总宽度(兼容插件)
         widgets_width += theme_config.widget_width.get(widget, list_.widget_width.get(widget, 0))
@@ -504,45 +537,45 @@ def main(state: int = 1, lesson_name: str = '', title: str = '通知示例', sub
     total_width = widgets_width + spacing * (len(widgets) - 1)
 
     start_x = int((screen_width - total_width) / 2)
-    margin_base = int(config_center.read_conf('General', 'margin'))
+    margin_base = int(config_center.read_conf("General", "margin"))
     start_y = int(margin_base * dpr)
- 
+
     if state != 4:
         window = tip_toast((start_x, start_y), total_width, state, lesson_name, duration=duration)
     else:
         window = tip_toast(
-            (start_x, start_y),
-            total_width, state,
-            '',
-            title,
-            subtitle,
-            content,
-            icon,
-            duration=duration
+            (start_x, start_y), total_width, state, "", title, subtitle, content, icon, duration=duration
         )
 
     window.show()
     window_list.append(window)
 
-    if config_center.read_conf('Toast', 'wave') == '1':
+    if config_center.read_conf("Toast", "wave") == "1":
         wave = wave_Effect(state)
         wave.show()
         window_list.append(wave)
 
 
 def detect_enable_toast(state: int = 0) -> bool:
-    if config_center.read_conf('Toast', 'attend_class') != '1' and state == 1:
+    if config_center.read_conf("Toast", "attend_class") != "1" and state == 1:
         return True
-    if (config_center.read_conf('Toast', 'finish_class') != '1') and (state in [0, 2]):
+    if (config_center.read_conf("Toast", "finish_class") != "1") and (state in [0, 2]):
         return True
-    if config_center.read_conf('Toast', 'prepare_class') != '1' and state == 3:
+    if config_center.read_conf("Toast", "prepare_class") != "1" and state == 3:
         return True
     else:
         return False
 
 
-def push_notification(state: int = 1, lesson_name: str = '', title: Optional[str] = None, subtitle: Optional[str] = None,
-                      content: Optional[str] = None, icon: Optional[str] = None, duration: int = 2000) -> Dict[str, Any]:  # 推送通知
+def push_notification(
+    state: int = 1,
+    lesson_name: str = "",
+    title: Optional[str] = None,
+    subtitle: Optional[str] = None,
+    content: Optional[str] = None,
+    icon: Optional[str] = None,
+    duration: int = 2000,
+) -> Dict[str, Any]:  # 推送通知
     global pushed_notification, notification_contents
     pushed_notification = True
     notification_contents = {
@@ -550,20 +583,20 @@ def push_notification(state: int = 1, lesson_name: str = '', title: Optional[str
         "lesson_name": lesson_name,
         "title": title,
         "subtitle": subtitle,
-        "content": content
+        "content": content,
     }
     main(state, lesson_name, title, subtitle, content, icon, duration)
     return notification_contents
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = QApplication(sys.argv)
     main(
         state=4,  # 自定义通知
-        title='天气预报',
-        subtitle='',
-        content='1°~-3° | 3°~-3° | 9°~1°',
-        icon='img/favicon.ico',
-        duration=2000
+        title="天气预报",
+        subtitle="",
+        content="1°~-3° | 3°~-3° | 9°~1°",
+        icon="img/favicon.ico",
+        duration=2000,
     )
     sys.exit(app.exec())

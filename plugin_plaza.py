@@ -1,61 +1,69 @@
 import json
+import platform
 import sys
 from datetime import datetime
 from random import shuffle
-from typing import List, Dict, Optional, Any
+from typing import Any, Dict, List, Optional
 
-from PyQt5 import uic
-from PyQt5.QtCore import QSize, Qt, QTimer, QUrl, QStringListModel, pyqtSignal, QThread
-from PyQt5.QtGui import QIcon, QPixmap, QDesktopServices
-from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QGridLayout, QSpacerItem, QSizePolicy, QWidget, \
-    QScroller, QCompleter
 from loguru import logger
-from qfluentwidgets import MSFluentWindow, FluentIcon as fIcon, NavigationItemPosition, TitleLabel, \
-    ImageLabel, StrongBodyLabel, HyperlinkLabel, CaptionLabel, PrimaryPushButton, HorizontalFlipView, \
-    InfoBar, InfoBarPosition, SplashScreen, MessageBoxBase, TransparentToolButton, BodyLabel, \
-    PrimarySplitPushButton, RoundMenu, Action, PipsPager, TextBrowser, CardWidget, \
-    IndeterminateProgressRing, ComboBox, ProgressBar, SmoothScrollArea, SearchLineEdit, HyperlinkButton, \
-    MessageBox, SwitchButton, SubtitleLabel
+from PyQt5 import uic
+from PyQt5.QtCore import (QSize, QStringListModel, Qt, QThread, QTimer, QUrl,
+                          pyqtSignal)
+from PyQt5.QtGui import QDesktopServices, QIcon, QPixmap
+from PyQt5.QtWidgets import (QApplication, QCompleter, QGridLayout,
+                             QHBoxLayout, QScroller, QSizePolicy, QSpacerItem,
+                             QVBoxLayout, QWidget)
+from qfluentwidgets import (Action, BodyLabel, CaptionLabel, CardWidget,
+                            ComboBox)
+from qfluentwidgets import FluentIcon as fIcon
+from qfluentwidgets import (HorizontalFlipView, HyperlinkButton,
+                            HyperlinkLabel, ImageLabel,
+                            IndeterminateProgressRing, InfoBar,
+                            InfoBarPosition, MessageBox, MessageBoxBase,
+                            MSFluentWindow, NavigationItemPosition, PipsPager,
+                            PrimaryPushButton, PrimarySplitPushButton,
+                            ProgressBar, RoundMenu, SearchLineEdit,
+                            SmoothScrollArea, SplashScreen, StrongBodyLabel,
+                            SubtitleLabel, SwitchButton, TextBrowser,
+                            TitleLabel, TransparentToolButton)
 
-import conf
+
 import list_ as l
 import network_thread as nt
 from conf import base_directory
 from file import config_center
 from plugin import p_loader
-from utils import restart, calculate_size
-import platform
-from loguru import logger
+from utils import calculate_size, restart
 
 
 class ThreadManager:
     """线程管理器"""
-    
+
     def __init__(self) -> None:
         self.active_threads: List[QThread] = []
         self.logger = logger
-    
+
     def add_thread(self, thread: QThread) -> QThread:
         """添加线程到管理器"""
         if thread not in self.active_threads:
             self.active_threads.append(thread)
             thread.finished.connect(lambda: self._remove_thread(thread))
         return thread
-    
+
     def _remove_thread(self, thread: QThread) -> None:
         """从管理器中移除线程"""
         if thread in self.active_threads:
             self.active_threads.remove(thread)
-    
+
     def stop_all_threads(self) -> None:
         """停止所有活跃线程"""
         for thread in self.active_threads.copy():
             try:
                 if thread.isRunning():
-                    if hasattr(thread, 'stop'):
+                    if hasattr(thread, "stop"):
                         thread.stop()
                     if not thread.wait(1000):
-                        # self.logger.warning(f"线程 {thread.__class__.__name__} 未能在1秒内停止，强制终止")
+                        # self.logger.warning(f"线程 {thread.__class__.__name__} 未能在1秒内停止, 强制终止")
                         thread.terminate()
                         thread.wait(500)
                     # self.logger.debug(f"线程已停止: {thread.__class__.__name__}")
@@ -63,31 +71,31 @@ class ThreadManager:
             except Exception as e:
                 self.logger.error(f"停止线程时发生错误: {e}")
         self.active_threads.clear()
-    
+
     def get_active_count(self) -> int:
         """获取活跃线程数量"""
         return len([t for t in self.active_threads if t.isRunning()])
-    
+
     def get_thread_status(self) -> Dict[str, Any]:
         """获取线程状态信息"""
         running = [t.__class__.__name__ for t in self.active_threads if t.isRunning()]
         finished = [t.__class__.__name__ for t in self.active_threads if t.isFinished()]
         return {
-            'total': len(self.active_threads),
-            'running': len(running),
-            'finished': len(finished),
-            'running_threads': running,
-            'finished_threads': finished
+            "total": len(self.active_threads),
+            "running": len(running),
+            "finished": len(finished),
+            "running_threads": running,
+            "finished_threads": finished,
         }
 
+
 # 适配高DPI缩放
-if platform.system() == 'Windows' and platform.release() not in ['7', 'XP', 'Vista']:
-    QApplication.setHighDpiScaleFactorRoundingPolicy(
-        Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+if platform.system() == "Windows" and platform.release() not in ["7", "XP", "Vista"]:
+    QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
     QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
     QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
 else:
-    logger.warning('不兼容的系统,跳过高DPI标识')
+    logger.warning("不兼容的系统,跳过高DPI标识")
 
 CONF_PATH = f"{base_directory}/plugins/plugins_from_pp.json"
 PLAZA_REPO_URL = "https://raw.githubusercontent.com/Class-Widgets/plugin-plaza/"
@@ -100,10 +108,10 @@ local_plugins_version = {}  # 本地插件版本
 download_progress = []  # 下载线程
 
 installed_plugins = []  # 已安装插件（通过PluginPlaza获取）
-tags = ['示例', '信息展示', '学习', '测试', '工具', '自动化']  # 测试用TAG
-recommend_plugins = ['cw-example-plugin']  # 推荐插件（通过PluginPlaza获取）
+tags = ["示例", "信息展示", "学习", "测试", "工具", "自动化"]  # 测试用TAG
+recommend_plugins = ["cw-example-plugin"]  # 推荐插件（通过PluginPlaza获取）
 search_items = []
-SELF_PLUGIN_VERSION = config_center.read_conf('Plugin', 'version')  # 自身版本号
+SELF_PLUGIN_VERSION = config_center.read_conf("Plugin", "version")  # 自身版本号
 SEARCH_FIELDS = ["name", "description", "tag", "author"]  # 搜索字段
 
 
@@ -124,23 +132,26 @@ class TagLink(HyperlinkButton):  # 标签链接
 
 
 class downloadProgressBar(InfoBar):  # 下载进度条(创建下载进程)
-    def __init__(self, url: str = TEST_DOWNLOAD_LINK, branch: str = 'main', name: str = "Test", parent: Optional[Any] = None) -> None:
+    def __init__(
+        self, url: str = TEST_DOWNLOAD_LINK, branch: str = "main", name: str = "Test", parent: Optional[Any] = None
+    ) -> None:
         global download_progress
-        self.p_name = url.split('/')[4]  # repo
+        self.p_name = url.split("/")[4]  # repo
         # user = url.split('/')[3]
         self.name = name
-        self.url = f'{url}/archive/refs/heads/{branch}.zip'
+        self.url = f"{url}/archive/refs/heads/{branch}.zip"
 
-        super().__init__(icon=fIcon.DOWNLOAD,
-                         title='',
-                         content=f"正在下载 {name} (～￣▽￣)～)",
-                         orient=Qt.Horizontal,
-                         isClosable=False,
-                         position=InfoBarPosition.TOP,
-                         duration=-1,
-                         parent=parent
-                         )
-        self.setCustomBackgroundColor('white', '#202020')
+        super().__init__(
+            icon=fIcon.DOWNLOAD,
+            title="",
+            content=f"正在下载 {name} (～￣▽￣)～)",
+            orient=Qt.Horizontal,
+            isClosable=False,
+            position=InfoBarPosition.TOP,
+            duration=-1,
+            parent=parent,
+        )
+        self.setCustomBackgroundColor("white", "#202020")
         self.bar = ProgressBar()
         self.bar.setFixedWidth(300)
         self.cancelBtn = HyperlinkLabel()
@@ -159,9 +170,9 @@ class downloadProgressBar(InfoBar):  # 下载进度条(创建下载进程)
         # self.download_thread = nt.DownloadAndExtract(TEST_DOWNLOAD_LINK, self.p_name)
         self.download_thread.progress_signal.connect(lambda progress: self.bar.setValue(int(progress)))  # 下载进度
         self.download_thread.status_signal.connect(self.detect_status)  # 判断状态
-        if hasattr(self.parent(), 'thread_manager'):
+        if hasattr(self.parent(), "thread_manager"):
             self.parent().thread_manager.add_thread(self.download_thread)
-        
+
         self.download_thread.start()
 
     def cancelDownload(self) -> None:
@@ -191,13 +202,13 @@ class downloadProgressBar(InfoBar):  # 下载进度条(创建下载进程)
         self.download_thread.deleteLater()
 
         InfoBar.success(
-            title='下载成功！',
+            title="下载成功！",
             content=f"下载 {self.name} 成功！",
             orient=Qt.Horizontal,
             isClosable=True,
             position=InfoBarPosition.TOP,
             duration=5000,
-            parent=self.parent()
+            parent=self.parent(),
         )
         if not restart_tips_flag:  # 重启提示
             self.parent().restart_tips()
@@ -207,31 +218,35 @@ class downloadProgressBar(InfoBar):  # 下载进度条(创建下载进程)
         global download_progress
         download_progress.remove(self.p_name)
         InfoBar.error(
-            title='下载失败(っ °Д °;)っ',
+            title="下载失败(っ °Д °;)っ",
             content=f"{error_info}",
             orient=Qt.Horizontal,
             isClosable=True,
             position=InfoBarPosition.TOP,
             duration=5000,
-            parent=self.parent()
+            parent=self.parent(),
         )
         self.close()
 
 
 def install_plugin(parent: Any, p_name: str, data: Dict[str, Any]) -> bool:
-    plugin_ver = str(data.get('plugin_ver'))
+    plugin_ver = str(data.get("plugin_ver"))
     if plugin_ver != SELF_PLUGIN_VERSION:  # 插件版本不匹配
         if plugin_ver > SELF_PLUGIN_VERSION:
-            content = (f'此插件版本（{plugin_ver}）高于当前设备中 Class Widgets 兼容的插件版本（{SELF_PLUGIN_VERSION}）；\n'
-                       f'请更新 Class Widgets 后再尝试安装此插件。')
+            content = (
+                f"此插件版本（{plugin_ver}）高于当前设备中 Class Widgets 兼容的插件版本（{SELF_PLUGIN_VERSION}）；\n"
+                f"请更新 Class Widgets 后再尝试安装此插件。"
+            )
         else:
-            content = (f'此插件版本（{plugin_ver}）低于当前设备中 Class Widgets 兼容的插件版本（{SELF_PLUGIN_VERSION}）；\n'
-                       f'可能是插件缺乏维护，请联系插件作者更新插件，或在社区（GitHub、QQ群）中提出问题。')
+            content = (
+                f"此插件版本（{plugin_ver}）低于当前设备中 Class Widgets 兼容的插件版本（{SELF_PLUGIN_VERSION}）；\n"
+                f"可能是插件缺乏维护, 请联系插件作者更新插件, 或在社区（GitHub、QQ群）中提出问题。"
+            )
 
         cc = MessageBox(
             "本插件不兼容当前版本的 Class Widgets",
-            f"{content}\n\n不建议安装此插件，否则将出现不可预料（包括崩溃、闪退等故障）的问题。",
-            parent
+            f"{content}\n\n不建议安装此插件, 否则将出现不可预料（包括崩溃、闪退等故障）的问题。",
+            parent,
         )  # 兼容性检查窗口
         cc.yesButton.setText("取消安装")
         cc.cancelButton.setText("强制安装（不建议）")
@@ -243,58 +258,64 @@ def install_plugin(parent: Any, p_name: str, data: Dict[str, Any]) -> bool:
         branch = data.get("branch")
         title = data.get("name")
 
-        di = downloadProgressBar(
-            url=f"{url}",
-            branch=branch,
-            name=title,
-            parent=parent
-        )
+        di = downloadProgressBar(url=f"{url}", branch=branch, name=title, parent=parent)
         di.show()
         return True
     return False
 
 
 class PluginDetailPage(MessageBoxBase):  # 插件详情页面
-    def __init__(self, icon: str, title: str, content: str, tag: str, version: str, author: str, url: str, data: Optional[Dict[str, Any]] = None, parent: Optional[Any] = None) -> None:
+    def __init__(
+        self,
+        icon: str,
+        title: str,
+        content: str,
+        tag: str,
+        version: str,
+        author: str,
+        url: str,
+        data: Optional[Dict[str, Any]] = None,
+        parent: Optional[Any] = None,
+    ) -> None:
         super().__init__(parent)
         self.data = data
         self.branch = data.get("branch")
         self.title = title
         self.parent = parent
         self.url = url
-        self.p_name = url.split('/')[-1]  # repo
-        author_url = '/'.join(url.rsplit('/', 2)[:-1])
+        self.p_name = url.split("/")[-1]  # repo
+        author_url = "/".join(url.rsplit("/", 2)[:-1])
         self.init_ui()
         self.download_readme()
-        scroll_area_widget = self.findChild(QVBoxLayout, 'verticalLayout_9')
+        scroll_area_widget = self.findChild(QVBoxLayout, "verticalLayout_9")
 
-        self.iconWidget = self.findChild(ImageLabel, 'pluginIcon')
+        self.iconWidget = self.findChild(ImageLabel, "pluginIcon")
         self.iconWidget.setImage(icon)
         self.iconWidget.setFixedSize(100, 100)
         self.iconWidget.setBorderRadius(8, 8, 8, 8)
 
-        self.titleLabel = self.findChild(TitleLabel, 'titleLabel')  # 标题
+        self.titleLabel = self.findChild(TitleLabel, "titleLabel")  # 标题
         self.titleLabel.setText(title)
 
-        self.contentLabel = self.findChild(CaptionLabel, 'descLabel')  # 描述
+        self.contentLabel = self.findChild(CaptionLabel, "descLabel")  # 描述
         self.contentLabel.setText(content)
 
-        self.tagLabel = self.findChild(HyperlinkLabel, 'tagButton')  # tag
+        self.tagLabel = self.findChild(HyperlinkLabel, "tagButton")  # tag
         self.tagLabel.setText(tag)
 
-        self.versionLabel = self.findChild(BodyLabel, 'versionLabel')  # 版本
+        self.versionLabel = self.findChild(BodyLabel, "versionLabel")  # 版本
         self.versionLabel.setText(version)
 
-        self.authorLabel = self.findChild(HyperlinkLabel, 'authorButton')  # 作者
+        self.authorLabel = self.findChild(HyperlinkLabel, "authorButton")  # 作者
         self.authorLabel.setText(author)
         self.authorLabel.setUrl(author_url)
 
-        self.openGitHub = self.findChild(TransparentToolButton, 'openGitHub')  # 打开连接
+        self.openGitHub = self.findChild(TransparentToolButton, "openGitHub")  # 打开连接
         self.openGitHub.setIcon(fIcon.LINK)
         self.openGitHub.setIconSize(QSize(18, 18))
         self.openGitHub.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(url)))
 
-        self.installButton = self.findChild(PrimarySplitPushButton, 'installButton')
+        self.installButton = self.findChild(PrimarySplitPushButton, "installButton")
         self.installButton.setText("  安装  ")
         self.installButton.setIcon(fIcon.DOWNLOAD)
         self.installButton.clicked.connect(self.install)
@@ -314,11 +335,14 @@ class PluginDetailPage(MessageBoxBase):  # 插件详情页面
                 self.installButton.setEnabled(True)
 
         menu = RoundMenu(parent=self.installButton)
-        menu.addActions([
-            Action(fIcon.DOWNLOAD, "为 Class Widgets 安装", triggered=self.install),
-            Action(fIcon.LINK, "下载到本地",
-                   triggered=lambda: QDesktopServices.openUrl(QUrl(f"{url}/releases/latest")))
-        ])
+        menu.addActions(
+            [
+                Action(fIcon.DOWNLOAD, "为 Class Widgets 安装", triggered=self.install),
+                Action(
+                    fIcon.LINK, "下载到本地", triggered=lambda: QDesktopServices.openUrl(QUrl(f"{url}/releases/latest"))
+                ),
+            ]
+        )
         self.installButton.setFlyout(menu)
 
         self.readmePage = TextBrowser(self)
@@ -340,15 +364,15 @@ class PluginDetailPage(MessageBoxBase):  # 插件详情页面
         else:
             self.download_thread = nt.getReadme(f"{replace_to_file_server(self.url, self.data['branch'])}/README.md")
         self.download_thread.html_signal.connect(display_readme)
-        if hasattr(self.parent, 'thread_manager'):
+        if hasattr(self.parent, "thread_manager"):
             self.parent.thread_manager.add_thread(self.download_thread)
-        
+
         self.download_thread.start()
 
     def init_ui(self) -> None:
         # 加载ui文件
         self.temp_widget = QWidget()
-        uic.loadUi(f'{base_directory}/view/pp/plugin_detail.ui', self.temp_widget)
+        uic.loadUi(f"{base_directory}/view/pp/plugin_detail.ui", self.temp_widget)
         self.viewLayout.addWidget(self.temp_widget)
         self.viewLayout.setContentsMargins(0, 0, 0, 0)
         # 隐藏原有按钮
@@ -357,7 +381,7 @@ class PluginDetailPage(MessageBoxBase):  # 插件详情页面
         self.buttonGroup.hide()
 
         # 自定关闭按钮
-        self.closeButton = self.findChild(TransparentToolButton, 'closeButton')
+        self.closeButton = self.findChild(TransparentToolButton, "closeButton")
         self.closeButton.setIcon(fIcon.CLOSE)
         self.closeButton.clicked.connect(self.close)
 
@@ -367,26 +391,38 @@ class PluginDetailPage(MessageBoxBase):  # 插件详情页面
 
 class PluginCard_Horizontal(CardWidget):  # 插件卡片（横向）
     def __init__(
-            self, icon: str = 'img/plaza/plugin_pre.png', title: str = 'Plugin Name', content: str = 'Description...', tag: str = 'Unknown',
-            version: str = '1.0.0', author: str = "CW Support",
-            url: str = "https://github.com/RinLit-233-shiroko/cw-example-plugin", data: Optional[Dict[str, Any]] = None, parent: Optional[Any] = None) -> None:
+        self,
+        icon: str = "img/plaza/plugin_pre.png",
+        title: str = "Plugin Name",
+        content: str = "Description...",
+        tag: str = "Unknown",
+        version: str = "1.0.0",
+        author: str = "CW Support",
+        url: str = "https://github.com/RinLit-233-shiroko/cw-example-plugin",
+        data: Optional[Dict[str, Any]] = None,
+        parent: Optional[Any] = None,
+    ) -> None:
         super().__init__(parent)
         self.icon = icon
         self.title = title
-        self.plugin_ver = data.get('plugin_ver')
+        self.plugin_ver = data.get("plugin_ver")
         self.parent = parent
         self.tag = tag
         self.branch = data.get("branch")
         self.url = url
-        self.p_name = url.split('/')[-1]  # repo
+        self.p_name = url.split("/")[-1]  # repo
         self.data = data
-        author_url = '/'.join(self.url.rsplit('/', 2)[:-1])
+        author_url = "/".join(self.url.rsplit("/", 2)[:-1])
 
-        self.iconWidget = ImageLabel(icon)  # 插件图标
-        self.titleLabel = StrongBodyLabel(title, self)  # 插件名
-        self.versionLabel = CaptionLabel(version, self)  # 插件版本
+        self.iconWidget = ImageLabel()  # 插件图标
+        self.iconWidget.setPixmap(icon)
+        self.titleLabel = StrongBodyLabel(title)  # 插件名
+        self.titleLabel.setParent(self)
+        self.versionLabel = CaptionLabel(version)  # 插件版本
+        self.versionLabel.setParent(self)
         self.authorLabel = HyperlinkLabel()  # 插件作者
-        self.contentLabel = CaptionLabel(content, self)  # 插件描述
+        self.contentLabel = CaptionLabel(content)  # 插件描述
+        self.contentLabel.setParent(self)
         self.installButton = PrimaryPushButton()
 
         # layout
@@ -449,10 +485,10 @@ class PluginCard_Horizontal(CardWidget):  # 插件卡片（横向）
 
         self.hBoxLayout_Author.addWidget(self.authorLabel, 0, Qt.AlignmentFlag.AlignLeft)
 
-    def install(self):
+    def install(self) -> None:
         install_plugin(self.parent, self.p_name, self.data)
 
-    def set_img(self, img):
+    def set_img(self, img) -> None:
         try:
             self.icon = img
             self.iconWidget.setImage(img)
@@ -460,11 +496,17 @@ class PluginCard_Horizontal(CardWidget):  # 插件卡片（横向）
         except Exception as e:
             logger.error(f"设置插件图片失败: {e}")
 
-    def show_detail(self):
+    def show_detail(self) -> None:
         w = PluginDetailPage(
-            icon=self.icon, title=self.title, content=self.contentLabel.text(),
-            tag=self.tag, version=self.versionLabel.text(), author=self.authorLabel.text(),
-            url=self.url, data=self.data, parent=self.parent
+            icon=self.icon,
+            title=self.title,
+            content=self.contentLabel.text(),
+            tag=self.tag,
+            version=self.versionLabel.text(),
+            author=self.authorLabel.text(),
+            url=self.url,
+            data=self.data,
+            parent=self.parent,
         )
         w.exec()
 
@@ -472,29 +514,29 @@ class PluginCard_Horizontal(CardWidget):  # 插件卡片（横向）
 class PluginPlaza(MSFluentWindow):
     closed = pyqtSignal()
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.splashScreen = None
         self.thread_manager = ThreadManager()
         global installed_plugins
         try:
-            with open(CONF_PATH, 'r', encoding='utf-8') as file:
-                installed_plugins = json.load(file).get('plugins')
+            with open(CONF_PATH, "r", encoding="utf-8") as file:
+                installed_plugins = json.load(file).get("plugins")
             # 校验
             for plugin in installed_plugins:
                 if plugin not in p_loader.plugins_name:
-                    logger.warning(f"已在插件广场安装的插件 {plugin} 未找到，可能已遭删除")
+                    logger.warning(f"已在插件广场安装的插件 {plugin} 未找到, 可能已遭删除")
                     installed_plugins.remove(plugin)
         except Exception as e:
             logger.error(f"读取已安装的插件失败: {e}")
         try:
-            self.homeInterface = uic.loadUi(f'{base_directory}/view/pp/home.ui')  # 首页
+            self.homeInterface = uic.loadUi(f"{base_directory}/view/pp/home.ui")  # 首页
             self.homeInterface.setObjectName("homeInterface")
-            self.latestsInterface = uic.loadUi(f'{base_directory}/view/pp/latests.ui')  # 最新更新
+            self.latestsInterface = uic.loadUi(f"{base_directory}/view/pp/latests.ui")  # 最新更新
             self.latestsInterface.setObjectName("latestInterface")
-            self.settingsInterface = uic.loadUi(f'{base_directory}/view/pp/settings.ui')  # 设置
+            self.settingsInterface = uic.loadUi(f"{base_directory}/view/pp/settings.ui")  # 设置
             self.settingsInterface.setObjectName("settingsInterface")
-            self.searchInterface = uic.loadUi(f'{base_directory}/view/pp/search.ui')  # 搜索
+            self.searchInterface = uic.loadUi(f"{base_directory}/view/pp/search.ui")  # 搜索
             self.searchInterface.setObjectName("searchInterface")
 
             load_local_plugins_version()  # 加载本地插件版本
@@ -503,23 +545,23 @@ class PluginPlaza(MSFluentWindow):
             self.get_pp_data()
             self.get_banner_img()
         except Exception as e:
-            logger.error(f'初始化插件广场时发生错误：{e}')
+            logger.error(f"初始化插件广场时发生错误：{e}")
 
-    def load_all_interface(self):
+    def load_all_interface(self) -> None:
         self.setup_homeInterface()
         self.setup_latestInterface()
         self.setup_settingsInterface()
         self.setup_searchInterface()
 
-    def setup_latestInterface(self):  # 初始化最新更新
-        latest_scroll = self.latestsInterface.findChild(SmoothScrollArea, 'latest_scroll')
+    def setup_latestInterface(self) -> None:  # 初始化最新更新
+        latest_scroll = self.latestsInterface.findChild(SmoothScrollArea, "latest_scroll")
         QScroller.grabGesture(latest_scroll.viewport(), QScroller.LeftMouseButtonGesture)
 
-    def setup_searchInterface(self):  # 初始化搜索
-        search_scroll = self.searchInterface.findChild(SmoothScrollArea, 'search_scroll')
+    def setup_searchInterface(self) -> None:  # 初始化搜索
+        search_scroll = self.searchInterface.findChild(SmoothScrollArea, "search_scroll")
 
-        def search(keyword):  # 搜索
-            if keyword == '/all':
+        def search(keyword) -> Any | dict:  # 搜索
+            if keyword == "/all":
                 return plugins_data
 
             result = {}
@@ -528,46 +570,55 @@ class PluginPlaza(MSFluentWindow):
                     result[key] = value
             return result
 
-        def clear_results():
+        def clear_results() -> None:
             for i in reversed(range(self.search_plugin_grid.count())):
                 widget = self.search_plugin_grid.itemAt(i).widget()
                 if widget:
                     widget.setParent(None)  # 移除控件
                     widget.destroy()  # 销毁控件
 
-        def search_plugins():  # 搜索插件
+        def search_plugins() -> None:  # 搜索插件
             if not plugins_data:
                 return
             clear_results()
 
             if self.search_plugin.text():
-                def set_plugin_image(plugin_card, data):
+
+                def set_plugin_image(plugin_card, data) -> None:
                     pixmap = QPixmap()
                     pixmap.loadFromData(data)
                     plugin_card.set_img(pixmap)
 
                 keyword = self.search_plugin.text()
-                print(f'结果：{search(keyword)}')  # 结果
+                print(f"结果：{search(keyword)}")  # 结果
                 plugin_num = 0  # 计数
                 for key, data in search(keyword).items():
-                    plugin_card = PluginCard_Horizontal(title=data['name'], content=data['description'],
-                                                        tag=data['tag'], version=data['version'], url=data['url'],
-                                                        author=data['author'], data=data, parent=self)
+                    plugin_card = PluginCard_Horizontal(
+                        title=data["name"],
+                        content=data["description"],
+                        tag=data["tag"],
+                        version=data["version"],
+                        url=data["url"],
+                        author=data["author"],
+                        data=data,
+                        parent=self,
+                    )
                     plugin_card.clicked.connect(plugin_card.show_detail)  # 点击事件
 
                     # 启动线程加载图片
                     image_thread = nt.getImg(f"{replace_to_file_server(data['url'], data['branch'])}/icon.png")
                     image_thread.repo_signal.connect(
-                        lambda img_data, card=plugin_card: set_plugin_image(card, img_data))
+                        lambda img_data, card=plugin_card: set_plugin_image(card, img_data)
+                    )
                     self.thread_manager.add_thread(image_thread)
                     image_thread.start()
 
                     self.search_plugin_grid.addWidget(plugin_card, plugin_num // 2, plugin_num % 2)  # 排列
                     plugin_num += 1
 
-        self.search_plugin_grid = self.searchInterface.findChild(QGridLayout, 'search_plugin_grid')  # 插件表格
-        self.tags_layout = self.searchInterface.findChild(QGridLayout, 'tags_layout')  # tag 布局
-        self.search_plugin = self.searchInterface.findChild(SearchLineEdit, 'search_plugin')
+        self.search_plugin_grid = self.searchInterface.findChild(QGridLayout, "search_plugin_grid")  # 插件表格
+        self.tags_layout = self.searchInterface.findChild(QGridLayout, "tags_layout")  # tag 布局
+        self.search_plugin = self.searchInterface.findChild(SearchLineEdit, "search_plugin")
         self.search_plugin.searchSignal.connect(search_plugins)
         self.search_plugin.returnPressed.connect(search_plugins)
         self.search_plugin.clearSignal.connect(clear_results)
@@ -583,27 +634,28 @@ class PluginPlaza(MSFluentWindow):
 
     def setup_settingsInterface(self):  # 初始化设置
         # 选择代理
-        select_mirror = self.settingsInterface.findChild(ComboBox, 'select_proxy')
+        select_mirror = self.settingsInterface.findChild(ComboBox, "select_proxy")
         select_mirror.addItems(nt.mirror_list)
-        select_mirror.setCurrentIndex(nt.mirror_list.index(config_center.read_conf('Plugin', 'mirror')))
+        select_mirror.setCurrentIndex(nt.mirror_list.index(config_center.read_conf("Plugin", "mirror")))
         select_mirror.currentIndexChanged.connect(
-            lambda: config_center.write_conf('Plugin', 'mirror', select_mirror.currentText()))
+            lambda: config_center.write_conf("Plugin", "mirror", select_mirror.currentText())
+        )
 
         # 开关自动启用插件
-        auto_enable_plugin = self.settingsInterface.findChild(SwitchButton, 'auto_enable_plugin')
-        auto_enable_plugin.setChecked(int(config_center.read_conf('Plugin', 'auto_enable_plugin')))
+        auto_enable_plugin = self.settingsInterface.findChild(SwitchButton, "auto_enable_plugin")
+        auto_enable_plugin.setChecked(int(config_center.read_conf("Plugin", "auto_enable_plugin")))
         auto_enable_plugin.checkedChanged.connect(
-            lambda: config_center.write_conf('Plugin', 'auto_enable_plugin', int(auto_enable_plugin.isChecked()))
+            lambda: config_center.write_conf("Plugin", "auto_enable_plugin", int(auto_enable_plugin.isChecked()))
         )
 
     def setup_homeInterface(self):  # 初始化首页
         # 标题和副标题
-        home_scroll = self.homeInterface.findChild(SmoothScrollArea, 'home_scroll')
-        time_today_label = self.homeInterface.findChild(TitleLabel, 'time_today_label')
+        home_scroll = self.homeInterface.findChild(SmoothScrollArea, "home_scroll")
+        time_today_label = self.homeInterface.findChild(TitleLabel, "time_today_label")
         time_today_label.setText(f"{datetime.now().month}月{datetime.now().day}日 {l.week[datetime.now().weekday()]}")
 
         # Banner
-        self.banner_view = self.homeInterface.findChild(HorizontalFlipView, 'banner_view')
+        self.banner_view = self.homeInterface.findChild(HorizontalFlipView, "banner_view")
         self.banner_view.setAspectRatioMode(Qt.AspectRatioMode.KeepAspectRatio)
         self.banner_view.setItemSize(QSize(900, 450))  # 设置图片大小（banner图片尺寸比）
         self.banner_view.setBorderRadius(8)
@@ -615,35 +667,33 @@ class PluginPlaza(MSFluentWindow):
         self.auto_play_timer.setInterval(2500)
 
         # 翻页
-        self.banner_pager = self.homeInterface.findChild(PipsPager, 'banner_pager')
+        self.banner_pager = self.homeInterface.findChild(PipsPager, "banner_pager")
         self.banner_pager.setVisibleNumber(5)
         self.banner_pager.currentIndexChanged.connect(
-            lambda: (self.banner_view.scrollToIndex(self.banner_pager.currentIndex()),
-                     self.auto_play_timer.stop(),
-                     self.auto_play_timer.start(2500))
+            lambda: (
+                self.banner_view.scrollToIndex(self.banner_pager.currentIndex()),
+                self.auto_play_timer.stop(),
+                self.auto_play_timer.start(2500),
+            )
         )
         QScroller.grabGesture(home_scroll.viewport(), QScroller.LeftMouseButtonGesture)
 
     def open_banner_link(self):
-        if not hasattr(self, 'img_list'):
-            QDesktopServices.openUrl(QUrl(
-                'https://www.yuque.com/rinlit/class-widgets_help/ez4vv7tv8wikxc0s#Se2Bb'
-            ))
+        if not hasattr(self, "img_list"):
+            QDesktopServices.openUrl(QUrl("https://www.yuque.com/rinlit/class-widgets_help/ez4vv7tv8wikxc0s#Se2Bb"))
             return False  # 没有图片
 
         if self.img_list[self.banner_view.currentIndex()] in self.banners_data:
-            if not self.banners_data[self.img_list[self.banner_view.currentIndex()]]['link']:
+            if not self.banners_data[self.img_list[self.banner_view.currentIndex()]]["link"]:
                 return False  # 无链接
-            QDesktopServices.openUrl(QUrl(
-                self.banners_data[self.img_list[self.banner_view.currentIndex()]]['link']
-            ))
+            QDesktopServices.openUrl(QUrl(self.banners_data[self.img_list[self.banner_view.currentIndex()]]["link"]))
 
     def set_tags_data(self, data):
         global tags, search_items, recommend_plugins
         rec_data = {}
         if data:
-            tags = data.get('tags')
-            recommend_plugins = data.get('recommend_plugin')
+            tags = data.get("tags")
+            recommend_plugins = data.get("recommend_plugin")
             shuffle(tags)  # 随机
         for tag in tags:
             search_items.append(tag)
@@ -657,15 +707,15 @@ class PluginPlaza(MSFluentWindow):
         for key, data in plugins_data.items():
             if key in recommend_plugins:
                 rec_data[key] = data
-        self.load_plugins(rec_data, 'home')
+        self.load_plugins(rec_data, "home")
 
     def load_plugins(self, p_data, page):
         global search_items
 
         for plugin in p_data.values():  # 遍历插件数据
-            search_items.append(plugin['name'])
-            if plugin['author'] not in search_items:
-                search_items.append(plugin['author'])
+            search_items.append(plugin["name"])
+            if plugin["author"] not in search_items:
+                search_items.append(plugin["author"])
         self.search_completer.setModel(QStringListModel(search_items))  # 设置搜索提示
 
         def set_plugin_image(plugin_card, data):
@@ -673,18 +723,25 @@ class PluginPlaza(MSFluentWindow):
             pixmap.loadFromData(data)
             plugin_card.set_img(pixmap)
 
-        if page == 'latest':
-            self.plugin_grid = self.latestsInterface.findChild(QGridLayout, 'all_plugin_grid')  # 插件表格
-        elif page == 'home':
-            self.plugin_grid = self.homeInterface.findChild(QGridLayout, 'rec_plugin_grid')  # 插件表格
+        if page == "latest":
+            self.plugin_grid = self.latestsInterface.findChild(QGridLayout, "all_plugin_grid")  # 插件表格
+        elif page == "home":
+            self.plugin_grid = self.homeInterface.findChild(QGridLayout, "rec_plugin_grid")  # 插件表格
         else:
-            self.plugin_grid = self.latestsInterface.findChild(QGridLayout, 'all_plugin_grid')  # 插件表格
+            self.plugin_grid = self.latestsInterface.findChild(QGridLayout, "all_plugin_grid")  # 插件表格
         plugin_num = 0  # 计数
 
         for plugin, data in p_data.items():  # 遍历插件数据
-            plugin_card = PluginCard_Horizontal(title=data['name'], content=data['description'],
-                                                tag=data['tag'], version=data['version'], url=data['url'],
-                                                author=data['author'], data=data, parent=self)
+            plugin_card = PluginCard_Horizontal(
+                title=data["name"],
+                content=data["description"],
+                tag=data["tag"],
+                version=data["version"],
+                url=data["url"],
+                author=data["author"],
+                data=data,
+                parent=self,
+            )
             plugin_card.clicked.connect(plugin_card.show_detail)  # 点击事件
 
             # 启动线程加载图片
@@ -696,7 +753,7 @@ class PluginPlaza(MSFluentWindow):
             self.plugin_grid.addWidget(plugin_card, plugin_num // 2, plugin_num % 2)  # 排列
             plugin_num += 1
 
-        self.homeInterface.findChild(IndeterminateProgressRing, 'load_plugin_progress').hide()
+        self.homeInterface.findChild(IndeterminateProgressRing, "load_plugin_progress").hide()
 
     def get_banner_img(self):
         def display_banner(data, index=0):
@@ -710,22 +767,24 @@ class PluginPlaza(MSFluentWindow):
 
         def get_banner(data=dict):
             try:
-                if 'error' not in data:
+                if "error" not in data:
                     self.banners_data = data
                     self.img_list = self.img_links = list(data.keys())
-                    self.img_links = [f'https://raw.githubusercontent.com/Class-Widgets/plugin-plaza/main/Banner/'
-                                      f'{img}.png' for img in self.img_links]
+                    self.img_links = [
+                        f"https://raw.githubusercontent.com/Class-Widgets/plugin-plaza/main/Banner/{img}.png"
+                        for img in self.img_links
+                    ]
                     self.banner_pager.setPageNumber(len(data))
                     banner_placeholders = ["img/plaza/banner_pre.png" for _ in range(len(data))]
                     self.banner_view.addImages(banner_placeholders)
                 else:
                     error_info = data.get("error", "未知错误")
-                    logger.error(f'PluginPlaza 无法联网,错误：{error_info}')
-                    self.findChild(BodyLabel, 'tips').setText(f'错误原因：{error_info}')
+                    logger.error(f"PluginPlaza 无法联网,错误：{error_info}")
+                    self.findChild(BodyLabel, "tips").setText(f"错误原因：{error_info}")
                     self.banner_view.addImage("img/plaza/banner_network-failed.png")
                     self.banner_view.addImage("img/plaza/banner_network-failed.png")
                     self.splashScreen.hide()
-                    self.homeInterface.findChild(SubtitleLabel, 'SubtitleLabel_3').hide()  # 隐藏副标题
+                    self.homeInterface.findChild(SubtitleLabel, "SubtitleLabel_3").hide()  # 隐藏副标题
                     return
 
                 # 定义一个内部函数来启动下一个线程
@@ -747,29 +806,30 @@ class PluginPlaza(MSFluentWindow):
         self.thread_manager.add_thread(self.banner_list_thread)
         self.banner_list_thread.start()
 
-    def restart_tips(self):
+    def restart_tips(self) -> None:
         global restart_tips_flag
         restart_tips_flag = True
         w = InfoBar.info(
-            title='需要重启',
-            content='若要应用插件配置，需重启 Class Widgets',
+            title="需要重启",
+            content="若要应用插件配置, 需重启 Class Widgets",
             orient=Qt.Horizontal,
             isClosable=True,
             position=InfoBarPosition.TOP,
             duration=-1,
-            parent=self
+            parent=self,
         )
-        restart_btn = HyperlinkLabel('现在重启')
+        restart_btn = HyperlinkLabel("现在重启")
         restart_btn.clicked.connect(restart)
         w.addWidget(restart_btn)
         w.show()
 
-    def get_pp_data(self):
+    def get_pp_data(self) -> None:
         global plugins_data
-        def callback(data):
+
+        def callback(data) -> None:
             global plugins_data
             plugins_data = data  # 保存插件数据
-            self.load_plugins(data, 'latest')
+            self.load_plugins(data, "latest")
             self.get_tags_data()
 
         self.get_plugin_list_thread = nt.getPluginInfo()
@@ -777,17 +837,17 @@ class PluginPlaza(MSFluentWindow):
         self.thread_manager.add_thread(self.get_plugin_list_thread)
         self.get_plugin_list_thread.start()
 
-    def get_tags_data(self):
+    def get_tags_data(self) -> None:
         self.get_tags_list_thread = nt.getTags()
         self.get_tags_list_thread.repo_signal.connect(self.set_tags_data)
         self.thread_manager.add_thread(self.get_tags_list_thread)
         self.get_tags_list_thread.start()
-    
+
     def closeEvent(self, event) -> None:
         self.thread_manager.stop_all_threads()
         super().closeEvent(event)
 
-    def switch_banners(self):  # 切换Banner
+    def switch_banners(self) -> None:  # 切换Banner
         if self.banner_view.currentIndex() == len(self.img_list) - 1:
             self.banner_view.scrollToIndex(0)
             self.banner_pager.setCurrentIndex(0)
@@ -795,14 +855,12 @@ class PluginPlaza(MSFluentWindow):
             self.banner_view.scrollNext()
             self.banner_pager.setCurrentIndex(self.banner_view.currentIndex())
 
-    def init_nav(self):
-        self.addSubInterface(self.homeInterface, fIcon.HOME, '首页', fIcon.HOME_FILL)
-        self.addSubInterface(self.latestsInterface, fIcon.LIBRARY, '分类', fIcon.LIBRARY_FILL)
+    def init_nav(self) -> None:
+        self.addSubInterface(self.homeInterface, fIcon.HOME, "首页", fIcon.HOME_FILL)
+        self.addSubInterface(self.latestsInterface, fIcon.LIBRARY, "分类", fIcon.LIBRARY_FILL)
+        self.addSubInterface(self.searchInterface, fIcon.SEARCH, "搜索", position=NavigationItemPosition.BOTTOM)
         self.addSubInterface(
-            self.searchInterface, fIcon.SEARCH, '搜索', position=NavigationItemPosition.BOTTOM
-        )
-        self.addSubInterface(
-            self.settingsInterface, fIcon.SETTING, '设置', fIcon.SETTING, position=NavigationItemPosition.BOTTOM
+            self.settingsInterface, fIcon.SETTING, "设置", fIcon.SETTING, position=NavigationItemPosition.BOTTOM
         )
 
     def init_window(self) -> None:
@@ -811,8 +869,8 @@ class PluginPlaza(MSFluentWindow):
 
         self.setMinimumWidth(850)
         self.setMinimumHeight(500)
-        self.setWindowTitle('插件广场')
-        self.setWindowIcon(QIcon(f'{base_directory}/img/pp_favicon.png'))
+        self.setWindowTitle("插件广场")
+        self.setWindowIcon(QIcon(f"{base_directory}/img/pp_favicon.png"))
 
         # 设置窗口大小
         size, pos = calculate_size()
@@ -830,7 +888,7 @@ class PluginPlaza(MSFluentWindow):
                     font-family: 'Microsoft YaHei';
                 }""")
 
-    def closeEvent(self, event):
+    def closeEvent(self, event) -> None:
         self.closed.emit()
         event.accept()
 
@@ -839,8 +897,8 @@ def add2save_plugin(p_name: str) -> None:  # 保存已安装插件
     global installed_plugins
     installed_plugins.append(p_name)
     try:
-        with open(CONF_PATH, 'r+', encoding='utf-8') as f:
-            if p_name not in json.load(f)['plugins']:
+        with open(CONF_PATH, "r+", encoding="utf-8") as f:
+            if p_name not in json.load(f)["plugins"]:
                 f.seek(0)  # 指针指向开头
                 json.dump({"plugins": installed_plugins}, f, ensure_ascii=False, indent=4)
                 f.truncate()  # 截断文件
@@ -848,24 +906,23 @@ def add2save_plugin(p_name: str) -> None:  # 保存已安装插件
         logger.error(f"保存已安装插件失败：{e}")
 
 
-def replace_to_file_server(url: str, branch: str = 'main') -> str:
-    return (f'{url.replace("https://github.com/", "https://raw.githubusercontent.com/")}'
-            f'/{branch}')
+def replace_to_file_server(url: str, branch: str = "main") -> str:
+    return f"{url.replace('https://github.com/', 'https://raw.githubusercontent.com/')}/{branch}"
 
 
 def load_local_plugins_version() -> None:
     global local_plugins_version
     for plugin in installed_plugins:
         try:
-            with open(f"plugins/{plugin}/plugin.json", 'r', encoding='utf-8') as f:
+            with open(f"plugins/{plugin}/plugin.json", "r", encoding="utf-8") as f:
                 data = json.load(f)
-                local_plugins_version[plugin] = data['version']
+                local_plugins_version[plugin] = data["version"]
         except Exception as e:
             logger.error(f"加载本地插件版本失败：{e}")
     print(local_plugins_version)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = QApplication(sys.argv)
     pp = PluginPlaza()
     pp.show()

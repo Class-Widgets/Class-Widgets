@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from sys import platform
+
 from loguru import logger
 
 APP_NAME = "Class Widgets"
