@@ -1535,6 +1535,9 @@ class SettingsMenu(FluentWindow):
         self.import_from_file = self.cfInterface.findChild(PushButton, 'config_import')
         self.import_from_file.clicked.connect(self.cf_import_schedule)  # 从文件导入
 
+        self.db_edit = self.cfInterface.findChild(PushButton, 'config_db_edit')
+        self.db_edit.clicked.connect(self.cf_open_db_edit)
+
         # 用自定义的 UniformListWidget 替换原 table
         old = self.cfInterface.findChild(ListWidget, 'config_table')
         parent_layout = old.parent().layout()
@@ -3233,6 +3236,115 @@ class SettingsMenu(FluentWindow):
         if data.get('error', None):
             self.show_tip_flyout('上传配置文件失败',
                                    data['error'], self.config_upload, InfoBarIcon.ERROR, FlyoutAnimationType.PULL_UP)
+    class cfDbEdit(MessageBoxBase):
+        def __init__(self, parent=None):
+            super().__init__(parent)
+            self.parent_menu = parent # 保存父菜单的引用
+            self.temp_widget = QWidget()
+            ui_path = f'{base_directory}/view/menu/schedule_db_edit.ui'
+            uic.loadUi(ui_path, self.temp_widget)
+            self.viewLayout.addWidget(self.temp_widget)
+
+            self.viewLayout.setContentsMargins(0, 0, 0, 0)
+            self.cancelButton.hide()
+            self.widget.setMinimumWidth(parent.width()//3*2)
+            self.widget.setMinimumHeight(parent.height())
+
+            self.add_button = self.widget.findChild(ToolButton, 'add_button')
+            self.add_button.setIcon(fIcon.ADD)
+            self.add_button.setToolTip('添加课表数据库')
+            self.add_button.clicked.connect(self.add_item)
+            self.clear_button = self.widget.findChild(ToolButton, 'clear_button')
+            self.clear_button.setIcon(fIcon.DELETE)
+            self.clear_button.clicked.connect(self.delete_item)
+            self.clear_button.setToolTip('删除课表数据库')
+            self.set_button = self.widget.findChild(ToolButton, 'set_button')
+            self.set_button.setIcon(fIcon.EDIT)
+            self.set_button.setToolTip('更改课表数据库')
+            self.set_button.clicked.connect(self.edit_item)
+
+            self.table = self.widget.findChild(ListWidget, 'db_list')
+
+            self.db_short = self.widget.findChild(LineEdit, 'db_short')
+            self.db_url = self.widget.findChild(LineEdit, 'db_url')
+
+            self.save_button = self.widget.findChild(PrimaryPushButton, 'save')
+            self.save_button.clicked.connect(self.save_item)
+
+            self.db_list = [(x.replace('@',''), list_.schedule_dbs[x]) for x in list_.schedule_dbs]
+            self.db_dict:dict = list_.schedule_dbs
+            self.init_table()
+
+        def init_table(self):
+            self.table.addItems([f"{x[0]} - {x[1]}" for x in self.db_list])
+
+        def edit_item(self):
+            selected_items = self.table.selectedItems()
+            if selected_items:
+                selected_item = selected_items[0]
+                if self.db_dict.get(self.db_short.text(), None):
+                    if self.db_short.text() != self.db_list(self.table.row(selected_item))[0]:
+                        Flyout.create(
+                            icon=InfoBarIcon.ERROR,
+                            title='错误！',
+                            content=f"数据库缩写 {self.db_short.text()} 已存在，请更换缩写。",
+                            target=self.add_button,
+                            parent=self,
+                            isClosable=True,
+                            aniType=FlyoutAnimationType.PULL_UP
+                        )
+                        return
+                del self.db_dict[f"@{self.db_list[self.table.row(selected_item)][0]}"]
+                self.db_list[self.table.row(selected_item)] = (self.db_short.text(), self.db_url.text())
+                self.db_dict[f"@{self.db_short.text()}"] = self.db_url.text()
+                selected_item.setText(
+                    f"{self.db_short.text()} - {self.db_url.text()}"
+                )
+
+        def delete_item(self):
+            selected_items = self.table.selectedItems()
+            if selected_items:
+                item = selected_items[0]
+                self.table.takeItem(self.table.row(item))
+                del self.db_dict[f"@{self.db_list[self.table.row(item)][0]}"]
+                self.db_list.pop(self.table.row(item))
+
+        def add_item(self):
+            if self.db_dict.get(f"@{self.db_short.text()}", None):
+                Flyout.create(
+                    icon=InfoBarIcon.ERROR,
+                    title='错误！',
+                    content=f"数据库缩写 {self.db_short.text()} 已存在，请更换缩写。",
+                    target=self.add_button,
+                    parent=self,
+                    isClosable=True,
+                    aniType=FlyoutAnimationType.PULL_UP
+                )
+                return
+            self.table.addItem(
+                f"{self.db_short.text()} - {self.db_url.text()}"
+            )
+            self.db_list.append((self.db_short.text(), self.db_url.text()))
+            self.db_dict[f"@{self.db_short.text()}"] = self.db_url.text()
+
+        def save_item(self):
+            db = self.db_dict
+
+            list_.save_data_to_json({"db":db}, base_directory / 'config' / "schedule_db.json")
+
+            Flyout.create(
+                icon=InfoBarIcon.SUCCESS,
+                title='保存成功',
+                content=f"已保存至 {base_directory / 'config' / "schedule_db.json"}",
+                target=self.save_button,
+                parent=self,
+                isClosable=True,
+                aniType=FlyoutAnimationType.PULL_UP
+            )
+    
+    def cf_open_db_edit(self):
+        self.cf_db_edit = self.cfDbEdit(self)
+        self.cf_db_edit.exec()
 
     def check_and_disable_schedule_edit(self):
         """检查是否存在调休状态，如果存在则禁用课程表编辑功能"""

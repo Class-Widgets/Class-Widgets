@@ -109,10 +109,13 @@ widget_name = {
 }
 
 native_widget_name = [widget_name[i] for i in widget_name]
-schedule_dbs = {
-    '@hpd': 'https://cwkv.hpdnya.com'
-}
 
+try:
+    with open(base_directory / "config" / "schedule_db.json") as f:
+        schedule_dbs = json.load(f).get('db', {})
+except:
+    logger.warning("读取数据库列表失败，重置为空。")
+    schedule_dbs = {}
 
 def validate_theme(folder: Path) -> Optional[ThemeInfo]:
     file_path = folder / 'theme.json'
