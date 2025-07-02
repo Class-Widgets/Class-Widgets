@@ -53,16 +53,24 @@ class CsesSchedule(BaseModel):
 
     @model_validator(mode="after")
     def validate_time(self) -> Self:
-        def to_offset(it: str) -> int:
-            tmp = it.split(":")
-            return int(tmp[0]) * 60 * 60 + int(tmp[1]) * 60 + int(tmp[2])
+        def to_offset(t: str) -> int:
+            h, m, s = map(int, t.split(":"))
+            return h * 3600 + m * 60 + s  # 还是建议引入个支持最新 YAML 格式的包）
 
-        offsets = list(
+        offsets = [
             (to_offset(class_.start_time), to_offset(class_.end_time))
             for class_ in self.classes
-        )
-        if any(x[0] <= y[0] < x[1] for x in offsets for y in offsets):
-            raise ValueError({"conflict": "a class start time in another class"})
+        ]
+
+        n = len(offsets)
+        for i in range(n):
+            s1, e1 = offsets[i]
+            if e1 <= s1:
+                raise ValueError({"conflict": f"class {i} has an end_time earlier than its start_time."})
+            for j in range(i + 1, n):
+                s2, e2 = offsets[j]
+                if s1 < e2 and s2 < e1: # 若 [s1,e1) 与 [s2,e2) 有交集。
+                    raise ValueError({"conflict": f"class {i} time overlaps with class {j}."})
         return self
 
 
