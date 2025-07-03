@@ -173,52 +173,52 @@
     <message>
         <location filename="../view/menu/about.ui" line="359"/>
         <source>检查更新</source>
-        <translation type="unfinished"></translation>
+        <translation>更新をチェック</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="397"/>
         <source>此项目的 Github</source>
-        <translation type="unfinished"></translation>
+        <translation>本プロジェクトのGithubリポジトリ</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="425"/>
         <source>我的 哔哩哔哩 主页</source>
-        <translation type="unfinished"></translation>
+        <translation>私の ﾋﾞﾘﾋﾞﾘ ﾎｰﾑﾍﾟｰｼﾞ</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="460"/>
         <source>查看开放源代码许可</source>
-        <translation type="unfinished"></translation>
+        <translation>オープンソースライセンスを表示</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="498"/>
         <source>鸣谢</source>
-        <translation type="unfinished"></translation>
+        <translation>謝辞</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="522"/>
         <source>更新</source>
-        <translation type="unfinished"></translation>
+        <translation>更新</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="557"/>
         <source>选择更新通道</source>
-        <translation type="unfinished"></translation>
+        <translation>ｱｯﾌﾟﾃﾞｰﾄﾁｬﾈﾙを選択</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="564"/>
         <source>将会获取选定更新通道的版本</source>
-        <translation type="unfinished"></translation>
+        <translation>選択されたｱｯﾌﾟﾃﾞｰﾄﾁｬﾈﾙのﾊﾞｰｼﾞｮﾝを取得します</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="635"/>
         <source>启动 Class Widgets 时自动检查更新</source>
-        <translation type="unfinished"></translation>
+        <translation>Class Widgets の起動時に自動でアップデートを確認します</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="642"/>
         <source>若启用，Class Widgets 将在启动时联网检查选定的更新通道中是否有最新版本更新。</source>
-        <translation type="unfinished"></translation>
+        <translation>有効にすると、Class Widgets は起動時にインターネットに接続して、選択されたｱｯﾌﾟﾃﾞｰﾄﾁｬﾈﾙに最新ﾊﾞｰｼﾞｮﾝがあるかどうかを確認します。</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="668"/>
@@ -258,164 +258,164 @@
     <message>
         <location filename="../view/menu/about.ui" line="700"/>
         <source>Copyright © 2025 RinLit, All Rights Reversed.</source>
-        <translation type="unfinished"></translation>
+        <translation>コピーライト © 2025 RinLit、全著作権所有。</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="41"/>
         <source>高级选项</source>
-        <translation type="unfinished"></translation>
+        <translation>詳細オプション</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="71"/>
         <source>课程</source>
-        <translation type="unfinished"></translation>
+        <translation>コース</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="104"/>
         <source>时差偏移</source>
-        <translation type="unfinished"></translation>
+        <translation>時差オフセット</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="111"/>
         <source>修正系统时间与学校铃声的时差，学校铃声慢于系统时间为正值，反之为负</source>
-        <translation type="unfinished"></translation>
+        <translation>システム時間と学校のチャイムの時差を補正します。チャイムがシステム時間より遅い場合は正の値、逆の場合は負の値を設定してください</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="188"/>
         <source>启用 单/双 周课表</source>
-        <translation type="unfinished"></translation>
+        <translation>単週/双週のコース表を有効にする</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="195"/>
         <source>若要启用此选项，需设定开学日期以计算</source>
-        <translation type="unfinished"></translation>
+        <translation>このオプションを有効にするには、計算のために開学日を設定する必要があります</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="224"/>
         <source>关闭</source>
-        <translation type="unfinished"></translation>
+        <translation>閉じる</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="266"/>
         <location filename="../view/menu/advance.ui" line="299"/>
         <source>选取开学日期</source>
-        <translation type="unfinished"></translation>
+        <translation>開学日を選択</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="273"/>
         <source>将用于计算单/双周，开学日期需设置为开学第一周第一天（即周一）</source>
-        <translation type="unfinished"></translation>
+        <translation>単週/双週の計算に使用されます。開学日は、開学初週の月曜日（第一日目）として設定する必要があります</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="313"/>
         <source>外观</source>
-        <translation type="unfinished"></translation>
+        <translation>外観</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="320"/>
         <location filename="../view/menu/advance.ui" line="526"/>
         <source>界面文字</source>
-        <translation type="unfinished"></translation>
+        <translation>画面の文字</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="327"/>
         <location filename="../view/menu/advance.ui" line="533"/>
         <source>在此处您可以修改界面所显示的语言</source>
-        <translation type="unfinished"></translation>
+        <translation>ここで表示される言語を変更できます</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="410"/>
         <location filename="../view/menu/advance.ui" line="616"/>
         <source>组件语言</source>
-        <translation type="unfinished"></translation>
+        <translation>コンポーネントの言語</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="417"/>
         <location filename="../view/menu/advance.ui" line="623"/>
         <source>选择你所需要组件显示的语言</source>
-        <translation type="unfinished"></translation>
+        <translation>必要なコンポーネントの表示言語を選択してください</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="484"/>
         <source>界面语言</source>
-        <translation type="unfinished"></translation>
+        <translation>インターフェースの言語</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="491"/>
         <source>选择你所需要界面显示的语言</source>
-        <translation type="unfinished"></translation>
+        <translation>必要なインターフェースの表示言語を選択してください</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="658"/>
         <source>隐藏方式</source>
-        <translation type="unfinished"></translation>
+        <translation>非表示方法</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="665"/>
         <source>隐藏方式将会修改单击隐藏和自动隐藏的行为，可按需更改（重启后生效）</source>
-        <translation type="unfinished"></translation>
+        <translation>非表示方法は、クリックでの非表示と自動非表示の動作を変更します。必要に応じて変更できます（再起動後に有効）</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="739"/>
         <source>默认</source>
-        <translation type="unfinished"></translation>
+        <translation>デフォルト</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="790"/>
         <source>全部隐藏</source>
-        <translation type="unfinished"></translation>
+        <translation>すべて非表示</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="841"/>
         <source>最小化为浮窗（推荐）</source>
-        <translation type="unfinished"></translation>
+        <translation>浮動ウィンドウに最小化（推奨）</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="852"/>
         <location filename="../view/menu/advance.ui" line="1529"/>
         <location filename="../view/menu/plugin_mgr.ui" line="637"/>
         <source>其他</source>
-        <translation type="unfinished"></translation>
+        <translation>その他</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="894"/>
         <source>自动隐藏</source>
-        <translation type="unfinished"></translation>
+        <translation>自動非表示</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="901"/>
         <source>选择你需要的自动隐藏方式</source>
-        <translation type="unfinished"></translation>
+        <translation>必要な自動非表示方法を選択してください</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="925"/>
         <source>什么是灵活隐藏？</source>
-        <translation type="unfinished"></translation>
+        <translation>ダイナミック非表示とは何ですか？</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="975"/>
         <source>特定课程不自动隐藏</source>
-        <translation type="unfinished"></translation>
+        <translation>特定のコースは自動で非表示にしない</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="982"/>
         <source>若启用，在遇到下方设置的特定课程时不会自动隐藏，以英文逗号分隔</source>
-        <translation type="unfinished"></translation>
+        <translation>有効にすると、下記の設定された特定のコースに遭遇した際、自動で非表示にされません。設定は英語のカンマで区切ってください</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1056"/>
         <source>不自动隐藏的课程</source>
-        <translation type="unfinished"></translation>
+        <translation>自動で非表示にしないコース</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1063"/>
         <source>配合 特定课程不自动隐藏 使用</source>
-        <translation type="unfinished"></translation>
+        <translation>「特定のコースは自動で非表示にしない」と併用してください。</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1142"/>
         <source>允许点击或触摸小组件</source>
-        <translation type="unfinished"></translation>
+        <translation>ウィジェットのクリックまたはタッチを許可する</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1149"/>
@@ -423,69 +423,78 @@
 若启用，单击小组件可显示或隐藏小组件，右键小组件可打开额外选项
 若禁用，点击小组件等同于点击小组件后方的窗口
 * 重启后生效</source>
-        <translation type="unfinished"></translation>
+        <translation>クリックまたはタッチでウィジェットを操作できるようにします。
+
+有効にすると、ウィジェットをクリックして表示・非表示を切り替えたり、右クリックで追加オプションを開いたりできます。
+
+無効にすると、ウィジェットをクリックしても、背後のウィンドウをクリックしたのと同じ動作になります。
+
+※ 再起動後に有効になります。</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1233"/>
         <source>自定义缩放</source>
-        <translation type="unfinished"></translation>
+        <translation>カスタムズーム</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1240"/>
         <source>更改自定义缩放系数百分比（重启后生效）
 *不建议使用 180% 以上的值，这可能会导致显示异常</source>
-        <translation type="unfinished"></translation>
+        <translation>カスタムズーム係数のパーセンテージを変更します（再起動後に有効）。
+※180%以上の値は表示の異常を引き起こす可能性があるため、使用は推奨されません。</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1337"/>
         <source>置顶/置底小组件</source>
-        <translation type="unfinished"></translation>
+        <translation>ウィジェットの前面/背面表示</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1350"/>
         <source>更改小组件的窗口状态（重启后生效）
 *开启“置底”功能时，将会禁用“单击隐藏小组件”</source>
-        <translation type="unfinished"></translation>
+        <translation>ウィジェットのウィンドウ状態を変更します（再起動後に有効）。
+
+※「背面に表示」機能を有効にすると、「クリックでウィジェットを非表示」機能は無効になります。</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1409"/>
         <source>边距大小</source>
-        <translation type="unfinished"></translation>
+        <translation>マージンサイズ</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1416"/>
         <source>设定桌面组件离屏幕边缘的大小（单位：px）</source>
-        <translation type="unfinished"></translation>
+        <translation>デスクトップウィジェットと画面端の距離を設定します（単位：px）</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1468"/>
         <source>启动</source>
-        <translation type="unfinished"></translation>
+        <translation>起動</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1502"/>
         <source>开机自启动</source>
-        <translation type="unfinished"></translation>
+        <translation>自動起動</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1568"/>
         <source>安全模式</source>
-        <translation type="unfinished"></translation>
+        <translation>セーフモード</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1575"/>
         <source>若启用，Class Widgets 将在程序崩溃时自动忽略，并不再弹出窗口；以免影响教学任务。</source>
-        <translation type="unfinished"></translation>
+        <translation>有効にすると、Class Widgets はプログラムがクラッシュした際に自動的に無視され、ウィンドウは表示されません。これにより、授業の進行に影響を与えません。</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1646"/>
         <source>禁用日志</source>
-        <translation type="unfinished"></translation>
+        <translation>ログを無効にする</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1653"/>
         <source>若启用，应用将不再会保存日志到本地</source>
-        <translation type="unfinished"></translation>
+        <translation>有効にすると、アプリケーションはログをローカルに保存しなくなります。</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1721"/>
