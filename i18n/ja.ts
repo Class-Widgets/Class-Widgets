@@ -837,37 +837,37 @@
     <message>
         <location filename="../view/menu/help.ui" line="146"/>
         <source>如何设置课程表？</source>
-        <translation>コース表</translation>
+        <translation>コース表の設定方法は？</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="150"/>
         <source>https://www.yuque.com/rinlit/class-widgets_help/swg86btkivirtnrl</source>
-        <translation type="unfinished"></translation>
+        <translation>https://www.yuque.com/rinlit/class-widgets_help/swg86btkivirtnrl</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="164"/>
         <source>如何切换主题？</source>
-        <translation type="unfinished"></translation>
+        <translation>テーマの切り替え方法は？</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="168"/>
         <source>https://www.yuque.com/rinlit/class-widgets_help/lg0p91q2mg4yertn</source>
-        <translation type="unfinished"></translation>
+        <translation>https://www.yuque.com/rinlit/class-widgets_help/lg0p91q2mg4yertn</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="182"/>
         <source>软件的时间与铃声不符怎么办？如何设置时差偏移？</source>
-        <translation type="unfinished"></translation>
+        <translation>ソフトの時間とアラーム音が合わない場合はどうすればいいですか？時差の調整はどう設定しますか？</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="186"/>
         <source>https://www.yuque.com/rinlit/class-widgets_help/vlk3plggb8edvub4#mHfUX</source>
-        <translation type="unfinished"></translation>
+        <translation>https://www.yuque.com/rinlit/class-widgets_help/vlk3plggb8edvub4#mHfUX</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="200"/>
         <source>怎么快速设置调休日和换课？</source>
-        <translation type="unfinished"></translation>
+        <translation>振替休日や振替授業はどうやってすぐに設定できる</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="204"/>
