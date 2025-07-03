@@ -1695,7 +1695,7 @@ class DesktopWidget(QWidget):  # 主要小组件
         self.weather_alert_text = None
         self.alert_showing = False
 
-        self.position = parent.get_widget_pos(self.path) if position is None else position
+        self.position = parent.get_widget_pos(self.path, None) if position is None else position
         self.animation = None
         self.opacity_animation = None
         mgr.hide_status = None
