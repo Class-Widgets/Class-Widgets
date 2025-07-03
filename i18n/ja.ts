@@ -867,214 +867,214 @@
     <message>
         <location filename="../view/menu/help.ui" line="200"/>
         <source>怎么快速设置调休日和换课？</source>
-        <translation>振替休日や振替授業はどうやってすぐに設定できる</translation>
+        <translation>振替休日や振替授業はどうやってすぐに設定できる？</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="204"/>
         <source>https://www.yuque.com/rinlit/class-widgets_help/gc4epffu7g5bf9os</source>
-        <translation type="unfinished"></translation>
+        <translation>https://www.yuque.com/rinlit/class-widgets_help/gc4epffu7g5bf9os</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="218"/>
         <source>如何开发插件？</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグインの開発方法は？</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="222"/>
         <source>https://www.yuque.com/rinlit/cw-docs-dev</source>
-        <translation type="unfinished"></translation>
+        <translation>https://www.yuque.com/rinlit/cw-docs-dev</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="236"/>
         <source>什么是 CSES？</source>
-        <translation type="unfinished"></translation>
+        <translation>CSESとは何ですか？</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="240"/>
         <source>https://github.com/CSES-org/CSES</source>
-        <translation type="unfinished"></translation>
+        <translation>https://github.com/CSES-org/CSES</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="257"/>
         <source>社区</source>
-        <translation type="unfinished"></translation>
+        <translation>コミュニティ</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="272"/>
         <source>我们的Q群</source>
-        <translation type="unfinished"></translation>
+        <translation>私たちのQQグループ</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="285"/>
         <source>GitHub Discussion</source>
-        <translation type="unfinished"></translation>
+        <translation>GitHub ディスカッション</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="298"/>
         <source>Discord</source>
-        <translation type="unfinished"></translation>
+        <translation>Discord</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="35"/>
         <location filename="../view/pp/settings.ui" line="71"/>
         <source>插件</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグイン</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="67"/>
         <source>插件管理</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグイン管理</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="74"/>
         <source>已安装 0 个插件</source>
-        <translation type="unfinished"></translation>
+        <translation>インストールされているプラグインは0件です</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="98"/>
         <source>*对插件的任意操作将在重启后生效。</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグインに関する操作は、再起動後に有効となります。</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="153"/>
         <source>在“插件广场”中检查更新</source>
-        <translation type="unfinished"></translation>
+        <translation>「プラグイン広場」で更新をチェックする</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="160"/>
         <source>将跳转至“插件广场”以检查插件的更新状态</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグインの更新を確認するために、「プラグイン広場」に移動します</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="192"/>
         <source>在“插件广场”检查</source>
-        <translation type="unfinished"></translation>
+        <translation>「プラグイン広場」で確認する</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="239"/>
         <source>搜索插件名称、作者或描述...</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグインの名前、作者、説明を検索...</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="262"/>
         <source>刷新插件列表</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグインリストを更新</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="362"/>
         <source>还未添加任何插件</source>
-        <translation type="unfinished"></translation>
+        <translation>まだプラグインが追加されていません</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="398"/>
         <source>添加插件</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグインを追加</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="431"/>
         <source>管理插件文件夹</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグインフォルダの管理</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="438"/>
         <source>可在此文件夹添加、删除和修改您所安装的插件</source>
-        <translation type="unfinished"></translation>
+        <translation>このフォルダ内で、インストール済みのプラグインを追加・削除・編集できます</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="506"/>
         <source>在“插件广场”中寻找</source>
-        <translation type="unfinished"></translation>
+        <translation>「プラグイン広場」で探す</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="513"/>
         <source>将跳转至“插件广场”</source>
-        <translation type="unfinished"></translation>
+        <translation>「プラグイン広場」へ移動します</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="545"/>
         <source>打开“插件广场”</source>
-        <translation type="unfinished"></translation>
+        <translation>「プラグイン広場」を開く</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="581"/>
         <source>导入本地插件</source>
-        <translation type="unfinished"></translation>
+        <translation>ローカルプラグインをインポート</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="588"/>
         <source>从本地文件导入插件包 (支持.zip格式与解压后的插件)</source>
-        <translation type="unfinished"></translation>
+        <translation>ローカルファイルからプラグインパッケージをインポート（.zip形式および解凍済みプラグイン対応）</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="620"/>
         <source>选择文件导入</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイルを選択してインポート</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="670"/>
         <source>安全模式加载插件</source>
-        <translation type="unfinished"></translation>
+        <translation>セーフモードでプラグインを起動</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="677"/>
         <source>当插件出现错误时自动禁用插件加载</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグインにエラーが起きた場合、自動で無効化</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="748"/>
         <source>插件自动化执行延迟</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグインの自動実行ディレイ</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="755"/>
         <source>当插件执行自动化操作时，需等待的时间（单位：秒）</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグインの自動操作実行時に待つ時間（単位：秒）</translation>
     </message>
     <message>
         <location filename="../view/menu/preview.ui" line="50"/>
         <location filename="../view/menu/sound.ui" line="742"/>
         <source>预览</source>
-        <translation type="unfinished"></translation>
+        <translation>プレビュー</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="35"/>
         <source>课程表编辑</source>
-        <translation type="unfinished"></translation>
+        <translation>コース編集</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="85"/>
         <source>选择星期</source>
-        <translation type="unfinished"></translation>
+        <translation>曜日を選択</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="137"/>
         <source>选择单/双周课表</source>
-        <translation type="unfinished"></translation>
+        <translation>奇数週／偶数週のコース表を選択</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="144"/>
         <source>若要启用双周课表，请在“高级选项”中 启用单双周课表和设置开学日期</source>
-        <translation type="unfinished"></translation>
+        <translation>双週のコース表を有効にする場合は、「詳細設定」で「単週・複週のコース表」を有効にし、始業日を設定してください</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="173"/>
         <source>复制单周课表</source>
-        <translation type="unfinished"></translation>
+        <translation>単週のコース表をコピー</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="221"/>
         <source>快速添加课程</source>
-        <translation type="unfinished"></translation>
+        <translation>コースを素早く追加</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="271"/>
         <source>下一天</source>
-        <translation type="unfinished"></translation>
+        <translation>翌日</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="41"/>
         <source>上下课提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>授業開始・終了の通知</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="103"/>
