@@ -494,235 +494,235 @@
     <message>
         <location filename="../view/menu/advance.ui" line="1653"/>
         <source>若启用，应用将不再会保存日志到本地</source>
-        <translation>有効にすると、アプリケーションはログをローカルに保存しなくなります。</translation>
+        <translation>有効にすると、アプリケーションはログをローカルに保存しなくなります</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1721"/>
         <location filename="../view/menu/advance.ui" line="1751"/>
         <source>清空日志</source>
-        <translation type="unfinished"></translation>
+        <translation>ログを消去</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1728"/>
         <source>将会清空 软件根目录下log. 的所有内容</source>
-        <translation type="unfinished"></translation>
+        <translation>ソフトウェアのルートディレクトリ下のlog.のすべての内容が消去されます</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1793"/>
         <source>允许程序多开</source>
-        <translation type="unfinished"></translation>
+        <translation>プログラムの同時起動を許可する</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1800"/>
         <source>程序多开后可能出现未知的问题，请谨慎使用</source>
-        <translation type="unfinished"></translation>
+        <translation>プログラムを複数回起動すると、予期しない問題が発生する可能性がありますので、慎重に使用してください</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1823"/>
         <location filename="../view/menu/advance.ui" line="1829"/>
         <source>不允许</source>
-        <translation type="unfinished"></translation>
+        <translation>許可しない</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1826"/>
         <source>允许</source>
-        <translation type="unfinished"></translation>
+        <translation>許可する</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="41"/>
         <source>配置文件</source>
-        <translation type="unfinished"></translation>
+        <translation>設定ファイル</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="71"/>
         <source>使用 {db}:{id} 格式从预设数据库获取，或输入完整 url</source>
-        <translation type="unfinished"></translation>
+        <translation>{db}:{id} の形式でプリセットデータベースから取得するか、完全なURLを入力してください</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="78"/>
         <source>下载</source>
-        <translation type="unfinished"></translation>
+        <translation>ダウンロード</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="85"/>
         <source>更新当前</source>
-        <translation type="unfinished"></translation>
+        <translation>現在の更新</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="92"/>
         <source>上传当前</source>
-        <translation type="unfinished"></translation>
+        <translation>現在のアップロード</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="99"/>
         <source>新建</source>
-        <translation type="unfinished"></translation>
+        <translation>新規作成</translation>
     </message>
     <message>
         <location filename="../view/menu/configs.ui" line="106"/>
         <source>导入</source>
-        <translation type="unfinished"></translation>
+        <translation>インポート</translation>
     </message>
     <message>
         <location filename="../view/menu/preview.ui" line="35"/>
         <location filename="../view/menu/schedule_edit.ui" line="44"/>
         <source>课程表</source>
-        <translation type="unfinished"></translation>
+        <translation>コース表</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="470"/>
         <source>使用“资源管理器”打开</source>
-        <translation type="unfinished"></translation>
+        <translation>「エクスプローラー」で開く</translation>
     </message>
     <message>
         <location filename="../view/menu/countdown_custom_edit.ui" line="35"/>
         <source>自定义倒计时编辑</source>
-        <translation type="unfinished"></translation>
+        <translation>カスタムカウントダウン編集</translation>
     </message>
     <message>
         <location filename="../view/menu/countdown_custom_edit.ui" line="44"/>
         <source>自定义倒计时</source>
-        <translation type="unfinished"></translation>
+        <translation>カスタムカウントダウン</translation>
     </message>
     <message>
         <location filename="../view/menu/countdown_custom_edit.ui" line="87"/>
         <source>自定义文本</source>
-        <translation type="unfinished"></translation>
+        <translation>カスタムテキスト</translation>
     </message>
     <message>
         <location filename="../view/menu/countdown_custom_edit.ui" line="113"/>
         <source>选择日期</source>
-        <translation type="unfinished"></translation>
+        <translation>日付を選択</translation>
     </message>
     <message>
         <location filename="../view/menu/countdown_custom_edit.ui" line="132"/>
         <source>选定一个日期</source>
-        <translation type="unfinished"></translation>
+        <translation>日付を選択してください</translation>
     </message>
     <message>
         <location filename="../view/menu/countdown_custom_edit.ui" line="161"/>
         <source>倒计时模式</source>
-        <translation type="unfinished"></translation>
+        <translation>カウントダウンモード</translation>
     </message>
     <message>
         <location filename="../view/menu/countdown_custom_edit.ui" line="184"/>
         <source>轮播间隔（秒）</source>
-        <translation type="unfinished"></translation>
+        <translation>スライドショー間隔（秒）</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="41"/>
         <source>自定义</source>
-        <translation type="unfinished"></translation>
+        <translation>カスタム</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="76"/>
         <source>*对小组件的显示、隐藏和拖拽操作将在重启后生效。</source>
-        <translation type="unfinished"></translation>
+        <translation>！ウィジェットの表示、非表示およびドラッグ操作は、再起動後に有効になります。</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="137"/>
         <source>选择小组件</source>
-        <translation type="unfinished"></translation>
+        <translation>ウィジェットを選択</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="167"/>
         <source>  添加  </source>
-        <translation type="unfinished"></translation>
+        <translation>  追加  </translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="174"/>
         <source>  移除  </source>
-        <translation type="unfinished"></translation>
+        <translation>  削除  </translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="183"/>
         <source>小组件</source>
-        <translation type="unfinished"></translation>
+        <translation>ウィジェット</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="195"/>
         <location filename="../view/menu/custom.ui" line="238"/>
         <source>主题</source>
-        <translation type="unfinished"></translation>
+        <translation>テーマ</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="205"/>
         <source>打开“主题”文件夹</source>
-        <translation type="unfinished"></translation>
+        <translation>「テーマ」フォルダーを開く</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="245"/>
         <source>将用于更改小组件的样式（重启后生效）</source>
-        <translation type="unfinished"></translation>
+        <translation>ウィジェットのスタイルを変更するために使用します（再起動後に有効）</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="307"/>
         <source>颜色模式</source>
-        <translation type="unfinished"></translation>
+        <translation>カラー モード</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="314"/>
         <source>将改变应用的浅/深色外观</source>
-        <translation type="unfinished"></translation>
+        <translation>アプリのライト/ダークテーマの外観を変更します</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="376"/>
         <source>小组件透明度</source>
-        <translation type="unfinished"></translation>
+        <translation>ウィジェットの透明度</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="383"/>
         <source>更改小组件在屏幕上显示的透明度</source>
-        <translation type="unfinished"></translation>
+        <translation>ウィジェットが画面に表示される透明度を変更</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="460"/>
         <source>上课时主题色</source>
-        <translation type="unfinished"></translation>
+        <translation>授業中のテーマカラー</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="467"/>
         <location filename="../view/menu/custom.ui" line="542"/>
         <source>将用于设置窗口、进度条和提醒弹窗 (为了提醒弹窗可读性，请不要设置过浅的颜色)</source>
-        <translation type="unfinished"></translation>
+        <translation>ウィンドウ、プログレスバー、通知ポップアップの設定に使用します（通知ポップアップの可読性を保つため、明るすぎる色は設定しないでください）</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="499"/>
         <location filename="../view/menu/custom.ui" line="574"/>
         <location filename="../view/menu/custom.ui" line="649"/>
         <source>更改颜色</source>
-        <translation type="unfinished"></translation>
+        <translation>色を変更</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="535"/>
         <source>下课时主题色</source>
-        <translation type="unfinished"></translation>
+        <translation>授業終了時のテーマカラー</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="610"/>
         <source>浮窗时间颜色</source>
-        <translation type="unfinished"></translation>
+        <translation>浮動ウィンドウの時間カラー</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="617"/>
         <source>将用于设置浮窗时间颜色 (为了时间的可读性，请不要设置过浅的颜色&amp;过高的透明度)</source>
-        <translation type="unfinished"></translation>
+        <translation>浮動ウィンドウの時間カラーを設定するために使用します（時間の可読性を保つため、明るすぎる色や透明度が高すぎる設定は避けてください）</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="666"/>
         <source>倒计时模糊</source>
-        <translation type="unfinished"></translation>
+        <translation>カウントダウンのぼかし</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="702"/>
         <source>模糊主组件倒计时</source>
-        <translation type="unfinished"></translation>
+        <translation>メインウィジェットのカウントダウンをぼかす</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="709"/>
         <location filename="../view/menu/custom.ui" line="787"/>
         <source>将会以“&lt; x 分钟”的形式模糊地显示倒计时</source>
-        <translation type="unfinished"></translation>
+        <translation>「&lt; x 分」の形式でカウントダウンをぼかして表示します</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="738"/>
@@ -734,7 +734,7 @@
         <location filename="../view/menu/plugin_mgr.ui" line="706"/>
         <location filename="../view/menu/plugin_mgr.ui" line="712"/>
         <source>关</source>
-        <translation type="unfinished"></translation>
+        <translation>オフ</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="741"/>
@@ -742,102 +742,102 @@
         <location filename="../view/menu/custom.ui" line="914"/>
         <location filename="../view/menu/plugin_mgr.ui" line="709"/>
         <source>开</source>
-        <translation type="unfinished"></translation>
+        <translation>オン</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="780"/>
         <source>模糊浮窗倒计时</source>
-        <translation type="unfinished"></translation>
+        <translation>浮動ウィンドウのカウントダウンをぼかす</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="839"/>
         <source>显示</source>
-        <translation type="unfinished"></translation>
+        <translation>表示</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="875"/>
         <source>允许 “接下来” 组件显示多个课程</source>
-        <translation type="unfinished"></translation>
+        <translation>「次へ」ウィジェットに複数のコースの表示を許可する</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="882"/>
         <source>若开启，则显示下来的多个课程；若关闭，仅显示一个</source>
-        <translation type="unfinished"></translation>
+        <translation>有効にすると、次に表示される複数のコースが表示されます。無効にすると、1つだけ表示されます</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="934"/>
         <source>天气</source>
-        <translation type="unfinished"></translation>
+        <translation>天気</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="944"/>
         <source>*在 高德天气/腾讯天气 和 小米天气/和风天气 间切换后，需要重新选择城市</source>
-        <translation type="unfinished"></translation>
+        <translation>Gaode 天気/Tencent 天気 と Xiaomi 天気/Hefeng 天気 の間で切り替えた後、都市を再選択する必要があります</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="994"/>
         <source>选择城市</source>
-        <translation type="unfinished"></translation>
+        <translation>都市を選択</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="1001"/>
         <source>将会用于获得天气数据</source>
-        <translation type="unfinished"></translation>
+        <translation>天気データを取得するために使用されます</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="1030"/>
         <source>  选择一个城市  </source>
-        <translation type="unfinished"></translation>
+        <translation>  都市を選択してください  </translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="1066"/>
         <source>设置天气源</source>
-        <translation type="unfinished"></translation>
+        <translation>天気ソースを設定</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="1073"/>
         <source>将会影响“天气”小组件的天气数据源</source>
-        <translation type="unfinished"></translation>
+        <translation>「天気」ウィジェットの天気情報ソースに影響します</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="1135"/>
         <source>天气源 API Key</source>
-        <translation type="unfinished"></translation>
+        <translation>天気ソース APIキー</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="1142"/>
         <source>部分天气源可能需要设置 Key 才能正常使用，可在“帮助”页找到各个天气源获得 Key 的方法。</source>
-        <translation type="unfinished"></translation>
+        <translation>一部の天気ソースは、正常に利用するためにAPIキーの設定が必要です。「ヘルプ」ページで、各天気ソースのキー取得方法をご確認ください。</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="1233"/>
         <source>应用</source>
-        <translation type="unfinished"></translation>
+        <translation>適用</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="48"/>
         <source>帮助文档</source>
-        <translation type="unfinished"></translation>
+        <translation>ヘルプドキュメント</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="55"/>
         <source>需连接到互联网</source>
-        <translation type="unfinished"></translation>
+        <translation>インターネット接続が必要です</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="84"/>
         <source>在浏览器中浏览</source>
-        <translation type="unfinished"></translation>
+        <translation>ブラウザで閲覧</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="128"/>
         <source>猜你想问</source>
-        <translation type="unfinished"></translation>
+        <translation>こちらの質問でしょうか？</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="146"/>
         <source>如何设置课程表？</source>
-        <translation type="unfinished"></translation>
+        <translation>コース表</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="150"/>
