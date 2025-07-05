@@ -199,6 +199,8 @@ After=graphical-session.target
 Type=simple
 ExecStart={file_path}
 Restart=on-failure
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=%h/.Xauthority
 
 [Install]
 WantedBy=default.target
