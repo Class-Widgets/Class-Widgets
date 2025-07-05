@@ -1858,7 +1858,7 @@ class SettingsMenu(FluentWindow):
         switch_startup.setChecked(int(config_center.read_conf('General', 'auto_startup')))
         switch_startup.checkedChanged.connect(lambda checked: switch_checked('General', 'auto_startup', checked))
         # 开机自启
-        if os.name != 'nt':
+        if os.name != 'nt' and not os.path.isdir("/run/systemd/system"):
             switch_startup.setEnabled(False)
 
         hide_mode_combo = self.adInterface.findChild(ComboBox, 'hide_mode_combo')
