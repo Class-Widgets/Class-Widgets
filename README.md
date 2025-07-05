@@ -4,6 +4,7 @@
 > [![](https://github.com/pizeroLOL.png?size=80)](https://github.com/pizeroLOL) [![](https://github.com/IsHPDuwu.png?size=80)](https://github.com/IsHPDuwu) [![](https://github.com/baiyao105.png?size=80)](https://github.com/baiyao105) [![](https://github.com/Artist-MOBAI.png?size=80)](https://github.com/Artist-MOBAI)
 > 
 > 有任何需要社区开发者帮忙的地方，请前往 QQ 群或提 issue
+> 我们已经在加速Class Widgets 2的开发，敬请期待！
 
 > [!NOTE]
 > Class Widgets 有 QQ 群和 Discord 服务器啦！详见[此处](#社区)
