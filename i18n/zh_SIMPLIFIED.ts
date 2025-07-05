@@ -258,7 +258,7 @@
     <message>
         <location filename="../view/menu/about.ui" line="700"/>
         <source>Copyright © 2025 RinLit, All Rights Reversed.</source>
-        <translation>Copyright © 2025 RinLit,IsHPDuwu,JerryQAQ,Baiyao,FireworkRocket and (more...114514+)  All Rights Reversed. (Fake,Only Rinlit)</translation>
+        <translation>Copyright © 2025 RinLit,IsHPDuwu,JerryQAQ,Baiyao,FireworkRocket and (more...114514+) All Rights Reversed. (Fake,Only Rinlit)</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="41"/>
@@ -3248,7 +3248,7 @@
     <message>
         <location filename="../menu.py" line="675"/>
         <source>卸载成功</source>
-        <translation type="unfinished">sudo rm -rf  /* 成功</translation>
+        <translation>sudo rm -rf /* 成功</translation>
     </message>
     <message>
         <location filename="../menu.py" line="676"/>
