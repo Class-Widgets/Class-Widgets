@@ -89,11 +89,11 @@
     "version_channel": 0,
     "auto_check_update": 1,
     "cses_version": 1,
-    "build_time": "__BUILD_TIME__",
-    "build_commit": "__BUILD_COMMIT__",
-    "build_branch": "__BUILD_BRANCH__",
-    "build_runid": "__BUILD_RUNID__",
-    "build_type": "__BUILD_TYPE__"
+    "build_time": "2025-07-01 17:39",
+    "build_commit": "12b2503",
+    "build_branch": "dev",
+    "build_runid": "15995618073",
+    "build_type": "pyinstaller"
   },
   "Other": {
     "do_not_log": 0,

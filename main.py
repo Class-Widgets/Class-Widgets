@@ -9,6 +9,7 @@ import sys
 import psutil
 import signal
 import traceback
+import updater
 from shutil import copy
 from typing import Optional, Dict, List, Any, Union, Tuple
 
@@ -26,6 +27,8 @@ from qfluentwidgets import Theme, setTheme, setThemeColor, SystemTrayMenu, Actio
     PrimaryPushButton, IconWidget
 
 from PyQt5.QtGui import QCloseEvent, QShowEvent, QHideEvent, QMouseEvent, QFocusEvent
+import updater
+
 
 import conf
 import list_
@@ -2843,10 +2846,20 @@ def setup_signal_handlers_optimized(app: QApplication) -> None:
     signal.signal(signal.SIGTERM, signal_handler)  # taskkill
     signal.signal(signal.SIGINT, signal_handler)   # Ctrl+C
     if os.name == 'posix':
-        signal.signal(signal.SIGQUIT, signal_handler) # 终端退出
+        signal.signal(signal.SIGQUIT, signal_handler) # 终端退出      
         signal.signal(signal.SIGHUP, signal_handler)  # 终端挂起
 
 if __name__ == '__main__':
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "--finish-update":
+            logger.debug("自动更新收尾")
+            updater.post_upgrade()
+
+        else:
+            '''--do-upgrade的参数分别对应updater.do_upgrade的参数'''
+            logger.debug("调用自动更新")
+            updater.do_upgrade(*sys.argv[2:])
+
     if share.attach() and config_center.read_conf('Other', 'multiple_programs') != '1':
         logger.debug('不允许多开实例')
         from qfluentwidgets import Dialog

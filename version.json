@@ -1,0 +1,63 @@
+{
+  "version_release": "v114.5.1.4",
+  "version_beta": "v114.5.14-b10086",
+  "releases":{
+    "x64":{
+        "url":"https://app.yhlgo.xyz/cw_win.zip",
+        "files_to_keep":[
+            "config/schedules",
+            "config/config.json",
+            "plugins/"
+        ],
+        "executable":"/main/ClassWidgets.exe"
+  },
+  "macOS":{
+        "url":"https://app.yhlgo.xyz/cw_mac.zip",
+        "files_to_keep":[
+            "config/schedules",
+            "config/config.json",
+            "plugins/"
+        ],
+        "executable":"/main/ClassWidgets"
+  },
+  "debian":{
+        "url":"https://app.yhlgo.xyz/cw_debian.zip",
+        "files_to_keep":[
+            "config/schedules",
+            "config/config.json",
+            "plugins/"
+        ],
+        "executable":"/main/ClassWidgets"
+  }
+  },
+  "releases_beta":{
+    "x64":{
+        "url":"https://app.yhlgo.xyz/cw_win_beta.zip",
+        "files_to_keep":[
+            "config/schedules",
+            "config/config.json",
+            "plugins/"
+        ],
+        "executable":"/main/ClassWidgets.exe"
+  },
+  "macOS":{
+        "url":"https://app.yhlgo.xyz/cw_mac_beta.zip",
+        "files_to_keep":[
+            "config/schedules",
+            "config/config.json",
+            "plugins/"
+        ],
+        "executable":"/main/ClassWidgets"
+  },
+  "debian":{
+        "url":"https://app.yhlgo.xyz/cw_debian_beta.zip",
+        "files_to_keep":[
+            "config/schedules",
+            "config/config.json",
+            "plugins/"
+        ],
+        "executable":"/main/ClassWidgets"
+  }
+  }
+  
+}
