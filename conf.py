@@ -272,7 +272,6 @@ def get_week_type() -> int:
 
 
 def get_is_widget_in(widget: str = 'example.ui') -> bool:
-    import list_
     widgets_list = list_.get_widget_config()
     return widget in widgets_list
 
