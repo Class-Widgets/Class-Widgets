@@ -235,7 +235,6 @@ jobs:
       - name: Build
         shell: bash
         run: |
-          source .venv/bin/activate
           pyinstaller --noconfirm --onefile \
             --name "ClassWidgets" \
             --add-data "LICENSE:." \
