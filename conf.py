@@ -189,7 +189,7 @@ def add_to_startup(file_path: str = f'{base_directory}/ClassWidgets', icon_path:
         if not startup_folder.exists():
             startup_folder.mkdir(parents=True)
         systemd_service = startup_folder / f'classwidgets.service'
-        print(systemd_service)
+        logger.info(f"创建systemd服务文件: {systemd_service}")
         with open(systemd_service, 'w') as f:
             f.write(f"""[Unit]
 Description=ClassWidgets
