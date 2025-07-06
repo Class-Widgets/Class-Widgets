@@ -98,7 +98,7 @@ jobs:
       - name: Build (Windows)
         if: ${{ startsWith(matrix.os, 'windows') }}
         run: |
-          pyinstaller --noconfirm --onefile --windowed \
+          pyinstaller --noconfirm --windowed \
             --name "ClassWidgets" \
             --add-data "LICENSE;." \
             --add-data "audio;audio" \
@@ -235,7 +235,7 @@ jobs:
       - name: Build
         shell: bash
         run: |
-          pyinstaller --noconfirm --onefile \
+          pyinstaller --noconfirm \
             --name "ClassWidgets" \
             --add-data "LICENSE:." \
             --add-data "audio:audio" \
