@@ -57,9 +57,7 @@ jobs:
         with:
           python-version: '3.12'
           architecture: ${{ matrix.arch }}
-          cache: 'pip'
-          cache-dependency-path: |
-            **/requirements*.txt
+          cache: 'pip' # caching pip dependencies
 
       - name: Init zip folder
         run: mkdir zip
@@ -202,6 +200,7 @@ jobs:
         uses: actions/setup-python@v5.3.0
         with:
           python-version: '3.12'
+          cache: 'pip' # caching pip dependencies
       - name: Install PyInstaller
         run: |
           pip install uv
