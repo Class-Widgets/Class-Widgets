@@ -199,9 +199,6 @@ jobs:
         uses: actions/setup-python@v5.3.0
         with:
           python-version: '3.8.10'
-          cache: 'pip'
-          cache-dependency-path: |
-            **/requirements*.txt
       - name: Install PyInstaller
         run: |
           pip install -r requirements.txt pyinstaller
