@@ -116,7 +116,7 @@ jobs:
             --icon "./img/favicon.ico" \
             main.py
           mkdir ClassWidgets
-          cp -R dist/ClassWidgets/ClassWidgets.exe ClassWidgets/
+          cp -R dist/ClassWidgets/ ClassWidgets/
           cp -R audio config font img ui view ClassWidgets/
 
 
