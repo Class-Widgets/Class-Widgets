@@ -135,7 +135,6 @@ jobs:
             --icon "./img/favicon.icns" \
             main.py
           cp -R dist/ClassWidgets.app Class\ Widgets.app
-          cp -R audio config font img ui view Class\ Widgets.app/Contents/MacOS/
 
       - name: Package (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
