@@ -65,7 +65,7 @@ jobs:
         run: mkdir zip
 
       - name: Install Dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.txt pyinstaller
 
       - name: Set Build Info
         shell: bash
@@ -78,7 +78,7 @@ jobs:
           build_commit="${GITHUB_SHA:0:7}"
           build_branch="${GITHUB_REF_NAME}"
           build_runid="${GITHUB_RUN_ID}"
-          build_type="Nuitka - Release"
+          build_type="PyInstaller - Release"
           config_path="config/default_config.json"
           config_text=$(cat "$config_path")
           config_text="${config_text//__BUILD_TIME__/$build_time}"
@@ -96,60 +96,51 @@ jobs:
 
       - name: Build (Windows)
         if: ${{ startsWith(matrix.os, 'windows') }}
-        uses: Nuitka/Nuitka-Action@main
-        with:
-          mode: standalone
-          script-name: main.py
-          output-file: ClassWidgets
-          enable-plugins: pyqt5
-          include-data-files: LICENSE=LICENSE
-          include-data-dir: |
-            audio=audio
-            config=config
-            font=font
-            img=img
-            ui=ui
-            view=view
-          include-package: |
-            pyttsx3.drivers
-            comtypes
-          disable-console: true
-          product-name: Class Widgets
-          file-version: 1.1.7.2
-          windows-icon-from-ico: ./img/favicon.ico
+        run: |
+          pyinstaller --noconfirm --onefile --windowed \
+            --name "ClassWidgets" \
+            --add-data "LICENSE;." \
+            --add-data "audio;audio" \
+            --add-data "config;config" \
+            --add-data "font;font" \
+            --add-data "img;img" \
+            --add-data "ui;ui" \
+            --add-data "view;view" \
+            --hidden-import "pyttsx3.drivers" \
+            --hidden-import "comtypes" \
+            --icon "./img/favicon.ico" \
+            main.py
+          mkdir ClassWidgets
+          cp -R dist/ClassWidgets.exe ClassWidgets/
+          cp -R audio config font img ui view ClassWidgets/
+
       - name: Build (macOS)
         if: ${{ startsWith(matrix.os, 'macos') }}
-        uses: Nuitka/Nuitka-Action@main
-        with:
-          script-name: main.py
-          enable-plugins: pyqt5
-          output-file: ClassWidgets
-          include-data-files: LICENSE=LICENSE
-          include-data-dir: |
-            audio=audio
-            config=config
-            font=font
-            img=img
-            ui=ui
-            view=view
-          include-package: pyttsx3.drivers
-          macos-app-icon: ./img/favicon.icns
-          macos-signed-app-name: cn.rinlit.classwidgets
-          macos-app-name: Class Widgets
-          macos-app-version: 1.1.7.2
-
+        run: |
+          pyinstaller --noconfirm --windowed \
+            --name "ClassWidgets" \
+            --add-data "LICENSE:." \
+            --add-data "audio:audio" \
+            --add-data "config:config" \
+            --add-data "font:font" \
+            --add-data "img:img" \
+            --add-data "ui:ui" \
+            --add-data "view:view" \
+            --hidden-import "pyttsx3.drivers" \
+            --icon "./img/favicon.icns" \
+            main.py
+          cp -R dist/ClassWidgets.app Class\ Widgets.app
+          cp -R audio config font img ui view Class\ Widgets.app/Contents/MacOS/
 
       - name: Package (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
           curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
-          xcopy build\main.dist\* ClassWidgets\ /e/y
           ./zip -r -q "./zip/ClassWidgets-Windows-${{ matrix.arch }} (Unsigned).zip" ClassWidgets
 
       - name: Package (macOS)
         if: ${{ startsWith(matrix.os, 'macos') }}
         run: |
-          cp -R build/main.app Class\ Widgets.app
           zip -r -q "./zip/ClassWidgets-macOS-${{ matrix.arch }}.zip" Class\ Widgets.app
 
       - name: Upload unsigned application
@@ -204,25 +195,16 @@ jobs:
           dpkg -i libxcb-util1_0.4.0-1+b1_amd64.deb
       - name: Checkout repository
         uses: actions/checkout@v4.2.2
-      - name: Setup uv & python
-        uses: astral-sh/setup-uv@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5.3.0
         with:
-          python-version: 3.8.10
-      - name: Setup Environment Variables
-        shell: bash
+          python-version: '3.8.10'
+          cache: 'pip'
+          cache-dependency-path: |
+            **/requirements*.txt
+      - name: Install PyInstaller
         run: |
-          echo "NUITKA_CACHE_DIR=${{ github.action_path }}/nuitka/cache" >> $GITHUB_ENV
-          echo "PYTHON_VERSION=3.8" >> $GITHUB_ENV
-      - name: Cache Nuitka cache directory
-        if: ${{ !inputs.disable-cache }}
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.NUITKA_CACHE_DIR }}
-          key: Debian-X64-python-${{ env.PYTHON_VERSION }}-nuitka-${{ github.sha }}
-          restore-keys: |
-            Debian-X64-python-${{ env.PYTHON_VERSION }}-
-            Debian-X64-python-
-            Debian-X64-
+          pip install -r requirements.txt pyinstaller
 
       - name: Set Build Info
         shell: bash
@@ -235,7 +217,7 @@ jobs:
           build_commit="${GITHUB_SHA:0:7}"
           build_branch="${GITHUB_REF_NAME}"
           build_runid="${GITHUB_RUN_ID}"
-          build_type="Nuitka - Release"
+          build_type="PyInstaller - Release"
           config_path="config/default_config.json"
           config_text=$(cat "$config_path")
           config_text="${config_text//__BUILD_TIME__/$build_time}"
@@ -254,26 +236,22 @@ jobs:
       - name: Build
         shell: bash
         run: |
-          uv venv
           source .venv/bin/activate
-          uv pip install -r requirements.txt
-          uv pip install nuitka==2.6.7
-          python -m nuitka main.py \
-            --enable-plugin=pyqt5 \
-            --mode=standalone \
-            -o"ClassWidgets" \
-            --include-data-dir=img=img \
-            --include-data-dir=ui=ui \
-            --include-data-dir=view=view \
-            --include-data-dir=config=config \
-            --include-data-dir=font=font \
-            --include-data-dir=audio=audio \
-            --include-data-files=LICENSE=LICENSE \
-            --include-package=pyttsx3.drivers
+          pyinstaller --noconfirm --onefile \
+            --name "ClassWidgets" \
+            --add-data "LICENSE:." \
+            --add-data "audio:audio" \
+            --add-data "config:config" \
+            --add-data "font:font" \
+            --add-data "img:img" \
+            --add-data "ui:ui" \
+            --add-data "view:view" \
+            --hidden-import "pyttsx3.drivers" \
+            main.py
 
       - name: Package (Debian)
         run: |
-          cp -R main.dist ClassWidgets
+          cp -R dist ClassWidgets
           mkdir zip
           zip -r -q zip/ClassWidgets-.zip ClassWidgets
 
