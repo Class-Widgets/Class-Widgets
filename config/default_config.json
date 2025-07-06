@@ -3,7 +3,6 @@
     "schedule": "新课表 - 1.json",
     "pin_on_top": 1,
     "margin": 10,
-    "time_offset": 0,
     "opacity": 95,
     "auto_startup": 0,
     "hide": 0,
@@ -34,6 +33,7 @@
   "TTS": {
     "enable": 0,
     "engine": "edge",
+    "language": "zh-CN",
     "voice_id": "",
     "speed": 50,
     "attend_class": "活动开始, {lesson_name}",
@@ -58,6 +58,15 @@
     "mirror": "gh_proxy",
     "auto_delay": 5,
     "auto_enable_plugin": 1
+  },
+  "Time": {
+    "time_offset": 0,
+    "type": "ntp",
+    "ntp_server": "ntp.aliyun.com",
+    "timezone": "local",
+    "enable_ntp_auto_refresh": 1,
+    "ntp_auto_refresh": 10,
+    "switch_enable_ntp_auto_sync": 1
   },
   "Date": {
     "start_date": "",

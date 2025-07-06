@@ -43,7 +43,7 @@ from weather import get_unified_weather_alerts, get_alert_image
 from network_thread import check_update
 from play_audio import play_audio
 from plugin import p_loader
-from utils import restart, stop, share, update_timer, DarkModeWatcher
+from utils import restart, stop, share, update_timer, DarkModeWatcher, TimeManagerFactory
 from file import config_center, schedule_center
 
 if os.name == 'nt':
@@ -88,7 +88,6 @@ weather_data_temp = None
 city = 101010100  # 默认城市
 theme = None
 
-time_offset = 0  # 时差偏移
 first_start = True
 error_cooldown = dt.timedelta(seconds=2)  # 冷却时间(s)
 ignore_errors = []
@@ -219,9 +218,10 @@ def get_start_time() -> None:
                 logger.error(f'加载课程表文件[节点类型]出错：{e}')
                 part_type = 'part'
 
-            # 应用时差偏移到课程表时间
-            start_time = dt.datetime.combine(today, dt.time(h, m)) + dt.timedelta(seconds=time_offset)
-            parts_start_time.append(start_time)
+            # 使用基础时间，不应用偏移（偏移在比较时统一处理）
+            current_time_manager = TimeManagerFactory.get_instance()
+            base_time = dt.datetime.combine(current_time_manager.get_today(), dt.time(h, m))
+            parts_start_time.append(base_time)
             order.append(item_name)
             parts_type.append(part_type)
         except Exception as e:
@@ -266,10 +266,17 @@ def get_part() -> Optional[Tuple[dt.datetime, int]]:
         return None
 
     def return_data():
-        c_time = parts_start_time[i]
+        base_time = parts_start_time[i]
+        current_manager = TimeManagerFactory.get_instance()
+        c_time = current_manager.get_current_time().replace(
+            hour=base_time.hour,
+            minute=base_time.minute,
+            second=base_time.second,
+            microsecond=base_time.microsecond
+        )
         return c_time, int(order[i])  # 返回开始时间、Part序号
 
-    current_dt = dt.datetime.now() # 当前时间
+    current_dt = TimeManagerFactory.get_instance().get_current_time() # 当前时间
 
     for i in range(len(parts_start_time)):  # 遍历每个Part
         time_len = dt.timedelta(minutes=0)  # Part长度
@@ -283,10 +290,19 @@ def get_part() -> Optional[Tuple[dt.datetime, int]]:
             if i == len(parts_start_time) - 1:  # 最后一个Part
                 return return_data()
             else:
-                if current_dt <= parts_start_time[i] + time_len:
+                # 将基础时间转换为当前时间基准进行比较
+                base_time = parts_start_time[i]
+                current_manager = TimeManagerFactory.get_instance()
+                adjusted_start_time = current_manager.get_current_time().replace(
+                    hour=base_time.hour,
+                    minute=base_time.minute,
+                    second=base_time.second,
+                    microsecond=base_time.microsecond
+                )
+                if current_dt <= adjusted_start_time + time_len:
                     return return_data()
 
-    return parts_start_time[0] + dt.timedelta(seconds=time_offset), 0, 'part'
+    return parts_start_time[0], 0
 
 def get_excluded_lessons() -> None:
     global excluded_lessons
@@ -334,7 +350,7 @@ def get_current_lessons() -> None:  # 获取当前课程
 # 获取倒计时、弹窗提示
 def get_countdown(toast: bool = False) -> Optional[List[Union[str, int]]]:  # 重构好累aaaa
     global last_notify_time
-    current_dt = dt.datetime.now()
+    current_dt = TimeManagerFactory.get_instance().get_current_time()
     if last_notify_time and (current_dt - last_notify_time).seconds < notify_cooldown:
         return
     def after_school():  # 放学
@@ -344,7 +360,7 @@ def get_countdown(toast: bool = False) -> Optional[List[Union[str, int]]]:  # �
             if config_center.read_conf('Toast', 'after_school') == '1':
                 notification.push_notification(2)  # 放学
 
-    current_dt = dt.datetime.combine(today, dt.datetime.strptime(current_time, '%H:%M:%S').time())  # 当前时间
+    current_dt = TimeManagerFactory.get_instance().get_current_time()  # 当前时间
     return_text = []
     got_return_data = False
 
@@ -419,7 +435,7 @@ def get_countdown(toast: bool = False) -> Optional[List[Union[str, int]]]:  # �
                         if lesson_name != '暂无课程':
                             next_lesson_name = lesson_name
                     if current_state == 0:
-                        now = dt.datetime.now()
+                        now = TimeManagerFactory.get_instance().get_current_time()
                         if not last_notify_time or (now - last_notify_time).seconds >= notify_cooldown:
                             if next_lesson_name != None:
                                     notification.push_notification(3, next_lesson_name)
@@ -438,7 +454,7 @@ def get_next_lessons() -> None:
     global next_lessons
     next_lessons = []
     part = 0
-    current_dt = dt.datetime.combine(today, dt.datetime.strptime(current_time, '%H:%M:%S').time())  # 当前时间
+    current_dt = TimeManagerFactory.get_instance().get_current_time()  # 当前时间
 
     if parts_start_time:
         c_time, part = get_part()
@@ -447,7 +463,12 @@ def get_next_lessons() -> None:
             if part == 0 or part == 3:
                 return True
             else:
-                if current_dt >= parts_start_time[part] - dt.timedelta(minutes=60):
+                if current_dt >= TimeManagerFactory.get_instance().get_current_time().replace(
+                    hour=parts_start_time[part].hour, 
+                    minute=parts_start_time[part].minute, 
+                    second=parts_start_time[part].second, 
+                    microsecond=parts_start_time[part].microsecond
+                ) - dt.timedelta(minutes=60):
                     return True
                 else:
                     return False
@@ -474,7 +495,7 @@ def get_next_lessons_text() -> str:
 # 获取当前活动
 def get_current_lesson_name() -> None:
     global current_lesson_name, current_state
-    current_dt = dt.datetime.combine(today, dt.datetime.strptime(current_time, '%H:%M:%S').time())  # 当前时间
+    current_dt = TimeManagerFactory.get_instance().get_current_time()  # 当前时间
     current_lesson_name = '暂无课程'
     current_state = 0
 
@@ -716,7 +737,7 @@ class PluginManager:  # 插件管理器
             "Timeline_Data": timeline_data,  # 时间线数据
             "Parts_Start_Time": parts_start_time,  # 节点开始时间
             "Parts_Type": parts_type,  # 节点类型
-            "Time_Offset": time_offset,  # 时差偏移
+            "Time_Offset": TimeManagerFactory.get_instance().get_time_offset(),  # 时差偏移
 
             "Schedule_Name": config_center.schedule_name,  # 课程表名称
             "Loaded_Data": loaded_data,  # 加载的课程表数据
@@ -819,7 +840,7 @@ class PluginMethod:  # 插件方法
         return generate_speech_sync(
             text=text,
             engine=engine,
-            voice=voice,
+            voice_id=voice,
             auto_fallback=auto_fallback,
             timeout=timeout
         )
@@ -1675,7 +1696,7 @@ class DesktopWidget(QWidget):  # 主要小组件
         self.weather_alert_text = None
         self.alert_showing = False
 
-        self.position = parent.get_widget_pos(self.path) if position is None else position
+        self.position = parent.get_widget_pos(self.path, None) if position is None else position
         self.animation = None
         self.opacity_animation = None
         mgr.hide_status = None
@@ -2020,12 +2041,10 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.open_extra_menu()
 
     def update_data(self, path: str = '') -> None:
-        global current_time, current_week, start_y, time_offset, today
+        global current_time, current_week, start_y, today
 
-        today = dt.date.today()
-        current_time = dt.datetime.now().strftime('%H:%M:%S')
-        time_offset = conf.get_time_offset()
-
+        today = TimeManagerFactory.get_instance().get_today()
+        current_time = TimeManagerFactory.get_instance().get_current_time_str('%H:%M:%S')
         get_start_time()
         get_current_lessons()
         get_current_lesson_name()
@@ -2053,7 +2072,7 @@ class DesktopWidget(QWidget):  # 主要小组件
         if conf.is_temp_week():  # 调休日
             current_week = config_center.read_conf('Temp', 'set_week')
         else:
-            current_week = dt.datetime.now().weekday()
+            current_week = TimeManagerFactory.get_instance().get_current_weekday()
         
         cd_list = get_countdown()
 
@@ -2953,7 +2972,7 @@ if __name__ == '__main__':
 
         # w = ErrorDialog()
         # w.exec()
-        if config_center.read_conf('Version', 'auto_check_update') == '1':
+        if config_center.read_conf('Version', 'auto_check_update', '1') == '1':
             check_update()
 
     status = app.exec()

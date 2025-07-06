@@ -1,6 +1,7 @@
 import datetime as dt
 import json
 import os
+import re
 import platform
 import subprocess
 import sys
@@ -13,13 +14,13 @@ import shutil
 import asyncio
 
 from PyQt5 import uic, QtCore
-from PyQt5.QtCore import Qt, QTime, QUrl, QDate, pyqtSignal, QSize, QThread, QTranslator
+from PyQt5.QtCore import Qt, QTime, QUrl, QDate, pyqtSignal, QSize, QThread, QTranslator, QObject, QTimer
 from PyQt5.QtGui import QIcon, QDesktopServices, QColor
 # from PyQt5.QtPrintSupport import QPrinter
 from PyQt5.QtCore import Qt, pyqtSignal, QRectF
 from PyQt5.QtGui import QPainter
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidgetItem, QLabel, QHBoxLayout, QSizePolicy, \
-    QSpacerItem, QFileDialog, QVBoxLayout, QScroller, QWidget, QListWidgetItem, QWidget, QStyle
+    QSpacerItem, QFileDialog, QVBoxLayout, QScroller, QWidget, QFrame, QListWidgetItem, QWidget, QStyle
 from packaging.version import Version
 from loguru import logger
 from qfluentwidgets import (
@@ -28,7 +29,7 @@ from qfluentwidgets import (
     FlyoutAnimationType, NavigationItemPosition, MessageBox, SubtitleLabel, PushButton, SwitchButton,
     CalendarPicker, BodyLabel, ColorDialog, isDarkTheme, TimeEdit, EditableComboBox, MessageBoxBase,
     SearchLineEdit, Slider, PlainTextEdit, ToolTipFilter, ToolTipPosition, RadioButton, HyperlinkLabel,
-    PrimaryDropDownPushButton, Action, RoundMenu, CardWidget, ImageLabel, StrongBodyLabel,
+    PrimaryDropDownPushButton, Action, RoundMenu, CardWidget, ImageLabel, StrongBodyLabel, TimePicker, FlyoutViewBase,
     TransparentDropDownToolButton, Dialog, SmoothScrollArea, TransparentToolButton, TableWidget, HyperlinkButton, DropDownToolButton, HyperlinkLabel, themeColor, FlyoutView
 )
 from qfluentwidgets.common import themeColor
@@ -39,11 +40,12 @@ import conf
 import list_ as list_
 import tip_toast
 import utils
+from utils import time_manager, TimeManagerFactory
 import weather
 import weather as wd
 from conf import base_directory, load_theme_config
 from cses_mgr import CSES_Converter
-from generate_speech import get_tts_voices, get_voice_id_by_name, get_voice_name_by_id, get_available_engines
+from generate_speech import get_tts_voices
 import generate_speech
 from file import config_center, schedule_center
 import file
@@ -269,7 +271,7 @@ from PyQt5.QtCore import QCoreApplication
 
 global_i18n_manager = None
 
-today = dt.date.today()
+today = TimeManagerFactory.get_instance().get_today()
 plugin_plaza = None
 
 plugin_dict = {}  # 插件字典
@@ -754,26 +756,33 @@ class TTSVoiceLoaderThread(QThread):
     errorOccurred = pyqtSignal(str)
     previewFinished = pyqtSignal(bool)
 
-    def __init__(self, engine_filter=None, parent=None):
+    def __init__(self, engine_filter=None, language_filter=None, parent=None):
         super().__init__(parent)
         self.engine_filter = engine_filter
+        self.language_filter = language_filter
 
     def run(self):
+        loop = None
         try:
-            if self.engine_filter == "pyttsx3" and platform.system() != "Windows":
-                logger.warning("当前系统不是Windows,跳过pyttsx3 TTS预览")
-                self.previewFinished.emit(False)
-                return
             if self.isInterruptionRequested():
                 return
             if self.engine_filter == "pyttsx3" and platform.system() != "Windows":
                 logger.warning("当前系统不是Windows,跳过pyttsx3语音加载")
                 self.voicesLoaded.emit([])
                 return
+            
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
-            available_voices, error_message = loop.run_until_complete(get_tts_voices(engine_filter=self.engine_filter))
-            loop.close()
+            
+            try:
+                available_voices, error_message = loop.run_until_complete(
+                    get_tts_voices(engine_filter=self.engine_filter, language_filter=self.language_filter)
+                )
+            except Exception as e:
+                if loop and not loop.is_closed():
+                    loop.close()
+                raise e
+                
             if self.isInterruptionRequested():
                 return
 
@@ -784,6 +793,16 @@ class TTSVoiceLoaderThread(QThread):
         except Exception as e:
             logger.error(f"加载TTS语音列表时出错: {e}")
             self.errorOccurred.emit(str(e))
+        finally:
+            if loop and not loop.is_closed():
+                try:
+                    loop.close()
+                except Exception as e:
+                    logger.warning(f"关闭事件循环时出错: {e}")
+            try:
+                asyncio.set_event_loop(None)
+            except Exception as e:
+                logger.warning(f"清理事件循环引用时出错: {e}")
 
 
 class TTSPreviewThread(QThread):
@@ -814,27 +833,19 @@ class TTSPreviewThread(QThread):
             audio_file = generate_speech_sync(
                 text=self.text,
                 engine=self.engine,
-                voice=self.voice,
-                auto_fallback=True,
+                voice_id=self.voice,
+                auto_fallback=False,
                 timeout=10.0
             )
-            
-            # 再次检查是否有中断请求
             if self.isInterruptionRequested():
                 logger.info("TTS预览线程收到中断请求，正在退出...")
-                # 删除已生成的音频文件
                 TTSEngine.delete_audio_file(audio_file)
                 return
-            
-            # 检查文件是否存在且有效
             if not os.path.exists(audio_file):
                 raise FileNotFoundError(f"生成的音频文件不存在: {audio_file}")
-                
-            # 检查文件大小是否正常（小于10字节的文件可能是损坏的）
             file_size = os.path.getsize(audio_file)
             if file_size < 10:
                 logger.warning(f"生成的音频文件可能无效，大小仅为 {file_size} 字节: {audio_file}")
-                # 删除可能损坏的文件
                 TTSEngine.delete_audio_file(audio_file)
                 raise ValueError(f"生成的音频文件可能无效，大小仅为 {file_size} 字节")
                 
@@ -1283,10 +1294,11 @@ class SettingsMenu(FluentWindow):
 
         self.voice_selector = None
         self.switch_enable_TTS = None
+        self.voice_language_selector = None
 
     def available_voices_cnt(self, voices):
         self.available_voices = voices
-        if hasattr(self, 'voice_selector') and self.voice_selector and hasattr(self, 'update_tts_voices') and self.TTSSettingsDialog and not self.TTSSettingsDialog.isHidden():
+        if hasattr(self, 'voice_selector') and self.voice_selector and hasattr(self, 'update_tts_voices'):
             self.update_tts_voices(self.available_voices)
         self.switch_enable_TTS.setEnabled(True if voices else False)
         self.voice_selector.setEnabled(True if voices else False)
@@ -1330,6 +1342,13 @@ class SettingsMenu(FluentWindow):
 
             parent.voice_selector = self.widget.findChild(ComboBox, 'voice_selector')
             parent.switch_enable_TTS = self.widget.findChild(SwitchButton, 'switch_enable_tts')
+            
+            # 语言选择器初始化
+            parent.voice_language_selector = self.widget.findChild(ComboBox, 'voice_language')
+            if parent.voice_language_selector:
+                parent.setup_voice_language_selector()
+                parent.voice_language_selector.currentTextChanged.connect(parent.on_voice_language_changed)
+            
             self.tts_vocab_button = self.widget.findChild(PushButton, 'tts_vocab_button')
             def show_vocab_note():
                 w = MessageBox(self.tr('小语法?'),
@@ -1481,20 +1500,27 @@ class SettingsMenu(FluentWindow):
             logger.debug(f"TTS引擎被更改,尝试更新列表: {selected_engine_key}")
             config_center.write_conf('TTS', 'engine', selected_engine_key)
             self.current_loaded_engine = selected_engine_key # 更新当前加载的引擎
-            self.load_tts_voices_for_engine(selected_engine_key)
+            current_language = None
+            if hasattr(self, 'voice_language_selector') and self.voice_language_selector:
+                current_language = self.voice_language_selector.currentData()
+            self.load_tts_voices_for_engine(selected_engine_key, current_language)
         elif not selected_engine_key:
             logger.warning("选择的TTS引擎键为空")
 
-    def load_tts_voices_for_engine(self, engine_key):
+    def load_tts_voices_for_engine(self, engine_key, language_filter=None):
         if config_center.read_conf('TTS', 'enable') == '0':
             self.voice_selector.clear()
             self.voice_selector.addItem(self.tr("未启用"), userData=None)
             self.voice_selector.setEnabled(False)
             self.switch_enable_TTS.setEnabled(True)
+            if hasattr(self, 'voice_language_selector') and self.voice_language_selector:
+                self.voice_language_selector.setEnabled(True)
             return
         self.voice_selector.clear()
         self.voice_selector.addItem(self.tr("加载中..."), userData=None)
         self.voice_selector.setEnabled(False)
+        if hasattr(self, 'voice_language_selector') and self.voice_language_selector:
+            self.voice_language_selector.setEnabled(False)
         if hasattr(self, 'TTSSettingsDialog') and self.TTSSettingsDialog.isVisible():
             self.switch_enable_TTS.setEnabled(False) # 临时禁用TTS开关
 
@@ -1507,9 +1533,9 @@ class SettingsMenu(FluentWindow):
 
         self.current_loaded_engine = engine_key
         self.available_voices = None
-        self.tts_voice_loader_thread = TTSVoiceLoaderThread(engine_filter=engine_key)
-        self.tts_voice_loader_thread.voicesLoaded.connect(lambda voices: self.available_voices_cnt(voices) or self.switch_enable_TTS.setEnabled(True))
-        self.tts_voice_loader_thread.errorOccurred.connect(lambda error: self.handle_tts_load_error(error) or self.switch_enable_TTS.setEnabled(True))
+        self.tts_voice_loader_thread = TTSVoiceLoaderThread(engine_filter=engine_key, language_filter=language_filter)
+        self.tts_voice_loader_thread.voicesLoaded.connect(lambda voices: self.available_voices_cnt(voices) or self.switch_enable_TTS.setEnabled(True) or self._enable_language_selector())
+        self.tts_voice_loader_thread.errorOccurred.connect(lambda error: self.handle_tts_load_error(error) or self.switch_enable_TTS.setEnabled(True) or self._enable_language_selector())
         self.tts_voice_loader_thread.start()
 
     def populate_tts_engines(self):
@@ -1600,7 +1626,10 @@ class SettingsMenu(FluentWindow):
             self.switch_enable_TTS.setEnabled(False)
             current_engine = self.engine_selector.currentData()
             if current_engine:
-                self.load_tts_voices_for_engine(current_engine)
+                current_language = None
+                if hasattr(self, 'voice_language_selector') and self.voice_language_selector:
+                    current_language = self.voice_language_selector.currentData()
+                self.load_tts_voices_for_engine(current_engine, current_language)
             else:
                 logger.warning("TTS启用但未选择引擎，无法加载语音")
                 self.voice_selector.clear()
@@ -1647,7 +1676,8 @@ class SettingsMenu(FluentWindow):
         for voice in available_voices:
             voice_selector.addItem(voice['name'], userData=voice['id'])
         current_voice_id = config_center.read_conf('TTS', 'voice_id')
-        current_voice_name = get_voice_name_by_id(current_voice_id, available_voices)
+        from generate_speech import get_voice_name_by_id_sync
+        current_voice_name = get_voice_name_by_id_sync(current_voice_id, available_voices)
         if current_voice_name:
             index_to_select = -1
             for i in range(voice_selector.count()):
@@ -1674,12 +1704,74 @@ class SettingsMenu(FluentWindow):
              switch_enable_TTS.setEnabled(False)
 
         voice_selector.setEnabled(True)
-        switch_enable_TTS.setEnabled(True)
-        voice_selector.currentTextChanged.connect(lambda name: config_center.write_conf('TTS', 'voice_id', voice_selector.currentData()) if voice_selector.currentData() else None)
+        self._enable_language_selector()
+
+    def setup_voice_language_selector(self):
+        """设置语言选择器"""
+        if not self.voice_language_selector:
+            return
+        
+        # 导入语言支持函数
+        from generate_speech import get_supported_languages
+        
+        # 清空并添加语言选项
+        self.voice_language_selector.clear()
+        self.voice_language_selector.addItem("全部语言", userData=None)
+        
+        supported_languages = get_supported_languages()
+        for lang_code, lang_name in supported_languages.items():
+            self.voice_language_selector.addItem(lang_name, userData=lang_code)
+        
+        # 加载保存的语言配置
+        saved_language = config_center.read_conf('TTS', 'language')
+        if saved_language:
+            index = self.voice_language_selector.findData(saved_language)
+            if index != -1:
+                self.voice_language_selector.setCurrentIndex(index)
+            else:
+                zh_index = self.voice_language_selector.findData('zh-CN')
+                if zh_index != -1:
+                    self.voice_language_selector.setCurrentIndex(zh_index)
+                else:
+                    self.voice_language_selector.setCurrentIndex(0)
+        else:
+            zh_index = self.voice_language_selector.findData('zh-CN')
+            if zh_index != -1:
+                self.voice_language_selector.setCurrentIndex(zh_index)
+                config_center.write_conf('TTS', 'language', 'zh-CN')
+            else:
+                self.voice_language_selector.setCurrentIndex(0)
+        
+    def _enable_language_selector(self):
+        """启用语言选择器"""
+        if hasattr(self, 'voice_language_selector') and self.voice_language_selector:
+            self.voice_language_selector.setEnabled(True)
+        return True
+    
+    def on_voice_language_changed(self, language_text):
+        """语言选择器变化处理"""
+        if not hasattr(self, 'voice_language_selector') or not self.voice_language_selector:
+            return
+        if not self.voice_language_selector.isEnabled():
+            return
+            
+        selected_language = self.voice_language_selector.currentData()
+        current_engine = self.engine_selector.currentData() if hasattr(self, 'engine_selector') and self.engine_selector else None
+        
+        # 保存语言配置
+        config_center.write_conf('TTS', 'language', selected_language or '')
+        
+        if current_engine and config_center.read_conf('TTS', 'enable') == '1':
+            # logger.debug(f"语言筛选已更改为: {selected_language or '全部语言'}")
+            if hasattr(self, 'voice_selector') and self.voice_selector:
+                self.voice_selector.clear()
+                self.voice_selector.addItem("正在加载语音...", userData=None)
+                self.voice_selector.setEnabled(False)
+            self.load_tts_voices_for_engine(current_engine, selected_language)
 
     def handle_tts_load_error(self, error_message):
         if not self.voice_selector or not self.switch_enable_TTS:
-            logger.warning("voice_selector 或 switch_enable_TTS 未初始化")
+            # logger.warning("voice_selector 或 switch_enable_TTS 未初始化")
             return
             
         voice_selector = self.voice_selector
@@ -1724,8 +1816,8 @@ class SettingsMenu(FluentWindow):
             self.url = file_path
             is_db = False
             for db in list_.schedule_dbs:
-                if file_path.startswith(list_.schedule_dbs[db]):
-                    file_path = file_path.replace(list_.schedule_dbs[db], db)
+                if file_path.startswith(f"{list_.schedule_dbs[db]}/"):
+                    file_path = f"{db}/{file_path[len(list_.schedule_dbs[db]) + 1:]}"
                     is_db = True
                     break
             if not is_db:
@@ -1762,6 +1854,9 @@ class SettingsMenu(FluentWindow):
 
         self.import_from_file = self.cfInterface.findChild(PushButton, 'config_import')
         self.import_from_file.clicked.connect(self.cf_import_schedule)  # 从文件导入
+
+        self.db_edit = self.cfInterface.findChild(PushButton, 'config_db_edit')
+        self.db_edit.clicked.connect(self.cf_open_db_edit)
 
         # 用自定义的 UniformListWidget 替换原 table
         old = self.cfInterface.findChild(ListWidget, 'config_table')
@@ -1943,7 +2038,7 @@ class SettingsMenu(FluentWindow):
         check_update_btn.clicked.connect(self.check_update)
 
         self.auto_check_update = self.ifInterface.findChild(SwitchButton, 'auto_check_update')
-        self.auto_check_update.setChecked(int(config_center.read_conf("Version", "auto_check_update")))
+        self.auto_check_update.setChecked(int(config_center.read_conf("Version", "auto_check_update", "1")))
         self.auto_check_update.checkedChanged.connect(
             lambda checked: switch_checked("Version", "auto_check_update", checked)
         )  # 自动检查更新
@@ -2072,9 +2167,9 @@ class SettingsMenu(FluentWindow):
             lambda: config_center.write_conf('Date', 'start_date', set_start_date.date.toString('yyyy-M-d')))  # 开学日期
 
         offset_spin = self.adInterface.findChild(SpinBox, 'offset_spin')
-        offset_spin.setValue(int(config_center.read_conf('General', 'time_offset')))
+        offset_spin.setValue(int(config_center.read_conf('Time', 'time_offset')))
         offset_spin.valueChanged.connect(
-            lambda: config_center.write_conf('General', 'time_offset', str(offset_spin.value()))
+            lambda: config_center.write_conf('Time', 'time_offset', str(offset_spin.value()))
         )  # 保存时差偏移
 
         text_scale_factor = self.adInterface.findChild(LineEdit, 'text_scale_factor')
@@ -2124,6 +2219,1314 @@ class SettingsMenu(FluentWindow):
                     language_combo_widgets.setCurrentIndex(i)
                     break
             language_combo_widgets.currentIndexChanged.connect(self.on_language_widgets_changed)
+        
+        # 时间获得方法配置
+        conf_time_get = self.adInterface.findChild(ComboBox, 'conf_time_get')
+        conf_time_get.addItems(['系统时间', 'NTP时间'])
+        current_time_type = config_center.read_conf('Time', 'type')
+        if current_time_type == 'ntp':
+            conf_time_get.setCurrentIndex(1)
+        else:
+            conf_time_get.setCurrentIndex(0)
+        conf_time_get.currentIndexChanged.connect(self.on_time_method_changed)
+        
+        # NTP服务器配置
+        ntp_server_url = self.adInterface.findChild(LineEdit, 'ntp_server_url')
+        ntp_server_url.setText(config_center.read_conf('Time', 'ntp_server'))
+        ntp_server_url.textChanged.connect(
+            lambda: self.on_ntp_server_url_changed(ntp_server_url.text())
+        )
+        ntp_refresh_button = self.adInterface.findChild(ToolButton, 'ntp_refresh_button')
+        ntp_refresh_button.setIcon(fIcon.SYNC)
+        ntp_refresh_button.setToolTip('立即同步NTP时间')
+        ntp_refresh_button.installEventFilter(ToolTipFilter(ntp_refresh_button, showDelay=300, position=ToolTipPosition.TOP))
+        ntp_refresh_button.clicked.connect(self.on_ntp_refresh_clicked)
+        ntp_refresh_picker = self.adInterface.findChild(SpinBox, 'ntp_refresh_picker')
+        auto_refresh_minutes = int(config_center.read_conf('Time', 'ntp_auto_refresh'))
+        ntp_refresh_picker.setMinimum(1)
+        ntp_refresh_picker.setMaximum(1440)  # 最大24小时
+        ntp_refresh_picker.setSuffix(' 分钟')
+        ntp_refresh_picker.setValue(auto_refresh_minutes)
+        ntp_refresh_picker.valueChanged.connect(self.on_ntp_auto_refresh_changed)
+        ntp_sync_timezone = self.adInterface.findChild(ComboBox, 'ntp_sync_timezone')
+        timezone_options = [
+            ('系统时区', 'local'),
+            ('(UTC+0)  伦敦时间', 'Europe/London'),
+            ('(UTC+1)  巴黎时间', 'Europe/Paris'),
+            ('(UTC+3)  莫斯科时间', 'Europe/Moscow'),
+            ('(UTC+8)  北京时间', 'Asia/Shanghai'),
+            ('(UTC+8)  新加坡时间', 'Asia/Singapore'),
+            ('(UTC+9)  东京时间', 'Asia/Tokyo'),
+            ('(UTC+10)  悉尼时间', 'Australia/Sydney'),
+            ('(UTC-8)  洛杉矶时间', 'America/Los_Angeles'),
+            ('(UTC-5)  纽约时间', 'America/New_York')
+        ]
+        for display_name, timezone_value in timezone_options:
+            ntp_sync_timezone.addItem(display_name)
+            ntp_sync_timezone.setItemData(ntp_sync_timezone.count() - 1, timezone_value)
+        current_timezone = config_center.read_conf('Time', 'timezone', 'local')
+        timezone_found = False
+        for i, (_, timezone_value) in enumerate(timezone_options):
+            if timezone_value == current_timezone:
+                ntp_sync_timezone.setCurrentIndex(i)
+                timezone_found = True
+                break
+        if not timezone_found:
+            ntp_sync_timezone.setCurrentIndex(0)
+            config_center.write_conf('Time', 'timezone', 'local')
+        ntp_sync_timezone.currentIndexChanged.connect(self.on_ntp_timezone_changed)
+        switch_enable_ntp_auto_sync = self.adInterface.findChild(SwitchButton, 'switch_enable_ntp_auto_sync')
+        auto_sync_enabled = int(config_center.read_conf('Time', 'switch_enable_ntp_auto_sync', '1'))
+        switch_enable_ntp_auto_sync.setChecked(bool(auto_sync_enabled))
+        switch_enable_ntp_auto_sync.checkedChanged.connect(self.on_ntp_auto_sync_switch_changed)
+        self.ntp_card_widget = self.adInterface.findChild(CardWidget, 'CardWidget_17')
+        self.update_ntp_status_display()
+        self.update_ntp_ui_visibility()
+        if config_center.read_conf('Time', 'type') == 'ntp' and auto_sync_enabled:
+            self._add_ntp_auto_sync_callback()
+
+    def on_time_method_changed(self):
+        """时间获得方法改变时的处理"""
+        conf_time_get = self.adInterface.findChild(ComboBox, 'conf_time_get')
+        is_ntp = conf_time_get.currentIndex() == 1
+        config_center.write_conf('Time', 'type', 'ntp' if is_ntp else 'local')
+        try:
+            new_manager = TimeManagerFactory.reset_instance()
+            utils.time_manager = new_manager
+            try:
+                if hasattr(self, 'parent') and self.parent and hasattr(self.parent, 'update_data'):
+                    self.parent.update_data()
+            except Exception:
+                pass
+            try:
+                current_manager = utils.time_manager
+                self._remove_ntp_auto_sync_callback()
+                if is_ntp:
+                    self.show_info_toast('时间设置', '已切换到NTP时间,正在同步时间~')
+                    self._start_async_ntp_sync(current_manager)
+                    auto_sync_enabled = int(config_center.read_conf('Time', 'switch_enable_ntp_auto_sync', '1'))
+                    if auto_sync_enabled:
+                        self._add_ntp_auto_sync_callback()
+                else:
+                    self.show_success_toast('时间设置', '已切换到系统时间')
+            except Exception as e:
+                logger.error(f"管理NTP自动同步回调失败: {e}")
+            
+            self.update_ntp_status_display()
+            self.update_ntp_ui_visibility()
+        except Exception as e:
+            logger.error(f"时间管理器切换失败: {e}")
+            self.show_warning_toast('时间设置', '切换失败')
+    
+    def on_ntp_refresh_clicked(self):
+        """NTP刷新按钮"""
+        try:
+            current_manager = utils.time_manager
+            if isinstance(current_manager, utils.LocalTimeManager):
+                self.show_warning_toast('NTP同步', '当前无需NTP同步')
+                return
+            if not isinstance(current_manager, utils.NTPTimeManager):
+                self.show_warning_toast('NTP同步', '当前时间管理器不支持NTP同步')
+                return
+            self.show_info_toast('NTP同步', '正在同步NTP时间~')
+            self._start_async_ntp_sync(current_manager)
+        except Exception as e:
+            logger.error(f"NTP同步失败: {e}")
+            self.show_warning_toast('NTP同步', 'NTP时间同步失败')
+    
+    def on_ntp_auto_refresh_changed(self, value):
+        """修改ntp自动刷新时间"""
+        config_center.write_conf('Time', 'ntp_auto_refresh', str(value))
+        try:
+            if config_center.read_conf('Time', 'type') == 'ntp' and int(config_center.read_conf('Time', 'switch_enable_ntp_auto_sync', '1')):
+                self._remove_ntp_auto_sync_callback()
+                self._add_ntp_auto_sync_callback()
+        except Exception as e:
+            logger.error(f"更新NTP自动同步间隔失败: {e}")
+    
+    def on_ntp_auto_sync_switch_changed(self, checked):
+        """NTP自动同步开关"""
+        try:
+            config_center.write_conf('Time', 'switch_enable_ntp_auto_sync', '1' if checked else '0')
+            if config_center.read_conf('Time', 'type') == 'ntp':
+                if checked:
+                    self._add_ntp_auto_sync_callback()
+                    self.show_success_toast('NTP设置', '已开启NTP自动同步ヾ(≧▽≦*)o')
+                else:
+                    self._remove_ntp_auto_sync_callback()
+                    self.show_info_toast('NTP设置', '已关闭NTP自动同步(≧﹏ ≦)')
+        except Exception as e:
+            logger.error(f"NTP自动同步开关设置失败: {e}")
+            self.show_warning_toast('NTP设置', '设置失败 (╥﹏╥)')
+    
+    def on_ntp_timezone_changed(self):
+        """NTP时区设置改变时的处理"""
+        try:
+            ntp_sync_timezone = self.adInterface.findChild(ComboBox, 'ntp_sync_timezone')
+            selected_timezone = ntp_sync_timezone.itemData(ntp_sync_timezone.currentIndex())
+            config_center.write_conf('Time', 'timezone', selected_timezone)
+            if config_center.read_conf('Time', 'type') == 'ntp':
+                try:
+                    self.show_info_toast('时区设置', f'时区已更新为 {ntp_sync_timezone.currentText()}，正在重新同步时间~')
+                    TimeManagerFactory.reset_instance()
+                    QTimer.singleShot(100, self.update_ntp_status_display)
+                    self._start_async_ntp_sync(utils.time_manager)
+                except Exception as e:
+                    logger.error(f"应用新时区失败: {e}")
+            else:
+                self.show_success_toast('时区设置', f'时区已设置为 {ntp_sync_timezone.currentText()}')
+        except Exception as e:
+            logger.error(f"时区设置失败: {e}")
+            self.show_error_toast('时区设置', '时区设置失败')
+    
+    def _add_ntp_auto_sync_callback(self):
+        """添加NTP自动同步回调"""
+        try:
+            from utils import update_timer
+            def ntp_auto_sync_callback():
+                """NTP自动同步回调函数"""
+                try:
+                    if config_center.read_conf('Time', 'type') != 'ntp':
+                        return
+                    current_manager = utils.time_manager
+                    if not isinstance(current_manager, utils.NTPTimeManager):
+                        return
+                    success = current_manager.sync_with_ntp()
+                    if success:
+                        try:
+                            self.update_ntp_status_display()
+                        except Exception:
+                            pass
+                except Exception as e:
+                    logger.error(f"NTP自动同步异常: {e}")
+            self._ntp_auto_sync_callback = ntp_auto_sync_callback
+            ntp_auto_refresh_minutes = int(config_center.read_conf('Time', 'ntp_auto_refresh'))
+            ntp_auto_refresh_seconds = ntp_auto_refresh_minutes * 60
+            update_timer.add_callback(ntp_auto_sync_callback, ntp_auto_refresh_seconds)
+            
+        except Exception as e:
+            logger.error(f"添加NTP自动同步回调失败: {e}")
+    
+    def _remove_ntp_auto_sync_callback(self):
+        """移除NTP自动同步回调"""
+        try:
+            from utils import update_timer
+            if hasattr(self, '_ntp_auto_sync_callback'):
+                update_timer.remove_callback(self._ntp_auto_sync_callback)
+                delattr(self, '_ntp_auto_sync_callback')
+        except Exception as e:
+            logger.error(f"移除NTP自动同步回调失败: {e}")
+    
+    def on_ntp_server_url_changed(self, url: str):
+        """修改 NTP 服务器 URL"""
+        url = url.strip()
+        ntp_server_url_widget = self.adInterface.findChild(LineEdit, 'ntp_server_url')
+        if hasattr(self, '_ntp_flyout_timer'):
+            self._ntp_flyout_timer.stop()
+        self._ntp_flyout_timer = QTimer()
+        self._ntp_flyout_timer.setSingleShot(True)
+        self._ntp_flyout_timer.timeout.connect(lambda: self._process_ntp_url_change(url, ntp_server_url_widget))
+        self._ntp_flyout_timer.start(1500)  # 1.5秒延迟
+    
+    def _process_ntp_url_change(self, url: str, ntp_server_url_widget):
+        """处理NTP URL变更的实际逻辑"""
+        if not url:
+            self._show_ntp_flyout(
+                ntp_server_url_widget, 
+                'warning', 
+                "NTP服务器URL不能为空 o(〃＾▽＾〃)o\n请输入有效的NTP服务器地址",
+                ""
+            )
+            return
+        # 验证url的正则
+        # 筛选demo:
+        # 域名: pool.ntp.org, time.windows.com, cn.pool.ntp.org
+        # IP(v4): 192.168.1.1, 203.107.6.88, 120.25.115.20
+        # time.nist.gov:123, 192.168.1.1:123
+        pattern = re.compile(
+            r'^('
+                # 域名筛选
+                r'([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+'
+                r'[a-zA-Z]{2,}' # 顶级域名(至少2个字母)
+            r'|'
+                # IP(v4)检查
+                r'(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.' # 每个字节（0-255）4个字节使用'.'分隔
+                r'(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.'
+                r'(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.'
+                r'(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)'
+            r')'
+            # 端口
+            r'(?::(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]?\d{1,4}))?' # 端口号部分 (1-65535 的端口)
+            r'$',
+            re.IGNORECASE
+        )
+        if pattern.match(url):
+            config_center.write_conf('Time', 'ntp_server', url)
+            self._show_ntp_flyout(
+                ntp_server_url_widget, 
+                'success', 
+                f"NTP服务器已更新: {url}"
+            )
+            # logger.debug(f"NTP服务器URL已更新: {url}")
+        else:
+            config_center.write_conf('Time', 'ntp_server', url)
+            self._show_ntp_flyout(
+                ntp_server_url_widget, 
+                'warning', 
+                f"URL格式可能不正确: {url}\n请检查是否为有效的域名或IP地址（︶^︶）",
+                url
+            )
+            logger.warning(f"NTP服务器URL格式可能不正确: {url}")
+    
+    def _show_ntp_flyout(self, target_widget, flyout_type: str, message: str, invalid_url: str = None):
+        if hasattr(self, '_current_ntp_flyout') and self._current_ntp_flyout:
+            try:
+                self._current_ntp_flyout.close()
+            except:
+                pass
+            self._current_ntp_flyout = None
+        
+        class NTPServerFlyoutView(FlyoutViewBase):
+            def __init__(self, flyout_type: str, message: str, invalid_url: str = None, parent=None):
+                super().__init__(parent)
+                self.flyout_type = flyout_type
+                self.invalid_url = invalid_url
+                self.parent_menu = parent
+                self.vBoxLayout = QVBoxLayout(self)
+                self.setFocusPolicy(Qt.NoFocus)
+                icon_label = ImageLabel()
+                if flyout_type == 'success':
+                    icon_label.setPixmap(InfoBarIcon.SUCCESS.icon().pixmap(24, 24))
+                    title = '设置成功 ✨'
+                elif flyout_type == 'warning':
+                    icon_label.setPixmap(InfoBarIcon.WARNING.icon().pixmap(24, 24))
+                    title = '格式警告'
+                else:
+                    icon_label.setPixmap(InfoBarIcon.INFORMATION.icon().pixmap(24, 24))
+                    title = 'NTP设置'
+                title_layout = QHBoxLayout()
+                title_layout.addWidget(icon_label)
+                title_label = StrongBodyLabel(title)
+                title_layout.addWidget(title_label)
+                title_layout.addStretch()
+                self.message_label = BodyLabel(message)
+                self.message_label.setWordWrap(True)
+                self.vBoxLayout.setSpacing(8)
+                self.vBoxLayout.setContentsMargins(16, 12, 16, 12)
+                self.vBoxLayout.addLayout(title_layout)
+                self.vBoxLayout.addWidget(self.message_label)
+                if flyout_type == 'warning':
+                    if invalid_url is not None:
+                        self._add_suggestion_buttons(invalid_url)
+                    self._add_save_confirmation()
+            
+            def _add_suggestion_buttons(self, invalid_url: str):
+                """为无效URL添加建议修正按钮"""
+                suggestions = self._get_url_suggestions(invalid_url)
+                if suggestions:
+                    if invalid_url == "":
+                        suggestion_label = CaptionLabel("推荐的NTP服务器:")
+                    else:
+                        suggestion_label = CaptionLabel("建议的修正:")
+                    self.vBoxLayout.addWidget(suggestion_label)
+                    button_layout = QHBoxLayout()
+                    for suggestion in suggestions[:3]:
+                        btn = PushButton(suggestion)
+                        btn.setFixedHeight(28)
+                        btn.setMaximumWidth(150)
+                        btn.setFocusPolicy(Qt.NoFocus)
+                        btn.clicked.connect(lambda checked, s=suggestion: self._apply_suggestion_and_close(s))
+                        button_layout.addWidget(btn)
+                    button_layout.addStretch()
+                    self.vBoxLayout.addLayout(button_layout)
+            
+            def _add_save_confirmation(self):
+                """添加保存确认按钮"""
+                separator = QFrame()
+                separator.setFrameShape(QFrame.HLine)
+                separator.setFrameShadow(QFrame.Sunken)
+                separator.setStyleSheet("QFrame { color: rgba(255, 255, 255, 0.1); }")
+                self.vBoxLayout.addWidget(separator)
+                confirm_label = CaptionLabel("执意保存当前输入的内容?")
+                confirm_label.setObjectName("confirmLabel")
+                if isDarkTheme():
+                    confirm_label.setStyleSheet("""
+                        QLabel#confirmLabel {
+                            color: rgba(255, 255, 255, 0.8);
+                        }
+                    """)
+                else:
+                    confirm_label.setStyleSheet("""
+                        QLabel#confirmLabel {
+                            color: rgba(0, 0, 0, 0.8);
+                        }
+                    """)
+                self.vBoxLayout.addWidget(confirm_label)
+                button_layout = QHBoxLayout()
+                button_layout.setSpacing(8)
+                save_btn = PrimaryPushButton("执意保存")
+                save_btn.setFixedHeight(32)
+                save_btn.setFixedWidth(150)
+                save_btn.clicked.connect(self._save_and_close)
+                button_layout.addStretch()
+                button_layout.addWidget(save_btn)
+                self.vBoxLayout.addLayout(button_layout)
+            
+            def _get_url_suggestions(self, invalid_url: str) -> list:
+                suggestions = []
+                common_servers = ['ntp.tencent.com', 'ntp.aliyun.com', 'pool.ntp.org', \
+                    'ntp.ntsc.ac.cn', 'cn.ntp.org.cn','time.cloudflare.com' , 'time1.google.com', \
+                        'time.windows.com', 'ntp1.nim.ac.cn']
+                if not invalid_url or invalid_url.strip() == "":
+                    return common_servers[:3]
+                url = invalid_url.strip()
+                if url.startswith(('http://', 'https://')):
+                    url = url.split('://', 1)[1]
+                valid_domain_pattern = re.compile(
+                    r'^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$'
+                )
+                if re.search(r'[`~!@#$%^&*()+=\[\]{}|\\:;"<>?/]', url):
+                    pass
+                elif valid_domain_pattern.match(url):
+                    if not re.search(r'\.\.|\.\-|\-\.|^\.|\.$', url):
+                        tld = url.split('.')[-1]
+                        if len(tld) >= 2 and tld.isalpha():
+                            suggestions.append(url)
+                # 好一个智能匹配(闲)
+                def calculate_similarity(server: str, user_input: str) -> float:
+                    """计算url和输入的相似度"""
+                    server_lower = server.lower()
+                    user_lower = user_input.lower()
+                    if server_lower == user_lower:
+                        return 100.0
+                    if server_lower.startswith(user_lower):
+                        return 90.0 + (len(user_lower) / len(server_lower)) * 10
+                    if user_lower in server_lower:
+                        return 70.0 + (len(user_lower) / len(server_lower)) * 20
+                    user_parts = user_lower.replace('.', ' ').split()
+                    server_parts = server_lower.replace('.', ' ').split()
+                    match_score = 0
+                    for user_part in user_parts:
+                        if len(user_part) >= 2:
+                            for server_part in server_parts:
+                                if user_part in server_part:
+                                    match_score += len(user_part) / len(server_part) * 30
+                                elif server_part.startswith(user_part):
+                                    match_score += len(user_part) / len(server_part) * 25
+                    return match_score
+                server_scores = []
+                for server in common_servers:
+                    score = calculate_similarity(server, url)
+                    server_scores.append((server, score))
+                server_scores.sort(key=lambda x: x[1], reverse=True)
+                for server, score in server_scores:
+                    if server not in suggestions:
+                        suggestions.append(server)
+                        if len(suggestions) >= 3:
+                            break
+                
+                return suggestions
+            
+            def _apply_suggestion_and_close(self, suggestion: str):
+                try:
+                    if self.parent_menu and hasattr(self.parent_menu, 'adInterface'):
+                        ntp_url_widget = self.parent_menu.adInterface.findChild(LineEdit, 'ntp_server_url')
+                        if ntp_url_widget:
+                            if hasattr(self.parent_menu, '_ntp_flyout_timer'):
+                                self.parent_menu._ntp_flyout_timer.stop()
+                            try:
+                                ntp_url_widget.textChanged.disconnect()
+                            except TypeError:
+                                pass
+                            ntp_url_widget.setText(suggestion)
+                            self._close_flyout()
+                            ntp_url_widget.textChanged.connect(self.parent_menu.on_ntp_server_url_changed)
+                            config_center.write_conf('Time', 'ntp_server', suggestion)
+                            self.parent_menu._show_ntp_flyout(
+                                ntp_url_widget, 
+                                'success', 
+                                f"NTP服务器已更新: {suggestion}"
+                            )
+                            if hasattr(self.parent_menu, 'update_ntp_status_display'):
+                                self.parent_menu.update_ntp_status_display()
+                except Exception as e:
+                    logger.error(f"应用NTP服务器建议失败: {e}")
+            
+            def _save_and_close(self):
+                try:
+                    if self.parent_menu:
+                        current_url = ""
+                        if hasattr(self.parent_menu, 'adInterface'):
+                            ntp_url_widget = self.parent_menu.adInterface.findChild(LineEdit, 'ntp_server_url')
+                            if ntp_url_widget:
+                                current_url = ntp_url_widget.text()
+                        self._close_flyout()
+                        if hasattr(self.parent_menu, '_show_ntp_flyout'):
+                            self.parent_menu._show_ntp_flyout(
+                                ntp_url_widget if ntp_url_widget else None,
+                                'success',
+                                '设置已保存ヾ(≧▽≦*)o'
+                            )
+                except Exception as e:
+                    logger.error(f"保存操作失败: {e}")
+
+            def _close_flyout(self):
+                try:
+                    if self.parent_menu and hasattr(self.parent_menu, '_current_ntp_flyout'):
+                        self.parent_menu._current_ntp_flyout = None
+                    flyout_widget = self
+                    while flyout_widget and not hasattr(flyout_widget, 'close'):
+                        flyout_widget = flyout_widget.parent()
+                    
+                    if flyout_widget and hasattr(flyout_widget, 'close'):
+                        flyout_widget.close()
+                except Exception as e:
+                    logger.error(f"关闭flyout失败: {e}")
+        try:
+            flyout_view = NTPServerFlyoutView(flyout_type, message, invalid_url, self)
+            flyout = Flyout.make(
+                flyout_view, 
+                target_widget, 
+                self, 
+                aniType=FlyoutAnimationType.PULL_UP
+            )
+            flyout.setWindowFlags(flyout.windowFlags() | Qt.Tool)
+            flyout.setFocusPolicy(Qt.NoFocus)
+            def custom_show_event(event):
+                QWidget.showEvent(flyout, event)
+            flyout.showEvent = custom_show_event
+            flyout.show()
+            self._current_ntp_flyout = flyout
+            if flyout_type == 'success':
+                import weakref
+                flyout_ref = weakref.ref(flyout)
+                def safe_close():
+                    flyout_obj = flyout_ref()
+                    if flyout_obj and not flyout_obj.isHidden():
+                        try:
+                            flyout_obj.close()
+                        except RuntimeError:
+                            pass
+                QTimer.singleShot(2000, safe_close)
+            return flyout
+        except Exception as e:
+            logger.error(f"显示NTP Flyout失败: {e}")
+            if flyout_type == 'success':
+                self.show_success_toast('NTP设置', message)
+            elif flyout_type == 'warning':
+                self.show_warning_toast('NTP设置', message)
+            return None
+
+    
+    def update_ntp_status_display(self):
+        """更新NTP状态显示"""
+        try:
+            current_manager = utils.time_manager
+            caption_label = self.adInterface.findChild(CaptionLabel, 'CaptionLabel_20')
+            if isinstance(current_manager, utils.LocalTimeManager):
+                caption_label.setText('当前使用: 系统本地时间')
+            elif isinstance(current_manager, utils.NTPTimeManager):
+                last_sync = current_manager.get_last_ntp_sync()
+                if last_sync:
+                    sync_time_str = last_sync.strftime('%Y年%m月%d日 - %H:%M:%S')
+                    caption_label.setText(f'上次NTP校准: {sync_time_str}')
+                else:
+                    caption_label.setText('NTP时间: 尚未进行校准')
+            else:
+                caption_label.setText('时间状态: 未知')
+                
+        except Exception as e:
+            logger.error(f"更新NTP状态显示失败: {e}")
+    
+    def update_ntp_ui_visibility(self):
+        """更新NTP组件的可见性"""
+        try:
+            current_manager = utils.time_manager
+            is_ntp_mode = isinstance(current_manager, utils.NTPTimeManager)
+            if hasattr(self, 'ntp_card_widget') and self.ntp_card_widget:
+                self.ntp_card_widget.setVisible(is_ntp_mode)
+                # logger.debug(f"NTP UI组件可见性: {'显示' if is_ntp_mode else '隐藏'}")
+        except Exception as e:
+            logger.error(f"更新UI可见性失败: {e}")
+    
+    def _start_async_ntp_sync(self, time_manager):
+        """启动NTP同步"""
+        try:
+            if hasattr(self, 'ntp_thread') and self.ntp_thread:
+                try:
+                    if self.ntp_thread.isRunning():
+                        self.show_warning_toast('NTP同步', '同步正在进行中,请稍候~')
+                        return
+                except RuntimeError:
+                    self.ntp_thread = None
+                    if hasattr(self, 'ntp_worker'):
+                        self.ntp_worker = None
+            self._cleanup_ntp_thread()
+            self.ntp_thread = QThread()
+            self.ntp_worker = NTPSyncWorker(time_manager)
+            self.ntp_worker.moveToThread(self.ntp_thread)
+            self.ntp_thread.started.connect(self.ntp_worker.sync_ntp)
+            self.ntp_worker.sync_finished.connect(self._on_ntp_sync_finished)
+            self.ntp_worker.sync_finished.connect(self.ntp_thread.quit)
+            self.ntp_worker.sync_finished.connect(self.ntp_worker.deleteLater)
+            self.ntp_thread.finished.connect(self.ntp_thread.deleteLater)
+            self.ntp_thread.start()
+        except Exception as e:
+            logger.error(f"启动NTP同步时失败: {e}")
+            self.show_warning_toast('NTP同步', '启动同步失败')
+            self._cleanup_ntp_thread()
+    
+    def _on_ntp_sync_finished(self, success):
+        """NTP同步完成"""
+        try:
+            if success:
+                self.show_success_toast('NTP同步', 'NTP时间同步成功!')
+                # 异步更新UI状态，避免阻塞
+                QTimer.singleShot(50, self.update_ntp_status_display)
+                # 延迟更新父组件数据
+                if hasattr(self, 'parent') and self.parent and hasattr(self.parent, 'update_data'):
+                    QTimer.singleShot(100, self.parent.update_data)
+            else:
+                self.show_warning_toast('NTP同步', 'NTP时间同步失败,请检查网络连接和url地址!')
+        except Exception as e:
+            logger.error(f"NTP同步完成回调失败: {e}")
+        finally:
+            QTimer.singleShot(100, self._cleanup_ntp_thread)
+    
+    def _cleanup_ntp_thread(self):
+        """清理NTP线程资源"""
+        try:
+            if hasattr(self, 'ntp_thread') and self.ntp_thread:
+                try:
+                    if self.ntp_thread.isRunning():
+                        if not self.ntp_thread.wait(3000):
+                            logger.warning("NTP线程未能在3秒内正常结束，强制终止")
+                            self.ntp_thread.terminate()
+                            self.ntp_thread.wait(1000)
+                except RuntimeError:
+                    logger.warning("已删除的QThread对象")
+                try:
+                    self.ntp_thread.started.disconnect()
+                    if hasattr(self, 'ntp_worker') and self.ntp_worker:
+                        self.ntp_worker.sync_finished.disconnect()
+                except (TypeError, RuntimeError):
+                    pass
+                
+                self.ntp_thread = None
+            if hasattr(self, 'ntp_worker') and self.ntp_worker:
+                self.ntp_worker = None
+        except Exception as e:
+            logger.error(f"清理NTP线程资源时出错: {e}")
+    # 神经病犯了
+    def show_info_toast(self, title: str, message: str):
+        try:
+            InfoBar.info(
+                title=title,
+                content=message,
+                orient=Qt.Horizontal,
+                isClosable=True,
+                position=InfoBarPosition.TOP,
+                duration=3000,
+                parent=self
+            )
+        except Exception as e:
+            logger.error(f"显示信息提示失败: {e}")
+
+    def show_success_toast(self, title: str, message: str):
+        try:
+            InfoBar.success(
+                title=title,
+                content=message,
+                orient=Qt.Horizontal,
+                isClosable=True,
+                position=InfoBarPosition.TOP,
+                duration=3000,
+                parent=self
+            )
+        except Exception as e:
+            logger.error(f"显示成功提示失败: {e}")
+    
+    def show_warning_toast(self, title: str, message: str):
+        try:
+            InfoBar.warning(
+                title=title,
+                content=message,
+                orient=Qt.Horizontal,
+                isClosable=True,
+                position=InfoBarPosition.TOP,
+                duration=5000,
+                parent=self
+            )
+        except Exception as e:
+            logger.error(f"显示错误提示失败: {e}")
+
+    def show_error_toast(self, title: str, message: str):
+        try:
+            InfoBar.error(
+                title=title,
+                content=message,
+                orient=Qt.Horizontal,
+                isClosable=True,
+                position=InfoBarPosition.TOP,
+                duration=5000,
+                parent=self
+            )
+        except Exception as e:
+            logger.error(f"显示错误提示失败: {e}")
+        
+        # 时间获得方法配置
+        conf_time_get = self.adInterface.findChild(ComboBox, 'conf_time_get')
+        conf_time_get.addItems(['系统时间', 'NTP时间'])
+        current_time_type = config_center.read_conf('Time', 'type')
+        if current_time_type == 'ntp':
+            conf_time_get.setCurrentIndex(1)
+        else:
+            conf_time_get.setCurrentIndex(0)
+        conf_time_get.currentIndexChanged.connect(self.on_time_method_changed)
+        
+        # NTP服务器配置
+        ntp_server_url = self.adInterface.findChild(LineEdit, 'ntp_server_url')
+        ntp_server_url.setText(config_center.read_conf('Time', 'ntp_server'))
+        ntp_server_url.textChanged.connect(
+            lambda: self.on_ntp_server_url_changed(ntp_server_url.text())
+        )
+        ntp_refresh_button = self.adInterface.findChild(ToolButton, 'ntp_refresh_button')
+        ntp_refresh_button.setIcon(fIcon.SYNC)
+        ntp_refresh_button.setToolTip('立即同步NTP时间')
+        ntp_refresh_button.installEventFilter(ToolTipFilter(ntp_refresh_button, showDelay=300, position=ToolTipPosition.TOP))
+        ntp_refresh_button.clicked.connect(self.on_ntp_refresh_clicked)
+        ntp_refresh_picker = self.adInterface.findChild(SpinBox, 'ntp_refresh_picker')
+        auto_refresh_minutes = int(config_center.read_conf('Time', 'ntp_auto_refresh'))
+        ntp_refresh_picker.setMinimum(1)
+        ntp_refresh_picker.setMaximum(1440)  # 最大24小时
+        ntp_refresh_picker.setSuffix(' 分钟')
+        ntp_refresh_picker.setValue(auto_refresh_minutes)
+        ntp_refresh_picker.valueChanged.connect(self.on_ntp_auto_refresh_changed)
+        ntp_sync_timezone = self.adInterface.findChild(ComboBox, 'ntp_sync_timezone')
+        timezone_options = [
+            ('系统时区', 'local'),
+            ('(UTC+0)  伦敦时间', 'Europe/London'),
+            ('(UTC+1)  巴黎时间', 'Europe/Paris'),
+            ('(UTC+3)  莫斯科时间', 'Europe/Moscow'),
+            ('(UTC+8)  北京时间', 'Asia/Shanghai'),
+            ('(UTC+8)  新加坡时间', 'Asia/Singapore'),
+            ('(UTC+9)  东京时间', 'Asia/Tokyo'),
+            ('(UTC+10)  悉尼时间', 'Australia/Sydney'),
+            ('(UTC-8)  洛杉矶时间', 'America/Los_Angeles'),
+            ('(UTC-5)  纽约时间', 'America/New_York')
+        ]
+        for display_name, timezone_value in timezone_options:
+            ntp_sync_timezone.addItem(display_name)
+            ntp_sync_timezone.setItemData(ntp_sync_timezone.count() - 1, timezone_value)
+        current_timezone = config_center.read_conf('Time', 'timezone', 'local')
+        timezone_found = False
+        for i, (_, timezone_value) in enumerate(timezone_options):
+            if timezone_value == current_timezone:
+                ntp_sync_timezone.setCurrentIndex(i)
+                timezone_found = True
+                break
+        if not timezone_found:
+            ntp_sync_timezone.setCurrentIndex(0)
+            config_center.write_conf('Time', 'timezone', 'local')
+        ntp_sync_timezone.currentIndexChanged.connect(self.on_ntp_timezone_changed)
+        switch_enable_ntp_auto_sync = self.adInterface.findChild(SwitchButton, 'switch_enable_ntp_auto_sync')
+        auto_sync_enabled = int(config_center.read_conf('Time', 'switch_enable_ntp_auto_sync', '1'))
+        switch_enable_ntp_auto_sync.setChecked(bool(auto_sync_enabled))
+        switch_enable_ntp_auto_sync.checkedChanged.connect(self.on_ntp_auto_sync_switch_changed)
+        self.ntp_card_widget = self.adInterface.findChild(CardWidget, 'CardWidget_17')
+        self.update_ntp_status_display()
+        self.update_ntp_ui_visibility()
+        if config_center.read_conf('Time', 'type') == 'ntp' and auto_sync_enabled:
+            self._add_ntp_auto_sync_callback()
+
+    def on_time_method_changed(self):
+        """时间获得方法改变时的处理"""
+        conf_time_get = self.adInterface.findChild(ComboBox, 'conf_time_get')
+        is_ntp = conf_time_get.currentIndex() == 1
+        config_center.write_conf('Time', 'type', 'ntp' if is_ntp else 'local')
+        try:
+            new_manager = TimeManagerFactory.reset_instance()
+            utils.time_manager = new_manager
+            try:
+                if hasattr(self, 'parent') and self.parent and hasattr(self.parent, 'update_data'):
+                    self.parent.update_data()
+            except Exception:
+                pass
+            try:
+                current_manager = utils.time_manager
+                self._remove_ntp_auto_sync_callback()
+                if is_ntp:
+                    self.show_info_toast('时间设置', '已切换到NTP时间,正在同步时间~')
+                    self._start_async_ntp_sync(current_manager)
+                    auto_sync_enabled = int(config_center.read_conf('Time', 'switch_enable_ntp_auto_sync', '1'))
+                    if auto_sync_enabled:
+                        self._add_ntp_auto_sync_callback()
+                else:
+                    self.show_success_toast('时间设置', '已切换到系统时间')
+            except Exception as e:
+                logger.error(f"管理NTP自动同步回调失败: {e}")
+            
+            self.update_ntp_status_display()
+            self.update_ntp_ui_visibility()
+        except Exception as e:
+            logger.error(f"时间管理器切换失败: {e}")
+            self.show_warning_toast('时间设置', '切换失败')
+    
+    def on_ntp_refresh_clicked(self):
+        """NTP刷新按钮"""
+        try:
+            current_manager = utils.time_manager
+            if isinstance(current_manager, utils.LocalTimeManager):
+                self.show_warning_toast('NTP同步', '当前无需NTP同步')
+                return
+            if not isinstance(current_manager, utils.NTPTimeManager):
+                self.show_warning_toast('NTP同步', '当前时间管理器不支持NTP同步')
+                return
+            self.show_info_toast('NTP同步', '正在同步NTP时间~')
+            self._start_async_ntp_sync(current_manager)
+        except Exception as e:
+            logger.error(f"NTP同步失败: {e}")
+            self.show_warning_toast('NTP同步', 'NTP时间同步失败')
+    
+    def on_ntp_auto_refresh_changed(self, value):
+        """修改ntp自动刷新时间"""
+        config_center.write_conf('Time', 'ntp_auto_refresh', str(value))
+        try:
+            if config_center.read_conf('Time', 'type') == 'ntp' and int(config_center.read_conf('Time', 'switch_enable_ntp_auto_sync', '1')):
+                self._remove_ntp_auto_sync_callback()
+                self._add_ntp_auto_sync_callback()
+        except Exception as e:
+            logger.error(f"更新NTP自动同步间隔失败: {e}")
+    
+    def on_ntp_auto_sync_switch_changed(self, checked):
+        """NTP自动同步开关"""
+        try:
+            config_center.write_conf('Time', 'switch_enable_ntp_auto_sync', '1' if checked else '0')
+            if config_center.read_conf('Time', 'type') == 'ntp':
+                if checked:
+                    self._add_ntp_auto_sync_callback()
+                    self.show_success_toast('NTP设置', '已开启NTP自动同步ヾ(≧▽≦*)o')
+                else:
+                    self._remove_ntp_auto_sync_callback()
+                    self.show_info_toast('NTP设置', '已关闭NTP自动同步(≧﹏ ≦)')
+        except Exception as e:
+            logger.error(f"NTP自动同步开关设置失败: {e}")
+            self.show_warning_toast('NTP设置', '设置失败 (╥﹏╥)')
+    
+    def on_ntp_timezone_changed(self):
+        """NTP时区设置改变时的处理"""
+        try:
+            ntp_sync_timezone = self.adInterface.findChild(ComboBox, 'ntp_sync_timezone')
+            selected_timezone = ntp_sync_timezone.itemData(ntp_sync_timezone.currentIndex())
+            config_center.write_conf('Time', 'timezone', selected_timezone)
+            if config_center.read_conf('Time', 'type') == 'ntp':
+                try:
+                    self.show_info_toast('时区设置', f'时区已更新为 {ntp_sync_timezone.currentText()}，正在重新同步时间~')
+                    TimeManagerFactory.reset_instance()
+                    QTimer.singleShot(100, self.update_ntp_status_display)
+                    self._start_async_ntp_sync(utils.time_manager)
+                except Exception as e:
+                    logger.error(f"应用新时区失败: {e}")
+            else:
+                self.show_success_toast('时区设置', f'时区已设置为 {ntp_sync_timezone.currentText()}')
+        except Exception as e:
+            logger.error(f"时区设置失败: {e}")
+            self.show_error_toast('时区设置', '时区设置失败')
+    
+    def _add_ntp_auto_sync_callback(self):
+        """添加NTP自动同步回调"""
+        try:
+            from utils import update_timer
+            def ntp_auto_sync_callback():
+                """NTP自动同步回调函数"""
+                try:
+                    if config_center.read_conf('Time', 'type') != 'ntp':
+                        return
+                    current_manager = utils.time_manager
+                    if not isinstance(current_manager, utils.NTPTimeManager):
+                        return
+                    success = current_manager.sync_with_ntp()
+                    if success:
+                        try:
+                            self.update_ntp_status_display()
+                        except Exception:
+                            pass
+                except Exception as e:
+                    logger.error(f"NTP自动同步异常: {e}")
+            self._ntp_auto_sync_callback = ntp_auto_sync_callback
+            ntp_auto_refresh_minutes = int(config_center.read_conf('Time', 'ntp_auto_refresh'))
+            ntp_auto_refresh_seconds = ntp_auto_refresh_minutes * 60
+            update_timer.add_callback(ntp_auto_sync_callback, ntp_auto_refresh_seconds)
+            
+        except Exception as e:
+            logger.error(f"添加NTP自动同步回调失败: {e}")
+    
+    def _remove_ntp_auto_sync_callback(self):
+        """移除NTP自动同步回调"""
+        try:
+            from utils import update_timer
+            if hasattr(self, '_ntp_auto_sync_callback'):
+                update_timer.remove_callback(self._ntp_auto_sync_callback)
+                delattr(self, '_ntp_auto_sync_callback')
+        except Exception as e:
+            logger.error(f"移除NTP自动同步回调失败: {e}")
+    
+    def on_ntp_server_url_changed(self, url: str):
+        """修改 NTP 服务器 URL"""
+        url = url.strip()
+        ntp_server_url_widget = self.adInterface.findChild(LineEdit, 'ntp_server_url')
+        if hasattr(self, '_ntp_flyout_timer'):
+            self._ntp_flyout_timer.stop()
+        self._ntp_flyout_timer = QTimer()
+        self._ntp_flyout_timer.setSingleShot(True)
+        self._ntp_flyout_timer.timeout.connect(lambda: self._process_ntp_url_change(url, ntp_server_url_widget))
+        self._ntp_flyout_timer.start(1500)  # 1.5秒延迟
+    
+    def _process_ntp_url_change(self, url: str, ntp_server_url_widget):
+        """处理NTP URL变更的实际逻辑"""
+        if not url:
+            self._show_ntp_flyout(
+                ntp_server_url_widget, 
+                'warning', 
+                "NTP服务器URL不能为空 o(〃＾▽＾〃)o\n请输入有效的NTP服务器地址",
+                ""
+            )
+            return
+        # 验证url的正则
+        # 筛选demo:
+        # 域名: pool.ntp.org, time.windows.com, cn.pool.ntp.org
+        # IP(v4): 192.168.1.1, 203.107.6.88, 120.25.115.20
+        # time.nist.gov:123, 192.168.1.1:123
+        pattern = re.compile(
+            r'^('
+                # 域名筛选
+                r'([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+'
+                r'[a-zA-Z]{2,}' # 顶级域名(至少2个字母)
+            r'|'
+                # IP(v4)检查
+                r'(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.' # 每个字节（0-255）4个字节使用'.'分隔
+                r'(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.'
+                r'(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.'
+                r'(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)'
+            r')'
+            # 端口
+            r'(?::(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]?\d{1,4}))?' # 端口号部分 (1-65535 的端口)
+            r'$',
+            re.IGNORECASE
+        )
+        if pattern.match(url):
+            config_center.write_conf('Time', 'ntp_server', url)
+            self._show_ntp_flyout(
+                ntp_server_url_widget, 
+                'success', 
+                f"NTP服务器已更新: {url}"
+            )
+            # logger.debug(f"NTP服务器URL已更新: {url}")
+        else:
+            config_center.write_conf('Time', 'ntp_server', url)
+            self._show_ntp_flyout(
+                ntp_server_url_widget, 
+                'warning', 
+                f"URL格式可能不正确: {url}\n请检查是否为有效的域名或IP地址（︶^︶）",
+                url
+            )
+            logger.warning(f"NTP服务器URL格式可能不正确: {url}")
+    
+    def _show_ntp_flyout(self, target_widget, flyout_type: str, message: str, invalid_url: str = None):
+        if hasattr(self, '_current_ntp_flyout') and self._current_ntp_flyout:
+            try:
+                self._current_ntp_flyout.close()
+            except:
+                pass
+            self._current_ntp_flyout = None
+        
+        class NTPServerFlyoutView(FlyoutViewBase):
+            def __init__(self, flyout_type: str, message: str, invalid_url: str = None, parent=None):
+                super().__init__(parent)
+                self.flyout_type = flyout_type
+                self.invalid_url = invalid_url
+                self.parent_menu = parent
+                self.vBoxLayout = QVBoxLayout(self)
+                self.setFocusPolicy(Qt.NoFocus)
+                icon_label = ImageLabel()
+                if flyout_type == 'success':
+                    icon_label.setPixmap(InfoBarIcon.SUCCESS.icon().pixmap(24, 24))
+                    title = '设置成功 ✨'
+                elif flyout_type == 'warning':
+                    icon_label.setPixmap(InfoBarIcon.WARNING.icon().pixmap(24, 24))
+                    title = '格式警告'
+                else:
+                    icon_label.setPixmap(InfoBarIcon.INFORMATION.icon().pixmap(24, 24))
+                    title = 'NTP设置'
+                title_layout = QHBoxLayout()
+                title_layout.addWidget(icon_label)
+                title_label = StrongBodyLabel(title)
+                title_layout.addWidget(title_label)
+                title_layout.addStretch()
+                self.message_label = BodyLabel(message)
+                self.message_label.setWordWrap(True)
+                self.vBoxLayout.setSpacing(8)
+                self.vBoxLayout.setContentsMargins(16, 12, 16, 12)
+                self.vBoxLayout.addLayout(title_layout)
+                self.vBoxLayout.addWidget(self.message_label)
+                if flyout_type == 'warning':
+                    if invalid_url is not None:
+                        self._add_suggestion_buttons(invalid_url)
+                    self._add_save_confirmation()
+            
+            def _add_suggestion_buttons(self, invalid_url: str):
+                """为无效URL添加建议修正按钮"""
+                suggestions = self._get_url_suggestions(invalid_url)
+                if suggestions:
+                    if invalid_url == "":
+                        suggestion_label = CaptionLabel("推荐的NTP服务器:")
+                    else:
+                        suggestion_label = CaptionLabel("建议的修正:")
+                    self.vBoxLayout.addWidget(suggestion_label)
+                    button_layout = QHBoxLayout()
+                    for suggestion in suggestions[:3]:
+                        btn = PushButton(suggestion)
+                        btn.setFixedHeight(28)
+                        btn.setMaximumWidth(150)
+                        btn.setFocusPolicy(Qt.NoFocus)
+                        btn.clicked.connect(lambda checked, s=suggestion: self._apply_suggestion_and_close(s))
+                        button_layout.addWidget(btn)
+                    button_layout.addStretch()
+                    self.vBoxLayout.addLayout(button_layout)
+            
+            def _add_save_confirmation(self):
+                """添加保存确认按钮"""
+                separator = QFrame()
+                separator.setFrameShape(QFrame.HLine)
+                separator.setFrameShadow(QFrame.Sunken)
+                separator.setStyleSheet("QFrame { color: rgba(255, 255, 255, 0.1); }")
+                self.vBoxLayout.addWidget(separator)
+                confirm_label = CaptionLabel("执意保存当前输入的内容?")
+                confirm_label.setObjectName("confirmLabel")
+                if isDarkTheme():
+                    confirm_label.setStyleSheet("""
+                        QLabel#confirmLabel {
+                            color: rgba(255, 255, 255, 0.8);
+                        }
+                    """)
+                else:
+                    confirm_label.setStyleSheet("""
+                        QLabel#confirmLabel {
+                            color: rgba(0, 0, 0, 0.8);
+                        }
+                    """)
+                self.vBoxLayout.addWidget(confirm_label)
+                button_layout = QHBoxLayout()
+                button_layout.setSpacing(8)
+                save_btn = PrimaryPushButton("执意保存")
+                save_btn.setFixedHeight(32)
+                save_btn.setFixedWidth(150)
+                save_btn.clicked.connect(self._save_and_close)
+                button_layout.addStretch()
+                button_layout.addWidget(save_btn)
+                self.vBoxLayout.addLayout(button_layout)
+            
+            def _get_url_suggestions(self, invalid_url: str) -> list:
+                suggestions = []
+                common_servers = ['ntp.tencent.com', 'ntp.aliyun.com', 'pool.ntp.org', \
+                    'ntp.ntsc.ac.cn', 'cn.ntp.org.cn','time.cloudflare.com' , 'time1.google.com', \
+                        'time.windows.com', 'ntp1.nim.ac.cn']
+                if not invalid_url or invalid_url.strip() == "":
+                    return common_servers[:3]
+                url = invalid_url.strip()
+                if url.startswith(('http://', 'https://')):
+                    url = url.split('://', 1)[1]
+                valid_domain_pattern = re.compile(
+                    r'^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$'
+                )
+                if re.search(r'[`~!@#$%^&*()+=\[\]{}|\\:;"<>?/]', url):
+                    pass
+                elif valid_domain_pattern.match(url):
+                    if not re.search(r'\.\.|\.\-|\-\.|^\.|\.$', url):
+                        tld = url.split('.')[-1]
+                        if len(tld) >= 2 and tld.isalpha():
+                            suggestions.append(url)
+                # 好一个智能匹配(闲)
+                def calculate_similarity(server: str, user_input: str) -> float:
+                    """计算url和输入的相似度"""
+                    server_lower = server.lower()
+                    user_lower = user_input.lower()
+                    if server_lower == user_lower:
+                        return 100.0
+                    if server_lower.startswith(user_lower):
+                        return 90.0 + (len(user_lower) / len(server_lower)) * 10
+                    if user_lower in server_lower:
+                        return 70.0 + (len(user_lower) / len(server_lower)) * 20
+                    user_parts = user_lower.replace('.', ' ').split()
+                    server_parts = server_lower.replace('.', ' ').split()
+                    match_score = 0
+                    for user_part in user_parts:
+                        if len(user_part) >= 2:
+                            for server_part in server_parts:
+                                if user_part in server_part:
+                                    match_score += len(user_part) / len(server_part) * 30
+                                elif server_part.startswith(user_part):
+                                    match_score += len(user_part) / len(server_part) * 25
+                    return match_score
+                server_scores = []
+                for server in common_servers:
+                    score = calculate_similarity(server, url)
+                    server_scores.append((server, score))
+                server_scores.sort(key=lambda x: x[1], reverse=True)
+                for server, score in server_scores:
+                    if server not in suggestions:
+                        suggestions.append(server)
+                        if len(suggestions) >= 3:
+                            break
+                
+                return suggestions
+            
+            def _apply_suggestion_and_close(self, suggestion: str):
+                try:
+                    if self.parent_menu and hasattr(self.parent_menu, 'adInterface'):
+                        ntp_url_widget = self.parent_menu.adInterface.findChild(LineEdit, 'ntp_server_url')
+                        if ntp_url_widget:
+                            if hasattr(self.parent_menu, '_ntp_flyout_timer'):
+                                self.parent_menu._ntp_flyout_timer.stop()
+                            try:
+                                ntp_url_widget.textChanged.disconnect()
+                            except TypeError:
+                                pass
+                            ntp_url_widget.setText(suggestion)
+                            self._close_flyout()
+                            ntp_url_widget.textChanged.connect(self.parent_menu.on_ntp_server_url_changed)
+                            config_center.write_conf('Time', 'ntp_server', suggestion)
+                            self.parent_menu._show_ntp_flyout(
+                                ntp_url_widget, 
+                                'success', 
+                                f"NTP服务器已更新: {suggestion}"
+                            )
+                            if hasattr(self.parent_menu, 'update_ntp_status_display'):
+                                self.parent_menu.update_ntp_status_display()
+                except Exception as e:
+                    logger.error(f"应用NTP服务器建议失败: {e}")
+            
+            def _save_and_close(self):
+                try:
+                    if self.parent_menu:
+                        current_url = ""
+                        if hasattr(self.parent_menu, 'adInterface'):
+                            ntp_url_widget = self.parent_menu.adInterface.findChild(LineEdit, 'ntp_server_url')
+                            if ntp_url_widget:
+                                current_url = ntp_url_widget.text()
+                        self._close_flyout()
+                        if hasattr(self.parent_menu, '_show_ntp_flyout'):
+                            self.parent_menu._show_ntp_flyout(
+                                ntp_url_widget if ntp_url_widget else None,
+                                'success',
+                                '设置已保存ヾ(≧▽≦*)o'
+                            )
+                except Exception as e:
+                    logger.error(f"保存操作失败: {e}")
+
+            def _close_flyout(self):
+                try:
+                    if self.parent_menu and hasattr(self.parent_menu, '_current_ntp_flyout'):
+                        self.parent_menu._current_ntp_flyout = None
+                    flyout_widget = self
+                    while flyout_widget and not hasattr(flyout_widget, 'close'):
+                        flyout_widget = flyout_widget.parent()
+                    
+                    if flyout_widget and hasattr(flyout_widget, 'close'):
+                        flyout_widget.close()
+                except Exception as e:
+                    logger.error(f"关闭flyout失败: {e}")
+        try:
+            flyout_view = NTPServerFlyoutView(flyout_type, message, invalid_url, self)
+            flyout = Flyout.make(
+                flyout_view, 
+                target_widget, 
+                self, 
+                aniType=FlyoutAnimationType.PULL_UP
+            )
+            flyout.setWindowFlags(flyout.windowFlags() | Qt.Tool)
+            flyout.setFocusPolicy(Qt.NoFocus)
+            def custom_show_event(event):
+                QWidget.showEvent(flyout, event)
+            flyout.showEvent = custom_show_event
+            flyout.show()
+            self._current_ntp_flyout = flyout
+            if flyout_type == 'success':
+                import weakref
+                flyout_ref = weakref.ref(flyout)
+                def safe_close():
+                    flyout_obj = flyout_ref()
+                    if flyout_obj and not flyout_obj.isHidden():
+                        try:
+                            flyout_obj.close()
+                        except RuntimeError:
+                            pass
+                QTimer.singleShot(2000, safe_close)
+            return flyout
+        except Exception as e:
+            logger.error(f"显示NTP Flyout失败: {e}")
+            if flyout_type == 'success':
+                self.show_success_toast('NTP设置', message)
+            elif flyout_type == 'warning':
+                self.show_warning_toast('NTP设置', message)
+            return None
+
+    
+    def update_ntp_status_display(self):
+        """更新NTP状态显示"""
+        try:
+            current_manager = utils.time_manager
+            caption_label = self.adInterface.findChild(CaptionLabel, 'CaptionLabel_20')
+            if isinstance(current_manager, utils.LocalTimeManager):
+                caption_label.setText('当前使用: 系统本地时间')
+            elif isinstance(current_manager, utils.NTPTimeManager):
+                last_sync = current_manager.get_last_ntp_sync()
+                if last_sync:
+                    sync_time_str = last_sync.strftime('%Y年%m月%d日 - %H:%M:%S')
+                    caption_label.setText(f'上次NTP校准: {sync_time_str}')
+                else:
+                    caption_label.setText('NTP时间: 尚未进行校准')
+            else:
+                caption_label.setText('时间状态: 未知')
+                
+        except Exception as e:
+            logger.error(f"更新NTP状态显示失败: {e}")
+    
+    def update_ntp_ui_visibility(self):
+        """更新NTP组件的可见性"""
+        try:
+            current_manager = utils.time_manager
+            is_ntp_mode = isinstance(current_manager, utils.NTPTimeManager)
+            if hasattr(self, 'ntp_card_widget') and self.ntp_card_widget:
+                self.ntp_card_widget.setVisible(is_ntp_mode)
+                # logger.debug(f"NTP UI组件可见性: {'显示' if is_ntp_mode else '隐藏'}")
+        except Exception as e:
+            logger.error(f"更新UI可见性失败: {e}")
+    
+    def _start_async_ntp_sync(self, time_manager):
+        """启动NTP同步"""
+        try:
+            if hasattr(self, 'ntp_thread') and self.ntp_thread:
+                try:
+                    if self.ntp_thread.isRunning():
+                        self.show_warning_toast('NTP同步', '同步正在进行中,请稍候~')
+                        return
+                except RuntimeError:
+                    self.ntp_thread = None
+                    if hasattr(self, 'ntp_worker'):
+                        self.ntp_worker = None
+            self._cleanup_ntp_thread()
+            self.ntp_thread = QThread()
+            self.ntp_worker = NTPSyncWorker(time_manager)
+            self.ntp_worker.moveToThread(self.ntp_thread)
+            self.ntp_thread.started.connect(self.ntp_worker.sync_ntp)
+            self.ntp_worker.sync_finished.connect(self._on_ntp_sync_finished)
+            self.ntp_worker.sync_finished.connect(self.ntp_thread.quit)
+            self.ntp_worker.sync_finished.connect(self.ntp_worker.deleteLater)
+            self.ntp_thread.finished.connect(self.ntp_thread.deleteLater)
+            self.ntp_thread.start()
+        except Exception as e:
+            logger.error(f"启动NTP同步时失败: {e}")
+            self.show_warning_toast('NTP同步', '启动同步失败')
+            self._cleanup_ntp_thread()
+    
+    def _on_ntp_sync_finished(self, success):
+        """NTP同步完成"""
+        try:
+            if success:
+                self.show_success_toast('NTP同步', 'NTP时间同步成功!')
+                # 异步更新UI状态，避免阻塞
+                QTimer.singleShot(50, self.update_ntp_status_display)
+                # 延迟更新父组件数据
+                if hasattr(self, 'parent') and self.parent and hasattr(self.parent, 'update_data'):
+                    QTimer.singleShot(100, self.parent.update_data)
+            else:
+                self.show_warning_toast('NTP同步', 'NTP时间同步失败,请检查网络连接和url地址!')
+        except Exception as e:
+            logger.error(f"NTP同步完成回调失败: {e}")
+        finally:
+            QTimer.singleShot(100, self._cleanup_ntp_thread)
+    
+    def _cleanup_ntp_thread(self):
+        """清理NTP线程资源"""
+        try:
+            if hasattr(self, 'ntp_thread') and self.ntp_thread:
+                try:
+                    if self.ntp_thread.isRunning():
+                        if not self.ntp_thread.wait(3000):
+                            logger.warning("NTP线程未能在3秒内正常结束，强制终止")
+                            self.ntp_thread.terminate()
+                            self.ntp_thread.wait(1000)
+                except RuntimeError:
+                    logger.warning("已删除的QThread对象")
+                try:
+                    self.ntp_thread.started.disconnect()
+                    if hasattr(self, 'ntp_worker') and self.ntp_worker:
+                        self.ntp_worker.sync_finished.disconnect()
+                except (TypeError, RuntimeError):
+                    pass
+                
+                self.ntp_thread = None
+            if hasattr(self, 'ntp_worker') and self.ntp_worker:
+                self.ntp_worker = None
+        except Exception as e:
+            logger.error(f"清理NTP线程资源时出错: {e}")
+    # 神经病犯了
+    def show_info_toast(self, title: str, message: str):
+        try:
+            InfoBar.info(
+                title=title,
+                content=message,
+                orient=Qt.Horizontal,
+                isClosable=True,
+                position=InfoBarPosition.TOP,
+                duration=3000,
+                parent=self
+            )
+        except Exception as e:
+            logger.error(f"显示信息提示失败: {e}")
+
+    def show_success_toast(self, title: str, message: str):
+        try:
+            InfoBar.success(
+                title=title,
+                content=message,
+                orient=Qt.Horizontal,
+                isClosable=True,
+                position=InfoBarPosition.TOP,
+                duration=3000,
+                parent=self
+            )
+        except Exception as e:
+            logger.error(f"显示成功提示失败: {e}")
+    
+    def show_warning_toast(self, title: str, message: str):
+        try:
+            InfoBar.warning(
+                title=title,
+                content=message,
+                orient=Qt.Horizontal,
+                isClosable=True,
+                position=InfoBarPosition.TOP,
+                duration=5000,
+                parent=self
+            )
+        except Exception as e:
+            logger.error(f"显示错误提示失败: {e}")
+
+    def show_error_toast(self, title: str, message: str):
+        try:
+            InfoBar.error(
+                title=title,
+                content=message,
+                orient=Qt.Horizontal,
+                isClosable=True,
+                position=InfoBarPosition.TOP,
+                duration=5000,
+                parent=self
+            )
+        except Exception as e:
+            logger.error(f"显示错误提示失败: {e}")
         
     def setup_schedule_edit(self):
         se_load_item()
@@ -2822,8 +4225,8 @@ class SettingsMenu(FluentWindow):
                 url = n2_dialog.textField.text()
 
                 for db in list_.schedule_dbs:
-                    if url.startswith(db):
-                        url = url.replace(db, list_.schedule_dbs[db])
+                    if url.startswith(f"{db}/"):
+                        url = f"{list_.schedule_dbs[db]}/{url[len(db)+1:]}"
                         break
                 
                 self.cf_file_list[self.table.currentIndex().row()].set_file_path(url)
@@ -2842,6 +4245,119 @@ class SettingsMenu(FluentWindow):
         if data.get('error', None):
             self.show_tip_flyout('上传配置文件失败',
                                    data['error'], self.config_upload, InfoBarIcon.ERROR, FlyoutAnimationType.PULL_UP)
+    class cfDbEdit(MessageBoxBase):
+        def __init__(self, parent=None):
+            super().__init__(parent)
+            self.parent_menu = parent # 保存父菜单的引用
+            self.temp_widget = QWidget()
+            ui_path = f'{base_directory}/view/menu/schedule_db_edit.ui'
+            uic.loadUi(ui_path, self.temp_widget)
+            self.viewLayout.addWidget(self.temp_widget)
+
+            self.viewLayout.setContentsMargins(0, 0, 0, 0)
+            self.cancelButton.hide()
+            self.widget.setMinimumWidth(parent.width()//3*2)
+            self.widget.setMinimumHeight(parent.height())
+
+            self.add_button = self.widget.findChild(ToolButton, 'add_button')
+            self.add_button.setIcon(fIcon.ADD)
+            self.add_button.setToolTip('添加课表数据库')
+            self.add_button.clicked.connect(self.add_item)
+            self.clear_button = self.widget.findChild(ToolButton, 'clear_button')
+            self.clear_button.setIcon(fIcon.DELETE)
+            self.clear_button.clicked.connect(self.delete_item)
+            self.clear_button.setToolTip('删除课表数据库')
+            self.set_button = self.widget.findChild(ToolButton, 'set_button')
+            self.set_button.setIcon(fIcon.EDIT)
+            self.set_button.setToolTip('更改课表数据库')
+            self.set_button.clicked.connect(self.edit_item)
+
+            self.table = self.widget.findChild(ListWidget, 'db_list')
+
+            self.db_short = self.widget.findChild(LineEdit, 'db_short')
+            self.db_url = self.widget.findChild(LineEdit, 'db_url')
+
+            self.save_button = self.widget.findChild(PrimaryPushButton, 'save')
+            self.save_button.clicked.connect(self.save_item)
+
+            self.db_list = [(x.replace('@',''), list_.schedule_dbs[x]) for x in list_.schedule_dbs]
+            self.db_dict:dict = list_.schedule_dbs
+            self.init_table()
+
+        def init_table(self):
+            self.table.addItems([f"{x[0]} - {x[1]}" for x in self.db_list])
+
+        def edit_item(self):
+            if self.db_short.text() == '' or self.db_url.text() == '':
+                return
+            selected_items = self.table.selectedItems()
+            if selected_items:
+                selected_item = selected_items[0]
+                if self.db_dict.get(self.db_short.text(), None):
+                    if self.db_short.text() != self.db_list(self.table.row(selected_item))[0]:
+                        Flyout.create(
+                            icon=InfoBarIcon.ERROR,
+                            title='错误！',
+                            content=f"数据库缩写 {self.db_short.text()} 已存在，请更换缩写。",
+                            target=self.add_button,
+                            parent=self,
+                            isClosable=True,
+                            aniType=FlyoutAnimationType.PULL_UP
+                        )
+                        return
+                del self.db_dict[f"@{self.db_list[self.table.row(selected_item)][0]}"]
+                self.db_list[self.table.row(selected_item)] = (self.db_short.text(), self.db_url.text())
+                self.db_dict[f"@{self.db_short.text()}"] = self.db_url.text()
+                selected_item.setText(
+                    f"{self.db_short.text()} - {self.db_url.text()}"
+                )
+
+        def delete_item(self):
+            selected_items = self.table.selectedItems()
+            if selected_items:
+                item = selected_items[0]
+                self.table.takeItem(self.table.row(item))
+                del self.db_dict[f"@{self.db_list[self.table.row(item)][0]}"]
+                self.db_list.pop(self.table.row(item))
+
+        def add_item(self):
+            if self.db_short.text() == '' or self.db_url.text() == '':
+                return
+            if self.db_dict.get(f"@{self.db_short.text()}", None):
+                Flyout.create(
+                    icon=InfoBarIcon.ERROR,
+                    title='错误！',
+                    content=f"数据库缩写 {self.db_short.text()} 已存在，请更换缩写。",
+                    target=self.add_button,
+                    parent=self,
+                    isClosable=True,
+                    aniType=FlyoutAnimationType.PULL_UP
+                )
+                return
+            self.table.addItem(
+                f"{self.db_short.text()} - {self.db_url.text()}"
+            )
+            self.db_list.append((self.db_short.text(), self.db_url.text()))
+            self.db_dict[f"@{self.db_short.text()}"] = self.db_url.text()
+
+        def save_item(self):
+            db = self.db_dict
+
+            list_.save_data_to_json({"db":db}, base_directory / 'config' / "schedule_db.json")
+
+            Flyout.create(
+                icon=InfoBarIcon.SUCCESS,
+                title='保存成功',
+                content=f"已保存至 {base_directory / 'config' / 'schedule_db.json'}",
+                target=self.save_button,
+                parent=self,
+                isClosable=True,
+                aniType=FlyoutAnimationType.PULL_UP
+            )
+    
+    def cf_open_db_edit(self):
+        self.cf_db_edit = self.cfDbEdit(self)
+        self.cf_db_edit.exec()
 
     def check_and_disable_schedule_edit(self):
         """检查是否存在调休状态，如果存在则禁用课程表编辑功能"""
@@ -3523,6 +5039,13 @@ class SettingsMenu(FluentWindow):
         self.addSubInterface(self.sdInterface, fIcon.RINGER, self.tr('提醒'), NavigationItemPosition.BOTTOM)
         self.addSubInterface(self.adInterface, fIcon.SETTING, self.tr('高级选项'), NavigationItemPosition.BOTTOM)
         self.addSubInterface(self.ifInterface, fIcon.INFO, self.tr('关于本产品'), NavigationItemPosition.BOTTOM)
+        try:
+            self.navigationInterface.currentItemChanged.connect(self._on_page_changed)
+        except AttributeError:
+            try:
+                self.stackedWidget.currentChanged.connect(self._on_page_changed)
+            except AttributeError:
+                pass
 
     def init_window(self):
         self.stackedWidget.setCurrentIndex(0)  # 设置初始页面
@@ -3550,6 +5073,52 @@ class SettingsMenu(FluentWindow):
         self.setWindowIcon(QIcon(f'{base_directory}/img/logo/favicon-settings.ico'))
 
         self.init_font()  # 设置字体
+
+    def _on_page_changed(self):
+        """清理NTP flyout"""
+        try:
+            if hasattr(self, '_current_ntp_flyout') and self._current_ntp_flyout:
+                self._current_ntp_flyout.close()
+                self._current_ntp_flyout = None
+        except Exception as e:
+            logger.error(f"页面切换时清理NTP flyout失败: {e}")
+    
+    def closeEvent(self, event):
+        try:
+            if hasattr(self, '_current_ntp_flyout') and self._current_ntp_flyout:
+                self._current_ntp_flyout.close()
+                self._current_ntp_flyout = None
+        except Exception as e:
+            logger.error(f"关闭窗口时清理NTP flyout失败: {e}")
+        try:
+            self._remove_ntp_auto_sync_callback()
+        except Exception as e:
+            logger.error(f"清理NTP自动同步回调失败: {e}")
+        
+        # 清理TTS相关线程和资源
+        try:
+            if hasattr(self, 'tts_voice_loader_thread') and self.tts_voice_loader_thread:
+                if self.tts_voice_loader_thread.isRunning():
+                    self.tts_voice_loader_thread.requestInterruption()
+                    self.tts_voice_loader_thread.quit()
+                    if not self.tts_voice_loader_thread.wait(1000):
+                        logger.warning("TTS语音加载线程未能在超时时间内退出")
+        except Exception as e:
+            logger.error(f"清理TTS语音加载线程失败: {e}")
+        
+        try:
+            if hasattr(self, 'TTSSettingsDialog') and self.TTSSettingsDialog:
+                if hasattr(self.TTSSettingsDialog, 'tts_preview_thread') and self.TTSSettingsDialog.tts_preview_thread:
+                    if self.TTSSettingsDialog.tts_preview_thread.isRunning():
+                        self.TTSSettingsDialog.tts_preview_thread.requestInterruption()
+                        self.TTSSettingsDialog.tts_preview_thread.quit()
+                        if not self.TTSSettingsDialog.tts_preview_thread.wait(1000):
+                            logger.warning("TTS预览线程未能在超时时间内退出")
+        except Exception as e:
+            logger.error(f"清理TTS预览线程失败: {e}")
+        
+        self.closed.emit()
+        event.accept()
 
     def on_language_view_changed(self):
         """界面语言切换"""
@@ -3658,6 +5227,21 @@ class SettingsMenu(FluentWindow):
             msg_box.exec()
 
 
+class NTPSyncWorker(QObject):
+    """NTP异步同步工作线程"""
+    sync_finished = pyqtSignal(bool)
+    def __init__(self, time_manager):
+        super().__init__()
+        self.time_manager = time_manager
+    
+    def sync_ntp(self):
+        """执行NTP同步"""
+        try:
+            success = self.time_manager.sync_with_ntp()
+            self.sync_finished.emit(success)
+        except Exception as e:
+            logger.error(f"异步NTP同步失败: {e}")
+            self.sync_finished.emit(False)
 
 def sp_get_class_num():  # 获取当前周课程数（未完成）
     highest_count = 0

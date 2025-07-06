@@ -14,8 +14,8 @@ import conf
 from conf import base_directory
 import list_
 from file import config_center
-from play_audio import PlayAudio, play_audio
-from generate_speech import generate_speech_sync, get_voice_id_by_name
+from play_audio import PlayAudio
+from generate_speech import get_tts_service
 import platform
 
 # 适配高DPI缩放
@@ -38,40 +38,7 @@ normal_color = '#56CFD8'
 
 window_list = []  # 窗口列表
 active_windows = []
-tts_is_playing = False  # TTS播放状态标志
-
-
-class TTSAudioThread(QThread):
-    """TTS线程"""
-    def __init__(self, text: str, voice_id: str) -> None:
-        super().__init__()
-        self.text = text
-        self.voice_id = voice_id
-
-    def run(self) -> None:
-        self.setPriority(QThread.Priority.LowPriority) # TTS优先级可以低一些
-        global tts_is_playing
-        if tts_is_playing:
-            logger.warning("TTS 已经播放")
-            return
-
-        engine_type = self.voice_id.split(':')[0] if self.voice_id else None
-        if engine_type == "pyttsx3" and platform.system() != "Windows":
-            logger.warning("当前系统不是Windows,pyttsx3跳过TTS生成")
-            return
-
-        try:
-            tts_is_playing = True
-            audio_path = generate_speech_sync(self.text, voice=self.voice_id, auto_fallback=True)
-            if audio_path and os.path.exists(audio_path):
-                logger.info(f"TTS生成成功")
-                play_audio(audio_path, tts_delete_after=True)
-            else:
-                logger.error("TTS生成失败或文件未找到")
-        except Exception as e:
-            logger.error(f"TTS处理失败: {e}")
-        finally:
-            tts_is_playing = False
+tts_service = None # TTS实例
 
 
 class tip_toast(QWidget):
@@ -81,12 +48,9 @@ class tip_toast(QWidget):
             w.close()
         active_windows.append(self)
         self.audio_thread = None
-        if hasattr(tip_toast, 'active_tts_thread') and tip_toast.active_tts_thread and tip_toast.active_tts_thread.isRunning():
-            logger.debug("已有TTS线程正在运行")
-            self.tts_audio_thread = None
-        else:
-            self.tts_audio_thread = None 
-            tip_toast.active_tts_thread = None
+        global tts_service
+        if tts_service is None:
+            tts_service = get_tts_service()
 
         uic.loadUi(f"{base_directory}/view/widget-toast-bar.ui", self)
 
@@ -191,18 +155,31 @@ class tip_toast(QWidget):
             format_values['content'] = content
             tts_text = config_center.read_conf('TTS', 'otherwise').format_map(format_values)
 
-        global tts_is_playing
         if tts_enabled and tts_text and tts_voice_id:
-            logger.info(f"生成TTS: '{tts_text}',语音ID: {tts_voice_id}")
-            if tts_is_playing:
-                 logger.warning("TTS已经在播放")
+            logger.info(f"播放TTS: '{tts_text}', 语音ID: {tts_voice_id}")
+            try:
+                from generate_speech import is_tts_playing, stop_tts
+                if is_tts_playing():
+                    logger.warning("TTS正在播放中，停止当前播放")
+                    stop_tts()
+            except ImportError as e:
+                logger.warning(f"导入TTS失败: {e}")
+            task_id = tts_service.play_tts(
+                text=tts_text,
+                voice_id=tts_voice_id,
+                auto_fallback=True,
+                on_complete=lambda file_path: logger.info(f"TTS播放完成: {file_path}"),
+                on_error=lambda error: logger.error(f"TTS播放失败: {error}")
+            )
+
+            if task_id:
+                logger.info(f"TTS任务已启动: {task_id}")
             else:
-                self.tts_audio_thread = TTSAudioThread(tts_text, tts_voice_id)
-                self.tts_audio_thread.start()
+                logger.warning("TTS任务启动失败")
         elif tts_enabled and tts_text and not tts_voice_id:
-             logger.warning(f"TTS已启用,但未能根据 '{tts_voice_id}' 找到有效的语音ID")
+            logger.warning(f"TTS已启用，但未找到有效的语音ID: '{tts_voice_id}'")
         elif tts_enabled and not tts_text:
-             logger.warning("TTS已启用,但当前没有文本供生成")
+            logger.warning("TTS已启用，但当前没有文本供生成")
 
         # 设置样式表
         if state == 1:  # 上课铃声
@@ -273,21 +250,6 @@ class tip_toast(QWidget):
         if sound_to_play:
             self.playsound(sound_to_play)
 
-        # 检查并播放TTS
-        if config_center.read_conf('TTS', 'enable') == '1' and tts_text:
-            voice_id = config_center.read_conf('TTS', 'voice_id')
-            if voice_id is None:
-                voice_id = ''
-            if self.tts_audio_thread and self.tts_audio_thread.isRunning():
-                try:
-                    self.tts_audio_thread.quit()
-                    self.tts_audio_thread.wait(1000) # 等待最多1秒
-                except Exception as e:
-                    logger.warning(f"停止旧TTS线程时出错: {e}")
-            self.tts_audio_thread = TTSAudioThread(tts_text, voice_id)
-            # 稍微延迟启动TTS，避免和提示音重叠太近
-            QTimer.singleShot(500, self.tts_audio_thread.start)
-
         self.geometry_animation.start()
         self.opacity_animation.start()
         self.blur_animation.start()
@@ -331,13 +293,15 @@ class tip_toast(QWidget):
                 self.audio_thread.quit()
                 self.audio_thread.wait(500)
             except Exception as e:
-                 logger.warning(f"关闭窗口时停止提示音线程出错: {e}")
-        if self.tts_audio_thread and self.tts_audio_thread.isRunning():
-            try:
-                self.tts_audio_thread.quit()
-                self.tts_audio_thread.wait(1000)
-            except Exception as e:
-                 logger.warning(f"关闭窗口时停止TTS线程出错: {e}")
+                logger.warning(f"关闭窗口时停止提示音线程出错: {e}")
+
+        try:
+            from generate_speech import is_tts_playing, stop_tts
+            if is_tts_playing():
+                stop_tts()
+                logger.info("窗口关闭时已停止TTS播放")
+        except (ImportError, Exception) as e:
+            logger.warning(f"关闭窗口时停止TTS播放出错: {e}")
 
         if self in active_windows:
             active_windows.remove(self)
@@ -496,7 +460,7 @@ def main(state: int = 1, lesson_name: str = '', title: str = '通知示例', sub
     except AttributeError:
         dpr = 1.0
     dpr = max(1.0, dpr)
- 
+
     widgets_width = 0
     for widget in widgets:  # 计算总宽度(兼容插件)
         widgets_width += theme_config.widget_width.get(widget, list_.widget_width.get(widget, 0))
@@ -506,7 +470,7 @@ def main(state: int = 1, lesson_name: str = '', title: str = '通知示例', sub
     start_x = int((screen_width - total_width) / 2)
     margin_base = int(config_center.read_conf('General', 'margin'))
     start_y = int(margin_base * dpr)
- 
+
     if state != 4:
         window = tip_toast((start_x, start_y), total_width, state, lesson_name, duration=duration)
     else:

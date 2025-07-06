@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>721</width>
+    <width>1073</width>
     <height>814</height>
    </rect>
   </property>
@@ -55,7 +55,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>673</width>
+        <width>1025</width>
         <height>711</height>
        </rect>
       </property>
@@ -104,6 +104,13 @@
           <widget class="PushButton" name="config_import">
            <property name="text">
             <string>导入</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="PushButton" name="config_db_edit">
+           <property name="text">
+            <string>数据库编辑</string>
            </property>
           </widget>
          </item>

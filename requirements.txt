@@ -29,6 +29,8 @@ PyGetWindow~=0.0.9
 edge-tts~=7.0.0
 pyttsx3==2.98
 python-dateutil==2.8.2
+ntplib ~= 0.4.0
+pytz ~= 2025.2
 annotated-types==0.7.0
 pydantic==2.10.6
 pydantic-core==2.27.2

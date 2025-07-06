@@ -162,6 +162,9 @@
                 </item>
                 <item>
                  <widget class="SwitchButton" name="switch_enable_tts">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
                   <property name="onText">
                    <string>启用</string>
                   </property>
@@ -194,9 +197,6 @@
                 <property name="bottomMargin">
                  <number>16</number>
                 </property>
-                <item row="0" column="2">
-                 <widget class="ComboBox" name="engine_selector"/>
-                </item>
                 <item row="0" column="0">
                  <layout class="QVBoxLayout" name="verticalLayout_13">
                   <property name="spacing">
@@ -254,6 +254,16 @@
                    </widget>
                   </item>
                  </layout>
+                </item>
+                <item row="0" column="2">
+                 <widget class="ComboBox" name="engine_selector">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </widget>
@@ -315,7 +325,36 @@
                  </layout>
                 </item>
                 <item>
-                 <widget class="ComboBox" name="voice_selector"/>
+                 <widget class="ComboBox" name="voice_language">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>10</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="ComboBox" name="voice_selector">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </widget>
@@ -707,6 +746,9 @@
                 </item>
                 <item>
                  <widget class="PrimaryDropDownPushButton" name="preview">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                     <horstretch>0</horstretch>

@@ -3,12 +3,12 @@ import os
 import sys
 from pathlib import Path
 from shutil import copy
-from typing import Dict, Any, Optional, Union, Callable
+from typing import Dict, Any, Optional, Union, Callable, List
 
 from loguru import logger
 import configparser
 from packaging.version import Version
-import configparser as config
+import json
 
 
 base_directory = Path(os.path.dirname(os.path.abspath(__file__)))
@@ -19,18 +19,20 @@ if str(base_directory).endswith('MacOS'):
 config_path = base_directory / 'config.ini'
 
 
+
+
 class ConfigCenter:
     """
     Config中心
     """
-    def __init__(self, base_directory: Path, schedule_update_callback: Optional[Callable] = None) -> None:
+    def __init__(self, base_directory: Path, schedule_update_callback: Optional[Callable[[], None]] = None) -> None:
         self.base_directory = base_directory
         self.config_version = 1
         self.config_file_name = 'config.ini'
         self.user_config_path = self.base_directory / self.config_file_name
         self.default_config_path = self.base_directory / 'config' / 'default_config.json'
         self.config = configparser.ConfigParser()
-        self.default_data = {}
+        self.default_data: Dict[str, Any] = {}
         self.schedule_update_callback = schedule_update_callback
 
         self._load_default_config()
@@ -73,7 +75,7 @@ class ConfigCenter:
 
     def _initialize_config(self) -> None:
         """初始化配置文件（当配置文件不存在时）"""
-        logger.info("配置文件不存在，已创建并写入默认配置。")
+        logger.debug("配置文件不存在，已创建并写入默认配置。")
         self.config.read_dict(self.default_data)
         self._write_config_to_file()
         if sys.platform != 'win32':
@@ -85,6 +87,7 @@ class ConfigCenter:
         """迁移配置文件（当配置文件版本不一致时）"""
         logger.warning(f"配置文件版本不同,重新适配")
         try:
+            self._perform_specific_migrations()
             for section, options in self.default_data.items():
                 if section not in self.config:
                     self.config.add_section(section)
@@ -104,6 +107,26 @@ class ConfigCenter:
             logger.success(f"配置文件已更新")
         except Exception as e:
             logger.error(f"配置文件更新失败: {e}")
+
+    def _perform_specific_migrations(self) -> None:
+        """执行特定的配置迁移规则"""
+        migration_rules = [
+            {
+                'old_section': 'General',
+                'old_key': 'time_offset',
+                'new_section': 'Time', 
+                'new_key': 'time_offset',
+                'remove_old': True
+            },
+            {
+                'old_section': 'Other',
+                'old_key': 'auto_check_update',
+                'new_section': 'Version',
+                'new_key': 'auto_check_update', 
+                'remove_old': True
+            }
+        ]
+        self.migrate_config(migration_rules=migration_rules)
 
     def _check_schedule_config(self) -> None:
         """检查课程表配置文件"""
@@ -142,6 +165,106 @@ class ConfigCenter:
         with open(self.user_config_path, 'w', encoding='utf-8') as configfile:
             self.config.write(configfile)
 
+    def migrate_config_item(self, old_section: str, old_key: str, new_section: str, new_key: str, 
+                           transform_func: Optional[Callable[[Any], Any]] = None, 
+                           remove_old: bool = True) -> bool:
+        """配置项迁移函数
+        
+        Args:
+            old_section: 原配置节名
+            old_key: 原配置键名
+            new_section: 新配置节名
+            new_key: 新配置键名
+            transform_func: 值转换函数，可选
+            remove_old: 是否删除原配置项，默认True
+            
+        Returns:
+            bool: 迁移是否成功
+        """
+        try:
+            if old_section not in self.config or old_key not in self.config[old_section]:
+                logger.debug(f"原配置项不存在: {old_section}.{old_key}")
+                return False
+            old_value = self.config[old_section][old_key]
+            new_value = transform_func(old_value) if transform_func else old_value
+            if new_section not in self.config:
+                self.config.add_section(new_section)
+                logger.debug(f"创建新配置节: {new_section}")
+            self.config[new_section][new_key] = str(new_value)
+            logger.debug(f"配置项迁移: {old_section}.{old_key} -> {new_section}.{new_key} (值: {old_value} -> {new_value})")
+            if remove_old:
+                del self.config[old_section][old_key]
+                logger.debug(f"已删除原配置项: {old_section}.{old_key}")
+                if not self.config[old_section]:
+                    self.config.remove_section(old_section)
+                    logger.debug(f"已删除空配置节: {old_section}")
+            return True
+        except Exception as e:
+            logger.error(f"配置项迁移失败 {old_section}.{old_key} -> {new_section}.{new_key}: {e}")
+            return False
+    
+    def migrate_config(self, old_section: str = None, old_key: str = None, new_section: str = None, 
+                       new_key: str = None, transform_func: Optional[Callable[[Any], Any]] = None, 
+                       remove_old: bool = True, migration_rules: Optional[List[Dict[str, Any]]] = None) -> Union[bool, Dict[str, bool]]:
+        """配置迁移
+
+        Args:
+            # 单个配置项迁移参数
+            old_section: 原配置节名
+            old_key: 原配置键名
+            new_section: 新配置节名
+            new_key: 新配置键名
+            transform_func: 值转换函数，可选
+            remove_old: 是否删除原配置项，默认True
+            # 批量迁移参数
+            migration_rules: 迁移规则列表，每个规则为字典，包含:
+                - old_section: 原配置节
+                - old_key: 原配置键
+                - new_section: 新配置节
+                - new_key: 新配置键
+                - transform_func: 转换函数 (可选)
+                - remove_old: 是否删除原配置 (可选,默认True)
+                
+        Returns:
+            Union[bool, Dict[str, bool]]: 单个迁移返回bool，批量迁移返回Dict[str, bool]
+            
+        Raises:
+            ValueError: 当参数不正确时抛出异常
+        """
+        if migration_rules is not None:
+            if not isinstance(migration_rules, list):
+                raise ValueError("migration_rules 必须是列表类型")
+            return self._batch_migrate_internal(migration_rules)
+        if not all([old_section, old_key, new_section, new_key]):
+            raise ValueError("需提供完整参数")
+        result = self.migrate_config_item(old_section, old_key, new_section, new_key, 
+                                         transform_func, remove_old)
+        if result:
+            self._write_config_to_file()
+        return result
+    
+    def _batch_migrate_internal(self, migration_rules: List[Dict[str, Any]]) -> Dict[str, bool]:
+        results = {}
+        for i, rule in enumerate(migration_rules):
+            rule_name = f"{rule['old_section']}.{rule['old_key']}->{rule['new_section']}.{rule['new_key']}"
+            try:
+                success = self.migrate_config_item(
+                    old_section=rule['old_section'],
+                    old_key=rule['old_key'],
+                    new_section=rule['new_section'],
+                    new_key=rule['new_key'],
+                    transform_func=rule.get('transform_func'),
+                    remove_old=rule.get('remove_old', True)
+                )
+                results[rule_name] = success
+            except Exception as e:
+                logger.error(f"批量迁移规则 {i} 执行失败: {e}")
+                results[rule_name] = False
+        if any(results.values()):
+            self._write_config_to_file()
+            logger.debug(f"批量配置迁移完成,成功: {sum(results.values())}/{len(results)}")
+        return results
+
     def _check_and_migrate_config(self) -> None:
         """检查并迁移配置文件"""
         if not self.user_config_path.exists():
@@ -168,7 +291,7 @@ class ConfigCenter:
                 logger.error(f"默认配置文件中的版本号 '{default_config_version_str}' 无效")
                 return
             if user_config_version < default_config_version:
-                logger.info(f"检测到配置文件版本不一致或缺失 (配置版本: {user_config_version}, 默认版本: {default_config_version})，正在执行配置迁移...")
+                logger.debug(f"检测到配置文件版本不一致或缺失 (配置版本: {user_config_version}, 默认版本: {default_config_version})，正在执行配置迁移...")
                 self._migrate_config()
                 self._write_config_to_file()
         self._check_schedule_config()
@@ -224,18 +347,46 @@ class ConfigCenter:
 
     def _convert_value(self, value: Any, value_type: str) -> Any:
         """根据指定的类型转换值"""
-        if value_type == "int":
-            return int(value)
-        elif value_type == "bool":
-            return str(value).lower() == "true"
-        elif value_type == "float":
-            return float(value)
-        elif value_type == "list":
-            return [item.strip() for item in value.split(',')]
-        elif value_type == "json":
-            return json.loads(value)
-        else:
-            return str(value)
+        if value is None:
+            if value_type == "int":
+                return 0
+            elif value_type == "bool":
+                return False
+            elif value_type == "float":
+                return 0.0
+            elif value_type == "list":
+                return []
+            elif value_type == "json":
+                return {}
+            else:
+                return ""
+        try:
+            if value_type == "int":
+                return int(value)
+            elif value_type == "bool":
+                return str(value).lower() == "true"
+            elif value_type == "float":
+                return float(value)
+            elif value_type == "list":
+                return [item.strip() for item in str(value).split(',')]
+            elif value_type == "json":
+                return json.loads(str(value))
+            else:
+                return str(value)
+        except (ValueError, TypeError, json.JSONDecodeError) as e:
+            logger.warning(f"配置值转换失败: {value} -> {value_type}, 错误: {e}")
+            if value_type == "int":
+                return 0
+            elif value_type == "bool":
+                return False
+            elif value_type == "float":
+                return 0.0
+            elif value_type == "list":
+                return []
+            elif value_type == "json":
+                return {}
+            else:
+                return str(value) if value is not None else ""
 
     def write_conf(self, section: str, key: str, value: Any) -> None:
         """写入配置项"""
@@ -252,21 +403,21 @@ class ScheduleCenter:
     """
     def __init__(self, config_center_instance: ConfigCenter) -> None:
         self.config_center = config_center_instance
-        self.schedule_data = None
+        self.schedule_data: Dict[str, Any] = {}
         self.update_schedule()
 
     def update_schedule(self) -> None:
         """
         更新课程表
         """
-        self.schedule_data:dict = load_from_json(self.config_center.read_conf('General', 'schedule'))
+        self.schedule_data = load_from_json(self.config_center.read_conf('General', 'schedule'))
         if 'timeline' not in self.schedule_data:
             self.schedule_data['timeline'] = {}
         if self.schedule_data.get('url', None) is None:
             self.schedule_data['url'] = 'local'
             self.save_data(self.schedule_data, config_center.schedule_name)
 
-    def update_url(self, url):
+    def update_url(self, url: str) -> None:
         """
         更新课程表url
         """
@@ -292,6 +443,7 @@ class ScheduleCenter:
             return f"数据已成功保存到 config/schedule/{filename}"
         except Exception as e:
             logger.error(f"保存数据时出错: {e}")
+            return None
 
 
 def load_from_json(filename: str) -> Dict[str, Any]:
@@ -302,7 +454,7 @@ def load_from_json(filename: str) -> Dict[str, Any]:
     """
     try:
         with open(base_directory / 'config' / 'schedule' / filename, 'r', encoding='utf-8') as file:
-            data = json.load(file)
+            data: Dict[str, Any] = json.load(file)
         return data
     except FileNotFoundError:
         logger.error(f"文件未找到: {filename}")

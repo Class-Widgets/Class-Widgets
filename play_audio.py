@@ -11,7 +11,6 @@ from loguru import logger
 
 import conf
 from file import config_center
-from generate_speech import TTSEngine, on_audio_played
 
 sound_cache: Dict[str, Any] = {}
 
@@ -29,7 +28,7 @@ class PlayAudio(QThread):
         self.play_back_signal.emit(True)
 
 
-def play_audio(file_path: str, tts_delete_after: bool = False) -> None:
+def play_audio(file_path: str, tts_delete_after: bool = False, volume: Optional[float] = None) -> bool:
     sound = None
     channel = None
     relative_path = os.path.relpath(file_path, conf.base_directory)
@@ -49,7 +48,7 @@ def play_audio(file_path: str, tts_delete_after: bool = False) -> None:
                     logger.info("使用兼容设置成功初始化 Mixer")
                 except pygame.error as e_fallback:
                     logger.error(f"Pygame mixer 初始化失败: {e_fallback}")
-                    return
+                    return False
 
         # 检查文件是否可读
         file_size = os.path.getsize(file_path)
@@ -62,14 +61,16 @@ def play_audio(file_path: str, tts_delete_after: bool = False) -> None:
             else:
                 logger.error(f"音频文件写入超时或为空: {relative_path}")
                 if tts_delete_after:
+                    from generate_speech import on_audio_played
                     on_audio_played(file_path)
-                return
+                return False
         file_size = os.path.getsize(file_path)
         if file_size < 10:
             logger.warning(f"音频文件可能无效或不完整，大小仅为 {file_size} 字节: {relative_path}")
             if tts_delete_after:
+                from generate_speech import on_audio_played
                 on_audio_played(file_path)
-            return
+            return False
 
         try:
             is_in_cache_dir = 'cache' in pathlib.Path(file_path).parts
@@ -83,36 +84,55 @@ def play_audio(file_path: str, tts_delete_after: bool = False) -> None:
         except pygame.error as e_load:
             logger.error(f"加载音频文件失败: {relative_path} | 错误: {e_load}")
             if tts_delete_after:
+                from generate_speech import on_audio_played
                 on_audio_played(file_path)
-            return
+            return False
 
-        volume = int(config_center.read_conf('Audio', 'volume')) / 100
-        sound.set_volume(volume)
+        if volume is not None:
+            final_volume = max(0.0, min(1.0, volume))  # 限制在 0.0-1.0 范围内
+        else:
+            final_volume = int(config_center.read_conf('Audio', 'volume')) / 100
+        sound.set_volume(final_volume)
         channel = sound.play()
         if channel:
-            channel.set_volume(volume)
+            channel.set_volume(final_volume)
             while channel.get_busy():
                 pygame.time.wait(100)
         else:
             logger.error(f"无法获取播放通道: {relative_path}")
-            # 即使播放失败也尝试删除文件
             if tts_delete_after:
+                from generate_speech import on_audio_played
                 on_audio_played(file_path)
+            return False
 
         logger.debug(f'成功播放音频: {relative_path}')
         if tts_delete_after:
+            from generate_speech import on_audio_played
             on_audio_played(file_path)
+        return True
 
     except FileNotFoundError as e:
         logger.error(f'音频文件未找到 | 路径: {relative_path} | 错误: {str(e)}')
+        return False
     except IOError as e:
         logger.error(f'音频文件读取错误或超时 | 路径: {relative_path} | 错误: {str(e)}')
+        return False
     except pygame.error as e:
         logger.error(f'Pygame 播放错误 | 路径: {relative_path} | 错误: {str(e)}')
+        return False
     except Exception as e:
         logger.error(f'未知播放失败 | 路径: {relative_path} | 错误: {str(e)}')
+        return False
     finally:
         if channel and channel.get_busy():
             channel.stop()
         if sound:
             sound.stop()
+
+def is_playing() -> bool:
+    """检查是否有音频正在播放"""
+    return pygame.mixer.get_busy()
+
+def stop_audio():
+    """停止所有正在播放的音频"""
+    pygame.mixer.stop()

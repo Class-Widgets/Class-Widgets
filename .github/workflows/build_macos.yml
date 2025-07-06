@@ -52,7 +52,7 @@ jobs:
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.architecture != 'all' && github.event.inputs.architecture != matrix.arch
         run: |
           echo "Skip build ${{ matrix.arch }}"
-          echo "::set-output name=should_skip::true"
+          echo "should_skip=false" >> $env:GITHUB_OUTPUT
 
       - name: Checkout repository
         uses: actions/checkout@v4.2.2
@@ -66,6 +66,7 @@ jobs:
         with:
           python-version: '3.12.0'
           architecture: ${{ matrix.arch }}
+          cache: 'pip'
 
       - name: Setup uv
         if: steps.skip_check.outputs.should_skip != 'true'
@@ -90,14 +91,53 @@ jobs:
           uv pip install -r requirements.txt
           uv pip install pyinstaller
 
-      - name: Prepare output directory
+      - name: Python Syntax Check
+        id: syntax_check
         if: steps.skip_check.outputs.should_skip != 'true'
+        run: |
+          source .venv/bin/activate
+          echo "🔍 开始 Python 语法检查..."
+          python_files=$(find . -name "*.py" -not -path "*/__pycache__/*" -not -path "*/.venv/*" -not -path "*/build/*" -not -path "*/dist/*")
+          has_errors=false
+          file_count=$(echo "$python_files" | wc -l)
+          echo "## 🔍 Python 语法检查" > syntax_report.md
+          echo "" >> syntax_report.md
+          for file in $python_files; do
+            echo "检查文件: $file"
+            error_output=$(python -m py_compile "$file" 2>&1)
+            if [ $? -ne 0 ]; then
+              echo "❌ 语法错误在文件 $file"
+              echo "$error_output"
+              has_errors=true
+              echo "### ❌ 语法错误: \`$file\`" >> syntax_report.md
+              echo "" >> syntax_report.md
+              echo "\`\`\`" >> syntax_report.md
+              echo "$error_output" >> syntax_report.md
+              echo "\`\`\`" >> syntax_report.md
+              echo "" >> syntax_report.md
+            fi
+          done
+          
+          if [ "$has_errors" = true ]; then
+            echo "❌ **构建失败**" >> syntax_report.md
+            cat syntax_report.md >> $GITHUB_STEP_SUMMARY
+            echo "has_syntax_errors=true" >> $GITHUB_OUTPUT
+            exit 1
+          else
+            echo "✅ 所有 Python 文件语法检查通过"
+            echo "## ✅ 语法检查通过" >> syntax_report.md
+            cat syntax_report.md >> $GITHUB_STEP_SUMMARY
+            echo "has_syntax_errors=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Prepare output directory
+        if: steps.skip_check.outputs.should_skip != 'true' && steps.syntax_check.outputs.has_syntax_errors != 'true'
         run: |
           rm -rf zip
           mkdir zip
 
       - name: Set Build Info
-        if: steps.skip_check.outputs.should_skip != 'true'
+        if: steps.skip_check.outputs.should_skip != 'true' && steps.syntax_check.outputs.has_syntax_errors != 'true'
         shell: bash
         env:
           PR_NUMBER: ${{ github.event.pull_request.number || 0 }}
@@ -134,9 +174,23 @@ jobs:
           echo "🌿 BRANCH:      $build_branch"
           echo "🆔 RUN_ID:      $build_runid"
           echo "🧪 BUILD_TYPE:  $build_type"
+          {
+            echo ""
+            echo "---"
+            echo ""
+            echo "## 📋 构建信息"
+            echo ""
+            echo "| 项目 | 值 |"
+            echo "|------|----|" 
+            echo "| ⏰ 构建时间 (UTC+8) | $build_time |"
+            echo "| 🔗 提交哈希 | $build_commit |"
+            echo "| 🌿 分支 | $build_branch |"
+            echo "| 🆔 运行 ID | $build_runid |"
+            echo "| 🧪 构建类型 | $build_type |"
+          } >> $GITHUB_STEP_SUMMARY
 
       - name: Run macOS build & package
-        if: steps.skip_check.outputs.should_skip != 'true'
+        if: steps.skip_check.outputs.should_skip != 'true' && steps.syntax_check.outputs.has_syntax_errors != 'true'
         run: |
           source .venv/bin/activate
           pyinstaller main.py \
@@ -154,9 +208,23 @@ jobs:
             --hidden-import darkdetect
           cp -R dist/"Class Widgets.app" .
           zip -r -q zip/ClassWidgets_${{ github.run_id }}-${{ matrix.arch }}.zip "Class Widgets.app"
+          zip_file="zip/ClassWidgets_${{ github.run_id }}-${{ matrix.arch }}.zip"
+          if [[ "$(uname)" == "Darwin" ]]; then
+            file_size=$(stat -f%z "$zip_file" 2>/dev/null || echo "未知")
+            file_md5=$(md5 -q "$zip_file" 2>/dev/null || echo "未知")
+          else
+            file_size=$(stat -c%s "$zip_file" 2>/dev/null || echo "未知")
+            file_md5=$(md5sum "$zip_file" 2>/dev/null | cut -d' ' -f1 || echo "未知")
+          fi
+          if [[ "$file_size" != "未知" ]]; then
+            file_size_mb=$(echo "scale=2; $file_size / 1024 / 1024" | bc 2>/dev/null || echo "未知")
+          else
+            file_size_mb="未知"
+          fi
+          printf "\n---\n\n## 📦 文件信息\n\n| 属性 | 值 |\n|------|----| \n| 📁 文件名 | ClassWidgets_${{ github.run_id }}-${{ matrix.arch }}.zip |\n| 📏 文件大小 | %s MB (%s bytes) |\n| 🔐 MD5 | %s |\n\n" "${file_size_mb}" "${file_size}" "${file_md5}" >> $GITHUB_STEP_SUMMARY
 
       - name: Upload build artifact
-        if: steps.skip_check.outputs.should_skip != 'true'
+        if: steps.skip_check.outputs.should_skip != 'true' && steps.syntax_check.outputs.has_syntax_errors != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-${{ matrix.arch }}_debug_#${{ github.run_number }}
