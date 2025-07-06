@@ -42,7 +42,7 @@ from weather import WeatherReportThread as weatherReportThread
 from weather import get_unified_weather_alerts, get_alert_image
 from play_audio import play_audio
 from plugin import p_loader
-from utils import restart, stop,already_running, update_timer, DarkModeWatcher, TimeManagerFactory
+from utils import restart, stop, already_running, update_timer, DarkModeWatcher, TimeManagerFactory
 from file import config_center, schedule_center
 
 if os.name == 'nt':
