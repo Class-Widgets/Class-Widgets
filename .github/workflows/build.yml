@@ -57,16 +57,15 @@ jobs:
         with:
           python-version: '3.8.10'
           architecture: ${{ matrix.arch }}
-          cache: 'pip' # caching pip dependencies
+          cache: 'pip'
+          cache-dependency-path: |
+            **/requirements*.txt
 
       - name: Init zip folder
         run: mkdir zip
 
-      - name: Install uv
-        run: pip install uv
-        
-      - name: Install Dependencies with uv
-        run: uv pip install -r requirements.txt pyinstaller --system
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
 
       - name: Set Build Info
         shell: bash
@@ -79,7 +78,7 @@ jobs:
           build_commit="${GITHUB_SHA:0:7}"
           build_branch="${GITHUB_REF_NAME}"
           build_runid="${GITHUB_RUN_ID}"
-          build_type="PyInstaller - Release"
+          build_type="Nuitka - Release"
           config_path="config/default_config.json"
           config_text=$(cat "$config_path")
           config_text="${config_text//__BUILD_TIME__/$build_time}"
@@ -97,54 +96,60 @@ jobs:
 
       - name: Build (Windows)
         if: ${{ startsWith(matrix.os, 'windows') }}
-        shell: bash
-        run: |
-          pyinstaller \
-            --noconfirm \
-            --windowed \
-            --contents-directory .\
-            --name "ClassWidgets" \
-            --add-data "LICENSE;." \
-            --add-data "audio;audio" \
-            --add-data "config;config" \
-            --add-data "font;font" \
-            --add-data "img;img" \
-            --add-data "ui;ui" \
-            --add-data "view;view" \
-            --hidden-import "pyttsx3.drivers" \
-            --hidden-import "comtypes" \
-            --icon "./img/favicon.ico" \
-            main.py
-          mkdir ClassWidgets
-          cp -R dist/ClassWidgets/ ClassWidgets/
-
-
+        uses: Nuitka/Nuitka-Action@main
+        with:
+          mode: standalone
+          script-name: main.py
+          output-file: ClassWidgets
+          enable-plugins: pyqt5
+          include-data-files: LICENSE=LICENSE
+          include-data-dir: |
+            audio=audio
+            config=config
+            font=font
+            img=img
+            ui=ui
+            view=view
+          include-package: |
+            pyttsx3.drivers
+            comtypes
+          disable-console: true
+          product-name: Class Widgets
+          file-version: 1.1.7.2
+          windows-icon-from-ico: ./img/favicon.ico
       - name: Build (macOS)
         if: ${{ startsWith(matrix.os, 'macos') }}
-        run: |
-          pyinstaller --noconfirm --windowed --contents-directory .\
-            --name "ClassWidgets" \
-            --add-data "LICENSE:." \
-            --add-data "audio:audio" \
-            --add-data "config:config" \
-            --add-data "font:font" \
-            --add-data "img:img" \
-            --add-data "ui:ui" \
-            --add-data "view:view" \
-            --hidden-import "pyttsx3.drivers" \
-            --icon "./img/favicon.icns" \
-            main.py
-          cp -R dist/ClassWidgets.app Class\ Widgets.app
+        uses: Nuitka/Nuitka-Action@main
+        with:
+          script-name: main.py
+          enable-plugins: pyqt5
+          output-file: ClassWidgets
+          include-data-files: LICENSE=LICENSE
+          include-data-dir: |
+            audio=audio
+            config=config
+            font=font
+            img=img
+            ui=ui
+            view=view
+          include-package: pyttsx3.drivers
+          macos-app-icon: ./img/favicon.icns
+          macos-signed-app-name: cn.rinlit.classwidgets
+          macos-app-name: Class Widgets
+          macos-app-version: 1.1.7.2
+
 
       - name: Package (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
           curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
+          xcopy build\main.dist\* ClassWidgets\ /e/y
           ./zip -r -q "./zip/ClassWidgets-Windows-${{ matrix.arch }} (Unsigned).zip" ClassWidgets
 
       - name: Package (macOS)
         if: ${{ startsWith(matrix.os, 'macos') }}
         run: |
+          cp -R build/main.app Class\ Widgets.app
           zip -r -q "./zip/ClassWidgets-macOS-${{ matrix.arch }}.zip" Class\ Widgets.app
 
       - name: Upload unsigned application
@@ -175,7 +180,7 @@ jobs:
         if: ${{ matrix.os == 'windows-latest' && startsWith(github.ref, 'refs/tags/') }}
         run: |
           del "zip/ClassWidgets-Windows-${{ matrix.arch }} (Unsigned).zip"
-          ./zip -r -q zip/ClassWidgets-Windows-${{ matrix.arch }}.zip ClassWidgets/ClassWidgets
+          ./zip -r -q zip/ClassWidgets-Windows-${{ matrix.arch }}.zip ClassWidgets
       - name: Upload signed application
         if: ${{ matrix.os == 'windows-latest' && startsWith(github.ref, 'refs/tags/') }}
         uses: actions/upload-artifact@v4.4.2
@@ -187,26 +192,37 @@ jobs:
     runs-on: ubuntu-latest
     needs: check_commit
     if: ${{ needs.check_commit.outputs.has-new-commits == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/') }}
-
+    container:
+      image: debian:10
     steps:
       - name: Install dependencies
         shell: bash
         run: |
-          sudo apt-get update
-          sudo apt-get install -y ccache gcc wget zip binutils libglib2.0-dev libfreetype6 libxfixes3 libgssapi-krb5-2 libdbus-1-3 libxext6 libfontconfig1 libxrandr2 libnspr4 libx11-xcb1 libxrender1 libasound2t64 libxkbcommon0 libxtst6 libnss3 libxdamage1 libxcomposite1 libcups2 libwayland-client0 libwayland-cursor0 libcairo2 libcairo-gobject2 libpango-1.0-0 libgtk-3-0 libgdk-pixbuf2.0-0 libxkbcommon-x11-0 libwayland-egl1 libxcb-xinerama0 libxcb-render-util0 libxcb-randr0 libxcb-image0 libxcb-sync1 libxcb-keysyms1 libxcb-shape0 libxcb-xfixes0 libxcb-icccm4 libxcb-glx0 git patchelf
+          apt-get update
+          apt-get install -y ccache gcc wget zip binutils libglib2.0-dev libfreetype6 libxfixes3 libgssapi-krb5-2 libdbus-1-3 libxext6 libfontconfig1 libxrandr2 libnspr4 libx11-xcb1 libxrender1 libasound2 libxkbcommon0 libxtst6 libnss3 libxdamage1 libxcomposite1 libcups2 libwayland-client0 libwayland-cursor0 libcairo2 libcairo-gobject2 libpango-1.0-0 libgtk-3-0 libgdk-pixbuf2.0-0 libxkbcommon-x11-0 libwayland-egl1 libxcb-xinerama0 libxcb-render-util0 libxcb-randr0 libxcb-image0 libxcb-sync1 libxcb-keysyms1 libxcb-shape0 libxcb-xfixes0 libxcb-icccm4 libxcb-glx0 git patchelf
           wget http://ftp.debian.org/debian/pool/main/x/xcb-util/libxcb-util1_0.4.0-1+b1_amd64.deb
-          sudo dpkg -i libxcb-util1_0.4.0-1+b1_amd64.deb
+          dpkg -i libxcb-util1_0.4.0-1+b1_amd64.deb
       - name: Checkout repository
         uses: actions/checkout@v4.2.2
-      - name: Setup Python
-        uses: actions/setup-python@v5.3.0
+      - name: Setup uv & python
+        uses: astral-sh/setup-uv@v4
         with:
-          python-version: '3.12'
-          cache: 'pip' # caching pip dependencies
-      - name: Install PyInstaller
+          python-version: 3.8.10
+      - name: Setup Environment Variables
+        shell: bash
         run: |
-          pip install uv
-          uv pip install -r requirements.txt pyinstaller --system
+          echo "NUITKA_CACHE_DIR=${{ github.action_path }}/nuitka/cache" >> $GITHUB_ENV
+          echo "PYTHON_VERSION=3.8" >> $GITHUB_ENV
+      - name: Cache Nuitka cache directory
+        if: ${{ !inputs.disable-cache }}
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.NUITKA_CACHE_DIR }}
+          key: Debian-X64-python-${{ env.PYTHON_VERSION }}-nuitka-${{ github.sha }}
+          restore-keys: |
+            Debian-X64-python-${{ env.PYTHON_VERSION }}-
+            Debian-X64-python-
+            Debian-X64-
 
       - name: Set Build Info
         shell: bash
@@ -219,7 +235,7 @@ jobs:
           build_commit="${GITHUB_SHA:0:7}"
           build_branch="${GITHUB_REF_NAME}"
           build_runid="${GITHUB_RUN_ID}"
-          build_type="PyInstaller - Release"
+          build_type="Nuitka - Release"
           config_path="config/default_config.json"
           config_text=$(cat "$config_path")
           config_text="${config_text//__BUILD_TIME__/$build_time}"
@@ -238,26 +254,31 @@ jobs:
       - name: Build
         shell: bash
         run: |
-          pyinstaller --noconfirm --contents-directory .\
-            --name "ClassWidgets" \
-            --add-data "LICENSE:." \
-            --add-data "audio:audio" \
-            --add-data "config:config" \
-            --add-data "font:font" \
-            --add-data "img:img" \
-            --add-data "ui:ui" \
-            --add-data "view:view" \
-            --hidden-import "pyttsx3.drivers" \
-            main.py
+          uv venv
+          source .venv/bin/activate
+          uv pip install -r requirements.txt
+          uv pip install nuitka==2.6.7
+          python -m nuitka main.py \
+            --enable-plugin=pyqt5 \
+            --mode=standalone \
+            -o"ClassWidgets" \
+            --include-data-dir=img=img \
+            --include-data-dir=ui=ui \
+            --include-data-dir=view=view \
+            --include-data-dir=config=config \
+            --include-data-dir=font=font \
+            --include-data-dir=audio=audio \
+            --include-data-files=LICENSE=LICENSE \
+            --include-package=pyttsx3.drivers
 
       - name: Package (Debian)
         run: |
-          cp -R dist ClassWidgets
+          cp -R main.dist ClassWidgets
           mkdir zip
-          zip -r -q zip/ClassWidgets-Debian.zip ClassWidgets
+          zip -r -q zip/ClassWidgets-Debian10.zip ClassWidgets
 
       - name: Upload
         uses: actions/upload-artifact@v4.4.2
         with:
-          name: debian-x64
+          name: debian10-x64
           path: ./zip

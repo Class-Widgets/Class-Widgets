@@ -42,7 +42,7 @@ from weather import WeatherReportThread as weatherReportThread
 from weather import get_unified_weather_alerts, get_alert_image
 from play_audio import play_audio
 from plugin import p_loader
-from utils import restart, stop, already_running, update_timer, DarkModeWatcher, TimeManagerFactory
+from utils import restart, stop, share, update_timer, DarkModeWatcher, TimeManagerFactory
 from file import config_center, schedule_center
 
 if os.name == 'nt':
@@ -2847,23 +2847,25 @@ def setup_signal_handlers_optimized(app: QApplication) -> None:
         signal.signal(signal.SIGHUP, signal_handler)  # 终端挂起
 
 if __name__ == '__main__':
-    is_already_running = already_running()
-    print(f"是否已多开：{is_already_running}")
-    if is_already_running and config_center.read_conf('Other', 'multiple_programs') != '1':
-        logger.debug('不允许多开实例')
-        from qfluentwidgets import Dialog
-        app = QApplication.instance() or QApplication(sys.argv)
-        dlg = Dialog(
-            'Class Widgets 正在运行',
-            'Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。'
-            '\n(若您需要打开多个实例，请在“设置”->“高级选项”中启用“允许程序多开”)'
-        )
-        dlg.yesButton.setText('好')
-        dlg.cancelButton.hide()
-        dlg.buttonLayout.insertStretch(0, 1)
-        dlg.setFixedWidth(550)
-        dlg.exec()
-        sys.exit(0)
+    if not share.create(1):
+        if share.attach() and config_center.read_conf('Other', 'multiple_programs') != '1':
+            logger.debug('不允许多开实例')
+            from qfluentwidgets import Dialog
+            app = QApplication.instance() or QApplication(sys.argv)
+            dlg = Dialog(
+                'Class Widgets 正在运行',
+                'Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。'
+                '\n(若您需要打开多个实例，请在“设置”->“高级选项”中启用“允许程序多开”)'
+            )
+            dlg.yesButton.setText('好')
+            dlg.cancelButton.hide()
+            dlg.buttonLayout.insertStretch(0, 1)
+            dlg.setFixedWidth(550)
+            dlg.exec()
+            sys.exit(0)
+        else:
+            print(f'无法创建共享内存: {share.errorString()}') # logger 可能还没准备好
+            sys.exit(1)
 
     scale_factor = float(config_center.read_conf('General', 'scale'))
     os.environ['QT_SCALE_FACTOR'] = str(scale_factor)
@@ -2872,7 +2874,7 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     app.setQuitOnLastWindowClosed(False)
     logger.info(
-        f"是否允许多开实例：{config_center.read_conf('Other', 'multiple_programs')}")
+        f"共享内存：{share.isAttached()} 是否允许多开实例：{config_center.read_conf('Other', 'multiple_programs')}")
     try:
         dark_mode_watcher = DarkModeWatcher(parent=app)
         dark_mode_watcher.darkModeChanged.connect(handle_dark_mode_change) # 连接信号
@@ -2908,7 +2910,7 @@ if __name__ == '__main__':
 
     # list_pyttsx3_voices()
 
-    if is_already_running and config_center.read_conf('Other', 'multiple_programs') != '1':
+    if share.attach() and config_center.read_conf('Other', 'multiple_programs') != '1':
         msg_box = Dialog(
             'Class Widgets 正在运行',
             'Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。'

@@ -164,66 +164,33 @@ def add_shortcut(file: str = '', icon: str = '') -> None:
         logger.error(f"创建桌面快捷方式时出错: {e}")
 
 
-def add_to_startup(file_path: str = f'{base_directory}/ClassWidgets', icon_path: str = '') -> None:  # 注册到开机启动
-    if os.name == 'nt':
-        file_path += '.exe'
-        file_path = Path(file_path) if file_path else Path(__file__).resolve()
-        icon_path = Path(icon_path) if icon_path else file_path
+def add_to_startup(file_path: str = f'{base_directory}/ClassWidgets.exe', icon_path: str = '') -> None:  # 注册到开机启动
+    if os.name != 'nt':
+        return
+    file_path = Path(file_path) if file_path else Path(__file__).resolve()
+    icon_path = Path(icon_path) if icon_path else file_path
 
-        # 获取启动文件夹路径
-        startup_folder = Path(os.getenv('APPDATA')) / 'Microsoft' / 'Windows' / 'Start Menu' / 'Programs' / 'Startup'
+    # 获取启动文件夹路径
+    startup_folder = Path(os.getenv('APPDATA')) / 'Microsoft' / 'Windows' / 'Start Menu' / 'Programs' / 'Startup'
 
-        # 快捷方式文件名（使用文件名或自定义名称）
-        name = file_path.stem  # 使用文件名作为快捷方式名称
-        shortcut_path = startup_folder / f'{name}.lnk'
+    # 快捷方式文件名（使用文件名或自定义名称）
+    name = file_path.stem  # 使用文件名作为快捷方式名称
+    shortcut_path = startup_folder / f'{name}.lnk'
 
-        # 创建快捷方式
-        shell = Dispatch('WScript.Shell')
-        shortcut = shell.CreateShortCut(str(shortcut_path))
-        shortcut.Targetpath = str(file_path)
-        shortcut.WorkingDirectory = str(file_path.parent)
-        shortcut.IconLocation = str(icon_path)  # 设置图标路径
-        shortcut.save()
-    elif os.path.isdir("/run/systemd/system"):
-        startup_folder = Path(os.path.expanduser("~"))/Path(".config/systemd/user")
-        if not startup_folder.exists():
-            startup_folder.mkdir(parents=True)
-        systemd_service = startup_folder / f'classwidgets.service'
-        logger.info(f"创建systemd服务文件: {systemd_service}")
-        with open(systemd_service, 'w') as f:
-            f.write(f"""[Unit]
-Description=ClassWidgets
-After=graphical-session.target
-
-[Service]
-Type=simple
-ExecStart={file_path}
-Restart=on-failure
-Environment=DISPLAY=:0
-Environment=XAUTHORITY=%h/.Xauthority
-
-[Install]
-WantedBy=default.target
-""")
-            # systemctl --user daemon-reexec
-            # systemctl --user daemon-reload
-            # systemctl --user enable classwidgets.service
-            # systemctl --user start classwidgets.service
-        os.system("systemctl --user daemon-reexec")
-        os.system("systemctl --user daemon-reload")
-        os.system("systemctl --user enable classwidgets.service")
-            
-        
+    # 创建快捷方式
+    shell = Dispatch('WScript.Shell')
+    shortcut = shell.CreateShortCut(str(shortcut_path))
+    shortcut.Targetpath = str(file_path)
+    shortcut.WorkingDirectory = str(file_path.parent)
+    shortcut.IconLocation = str(icon_path)  # 设置图标路径
+    shortcut.save()
 
 
 def remove_from_startup() -> None:
-    if os.name == 'nt':
-        startup_folder = os.path.join(os.getenv('APPDATA'), 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'Startup')
-        shortcut_path = os.path.join(startup_folder, f'{name}.lnk')
-        if os.path.exists(shortcut_path):
-            os.remove(shortcut_path)
-    elif os.path.isdir("/run/systemd/system"):
-        os.system("systemctl --user disable classwidgets.service")
+    startup_folder = os.path.join(os.getenv('APPDATA'), 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'Startup')
+    shortcut_path = os.path.join(startup_folder, f'{name}.lnk')
+    if os.path.exists(shortcut_path):
+        os.remove(shortcut_path)
 
 def update_countdown(cnt: int) -> None:
     global update_countdown_custom_last
