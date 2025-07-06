@@ -200,13 +200,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4.2.2
       - name: Setup Python
-        uses: actions/setup-python@v5.3.0
+        uses: astral-sh/setup-uv@v4
         with:
           python-version: '3.12'
           cache: 'pip' # caching pip dependencies
       - name: Install PyInstaller
         run: |
-          pip install uv
           uv pip install -r requirements.txt pyinstaller --system
 
       - name: Set Build Info
