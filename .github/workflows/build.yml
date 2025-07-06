@@ -64,8 +64,11 @@ jobs:
       - name: Init zip folder
         run: mkdir zip
 
-      - name: Install Dependencies
-        run: pip install -r requirements.txt pyinstaller
+      - name: Install uv
+        run: pipx install uv
+        
+      - name: Install Dependencies with uv
+        run: uv pip install -r requirements.txt pyinstaller
 
       - name: Set Build Info
         shell: bash
@@ -201,7 +204,8 @@ jobs:
           python-version: '3.12'
       - name: Install PyInstaller
         run: |
-          pip install -r requirements.txt pyinstaller
+          pipx install uv
+          uv pip install -r requirements.txt pyinstaller
 
       - name: Set Build Info
         shell: bash
