@@ -65,7 +65,7 @@ jobs:
         run: mkdir zip
 
       - name: Install uv
-        run: pipx install uv
+        run: pip install uv
         
       - name: Install Dependencies with uv
         run: uv pip install -r requirements.txt pyinstaller
