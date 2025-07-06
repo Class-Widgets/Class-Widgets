@@ -255,7 +255,7 @@ jobs:
         run: |
           cp -R dist ClassWidgets
           mkdir zip
-          zip -r -q zip/ClassWidgets-.zip ClassWidgets
+          zip -r -q zip/ClassWidgets-Debian.zip ClassWidgets
 
       - name: Upload
         uses: actions/upload-artifact@v4.4.2
