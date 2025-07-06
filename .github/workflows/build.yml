@@ -97,23 +97,23 @@ jobs:
 
       - name: Build (Windows)
         if: ${{ startsWith(matrix.os, 'windows') }}
-        shell: pwsh
+        shell: bash
         run: |
-          pyinstaller `
-            --noconfirm `
-            --windowed `
-            --contents-directory .`
-            --name "ClassWidgets" `
-            --add-data "LICENSE;." `
-            --add-data "audio;audio" `
-            --add-data "config;config" `
-            --add-data "font;font" `
-            --add-data "img;img" `
-            --add-data "ui;ui" `
-            --add-data "view;view" `
-            --hidden-import "pyttsx3.drivers" `
-            --hidden-import "comtypes" `
-            --icon "./img/favicon.ico" `
+          pyinstaller \
+            --noconfirm \
+            --windowed \
+            --contents-directory .\
+            --name "ClassWidgets" \
+            --add-data "LICENSE;." \
+            --add-data "audio;audio" \
+            --add-data "config;config" \
+            --add-data "font;font" \
+            --add-data "img;img" \
+            --add-data "ui;ui" \
+            --add-data "view;view" \
+            --hidden-import "pyttsx3.drivers" \
+            --hidden-import "comtypes" \
+            --icon "./img/favicon.ico" \
             main.py
           mkdir ClassWidgets
           cp -R dist/ClassWidgets.exe ClassWidgets/
