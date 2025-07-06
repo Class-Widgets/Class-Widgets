@@ -55,7 +55,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5.3.0
         with:
-          python-version: '3.12'
+          python-version: '3.8.10'
           architecture: ${{ matrix.arch }}
           cache: 'pip' # caching pip dependencies
 
