@@ -259,6 +259,7 @@ jobs:
           uv pip install -r requirements.txt
           uv pip install nuitka==2.6.7
           python -m nuitka main.py \
+            --include-qt-plugins=platforms \
             --enable-plugin=pyqt5 \
             --mode=standalone \
             -o"ClassWidgets" \
