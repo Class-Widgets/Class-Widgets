@@ -170,12 +170,6 @@ class I18nManager:
             if theme_translator:
                 self.translators.append(theme_translator)
                 app.installTranslator(theme_translator)
-            dark_translator = self._load_translation_file(
-                Path(conf.base_directory) / 'ui' / current_theme / 'dark' / 'i18n' / f'{lang_code}.qm'
-            )
-            if dark_translator:
-                self.translators.append(dark_translator)
-                app.installTranslator(dark_translator)
             self.current_language_widgets = lang_code
             config_center.write_conf('General', 'language_widgets', lang_code)
             logger.success(f"成功加载组件语言: {lang_code} ({self.available_languages_widgets.get(lang_code, lang_code)})")
