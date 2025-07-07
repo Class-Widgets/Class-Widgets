@@ -3869,8 +3869,8 @@ class SettingsMenu(FluentWindow):
 
             if utils.tray_icon:
                 utils.tray_icon.push_error_notification(
-                    self.tr('version', "检查更新失败！"),
-                    self.tr('version', "检查更新失败！\n{data}").format(data=version['error'])
+                    self.tr("检查更新失败！"),
+                    self.tr("检查更新失败！\n{data}").format(data=version['error'])
                 )
             return False
 
