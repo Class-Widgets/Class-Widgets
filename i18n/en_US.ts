@@ -2005,53 +2005,53 @@ Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, 
         <location filename="../menu.py" line="2374"/>
         <location filename="../menu.py" line="3028"/>
         <source>时区设置失败</source>
-        <translation>Time zone failure</translation>
+        <translation>Failed to set time zone</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2431"/>
         <location filename="../menu.py" line="3085"/>
         <source>NTP服务器URL不能为空 o(〃＾▽＾〃)o
 请输入有效的NTP服务器地址</source>
-        <translation>NTP server URL cannot be empty o (〃 〃 〃 〃)o
+        <translation>NTP server URL cannot be empty o(〃＾▽＾〃)o
 Entry into effective NTP server address</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2462"/>
         <location filename="../menu.py" line="3116"/>
         <source>NTP服务器已更新: {url}</source>
-        <translation>NTP server has been upgraded:</translation>
+        <translation>NTP server has been upgraded: {url}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2470"/>
         <location filename="../menu.py" line="3124"/>
         <source>URL格式可能不正确: {url}
 请检查是否为有效的域名或IP地址（︶^︶）</source>
-        <translation>URL format may not be correct:
-Inspection of effective domain name or IP address (^)</translation>
+        <translation>URL format may not be correct: {url}
+Inspection of effective domain name or IP address （︶^︶）</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2721"/>
         <location filename="../menu.py" line="3375"/>
         <source>当前使用: 系统本地时间</source>
-        <translation>Current use: local time of the system</translation>
+        <translation>Current use: system time</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2725"/>
         <location filename="../menu.py" line="3379"/>
         <source>%Y年%m月%d日 - %H:%M:%S</source>
-        <translation>per cent Y perm per day - per cent H: per M: per S</translation>
+        <translation>%Y-%m-%d - %H:%M:%S</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2726"/>
         <location filename="../menu.py" line="3380"/>
         <source>上次NTP校准: {sync_time_str}</source>
-        <translation>Former NTP准: {sync_time_str}</translation>
+        <translation>Last NTP synchronization time: {sync_time_str}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2728"/>
         <location filename="../menu.py" line="3382"/>
         <source>NTP时间: 尚未进行校准</source>
-        <translation>NTP TIMING: NOT COMPLETED</translation>
+        <translation>NTP time: Not synchronized yet</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2730"/>
@@ -2069,24 +2069,24 @@ Inspection of effective domain name or IP address (^)</translation>
         <location filename="../menu.py" line="2770"/>
         <location filename="../menu.py" line="3424"/>
         <source>启动同步失败</source>
-        <translation>Initiation of simultaneous failures</translation>
+        <translation>Failed to initiate synchronization</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2777"/>
         <location filename="../menu.py" line="3431"/>
         <source>NTP时间同步成功!</source>
-        <translation>NTP COINCIDES WITH SUCCESS!</translation>
+        <translation>NTP synchronization succeeded</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2784"/>
         <location filename="../menu.py" line="3438"/>
         <source>NTP时间同步失败,请检查网络连接和url地址!</source>
-        <translation>NTP failed in tandem and asked to check network connections and url addresses!</translation>
+        <translation>NTP time synchronization failed, please check the network connection and URL address!</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3025"/>
         <source>时区已更新为 {ntp_sync_timezone}</source>
-        <translation>time zone has been updated to include:</translation>
+        <translation>time zone has been updated to {ntp_sync_timezone}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3529"/>
@@ -2233,13 +2233,13 @@ Inspection of effective domain name or IP address (^)</translation>
     <message>
         <location filename="../menu.py" line="3872"/>
         <source>检查更新失败！</source>
-        <translation>The inspection failed</translation>
+        <translation>Failed to check for updates!</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3873"/>
         <source>检查更新失败！
 {data}</source>
-        <translation>the inspection failed!
+        <translation>Failed to check for updates!
 {data}</translation>
     </message>
     <message>
@@ -2365,8 +2365,8 @@ The new language will take full effect after restarting the program</translation
         <location filename="../menu.py" line="5183"/>
         <source>组件语言已切换为 {selected_lang_name}
 新语言将在重启程序后完全生效</source>
-        <translation>formal language has been changed to the following:
-the new language will become fully effective after the resumption of the proceedings</translation>
+        <translation>Language switched to {selected_lang_name}
+Changes will apply after restart</translation>
     </message>
     <message>
         <location filename="../menu.py" line="5213"/>
