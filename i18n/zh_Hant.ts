@@ -325,7 +325,7 @@
     <message>
         <location filename="../view/menu/advance.ui" line="238"/>
         <source>时间</source>
-        <translation type="unfinished"></translation>
+        <translation>時間綫</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="349"/>
@@ -2367,7 +2367,8 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
         <location filename="../menu.py" line="5183"/>
         <source>组件语言已切换为 {selected_lang_name}
 新语言将在重启程序后完全生效</source>
-        <translation type="unfinished"></translation>
+        <translation>介面語言已切換為 {selected_lang_name}
+新語言將會在重啟後完全生效</translation>
     </message>
     <message>
         <location filename="../menu.py" line="5213"/>
