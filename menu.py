@@ -5179,7 +5179,7 @@ class SettingsMenu(FluentWindow):
                     if success:
                         config_center.write_conf('General', 'language_widgets', selected_lang_code)
                         title = self.tr('组件语言切换成功 ♪(´▽｀)')
-                        content = self.tr('menu','组件语言已切换为 {selected_lang_name}\n' \
+                        content = self.tr('组件语言已切换为 {selected_lang_name}\n' \
                                 f'新语言将在重启程序后完全生效').format(selected_lang_name=selected_lang_name)
 
                         flyout = Flyout.create(title=title,
