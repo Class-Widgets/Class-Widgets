@@ -2216,7 +2216,7 @@ class SettingsMenu(FluentWindow):
         
         # 时间获得方法配置
         conf_time_get = self.adInterface.findChild(ComboBox, 'conf_time_get')
-        conf_time_get.addItems(['系统时间', 'NTP时间'])
+        conf_time_get.addItems([self.tr('系统时间'), self.tr('NTP时间')])
         current_time_type = config_center.read_conf('Time', 'type')
         if current_time_type == 'ntp':
             conf_time_get.setCurrentIndex(1)
@@ -2232,28 +2232,28 @@ class SettingsMenu(FluentWindow):
         )
         ntp_refresh_button = self.adInterface.findChild(ToolButton, 'ntp_refresh_button')
         ntp_refresh_button.setIcon(fIcon.SYNC)
-        ntp_refresh_button.setToolTip('立即同步NTP时间')
+        ntp_refresh_button.setToolTip(self.tr('立即同步NTP时间'))
         ntp_refresh_button.installEventFilter(ToolTipFilter(ntp_refresh_button, showDelay=300, position=ToolTipPosition.TOP))
         ntp_refresh_button.clicked.connect(self.on_ntp_refresh_clicked)
         ntp_refresh_picker = self.adInterface.findChild(SpinBox, 'ntp_refresh_picker')
         auto_refresh_minutes = int(config_center.read_conf('Time', 'ntp_auto_refresh'))
         ntp_refresh_picker.setMinimum(1)
         ntp_refresh_picker.setMaximum(1440)  # 最大24小时
-        ntp_refresh_picker.setSuffix(' 分钟')
+        ntp_refresh_picker.setSuffix(self.tr(' 分钟'))
         ntp_refresh_picker.setValue(auto_refresh_minutes)
         ntp_refresh_picker.valueChanged.connect(self.on_ntp_auto_refresh_changed)
         ntp_sync_timezone = self.adInterface.findChild(ComboBox, 'ntp_sync_timezone')
         timezone_options = [
-            ('系统时区', 'local'),
-            ('(UTC+0)  伦敦时间', 'Europe/London'),
-            ('(UTC+1)  巴黎时间', 'Europe/Paris'),
-            ('(UTC+3)  莫斯科时间', 'Europe/Moscow'),
-            ('(UTC+8)  北京时间', 'Asia/Shanghai'),
-            ('(UTC+8)  新加坡时间', 'Asia/Singapore'),
-            ('(UTC+9)  东京时间', 'Asia/Tokyo'),
-            ('(UTC+10)  悉尼时间', 'Australia/Sydney'),
-            ('(UTC-8)  洛杉矶时间', 'America/Los_Angeles'),
-            ('(UTC-5)  纽约时间', 'America/New_York')
+            (self.tr('系统时区'), self.tr('local')),
+            (self.tr('(UTC+0)  伦敦时间'), 'Europe/London'),
+            (self.tr('(UTC+1)  巴黎时间'), 'Europe/Paris'),
+            (self.tr('(UTC+3)  莫斯科时间'), 'Europe/Moscow'),
+            (self.tr('(UTC+8)  北京时间'), 'Asia/Shanghai'),
+            (self.tr('(UTC+8)  新加坡时间'), 'Asia/Singapore'),
+            (self.tr('(UTC+9)  东京时间'), 'Asia/Tokyo'),
+            (self.tr('(UTC+10)  悉尼时间'), 'Australia/Sydney'),
+            (self.tr('(UTC-8)  洛杉矶时间'), 'America/Los_Angeles'),
+            (self.tr('(UTC-5)  纽约时间'), 'America/New_York')
         ]
         for display_name, timezone_value in timezone_options:
             ntp_sync_timezone.addItem(display_name)
@@ -2296,13 +2296,13 @@ class SettingsMenu(FluentWindow):
                 current_manager = utils.time_manager
                 self._remove_ntp_auto_sync_callback()
                 if is_ntp:
-                    self.show_info_toast('时间设置', '已切换到NTP时间,正在同步时间~')
+                    self.show_info_toast(self.tr('时间设置'), self.tr('已切换到NTP时间,正在同步时间~'))
                     self._start_async_ntp_sync(current_manager)
                     auto_sync_enabled = int(config_center.read_conf('Time', 'switch_enable_ntp_auto_sync', '1'))
                     if auto_sync_enabled:
                         self._add_ntp_auto_sync_callback()
                 else:
-                    self.show_success_toast('时间设置', '已切换到系统时间')
+                    self.show_success_toast(self.tr('时间设置'), self.tr('已切换到系统时间'))
             except Exception as e:
                 logger.error(f"管理NTP自动同步回调失败: {e}")
             
@@ -2310,23 +2310,23 @@ class SettingsMenu(FluentWindow):
             self.update_ntp_ui_visibility()
         except Exception as e:
             logger.error(f"时间管理器切换失败: {e}")
-            self.show_warning_toast('时间设置', '切换失败')
+            self.show_warning_toast(self.tr('时间设置'), self.tr('切换失败'))
     
     def on_ntp_refresh_clicked(self):
         """NTP刷新按钮"""
         try:
             current_manager = utils.time_manager
             if isinstance(current_manager, utils.LocalTimeManager):
-                self.show_warning_toast('NTP同步', '当前无需NTP同步')
+                self.show_warning_toast(self.tr('NTP同步'), self.tr('当前无需NTP同步'))
                 return
             if not isinstance(current_manager, utils.NTPTimeManager):
-                self.show_warning_toast('NTP同步', '当前时间管理器不支持NTP同步')
+                self.show_warning_toast(self.tr('NTP同步'), self.tr('当前时间管理器不支持NTP同步'))
                 return
-            self.show_info_toast('NTP同步', '正在同步NTP时间~')
+            self.show_info_toast(self.tr('NTP同步'), self.tr('正在同步NTP时间~'))
             self._start_async_ntp_sync(current_manager)
         except Exception as e:
             logger.error(f"NTP同步失败: {e}")
-            self.show_warning_toast('NTP同步', 'NTP时间同步失败')
+            self.show_warning_toast(self.tr('NTP同步'),self.tr( 'NTP时间同步失败'))
     
     def on_ntp_auto_refresh_changed(self, value):
         """修改ntp自动刷新时间"""
@@ -2345,13 +2345,13 @@ class SettingsMenu(FluentWindow):
             if config_center.read_conf('Time', 'type') == 'ntp':
                 if checked:
                     self._add_ntp_auto_sync_callback()
-                    self.show_success_toast('NTP设置', '已开启NTP自动同步ヾ(≧▽≦*)o')
+                    self.show_success_toast(self.tr('NTP设置'), self.tr('已开启NTP自动同步ヾ(≧▽≦*)o'))
                 else:
                     self._remove_ntp_auto_sync_callback()
-                    self.show_info_toast('NTP设置', '已关闭NTP自动同步(≧﹏ ≦)')
+                    self.show_info_toast(self.tr('NTP设置'), self.tr('已关闭NTP自动同步(≧﹏ ≦)'))
         except Exception as e:
             logger.error(f"NTP自动同步开关设置失败: {e}")
-            self.show_warning_toast('NTP设置', '设置失败 (╥﹏╥)')
+            self.show_warning_toast(self.tr('NTP设置'), self.tr('设置失败 (╥﹏╥)'))
     
     def on_ntp_timezone_changed(self):
         """NTP时区设置改变时的处理"""
@@ -2361,17 +2361,17 @@ class SettingsMenu(FluentWindow):
             config_center.write_conf('Time', 'timezone', selected_timezone)
             if config_center.read_conf('Time', 'type') == 'ntp':
                 try:
-                    self.show_info_toast('时区设置', f'时区已更新为 {ntp_sync_timezone.currentText()}，正在重新同步时间~')
+                    self.show_info_toast(self.tr('时区设置'), self.tr('时区已更新为 {ntp_sync_timezone}，正在重新同步时间~').format(ntp_sync_timezone=ntp_sync_timezone.currentText()))
                     TimeManagerFactory.reset_instance()
                     QTimer.singleShot(100, self.update_ntp_status_display)
                     self._start_async_ntp_sync(utils.time_manager)
                 except Exception as e:
                     logger.error(f"应用新时区失败: {e}")
             else:
-                self.show_success_toast('时区设置', f'时区已设置为 {ntp_sync_timezone.currentText()}')
+                self.show_success_toast(self.tr('时区设置'), self.tr('时区已设置为 {ntp_sync_timezone.currentText()}').format(ntp_sync_timezone=ntp_sync_timezone.currentText()))
         except Exception as e:
             logger.error(f"时区设置失败: {e}")
-            self.show_error_toast('时区设置', '时区设置失败')
+            self.show_error_toast(self.tr('时区设置'), self.tr('时区设置失败'))
     
     def _add_ntp_auto_sync_callback(self):
         """添加NTP自动同步回调"""
@@ -2428,7 +2428,7 @@ class SettingsMenu(FluentWindow):
             self._show_ntp_flyout(
                 ntp_server_url_widget, 
                 'warning', 
-                "NTP服务器URL不能为空 o(〃＾▽＾〃)o\n请输入有效的NTP服务器地址",
+                self.tr("NTP服务器URL不能为空 o(〃＾▽＾〃)o\n请输入有效的NTP服务器地址"),
                 ""
             )
             return
@@ -2459,7 +2459,7 @@ class SettingsMenu(FluentWindow):
             self._show_ntp_flyout(
                 ntp_server_url_widget, 
                 'success', 
-                f"NTP服务器已更新: {url}"
+                self.tr("NTP服务器已更新: {url}").format(url=url)
             )
             # logger.debug(f"NTP服务器URL已更新: {url}")
         else:
@@ -2467,7 +2467,7 @@ class SettingsMenu(FluentWindow):
             self._show_ntp_flyout(
                 ntp_server_url_widget, 
                 'warning', 
-                f"URL格式可能不正确: {url}\n请检查是否为有效的域名或IP地址（︶^︶）",
+                self.tr("URL格式可能不正确: {url}\n请检查是否为有效的域名或IP地址（︶^︶）").format(url=url),
                 url
             )
             logger.warning(f"NTP服务器URL格式可能不正确: {url}")
@@ -2491,13 +2491,13 @@ class SettingsMenu(FluentWindow):
                 icon_label = ImageLabel()
                 if flyout_type == 'success':
                     icon_label.setPixmap(InfoBarIcon.SUCCESS.icon().pixmap(24, 24))
-                    title = '设置成功 ✨'
+                    title = self.tr('设置成功 ✨')
                 elif flyout_type == 'warning':
                     icon_label.setPixmap(InfoBarIcon.WARNING.icon().pixmap(24, 24))
-                    title = '格式警告'
+                    title = self.tr('格式警告')
                 else:
                     icon_label.setPixmap(InfoBarIcon.INFORMATION.icon().pixmap(24, 24))
-                    title = 'NTP设置'
+                    title = self.tr('NTP设置')
                 title_layout = QHBoxLayout()
                 title_layout.addWidget(icon_label)
                 title_label = StrongBodyLabel(title)
@@ -2519,9 +2519,9 @@ class SettingsMenu(FluentWindow):
                 suggestions = self._get_url_suggestions(invalid_url)
                 if suggestions:
                     if invalid_url == "":
-                        suggestion_label = CaptionLabel("推荐的NTP服务器:")
+                        suggestion_label = CaptionLabel(self.tr("推荐的NTP服务器:"))
                     else:
-                        suggestion_label = CaptionLabel("建议的修正:")
+                        suggestion_label = CaptionLabel(self.tr("建议的修正:"))
                     self.vBoxLayout.addWidget(suggestion_label)
                     button_layout = QHBoxLayout()
                     for suggestion in suggestions[:3]:
@@ -2541,7 +2541,7 @@ class SettingsMenu(FluentWindow):
                 separator.setFrameShadow(QFrame.Sunken)
                 separator.setStyleSheet("QFrame { color: rgba(255, 255, 255, 0.1); }")
                 self.vBoxLayout.addWidget(separator)
-                confirm_label = CaptionLabel("执意保存当前输入的内容?")
+                confirm_label = CaptionLabel(self.tr("执意保存当前输入的内容?"))
                 confirm_label.setObjectName("confirmLabel")
                 if isDarkTheme():
                     confirm_label.setStyleSheet("""
@@ -2558,7 +2558,7 @@ class SettingsMenu(FluentWindow):
                 self.vBoxLayout.addWidget(confirm_label)
                 button_layout = QHBoxLayout()
                 button_layout.setSpacing(8)
-                save_btn = PrimaryPushButton("执意保存")
+                save_btn = PrimaryPushButton(self.tr("执意保存"))
                 save_btn.setFixedHeight(32)
                 save_btn.setFixedWidth(150)
                 save_btn.clicked.connect(self._save_and_close)
@@ -2639,7 +2639,7 @@ class SettingsMenu(FluentWindow):
                             self.parent_menu._show_ntp_flyout(
                                 ntp_url_widget, 
                                 'success', 
-                                f"NTP服务器已更新: {suggestion}"
+                                self.tr("NTP服务器已更新: {suggestion}").format(suggestion=suggestion),
                             )
                             if hasattr(self.parent_menu, 'update_ntp_status_display'):
                                 self.parent_menu.update_ntp_status_display()
@@ -2659,7 +2659,7 @@ class SettingsMenu(FluentWindow):
                             self.parent_menu._show_ntp_flyout(
                                 ntp_url_widget if ntp_url_widget else None,
                                 'success',
-                                '设置已保存ヾ(≧▽≦*)o'
+                                self.tr('设置已保存ヾ(≧▽≦*)o')
                             )
                 except Exception as e:
                     logger.error(f"保存操作失败: {e}")
@@ -2706,9 +2706,9 @@ class SettingsMenu(FluentWindow):
         except Exception as e:
             logger.error(f"显示NTP Flyout失败: {e}")
             if flyout_type == 'success':
-                self.show_success_toast('NTP设置', message)
+                self.show_success_toast(self.tr('NTP设置'), message)
             elif flyout_type == 'warning':
-                self.show_warning_toast('NTP设置', message)
+                self.show_warning_toast(self.tr('NTP设置'), message)
             return None
 
     
@@ -2718,16 +2718,16 @@ class SettingsMenu(FluentWindow):
             current_manager = utils.time_manager
             caption_label = self.adInterface.findChild(CaptionLabel, 'CaptionLabel_20')
             if isinstance(current_manager, utils.LocalTimeManager):
-                caption_label.setText('当前使用: 系统本地时间')
+                caption_label.setText(self.tr('当前使用: 系统本地时间'))
             elif isinstance(current_manager, utils.NTPTimeManager):
                 last_sync = current_manager.get_last_ntp_sync()
                 if last_sync:
-                    sync_time_str = last_sync.strftime('%Y年%m月%d日 - %H:%M:%S')
-                    caption_label.setText(f'上次NTP校准: {sync_time_str}')
+                    sync_time_str = last_sync.strftime(self.tr('%Y年%m月%d日 - %H:%M:%S'))
+                    caption_label.setText(self.tr('上次NTP校准: {sync_time_str}').format(sync_time_str=sync_time_str))
                 else:
-                    caption_label.setText('NTP时间: 尚未进行校准')
+                    caption_label.setText(self.tr('NTP时间: 尚未进行校准'))
             else:
-                caption_label.setText('时间状态: 未知')
+                caption_label.setText(self.tr('时间状态: 未知'))
                 
         except Exception as e:
             logger.error(f"更新NTP状态显示失败: {e}")
@@ -2749,7 +2749,7 @@ class SettingsMenu(FluentWindow):
             if hasattr(self, 'ntp_thread') and self.ntp_thread:
                 try:
                     if self.ntp_thread.isRunning():
-                        self.show_warning_toast('NTP同步', '同步正在进行中,请稍候~')
+                        self.show_warning_toast(self.tr('NTP同步'), self.tr('同步正在进行中,请稍候~'))
                         return
                 except RuntimeError:
                     self.ntp_thread = None
@@ -2767,21 +2767,21 @@ class SettingsMenu(FluentWindow):
             self.ntp_thread.start()
         except Exception as e:
             logger.error(f"启动NTP同步时失败: {e}")
-            self.show_warning_toast('NTP同步', '启动同步失败')
+            self.show_warning_toast(self.tr('NTP同步'), self.tr('启动同步失败'))
             self._cleanup_ntp_thread()
     
     def _on_ntp_sync_finished(self, success):
         """NTP同步完成"""
         try:
             if success:
-                self.show_success_toast('NTP同步', 'NTP时间同步成功!')
+                self.show_success_toast(self.tr('NTP同步'), self.tr('NTP时间同步成功!'))
                 # 异步更新UI状态，避免阻塞
                 QTimer.singleShot(50, self.update_ntp_status_display)
                 # 延迟更新父组件数据
                 if hasattr(self, 'parent') and self.parent and hasattr(self.parent, 'update_data'):
                     QTimer.singleShot(100, self.parent.update_data)
             else:
-                self.show_warning_toast('NTP同步', 'NTP时间同步失败,请检查网络连接和url地址!')
+                self.show_warning_toast(self.tr('NTP同步'), self.tr('NTP时间同步失败,请检查网络连接和url地址!'))
         except Exception as e:
             logger.error(f"NTP同步完成回调失败: {e}")
         finally:
@@ -2870,7 +2870,7 @@ class SettingsMenu(FluentWindow):
         
         # 时间获得方法配置
         conf_time_get = self.adInterface.findChild(ComboBox, 'conf_time_get')
-        conf_time_get.addItems(['系统时间', 'NTP时间'])
+        conf_time_get.addItems([self.tr('系统时间'), self.tr('NTP时间')])
         current_time_type = config_center.read_conf('Time', 'type')
         if current_time_type == 'ntp':
             conf_time_get.setCurrentIndex(1)
@@ -2886,14 +2886,14 @@ class SettingsMenu(FluentWindow):
         )
         ntp_refresh_button = self.adInterface.findChild(ToolButton, 'ntp_refresh_button')
         ntp_refresh_button.setIcon(fIcon.SYNC)
-        ntp_refresh_button.setToolTip('立即同步NTP时间')
+        ntp_refresh_button.setToolTip(self.tr('立即同步NTP时间'))
         ntp_refresh_button.installEventFilter(ToolTipFilter(ntp_refresh_button, showDelay=300, position=ToolTipPosition.TOP))
         ntp_refresh_button.clicked.connect(self.on_ntp_refresh_clicked)
         ntp_refresh_picker = self.adInterface.findChild(SpinBox, 'ntp_refresh_picker')
         auto_refresh_minutes = int(config_center.read_conf('Time', 'ntp_auto_refresh'))
         ntp_refresh_picker.setMinimum(1)
         ntp_refresh_picker.setMaximum(1440)  # 最大24小时
-        ntp_refresh_picker.setSuffix(' 分钟')
+        ntp_refresh_picker.setSuffix(self.tr(' 分钟'))
         ntp_refresh_picker.setValue(auto_refresh_minutes)
         ntp_refresh_picker.valueChanged.connect(self.on_ntp_auto_refresh_changed)
         ntp_sync_timezone = self.adInterface.findChild(ComboBox, 'ntp_sync_timezone')
@@ -2950,13 +2950,13 @@ class SettingsMenu(FluentWindow):
                 current_manager = utils.time_manager
                 self._remove_ntp_auto_sync_callback()
                 if is_ntp:
-                    self.show_info_toast('时间设置', '已切换到NTP时间,正在同步时间~')
+                    self.show_info_toast(self.tr('时间设置'), self.tr('已切换到NTP时间,正在同步时间~'))
                     self._start_async_ntp_sync(current_manager)
                     auto_sync_enabled = int(config_center.read_conf('Time', 'switch_enable_ntp_auto_sync', '1'))
                     if auto_sync_enabled:
                         self._add_ntp_auto_sync_callback()
                 else:
-                    self.show_success_toast('时间设置', '已切换到系统时间')
+                    self.show_success_toast(self.tr('时间设置'), self.tr('已切换到系统时间'))
             except Exception as e:
                 logger.error(f"管理NTP自动同步回调失败: {e}")
             
@@ -2964,23 +2964,23 @@ class SettingsMenu(FluentWindow):
             self.update_ntp_ui_visibility()
         except Exception as e:
             logger.error(f"时间管理器切换失败: {e}")
-            self.show_warning_toast('时间设置', '切换失败')
+            self.show_warning_toast(self.tr('时间设置'), self.tr('切换失败'))
     
     def on_ntp_refresh_clicked(self):
         """NTP刷新按钮"""
         try:
             current_manager = utils.time_manager
             if isinstance(current_manager, utils.LocalTimeManager):
-                self.show_warning_toast('NTP同步', '当前无需NTP同步')
+                self.show_warning_toast(self.tr('NTP同步'), self.tr('当前无需NTP同步'))
                 return
             if not isinstance(current_manager, utils.NTPTimeManager):
-                self.show_warning_toast('NTP同步', '当前时间管理器不支持NTP同步')
+                self.show_warning_toast(self.tr('NTP同步'), self.tr('当前时间管理器不支持NTP同步'))
                 return
-            self.show_info_toast('NTP同步', '正在同步NTP时间~')
+            self.show_info_toast(self.tr('NTP同步'), self.tr('正在同步NTP时间~'))
             self._start_async_ntp_sync(current_manager)
         except Exception as e:
             logger.error(f"NTP同步失败: {e}")
-            self.show_warning_toast('NTP同步', 'NTP时间同步失败')
+            self.show_warning_toast(self.tr('NTP同步'), self.tr('NTP时间同步失败'))
     
     def on_ntp_auto_refresh_changed(self, value):
         """修改ntp自动刷新时间"""
@@ -2999,13 +2999,13 @@ class SettingsMenu(FluentWindow):
             if config_center.read_conf('Time', 'type') == 'ntp':
                 if checked:
                     self._add_ntp_auto_sync_callback()
-                    self.show_success_toast('NTP设置', '已开启NTP自动同步ヾ(≧▽≦*)o')
+                    self.show_success_toast(self.tr('NTP设置'), self.tr('已开启NTP自动同步ヾ(≧▽≦*)o'))
                 else:
                     self._remove_ntp_auto_sync_callback()
-                    self.show_info_toast('NTP设置', '已关闭NTP自动同步(≧﹏ ≦)')
+                    self.show_info_toast(self.tr('NTP设置'), self.tr('已关闭NTP自动同步(≧﹏ ≦)'))
         except Exception as e:
             logger.error(f"NTP自动同步开关设置失败: {e}")
-            self.show_warning_toast('NTP设置', '设置失败 (╥﹏╥)')
+            self.show_warning_toast(self.tr('NTP设置'), self.tr('设置失败 (╥﹏╥)'))
     
     def on_ntp_timezone_changed(self):
         """NTP时区设置改变时的处理"""
@@ -3015,17 +3015,17 @@ class SettingsMenu(FluentWindow):
             config_center.write_conf('Time', 'timezone', selected_timezone)
             if config_center.read_conf('Time', 'type') == 'ntp':
                 try:
-                    self.show_info_toast('时区设置', f'时区已更新为 {ntp_sync_timezone.currentText()}，正在重新同步时间~')
+                    self.show_info_toast(self.tr('时区设置'), self.tr('时区已更新为 {ntp_sync_timezone}，正在重新同步时间~').format(ntp_sync_timezone=ntp_sync_timezone.currentText()))
                     TimeManagerFactory.reset_instance()
                     QTimer.singleShot(100, self.update_ntp_status_display)
                     self._start_async_ntp_sync(utils.time_manager)
                 except Exception as e:
                     logger.error(f"应用新时区失败: {e}")
             else:
-                self.show_success_toast('时区设置', f'时区已设置为 {ntp_sync_timezone.currentText()}')
+                self.show_success_toast(self.tr('时区设置'), self.tr('时区已更新为 {ntp_sync_timezone}').format(ntp_sync_timezone=ntp_sync_timezone.currentText()))
         except Exception as e:
             logger.error(f"时区设置失败: {e}")
-            self.show_error_toast('时区设置', '时区设置失败')
+            self.show_error_toast(self.tr('时区设置'), self.tr('时区设置失败'))
     
     def _add_ntp_auto_sync_callback(self):
         """添加NTP自动同步回调"""
@@ -3082,7 +3082,7 @@ class SettingsMenu(FluentWindow):
             self._show_ntp_flyout(
                 ntp_server_url_widget, 
                 'warning', 
-                "NTP服务器URL不能为空 o(〃＾▽＾〃)o\n请输入有效的NTP服务器地址",
+                self.tr("NTP服务器URL不能为空 o(〃＾▽＾〃)o\n请输入有效的NTP服务器地址"),
                 ""
             )
             return
@@ -3113,7 +3113,7 @@ class SettingsMenu(FluentWindow):
             self._show_ntp_flyout(
                 ntp_server_url_widget, 
                 'success', 
-                f"NTP服务器已更新: {url}"
+                self.tr("NTP服务器已更新: {url}").format(url=url)
             )
             # logger.debug(f"NTP服务器URL已更新: {url}")
         else:
@@ -3121,7 +3121,7 @@ class SettingsMenu(FluentWindow):
             self._show_ntp_flyout(
                 ntp_server_url_widget, 
                 'warning', 
-                f"URL格式可能不正确: {url}\n请检查是否为有效的域名或IP地址（︶^︶）",
+                self.tr("URL格式可能不正确: {url}\n请检查是否为有效的域名或IP地址（︶^︶）").format(url=url),
                 url
             )
             logger.warning(f"NTP服务器URL格式可能不正确: {url}")
@@ -3145,13 +3145,13 @@ class SettingsMenu(FluentWindow):
                 icon_label = ImageLabel()
                 if flyout_type == 'success':
                     icon_label.setPixmap(InfoBarIcon.SUCCESS.icon().pixmap(24, 24))
-                    title = '设置成功 ✨'
+                    title = self.tr('设置成功 ✨')
                 elif flyout_type == 'warning':
                     icon_label.setPixmap(InfoBarIcon.WARNING.icon().pixmap(24, 24))
-                    title = '格式警告'
+                    title = self.tr('格式警告')
                 else:
                     icon_label.setPixmap(InfoBarIcon.INFORMATION.icon().pixmap(24, 24))
-                    title = 'NTP设置'
+                    title = self.tr('NTP设置')
                 title_layout = QHBoxLayout()
                 title_layout.addWidget(icon_label)
                 title_label = StrongBodyLabel(title)
@@ -3173,9 +3173,9 @@ class SettingsMenu(FluentWindow):
                 suggestions = self._get_url_suggestions(invalid_url)
                 if suggestions:
                     if invalid_url == "":
-                        suggestion_label = CaptionLabel("推荐的NTP服务器:")
+                        suggestion_label = CaptionLabel(self.tr("推荐的NTP服务器:"))
                     else:
-                        suggestion_label = CaptionLabel("建议的修正:")
+                        suggestion_label = CaptionLabel(self.tr("建议的修正:"))
                     self.vBoxLayout.addWidget(suggestion_label)
                     button_layout = QHBoxLayout()
                     for suggestion in suggestions[:3]:
@@ -3195,7 +3195,7 @@ class SettingsMenu(FluentWindow):
                 separator.setFrameShadow(QFrame.Sunken)
                 separator.setStyleSheet("QFrame { color: rgba(255, 255, 255, 0.1); }")
                 self.vBoxLayout.addWidget(separator)
-                confirm_label = CaptionLabel("执意保存当前输入的内容?")
+                confirm_label = CaptionLabel(self.tr("执意保存当前输入的内容?"))
                 confirm_label.setObjectName("confirmLabel")
                 if isDarkTheme():
                     confirm_label.setStyleSheet("""
@@ -3212,7 +3212,7 @@ class SettingsMenu(FluentWindow):
                 self.vBoxLayout.addWidget(confirm_label)
                 button_layout = QHBoxLayout()
                 button_layout.setSpacing(8)
-                save_btn = PrimaryPushButton("执意保存")
+                save_btn = PrimaryPushButton(self.tr("执意保存"))
                 save_btn.setFixedHeight(32)
                 save_btn.setFixedWidth(150)
                 save_btn.clicked.connect(self._save_and_close)
@@ -3293,7 +3293,7 @@ class SettingsMenu(FluentWindow):
                             self.parent_menu._show_ntp_flyout(
                                 ntp_url_widget, 
                                 'success', 
-                                f"NTP服务器已更新: {suggestion}"
+                                self.tr("NTP服务器已更新: {suggestion}").format(suggestion=suggestion)
                             )
                             if hasattr(self.parent_menu, 'update_ntp_status_display'):
                                 self.parent_menu.update_ntp_status_display()
@@ -3313,7 +3313,7 @@ class SettingsMenu(FluentWindow):
                             self.parent_menu._show_ntp_flyout(
                                 ntp_url_widget if ntp_url_widget else None,
                                 'success',
-                                '设置已保存ヾ(≧▽≦*)o'
+                                self.tr('设置已保存ヾ(≧▽≦*)o')
                             )
                 except Exception as e:
                     logger.error(f"保存操作失败: {e}")
@@ -3360,9 +3360,9 @@ class SettingsMenu(FluentWindow):
         except Exception as e:
             logger.error(f"显示NTP Flyout失败: {e}")
             if flyout_type == 'success':
-                self.show_success_toast('NTP设置', message)
+                self.show_success_toast(self.tr('NTP设置'), message)
             elif flyout_type == 'warning':
-                self.show_warning_toast('NTP设置', message)
+                self.show_warning_toast(self.tr('NTP设置'), message)
             return None
 
     
@@ -3372,16 +3372,16 @@ class SettingsMenu(FluentWindow):
             current_manager = utils.time_manager
             caption_label = self.adInterface.findChild(CaptionLabel, 'CaptionLabel_20')
             if isinstance(current_manager, utils.LocalTimeManager):
-                caption_label.setText('当前使用: 系统本地时间')
+                caption_label.setText(self.tr('当前使用: 系统本地时间'))
             elif isinstance(current_manager, utils.NTPTimeManager):
                 last_sync = current_manager.get_last_ntp_sync()
                 if last_sync:
-                    sync_time_str = last_sync.strftime('%Y年%m月%d日 - %H:%M:%S')
-                    caption_label.setText(f'上次NTP校准: {sync_time_str}')
+                    sync_time_str = last_sync.strftime(self.tr('%Y年%m月%d日 - %H:%M:%S'))
+                    caption_label.setText(self.tr('上次NTP校准: {sync_time_str}'))
                 else:
-                    caption_label.setText('NTP时间: 尚未进行校准')
+                    caption_label.setText(self.tr('NTP时间: 尚未进行校准'))
             else:
-                caption_label.setText('时间状态: 未知')
+                caption_label.setText(self.tr('时间状态: 未知'))
                 
         except Exception as e:
             logger.error(f"更新NTP状态显示失败: {e}")
@@ -3403,7 +3403,7 @@ class SettingsMenu(FluentWindow):
             if hasattr(self, 'ntp_thread') and self.ntp_thread:
                 try:
                     if self.ntp_thread.isRunning():
-                        self.show_warning_toast('NTP同步', '同步正在进行中,请稍候~')
+                        self.show_warning_toast(self.tr('NTP同步'), self.tr('同步正在进行中,请稍候~'))
                         return
                 except RuntimeError:
                     self.ntp_thread = None
@@ -3421,21 +3421,21 @@ class SettingsMenu(FluentWindow):
             self.ntp_thread.start()
         except Exception as e:
             logger.error(f"启动NTP同步时失败: {e}")
-            self.show_warning_toast('NTP同步', '启动同步失败')
+            self.show_warning_toast(self.tr('NTP同步'), self.tr('启动同步失败'))
             self._cleanup_ntp_thread()
     
     def _on_ntp_sync_finished(self, success):
         """NTP同步完成"""
         try:
             if success:
-                self.show_success_toast('NTP同步', 'NTP时间同步成功!')
+                self.show_success_toast(self.tr('NTP同步'), self.tr('NTP时间同步成功!'))
                 # 异步更新UI状态，避免阻塞
                 QTimer.singleShot(50, self.update_ntp_status_display)
                 # 延迟更新父组件数据
                 if hasattr(self, 'parent') and self.parent and hasattr(self.parent, 'update_data'):
                     QTimer.singleShot(100, self.parent.update_data)
             else:
-                self.show_warning_toast('NTP同步', 'NTP时间同步失败,请检查网络连接和url地址!')
+                self.show_warning_toast(self.tr('NTP同步'), self.tr('NTP时间同步失败,请检查网络连接和url地址!'))
         except Exception as e:
             logger.error(f"NTP同步完成回调失败: {e}")
         finally:
