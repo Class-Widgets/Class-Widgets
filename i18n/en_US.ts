@@ -1999,7 +1999,7 @@ Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, 
     <message>
         <location filename="../menu.py" line="2371"/>
         <source>时区已设置为 {ntp_sync_timezone}</source>
-        <translation type="unfinished"></translation>
+        <translation>Time zone set to {ntp_sync_timezone}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2374"/>
