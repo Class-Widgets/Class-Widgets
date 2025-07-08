@@ -3457,7 +3457,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../list_.py" line="21"/>
         <source>休息段</source>
-        <translation></translation>
+        <translation>休息段</translation>
     </message>
     <message>
         <location filename="../list_.py" line="21"/>
@@ -3536,7 +3536,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <location filename="../list_.py" line="63"/>
         <location filename="../list_.py" line="168"/>
         <source>英语</source>
-        <translation></translation>
+        <translation>英语</translation>
     </message>
     <message>
         <location filename="../list_.py" line="34"/>
@@ -3607,7 +3607,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <location filename="../list_.py" line="81"/>
         <location filename="../list_.py" line="178"/>
         <source>信息技术</source>
-        <translation></translation>
+        <translation>信息技术</translation>
     </message>
     <message>
         <location filename="../list_.py" line="44"/>
@@ -3958,13 +3958,13 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <location filename="../menu.py" line="631"/>
         <source>menu</source>
         <comment>您确定要删除插件“{title}”吗？</comment>
-        <translation></translation>
+        <translation>menu</translation>
     </message>
     <message>
         <location filename="../menu.py" line="631"/>
         <source>menu</source>
         <comment>删除此插件后，将无法恢复。</comment>
-        <translation></translation>
+        <translation>menu</translation>
     </message>
     <message>
         <location filename="../menu.py" line="656"/>
