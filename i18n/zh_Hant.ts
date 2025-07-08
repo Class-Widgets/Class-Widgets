@@ -3882,7 +3882,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../menu.py" line="374"/>
         <source>未添加</source>
-        <translation></translation>
+        <translation>未添加</translation>
     </message>
     <message>
         <location filename="../menu.py" line="425"/>
