@@ -7,15 +7,13 @@
         <location filename="../menu.py" line="1585"/>
         <source>系统 TTS（pyttsx3）用的是系统自带的语音服务噢~
 您可以在系统设置里添加更多语音(*≧▽≦)</source>
-        <translation>CustomMessageBox
-系統 TTS（pyttsx3）使用的是系統內建的語音服務喔～
+        <translation>系統 TTS（pyttsx3）使用的是系統內建的語音服務喔～
 你可以在系統設定中新增更多語音 (*≧▽≦)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1587"/>
         <source>打开Windows语音设置</source>
-        <translation>CustomMessageBox
-打開Windows語音設定</translation>
+        <translation>打開Windows語音設定</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1592"/>
@@ -26,8 +24,7 @@
     <message>
         <location filename="../menu.py" line="1600"/>
         <source>这个语音引擎还没有提示信息呢~(・ω&lt;)</source>
-        <translation>CustomMessageBox
-本語音引擎尚未提供提示訊息</translation>
+        <translation>本語音引擎尚未提供提示訊息</translation>
     </message>
 </context>
 <context>
