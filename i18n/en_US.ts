@@ -324,27 +324,27 @@ The start date of the school term needs to be set as the first day of the first 
     <message>
         <location filename="../view/menu/advance.ui" line="238"/>
         <source>时间</source>
-        <translation type="unfinished"></translation>
+        <translation>Time</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="349"/>
         <source>时间获得方法</source>
-        <translation type="unfinished"></translation>
+        <translation>Timing method</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="356"/>
         <source>选择时间获得方法</source>
-        <translation type="unfinished"></translation>
+        <translation>Timing method</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="457"/>
         <source>NTP服务器</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP SERVER</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="464"/>
         <source>使用url链接NTP服务器同步时间</source>
-        <translation type="unfinished"></translation>
+        <translation>Timing of the NTP server using url link</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="544"/>
@@ -1488,12 +1488,12 @@ But make sure that the plugins you need in the plugin square are secure.</transl
     <message>
         <location filename="../view/menu/schedule_db_edit.ui" line="76"/>
         <source>数据库简称</source>
-        <translation type="unfinished"></translation>
+        <translation>Abbreviations</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_db_edit.ui" line="102"/>
         <source>数据库地址</source>
-        <translation type="unfinished"></translation>
+        <translation>Database address</translation>
     </message>
 </context>
 <context>
@@ -1508,7 +1508,7 @@ But make sure that the plugins you need in the plugin square are secure.</transl
         <location filename="../menu.py" line="2498"/>
         <location filename="../menu.py" line="3152"/>
         <source>格式警告</source>
-        <translation type="unfinished"></translation>
+        <translation>Formal warning</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2501"/>
@@ -1530,19 +1530,19 @@ But make sure that the plugins you need in the plugin square are secure.</transl
         <location filename="../menu.py" line="2524"/>
         <location filename="../menu.py" line="3178"/>
         <source>建议的修正:</source>
-        <translation type="unfinished"></translation>
+        <translation>Proposed amendments:</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2544"/>
         <location filename="../menu.py" line="3198"/>
         <source>执意保存当前输入的内容?</source>
-        <translation type="unfinished"></translation>
+        <translation>Is it committed to preserving the content of the current input?</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2561"/>
         <location filename="../menu.py" line="3215"/>
         <source>执意保存</source>
-        <translation type="unfinished"></translation>
+        <translation>Reservations</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2642"/>
@@ -1828,12 +1828,12 @@ Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, 
     <message>
         <location filename="../menu.py" line="2247"/>
         <source>系统时区</source>
-        <translation type="unfinished"></translation>
+        <translation>Time zones</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2247"/>
         <source>local</source>
-        <translation type="unfinished"></translation>
+        <translation>local</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2248"/>
@@ -2005,86 +2005,88 @@ Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, 
         <location filename="../menu.py" line="2374"/>
         <location filename="../menu.py" line="3028"/>
         <source>时区设置失败</source>
-        <translation type="unfinished"></translation>
+        <translation>Time zone failure</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2431"/>
         <location filename="../menu.py" line="3085"/>
         <source>NTP服务器URL不能为空 o(〃＾▽＾〃)o
 请输入有效的NTP服务器地址</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP server URL cannot be empty o (〃 〃 〃 〃)o
+Entry into effective NTP server address</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2462"/>
         <location filename="../menu.py" line="3116"/>
         <source>NTP服务器已更新: {url}</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP server has been upgraded:</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2470"/>
         <location filename="../menu.py" line="3124"/>
         <source>URL格式可能不正确: {url}
 请检查是否为有效的域名或IP地址（︶^︶）</source>
-        <translation type="unfinished"></translation>
+        <translation>URL format may not be correct:
+Inspection of effective domain name or IP address (^)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2721"/>
         <location filename="../menu.py" line="3375"/>
         <source>当前使用: 系统本地时间</source>
-        <translation type="unfinished"></translation>
+        <translation>Current use: local time of the system</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2725"/>
         <location filename="../menu.py" line="3379"/>
         <source>%Y年%m月%d日 - %H:%M:%S</source>
-        <translation type="unfinished"></translation>
+        <translation>per cent Y perm per day - per cent H: per M: per S</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2726"/>
         <location filename="../menu.py" line="3380"/>
         <source>上次NTP校准: {sync_time_str}</source>
-        <translation type="unfinished"></translation>
+        <translation>Former NTP准: {sync_time_str}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2728"/>
         <location filename="../menu.py" line="3382"/>
         <source>NTP时间: 尚未进行校准</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP TIMING: NOT COMPLETED</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2730"/>
         <location filename="../menu.py" line="3384"/>
         <source>时间状态: 未知</source>
-        <translation type="unfinished"></translation>
+        <translation>Time state: unknown</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2752"/>
         <location filename="../menu.py" line="3406"/>
         <source>同步正在进行中,请稍候~</source>
-        <translation type="unfinished"></translation>
+        <translation>Synchronization is under way and greeting ~</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2770"/>
         <location filename="../menu.py" line="3424"/>
         <source>启动同步失败</source>
-        <translation type="unfinished"></translation>
+        <translation>Initiation of simultaneous failures</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2777"/>
         <location filename="../menu.py" line="3431"/>
         <source>NTP时间同步成功!</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP COINCIDES WITH SUCCESS!</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2784"/>
         <location filename="../menu.py" line="3438"/>
         <source>NTP时间同步失败,请检查网络连接和url地址!</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP failed in tandem and asked to check network connections and url addresses!</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3025"/>
         <source>时区已更新为 {ntp_sync_timezone}</source>
-        <translation type="unfinished"></translation>
+        <translation>time zone has been updated to include:</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3529"/>
@@ -2231,13 +2233,14 @@ Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, 
     <message>
         <location filename="../menu.py" line="3872"/>
         <source>检查更新失败！</source>
-        <translation type="unfinished"></translation>
+        <translation>The inspection failed</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3873"/>
         <source>检查更新失败！
 {data}</source>
-        <translation type="unfinished"></translation>
+        <translation>the inspection failed!
+{data}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3925"/>
@@ -2362,7 +2365,8 @@ The new language will take full effect after restarting the program</translation
         <location filename="../menu.py" line="5183"/>
         <source>组件语言已切换为 {selected_lang_name}
 新语言将在重启程序后完全生效</source>
-        <translation type="unfinished"></translation>
+        <translation>formal language has been changed to the following:
+the new language will become fully effective after the resumption of the proceedings</translation>
     </message>
     <message>
         <location filename="../menu.py" line="5213"/>
