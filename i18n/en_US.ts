@@ -1998,7 +1998,7 @@ Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, 
     </message>
     <message>
         <location filename="../menu.py" line="2371"/>
-        <source>时区已设置为 {ntp_sync_timezone.currentText()}</source>
+        <source>时区已设置为 {ntp_sync_timezone}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

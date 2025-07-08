@@ -2000,7 +2000,7 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
     </message>
     <message>
         <location filename="../menu.py" line="2371"/>
-        <source>时区已设置为 {ntp_sync_timezone.currentText()}</source>
+        <source>时区已设置为 {ntp_sync_timezone}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
