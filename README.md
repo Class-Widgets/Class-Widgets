@@ -110,7 +110,7 @@ Copyright © 2025 RinLit.
 
 感谢以下赞助商对本项目的支持。
 
-由 [![Weblate]](https://hosted.weblate.org/engage/class-widgets-1/) 提供免费的翻译平台
+由 [Weblate](https://hosted.weblate.org/engage/class-widgets-1/) 提供免费的翻译平台
 
 [![翻译状态](https://hosted.weblate.org/widget/class-widgets-1/view/open-graph.png)](https://hosted.weblate.org/engage/class-widgets-1/)
 
