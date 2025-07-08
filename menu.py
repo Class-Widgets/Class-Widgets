@@ -2368,7 +2368,7 @@ class SettingsMenu(FluentWindow):
                 except Exception as e:
                     logger.error(f"应用新时区失败: {e}")
             else:
-                self.show_success_toast(self.tr('时区设置'), self.tr('时区已设置为 {ntp_sync_timezone.currentText()}').format(ntp_sync_timezone=ntp_sync_timezone.currentText()))
+                self.show_success_toast(self.tr('时区设置'), self.tr('时区已设置为 {ntp_sync_timezone}').format(ntp_sync_timezone=ntp_sync_timezone.currentText()))
         except Exception as e:
             logger.error(f"时区设置失败: {e}")
             self.show_error_toast(self.tr('时区设置'), self.tr('时区设置失败'))

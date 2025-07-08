@@ -1907,11 +1907,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../menu.py" line="2371"/>
-        <source>时区已设置为 {ntp_sync_timezone.currentText()}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../menu.py" line="2374"/>
         <location filename="../menu.py" line="3028"/>
         <source>时区设置失败</source>
@@ -2292,6 +2287,11 @@
         <location filename="../menu.py" line="1618"/>
         <location filename="../menu.py" line="1663"/>
         <source>加载中...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="2371"/>
+        <source>时区已设置为 {ntp_sync_timezone}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
