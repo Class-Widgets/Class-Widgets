@@ -313,52 +313,52 @@
     <message>
         <location filename="../view/menu/advance.ui" line="238"/>
         <source>时间</source>
-        <translation type="unfinished"></translation>
+        <translation>タイムライン</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="349"/>
         <source>时间获得方法</source>
-        <translation type="unfinished"></translation>
+        <translation>時間取得方法</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="356"/>
         <source>选择时间获得方法</source>
-        <translation type="unfinished"></translation>
+        <translation>時間取得方法を選択してください</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="457"/>
         <source>NTP服务器</source>
-        <translation type="unfinished"></translation>
+        <translation>NTPサーバー</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="464"/>
         <source>使用url链接NTP服务器同步时间</source>
-        <translation type="unfinished"></translation>
+        <translation>URLリンクを使用してNTPサーバーと同期します</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="544"/>
         <source>NTP同步使用的时区</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP同期で使用するタイムゾーン</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="551"/>
         <source>NTP同步时应使用的时区</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP同期時に使用すべきタイムゾーン</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="622"/>
         <source>NTP自动校准</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP自動校正</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="632"/>
         <source>上次校准: 1145年1月1日 - 11:45:14</source>
-        <translation type="unfinished"></translation>
+        <translation>前回の校正：1145年1月1日 - 11:45:14</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="656"/>
         <source>按照设定的校准分钟数自动执行校准</source>
-        <translation type="unfinished"></translation>
+        <translation>設定された校正間隔（分）に従って自動的に校正を実行します</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="705"/>
@@ -620,7 +620,7 @@
     <message>
         <location filename="../view/menu/configs.ui" line="113"/>
         <source>数据库编辑</source>
-        <translation type="unfinished"></translation>
+        <translation>データベース編集</translation>
     </message>
     <message>
         <location filename="../view/menu/preview.ui" line="35"/>
@@ -1138,289 +1138,291 @@
     <message>
         <location filename="../view/menu/sound.ui" line="103"/>
         <source>启用上课提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>授業開始の通知を有効にする</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="110"/>
         <source>启用后将在上课时弹窗且发出提示音提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>有効にすると、授業開始時にポップアップと通知音でお知らせします</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="181"/>
         <source>启用下课提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>授業終了の通知を有効にする</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="188"/>
         <source>启用后将在下课时弹窗且发出提示音提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>有効にすると、授業終了時にポップアップと通知音でお知らせします</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="259"/>
         <source>启用放学提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>下校時の通知を有効にする</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="266"/>
         <source>启用后将在放学时弹窗且发出提示音提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>有効にすると、下校時にポップアップと通知音でお知らせします</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="337"/>
         <source>启用预备铃</source>
-        <translation type="unfinished"></translation>
+        <translation>予鈴を有効にする</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="344"/>
         <source>在正式上课前发出预备铃（输入提前的分钟数）</source>
-        <translation type="unfinished"></translation>
+        <translation>正式な授業開始前に予鈴を鳴らします（事前に設定した分数を入力してください）</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="428"/>
         <source>TTS语音播报</source>
-        <translation type="unfinished"></translation>
+        <translation>TTS</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="435"/>
         <source>调整关于TTS语音合成相关选项</source>
-        <translation type="unfinished"></translation>
+        <translation>TTS音声合成に関するオプションの調整</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="458"/>
         <source>TTS语音设置</source>
-        <translation type="unfinished"></translation>
+        <translation>TTS音声設定</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="494"/>
         <source>音量</source>
-        <translation type="unfinished"></translation>
+        <translation>音量</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="501"/>
         <source>将调整提醒声音的音量大小</source>
-        <translation type="unfinished"></translation>
+        <translation>通知音の音量を調整します</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="578"/>
         <source>是否置顶</source>
-        <translation type="unfinished"></translation>
+        <translation>常に最前面に表示するか</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="585"/>
         <source>启用后将在提醒时置顶弹窗</source>
-        <translation type="unfinished"></translation>
+        <translation>有効にすると、通知時にポップアップを最前面に表示します</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="653"/>
         <source>启用强调特效</source>
-        <translation type="unfinished"></translation>
+        <translation>強調エフェクトを有効にする</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="660"/>
         <source>启用后弹出提醒弹窗同时会有水波强调及模糊淡入淡出效果
 *可能影响性能</source>
-        <translation type="unfinished"></translation>
+        <translation>有効にすると、通知ポップアップが表示される際にウォーターリップルの強調効果およびぼかしのフェードイン・フェードアウト効果が適用されます
+*パフォーマンスに影響を与える可能性があります</translation>
     </message>
     <message>
         <location filename="../view/menu/subject.ui" line="35"/>
         <source>学科编辑</source>
-        <translation type="unfinished"></translation>
+        <translation>科目編集</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="35"/>
         <source>时间线编辑</source>
-        <translation type="unfinished"></translation>
+        <translation>タイムライン編集</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="55"/>
         <source>节点</source>
-        <translation type="unfinished"></translation>
+        <translation>ノード</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="99"/>
         <source>还未添加任何节点</source>
-        <translation type="unfinished"></translation>
+        <translation>まだノードが追加されていません</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="162"/>
         <source>节点名称</source>
-        <translation type="unfinished"></translation>
+        <translation>ノード名称</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="188"/>
         <source>类型</source>
-        <translation type="unfinished"></translation>
+        <translation>類</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="218"/>
         <source>开始时间</source>
-        <translation type="unfinished"></translation>
+        <translation>開始時間</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="240"/>
         <source>h:mm</source>
-        <translation type="unfinished"></translation>
+        <translation>h:mm</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="274"/>
         <source>时间线</source>
-        <translation type="unfinished"></translation>
+        <translation>タイムライン</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="330"/>
         <source>还未添加任何时间线</source>
-        <translation type="unfinished"></translation>
+        <translation>まだタイムラインが追加されていません</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="393"/>
         <source>活动类型</source>
-        <translation type="unfinished"></translation>
+        <translation>イベントタイプ</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="419"/>
         <source>时段</source>
-        <translation type="unfinished"></translation>
+        <translation>時間帯</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="449"/>
         <source>时长（分钟）</source>
-        <translation type="unfinished"></translation>
+        <translation>時間（分）</translation>
     </message>
     <message>
         <location filename="../view/pp/home.ui" line="76"/>
         <source>今天</source>
-        <translation type="unfinished"></translation>
+        <translation>今日</translation>
     </message>
     <message>
         <location filename="../view/pp/home.ui" line="91"/>
         <source>11月45日 周日</source>
-        <translation type="unfinished"></translation>
+        <translation>11月45日 日曜日</translation>
     </message>
     <message>
         <location filename="../view/pp/home.ui" line="172"/>
         <source>推荐插件</source>
-        <translation type="unfinished"></translation>
+        <translation>おすすめプラグイン</translation>
     </message>
     <message>
         <location filename="../view/pp/home.ui" line="211"/>
         <source>这就到底了吗……(っ °Д °;)っ</source>
-        <translation type="unfinished"></translation>
+        <translation>これで終わりなの……？(っ °Д °;)っ</translation>
     </message>
     <message>
         <location filename="../view/pp/latests.ui" line="70"/>
         <source>分类</source>
-        <translation type="unfinished"></translation>
+        <translation>分類</translation>
     </message>
     <message>
         <location filename="../view/pp/latests.ui" line="79"/>
         <source>所有插件</source>
-        <translation type="unfinished"></translation>
+        <translation>すべてのプラグイン</translation>
     </message>
     <message>
         <location filename="../view/pp/latests.ui" line="89"/>
         <source>Coming Soon~</source>
-        <translation type="unfinished"></translation>
+        <translation>Coming Soon~</translation>
     </message>
     <message>
         <location filename="../view/pp/plugin_detail.ui" line="137"/>
         <source>PluginName</source>
-        <translation type="unfinished"></translation>
+        <translation>PluginName</translation>
     </message>
     <message>
         <location filename="../view/pp/plugin_detail.ui" line="147"/>
         <source>1.1.0</source>
-        <translation type="unfinished"></translation>
+        <translation>1.1.0</translation>
     </message>
     <message>
         <location filename="../view/pp/plugin_detail.ui" line="181"/>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation>Author</translation>
     </message>
     <message>
         <location filename="../view/pp/plugin_detail.ui" line="188"/>
         <source>|</source>
-        <translation type="unfinished"></translation>
+        <translation>|</translation>
     </message>
     <message>
         <location filename="../view/pp/plugin_detail.ui" line="215"/>
         <source>Tag</source>
-        <translation type="unfinished"></translation>
+        <translation>Tag</translation>
     </message>
     <message>
         <location filename="../view/pp/plugin_detail.ui" line="289"/>
         <source>Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description </source>
-        <translation type="unfinished"></translation>
+        <translation>Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description </translation>
     </message>
     <message>
         <location filename="../view/pp/plugin_detail.ui" line="301"/>
         <source>Install</source>
-        <translation type="unfinished"></translation>
+        <translation>Install</translation>
     </message>
     <message>
         <location filename="../view/pp/search.ui" line="74"/>
         <source>搜索你希望查找的插件、Tag等</source>
-        <translation type="unfinished"></translation>
+        <translation>索したいプラグインやタグなどを入力してください</translation>
     </message>
     <message>
         <location filename="../view/pp/search.ui" line="86"/>
         <source>探索更多</source>
-        <translation type="unfinished"></translation>
+        <translation>もっと見る</translation>
     </message>
     <message>
         <location filename="../view/pp/settings.ui" line="41"/>
         <source>设置</source>
-        <translation type="unfinished"></translation>
+        <translation>設定</translation>
     </message>
     <message>
         <location filename="../view/pp/settings.ui" line="104"/>
         <source>下载后自动启用插件</source>
-        <translation type="unfinished"></translation>
+        <translation>ダウンロード後、自動的にプラグインを有効化します</translation>
     </message>
     <message>
         <location filename="../view/pp/settings.ui" line="111"/>
         <source>在下载插件后，将为您自动启用插件以便您重启可以立即使用。
 但请确信您在“插件广场”中需要的插件是安全的。</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグインをダウンロードした後、自動的に有効化され、再起動後すぐに使用できるようになります。
+ただし、「プラグイン広場」で選択したプラグインが安全であることを必ずご確認ください。</translation>
     </message>
     <message>
         <location filename="../view/pp/settings.ui" line="164"/>
         <source>网络</source>
-        <translation type="unfinished"></translation>
+        <translation>ネットワーク</translation>
     </message>
     <message>
         <location filename="../view/pp/settings.ui" line="197"/>
         <source>选择镜像源</source>
-        <translation type="unfinished"></translation>
+        <translation>ミラーソースを選択</translation>
     </message>
     <message>
         <location filename="../view/pp/settings.ui" line="204"/>
         <source>若需要在中国大陆正常使用“插件广场”，最好为其设置一个镜像源。</source>
-        <translation type="unfinished"></translation>
+        <translation>中国本土で「プラグイン広場」を正常に利用するには、ミラーソースを設定するのが望ましいです。</translation>
     </message>
     <message>
         <location filename="../view/menu/file_item.ui" line="89"/>
         <source>File name</source>
-        <translation type="unfinished"></translation>
+        <translation>File name</translation>
     </message>
     <message>
         <location filename="../view/menu/file_item.ui" line="99"/>
         <source>file url file url file url file url file url file url </source>
-        <translation type="unfinished"></translation>
+        <translation>file url file url file url file url file url file url </translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_db_edit.ui" line="35"/>
         <source>课表数据库编辑</source>
-        <translation type="unfinished"></translation>
+        <translation>時間割データベース編集</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_db_edit.ui" line="76"/>
         <source>数据库简称</source>
-        <translation type="unfinished"></translation>
+        <translation>データベースの略称</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_db_edit.ui" line="102"/>
         <source>数据库地址</source>
-        <translation type="unfinished"></translation>
+        <translation>データベースのアドレス</translation>
     </message>
 </context>
 <context>
@@ -1429,13 +1431,13 @@
         <location filename="../menu.py" line="2495"/>
         <location filename="../menu.py" line="3149"/>
         <source>设置成功 ✨</source>
-        <translation type="unfinished"></translation>
+        <translation>設定が完了しました ✨</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2498"/>
         <location filename="../menu.py" line="3152"/>
         <source>格式警告</source>
-        <translation type="unfinished"></translation>
+        <translation>フォーマット警告</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2501"/>
@@ -1445,43 +1447,43 @@
         <location filename="../menu.py" line="3363"/>
         <location filename="../menu.py" line="3365"/>
         <source>NTP设置</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP設定</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2522"/>
         <location filename="../menu.py" line="3176"/>
         <source>推荐的NTP服务器:</source>
-        <translation type="unfinished"></translation>
+        <translation>推奨されるNTPサーバー：</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2524"/>
         <location filename="../menu.py" line="3178"/>
         <source>建议的修正:</source>
-        <translation type="unfinished"></translation>
+        <translation>推奨される修正案：</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2544"/>
         <location filename="../menu.py" line="3198"/>
         <source>执意保存当前输入的内容?</source>
-        <translation type="unfinished"></translation>
+        <translation>現在の入力内容を強制的に保存しますか？</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2561"/>
         <location filename="../menu.py" line="3215"/>
         <source>执意保存</source>
-        <translation type="unfinished"></translation>
+        <translation>強制的に保存</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2642"/>
         <location filename="../menu.py" line="3296"/>
         <source>NTP服务器已更新: {suggestion}</source>
-        <translation type="unfinished"></translation>
+        <translation>NTPサーバーが更新されました: {suggestion}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2663"/>
         <location filename="../menu.py" line="3317"/>
         <source>设置已保存ヾ(≧▽≦*)o</source>
-        <translation type="unfinished"></translation>
+        <translation>設定が保存されましたヾ(≧▽≦*)o</translation>
     </message>
 </context>
 <context>
@@ -1489,73 +1491,74 @@
     <message>
         <location filename="../menu.py" line="941"/>
         <source>全部插件</source>
-        <translation type="unfinished"></translation>
+        <translation>すべてのプラグイン</translation>
     </message>
     <message>
         <location filename="../menu.py" line="942"/>
         <source>已启用</source>
-        <translation type="unfinished"></translation>
+        <translation>有効になりました</translation>
     </message>
     <message>
         <location filename="../menu.py" line="943"/>
         <source>已禁用</source>
-        <translation type="unfinished"></translation>
+        <translation>無効になりました</translation>
     </message>
     <message>
         <location filename="../menu.py" line="944"/>
         <source>有设置项</source>
-        <translation type="unfinished"></translation>
+        <translation>設定項目があります</translation>
     </message>
     <message>
         <location filename="../menu.py" line="947"/>
         <source>无设置项</source>
-        <translation type="unfinished"></translation>
+        <translation>設定項目はありません</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1032"/>
         <source>已安装 {total_count} 个插件，已启用 {enabled_count} 个</source>
-        <translation type="unfinished"></translation>
+        <translation>合計 {total_count} 個のプラグインがインストールされており、そのうち {enabled_count} 個が有効になっています</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1072"/>
         <source>没有找到匹配的插件</source>
-        <translation type="unfinished"></translation>
+        <translation>一致するプラグインが見つかりませんでした</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1113"/>
         <source>导入插件时发生错误：{e}</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグインのインポート中にエラーが発生しました：{e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1119"/>
         <location filename="../menu.py" line="1158"/>
         <source>未知插件</source>
-        <translation type="unfinished"></translation>
+        <translation>不明なプラグイン</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1125"/>
         <location filename="../menu.py" line="1163"/>
         <source>插件已存在</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグインは既に存在します</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1126"/>
         <location filename="../menu.py" line="1164"/>
         <source>插件 &quot;{plugin_name}&quot; 已存在，是否覆盖？</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグイン「{plugin_name}」は既に存在します。上書きしますか？</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1135"/>
         <location filename="../menu.py" line="1173"/>
         <source>导入成功</source>
-        <translation type="unfinished"></translation>
+        <translation>インポート成功</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1136"/>
         <location filename="../menu.py" line="1174"/>
         <source>插件 &quot;{plugin_name}&quot; 导入成功！
 重启应用后生效。</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグイン「{plugin_name}」のインポートに成功しました！
+アプリを再起動すると反映されます。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1139"/>
@@ -1568,22 +1571,22 @@
         <location filename="../menu.py" line="1145"/>
         <location filename="../menu.py" line="1186"/>
         <source>插件配置文件格式错误</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグイン設定ファイルの形式が正しくありません</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1148"/>
         <source>复制插件文件夹时发生错误：{e}</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグインフォルダのコピー中にエラーが発生しました：{e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1154"/>
         <source>无效的插件文件：缺少 plugin.json 配置文件</source>
-        <translation type="unfinished"></translation>
+        <translation>無効なプラグインファイル：plugin.json 設定ファイルがありません</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1183"/>
         <source>无效的ZIP文件</source>
-        <translation type="unfinished"></translation>
+        <translation>無効なZIPファイル</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1189"/>
