@@ -135,7 +135,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="687"/>
         <source>日志已成功复制到剪贴板。</source>
-        <translation>Successfully copied log to clipboard</translation>
+        <translation>Successfully copied log to clipboard.</translation>
     </message>
 </context>
 <context>
@@ -143,12 +143,12 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="1438"/>
         <source>&lt; - 分钟</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt; - minute</translation>
     </message>
     <message>
         <location filename="../main.py" line="1441"/>
         <source>&lt;&#x2005;{minutes}&#x2005;分钟</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;&#x2005;{minutes}&#x2005;minutes</translation>
     </message>
 </context>
 <context>
@@ -3229,7 +3229,7 @@ Error generating or playing audio: {error_message}</translation>
     <message>
         <location filename="../main.py" line="1041"/>
         <source>未知组件</source>
-        <translation type="unfinished"></translation>
+        <translation>Unknown components</translation>
     </message>
 </context>
 <context>
@@ -3878,27 +3878,27 @@ Error generating or playing audio: {error_message}</translation>
         <location filename="../main.py" line="437"/>
         <location filename="../main.py" line="501"/>
         <source>暂无课程</source>
-        <translation type="unfinished">No class</translation>
+        <translation>No courses available at the moment</translation>
     </message>
     <message>
         <location filename="../main.py" line="409"/>
         <source>当前活动结束还有</source>
-        <translation type="unfinished"></translation>
+        <translation>Till the end of current activity</translation>
     </message>
     <message>
         <location filename="../main.py" line="411"/>
         <source>课间时长还有</source>
-        <translation type="unfinished"></translation>
+        <translation>The duration of break time is still</translation>
     </message>
     <message>
         <location filename="../main.py" line="446"/>
         <source>距离上课还有</source>
-        <translation type="unfinished"></translation>
+        <translation>There is still time before class</translation>
     </message>
     <message>
         <location filename="../main.py" line="448"/>
         <source>目前课程已结束</source>
-        <translation type="unfinished"></translation>
+        <translation>Current course is completed</translation>
     </message>
     <message>
         <location filename="../main.py" line="521"/>
@@ -3908,53 +3908,55 @@ Error generating or playing audio: {error_message}</translation>
     <message>
         <location filename="../main.py" line="800"/>
         <source>示例课程</source>
-        <translation type="unfinished"></translation>
+        <translation>Example class</translation>
     </message>
     <message>
         <location filename="../main.py" line="800"/>
         <source>通知示例</source>
-        <translation type="unfinished"></translation>
+        <translation>Notification example</translation>
     </message>
     <message>
         <location filename="../main.py" line="800"/>
         <source>副标题</source>
-        <translation type="unfinished"></translation>
+        <translation>Subtitle</translation>
     </message>
     <message>
         <location filename="../main.py" line="801"/>
         <source>这是一条通知示例</source>
-        <translation type="unfinished"></translation>
+        <translation>This is a notification example</translation>
     </message>
     <message>
         <location filename="../main.py" line="2505"/>
         <location filename="../main.py" line="2534"/>
         <source>上课时自动隐藏</source>
-        <translation type="unfinished">Auto hide in class</translation>
+        <translation>Auto hide when having classes</translation>
     </message>
     <message>
         <location filename="../main.py" line="2506"/>
         <location filename="../main.py" line="2535"/>
         <source>窗口最大化时隐藏</source>
-        <translation type="unfinished">Auto hide when maximized</translation>
+        <translation>Auto Hide when maximizing the window</translation>
     </message>
     <message>
         <location filename="../main.py" line="2507"/>
         <location filename="../main.py" line="2536"/>
         <source>暂时无法变更“状态”</source>
-        <translation type="unfinished"></translation>
+        <translation>Unable to change &apos;status&apos; temporarily</translation>
     </message>
     <message>
         <location filename="../main.py" line="2510"/>
         <source>您正在使用 {hide_mode_text} 模式，无法变更隐藏状态
 若变更状态，将修改隐藏模式“灵活隐藏” (您稍后可以在“设置”中更改此选项)
 您确定要隐藏组件吗?</source>
-        <translation type="unfinished"></translation>
+        <translation>You are using {hide_mode_text} mode and cannot change hiding status.
+If changing hiding status, we will change hiding mode to &quot;Flexible hiding&quot;(You can change this option later in &apos;Settings&apos;)
+Do you want to hide the widget?</translation>
     </message>
     <message>
         <location filename="../main.py" line="2514"/>
         <location filename="../main.py" line="2543"/>
         <source>确定</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirm</translation>
     </message>
     <message>
         <location filename="../main.py" line="2516"/>
@@ -3967,7 +3969,9 @@ Error generating or playing audio: {error_message}</translation>
         <source>您正在使用 {hide_mode_text} 模式，无法变更隐藏状态
 若变更状态，将修改隐藏模式“灵活隐藏” (您可以在“设置”中更改此选项)
 您确定要隐藏组件吗?</source>
-        <translation type="unfinished"></translation>
+        <translation>You are using {hide_mode_text} mode and cannot change hiding status.
+If changing hiding status, we will change hiding mode to &quot;Flexible hiding&quot;(You can change this option later in &apos;Settings&apos;)
+Do you want to hide the widget?</translation>
     </message>
     <message>
         <location filename="../main.py" line="2860"/>
