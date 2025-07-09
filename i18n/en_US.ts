@@ -32,7 +32,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="1730"/>
         <source>{year} 年 {month} 月</source>
-        <translation>Year {year} month {month}</translation>
+        <translation>united nations development programme</translation>
     </message>
     <message>
         <location filename="../main.py" line="2003"/>
