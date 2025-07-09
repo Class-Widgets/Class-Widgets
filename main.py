@@ -26,6 +26,7 @@ from qfluentwidgets import Theme, setTheme, setThemeColor, SystemTrayMenu, Actio
     PrimaryPushButton, IconWidget
 
 from PyQt5.QtGui import QCloseEvent, QShowEvent, QHideEvent, QMouseEvent, QFocusEvent
+from PyQt5.QtCore import QCoreApplication
 
 import conf
 import list_
@@ -332,18 +333,18 @@ def get_current_lessons() -> None:  # 获取当前课程
         if item_name.startswith('a'):
             if schedule[str(current_week)]:
                 try:
-                    if schedule[str(current_week)][class_count] != '未添加':
+                    if schedule[str(current_week)][class_count] != QCoreApplication.translate('main', '未添加'):
                         current_lessons[item_name] = schedule[str(current_week)][class_count]
                     else:
-                        current_lessons[item_name] = '暂无课程'
+                        current_lessons[item_name] = QCoreApplication.translate('main', '暂无课程')
                 except IndexError:
-                    current_lessons[item_name] = '暂无课程'
+                    current_lessons[item_name] = QCoreApplication.translate('main', '暂无课程')
                 except Exception as e:
-                    current_lessons[item_name] = '暂无课程'
+                    current_lessons[item_name] = QCoreApplication.translate('main', '暂无课程')
                     logger.debug(f'加载课程表文件出错：{e}')
                 class_count += 1
             else:
-                current_lessons[item_name] = '暂无课程'
+                current_lessons[item_name] = QCoreApplication.translate('main', '暂无课程')
                 class_count += 1
 
 
@@ -405,9 +406,9 @@ def get_countdown(toast: bool = False) -> Optional[List[Union[str, int]]]:  # �
                     if c_time >= current_dt:
                         # 根据所在时间段使用不同标语
                         if item_name.startswith('a'):
-                            return_text.append('当前活动结束还有')
+                            return_text.append(QCoreApplication.translate('main', '当前活动结束还有'))
                         else:
-                            return_text.append('课间时长还有')
+                            return_text.append(QCoreApplication.translate('main', '课间时长还有'))
                         # 返回倒计时、进度条
                         time_diff = c_time - current_dt
                         minute, sec = divmod(time_diff.seconds, 60)
@@ -432,7 +433,7 @@ def get_countdown(toast: bool = False) -> Optional[List[Union[str, int]]]:  # �
                                 break
                     if next_lesson_key and next_lesson_key in current_lessons:
                         lesson_name = current_lessons[next_lesson_key]
-                        if lesson_name != '暂无课程':
+                        if lesson_name != QCoreApplication.translate('main', '暂无课程'):
                             next_lesson_name = lesson_name
                     if current_state == 0:
                         now = TimeManagerFactory.get_instance().get_current_time()
@@ -442,9 +443,9 @@ def get_countdown(toast: bool = False) -> Optional[List[Union[str, int]]]:  # �
             if f'a{part}1' in timeline_data:
                 time_diff = c_time - current_dt
                 minute, sec = divmod(time_diff.seconds, 60)
-                return_text = ['距离上课还有', f'{minute:02d}:{sec:02d}', 100]
+                return_text = [QCoreApplication.translate('main', '距离上课还有'), f'{minute:02d}:{sec:02d}', 100]
             else:
-                return_text = ['目前课程已结束', f'00:00', 100]
+                return_text = [QCoreApplication.translate('main', '目前课程已结束'), f'00:00', 100]
         return return_text
 
 
@@ -496,7 +497,7 @@ def get_next_lessons_text() -> str:
 def get_current_lesson_name() -> None:
     global current_lesson_name, current_state
     current_dt = TimeManagerFactory.get_instance().get_current_time()  # 当前时间
-    current_lesson_name = '暂无课程'
+    current_lesson_name = QCoreApplication.translate('main', '暂无课程')
     current_state = 0
 
     if parts_start_time:
@@ -516,7 +517,7 @@ def get_current_lesson_name() -> None:
                             current_lesson_name = current_lessons[item_name]
                             current_state = 1
                         else:
-                            current_lesson_name = '课间'
+                            current_lesson_name = QCoreApplication.translate('main', '课间')
                             current_state = 0
                         return
 
@@ -620,9 +621,9 @@ class ErrorDialog(Dialog):  # 重大错误提示框
             stop()
         
         super().__init__(
-            'Class Widgets 崩溃报告',
-            '抱歉！Class Widgets 发生了严重的错误从而无法正常运行。您可以保存下方的错误信息并向他人求助。'
-            '若您认为这是程序的Bug，请点击“报告此问题”或联系开发者。',
+            self.tr('Class Widgets 崩溃报告'),
+            self.tr('抱歉！Class Widgets 发生了严重的错误从而无法正常运行。您可以保存下方的错误信息并向他人求助。'
+            '若您认为这是程序的Bug，请点击“报告此问题”或联系开发者。'),
             parent
         )
         global error_dialog
@@ -637,16 +638,16 @@ class ErrorDialog(Dialog):  # 重大错误提示框
         self.iconLabel = ImageLabel()
         self.iconLabel.setImage(f"{base_directory}/img/logo/favicon-error.ico")
         self.error_log = PlainTextEdit()
-        self.report_problem = PushButton(fIcon.FEEDBACK, '报告此问题')
-        self.copy_log_btn = PushButton(fIcon.COPY, '复制日志')
-        self.ignore_error_btn = PushButton(fIcon.INFO, '忽略错误')
+        self.report_problem = PushButton(fIcon.FEEDBACK, self.tr('报告此问题'))
+        self.copy_log_btn = PushButton(fIcon.COPY, self.tr('复制日志'))
+        self.ignore_error_btn = PushButton(fIcon.INFO, self.tr('忽略错误'))
         self.ignore_same_error = CheckBox()
-        self.ignore_same_error.setText('在下次启动之前，忽略此错误')
-        self.restart_btn = PrimaryPushButton(fIcon.SYNC, '重新启动')
+        self.ignore_same_error.setText(self.tr('在下次启动之前，忽略此错误'))
+        self.restart_btn = PrimaryPushButton(fIcon.SYNC, self.tr('重新启动'))
 
         self.iconLabel.setScaledContents(True)
         self.iconLabel.setFixedSize(50, 50)
-        self.titleLabel.setText('出错啦！ヽ(*。>Д<)o゜')
+        self.titleLabel.setText(self.tr('出错啦！ヽ(*。>Д<)o゜'))
         self.titleLabel.setStyleSheet("font-family: Microsoft YaHei UI; font-size: 25px; font-weight: 500;")
         self.error_log.setReadOnly(True)
         self.error_log.setPlainText(error_details)
@@ -682,8 +683,8 @@ class ErrorDialog(Dialog):  # 重大错误提示框
         QApplication.clipboard().setText(self.error_log.toPlainText())
         Flyout.create(
             icon=InfoBarIcon.SUCCESS,
-            title='复制成功！ヾ(^▽^*)))',
-            content="日志已成功复制到剪贴板。",
+            title=self.tr('复制成功！ヾ(^▽^*)))'),
+            content=self.tr("日志已成功复制到剪贴板。"),
             target=self.copy_log_btn,
             parent=self,
             isClosable=True,
@@ -796,8 +797,8 @@ class PluginMethod:  # 插件方法
             return False
 
     @staticmethod
-    def send_notification(state: int = 1, lesson_name: str = '示例课程', title: str = '通知示例', subtitle: str = '副标题',
-                          content: str = '这是一条通知示例', icon: Optional[Any] = None, duration: int = 2000) -> None:  # 发送通知
+    def send_notification(state: int = 1, lesson_name: str = QCoreApplication.translate('main', '示例课程'), title: str = QCoreApplication.translate('main', '通知示例'), subtitle: str = QCoreApplication.translate('main', '副标题'),
+                          content: str = QCoreApplication.translate('main', '这是一条通知示例'), icon: Optional[Any] = None, duration: int = 2000) -> None:  # 发送通知
         notification.push_notification(state, lesson_name, title, subtitle, content, icon, duration)
 
     @staticmethod
@@ -1037,7 +1038,7 @@ class WidgetsManager:
         widgets_to_clean = list(self.widgets)
         self.widgets.clear()
         for widget in widgets_to_clean:
-            widget_path = getattr(widget, 'path', '未知组件')
+            widget_path = getattr(widget, 'path', self.tr('未知组件'))
             try:
                 if hasattr(widget, 'weather_timer') and widget.weather_timer:
                     try:
@@ -1073,7 +1074,7 @@ class openProgressDialog(QWidget):
     def __init__(self, action_title='打开 记事本', action='notepad'):
         super().__init__()
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint | Qt.Tool)
-        time = int(config_center.read_conf('Plugin', 'auto_delay'))
+        time = int(config_center.read_conf('Plugin', 'aguto_delay'))
         self.action = action
 
         screen_geometry = app.primaryScreen().availableGeometry()
@@ -1434,10 +1435,10 @@ class FloatingWidget(QWidget):  # 浮窗
             blur_floating = config_center.read_conf('General', 'blur_floating_countdown') == '1'
             if blur_floating:  # 模糊显示
                 if cd_list[1] == '00:00':
-                    self.activity_countdown.setText(f"< - 分钟")
+                    self.activity_countdown.setText(self.tr("< - 分钟"))
                 else:
                     minutes = int(cd_list[1].split(':')[0]) + 1
-                    self.activity_countdown.setText(f"< {minutes} 分钟")
+                    self.activity_countdown.setText(self.tr("< {minutes} 分钟").format(minutes=minutes))
             else:  # 精确显示
                 self.activity_countdown.setText(cd_list[1])
             self.countdown_progress_bar.setValue(cd_list[2])
@@ -1726,7 +1727,7 @@ class DesktopWidget(QWidget):  # 主要小组件
 
         if path == 'widget-time.ui':  # 日期显示
             self.date_text = self.findChild(QLabel, 'date_text')
-            self.date_text.setText(f'{today.year} 年 {today.month} 月')
+            self.date_text.setText(self.tr('{year} 年 {month} 月').format(year=today.year, month=today.month))
             self.day_text = self.findChild(QLabel, 'day_text')
             self.day_text.setText(f'{today.day}日  {list_.week[today.weekday()]}')
 
@@ -1999,18 +2000,18 @@ class DesktopWidget(QWidget):  # 主要小组件
         utils.tray_icon.setToolTip(f"Class Widgets - {config_center.schedule_name[:-5]}")
         self.tray_menu = SystemTrayMenu(title='Class Widgets', parent=self)
         self.tray_menu.addActions([
-            Action(fIcon.HIDE, '完全隐藏/显示小组件', triggered=lambda: self.hide_show_widgets()),
-            Action(fIcon.BACK_TO_WINDOW, '最小化为浮窗', triggered=lambda: self.minimize_to_floating()),
+            Action(fIcon.HIDE, self.tr('完全隐藏/显示小组件'), triggered=lambda: self.hide_show_widgets()),
+            Action(fIcon.BACK_TO_WINDOW, self.tr('最小化为浮窗'), triggered=lambda: self.minimize_to_floating()),
         ])
         self.tray_menu.addSeparator()
         self.tray_menu.addActions([
-            Action(fIcon.SHOPPING_CART, '插件广场', triggered=open_plaza),
-            Action(fIcon.DEVELOPER_TOOLS, '额外选项', triggered=self.open_extra_menu),
-            Action(fIcon.SETTING, '设置', triggered=open_settings)
+            Action(fIcon.SHOPPING_CART, self.tr('插件广场'), triggered=open_plaza),
+            Action(fIcon.DEVELOPER_TOOLS, self.tr('额外选项'), triggered=self.open_extra_menu),
+            Action(fIcon.SETTING, self.tr('设置'), triggered=open_settings)
         ])
         self.tray_menu.addSeparator()
-        self.tray_menu.addAction(Action(fIcon.SYNC, '重新启动', triggered=restart))
-        self.tray_menu.addAction(Action(fIcon.CLOSE, '退出', triggered=stop))
+        self.tray_menu.addAction(Action(fIcon.SYNC, self.tr('重新启动'), triggered=restart))
+        self.tray_menu.addAction(Action(fIcon.CLOSE, self.tr('退出'), triggered=stop))
         utils.tray_icon.setContextMenu(self.tray_menu)
 
         utils.tray_icon.activated.connect(self.on_tray_icon_clicked)
@@ -2126,7 +2127,7 @@ class DesktopWidget(QWidget):  # 主要小组件
 
         if path == 'widget-countdown-day.ui':  # 自定义倒计时
             conf.update_countdown(self.cnt)
-            self.custom_title.setText(f'距离 {conf.get_cd_text_custom()} 还有')
+            self.custom_title.setText(self.tr('距离 {cd_text} 还有').format(cd_text=conf.get_cd_text_custom()))
             self.custom_countdown.setText(conf.get_custom_countdown())
         self.update()
 
@@ -2344,10 +2345,10 @@ class DesktopWidget(QWidget):  # 主要小组件
     def _simplify_alert_text(self, text: str) -> str:
         """简化预警文本"""
         if not text:
-            return '预警'
+            return self.tr('预警')
         match = re.search(r'(发布|升级为)(\w+)(蓝色|黄色|橙色|红色)预警', text)
         if match:
-            return f"{match.group(2)}预警"
+            return self.tr("{data}预警").format(data=match.group(2))
         return '未知预警'
 
     def _get_alert_icon_by_severity(self, severity: Union[str, int]) -> str:
@@ -2501,17 +2502,18 @@ class DesktopWidget(QWidget):  # 主要小组件
     def hide_show_widgets() -> None:  # 隐藏/显示主界面（全部隐藏）
         hide_mode = config_center.read_conf('General', 'hide')
         if hide_mode == '1' or hide_mode == '2':
-            hide_mode_text = "上课时自动隐藏" if hide_mode == '1' else "窗口最大化时隐藏"
+            hide_mode_text = QCoreApplication.translate('main', "上课时自动隐藏") if hide_mode == '1' else QCoreApplication.translate('main', "窗口最大化时隐藏")
             w = Dialog(
-                "暂时无法变更“状态”",
-                f"您正在使用 {hide_mode_text} 模式，无法变更隐藏状态\n"
+                QCoreApplication.translate('main', "暂时无法变更“状态”"),
+                QCoreApplication.translate('main', "您正在使用 {hide_mode_text} 模式，无法变更隐藏状态\n"
                 "若变更状态，将修改隐藏模式“灵活隐藏” (您稍后可以在“设置”中更改此选项)\n"
-                "您确定要隐藏组件吗?",
+                "您确定要隐藏组件吗?").format(
+                    hide_mode_text=hide_mode_text),
                 None
             )
-            w.yesButton.setText("确定")
+            w.yesButton.setText(QCoreApplication.translate('main', "确定"))
             w.yesButton.clicked.connect(lambda: config_center.write_conf('General', 'hide', '3'))
-            w.cancelButton.setText("取消")
+            w.cancelButton.setText(QCoreApplication.translate('main', "取消"))
             w.buttonLayout.insertStretch(1)
             w.setFixedWidth(550)
             if w.exec():
@@ -2529,17 +2531,18 @@ class DesktopWidget(QWidget):  # 主要小组件
     def minimize_to_floating() -> None:  # 最小化到浮窗
         hide_mode = config_center.read_conf('General', 'hide')
         if hide_mode == '1' or hide_mode == '2':
-            hide_mode_text = "上课时自动隐藏" if hide_mode == '1' else "窗口最大化时隐藏"
+            hide_mode_text = QCoreApplication.translate('main', "上课时自动隐藏") if hide_mode == '1' else QCoreApplication.translate('main', "窗口最大化时隐藏")
             w = Dialog(
-                "暂时无法变更“状态”",
-                f"您正在使用 {hide_mode_text} 模式，无法变更隐藏状态\n"
+                QCoreApplication.translate('main', "暂时无法变更“状态”"),
+                QCoreApplication.translate('main', "您正在使用 {hide_mode_text} 模式，无法变更隐藏状态\n"
                 "若变更状态，将修改隐藏模式“灵活隐藏” (您可以在“设置”中更改此选项)\n"
-                "您确定要隐藏组件吗?",
+                "您确定要隐藏组件吗?").format(
+                    hide_mode_text=hide_mode_text),
                 None
             )
-            w.yesButton.setText("确定")
+            w.yesButton.setText(QCoreApplication.translate('main', "确定"))
             w.yesButton.clicked.connect(lambda: config_center.write_conf('General', 'hide', '3'))
-            w.cancelButton.setText("取消")
+            w.cancelButton.setText(QCoreApplication.translate('main', "取消"))
             w.buttonLayout.insertStretch(1)
             w.setFixedWidth(550)
             if w.exec():
@@ -2854,9 +2857,9 @@ if __name__ == '__main__':
             from qfluentwidgets import Dialog
             app = QApplication.instance() or QApplication(sys.argv)
             dlg = Dialog(
-                'Class Widgets 正在运行',
-                'Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。'
-                '\n(若您需要打开多个实例，请在“设置”->“高级选项”中启用“允许程序多开”)'
+                QCoreApplication.translate('main', 'Class Widgets 正在运行'),
+                QCoreApplication.translate('main', 'Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。'
+                '\n(若您需要打开多个实例，请在“设置”->“高级选项”中启用“允许程序多开”)')
             )
             dlg.yesButton.setText('好')
             dlg.cancelButton.hide()
@@ -2896,9 +2899,9 @@ if __name__ == '__main__':
 
     if scale_factor > 1.8 or scale_factor < 1.0:
         logger.warning("当前缩放系数可能导致显示异常，建议使缩放系数在 100% 到 180% 之间")
-        msg_box = Dialog('缩放系数过大',
-                         f"当前缩放系数为 {scale_factor * 100}%，可能导致显示异常。\n建议将缩放系数设置为 100% 到 180% 之间。")
-        msg_box.yesButton.setText('好')
+        msg_box = Dialog(QCoreApplication.translate('main', '缩放系数过大'),
+                         QCoreApplication.translate('main', "当前缩放系数为 {scale_factor}%，可能导致显示异常。\n建议将缩放系数设置为 100% 到 180% 之间。").format(scale_factor=scale_factor*100))
+        msg_box.yesButton.setText(QCoreApplication.translate('main', '好'))
         msg_box.cancelButton.hide()
         msg_box.buttonLayout.insertStretch(0, 1)
         msg_box.setFixedWidth(550)
@@ -2923,11 +2926,11 @@ if __name__ == '__main__':
 
     if share.attach() and config_center.read_conf('Other', 'multiple_programs') != '1':
         msg_box = Dialog(
-            'Class Widgets 正在运行',
-            'Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。'
-            '\n(若您需要打开多个实例，请在“设置”->“高级选项”中启用“允许程序多开”)'
+            QCoreApplication.translate('main', 'Class Widgets 正在运行'),
+            QCoreApplication.translate('main', 'Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。'
+            '\n(若您需要打开多个实例，请在“设置”->“高级选项”中启用“允许程序多开”)')
         )
-        msg_box.yesButton.setText('好')
+        msg_box.yesButton.setText(QCoreApplication.translate('main', '好'))
         msg_box.cancelButton.hide()
         msg_box.buttonLayout.insertStretch(0, 1)
         msg_box.setFixedWidth(550)
