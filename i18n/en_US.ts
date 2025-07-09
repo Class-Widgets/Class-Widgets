@@ -3969,7 +3969,7 @@ Do you want to hide the widget?</translation>
         <source>您正在使用 {hide_mode_text} 模式，无法变更隐藏状态
 若变更状态，将修改隐藏模式“灵活隐藏” (您可以在“设置”中更改此选项)
 您确定要隐藏组件吗?</source>
-        <translation>You are using {hide_mode_text} mode and cannot change hiding status.
+        <translation>You are using {hide_mode_text} mode and can&apos;t change hiding status.
 If changing hiding status, we will change hiding mode to &quot;Flexible hiding&quot;(You can change this option later in &apos;Settings&apos;)
 Do you want to hide the widget?</translation>
     </message>
@@ -3977,25 +3977,27 @@ Do you want to hide the widget?</translation>
         <location filename="../main.py" line="2860"/>
         <location filename="../main.py" line="2929"/>
         <source>Class Widgets 正在运行</source>
-        <translation type="unfinished"></translation>
+        <translation>Class Widgets is running now</translation>
     </message>
     <message>
         <location filename="../main.py" line="2863"/>
         <location filename="../main.py" line="2932"/>
         <source>Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。
 (若您需要打开多个实例，请在“设置”-&gt;“高级选项”中启用“允许程序多开”)</source>
-        <translation type="unfinished"></translation>
+        <translation>Class Widgets is running now! Do not start multiple instance,or it will cause unknown problems.
+(If you need to start multiple instance,Please enable&quot;Allow multiple instances&quot; In &quot;Settings&quot; -&gt; &quot;Advanced Options&quot;)</translation>
     </message>
     <message>
         <location filename="../main.py" line="2902"/>
         <source>缩放系数过大</source>
-        <translation type="unfinished"></translation>
+        <translation>The scaling factor is too large</translation>
     </message>
     <message>
         <location filename="../main.py" line="2903"/>
         <source>当前缩放系数为 {scale_factor}%，可能导致显示异常。
 建议将缩放系数设置为 100% 到 180% 之间。</source>
-        <translation type="unfinished"></translation>
+        <translation>Current sa=caling factor is {scale_factor}% now, and it may cause display problems.
+It is recommended to set the scaling factor to a value between 100% and 180%</translation>
     </message>
     <message>
         <location filename="../main.py" line="2904"/>
