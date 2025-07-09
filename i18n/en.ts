@@ -135,7 +135,7 @@ You can add more voice in System Settings(*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="687"/>
         <source>日志已成功复制到剪贴板。</source>
-        <translation>Successfully copied the log to the clipboard</translation>
+        <translation>Successfully copied the log to the clipboard.</translation>
     </message>
 </context>
 <context>
@@ -143,12 +143,12 @@ You can add more voice in System Settings(*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="1438"/>
         <source>&lt; - 分钟</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt; - minute</translation>
     </message>
     <message>
         <location filename="../main.py" line="1441"/>
         <source>&lt;&#x2005;{minutes}&#x2005;分钟</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;&#x2005;{minutes}&#x2005;minutes</translation>
     </message>
 </context>
 <context>
@@ -176,59 +176,59 @@ You can add more voice in System Settings(*≧▽≦)</translation>
         <location filename="../view/pp/search.ui" line="20"/>
         <location filename="../view/pp/settings.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="35"/>
         <source>额外选项</source>
-        <translation type="unfinished"></translation>
+        <translation>Extra options</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="45"/>
         <source>调休</source>
-        <translation type="unfinished"></translation>
+        <translation>Compensatory Leave</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="84"/>
         <source>设置调休星期</source>
-        <translation type="unfinished"></translation>
+        <translation>Set the week of rest</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="91"/>
         <source>将替换当前调休日的课程表为选定星期</source>
-        <translation type="unfinished"></translation>
+        <translation>Replace the curriculum of the current compensatory leave day as the selected week</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="128"/>
         <source>换课</source>
-        <translation type="unfinished"></translation>
+        <translation>Exchange classes</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="135"/>
         <source>临时替换当天的课程，重启后失效</source>
-        <translation type="unfinished"></translation>
+        <translation>Temporarily replace the course of the day, and it will become invalid after restarting</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="208"/>
         <location filename="../view/menu/schedule_edit.ui" line="294"/>
         <source>课程/活动</source>
-        <translation type="unfinished"></translation>
+        <translation>Classes/Activity</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="234"/>
         <location filename="../view/menu/schedule_edit.ui" line="320"/>
         <source>自定义课程</source>
-        <translation type="unfinished"></translation>
+        <translation>Custom classes</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="280"/>
         <source>*所有更改在重启后重置</source>
-        <translation type="unfinished"></translation>
+        <translation>*All changes you made will be reset after restart</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="287"/>
         <source>浏览更多设置</source>
-        <translation type="unfinished"></translation>
+        <translation>Explore more settings</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="306"/>
@@ -238,109 +238,109 @@ You can add more voice in System Settings(*≧▽≦)</translation>
         <location filename="../view/menu/subject.ui" line="89"/>
         <location filename="../view/menu/timeline_edit.ui" line="520"/>
         <source>保存</source>
-        <translation type="unfinished"></translation>
+        <translation>Save</translation>
     </message>
     <message>
         <location filename="../view/widget-toast-bar.ui" line="123"/>
         <source>上课</source>
-        <translation type="unfinished"></translation>
+        <translation>Class begin</translation>
     </message>
     <message>
         <location filename="../view/widget-toast-bar.ui" line="151"/>
         <source>当前课程</source>
-        <translation type="unfinished"></translation>
+        <translation>Current class</translation>
     </message>
     <message>
         <location filename="../view/widget-toast-bar.ui" line="170"/>
         <source>英语</source>
-        <translation type="unfinished"></translation>
+        <translation>English</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="35"/>
         <source>关于</source>
-        <translation type="unfinished"></translation>
+        <translation>About</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="118"/>
         <source>Class Widgets</source>
-        <translation type="unfinished"></translation>
+        <translation>Class Widgets</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="128"/>
         <source>Class Widgets 是一款能显示当前课程的桌面组件App。其提供了直观的图形化课程表编辑和美观的桌面组件。</source>
-        <translation type="unfinished"></translation>
+        <translation>Class Widgets is an desktop widgets App that can display current classes.It provides intuitive graphical course schedule editing and beautiful desktop components.</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="232"/>
         <source>版本号:获取失败！</source>
-        <translation type="unfinished"></translation>
+        <translation>Version: Fail to get!</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="259"/>
         <source>编译日期</source>
-        <translation type="unfinished"></translation>
+        <translation>Compilation date</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="266"/>
         <location filename="../view/menu/about.ui" line="303"/>
         <location filename="../view/menu/about.ui" line="340"/>
         <source>获取失败！</source>
-        <translation type="unfinished"></translation>
+        <translation>Fail to get!</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="296"/>
         <source>Build Commit</source>
-        <translation type="unfinished"></translation>
+        <translation>Build Commit</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="333"/>
         <source>Build UUID</source>
-        <translation type="unfinished"></translation>
+        <translation>Build Universally Unique Identifier</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="359"/>
         <source>检查更新</source>
-        <translation type="unfinished"></translation>
+        <translation>Check for update</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="397"/>
         <source>此项目的 Github</source>
-        <translation type="unfinished"></translation>
+        <translation>GitHub Reopsitory of the project</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="425"/>
         <source>我的 哔哩哔哩 主页</source>
-        <translation type="unfinished"></translation>
+        <translation>My Bilibili homepage</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="460"/>
         <source>查看开放源代码许可</source>
-        <translation type="unfinished"></translation>
+        <translation>Check the open-source license</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="498"/>
         <source>鸣谢</source>
-        <translation type="unfinished"></translation>
+        <translation>Acknowledgement</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="522"/>
         <source>更新</source>
-        <translation type="unfinished"></translation>
+        <translation>Update</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="557"/>
         <source>选择更新通道</source>
-        <translation type="unfinished"></translation>
+        <translation>Choose updating channel</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="564"/>
         <source>将会获取选定更新通道的版本</source>
-        <translation type="unfinished"></translation>
+        <translation>Will get the version of the selected update channel</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="635"/>
         <source>启动 Class Widgets 时自动检查更新</source>
-        <translation type="unfinished"></translation>
+        <translation>Check for updates when starting Class Widgets</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="642"/>
