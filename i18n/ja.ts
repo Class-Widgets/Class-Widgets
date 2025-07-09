@@ -1933,7 +1933,7 @@
         <location filename="../menu.py" line="2299"/>
         <location filename="../menu.py" line="2953"/>
         <source>已切换到NTP时间,正在同步时间~</source>
-        <translation>NTP時刻に切り替え済み、時刻を同期中…</translation>
+        <translation>NTP時刻に切り替え済み、時刻を同期中</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2305"/>
