@@ -1856,68 +1856,68 @@
         <location filename="../menu.py" line="2235"/>
         <location filename="../menu.py" line="2889"/>
         <source>立即同步NTP时间</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP時刻を即時同期</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2242"/>
         <location filename="../menu.py" line="2896"/>
         <source> 分钟</source>
-        <translation type="unfinished"></translation>
+        <translation> 分</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2247"/>
         <source>系统时区</source>
-        <translation type="unfinished"></translation>
+        <translation>システムタイムゾーン</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2247"/>
         <source>local</source>
-        <translation type="unfinished"></translation>
+        <translation>local</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2248"/>
         <source>(UTC+0)  伦敦时间</source>
-        <translation type="unfinished"></translation>
+        <translation>(UTC+0)  ロンドン</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2249"/>
         <source>(UTC+1)  巴黎时间</source>
-        <translation type="unfinished"></translation>
+        <translation>(UTC+1)  パリス</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2250"/>
         <source>(UTC+3)  莫斯科时间</source>
-        <translation type="unfinished"></translation>
+        <translation>(UTC+3)  モスコ</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2251"/>
         <source>(UTC+8)  北京时间</source>
-        <translation type="unfinished"></translation>
+        <translation>(UTC+8)  北京</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2252"/>
         <source>(UTC+8)  新加坡时间</source>
-        <translation type="unfinished"></translation>
+        <translation>(UTC+8)  シンガポール</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2253"/>
         <source>(UTC+9)  东京时间</source>
-        <translation type="unfinished"></translation>
+        <translation>(UTC+9)  東京</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2254"/>
         <source>(UTC+10)  悉尼时间</source>
-        <translation type="unfinished"></translation>
+        <translation>(UTC+10)  シドニー</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2255"/>
         <source>(UTC-8)  洛杉矶时间</source>
-        <translation type="unfinished"></translation>
+        <translation>(UTC-8)  ロス·アンジェレス</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2256"/>
         <source>(UTC-5)  纽约时间</source>
-        <translation type="unfinished"></translation>
+        <translation>(UTC-5)  ニューヨーク</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2299"/>
@@ -1927,13 +1927,13 @@
         <location filename="../menu.py" line="2959"/>
         <location filename="../menu.py" line="2967"/>
         <source>时间设置</source>
-        <translation type="unfinished"></translation>
+        <translation>時間設定</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2299"/>
         <location filename="../menu.py" line="2953"/>
         <source>已切换到NTP时间,正在同步时间~</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP時刻に切り替え済み、時刻を同期中…</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2305"/>
