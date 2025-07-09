@@ -31,22 +31,22 @@
     <message>
         <location filename="../main.py" line="1730"/>
         <source>{year} 年 {month} 月</source>
-        <translation type="unfinished"></translation>
+        <translation>{year} 年 {month} 月</translation>
     </message>
     <message>
         <location filename="../main.py" line="2003"/>
         <source>完全隐藏/显示小组件</source>
-        <translation type="unfinished"></translation>
+        <translation>ウィジェットを完全に非表示／表示にする</translation>
     </message>
     <message>
         <location filename="../main.py" line="2004"/>
         <source>最小化为浮窗</source>
-        <translation type="unfinished"></translation>
+        <translation>フローティングウィンドウとして最小化</translation>
     </message>
     <message>
         <location filename="../main.py" line="2008"/>
         <source>插件广场</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグイン広場</translation>
     </message>
     <message>
         <location filename="../main.py" line="2009"/>
@@ -61,27 +61,27 @@
     <message>
         <location filename="../main.py" line="2013"/>
         <source>重新启动</source>
-        <translation type="unfinished"></translation>
+        <translation>再起動</translation>
     </message>
     <message>
         <location filename="../main.py" line="2014"/>
         <source>退出</source>
-        <translation type="unfinished"></translation>
+        <translation>戻る</translation>
     </message>
     <message>
         <location filename="../main.py" line="2130"/>
         <source>距离 {cd_text} 还有</source>
-        <translation type="unfinished"></translation>
+        <translation>{cd_text} まであと</translation>
     </message>
     <message>
         <location filename="../main.py" line="2349"/>
         <source>预警</source>
-        <translation type="unfinished"></translation>
+        <translation>警報</translation>
     </message>
     <message>
         <location filename="../main.py" line="2351"/>
         <source>{data}预警</source>
-        <translation type="unfinished"></translation>
+        <translation>{data}警報</translation>
     </message>
 </context>
 <context>
@@ -89,52 +89,52 @@
     <message>
         <location filename="../main.py" line="624"/>
         <source>Class Widgets 崩溃报告</source>
-        <translation type="unfinished"></translation>
+        <translation>Class Widgets クラッシュレポート</translation>
     </message>
     <message>
         <location filename="../main.py" line="626"/>
         <source>抱歉！Class Widgets 发生了严重的错误从而无法正常运行。您可以保存下方的错误信息并向他人求助。若您认为这是程序的Bug，请点击“报告此问题”或联系开发者。</source>
-        <translation type="unfinished"></translation>
+        <translation>申し訳ありません！Class Widgets に重大なエラーが発生し、正常に動作できませんでした。以下のエラーメッセージを保存して他の人に助けを求めることができます。プログラムのバグだと思われる場合は、「この問題を報告」をクリックするか、開発者にご連絡ください。</translation>
     </message>
     <message>
         <location filename="../main.py" line="641"/>
         <source>报告此问题</source>
-        <translation type="unfinished"></translation>
+        <translation>この問題を報告する</translation>
     </message>
     <message>
         <location filename="../main.py" line="642"/>
         <source>复制日志</source>
-        <translation type="unfinished"></translation>
+        <translation>ログをコピー</translation>
     </message>
     <message>
         <location filename="../main.py" line="643"/>
         <source>忽略错误</source>
-        <translation type="unfinished"></translation>
+        <translation>エラーを無視する</translation>
     </message>
     <message>
         <location filename="../main.py" line="645"/>
         <source>在下次启动之前，忽略此错误</source>
-        <translation type="unfinished"></translation>
+        <translation>次回起動までこのエラーを無視</translation>
     </message>
     <message>
         <location filename="../main.py" line="646"/>
         <source>重新启动</source>
-        <translation type="unfinished"></translation>
+        <translation>再起動</translation>
     </message>
     <message>
         <location filename="../main.py" line="650"/>
         <source>出错啦！ヽ(*。&gt;Д&lt;)o゜</source>
-        <translation type="unfinished"></translation>
+        <translation>エラーが発生しました！ヽ(*。&gt;Д&lt;)o゜</translation>
     </message>
     <message>
         <location filename="../main.py" line="686"/>
         <source>复制成功！ヾ(^▽^*)))</source>
-        <translation type="unfinished"></translation>
+        <translation>コピー成功！ヾ(^▽^*)))</translation>
     </message>
     <message>
         <location filename="../main.py" line="687"/>
         <source>日志已成功复制到剪贴板。</source>
-        <translation type="unfinished"></translation>
+        <translation>ログはクリップボードに正常にコピーされました。</translation>
     </message>
 </context>
 <context>
@@ -142,12 +142,12 @@
     <message>
         <location filename="../main.py" line="1438"/>
         <source>&lt; - 分钟</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt; - 分</translation>
     </message>
     <message>
         <location filename="../main.py" line="1441"/>
         <source>&lt;&#x2005;{minutes}&#x2005;分钟</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;&#x2005;{minutes}&#x2005;分</translation>
     </message>
 </context>
 <context>
@@ -1715,54 +1715,54 @@
     <message>
         <location filename="../menu.py" line="1189"/>
         <source>错误</source>
-        <translation type="unfinished"></translation>
+        <translation>エラー</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1224"/>
         <source>https://classwidgets.rinlit.cn/docs-user/</source>
-        <translation type="unfinished"></translation>
+        <translation>https://classwidgets.rinlit.cn/docs-user/</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1263"/>
         <source>上课提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>授業開始の通知</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1264"/>
         <location filename="../menu.py" line="1266"/>
         <location filename="../menu.py" line="1268"/>
         <source>信息技术</source>
-        <translation type="unfinished"></translation>
+        <translation>ICT</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1265"/>
         <source>下课提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>授業終了の通知</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1267"/>
         <source>预备提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>予鈴の通知</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1269"/>
         <source>其他提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>その他の通知</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1270"/>
         <source>通知</source>
-        <translation type="unfinished"></translation>
+        <translation>通知</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1270"/>
         <source>测试通知示例</source>
-        <translation type="unfinished"></translation>
+        <translation>通知テストのサンプル</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1271"/>
         <source>这是一条测试通知ヾ(≧▽≦*)o</source>
-        <translation type="unfinished"></translation>
+        <translation>これはテスト通知ですヾ(≧▽≦*)o</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1475"/>
@@ -1771,84 +1771,86 @@
         <location filename="../menu.py" line="1616"/>
         <location filename="../menu.py" line="1636"/>
         <source>未启用</source>
-        <translation type="unfinished"></translation>
+        <translation>未有効</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1569"/>
         <source>引擎小提示</source>
-        <translation type="unfinished"></translation>
+        <translation>エンジンのヒント</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1573"/>
         <source>Edge TTS 需要联网才能正常发声哦~
 请确保网络连接,不然会说不出话来(&gt;﹏&lt;)
 * 可能会有一定的延迟,耐心等待一下~</source>
-        <translation type="unfinished"></translation>
+        <translation>Edge TTS は正常に音声を再生するためにインターネット接続が必要です〜 
+ネットワーク接続を確認してください、そうしないと音声が出ません(&gt;﹏&lt;) 
+* 遅延が発生する場合がありますので、しばらくお待ちください〜</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1616"/>
         <location filename="../menu.py" line="1774"/>
         <source>加载失败</source>
-        <translation type="unfinished"></translation>
+        <translation>読み込みに失敗しました</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1616"/>
         <location filename="../menu.py" line="1664"/>
         <source>无可用语音</source>
-        <translation type="unfinished"></translation>
+        <translation>利用可能な音声がありません</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1630"/>
         <source>请选择引擎</source>
-        <translation type="unfinished"></translation>
+        <translation>エンジンを選択してください</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1779"/>
         <source>TTS语音加载失败</source>
-        <translation type="unfinished"></translation>
+        <translation>TTS音声の読み込みに失敗しました</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1779"/>
         <source>加载TTS语音时发生错误:
 {error_message}</source>
-        <translation type="unfinished"></translation>
+        <translation>TTS音声の読み込み中にエラーが発生しました: {error_message}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2049"/>
         <source>https://github.com/RinLit-233-shiroko/Class-Widgets</source>
-        <translation type="unfinished"></translation>
+        <translation>https://github.com/RinLit-233-shiroko/Class-Widgets</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2053"/>
         <source>https://space.bilibili.com/569522843</source>
-        <translation type="unfinished"></translation>
+        <translation>https://space.bilibili.com/569522843</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2060"/>
         <source>https://github.com/RinLit-233-shiroko/Class-Widgets?tab=readme-ov-file#致谢</source>
-        <translation type="unfinished"></translation>
+        <translation>https://github.com/RinLit-233-shiroko/Class-Widgets?tab=readme-ov-file#致谢</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2182"/>
         <source>灵活模式</source>
-        <translation type="unfinished"></translation>
+        <translation>フレキシブルモード</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2182"/>
         <source>灵活模式为上课时自动隐藏，可手动改变隐藏状态，当前课程状态（上课/课间）改变后会清除手动隐藏状态，重新转为自动隐藏。</source>
-        <translation type="unfinished"></translation>
+        <translation>フレキシブルモードは授業中に自動的に非表示になりますが、手動で表示状態を変更可能です。現在の授業ステータス（授業中/休憩時間）が変更されると、手動での非表示状態は解除され、自動非表示に戻ります。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2219"/>
         <location filename="../menu.py" line="2873"/>
         <source>系统时间</source>
-        <translation type="unfinished"></translation>
+        <translation>システム時間</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2219"/>
         <location filename="../menu.py" line="2873"/>
         <source>NTP时间</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP時間</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2235"/>
