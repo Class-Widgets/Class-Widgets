@@ -31,7 +31,7 @@
     <message>
         <location filename="../main.py" line="1730"/>
         <source>{year} 年 {month} 月</source>
-        <translation type="unfinished"></translation>
+        <translation>{year} 年 {month} 月</translation>
     </message>
     <message>
         <location filename="../main.py" line="2003"/>
