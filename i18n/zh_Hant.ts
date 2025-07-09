@@ -32,22 +32,22 @@
     <message>
         <location filename="../main.py" line="1730"/>
         <source>{year} 年 {month} 月</source>
-        <translation type="unfinished"></translation>
+        <translation>{year} 年 {month} 月</translation>
     </message>
     <message>
         <location filename="../main.py" line="2003"/>
         <source>完全隐藏/显示小组件</source>
-        <translation type="unfinished"></translation>
+        <translation>完全隱藏/顯示小組件</translation>
     </message>
     <message>
         <location filename="../main.py" line="2004"/>
         <source>最小化为浮窗</source>
-        <translation type="unfinished"></translation>
+        <translation>最小化視窗</translation>
     </message>
     <message>
         <location filename="../main.py" line="2008"/>
         <source>插件广场</source>
-        <translation type="unfinished"></translation>
+        <translation>插件商店</translation>
     </message>
     <message>
         <location filename="../main.py" line="2009"/>
@@ -62,27 +62,27 @@
     <message>
         <location filename="../main.py" line="2013"/>
         <source>重新启动</source>
-        <translation type="unfinished"></translation>
+        <translation>重新啟動</translation>
     </message>
     <message>
         <location filename="../main.py" line="2014"/>
         <source>退出</source>
-        <translation type="unfinished"></translation>
+        <translation>退出</translation>
     </message>
     <message>
         <location filename="../main.py" line="2130"/>
         <source>距离 {cd_text} 还有</source>
-        <translation type="unfinished"></translation>
+        <translation>距離 {cd_text} 還有</translation>
     </message>
     <message>
         <location filename="../main.py" line="2349"/>
         <source>预警</source>
-        <translation type="unfinished"></translation>
+        <translation>預警</translation>
     </message>
     <message>
         <location filename="../main.py" line="2351"/>
         <source>{data}预警</source>
-        <translation type="unfinished"></translation>
+        <translation>{data}預警</translation>
     </message>
 </context>
 <context>
@@ -90,52 +90,52 @@
     <message>
         <location filename="../main.py" line="624"/>
         <source>Class Widgets 崩溃报告</source>
-        <translation type="unfinished"></translation>
+        <translation>Class Widgets 崩潰報告</translation>
     </message>
     <message>
         <location filename="../main.py" line="626"/>
         <source>抱歉！Class Widgets 发生了严重的错误从而无法正常运行。您可以保存下方的错误信息并向他人求助。若您认为这是程序的Bug，请点击“报告此问题”或联系开发者。</source>
-        <translation type="unfinished"></translation>
+        <translation>抱歉！Class Widgets 發生嚴重錯誤，未能正常運行。您可儲存以下錯誤資訊，並尋求技術支援。若您認為這是程式錯誤，請點擊「回報問題」或聯絡開發人員。</translation>
     </message>
     <message>
         <location filename="../main.py" line="641"/>
         <source>报告此问题</source>
-        <translation type="unfinished"></translation>
+        <translation>報告本問題</translation>
     </message>
     <message>
         <location filename="../main.py" line="642"/>
         <source>复制日志</source>
-        <translation type="unfinished"></translation>
+        <translation>複製紀錄</translation>
     </message>
     <message>
         <location filename="../main.py" line="643"/>
         <source>忽略错误</source>
-        <translation type="unfinished"></translation>
+        <translation>略過錯誤</translation>
     </message>
     <message>
         <location filename="../main.py" line="645"/>
         <source>在下次启动之前，忽略此错误</source>
-        <translation type="unfinished"></translation>
+        <translation>在下次啟動之前，略過本錯誤</translation>
     </message>
     <message>
         <location filename="../main.py" line="646"/>
         <source>重新启动</source>
-        <translation type="unfinished"></translation>
+        <translation>重新啟動</translation>
     </message>
     <message>
         <location filename="../main.py" line="650"/>
         <source>出错啦！ヽ(*。&gt;Д&lt;)o゜</source>
-        <translation type="unfinished"></translation>
+        <translation>出錯啦！ヽ(*。&gt;Д&lt;)o゜</translation>
     </message>
     <message>
         <location filename="../main.py" line="686"/>
         <source>复制成功！ヾ(^▽^*)))</source>
-        <translation type="unfinished"></translation>
+        <translation>複製成功！ヾ(^▽^*)))</translation>
     </message>
     <message>
         <location filename="../main.py" line="687"/>
         <source>日志已成功复制到剪贴板。</source>
-        <translation type="unfinished"></translation>
+        <translation>紀錄已成功複製到剪貼簿。</translation>
     </message>
 </context>
 <context>
@@ -143,12 +143,12 @@
     <message>
         <location filename="../main.py" line="1438"/>
         <source>&lt; - 分钟</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt; - 分鐘</translation>
     </message>
     <message>
         <location filename="../main.py" line="1441"/>
         <source>&lt;&#x2005;{minutes}&#x2005;分钟</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;&#x2005;{minutes}&#x2005;分鐘</translation>
     </message>
 </context>
 <context>
@@ -451,42 +451,42 @@
     <message>
         <location filename="../view/menu/advance.ui" line="349"/>
         <source>时间获得方法</source>
-        <translation type="unfinished"></translation>
+        <translation>時間獲得方法</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="356"/>
         <source>选择时间获得方法</source>
-        <translation type="unfinished"></translation>
+        <translation>選擇時間獲得方法</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="457"/>
         <source>NTP服务器</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP伺服器</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="464"/>
         <source>使用url链接NTP服务器同步时间</source>
-        <translation type="unfinished"></translation>
+        <translation>使用 URL 鏈接 NTP 伺服器以同步時間</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="544"/>
         <source>NTP同步使用的时区</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP同步使用的時區</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="551"/>
         <source>NTP同步时应使用的时区</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP同步時應該使用的時區</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="622"/>
         <source>NTP自动校准</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP自動校時</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="632"/>
         <source>上次校准: 1145年1月1日 - 11:45:14</source>
-        <translation type="unfinished"></translation>
+        <translation>上次校時：公元 1145 年 1 月 1 日 11:45:14</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="656"/>
