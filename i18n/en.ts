@@ -7,23 +7,24 @@
         <location filename="../menu.py" line="1585"/>
         <source>系统 TTS（pyttsx3）用的是系统自带的语音服务噢~
 您可以在系统设置里添加更多语音(*≧▽≦)</source>
-        <translation type="unfinished"></translation>
+        <translation>Systems TTS (pyttsx3) are used by a system-owned voice service ~
+You can add more voice in System Settings(*≧▽≦)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1587"/>
         <source>打开Windows语音设置</source>
-        <translation type="unfinished"></translation>
+        <translation>Open Windows speech settings</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1592"/>
         <location filename="../menu.py" line="1601"/>
         <source>知道啦~</source>
-        <translation type="unfinished"></translation>
+        <translation>I know it~</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1600"/>
         <source>这个语音引擎还没有提示信息呢~(・ω&lt;)</source>
-        <translation type="unfinished"></translation>
+        <translation>This voice engine haven&apos;t provide any prompt message yet ~(・ω&lt;)</translation>
     </message>
 </context>
 <context>
@@ -31,57 +32,57 @@
     <message>
         <location filename="../main.py" line="1730"/>
         <source>{year} 年 {month} 月</source>
-        <translation type="unfinished"></translation>
+        <translation>Year {year} month {month}</translation>
     </message>
     <message>
         <location filename="../main.py" line="2003"/>
         <source>完全隐藏/显示小组件</source>
-        <translation type="unfinished"></translation>
+        <translation>Completely hide/show widgets</translation>
     </message>
     <message>
         <location filename="../main.py" line="2004"/>
         <source>最小化为浮窗</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimize to a floating window</translation>
     </message>
     <message>
         <location filename="../main.py" line="2008"/>
         <source>插件广场</source>
-        <translation type="unfinished"></translation>
+        <translation>Plugin Plaza</translation>
     </message>
     <message>
         <location filename="../main.py" line="2009"/>
         <source>额外选项</source>
-        <translation type="unfinished"></translation>
+        <translation>Extra settings</translation>
     </message>
     <message>
         <location filename="../main.py" line="2010"/>
         <source>设置</source>
-        <translation type="unfinished"></translation>
+        <translation>Settings</translation>
     </message>
     <message>
         <location filename="../main.py" line="2013"/>
         <source>重新启动</source>
-        <translation type="unfinished"></translation>
+        <translation>Restart</translation>
     </message>
     <message>
         <location filename="../main.py" line="2014"/>
         <source>退出</source>
-        <translation type="unfinished"></translation>
+        <translation>Exit</translation>
     </message>
     <message>
         <location filename="../main.py" line="2130"/>
         <source>距离 {cd_text} 还有</source>
-        <translation type="unfinished"></translation>
+        <translation>Till {cd_text}</translation>
     </message>
     <message>
         <location filename="../main.py" line="2349"/>
         <source>预警</source>
-        <translation type="unfinished"></translation>
+        <translation>Early warning</translation>
     </message>
     <message>
         <location filename="../main.py" line="2351"/>
         <source>{data}预警</source>
-        <translation type="unfinished"></translation>
+        <translation>{data} Early Warning</translation>
     </message>
 </context>
 <context>
@@ -89,17 +90,17 @@
     <message>
         <location filename="../main.py" line="624"/>
         <source>Class Widgets 崩溃报告</source>
-        <translation type="unfinished"></translation>
+        <translation>Class Widgets crash report</translation>
     </message>
     <message>
         <location filename="../main.py" line="626"/>
         <source>抱歉！Class Widgets 发生了严重的错误从而无法正常运行。您可以保存下方的错误信息并向他人求助。若您认为这是程序的Bug，请点击“报告此问题”或联系开发者。</source>
-        <translation type="unfinished"></translation>
+        <translation>Sorry! Something wrong happend to Class Widgets and stoppend it from running proprtly. You can save the following error infomation and ask for help to others. If you think is is a bug of the program, click &quot;Report the problem&quot; or contact developer.</translation>
     </message>
     <message>
         <location filename="../main.py" line="641"/>
         <source>报告此问题</source>
-        <translation type="unfinished"></translation>
+        <translation>Report</translation>
     </message>
     <message>
         <location filename="../main.py" line="642"/>
