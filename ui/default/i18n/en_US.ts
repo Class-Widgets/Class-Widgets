@@ -21,7 +21,7 @@
         <location filename="../toast-open_dialog.ui" line="142"/>
         <location filename="../dark/toast-open_dialog.ui" line="142"/>
         <source>即将打开</source>
-        <translation type="unfinished"></translation>
+        <translation>Will open</translation>
     </message>
     <message>
         <location filename="../toast-open_dialog.ui" line="171"/>
@@ -29,67 +29,67 @@
         <location filename="../dark/toast-open_dialog.ui" line="171"/>
         <location filename="../dark/widget-floating.ui" line="153"/>
         <source>测试</source>
-        <translation type="unfinished"></translation>
+        <translation>Debug</translation>
     </message>
     <message>
         <location filename="../toast-open_dialog.ui" line="210"/>
         <location filename="../dark/toast-open_dialog.ui" line="210"/>
         <source>取消</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location filename="../widget-base.ui" line="26"/>
         <location filename="../dark/widget-base.ui" line="26"/>
         <source>基本组件</source>
-        <translation type="unfinished"></translation>
+        <translation>Basic compotents</translation>
     </message>
     <message>
         <location filename="../widget-base.ui" line="90"/>
         <location filename="../dark/widget-base.ui" line="90"/>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Title</translation>
     </message>
     <message>
         <location filename="../widget-base.ui" line="127"/>
         <location filename="../dark/widget-base.ui" line="127"/>
         <source>Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Content</translation>
     </message>
     <message>
         <location filename="../widget-countdown-day.ui" line="26"/>
         <location filename="../dark/widget-countdown-day.ui" line="26"/>
         <source>倒计日</source>
-        <translation type="unfinished"></translation>
+        <translation>Countdown date</translation>
     </message>
     <message>
         <location filename="../widget-countdown-day.ui" line="50"/>
         <location filename="../dark/widget-countdown-day.ui" line="50"/>
         <source>距离 中考 还有</source>
-        <translation type="unfinished"></translation>
+        <translation>Days till Senior High School Entrance Exam(Zhongkao)</translation>
     </message>
     <message>
         <location filename="../widget-countdown-day.ui" line="82"/>
         <location filename="../dark/widget-countdown-day.ui" line="82"/>
         <source>300 天</source>
-        <translation type="unfinished"></translation>
+        <translation>300 Days</translation>
     </message>
     <message>
         <location filename="../widget-countdown.ui" line="26"/>
         <location filename="../dark/widget-countdown.ui" line="26"/>
         <source>活动倒计时</source>
-        <translation type="unfinished"></translation>
+        <translation>Activity countdown</translation>
     </message>
     <message>
         <location filename="../widget-countdown.ui" line="84"/>
         <location filename="../dark/widget-countdown.ui" line="84"/>
         <source>倒计时</source>
-        <translation type="unfinished"></translation>
+        <translation>Countdown</translation>
     </message>
     <message>
         <location filename="../widget-countdown.ui" line="116"/>
         <location filename="../dark/widget-countdown.ui" line="116"/>
         <source>00:00</source>
-        <translation type="unfinished"></translation>
+        <translation>00:00</translation>
     </message>
     <message>
         <location filename="../widget-current-activity.ui" line="26"/>
@@ -97,49 +97,49 @@
         <location filename="../dark/widget-current-activity.ui" line="26"/>
         <location filename="../dark/widget-current-activity.ui" line="108"/>
         <source>当前活动</source>
-        <translation type="unfinished"></translation>
+        <translation>Current Activity</translation>
     </message>
     <message>
         <location filename="../widget-current-activity.ui" line="51"/>
         <location filename="../dark/widget-current-activity.ui" line="56"/>
         <source>  测试</source>
-        <translation type="unfinished"></translation>
+        <translation>  ..Debug</translation>
     </message>
     <message>
         <location filename="../widget-floating.ui" line="165"/>
         <location filename="../dark/widget-floating.ui" line="178"/>
         <source>&lt;0分钟</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;0 Minutes</translation>
     </message>
     <message>
         <location filename="../widget-floating.ui" line="206"/>
         <location filename="../dark/widget-floating.ui" line="219"/>
         <source>%p%</source>
-        <translation type="unfinished"></translation>
+        <translation>%p%</translation>
     </message>
     <message>
         <location filename="../widget-next-activity.ui" line="26"/>
         <location filename="../dark/widget-next-activity.ui" line="26"/>
         <source>更多活动</source>
-        <translation type="unfinished"></translation>
+        <translation>More Activity</translation>
     </message>
     <message>
         <location filename="../widget-next-activity.ui" line="50"/>
         <location filename="../dark/widget-next-activity.ui" line="50"/>
         <source>接下来</source>
-        <translation type="unfinished"></translation>
+        <translation>Coming</translation>
     </message>
     <message>
         <location filename="../widget-next-activity.ui" line="82"/>
         <location filename="../dark/widget-next-activity.ui" line="82"/>
         <source>测试测试</source>
-        <translation type="unfinished"></translation>
+        <translation>Test</translation>
     </message>
     <message>
         <location filename="../widget-time.ui" line="26"/>
         <location filename="../dark/widget-time.ui" line="26"/>
         <source>时间</source>
-        <translation type="unfinished"></translation>
+        <translation>Time</translation>
     </message>
     <message>
         <location filename="../widget-time.ui" line="50"/>
