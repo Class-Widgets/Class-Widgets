@@ -3995,7 +3995,7 @@ Do you want to hide the widget?</translation>
         <source>当前缩放系数为 {scale_factor}%，可能导致显示异常。
 建议将缩放系数设置为 100% 到 180% 之间。</source>
         <translation>Current sa=caling factor is {scale_factor}% now, and it may cause display problems.
-It is recommended to set the scaling factor to a value between 100% and 180%</translation>
+It is recommended to set the scaling factor to a value between 100% and 180%.</translation>
     </message>
     <message>
         <location filename="../main.py" line="2904"/>
