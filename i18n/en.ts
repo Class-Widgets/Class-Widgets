@@ -100,42 +100,42 @@ You can add more voice in System Settings(*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="641"/>
         <source>报告此问题</source>
-        <translation>Report</translation>
+        <translation>Report the problem</translation>
     </message>
     <message>
         <location filename="../main.py" line="642"/>
         <source>复制日志</source>
-        <translation type="unfinished"></translation>
+        <translation>Copy log</translation>
     </message>
     <message>
         <location filename="../main.py" line="643"/>
         <source>忽略错误</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignore error</translation>
     </message>
     <message>
         <location filename="../main.py" line="645"/>
         <source>在下次启动之前，忽略此错误</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignore this error till next launch</translation>
     </message>
     <message>
         <location filename="../main.py" line="646"/>
         <source>重新启动</source>
-        <translation type="unfinished"></translation>
+        <translation>Restart</translation>
     </message>
     <message>
         <location filename="../main.py" line="650"/>
         <source>出错啦！ヽ(*。&gt;Д&lt;)o゜</source>
-        <translation type="unfinished"></translation>
+        <translation>Something wrong happened! ヽ(*。&gt;Д&lt;)o゜</translation>
     </message>
     <message>
         <location filename="../main.py" line="686"/>
         <source>复制成功！ヾ(^▽^*)))</source>
-        <translation type="unfinished"></translation>
+        <translation>Copy success! ヾ(^▽^*)))</translation>
     </message>
     <message>
         <location filename="../main.py" line="687"/>
         <source>日志已成功复制到剪贴板。</source>
-        <translation type="unfinished"></translation>
+        <translation>Successfully copied the log to the clipboard</translation>
     </message>
 </context>
 <context>
