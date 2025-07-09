@@ -15,7 +15,7 @@
         <location filename="../toast-open_dialog.ui" line="105"/>
         <location filename="../dark/toast-open_dialog.ui" line="105"/>
         <source>%p</source>
-        <translation type="unfinished"></translation>
+        <translation>%p</translation>
     </message>
     <message>
         <location filename="../toast-open_dialog.ui" line="142"/>
