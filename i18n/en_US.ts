@@ -24,7 +24,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../menu.py" line="1600"/>
         <source>这个语音引擎还没有提示信息呢~(・ω&lt;)</source>
-        <translation>The voice engine doesn&apos;t have any prompts yet. ~(・ω&lt;)</translation>
+        <translation>This voice engine doesn&apos;t have any tip yet ~ (・ω&lt;)</translation>
     </message>
 </context>
 <context>
@@ -42,7 +42,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="2004"/>
         <source>最小化为浮窗</source>
-        <translation>Minimize into floating windows</translation>
+        <translation>Minimize to floating windows</translation>
     </message>
     <message>
         <location filename="../main.py" line="2008"/>
@@ -77,12 +77,12 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="2349"/>
         <source>预警</source>
-        <translation>Early warning</translation>
+        <translation>alert</translation>
     </message>
     <message>
         <location filename="../main.py" line="2351"/>
         <source>{data}预警</source>
-        <translation>{data} early warning</translation>
+        <translation>{data} alert</translation>
     </message>
 </context>
 <context>
@@ -95,7 +95,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="626"/>
         <source>抱歉！Class Widgets 发生了严重的错误从而无法正常运行。您可以保存下方的错误信息并向他人求助。若您认为这是程序的Bug，请点击“报告此问题”或联系开发者。</source>
-        <translation>Sorry! Something went wrong with Class Widgets, causing it to stop working properly. You can save the following error information and seek help from others. If you believe this is a bug, click &apos;Report the problem&apos; or contact the developer.</translation>
+        <translation>Sorry! Something went wrong with Class Widgets, causing it to stop working properly. You can save the following error information and seek help from others. If you believe this is a bug, click &apos;Report this issuse&apos; or contact the developer.</translation>
     </message>
     <message>
         <location filename="../main.py" line="641"/>
