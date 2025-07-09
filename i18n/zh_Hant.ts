@@ -1979,32 +1979,32 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
     <message>
         <location filename="../menu.py" line="2251"/>
         <source>(UTC+8)  北京时间</source>
-        <translation>(UTC+8)  香港时间</translation>
+        <translation>(UTC+8)  香港時間</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2252"/>
         <source>(UTC+8)  新加坡时间</source>
-        <translation type="unfinished"></translation>
+        <translation>(UTC+8)  星加坡時間</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2253"/>
         <source>(UTC+9)  东京时间</source>
-        <translation type="unfinished"></translation>
+        <translation>(UTC+9)  東京時間</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2254"/>
         <source>(UTC+10)  悉尼时间</source>
-        <translation type="unfinished"></translation>
+        <translation>(UTC+10)  悉尼時間</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2255"/>
         <source>(UTC-8)  洛杉矶时间</source>
-        <translation type="unfinished"></translation>
+        <translation>(UTC-8)  洛杉磯時間</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2256"/>
         <source>(UTC-5)  纽约时间</source>
-        <translation type="unfinished"></translation>
+        <translation>(UTC-5)  紐約時間</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2299"/>
@@ -2014,25 +2014,25 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
         <location filename="../menu.py" line="2959"/>
         <location filename="../menu.py" line="2967"/>
         <source>时间设置</source>
-        <translation type="unfinished"></translation>
+        <translation>時間設定</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2299"/>
         <location filename="../menu.py" line="2953"/>
         <source>已切换到NTP时间,正在同步时间~</source>
-        <translation type="unfinished"></translation>
+        <translation>已切換至 NTP 時間，正在同步時間～</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2305"/>
         <location filename="../menu.py" line="2959"/>
         <source>已切换到系统时间</source>
-        <translation type="unfinished"></translation>
+        <translation>已切換至系統時間</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2313"/>
         <location filename="../menu.py" line="2967"/>
         <source>切换失败</source>
-        <translation type="unfinished"></translation>
+        <translation>切換失敗</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2320"/>
@@ -2052,31 +2052,31 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
         <location filename="../menu.py" line="3431"/>
         <location filename="../menu.py" line="3438"/>
         <source>NTP同步</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP同步</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2320"/>
         <location filename="../menu.py" line="2974"/>
         <source>当前无需NTP同步</source>
-        <translation type="unfinished"></translation>
+        <translation>目前無需 NTP 同步</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2323"/>
         <location filename="../menu.py" line="2977"/>
         <source>当前时间管理器不支持NTP同步</source>
-        <translation type="unfinished"></translation>
+        <translation>當前時間管理器不支援 NTP 同步</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2325"/>
         <location filename="../menu.py" line="2979"/>
         <source>正在同步NTP时间~</source>
-        <translation type="unfinished"></translation>
+        <translation>正在同步 NTP 時間～</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2329"/>
         <location filename="../menu.py" line="2983"/>
         <source>NTP时间同步失败</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP 時間同步失敗</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2348"/>
@@ -2086,25 +2086,25 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
         <location filename="../menu.py" line="3005"/>
         <location filename="../menu.py" line="3008"/>
         <source>NTP设置</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP設定</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2348"/>
         <location filename="../menu.py" line="3002"/>
         <source>已开启NTP自动同步ヾ(≧▽≦*)o</source>
-        <translation type="unfinished"></translation>
+        <translation>已開啟 NTP 自動同步ヾ(≧▽≦*)o</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2351"/>
         <location filename="../menu.py" line="3005"/>
         <source>已关闭NTP自动同步(≧﹏ ≦)</source>
-        <translation type="unfinished"></translation>
+        <translation>已關閉 NTP 自動同步 (≧﹏≦)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2354"/>
         <location filename="../menu.py" line="3008"/>
         <source>设置失败 (╥﹏╥)</source>
-        <translation type="unfinished"></translation>
+        <translation>設定失敗 (╥﹏╥)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2364"/>
@@ -2114,103 +2114,105 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
         <location filename="../menu.py" line="3025"/>
         <location filename="../menu.py" line="3028"/>
         <source>时区设置</source>
-        <translation type="unfinished"></translation>
+        <translation>時區設定</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2364"/>
         <location filename="../menu.py" line="3018"/>
         <source>时区已更新为 {ntp_sync_timezone}，正在重新同步时间~</source>
-        <translation type="unfinished"></translation>
+        <translation>時區已更新為 {ntp_sync_timezone}，正在重新同步時間～</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2371"/>
         <source>时区已设置为 {ntp_sync_timezone}</source>
-        <translation type="unfinished"></translation>
+        <translation>時區已設定為 {ntp_sync_timezone}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2374"/>
         <location filename="../menu.py" line="3028"/>
         <source>时区设置失败</source>
-        <translation type="unfinished"></translation>
+        <translation>時區設定失敗</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2431"/>
         <location filename="../menu.py" line="3085"/>
         <source>NTP服务器URL不能为空 o(〃＾▽＾〃)o
 请输入有效的NTP服务器地址</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP 伺服器 URL 不可為空 o(〃＾▽＾〃)o
+請輸入有效的 NTP 伺服器地址</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2462"/>
         <location filename="../menu.py" line="3116"/>
         <source>NTP服务器已更新: {url}</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP 伺服器已更新：{url}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2470"/>
         <location filename="../menu.py" line="3124"/>
         <source>URL格式可能不正确: {url}
 请检查是否为有效的域名或IP地址（︶^︶）</source>
-        <translation type="unfinished"></translation>
+        <translation>URL 格式可能不正確：{url}
+請檢查是否為有效的域名或 IP 地址（︶^︶）</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2721"/>
         <location filename="../menu.py" line="3375"/>
         <source>当前使用: 系统本地时间</source>
-        <translation type="unfinished"></translation>
+        <translation>當前使用：系統本地時間</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2725"/>
         <location filename="../menu.py" line="3379"/>
         <source>%Y年%m月%d日 - %H:%M:%S</source>
-        <translation type="unfinished"></translation>
+        <translation>%Y年%m月%d日 - %H:%M:%S</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2726"/>
         <location filename="../menu.py" line="3380"/>
         <source>上次NTP校准: {sync_time_str}</source>
-        <translation type="unfinished"></translation>
+        <translation>上次 NTP 校時：{sync_time_str}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2728"/>
         <location filename="../menu.py" line="3382"/>
         <source>NTP时间: 尚未进行校准</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP 時間：尚未進行校時</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2730"/>
         <location filename="../menu.py" line="3384"/>
         <source>时间状态: 未知</source>
-        <translation type="unfinished"></translation>
+        <translation>時間狀態：未知</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2752"/>
         <location filename="../menu.py" line="3406"/>
         <source>同步正在进行中,请稍候~</source>
-        <translation type="unfinished"></translation>
+        <translation>同步正在進行中，請稍候～</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2770"/>
         <location filename="../menu.py" line="3424"/>
         <source>启动同步失败</source>
-        <translation type="unfinished"></translation>
+        <translation>啟動同步失敗</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2777"/>
         <location filename="../menu.py" line="3431"/>
         <source>NTP时间同步成功!</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP 時間同步成功！</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2784"/>
         <location filename="../menu.py" line="3438"/>
         <source>NTP时间同步失败,请检查网络连接和url地址!</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP 時間同步失敗，請檢查網絡連接及 URL 地址！</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3025"/>
         <source>时区已更新为 {ntp_sync_timezone}</source>
-        <translation type="unfinished"></translation>
+        <translation>時區已更新為 {ntp_sync_timezone}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3529"/>
@@ -2357,13 +2359,14 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
     <message>
         <location filename="../menu.py" line="3872"/>
         <source>检查更新失败！</source>
-        <translation type="unfinished"></translation>
+        <translation>檢查更新失敗！</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3873"/>
         <source>检查更新失败！
 {data}</source>
-        <translation type="unfinished"></translation>
+        <translation>檢查更新失敗！
+{data}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3925"/>
@@ -3241,7 +3244,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../main.py" line="1041"/>
         <source>未知组件</source>
-        <translation type="unfinished"></translation>
+        <translation>未知組件</translation>
     </message>
 </context>
 <context>
@@ -3880,7 +3883,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../main.py" line="337"/>
         <source>未添加</source>
-        <translation type="unfinished"></translation>
+        <translation>未添加</translation>
     </message>
     <message>
         <location filename="../main.py" line="340"/>
@@ -3895,22 +3898,22 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../main.py" line="409"/>
         <source>当前活动结束还有</source>
-        <translation type="unfinished"></translation>
+        <translation>距離當前活動結束還有</translation>
     </message>
     <message>
         <location filename="../main.py" line="411"/>
         <source>课间时长还有</source>
-        <translation type="unfinished"></translation>
+        <translation>課間時間還有</translation>
     </message>
     <message>
         <location filename="../main.py" line="446"/>
         <source>距离上课还有</source>
-        <translation type="unfinished"></translation>
+        <translation>距離上課還有</translation>
     </message>
     <message>
         <location filename="../main.py" line="448"/>
         <source>目前课程已结束</source>
-        <translation type="unfinished"></translation>
+        <translation>目前課程已結束</translation>
     </message>
     <message>
         <location filename="../main.py" line="521"/>
@@ -3920,22 +3923,22 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../main.py" line="800"/>
         <source>示例课程</source>
-        <translation type="unfinished"></translation>
+        <translation>示範課程</translation>
     </message>
     <message>
         <location filename="../main.py" line="800"/>
         <source>通知示例</source>
-        <translation type="unfinished"></translation>
+        <translation>通知示範</translation>
     </message>
     <message>
         <location filename="../main.py" line="800"/>
         <source>副标题</source>
-        <translation type="unfinished"></translation>
+        <translation>副標題</translation>
     </message>
     <message>
         <location filename="../main.py" line="801"/>
         <source>这是一条通知示例</source>
-        <translation type="unfinished"></translation>
+        <translation>這是一則通知範例</translation>
     </message>
     <message>
         <location filename="../main.py" line="2505"/>
@@ -3953,14 +3956,16 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <location filename="../main.py" line="2507"/>
         <location filename="../main.py" line="2536"/>
         <source>暂时无法变更“状态”</source>
-        <translation type="unfinished"></translation>
+        <translation>暫時無法變更&quot;狀態&quot;</translation>
     </message>
     <message>
         <location filename="../main.py" line="2510"/>
         <source>您正在使用 {hide_mode_text} 模式，无法变更隐藏状态
 若变更状态，将修改隐藏模式“灵活隐藏” (您稍后可以在“设置”中更改此选项)
 您确定要隐藏组件吗?</source>
-        <translation type="unfinished"></translation>
+        <translation>您正在使用 {hide_mode_text} 模式，無法變更隱藏狀態。
+若變更狀態，將會修改隱藏模式為「靈活隱藏」（您稍後可在「設定」中更改此選項）。
+您確定要隱藏此組件嗎？</translation>
     </message>
     <message>
         <location filename="../main.py" line="2514"/>
@@ -3979,31 +3984,35 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <source>您正在使用 {hide_mode_text} 模式，无法变更隐藏状态
 若变更状态，将修改隐藏模式“灵活隐藏” (您可以在“设置”中更改此选项)
 您确定要隐藏组件吗?</source>
-        <translation type="unfinished"></translation>
+        <translation>你正在使用 {hide_mode_text} 模式，無法變更隱藏狀態。
+若變更狀態，將會修改隱藏模式為「靈活隱藏」（您可以在「設定」中更改此選項）。
+你確定要隱藏此組件嗎？</translation>
     </message>
     <message>
         <location filename="../main.py" line="2860"/>
         <location filename="../main.py" line="2929"/>
         <source>Class Widgets 正在运行</source>
-        <translation type="unfinished"></translation>
+        <translation>Class Widgets 正在運行</translation>
     </message>
     <message>
         <location filename="../main.py" line="2863"/>
         <location filename="../main.py" line="2932"/>
         <source>Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。
 (若您需要打开多个实例，请在“设置”-&gt;“高级选项”中启用“允许程序多开”)</source>
-        <translation type="unfinished"></translation>
+        <translation>Class Widgets 正在運行！請勿開啟多個實例，否則可能會出現不可預知的問題。
+（若您需要開啟多個實例，請於「設定」→「進階選項」中啟用「允許程式多開」）</translation>
     </message>
     <message>
         <location filename="../main.py" line="2902"/>
         <source>缩放系数过大</source>
-        <translation type="unfinished"></translation>
+        <translation>縮放係數過大</translation>
     </message>
     <message>
         <location filename="../main.py" line="2903"/>
         <source>当前缩放系数为 {scale_factor}%，可能导致显示异常。
 建议将缩放系数设置为 100% 到 180% 之间。</source>
-        <translation type="unfinished"></translation>
+        <translation>當前縮放係數為 {scale_factor}%，可能導致顯示異常。
+建議將縮放係數設定於 100% 至 180% 之間。</translation>
     </message>
     <message>
         <location filename="../main.py" line="2904"/>
