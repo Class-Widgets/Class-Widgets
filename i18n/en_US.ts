@@ -32,7 +32,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="1730"/>
         <source>{year} 年 {month} 月</source>
-        <translation>united nations development programme</translation>
+        <translation>{year} Year {month} Month</translation>
     </message>
     <message>
         <location filename="../main.py" line="2003"/>
@@ -52,12 +52,12 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="2009"/>
         <source>额外选项</source>
-        <translation type="unfinished">Additional Options</translation>
+        <translation>Additional Options</translation>
     </message>
     <message>
         <location filename="../main.py" line="2010"/>
         <source>设置</source>
-        <translation type="unfinished">Settings</translation>
+        <translation>Settings</translation>
     </message>
     <message>
         <location filename="../main.py" line="2013"/>
@@ -82,7 +82,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="2351"/>
         <source>{data}预警</source>
-        <translation>{data} alert</translation>
+        <translation>{data}alert</translation>
     </message>
 </context>
 <context>
@@ -95,7 +95,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="626"/>
         <source>抱歉！Class Widgets 发生了严重的错误从而无法正常运行。您可以保存下方的错误信息并向他人求助。若您认为这是程序的Bug，请点击“报告此问题”或联系开发者。</source>
-        <translation>Sorry! Something went wrong with Class Widgets, causing it to stop working properly. You can save the following error information and seek help from others. If you believe this is a bug, click &apos;Report this issuse&apos; or contact the developer.</translation>
+        <translation>Sorry! Something went wrong with Class Widgets, causing it to stop working properly. You can save the following error information and seek help from others. If you believe this is a bug, click &apos;Report this issue&apos; or contact the developer.</translation>
     </message>
     <message>
         <location filename="../main.py" line="641"/>
@@ -125,7 +125,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="650"/>
         <source>出错啦！ヽ(*。&gt;Д&lt;)o゜</source>
-        <translation>Something goes wrong ! ヽ(*。&gt;Д&lt;)o゜</translation>
+        <translation>Oops! Something goes wrong ! ヽ(*。&gt;Д&lt;)o゜</translation>
     </message>
     <message>
         <location filename="../main.py" line="686"/>
@@ -453,7 +453,7 @@ The start date of the school term needs to be set as the first day of the first 
     <message>
         <location filename="../view/menu/advance.ui" line="349"/>
         <source>时间获得方法</source>
-        <translation>Timing method</translation>
+        <translation>Methods for obtaining time</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="356"/>
@@ -700,7 +700,7 @@ If disabled, clicking a widget is equivalent to clicking the window behind the w
     <message>
         <location filename="../view/menu/advance.ui" line="2192"/>
         <source>程序多开后可能出现未知的问题，请谨慎使用</source>
-        <translation>Enabling multiple instances may cause unexpected issues. Use with caution.</translation>
+        <translation>Enabling multiple instances may cause unexpected issues. Use with caution</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="2215"/>
@@ -1660,13 +1660,13 @@ But make sure that the plugins you need in the plugin square are secure.</transl
         <location filename="../menu.py" line="2544"/>
         <location filename="../menu.py" line="3198"/>
         <source>执意保存当前输入的内容?</source>
-        <translation>Is it committed to preserving the content of the current input?</translation>
+        <translation>Are you sure you want to save the current input?</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2561"/>
         <location filename="../menu.py" line="3215"/>
         <source>执意保存</source>
-        <translation>Reservations</translation>
+        <translation>Persist the save</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2642"/>
@@ -1701,12 +1701,12 @@ But make sure that the plugins you need in the plugin square are secure.</transl
     <message>
         <location filename="../menu.py" line="944"/>
         <source>有设置项</source>
-        <translation>Settings</translation>
+        <translation>Available settings</translation>
     </message>
     <message>
         <location filename="../menu.py" line="947"/>
         <source>无设置项</source>
-        <translation>No Settings</translation>
+        <translation>No settings available</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1032"/>
@@ -1952,7 +1952,7 @@ Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, 
     <message>
         <location filename="../menu.py" line="2247"/>
         <source>系统时区</source>
-        <translation>Time zones</translation>
+        <translation>System timezone</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2247"/>
@@ -2187,7 +2187,7 @@ Inspection of effective domain name or IP address （︶^︶）</translation>
         <location filename="../menu.py" line="2752"/>
         <location filename="../menu.py" line="3406"/>
         <source>同步正在进行中,请稍候~</source>
-        <translation>Synchronization is under way and greeting ~</translation>
+        <translation>Sync in progress, please wait~</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2770"/>
@@ -2199,7 +2199,7 @@ Inspection of effective domain name or IP address （︶^︶）</translation>
         <location filename="../menu.py" line="2777"/>
         <location filename="../menu.py" line="3431"/>
         <source>NTP时间同步成功!</source>
-        <translation>NTP synchronization succeeded</translation>
+        <translation>NTP synchronization succeeded!</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2784"/>
@@ -3186,8 +3186,7 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../menu.py" line="1448"/>
         <source>启动TTS预览时出错: {e}</source>
-        <translation>TTSSettings
-Error launching TTS preview: {e}</translation>
+        <translation>Error launching TTS preview: {e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1456"/>
@@ -3197,8 +3196,7 @@ Error launching TTS preview: {e}</translation>
     <message>
         <location filename="../menu.py" line="1457"/>
         <source>生成或播放语音时出错: {error_message}</source>
-        <translation>TTSSettings
-Error generating or playing audio: {error_message}</translation>
+        <translation>Error generating or playing audio: {error_message}</translation>
     </message>
 </context>
 <context>
@@ -3868,7 +3866,7 @@ Error generating or playing audio: {error_message}</translation>
     <message>
         <location filename="../main.py" line="337"/>
         <source>未添加</source>
-        <translation type="unfinished">Not added</translation>
+        <translation>Not added</translation>
     </message>
     <message>
         <location filename="../main.py" line="340"/>
@@ -3903,7 +3901,7 @@ Error generating or playing audio: {error_message}</translation>
     <message>
         <location filename="../main.py" line="521"/>
         <source>课间</source>
-        <translation type="unfinished">Break</translation>
+        <translation>Break time</translation>
     </message>
     <message>
         <location filename="../main.py" line="800"/>
@@ -3962,7 +3960,7 @@ Do you want to hide the widget?</translation>
         <location filename="../main.py" line="2516"/>
         <location filename="../main.py" line="2545"/>
         <source>取消</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location filename="../main.py" line="2539"/>
@@ -4003,7 +4001,7 @@ It is recommended to set the scaling factor to a value between 100% and 180%</tr
         <location filename="../main.py" line="2904"/>
         <location filename="../main.py" line="2933"/>
         <source>好</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -4234,7 +4232,7 @@ It is recommended to set the scaling factor to a value between 100% and 180%</tr
     <message>
         <location filename="../menu.py" line="656"/>
         <source>我再想想……</source>
-        <translation>Think again...</translation>
+        <translation>Think again…</translation>
     </message>
     <message>
         <location filename="../menu.py" line="671"/>
