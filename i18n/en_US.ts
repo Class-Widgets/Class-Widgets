@@ -32,22 +32,22 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="1730"/>
         <source>{year} 年 {month} 月</source>
-        <translation type="unfinished"></translation>
+        <translation>Year {year} month {month}</translation>
     </message>
     <message>
         <location filename="../main.py" line="2003"/>
         <source>完全隐藏/显示小组件</source>
-        <translation type="unfinished"></translation>
+        <translation>Completely hide/show widgets</translation>
     </message>
     <message>
         <location filename="../main.py" line="2004"/>
         <source>最小化为浮窗</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimize into floating windows</translation>
     </message>
     <message>
         <location filename="../main.py" line="2008"/>
         <source>插件广场</source>
-        <translation type="unfinished"></translation>
+        <translation>Plugin Plaza</translation>
     </message>
     <message>
         <location filename="../main.py" line="2009"/>
@@ -62,27 +62,27 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="2013"/>
         <source>重新启动</source>
-        <translation type="unfinished"></translation>
+        <translation>Restart</translation>
     </message>
     <message>
         <location filename="../main.py" line="2014"/>
         <source>退出</source>
-        <translation type="unfinished"></translation>
+        <translation>Exit</translation>
     </message>
     <message>
         <location filename="../main.py" line="2130"/>
         <source>距离 {cd_text} 还有</source>
-        <translation type="unfinished"></translation>
+        <translation>Till {cd_text}</translation>
     </message>
     <message>
         <location filename="../main.py" line="2349"/>
         <source>预警</source>
-        <translation type="unfinished"></translation>
+        <translation>Early warning</translation>
     </message>
     <message>
         <location filename="../main.py" line="2351"/>
         <source>{data}预警</source>
-        <translation type="unfinished"></translation>
+        <translation>{data} early warning</translation>
     </message>
 </context>
 <context>
@@ -90,52 +90,52 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="624"/>
         <source>Class Widgets 崩溃报告</source>
-        <translation type="unfinished"></translation>
+        <translation>Class Widgets crash report</translation>
     </message>
     <message>
         <location filename="../main.py" line="626"/>
         <source>抱歉！Class Widgets 发生了严重的错误从而无法正常运行。您可以保存下方的错误信息并向他人求助。若您认为这是程序的Bug，请点击“报告此问题”或联系开发者。</source>
-        <translation type="unfinished"></translation>
+        <translation>Sorry! Something wrong happend to Class Widgets and stoppend it from running proprtly. You can save the following error infomation and ask for help to others. If you think is is a bug of the program, click &quot;Report the problem&quot; or contact developer.</translation>
     </message>
     <message>
         <location filename="../main.py" line="641"/>
         <source>报告此问题</source>
-        <translation type="unfinished"></translation>
+        <translation>Report the problem</translation>
     </message>
     <message>
         <location filename="../main.py" line="642"/>
         <source>复制日志</source>
-        <translation type="unfinished"></translation>
+        <translation>Copy log</translation>
     </message>
     <message>
         <location filename="../main.py" line="643"/>
         <source>忽略错误</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignore error</translation>
     </message>
     <message>
         <location filename="../main.py" line="645"/>
         <source>在下次启动之前，忽略此错误</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignore this error till next launch</translation>
     </message>
     <message>
         <location filename="../main.py" line="646"/>
         <source>重新启动</source>
-        <translation type="unfinished"></translation>
+        <translation>Restart</translation>
     </message>
     <message>
         <location filename="../main.py" line="650"/>
         <source>出错啦！ヽ(*。&gt;Д&lt;)o゜</source>
-        <translation type="unfinished"></translation>
+        <translation>Something goes wrong ! ヽ(*。&gt;Д&lt;)o゜</translation>
     </message>
     <message>
         <location filename="../main.py" line="686"/>
         <source>复制成功！ヾ(^▽^*)))</source>
-        <translation type="unfinished"></translation>
+        <translation>Copied! ヾ(^▽^*)))</translation>
     </message>
     <message>
         <location filename="../main.py" line="687"/>
         <source>日志已成功复制到剪贴板。</source>
-        <translation type="unfinished"></translation>
+        <translation>Successfully copied log to clipboard</translation>
     </message>
 </context>
 <context>
