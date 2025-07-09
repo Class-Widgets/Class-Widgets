@@ -486,12 +486,12 @@
     <message>
         <location filename="../view/menu/advance.ui" line="632"/>
         <source>上次校准: 1145年1月1日 - 11:45:14</source>
-        <translation>上次校時：公元 1145 年 1 月 1 日 11:45:14</translation>
+        <translation>上次校時：1145 年 1 月 1 日 11:45:14</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="656"/>
         <source>按照设定的校准分钟数自动执行校准</source>
-        <translation type="unfinished"></translation>
+        <translation>根據設定的校時分鐘數，自動執行校時操作</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="705"/>
@@ -749,7 +749,7 @@
     <message>
         <location filename="../view/menu/configs.ui" line="113"/>
         <source>数据库编辑</source>
-        <translation type="unfinished"></translation>
+        <translation>資料庫編輯</translation>
     </message>
     <message>
         <location filename="../view/menu/preview.ui" line="35"/>
@@ -1605,17 +1605,17 @@
     <message>
         <location filename="../view/menu/schedule_db_edit.ui" line="35"/>
         <source>课表数据库编辑</source>
-        <translation type="unfinished"></translation>
+        <translation>課程時間表資料庫編輯</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_db_edit.ui" line="76"/>
         <source>数据库简称</source>
-        <translation type="unfinished"></translation>
+        <translation>資料庫簡稱</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_db_edit.ui" line="102"/>
         <source>数据库地址</source>
-        <translation type="unfinished"></translation>
+        <translation>資料庫地址</translation>
     </message>
 </context>
 <context>
@@ -1624,13 +1624,13 @@
         <location filename="../menu.py" line="2495"/>
         <location filename="../menu.py" line="3149"/>
         <source>设置成功 ✨</source>
-        <translation type="unfinished"></translation>
+        <translation>設定成功 ✨</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2498"/>
         <location filename="../menu.py" line="3152"/>
         <source>格式警告</source>
-        <translation type="unfinished"></translation>
+        <translation>格式警告</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2501"/>
@@ -1640,43 +1640,43 @@
         <location filename="../menu.py" line="3363"/>
         <location filename="../menu.py" line="3365"/>
         <source>NTP设置</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP設定</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2522"/>
         <location filename="../menu.py" line="3176"/>
         <source>推荐的NTP服务器:</source>
-        <translation type="unfinished"></translation>
+        <translation>推薦的 NTP 伺服器:</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2524"/>
         <location filename="../menu.py" line="3178"/>
         <source>建议的修正:</source>
-        <translation type="unfinished"></translation>
+        <translation>建議的修正:</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2544"/>
         <location filename="../menu.py" line="3198"/>
         <source>执意保存当前输入的内容?</source>
-        <translation type="unfinished"></translation>
+        <translation>是否堅持保存當前輸入的內容?</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2561"/>
         <location filename="../menu.py" line="3215"/>
         <source>执意保存</source>
-        <translation type="unfinished"></translation>
+        <translation>堅持保存</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2642"/>
         <location filename="../menu.py" line="3296"/>
         <source>NTP服务器已更新: {suggestion}</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP 伺服器已更新：{suggestion}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2663"/>
         <location filename="../menu.py" line="3317"/>
         <source>设置已保存ヾ(≧▽≦*)o</source>
-        <translation type="unfinished"></translation>
+        <translation>設定已儲存ヾ(≧▽≦*)o</translation>
     </message>
 </context>
 <context>
@@ -1931,55 +1931,55 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
         <location filename="../menu.py" line="2219"/>
         <location filename="../menu.py" line="2873"/>
         <source>系统时间</source>
-        <translation type="unfinished"></translation>
+        <translation>系統時間</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2219"/>
         <location filename="../menu.py" line="2873"/>
         <source>NTP时间</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP時間</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2235"/>
         <location filename="../menu.py" line="2889"/>
         <source>立即同步NTP时间</source>
-        <translation type="unfinished"></translation>
+        <translation>立即同步 NTP 時間</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2242"/>
         <location filename="../menu.py" line="2896"/>
         <source> 分钟</source>
-        <translation type="unfinished"></translation>
+        <translation> 分鐘</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2247"/>
         <source>系统时区</source>
-        <translation type="unfinished"></translation>
+        <translation>系統時區</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2247"/>
         <source>local</source>
-        <translation type="unfinished"></translation>
+        <translation>local</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2248"/>
         <source>(UTC+0)  伦敦时间</source>
-        <translation type="unfinished"></translation>
+        <translation>(UTC+0)  倫敦時間</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2249"/>
         <source>(UTC+1)  巴黎时间</source>
-        <translation type="unfinished"></translation>
+        <translation>(UTC+1)  巴黎時間</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2250"/>
         <source>(UTC+3)  莫斯科时间</source>
-        <translation type="unfinished"></translation>
+        <translation>(UTC+3)  莫斯科時間</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2251"/>
         <source>(UTC+8)  北京时间</source>
-        <translation type="unfinished"></translation>
+        <translation>(UTC+8)  香港时间</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2252"/>
