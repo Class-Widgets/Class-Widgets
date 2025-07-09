@@ -19,12 +19,12 @@ You can add more voice in system settings (*≧▽≦)</translation>
         <location filename="../menu.py" line="1592"/>
         <location filename="../menu.py" line="1601"/>
         <source>知道啦~</source>
-        <translation>I see.</translation>
+        <translation>Got it~</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1600"/>
         <source>这个语音引擎还没有提示信息呢~(・ω&lt;)</source>
-        <translation>The voice engine doesn&apos;t have any prompts yet.</translation>
+        <translation>The voice engine doesn&apos;t have any prompts yet. ~(・ω&lt;)</translation>
     </message>
 </context>
 <context>
@@ -95,27 +95,27 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="626"/>
         <source>抱歉！Class Widgets 发生了严重的错误从而无法正常运行。您可以保存下方的错误信息并向他人求助。若您认为这是程序的Bug，请点击“报告此问题”或联系开发者。</source>
-        <translation>Sorry! Something wrong happend to Class Widgets and stoppend it from running proprtly. You can save the following error infomation and ask for help to others. If you think is is a bug of the program, click &quot;Report the problem&quot; or contact developer.</translation>
+        <translation>Sorry! Something went wrong with Class Widgets, causing it to stop working properly. You can save the following error information and seek help from others. If you believe this is a bug, click &apos;Report the problem&apos; or contact the developer.</translation>
     </message>
     <message>
         <location filename="../main.py" line="641"/>
         <source>报告此问题</source>
-        <translation>Report the problem</translation>
+        <translation>Report this issue</translation>
     </message>
     <message>
         <location filename="../main.py" line="642"/>
         <source>复制日志</source>
-        <translation>Copy log</translation>
+        <translation>Copy Log</translation>
     </message>
     <message>
         <location filename="../main.py" line="643"/>
         <source>忽略错误</source>
-        <translation>Ignore error</translation>
+        <translation>Ignore the error</translation>
     </message>
     <message>
         <location filename="../main.py" line="645"/>
         <source>在下次启动之前，忽略此错误</source>
-        <translation>Ignore this error till next launch</translation>
+        <translation>Ignore this error until the next launch</translation>
     </message>
     <message>
         <location filename="../main.py" line="646"/>
