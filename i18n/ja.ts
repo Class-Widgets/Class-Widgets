@@ -1933,19 +1933,19 @@
         <location filename="../menu.py" line="2299"/>
         <location filename="../menu.py" line="2953"/>
         <source>已切换到NTP时间,正在同步时间~</source>
-        <translation>NTP時刻に切り替え済み、時刻を同期中…</translation>
+        <translation>NTP時刻に切り替え済み、時刻を同期中</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2305"/>
         <location filename="../menu.py" line="2959"/>
         <source>已切换到系统时间</source>
-        <translation type="unfinished"></translation>
+        <translation>システム時刻に切り替え済み</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2313"/>
         <location filename="../menu.py" line="2967"/>
         <source>切换失败</source>
-        <translation type="unfinished"></translation>
+        <translation>切り替え失敗</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2320"/>
@@ -1965,31 +1965,31 @@
         <location filename="../menu.py" line="3431"/>
         <location filename="../menu.py" line="3438"/>
         <source>NTP同步</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP同期</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2320"/>
         <location filename="../menu.py" line="2974"/>
         <source>当前无需NTP同步</source>
-        <translation type="unfinished"></translation>
+        <translation>現在、NTP同期は不要です</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2323"/>
         <location filename="../menu.py" line="2977"/>
         <source>当前时间管理器不支持NTP同步</source>
-        <translation type="unfinished"></translation>
+        <translation>現在の時間マネージャーはNTP同期をサポートしていません</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2325"/>
         <location filename="../menu.py" line="2979"/>
         <source>正在同步NTP时间~</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP時刻を同期中…</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2329"/>
         <location filename="../menu.py" line="2983"/>
         <source>NTP时间同步失败</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP時刻同期失敗</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2348"/>
@@ -2005,19 +2005,19 @@
         <location filename="../menu.py" line="2348"/>
         <location filename="../menu.py" line="3002"/>
         <source>已开启NTP自动同步ヾ(≧▽≦*)o</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP自動同期をオンにしましたヾ(≧▽≦*)o</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2351"/>
         <location filename="../menu.py" line="3005"/>
         <source>已关闭NTP自动同步(≧﹏ ≦)</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP自動同期をオフにしました(≧﹏ ≦)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2354"/>
         <location filename="../menu.py" line="3008"/>
         <source>设置失败 (╥﹏╥)</source>
-        <translation type="unfinished"></translation>
+        <translation>設定失敗(╥﹏╥)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2364"/>
@@ -2027,69 +2027,70 @@
         <location filename="../menu.py" line="3025"/>
         <location filename="../menu.py" line="3028"/>
         <source>时区设置</source>
-        <translation type="unfinished"></translation>
+        <translation>タイムゾーン設定</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2364"/>
         <location filename="../menu.py" line="3018"/>
         <source>时区已更新为 {ntp_sync_timezone}，正在重新同步时间~</source>
-        <translation type="unfinished"></translation>
+        <translation>{ntp_sync_timezone}にタイムゾーンを更新しました。時刻を再同期しています～</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2374"/>
         <location filename="../menu.py" line="3028"/>
         <source>时区设置失败</source>
-        <translation type="unfinished"></translation>
+        <translation>タイムゾーン設定失敗</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2431"/>
         <location filename="../menu.py" line="3085"/>
         <source>NTP服务器URL不能为空 o(〃＾▽＾〃)o
 请输入有效的NTP服务器地址</source>
-        <translation type="unfinished"></translation>
+        <translation>NTPサーバーのURLは空にできません。有効なNTPサーバーアドレスを入力してください。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2462"/>
         <location filename="../menu.py" line="3116"/>
         <source>NTP服务器已更新: {url}</source>
-        <translation type="unfinished"></translation>
+        <translation>NTPサーバーを更新しました: {url}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2470"/>
         <location filename="../menu.py" line="3124"/>
         <source>URL格式可能不正确: {url}
 请检查是否为有效的域名或IP地址（︶^︶）</source>
-        <translation type="unfinished"></translation>
+        <translation>URLの形式が正しくない可能性があります: {url}
+有効なドメイン名またはIPアドレスであるか確認してください</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2721"/>
         <location filename="../menu.py" line="3375"/>
         <source>当前使用: 系统本地时间</source>
-        <translation type="unfinished"></translation>
+        <translation>現在使用中：システムローカル時間</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2725"/>
         <location filename="../menu.py" line="3379"/>
         <source>%Y年%m月%d日 - %H:%M:%S</source>
-        <translation type="unfinished"></translation>
+        <translation>%Y年%m月%d日 - %H:%M:%S</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2726"/>
         <location filename="../menu.py" line="3380"/>
         <source>上次NTP校准: {sync_time_str}</source>
-        <translation type="unfinished"></translation>
+        <translation>最終NTP校正: {sync_time_str}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2728"/>
         <location filename="../menu.py" line="3382"/>
         <source>NTP时间: 尚未进行校准</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP時刻：未校正</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2730"/>
         <location filename="../menu.py" line="3384"/>
         <source>时间状态: 未知</source>
-        <translation type="unfinished"></translation>
+        <translation>時間状態: 不明</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2752"/>
