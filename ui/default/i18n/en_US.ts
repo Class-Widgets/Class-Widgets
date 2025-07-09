@@ -9,7 +9,7 @@
         <location filename="../dark/toast-open_dialog.ui" line="20"/>
         <location filename="../dark/widget-floating.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../toast-open_dialog.ui" line="105"/>
