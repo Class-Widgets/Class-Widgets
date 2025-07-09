@@ -52,12 +52,12 @@
     <message>
         <location filename="../main.py" line="2009"/>
         <source>额外选项</source>
-        <translation type="unfinished">額外選項</translation>
+        <translation>額外選項</translation>
     </message>
     <message>
         <location filename="../main.py" line="2010"/>
         <source>设置</source>
-        <translation type="unfinished">設定</translation>
+        <translation>設定</translation>
     </message>
     <message>
         <location filename="../main.py" line="2013"/>
@@ -3893,7 +3893,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <location filename="../main.py" line="437"/>
         <location filename="../main.py" line="501"/>
         <source>暂无课程</source>
-        <translation type="unfinished">暫無課程</translation>
+        <translation>暫無課程</translation>
     </message>
     <message>
         <location filename="../main.py" line="409"/>
@@ -3918,7 +3918,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../main.py" line="521"/>
         <source>课间</source>
-        <translation type="unfinished">課間</translation>
+        <translation>課間</translation>
     </message>
     <message>
         <location filename="../main.py" line="800"/>
@@ -3944,13 +3944,13 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <location filename="../main.py" line="2505"/>
         <location filename="../main.py" line="2534"/>
         <source>上课时自动隐藏</source>
-        <translation type="unfinished">上堂時自動隱藏</translation>
+        <translation>上堂時自動隱藏</translation>
     </message>
     <message>
         <location filename="../main.py" line="2506"/>
         <location filename="../main.py" line="2535"/>
         <source>窗口最大化时隐藏</source>
-        <translation type="unfinished">窗口最大化時隱藏</translation>
+        <translation>窗口最大化時隱藏</translation>
     </message>
     <message>
         <location filename="../main.py" line="2507"/>
@@ -3971,13 +3971,13 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <location filename="../main.py" line="2514"/>
         <location filename="../main.py" line="2543"/>
         <source>确定</source>
-        <translation type="unfinished">確定</translation>
+        <translation>確定</translation>
     </message>
     <message>
         <location filename="../main.py" line="2516"/>
         <location filename="../main.py" line="2545"/>
         <source>取消</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../main.py" line="2539"/>
@@ -4018,7 +4018,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <location filename="../main.py" line="2904"/>
         <location filename="../main.py" line="2933"/>
         <source>好</source>
-        <translation type="unfinished">好</translation>
+        <translation>好</translation>
     </message>
 </context>
 <context>
