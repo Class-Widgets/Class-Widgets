@@ -133,7 +133,7 @@
         <location filename="../widget-next-activity.ui" line="82"/>
         <location filename="../dark/widget-next-activity.ui" line="82"/>
         <source>测试测试</source>
-        <translation>Test</translation>
+        <translation>Watch RinLit online in 91 video</translation>
     </message>
     <message>
         <location filename="../widget-time.ui" line="26"/>
@@ -145,31 +145,31 @@
         <location filename="../widget-time.ui" line="50"/>
         <location filename="../dark/widget-time.ui" line="50"/>
         <source>2025 年  13 月</source>
-        <translation type="unfinished"></translation>
+        <translation>13 Month 2025</translation>
     </message>
     <message>
         <location filename="../widget-time.ui" line="82"/>
         <location filename="../dark/widget-time.ui" line="82"/>
         <source>32 日 周二</source>
-        <translation type="unfinished"></translation>
+        <translation>Day 32 Tuesday</translation>
     </message>
     <message>
         <location filename="../widget-weather.ui" line="26"/>
         <location filename="../dark/widget-weather.ui" line="26"/>
         <source>天气</source>
-        <translation type="unfinished"></translation>
+        <translation>Weather</translation>
     </message>
     <message>
         <location filename="../widget-weather.ui" line="50"/>
         <location filename="../dark/widget-weather.ui" line="50"/>
         <source>当前城市</source>
-        <translation type="unfinished"></translation>
+        <translation>Current city</translation>
     </message>
     <message>
         <location filename="../widget-weather.ui" line="128"/>
         <location filename="../dark/widget-weather.ui" line="128"/>
         <source>114℉</source>
-        <translation type="unfinished"></translation>
+        <translation>114℉</translation>
     </message>
 </context>
 </TS>
