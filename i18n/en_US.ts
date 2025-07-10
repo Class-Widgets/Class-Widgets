@@ -3825,57 +3825,57 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>一月</source>
-        <translation type="unfinished"></translation>
+        <translation>January</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>二月</source>
-        <translation type="unfinished"></translation>
+        <translation>February</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>三月</source>
-        <translation type="unfinished"></translation>
+        <translation>March</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>四月</source>
-        <translation type="unfinished"></translation>
+        <translation>April</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>五月</source>
-        <translation type="unfinished"></translation>
+        <translation>May</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>六月</source>
-        <translation type="unfinished"></translation>
+        <translation>June</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>七月</source>
-        <translation type="unfinished"></translation>
+        <translation>July</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>八月</source>
-        <translation type="unfinished"></translation>
+        <translation>August</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>九月</source>
-        <translation type="unfinished"></translation>
+        <translation>September</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>十月</source>
-        <translation type="unfinished"></translation>
+        <translation>October</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>十一月</source>
-        <translation type="unfinished"></translation>
+        <translation>November</translation>
     </message>
     <message>
         <location filename="../list_.py" line="20"/>
@@ -3885,7 +3885,7 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../list_.py" line="20"/>
         <source>十二月</source>
-        <translation type="unfinished"></translation>
+        <translation>December</translation>
     </message>
     <message>
         <location filename="../list_.py" line="21"/>
