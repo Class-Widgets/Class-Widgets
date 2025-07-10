@@ -2853,17 +2853,17 @@
     <message>
         <location filename="../menu.py" line="1390"/>
         <source>上课提醒</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">授業開始の通知</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1391"/>
         <source>下课提醒</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">授業終了の通知</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1392"/>
         <source>预备提醒</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">予鈴の通知</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1393"/>
@@ -2873,22 +2873,22 @@
     <message>
         <location filename="../menu.py" line="1394"/>
         <source>其他提醒</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">その他の通知</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1402"/>
         <source>信息技术</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ICT</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1404"/>
         <source>通知</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">通知</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1406"/>
         <source>这是一条测试通知ヾ(≧▽≦*)o</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">これはテスト通知ですヾ(≧▽≦*)o</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1447"/>
@@ -3147,7 +3147,7 @@
         <location filename="../list_.py" line="81"/>
         <location filename="../list_.py" line="178"/>
         <source>信息技术</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ICT</translation>
     </message>
     <message>
         <location filename="../list_.py" line="44"/>
@@ -3667,6 +3667,69 @@
         <location filename="../menu.py" line="683"/>
         <source>卸载插件 “{title}” 时出错，请查看日志获取详细信息。</source>
         <translation type="unfinished">ﾌﾟﾗｸﾞｲﾝ「{title}」のｱﾝｲﾝｽﾄｰﾙ中にエラーが発生しました。詳細はログを確認してください。</translation>
+    </message>
+</context>
+<context>
+    <name>tip_toast</name>
+    <message>
+        <location filename="../tip_toast.py" line="111"/>
+        <source>活动开始</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tip_toast.py" line="112"/>
+        <source>当前课程</source>
+        <translation type="unfinished">現在の授業</translation>
+    </message>
+    <message>
+        <location filename="../tip_toast.py" line="119"/>
+        <source>下课铃声显示</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tip_toast.py" line="120"/>
+        <source>下课</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tip_toast.py" line="122"/>
+        <source>即将进行</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tip_toast.py" line="131"/>
+        <source>放学铃声显示</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tip_toast.py" line="132"/>
+        <source>放学</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tip_toast.py" line="133"/>
+        <source>当前课程已结束</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tip_toast.py" line="139"/>
+        <source>预备铃声显示</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tip_toast.py" line="140"/>
+        <source>即将开始</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tip_toast.py" line="141"/>
+        <source>下一节</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tip_toast.py" line="149"/>
+        <source>通知显示: {title}</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

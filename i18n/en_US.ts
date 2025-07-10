@@ -4255,4 +4255,67 @@ It is recommended to set the scaling factor to a value between 100% and 180%.</t
         <translation>An error occurred while uninstalling the plugin &apos;{title}&apos;. Please check the log for details.</translation>
     </message>
 </context>
+<context>
+    <name>tip_toast</name>
+    <message>
+        <location filename="../tip_toast.py" line="111"/>
+        <source>活动开始</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tip_toast.py" line="112"/>
+        <source>当前课程</source>
+        <translation type="unfinished">Current course</translation>
+    </message>
+    <message>
+        <location filename="../tip_toast.py" line="119"/>
+        <source>下课铃声显示</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tip_toast.py" line="120"/>
+        <source>下课</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tip_toast.py" line="122"/>
+        <source>即将进行</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tip_toast.py" line="131"/>
+        <source>放学铃声显示</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tip_toast.py" line="132"/>
+        <source>放学</source>
+        <translation type="unfinished">After school</translation>
+    </message>
+    <message>
+        <location filename="../tip_toast.py" line="133"/>
+        <source>当前课程已结束</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tip_toast.py" line="139"/>
+        <source>预备铃声显示</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tip_toast.py" line="140"/>
+        <source>即将开始</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tip_toast.py" line="141"/>
+        <source>下一节</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tip_toast.py" line="149"/>
+        <source>通知显示: {title}</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>

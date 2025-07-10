@@ -108,18 +108,18 @@ class tip_toast(QWidget):
 
         if state == 1:
             logger.info('上课铃声显示')
-            title_label.setText('活动开始')  # 修正文本，以适应不同场景
-            subtitle_label.setText('当前课程')
+            title_label.setText(self.tr('活动开始'))  # 修正文本，以适应不同场景
+            subtitle_label.setText(self.tr('当前课程'))
             lesson.setText(lesson_name)  # 课程名
             sound_to_play = attend_class
             format_values['lesson_name'] = lesson_name
             tts_text = config_center.read_conf('TTS', 'attend_class').format_map(format_values)
             setThemeColor(f"#{config_center.read_conf('Color', 'attend_class')}")  # 主题色
         elif state == 0:
-            logger.info('下课铃声显示')
-            title_label.setText('下课')
+            logger.info(self.tr('下课铃声显示'))
+            title_label.setText(self.tr('下课'))
             if lesson_name:
-                subtitle_label.setText('即将进行')
+                subtitle_label.setText(self.tr('即将进行'))
             else:
                 subtitle_label.hide()
             lesson.setText(lesson_name)  # 课程名
@@ -128,17 +128,17 @@ class tip_toast(QWidget):
             tts_text = config_center.read_conf('TTS', 'finish_class').format_map(format_values)
             setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}")
         elif state == 2:
-            logger.info('放学铃声显示')
-            title_label.setText('放学')
-            subtitle_label.setText('当前课程已结束')
+            logger.info(self.tr('放学铃声显示'))
+            title_label.setText(self.tr('放学'))
+            subtitle_label.setText(self.tr('当前课程已结束'))
             lesson.setText('')  # 课程名
             sound_to_play = finish_class
             tts_text = config_center.read_conf('TTS', 'after_school').format_map(format_values)
             setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}")
         elif state == 3:
-            logger.info('预备铃声显示')
-            title_label.setText('即将开始')  # 同上
-            subtitle_label.setText('下一节')
+            logger.info(self.tr('预备铃声显示'))
+            title_label.setText(self.tr('即将开始'))  # 同上
+            subtitle_label.setText(self.tr('下一节'))
             lesson.setText(lesson_name)
             sound_to_play = prepare_class
             format_values['lesson_name'] = lesson_name
@@ -146,7 +146,7 @@ class tip_toast(QWidget):
             tts_text = config_center.read_conf('TTS', 'prepare_class').format_map(format_values)
             setThemeColor(f"#{config_center.read_conf('Color', 'prepare_class')}")
         elif state == 4:
-            logger.info(f'通知显示: {title}')
+            logger.info(self.tr('通知显示: {title}').format(title=title))
             title_label.setText(title)
             subtitle_label.setText(subtitle)
             lesson.setText(content)
