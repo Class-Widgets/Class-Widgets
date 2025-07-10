@@ -87,12 +87,12 @@
     <message>
         <location filename="../main.py" line="2120"/>
         <source>&lt; - 分钟</source>
-        <translation type="unfinished">&lt; - 分鐘</translation>
+        <translation>&lt; - 分鐘</translation>
     </message>
     <message>
         <location filename="../main.py" line="2122"/>
         <source>&lt;&#x2005;{minutes}&#x2005;分钟</source>
-        <translation type="unfinished">&lt;&#x2005;{minutes}&#x2005;分鐘</translation>
+        <translation>&lt;&#x2005;{minutes}&#x2005;分鐘</translation>
     </message>
     <message>
         <location filename="../main.py" line="2130"/>
@@ -1733,7 +1733,7 @@
     <message>
         <location filename="../plugin_plaza.py" line="425"/>
         <source>更新</source>
-        <translation type="unfinished">更新</translation>
+        <translation>更新</translation>
     </message>
 </context>
 <context>
@@ -1757,7 +1757,7 @@
     <message>
         <location filename="../plugin_plaza.py" line="313"/>
         <source>更新</source>
-        <translation type="unfinished">更新</translation>
+        <translation>更新</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="319"/>
@@ -1979,7 +1979,7 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
     <message>
         <location filename="../menu.py" line="1575"/>
         <source>知道啦~</source>
-        <translation type="unfinished">明白啦～</translation>
+        <translation>明白啦～</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1616"/>
@@ -3481,7 +3481,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <location filename="../menu.py" line="4294"/>
         <location filename="../menu.py" line="4323"/>
         <source>错误！</source>
-        <translation type="unfinished">錯誤!</translation>
+        <translation>錯誤!</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4295"/>
@@ -3492,7 +3492,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../menu.py" line="4344"/>
         <source>保存成功</source>
-        <translation type="unfinished">儲存成功</translation>
+        <translation>儲存成功</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4345"/>
@@ -3517,7 +3517,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../plugin_plaza.py" line="148"/>
         <source>取消</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
