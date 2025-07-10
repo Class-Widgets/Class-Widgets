@@ -40,7 +40,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="1730"/>
         <source>{year} 年 {month} 月</source>
-        <translation>{year} Year {month} Month</translation>
+        <translation>{month} {year}</translation>
     </message>
     <message>
         <location filename="../main.py" line="1732"/>
@@ -86,7 +86,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="2081"/>
         <source>{year}&#x2005;年&#x2002;{month}&#x2005;月</source>
-        <translation>{year}&#x2002;{month}</translation>
+        <translation>{month} {year}</translation>
     </message>
     <message>
         <location filename="../main.py" line="2120"/>
