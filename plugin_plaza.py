@@ -602,7 +602,7 @@ class PluginPlaza(MSFluentWindow):
         home_scroll = self.homeInterface.findChild(SmoothScrollArea, 'home_scroll')
         time_today_label = self.homeInterface.findChild(TitleLabel, 'time_today_label')
         time_today_label.setText(self.tr("{month}月{day}日 {weekday}").format(
-            month=datetime.now().month, day=datetime.now().day, weekday=l.week[datetime.now().weekday()]))
+            month=l.month[datetime.now()].month, day=datetime.now().day, weekday=l.week[datetime.now().weekday()]))
 
         # Banner
         self.banner_view = self.homeInterface.findChild(HorizontalFlipView, 'banner_view')

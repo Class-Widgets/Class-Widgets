@@ -3544,304 +3544,364 @@
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
+        <source>一月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="19"/>
+        <source>二月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="19"/>
+        <source>三月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="19"/>
+        <source>四月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="19"/>
+        <source>五月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="19"/>
+        <source>六月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="19"/>
+        <source>七月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="19"/>
+        <source>八月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="19"/>
+        <source>九月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="19"/>
+        <source>十月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="19"/>
+        <source>十一月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="20"/>
         <source>单周</source>
         <translation type="unfinished">丹州</translation>
     </message>
     <message>
         <location filename="../list_.py" line="20"/>
+        <source>十二月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="21"/>
         <source>双周</source>
         <translation type="unfinished">双舟</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="20"/>
+        <location filename="../list_.py" line="21"/>
         <source>节点</source>
         <translation type="unfinished">节·</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="21"/>
+        <location filename="../list_.py" line="22"/>
         <source>休息段</source>
         <translation type="unfinished">暴风雨前的宁静</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="21"/>
-        <location filename="../list_.py" line="23"/>
+        <location filename="../list_.py" line="22"/>
         <location filename="../list_.py" line="24"/>
+        <location filename="../list_.py" line="25"/>
         <source>无</source>
         <translation type="unfinished">虚空</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="21"/>
+        <location filename="../list_.py" line="22"/>
         <source>置于顶部</source>
         <translation type="unfinished">灵魂沙气泡柱</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="22"/>
+        <location filename="../list_.py" line="23"/>
         <source>置于底部</source>
         <translation type="unfinished">熔岩气泡柱</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="22"/>
+        <location filename="../list_.py" line="23"/>
         <source>浅色</source>
         <translation type="unfinished">白人</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="22"/>
+        <location filename="../list_.py" line="23"/>
         <source>深色</source>
         <translation type="unfinished">黑人(man)</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="23"/>
+        <location filename="../list_.py" line="24"/>
         <source>跟随系统</source>
         <translation type="unfinished">当然是听Windows娘的啦！</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="23"/>
-        <location filename="../list_.py" line="25"/>
+        <location filename="../list_.py" line="24"/>
+        <location filename="../list_.py" line="26"/>
         <source>上课时自动隐藏</source>
         <translation type="unfinished">地下党👀</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="23"/>
+        <location filename="../list_.py" line="24"/>
         <source>窗口最大化时隐藏</source>
         <translation type="unfinished">唔..太大了装不下了</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="24"/>
+        <location filename="../list_.py" line="25"/>
         <source>灵活隐藏</source>
         <translation type="unfinished">左右反复横跳</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="25"/>
+        <location filename="../list_.py" line="26"/>
         <source>正式版 (Release)</source>
         <translation type="unfinished">Github上的群友belike</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="27"/>
+        <location filename="../list_.py" line="28"/>
         <source>测试版 (Beta)</source>
         <translation type="unfinished">Cwc里的群友belike</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="31"/>
-        <location filename="../list_.py" line="61"/>
-        <location filename="../list_.py" line="166"/>
-        <source>语文</source>
-        <translation type="unfinished">零音LyRin</translation>
     </message>
     <message>
         <location filename="../list_.py" line="32"/>
         <location filename="../list_.py" line="62"/>
         <location filename="../list_.py" line="167"/>
-        <source>数学</source>
-        <translation type="unfinished">干冰DryIce</translation>
+        <source>语文</source>
+        <translation type="unfinished">零音LyRin</translation>
     </message>
     <message>
         <location filename="../list_.py" line="33"/>
         <location filename="../list_.py" line="63"/>
         <location filename="../list_.py" line="168"/>
-        <source>英语</source>
-        <translation type="unfinished"></translation>
+        <source>数学</source>
+        <translation type="unfinished">干冰DryIce</translation>
     </message>
     <message>
         <location filename="../list_.py" line="34"/>
-        <location filename="../list_.py" line="66"/>
+        <location filename="../list_.py" line="64"/>
         <location filename="../list_.py" line="169"/>
-        <source>生物</source>
-        <translation type="unfinished">Rinlit</translation>
+        <source>英语</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../list_.py" line="35"/>
         <location filename="../list_.py" line="67"/>
         <location filename="../list_.py" line="170"/>
-        <source>地理</source>
-        <translation type="unfinished">哇还有插入</translation>
+        <source>生物</source>
+        <translation type="unfinished">Rinlit</translation>
     </message>
     <message>
         <location filename="../list_.py" line="36"/>
-        <location filename="../list_.py" line="64"/>
+        <location filename="../list_.py" line="68"/>
         <location filename="../list_.py" line="171"/>
-        <source>政治</source>
-        <translation type="unfinished">放暑假后的QQ群</translation>
+        <source>地理</source>
+        <translation type="unfinished">哇还有插入</translation>
     </message>
     <message>
         <location filename="../list_.py" line="37"/>
         <location filename="../list_.py" line="65"/>
         <location filename="../list_.py" line="172"/>
-        <location filename="../list_.py" line="191"/>
-        <source>历史</source>
-        <translation type="unfinished">Rin写的代码</translation>
+        <source>政治</source>
+        <translation type="unfinished">放暑假后的QQ群</translation>
     </message>
     <message>
         <location filename="../list_.py" line="38"/>
-        <location filename="../list_.py" line="68"/>
+        <location filename="../list_.py" line="66"/>
         <location filename="../list_.py" line="173"/>
-        <source>物理</source>
-        <translation type="unfinished">HardCore大爷</translation>
+        <location filename="../list_.py" line="192"/>
+        <source>历史</source>
+        <translation type="unfinished">Rin写的代码</translation>
     </message>
     <message>
         <location filename="../list_.py" line="39"/>
         <location filename="../list_.py" line="69"/>
         <location filename="../list_.py" line="174"/>
-        <source>化学</source>
-        <translation type="unfinished">加纳</translation>
+        <source>物理</source>
+        <translation type="unfinished">HardCore大爷</translation>
     </message>
     <message>
         <location filename="../list_.py" line="40"/>
-        <location filename="../list_.py" line="75"/>
+        <location filename="../list_.py" line="70"/>
         <location filename="../list_.py" line="175"/>
-        <source>美术</source>
-        <translation type="unfinished">只有一位落榜美术生</translation>
+        <source>化学</source>
+        <translation type="unfinished">加纳</translation>
     </message>
     <message>
         <location filename="../list_.py" line="41"/>
         <location filename="../list_.py" line="76"/>
         <location filename="../list_.py" line="176"/>
+        <source>美术</source>
+        <translation type="unfinished">只有一位落榜美术生</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="42"/>
+        <location filename="../list_.py" line="77"/>
+        <location filename="../list_.py" line="177"/>
         <source>音乐</source>
         <translation type="unfinished">仲夏萤火之夜</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="42"/>
-        <location filename="../list_.py" line="70"/>
-        <location filename="../list_.py" line="177"/>
+        <location filename="../list_.py" line="43"/>
+        <location filename="../list_.py" line="71"/>
+        <location filename="../list_.py" line="178"/>
         <source>体育</source>
         <translation type="unfinished">当老师说让排头跑慢点时</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="43"/>
-        <location filename="../list_.py" line="81"/>
-        <location filename="../list_.py" line="178"/>
+        <location filename="../list_.py" line="44"/>
+        <location filename="../list_.py" line="82"/>
+        <location filename="../list_.py" line="179"/>
         <source>信息技术</source>
         <translation type="unfinished">技术宅改变世界！</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="44"/>
-        <location filename="../list_.py" line="179"/>
+        <location filename="../list_.py" line="45"/>
+        <location filename="../list_.py" line="180"/>
         <source>电脑</source>
         <translation type="unfinished">💻</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="45"/>
-        <location filename="../list_.py" line="180"/>
+        <location filename="../list_.py" line="46"/>
+        <location filename="../list_.py" line="181"/>
         <source>课程表未加载</source>
         <translation type="unfinished">货呢？</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="47"/>
-        <location filename="../list_.py" line="71"/>
-        <location filename="../list_.py" line="182"/>
-        <source>班会</source>
-        <translation type="unfinished">提前适应开会</translation>
     </message>
     <message>
         <location filename="../list_.py" line="48"/>
         <location filename="../list_.py" line="72"/>
         <location filename="../list_.py" line="183"/>
+        <source>班会</source>
+        <translation type="unfinished">提前适应开会</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="49"/>
+        <location filename="../list_.py" line="73"/>
+        <location filename="../list_.py" line="184"/>
         <source>自习</source>
         <translation type="unfinished">小纸条大作战</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="49"/>
-        <location filename="../list_.py" line="58"/>
-        <location filename="../list_.py" line="184"/>
+        <location filename="../list_.py" line="50"/>
+        <location filename="../list_.py" line="59"/>
+        <location filename="../list_.py" line="185"/>
         <source>课间</source>
         <translation type="unfinished">下课准时刷新的npc</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="50"/>
-        <location filename="../list_.py" line="74"/>
-        <location filename="../list_.py" line="185"/>
+        <location filename="../list_.py" line="51"/>
+        <location filename="../list_.py" line="75"/>
+        <location filename="../list_.py" line="186"/>
         <source>大课间</source>
         <translation type="unfinished">大</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="51"/>
-        <location filename="../list_.py" line="186"/>
+        <location filename="../list_.py" line="52"/>
+        <location filename="../list_.py" line="187"/>
         <source>放学</source>
         <translation type="unfinished">我是走读生</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="52"/>
-        <location filename="../list_.py" line="187"/>
+        <location filename="../list_.py" line="53"/>
+        <location filename="../list_.py" line="188"/>
         <source>暂无课程</source>
         <translation type="unfinished">你为啥不配置课程</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="57"/>
+        <location filename="../list_.py" line="58"/>
         <source>课程</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../list_.py" line="58"/>
+        <location filename="../list_.py" line="59"/>
         <source>上午</source>
         <translation type="unfinished">猫儿宁</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="58"/>
+        <location filename="../list_.py" line="59"/>
         <source>下午</source>
         <translation type="unfinished">艾弗特怒</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="59"/>
+        <location filename="../list_.py" line="60"/>
         <source>晚修</source>
         <translation type="unfinished">小纸条大作战2.0</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="60"/>
+        <location filename="../list_.py" line="61"/>
         <source>自定义</source>
         <translation type="unfinished">创造模式</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="73"/>
+        <location filename="../list_.py" line="74"/>
         <source>早读</source>
         <translation type="unfinished">衡水中学专用</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="77"/>
+        <location filename="../list_.py" line="78"/>
         <source>心理</source>
         <translation type="unfinished">我有玉玉症</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="98"/>
-        <location filename="../list_.py" line="107"/>
+        <location filename="../list_.py" line="99"/>
+        <location filename="../list_.py" line="108"/>
         <source>当前日期</source>
         <translation type="unfinished">当日</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="99"/>
-        <location filename="../list_.py" line="108"/>
+        <location filename="../list_.py" line="100"/>
+        <location filename="../list_.py" line="109"/>
         <source>活动倒计时</source>
         <translation type="unfinished">幸福倒计时</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="100"/>
-        <location filename="../list_.py" line="109"/>
+        <location filename="../list_.py" line="101"/>
+        <location filename="../list_.py" line="110"/>
         <source>当前活动</source>
         <translation type="unfinished">活跃的当前</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="101"/>
-        <location filename="../list_.py" line="110"/>
+        <location filename="../list_.py" line="102"/>
+        <location filename="../list_.py" line="111"/>
         <source>更多活动</source>
         <translation type="unfinished">我们需要更多</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="102"/>
-        <location filename="../list_.py" line="111"/>
+        <location filename="../list_.py" line="103"/>
+        <location filename="../list_.py" line="112"/>
         <source>倒计日</source>
         <translation type="unfinished">压迫感</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="103"/>
-        <location filename="../list_.py" line="115"/>
+        <location filename="../list_.py" line="104"/>
+        <location filename="../list_.py" line="116"/>
         <source>天气</source>
         <translation type="unfinished">今天是个好日子啊（喜</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="194"/>
+        <location filename="../list_.py" line="195"/>
         <source>轮播</source>
         <translation type="unfinished">论剑</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="197"/>
+        <location filename="../list_.py" line="198"/>
         <source>多小组件</source>
         <translation type="unfinished">多多多多多多多多多多多多</translation>
     </message>

@@ -3824,304 +3824,364 @@ Error occurred while switching component language: {e}</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
+        <source>一月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="19"/>
+        <source>二月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="19"/>
+        <source>三月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="19"/>
+        <source>四月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="19"/>
+        <source>五月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="19"/>
+        <source>六月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="19"/>
+        <source>七月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="19"/>
+        <source>八月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="19"/>
+        <source>九月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="19"/>
+        <source>十月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="19"/>
+        <source>十一月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="20"/>
         <source>单周</source>
         <translation>single week</translation>
     </message>
     <message>
         <location filename="../list_.py" line="20"/>
+        <source>十二月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="21"/>
         <source>双周</source>
         <translation>even week</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="20"/>
+        <location filename="../list_.py" line="21"/>
         <source>节点</source>
         <translation>Node</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="21"/>
+        <location filename="../list_.py" line="22"/>
         <source>休息段</source>
         <translation>Break period</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="21"/>
-        <location filename="../list_.py" line="23"/>
+        <location filename="../list_.py" line="22"/>
         <location filename="../list_.py" line="24"/>
+        <location filename="../list_.py" line="25"/>
         <source>无</source>
         <translation>None</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="21"/>
+        <location filename="../list_.py" line="22"/>
         <source>置于顶部</source>
         <translation>On top</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="22"/>
+        <location filename="../list_.py" line="23"/>
         <source>置于底部</source>
         <translation>On bottom</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="22"/>
+        <location filename="../list_.py" line="23"/>
         <source>浅色</source>
         <translation>Light</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="22"/>
+        <location filename="../list_.py" line="23"/>
         <source>深色</source>
         <translation>Dark</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="23"/>
+        <location filename="../list_.py" line="24"/>
         <source>跟随系统</source>
         <translation>Follow system</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="23"/>
-        <location filename="../list_.py" line="25"/>
+        <location filename="../list_.py" line="24"/>
+        <location filename="../list_.py" line="26"/>
         <source>上课时自动隐藏</source>
         <translation>Auto hide in class</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="23"/>
+        <location filename="../list_.py" line="24"/>
         <source>窗口最大化时隐藏</source>
         <translation>Auto hide when maximized</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="24"/>
+        <location filename="../list_.py" line="25"/>
         <source>灵活隐藏</source>
         <translation>flexible hiding</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="25"/>
+        <location filename="../list_.py" line="26"/>
         <source>正式版 (Release)</source>
         <translation>Release</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="27"/>
+        <location filename="../list_.py" line="28"/>
         <source>测试版 (Beta)</source>
         <translation>Beta</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="31"/>
-        <location filename="../list_.py" line="61"/>
-        <location filename="../list_.py" line="166"/>
-        <source>语文</source>
-        <translation>English</translation>
     </message>
     <message>
         <location filename="../list_.py" line="32"/>
         <location filename="../list_.py" line="62"/>
         <location filename="../list_.py" line="167"/>
-        <source>数学</source>
-        <translation>Math</translation>
+        <source>语文</source>
+        <translation>English</translation>
     </message>
     <message>
         <location filename="../list_.py" line="33"/>
         <location filename="../list_.py" line="63"/>
         <location filename="../list_.py" line="168"/>
-        <source>英语</source>
-        <translation>Chinese</translation>
+        <source>数学</source>
+        <translation>Math</translation>
     </message>
     <message>
         <location filename="../list_.py" line="34"/>
-        <location filename="../list_.py" line="66"/>
+        <location filename="../list_.py" line="64"/>
         <location filename="../list_.py" line="169"/>
-        <source>生物</source>
-        <translation>Biology</translation>
+        <source>英语</source>
+        <translation>Chinese</translation>
     </message>
     <message>
         <location filename="../list_.py" line="35"/>
         <location filename="../list_.py" line="67"/>
         <location filename="../list_.py" line="170"/>
-        <source>地理</source>
-        <translation>Geography</translation>
+        <source>生物</source>
+        <translation>Biology</translation>
     </message>
     <message>
         <location filename="../list_.py" line="36"/>
-        <location filename="../list_.py" line="64"/>
+        <location filename="../list_.py" line="68"/>
         <location filename="../list_.py" line="171"/>
-        <source>政治</source>
-        <translation>Politics</translation>
+        <source>地理</source>
+        <translation>Geography</translation>
     </message>
     <message>
         <location filename="../list_.py" line="37"/>
         <location filename="../list_.py" line="65"/>
         <location filename="../list_.py" line="172"/>
-        <location filename="../list_.py" line="191"/>
-        <source>历史</source>
-        <translation>History</translation>
+        <source>政治</source>
+        <translation>Politics</translation>
     </message>
     <message>
         <location filename="../list_.py" line="38"/>
-        <location filename="../list_.py" line="68"/>
+        <location filename="../list_.py" line="66"/>
         <location filename="../list_.py" line="173"/>
-        <source>物理</source>
-        <translation>Physics</translation>
+        <location filename="../list_.py" line="192"/>
+        <source>历史</source>
+        <translation>History</translation>
     </message>
     <message>
         <location filename="../list_.py" line="39"/>
         <location filename="../list_.py" line="69"/>
         <location filename="../list_.py" line="174"/>
-        <source>化学</source>
-        <translation>Chemisty</translation>
+        <source>物理</source>
+        <translation>Physics</translation>
     </message>
     <message>
         <location filename="../list_.py" line="40"/>
-        <location filename="../list_.py" line="75"/>
+        <location filename="../list_.py" line="70"/>
         <location filename="../list_.py" line="175"/>
-        <source>美术</source>
-        <translation>Art</translation>
+        <source>化学</source>
+        <translation>Chemisty</translation>
     </message>
     <message>
         <location filename="../list_.py" line="41"/>
         <location filename="../list_.py" line="76"/>
         <location filename="../list_.py" line="176"/>
+        <source>美术</source>
+        <translation>Art</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="42"/>
+        <location filename="../list_.py" line="77"/>
+        <location filename="../list_.py" line="177"/>
         <source>音乐</source>
         <translation>Music</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="42"/>
-        <location filename="../list_.py" line="70"/>
-        <location filename="../list_.py" line="177"/>
+        <location filename="../list_.py" line="43"/>
+        <location filename="../list_.py" line="71"/>
+        <location filename="../list_.py" line="178"/>
         <source>体育</source>
         <translation>P.E.</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="43"/>
-        <location filename="../list_.py" line="81"/>
-        <location filename="../list_.py" line="178"/>
+        <location filename="../list_.py" line="44"/>
+        <location filename="../list_.py" line="82"/>
+        <location filename="../list_.py" line="179"/>
         <source>信息技术</source>
         <translation>I.T.</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="44"/>
-        <location filename="../list_.py" line="179"/>
+        <location filename="../list_.py" line="45"/>
+        <location filename="../list_.py" line="180"/>
         <source>电脑</source>
         <translation>Computer</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="45"/>
-        <location filename="../list_.py" line="180"/>
+        <location filename="../list_.py" line="46"/>
+        <location filename="../list_.py" line="181"/>
         <source>课程表未加载</source>
         <translation>Schedule not loaded</translation>
-    </message>
-    <message>
-        <location filename="../list_.py" line="47"/>
-        <location filename="../list_.py" line="71"/>
-        <location filename="../list_.py" line="182"/>
-        <source>班会</source>
-        <translation>Class meeting</translation>
     </message>
     <message>
         <location filename="../list_.py" line="48"/>
         <location filename="../list_.py" line="72"/>
         <location filename="../list_.py" line="183"/>
+        <source>班会</source>
+        <translation>Class meeting</translation>
+    </message>
+    <message>
+        <location filename="../list_.py" line="49"/>
+        <location filename="../list_.py" line="73"/>
+        <location filename="../list_.py" line="184"/>
         <source>自习</source>
         <translation>Study period</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="49"/>
-        <location filename="../list_.py" line="58"/>
-        <location filename="../list_.py" line="184"/>
+        <location filename="../list_.py" line="50"/>
+        <location filename="../list_.py" line="59"/>
+        <location filename="../list_.py" line="185"/>
         <source>课间</source>
         <translation>Break</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="50"/>
-        <location filename="../list_.py" line="74"/>
-        <location filename="../list_.py" line="185"/>
+        <location filename="../list_.py" line="51"/>
+        <location filename="../list_.py" line="75"/>
+        <location filename="../list_.py" line="186"/>
         <source>大课间</source>
         <translation>Long recess</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="51"/>
-        <location filename="../list_.py" line="186"/>
+        <location filename="../list_.py" line="52"/>
+        <location filename="../list_.py" line="187"/>
         <source>放学</source>
         <translation>After school</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="52"/>
-        <location filename="../list_.py" line="187"/>
+        <location filename="../list_.py" line="53"/>
+        <location filename="../list_.py" line="188"/>
         <source>暂无课程</source>
         <translation>No class</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="57"/>
+        <location filename="../list_.py" line="58"/>
         <source>课程</source>
         <translation>Course</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="58"/>
+        <location filename="../list_.py" line="59"/>
         <source>上午</source>
         <translation>a.m.</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="58"/>
+        <location filename="../list_.py" line="59"/>
         <source>下午</source>
         <translation>p.m.</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="59"/>
+        <location filename="../list_.py" line="60"/>
         <source>晚修</source>
         <translation>Evening prep</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="60"/>
+        <location filename="../list_.py" line="61"/>
         <source>自定义</source>
         <translation>Custom</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="73"/>
+        <location filename="../list_.py" line="74"/>
         <source>早读</source>
         <translation>Morning reading</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="77"/>
+        <location filename="../list_.py" line="78"/>
         <source>心理</source>
         <translation>Psycholoigy</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="98"/>
-        <location filename="../list_.py" line="107"/>
+        <location filename="../list_.py" line="99"/>
+        <location filename="../list_.py" line="108"/>
         <source>当前日期</source>
         <translation>Current date</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="99"/>
-        <location filename="../list_.py" line="108"/>
+        <location filename="../list_.py" line="100"/>
+        <location filename="../list_.py" line="109"/>
         <source>活动倒计时</source>
         <translation>Countdown</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="100"/>
-        <location filename="../list_.py" line="109"/>
+        <location filename="../list_.py" line="101"/>
+        <location filename="../list_.py" line="110"/>
         <source>当前活动</source>
         <translation>Current Activity</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="101"/>
-        <location filename="../list_.py" line="110"/>
+        <location filename="../list_.py" line="102"/>
+        <location filename="../list_.py" line="111"/>
         <source>更多活动</source>
         <translation>Upcoming Activities</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="102"/>
-        <location filename="../list_.py" line="111"/>
+        <location filename="../list_.py" line="103"/>
+        <location filename="../list_.py" line="112"/>
         <source>倒计日</source>
         <translation>Day Countdown</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="103"/>
-        <location filename="../list_.py" line="115"/>
+        <location filename="../list_.py" line="104"/>
+        <location filename="../list_.py" line="116"/>
         <source>天气</source>
         <translation>Weather</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="194"/>
+        <location filename="../list_.py" line="195"/>
         <source>轮播</source>
         <translation>Carousel</translation>
     </message>
     <message>
-        <location filename="../list_.py" line="197"/>
+        <location filename="../list_.py" line="198"/>
         <source>多小组件</source>
         <translation>Multiple widgets</translation>
     </message>
