@@ -38,8 +38,8 @@
     <name>DesktopWidget</name>
     <message>
         <location filename="../main.py" line="1730"/>
-        <source>{year} 年 {month} 月</source>
-        <translation>{year} 年 {month} 月</translation>
+        <source>{year} 年 {month}</source>
+        <translation>{year} 年 {month}</translation>
     </message>
     <message>
         <location filename="../main.py" line="1732"/>

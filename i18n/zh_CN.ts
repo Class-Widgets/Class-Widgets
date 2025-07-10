@@ -38,7 +38,7 @@
     <name>DesktopWidget</name>
     <message>
         <location filename="../main.py" line="1730"/>
-        <source>{year} 年 {month} 月</source>
+        <source>{year} 年 {month}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
