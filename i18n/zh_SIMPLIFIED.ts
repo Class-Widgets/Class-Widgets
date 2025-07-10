@@ -2,6 +2,14 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_SIMPLIFIED">
 <context>
+    <name>ConfigCenter</name>
+    <message>
+        <location filename="../file.py" line="61"/>
+        <source>好</source>
+        <translation type="unfinished">是个人物👍</translation>
+    </message>
+</context>
+<context>
     <name>CustomMessageBox</name>
     <message>
         <location filename="../menu.py" line="1585"/>
@@ -32,6 +40,12 @@
         <location filename="../main.py" line="1730"/>
         <source>{year} 年 {month} 月</source>
         <translation>{year} 年 {month} 月</translation>
+    </message>
+    <message>
+        <location filename="../main.py" line="1732"/>
+        <location filename="../main.py" line="2082"/>
+        <source>{day}日  {week}</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../main.py" line="2003"/>
@@ -69,11 +83,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../main.py" line="2081"/>
+        <source>{year}&#x2005;年&#x2002;{month}&#x2005;月</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.py" line="2120"/>
+        <source>&lt; - 分钟</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.py" line="2122"/>
+        <source>&lt;&#x2005;{minutes}&#x2005;分钟</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../main.py" line="2130"/>
         <source>距离 {cd_text} 还有</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../main.py" line="2328"/>
         <location filename="../main.py" line="2349"/>
         <source>预警</source>
         <translation type="unfinished"></translation>
@@ -81,6 +111,11 @@
     <message>
         <location filename="../main.py" line="2351"/>
         <source>{data}预警</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.py" line="2473"/>
+        <source>{city} · 未知</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1613,6 +1648,79 @@
     </message>
 </context>
 <context>
+    <name>PluginCard</name>
+    <message>
+        <location filename="../menu.py" line="632"/>
+        <source>永久删除</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PluginCard_Horizontal</name>
+    <message>
+        <location filename="../plugin_plaza.py" line="412"/>
+        <source>安装</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../plugin_plaza.py" line="419"/>
+        <source>已安装</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../plugin_plaza.py" line="425"/>
+        <source>更新</source>
+        <translation type="unfinished">更！</translation>
+    </message>
+</context>
+<context>
+    <name>PluginDetailPage</name>
+    <message>
+        <location filename="../plugin_plaza.py" line="299"/>
+        <source>  安装  </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../plugin_plaza.py" line="304"/>
+        <location filename="../plugin_plaza.py" line="332"/>
+        <source>  安装中  </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../plugin_plaza.py" line="307"/>
+        <source>  已安装  </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../plugin_plaza.py" line="313"/>
+        <source>更新</source>
+        <translation type="unfinished">更！</translation>
+    </message>
+    <message>
+        <location filename="../plugin_plaza.py" line="319"/>
+        <source>为 Class Widgets 安装</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../plugin_plaza.py" line="320"/>
+        <source>下载到本地</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PluginPlaza</name>
+    <message>
+        <location filename="../plugin_plaza.py" line="604"/>
+        <source>{month}月{day}日 {weekday}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../plugin_plaza.py" line="726"/>
+        <source>错误原因：{error_info}</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SettingsMenu</name>
     <message>
         <location filename="../menu.py" line="941"/>
@@ -1793,6 +1901,11 @@
 请确保网络连接,不然会说不出话来(&gt;﹏&lt;)
 * 可能会有一定的延迟,耐心等待一下~</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="1575"/>
+        <source>知道啦~</source>
+        <translation type="unfinished">阅</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1616"/>
@@ -2223,6 +2336,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../menu.py" line="3699"/>
+        <source>预览 - {schedule_name}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../menu.py" line="3754"/>
         <location filename="../menu.py" line="3774"/>
         <source>已清除日志</source>
@@ -2278,6 +2396,24 @@
         <location filename="../menu.py" line="3873"/>
         <source>检查更新失败！
 {data}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="3908"/>
+        <location filename="../menu.py" line="3958"/>
+        <source>文件已存在</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="3908"/>
+        <location filename="../menu.py" line="3958"/>
+        <source>文件 {file_name} 已存在，是否覆盖？</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="3909"/>
+        <location filename="../menu.py" line="3959"/>
+        <source>覆盖</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2482,8 +2618,99 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../menu.py" line="4062"/>
+        <source>文件名不能为空</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="4067"/>
+        <source>文件名包含非法字符</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="4071"/>
+        <source>文件名过长</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="4077"/>
+        <source>文件名是保留名称</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="4080"/>
+        <source>文件名不能包含路径分隔符</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="4082"/>
+        <source>文件名合法</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="4083"/>
+        <source>请输入新课表名称</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="4084"/>
+        <source>请命名您的课程表计划：</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="4084"/>
+        <source>新课表 - 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../menu.py" line="4126"/>
         <source>错误！</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="4151"/>
+        <location filename="../menu.py" line="4161"/>
+        <location filename="../menu.py" line="4191"/>
+        <source>获取配置文件失败</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="4152"/>
+        <source>当前课表为本地课表，无法获取配置文件。请上传课表后再尝试获取配置文件。</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="4168"/>
+        <source>更新配置文件失败</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="4178"/>
+        <location filename="../menu.py" line="4179"/>
+        <source>请输入配置文件链接</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="4203"/>
+        <source>保存配置文件失败，将自动保存为空课表</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="4215"/>
+        <source>请输入课表链接</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="4216"/>
+        <source>当前可缩写数据库：
+{dbs}
+你可以使用缩写来代替完整的数据库链接</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="4235"/>
+        <location filename="../menu.py" line="4240"/>
+        <source>上传配置文件失败</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2938,6 +3165,54 @@
         <location filename="../main.py" line="1041"/>
         <source>未知组件</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>cfDbEdit</name>
+    <message>
+        <location filename="../menu.py" line="4258"/>
+        <source>添加课表数据库</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="4263"/>
+        <source>删除课表数据库</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="4266"/>
+        <source>更改课表数据库</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="4294"/>
+        <location filename="../menu.py" line="4323"/>
+        <source>错误！</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="4295"/>
+        <location filename="../menu.py" line="4324"/>
+        <source>数据库缩写 {db_short} 已存在，请更换缩写。</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="4344"/>
+        <source>保存成功</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="4345"/>
+        <source>已保存至 ./config/schedule_db.json</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>downloadProgressBar</name>
+    <message>
+        <location filename="../plugin_plaza.py" line="148"/>
+        <source>取消</source>
+        <translation type="unfinished">跑路</translation>
     </message>
 </context>
 <context>
@@ -3584,6 +3859,7 @@
         <location filename="../main.py" line="344"/>
         <location filename="../main.py" line="348"/>
         <location filename="../main.py" line="437"/>
+        <location filename="../main.py" line="490"/>
         <location filename="../main.py" line="501"/>
         <source>暂无课程</source>
         <translation type="unfinished">你为啥不配置课程</translation>
@@ -3702,6 +3978,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../main.py" line="2864"/>
         <location filename="../main.py" line="2904"/>
         <location filename="../main.py" line="2933"/>
         <source>好</source>
@@ -3950,6 +4227,25 @@
         <location filename="../menu.py" line="683"/>
         <source>卸载插件 “{title}” 时出错，请查看日志获取详细信息。</source>
         <translation type="unfinished">无法使{title}跑路，去拿着辞退书（日志）去找清汤大老爷（issue）</translation>
+    </message>
+</context>
+<context>
+    <name>plugin_plaza</name>
+    <message>
+        <location filename="../plugin_plaza.py" line="227"/>
+        <source>此插件版本（{plugin_ver}）高于当前设备中 Class Widgets 兼容的插件版本（{SELF_PLUGIN_VERSION}）；
+请更新 Class Widgets 后再尝试安装此插件。</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../plugin_plaza.py" line="237"/>
+        <source>取消安装</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../plugin_plaza.py" line="238"/>
+        <source>强制安装（不建议）</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
