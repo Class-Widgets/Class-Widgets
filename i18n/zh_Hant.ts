@@ -4275,7 +4275,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../tip_toast.py" line="111"/>
         <source>活动开始</source>
-        <translation type="unfinished"></translation>
+        <translation>活動開始</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="112"/>
@@ -4285,22 +4285,22 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../tip_toast.py" line="119"/>
         <source>下课铃声显示</source>
-        <translation type="unfinished"></translation>
+        <translation>落堂鈴聲顯示</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="120"/>
         <source>下课</source>
-        <translation type="unfinished"></translation>
+        <translation>落堂</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="122"/>
         <source>即将进行</source>
-        <translation type="unfinished"></translation>
+        <translation>即將進行</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="131"/>
         <source>放学铃声显示</source>
-        <translation type="unfinished"></translation>
+        <translation>放學鈴聲顯示</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="132"/>
@@ -4310,27 +4310,27 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../tip_toast.py" line="133"/>
         <source>当前课程已结束</source>
-        <translation type="unfinished"></translation>
+        <translation>當前課堂已結束</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="139"/>
         <source>预备铃声显示</source>
-        <translation type="unfinished"></translation>
+        <translation>預備鈴聲顯示</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="140"/>
         <source>即将开始</source>
-        <translation type="unfinished"></translation>
+        <translation>即將開始</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="141"/>
         <source>下一节</source>
-        <translation type="unfinished"></translation>
+        <translation>下一堂</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="149"/>
         <source>通知显示: {title}</source>
-        <translation type="unfinished"></translation>
+        <translation>通知顯示: {title}</translation>
     </message>
 </context>
 </TS>
