@@ -11,6 +11,8 @@ import time
 from dateutil import parser
 from loguru import logger
 
+from PyQt5.QtCore import QCoreApplication
+
 import list_
 from basic_dirs import CW_HOME, THEME_DIRS
 from data_model import ThemeConfig, ThemeInfo
