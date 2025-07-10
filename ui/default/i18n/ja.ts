@@ -71,7 +71,7 @@
         <location filename="../widget-countdown-day.ui" line="82"/>
         <location filename="../dark/widget-countdown-day.ui" line="82"/>
         <source>300 天</source>
-        <translation>300 天</translation>
+        <translation>300日</translation>
     </message>
     <message>
         <location filename="../widget-countdown.ui" line="26"/>
@@ -151,7 +151,7 @@
         <location filename="../widget-time.ui" line="82"/>
         <location filename="../dark/widget-time.ui" line="82"/>
         <source>32 日 周二</source>
-        <translation>32 日 火曜日</translation>
+        <translation>2日目</translation>
     </message>
     <message>
         <location filename="../widget-weather.ui" line="26"/>
@@ -169,7 +169,7 @@
         <location filename="../widget-weather.ui" line="128"/>
         <location filename="../dark/widget-weather.ui" line="128"/>
         <source>114℉</source>
-        <translation>114℉</translation>
+        <translation>114°Fの</translation>
     </message>
 </context>
 </TS>
