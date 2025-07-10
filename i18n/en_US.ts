@@ -3500,37 +3500,37 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <source>周一</source>
         <comment>周一</comment>
-        <translation type="vanished">Monday</translation>
+        <translation type="vanished">Mon.</translation>
     </message>
     <message>
         <source>周二</source>
         <comment>周二</comment>
-        <translation type="vanished">Tuesday</translation>
+        <translation type="vanished">Tue.</translation>
     </message>
     <message>
         <source>周三</source>
         <comment>周三</comment>
-        <translation type="vanished">Wednesday</translation>
+        <translation type="vanished">Wed.</translation>
     </message>
     <message>
         <source>周四</source>
         <comment>周四</comment>
-        <translation type="vanished">Thursday</translation>
+        <translation type="vanished">Thur.</translation>
     </message>
     <message>
         <source>周五</source>
         <comment>周五</comment>
-        <translation type="vanished">Friday</translation>
+        <translation type="vanished">Fri.</translation>
     </message>
     <message>
         <source>周六</source>
         <comment>周六</comment>
-        <translation type="vanished">Saturday</translation>
+        <translation type="vanished">Sat.</translation>
     </message>
     <message>
         <source>周日</source>
         <comment>周日</comment>
-        <translation type="vanished">Sunday</translation>
+        <translation type="vanished">Sun.</translation>
     </message>
     <message>
         <source>单周</source>
@@ -3790,37 +3790,37 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../list_.py" line="17"/>
         <source>周一</source>
-        <translation>Monday</translation>
+        <translation>Mon.</translation>
     </message>
     <message>
         <location filename="../list_.py" line="17"/>
         <source>周二</source>
-        <translation>Tuesday</translation>
+        <translation>Tue.</translation>
     </message>
     <message>
         <location filename="../list_.py" line="17"/>
         <source>周三</source>
-        <translation>Wednesday</translation>
+        <translation>Wed.</translation>
     </message>
     <message>
         <location filename="../list_.py" line="17"/>
         <source>周四</source>
-        <translation>Thursday</translation>
+        <translation>Thur.</translation>
     </message>
     <message>
         <location filename="../list_.py" line="17"/>
         <source>周五</source>
-        <translation>Friday</translation>
+        <translation>Fri.</translation>
     </message>
     <message>
         <location filename="../list_.py" line="17"/>
         <source>周六</source>
-        <translation>Saturday</translation>
+        <translation>Sat.</translation>
     </message>
     <message>
         <location filename="../list_.py" line="18"/>
         <source>周日</source>
-        <translation>Sunday</translation>
+        <translation>Sun.</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
