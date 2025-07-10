@@ -58,7 +58,7 @@ class ConfigCenter:
                 'Class Widgets 启动失败w(ﾟДﾟ)w',
                 f'加载默认配置文件失败,请检查文件完整性或尝试重新安装。\n错误信息: {e}'
             )
-            dlg.yesButton.setText('好')
+            dlg.yesButton.setText(self.tr('好'))
             dlg.cancelButton.hide()
             dlg.buttonLayout.insertStretch(0, 1)
             dlg.setFixedWidth(550)

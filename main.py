@@ -486,7 +486,7 @@ def get_next_lessons() -> None:
 def get_next_lessons_text() -> str: 
     MAX_DISPLAY_LENGTH = 16
     if not next_lessons:
-        return '当前暂无课程'
+        return QCoreApplication.translate('main', '暂无课程')
     if config_center.read_conf('General', 'enable_display_full_next_lessons') == '0':
         return utils.slice_str_by_length(f"{next_lessons[0]} {'...' if len(next_lessons) > 1 else ''}", MAX_DISPLAY_LENGTH)
     if utils.get_str_length(full_text := (' '.join(next_lessons))) <= MAX_DISPLAY_LENGTH:
@@ -2078,8 +2078,8 @@ class DesktopWidget(QWidget):  # 主要小组件
         cd_list = get_countdown()
 
         if path == 'widget-time.ui':  # 日期显示
-            self.date_text.setText(f'{today.year} 年 {today.month} 月')
-            self.day_text.setText(f'{today.day} 日 {list_.week[today.weekday()]}')
+            self.date_text.setText(self.tr('{year} 年 {month} 月').format(year=today.year, month=today.month))
+            self.day_text.setText(self.tr('{day}日  {week}').format(day=today.day, week=list_.week[today.weekday()]))
 
         if path == 'widget-current-activity.ui':  # 当前活动
             self.current_subject.setText(f'  {current_lesson_name}')
@@ -2117,9 +2117,9 @@ class DesktopWidget(QWidget):  # 主要小组件
             if cd_list:
                 if config_center.read_conf('General', 'blur_countdown') == '1':  # 模糊倒计时
                     if cd_list[1] == '00:00':
-                        self.activity_countdown.setText(f"< - 分钟")
+                        self.activity_countdown.setText(self.tr("< - 分钟"))
                     else:
-                        self.activity_countdown.setText(f"< {int(cd_list[1].split(':')[0]) + 1} 分钟")
+                        self.activity_countdown.setText(self.tr("< {minutes} 分钟").format(minutes=int(cd_list[1].split(':')[0]) + 1))
                 else:
                     self.activity_countdown.setText(cd_list[1])
                 self.ac_title.setText(cd_list[0])
