@@ -6,7 +6,7 @@
     <message>
         <location filename="../file.py" line="61"/>
         <source>好</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -46,7 +46,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
         <location filename="../main.py" line="1732"/>
         <location filename="../main.py" line="2082"/>
         <source>{day}日  {week}</source>
-        <translation type="unfinished"></translation>
+        <translation>{day}  {week}</translation>
     </message>
     <message>
         <location filename="../main.py" line="2003"/>
@@ -86,7 +86,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="2081"/>
         <source>{year}&#x2005;年&#x2002;{month}&#x2005;月</source>
-        <translation type="unfinished"></translation>
+        <translation>{year}&#x2002;{month}</translation>
     </message>
     <message>
         <location filename="../main.py" line="2120"/>
@@ -96,7 +96,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="2122"/>
         <source>&lt;&#x2005;{minutes}&#x2005;分钟</source>
-        <translation type="unfinished">&lt;&#x2005;{minutes}&#x2005;minutes</translation>
+        <translation>&lt;&#x2005;{minutes}&#x2005;min</translation>
     </message>
     <message>
         <location filename="../main.py" line="2130"/>
@@ -117,7 +117,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="2473"/>
         <source>{city} · 未知</source>
-        <translation type="unfinished"></translation>
+        <translation>{city} · Unknown</translation>
     </message>
 </context>
 <context>
@@ -1721,7 +1721,7 @@ But make sure that the plugins you need in the plugin square are secure.</transl
     <message>
         <location filename="../menu.py" line="632"/>
         <source>永久删除</source>
-        <translation type="unfinished"></translation>
+        <translation>Delete forever</translation>
     </message>
 </context>
 <context>
@@ -1729,17 +1729,17 @@ But make sure that the plugins you need in the plugin square are secure.</transl
     <message>
         <location filename="../plugin_plaza.py" line="412"/>
         <source>安装</source>
-        <translation type="unfinished"></translation>
+        <translation>Install</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="419"/>
         <source>已安装</source>
-        <translation type="unfinished"></translation>
+        <translation>Installed</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="425"/>
         <source>更新</source>
-        <translation type="unfinished">Update</translation>
+        <translation>Update</translation>
     </message>
 </context>
 <context>
@@ -1747,33 +1747,33 @@ But make sure that the plugins you need in the plugin square are secure.</transl
     <message>
         <location filename="../plugin_plaza.py" line="299"/>
         <source>  安装  </source>
-        <translation type="unfinished"></translation>
+        <translation>  Install  </translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="304"/>
         <location filename="../plugin_plaza.py" line="332"/>
         <source>  安装中  </source>
-        <translation type="unfinished"></translation>
+        <translation>  Installing  </translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="307"/>
         <source>  已安装  </source>
-        <translation type="unfinished"></translation>
+        <translation>  Installed  </translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="313"/>
         <source>更新</source>
-        <translation type="unfinished">Update</translation>
+        <translation>Update</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="319"/>
         <source>为 Class Widgets 安装</source>
-        <translation type="unfinished"></translation>
+        <translation>Install for Class Widgets</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="320"/>
         <source>下载到本地</source>
-        <translation type="unfinished"></translation>
+        <translation>Download to local</translation>
     </message>
 </context>
 <context>
@@ -1781,7 +1781,7 @@ But make sure that the plugins you need in the plugin square are secure.</transl
     <message>
         <location filename="../plugin_plaza.py" line="604"/>
         <source>{month}月{day}日 {weekday}</source>
-        <translation type="unfinished"></translation>
+        <translation>{month}  {day}  {weekday}</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="726"/>
