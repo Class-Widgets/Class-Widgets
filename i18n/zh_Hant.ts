@@ -1689,13 +1689,13 @@
         <location filename="../menu.py" line="2544"/>
         <location filename="../menu.py" line="3198"/>
         <source>执意保存当前输入的内容?</source>
-        <translation>是否堅持保存當前輸入的內容?</translation>
+        <translation>是否堅持儲存當前輸入的內容?</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2561"/>
         <location filename="../menu.py" line="3215"/>
         <source>执意保存</source>
-        <translation>堅持保存</translation>
+        <translation>堅持儲存</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2642"/>
@@ -2630,7 +2630,7 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
     <message>
         <location filename="../menu.py" line="4203"/>
         <source>保存配置文件失败，将自动保存为空课表</source>
-        <translation>保存設定檔失敗，將會自動保存為空白課程時間表</translation>
+        <translation>儲存設定檔失敗，將會自動保存為空白課程時間表</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4215"/>
@@ -4617,17 +4617,17 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <source>此插件版本（{plugin_ver}）高于当前设备中 Class Widgets 兼容的插件版本（{SELF_PLUGIN_VERSION}）；
 请更新 Class Widgets 后再尝试安装此插件。</source>
         <translation>本插件版本（{plugin_ver}）高於目前裝置中 Class Widgets 所支援的插件版本（{SELF_PLUGIN_VERSION}）；
-請先更新 Class Widgets，然後再次嘗試安裝本插件</translation>
+請先更新 Class Widgets，然後再次嘗試安裝本插件。</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="237"/>
         <source>取消安装</source>
-        <translation type="unfinished"></translation>
+        <translation>取消安裝</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="238"/>
         <source>强制安装（不建议）</source>
-        <translation type="unfinished"></translation>
+        <translation>強制安裝（不建議）</translation>
     </message>
 </context>
 <context>
