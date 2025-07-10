@@ -1592,7 +1592,7 @@ But make sure that the plugins you need in the plugin square are secure.</transl
     <message>
         <location filename="../view/pp/settings.ui" line="204"/>
         <source>若需要在中国大陆正常使用“插件广场”，最好为其设置一个镜像源。</source>
-        <translation>To ensure proper use of the Plugin Marketplace in mainland China, it is recommended to configure a mirror source.</translation>
+        <translation>To ensure proper use of the Plugin Marketplace in China Mainland, it is recommended to configure a mirror source.</translation>
     </message>
     <message>
         <location filename="../view/menu/file_item.ui" line="89"/>
@@ -3876,12 +3876,12 @@ Error occurred while switching component language: {e}</translation>
         <location filename="../main.py" line="437"/>
         <location filename="../main.py" line="501"/>
         <source>暂无课程</source>
-        <translation>No courses set</translation>
+        <translation>Not set</translation>
     </message>
     <message>
         <location filename="../main.py" line="409"/>
         <source>当前活动结束还有</source>
-        <translation>Till current activity ends</translation>
+        <translation>Till Current Activity Ends</translation>
     </message>
     <message>
         <location filename="../main.py" line="411"/>
@@ -3891,22 +3891,22 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../main.py" line="446"/>
         <source>距离上课还有</source>
-        <translation>Unill Next Course</translation>
+        <translation>Untill Next Course</translation>
     </message>
     <message>
         <location filename="../main.py" line="448"/>
         <source>目前课程已结束</source>
-        <translation>Courses completed</translation>
+        <translation>Course Completed</translation>
     </message>
     <message>
         <location filename="../main.py" line="521"/>
         <source>课间</source>
-        <translation>Break time</translation>
+        <translation>Break Time</translation>
     </message>
     <message>
         <location filename="../main.py" line="800"/>
         <source>示例课程</source>
-        <translation>Example Class</translation>
+        <translation>Example Course</translation>
     </message>
     <message>
         <location filename="../main.py" line="800"/>
@@ -3921,7 +3921,7 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../main.py" line="801"/>
         <source>这是一条通知示例</source>
-        <translation>This is a example notification.</translation>
+        <translation>This is a example notification</translation>
     </message>
     <message>
         <location filename="../main.py" line="2505"/>
