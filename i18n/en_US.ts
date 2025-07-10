@@ -4237,22 +4237,22 @@ It is recommended to set the scaling factor to a value between 100% and 180%.</t
     <message>
         <location filename="../menu.py" line="671"/>
         <source>卸载成功</source>
-        <translation>Uninstalled Successfully</translation>
+        <translation>Uninstallation Succeeded</translation>
     </message>
     <message>
         <location filename="../menu.py" line="672"/>
         <source>插件 “{title}” 已卸载。请重启 Class Widgets 以完全移除。</source>
-        <translation>Plugin &apos;{title}&apos; has been uninstalled. Please restart the Class Widgets to remove them completely.</translation>
+        <translation>Plugin &apos;{title}&apos; has been uninstalled. Please restart the Class Widgets to remove it completely.</translation>
     </message>
     <message>
         <location filename="../menu.py" line="682"/>
         <source>卸载失败</source>
-        <translation>Uninstallation failed</translation>
+        <translation>Uninstallation Failed</translation>
     </message>
     <message>
         <location filename="../menu.py" line="683"/>
         <source>卸载插件 “{title}” 时出错，请查看日志获取详细信息。</source>
-        <translation>An error occurred while uninstalling the plugin &apos;{title}&apos;. Please check the log for details.</translation>
+        <translation>An error occurred while uninstalling the plugin &apos;{title}&apos;, please check the log for details.</translation>
     </message>
 </context>
 <context>
@@ -4260,62 +4260,62 @@ It is recommended to set the scaling factor to a value between 100% and 180%.</t
     <message>
         <location filename="../tip_toast.py" line="111"/>
         <source>活动开始</source>
-        <translation type="unfinished"></translation>
+        <translation>Activity Starts</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="112"/>
         <source>当前课程</source>
-        <translation type="unfinished">Current course</translation>
+        <translation>Current course</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="119"/>
         <source>下课铃声显示</source>
-        <translation type="unfinished"></translation>
+        <translation>Appearance of break time notification</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="120"/>
         <source>下课</source>
-        <translation type="unfinished"></translation>
+        <translation>Class Over</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="122"/>
         <source>即将进行</source>
-        <translation type="unfinished"></translation>
+        <translation>Coming Activity:</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="131"/>
         <source>放学铃声显示</source>
-        <translation type="unfinished"></translation>
+        <translation>Appearance of after-school notification</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="132"/>
         <source>放学</source>
-        <translation type="unfinished">After school</translation>
+        <translation>School&apos;s Over</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="133"/>
         <source>当前课程已结束</source>
-        <translation type="unfinished"></translation>
+        <translation>Current course completed</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="139"/>
         <source>预备铃声显示</source>
-        <translation type="unfinished"></translation>
+        <translation>Appearance of coming activities notification</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="140"/>
         <source>即将开始</source>
-        <translation type="unfinished"></translation>
+        <translation>Coming activity:</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="141"/>
         <source>下一节</source>
-        <translation type="unfinished"></translation>
+        <translation>Next lesson:</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="149"/>
         <source>通知显示: {title}</source>
-        <translation type="unfinished"></translation>
+        <translation>What will notification appear: {title}</translation>
     </message>
 </context>
 </TS>
