@@ -4232,12 +4232,12 @@ It is recommended to set the scaling factor to a value between 100% and 180%.</t
     <message>
         <location filename="../menu.py" line="656"/>
         <source>我再想想……</source>
-        <translation>Think again…</translation>
+        <translation>Not now…</translation>
     </message>
     <message>
         <location filename="../menu.py" line="671"/>
         <source>卸载成功</source>
-        <translation>Uninstall successfully</translation>
+        <translation>Uninstalled Successfully</translation>
     </message>
     <message>
         <location filename="../menu.py" line="672"/>
