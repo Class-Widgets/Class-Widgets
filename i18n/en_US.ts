@@ -91,7 +91,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="2120"/>
         <source>&lt; - 分钟</source>
-        <translation>&lt; - minute</translation>
+        <translation>&lt; - min</translation>
     </message>
     <message>
         <location filename="../main.py" line="2122"/>
@@ -112,7 +112,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="2351"/>
         <source>{data}预警</source>
-        <translation>{data}alert</translation>
+        <translation>{data} alert</translation>
     </message>
     <message>
         <location filename="../main.py" line="2473"/>
@@ -178,12 +178,12 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="1438"/>
         <source>&lt; - 分钟</source>
-        <translation>&lt; - minute</translation>
+        <translation>&lt; - min</translation>
     </message>
     <message>
         <location filename="../main.py" line="1441"/>
         <source>&lt;&#x2005;{minutes}&#x2005;分钟</source>
-        <translation>&lt;&#x2005;{minutes}&#x2005;minutes</translation>
+        <translation>&lt;&#x2005;{minutes}&#x2005;min</translation>
     </message>
 </context>
 <context>
@@ -4260,7 +4260,7 @@ Do you want to hide the widget?</translation>
         <location filename="../main.py" line="2903"/>
         <source>当前缩放系数为 {scale_factor}%，可能导致显示异常。
 建议将缩放系数设置为 100% 到 180% 之间。</source>
-        <translation>Current sa=caling factor is {scale_factor}% now, and it may cause display problems.
+        <translation>Current sacaling factor is {scale_factor}% now, and it may cause display problems.
 It is recommended to set the scaling factor to a value between 100% and 180%.</translation>
     </message>
     <message>
@@ -4528,17 +4528,18 @@ It is recommended to set the scaling factor to a value between 100% and 180%.</t
         <location filename="../plugin_plaza.py" line="227"/>
         <source>此插件版本（{plugin_ver}）高于当前设备中 Class Widgets 兼容的插件版本（{SELF_PLUGIN_VERSION}）；
 请更新 Class Widgets 后再尝试安装此插件。</source>
-        <translation type="unfinished"></translation>
+        <translation>This plugin version ({plugin_ver}) is higher than the plugin version ({SELF_PLUGIN_VERSION}) that Class Widgets is compatible with on the current device;
+Please update Class Widgets before trying to install this plugin.</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="237"/>
         <source>取消安装</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="238"/>
         <source>强制安装（不建议）</source>
-        <translation type="unfinished"></translation>
+        <translation>Force install (not recommended)</translation>
     </message>
 </context>
 <context>
