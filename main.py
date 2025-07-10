@@ -1729,7 +1729,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.date_text = self.findChild(QLabel, 'date_text')
             self.date_text.setText(self.tr('{year} 年 {month} 月').format(year=today.year, month=today.month))
             self.day_text = self.findChild(QLabel, 'day_text')
-            self.day_text.setText(f'{today.day}日  {list_.week[today.weekday()]}')
+            self.day_text.setText(self.tr('{day}日  {week}').format(day=today.day, week=list_.week[today.weekday()]))
 
         elif path == 'widget-countdown.ui':  # 活动倒计时
             self.countdown_progress_bar = self.findChild(QProgressBar, 'progressBar')
@@ -2325,7 +2325,7 @@ class DesktopWidget(QWidget):  # 主要小组件
         if self.current_alert_index >= len(self.current_alerts):
             self.current_alert_index = 0
         current_alert = self.current_alerts[self.current_alert_index]
-        alert_text = self._simplify_alert_text(current_alert.get('title', '预警'))
+        alert_text = self._simplify_alert_text(current_alert.get('title', self.tr('预警')))
         font = self.weather_alert_text.font()
         if len(alert_text) <= 4:
             font.setPointSize(14)
@@ -2470,7 +2470,7 @@ class DesktopWidget(QWidget):  # 主要小组件
                     self.temperature.setText('--°')
                     current_city = self.findChild(QLabel, 'current_city')
                     if current_city:
-                        current_city.setText(f"{db.search_by_num(config_center.read_conf('Weather', 'city'))} · 未知")
+                        current_city.setText(self.tr("{city} · 未知").format(city=db.search_by_num(config_center.read_conf('Weather', 'city'))))
                     if hasattr(self, 'backgnd'):
                         path = db.get_weather_stylesheet('99').replace('\\', '/')
                         update_stylesheet = re.sub(
@@ -2861,7 +2861,7 @@ if __name__ == '__main__':
                 QCoreApplication.translate('main', 'Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。'
                 '\n(若您需要打开多个实例，请在“设置”->“高级选项”中启用“允许程序多开”)')
             )
-            dlg.yesButton.setText('好')
+            dlg.yesButton.setText(QCoreApplication.translate('main', '好'))
             dlg.cancelButton.hide()
             dlg.buttonLayout.insertStretch(0, 1)
             dlg.setFixedWidth(550)

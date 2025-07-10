@@ -629,7 +629,7 @@ class PluginCard(CardWidget):  # 插件卡片
 
     def remove_plugin(self):
         alert = MessageBox(QCoreApplication.translate('menu','menu', "您确定要删除插件“{title}”吗？").format(title=self.title), QCoreApplication.translate('menu','menu', "删除此插件后，将无法恢复。"), self.parent)
-        alert.yesButton.setText('永久删除')
+        alert.yesButton.setText(self.tr('永久删除'))
         alert.yesButton.setStyleSheet("""
                 PushButton{
                     border-radius: 5px;
@@ -1572,7 +1572,7 @@ class SettingsMenu(FluentWindow):
                        "请确保网络连接,不然会说不出话来(>﹏<)\n"
                        "* 可能会有一定的延迟,耐心等待一下~"))
             w = MessageBox(title, message, self.TTSSettingsDialog if hasattr(self, 'TTSSettingsDialog') and self.TTSSettingsDialog else self.parent_menu)
-            w.yesButton.setText('知道啦~')
+            w.yesButton.setText(self.tr('知道啦~'))
             w.cancelButton.hide()
             w.show()
         elif current_engine_key == "pyttsx3" and platform.system() == "Windows":
@@ -3696,7 +3696,7 @@ class SettingsMenu(FluentWindow):
 
     def setup_schedule_preview(self):
         subtitle = self.findChild(SubtitleLabel, 'subtitle_file')
-        subtitle.setText(f'预览  -  {config_center.schedule_name[:-5]}')
+        subtitle.setText(self.tr('预览 - {schedule_name}').format(schedule_name=config_center.schedule_name[:-5]))
 
         schedule_view = self.findChild(TableWidget, 'schedule_view')
         schedule_view.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)  # 使列表自动等宽
@@ -3905,8 +3905,8 @@ class SettingsMenu(FluentWindow):
                 f"{file_name.replace('.yaml', '.json')}"
 
             if os.path.exists(save_path):
-                overwrite = MessageBox('文件已存在', f'文件 {file_name} 已存在，是否覆盖？', self)
-                overwrite.yesButton.setText('覆盖')
+                overwrite = MessageBox(self.tr('文件已存在'), self.tr('文件 {file_name} 已存在，是否覆盖？').format(file_name=file_name), self)
+                overwrite.yesButton.setText(self.tr('覆盖'))
                 if not overwrite.exec():
                     return
         
@@ -3955,8 +3955,8 @@ class SettingsMenu(FluentWindow):
 
             save_path = base_directory / "config" / "schedule" / file_name
             if os.path.exists(save_path):
-                overwrite = MessageBox('文件已存在', f'文件 {file_name} 已存在，是否覆盖？', self)
-                overwrite.yesButton.setText('覆盖')
+                overwrite = MessageBox(self.tr('文件已存在'), self.tr('文件 {file_name} 已存在，是否覆盖？').format(file_name=file_name), self)
+                overwrite.yesButton.setText(self.tr('覆盖'))
                 if not overwrite.exec():
                     return
         
@@ -4056,32 +4056,32 @@ class SettingsMenu(FluentWindow):
             def is_valid_filename(file_name):
                 # 检查是否为空
                 if not file_name.strip():
-                    return False, "文件名不能为空"
+                    return False, self.tr("文件名不能为空")
                 
                 # 检查非法字符
                 invalid_chars = r'[\\/:*?"<>|]'
                 if re.search(invalid_chars, file_name):
-                    return False, "文件名包含非法字符"
+                    return False, self.tr("文件名包含非法字符")
                 
                 # 检查长度
                 if len(file_name) > 255:
-                    return False, "文件名过长"
+                    return False, self.tr("文件名过长")
                 
                 # 检查保留名称
                 reserved_names = {"CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
                                 "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"}
                 if file_name.upper() in reserved_names:
-                    return False, "文件名是保留名称"
+                    return False, self.tr("文件名是保留名称")
                 
                 # 检查路径分隔符
                 if os.path.sep in file_name:
-                    return False, "文件名不能包含路径分隔符"
+                    return False, self.tr("文件名不能包含路径分隔符")
                 
-                return True, "文件名合法"
+                return True, self.tr("文件名合法")
             
             n2_dialog = TextFieldMessageBox(
-                        self, '请输入新课表名称',
-                        '请命名您的课程表计划：', '新课表 - 1', list_.get_schedule_config(), is_valid_filename
+                        self, self.tr('请输入新课表名称'),
+                        self.tr('请命名您的课程表计划：'), self.tr('新课表 - 1'), list_.get_schedule_config(), is_valid_filename
                     )
             if not n2_dialog.exec():
                 return
@@ -4148,8 +4148,8 @@ class SettingsMenu(FluentWindow):
     def cf_get_schedule(self):
         url = schedule_center.schedule_data.get('url', 'local')
         if url == 'local':
-            self.show_tip_flyout('获取配置文件失败',
-                                   '当前课表为本地课表，无法获取配置文件。请上传课表后再尝试获取配置文件。',
+            self.show_tip_flyout(self.tr('获取配置文件失败'),
+                                   self.tr('当前课表为本地课表，无法获取配置文件。请上传课表后再尝试获取配置文件。'),
                                    self.config_download, InfoBarIcon.ERROR, FlyoutAnimationType.PULL_UP)
             return
         self.schedule_get_thread = scheduleThread(url)
@@ -4158,14 +4158,14 @@ class SettingsMenu(FluentWindow):
 
     def cf_receive_schedule(self, data):
         if not (data.get('error', None) is None):
-            self.show_tip_flyout('获取配置文件失败',
+            self.show_tip_flyout(self.tr('获取配置文件失败'),
                                    data['error'], self.config_download, InfoBarIcon.ERROR, FlyoutAnimationType.PULL_UP)
             return
         try:
             schedule_center.save_data(data, config_center.schedule_name)
         except ValueError as e:
             logger.error(f'更新配置文件 {config_center.schedule_name} 时发生错误：{e}')
-            self.show_tip_flyout('更新配置文件失败',
+            self.show_tip_flyout(self.tr('更新配置文件失败'),
                                    f"{e}", self.config_download, InfoBarIcon.ERROR, FlyoutAnimationType.PULL_UP)  
             return
         schedule_center.update_schedule()
@@ -4175,8 +4175,8 @@ class SettingsMenu(FluentWindow):
             self.config_url:LineEdit = self.cfInterface.findChild(LineEdit, 'config_url')
             url = self.config_url.text()
             if url == '':
-                self.show_tip_flyout('请输入配置文件链接',
-                                   '请输入配置文件链接', self.config_url, InfoBarIcon.WARNING, FlyoutAnimationType.DROP_DOWN)
+                self.show_tip_flyout(self.tr('请输入配置文件链接'),
+                                   self.tr('请输入配置文件链接'), self.config_url, InfoBarIcon.WARNING, FlyoutAnimationType.DROP_DOWN)
                 return        
             self.schedule_load_thread = scheduleThread(url)
             self.schedule_load_thread.update_signal.connect(self.cf_receive_schedule_from_db)
@@ -4188,7 +4188,7 @@ class SettingsMenu(FluentWindow):
     
     def cf_receive_schedule_from_db(self, data):
         if not (data.get('error', None) is None):
-            self.show_tip_flyout('获取配置文件失败',
+            self.show_tip_flyout(self.tr('获取配置文件失败'),
                                    data['error'], self.config_download, InfoBarIcon.ERROR, FlyoutAnimationType.PULL_UP)
             self.config_url.setEnabled(True)
             return
@@ -4200,7 +4200,7 @@ class SettingsMenu(FluentWindow):
             schedule_center.save_data(data, config_center.schedule_name)
         except ValueError as e:
             logger.error(f'保存配置文件 {url} 时发生错误：{e}')
-            self.show_tip_flyout('保存配置文件失败，将自动保存为空课表',
+            self.show_tip_flyout(self.tr('保存配置文件失败，将自动保存为空课表'),
                                    f"{e}", self.config_download, InfoBarIcon.ERROR, FlyoutAnimationType.PULL_UP)
             self.config_url.setEnabled(True)
             return
@@ -4212,8 +4212,8 @@ class SettingsMenu(FluentWindow):
         try:
             if url == '' or url == 'local':
                 n2_dialog = TextFieldMessageBox(
-                        self, '请输入课表链接',
-                        f'当前可缩写数据库：\n{list_.schedule_dbs}\n你可以使用缩写来代替完整的数据库链接', '')
+                        self, self.tr('请输入课表链接'),
+                        self.tr('当前可缩写数据库：\n{dbs}\n你可以使用缩写来代替完整的数据库链接').format(dbs='\n'.join([f"{k} - {v}" for k, v in list_.schedule_dbs.items()])), '')
                 if not n2_dialog.exec():
                     return
                 url = n2_dialog.textField.text()
@@ -4232,12 +4232,12 @@ class SettingsMenu(FluentWindow):
             
         except Exception as e:
             logger.error(f'上传配置文件 {url} 时发生错误：{e}')
-            self.show_tip_flyout('上传配置文件失败',
+            self.show_tip_flyout(self.tr('上传配置文件失败'),
                                    f"{e}", self.config_upload, InfoBarIcon.ERROR, FlyoutAnimationType.PULL_UP)
 
     def cf_receive_schedule_from_post(self, data):
         if data.get('error', None):
-            self.show_tip_flyout('上传配置文件失败',
+            self.show_tip_flyout(self.tr('上传配置文件失败'),
                                    data['error'], self.config_upload, InfoBarIcon.ERROR, FlyoutAnimationType.PULL_UP)
     class cfDbEdit(MessageBoxBase):
         def __init__(self, parent=None):
@@ -4255,15 +4255,15 @@ class SettingsMenu(FluentWindow):
 
             self.add_button = self.widget.findChild(ToolButton, 'add_button')
             self.add_button.setIcon(fIcon.ADD)
-            self.add_button.setToolTip('添加课表数据库')
+            self.add_button.setToolTip(self.tr('添加课表数据库'))
             self.add_button.clicked.connect(self.add_item)
             self.clear_button = self.widget.findChild(ToolButton, 'clear_button')
             self.clear_button.setIcon(fIcon.DELETE)
             self.clear_button.clicked.connect(self.delete_item)
-            self.clear_button.setToolTip('删除课表数据库')
+            self.clear_button.setToolTip(self.tr('删除课表数据库'))
             self.set_button = self.widget.findChild(ToolButton, 'set_button')
             self.set_button.setIcon(fIcon.EDIT)
-            self.set_button.setToolTip('更改课表数据库')
+            self.set_button.setToolTip(self.tr('更改课表数据库'))
             self.set_button.clicked.connect(self.edit_item)
 
             self.table = self.widget.findChild(ListWidget, 'db_list')
@@ -4291,8 +4291,8 @@ class SettingsMenu(FluentWindow):
                     if self.db_short.text() != self.db_list(self.table.row(selected_item))[0]:
                         Flyout.create(
                             icon=InfoBarIcon.ERROR,
-                            title='错误！',
-                            content=f"数据库缩写 {self.db_short.text()} 已存在，请更换缩写。",
+                            title=self.tr('错误！'),
+                            content=self.tr("数据库缩写 {db_short} 已存在，请更换缩写。").format(db_short=self.db_short.text()),
                             target=self.add_button,
                             parent=self,
                             isClosable=True,
@@ -4320,8 +4320,8 @@ class SettingsMenu(FluentWindow):
             if self.db_dict.get(f"@{self.db_short.text()}", None):
                 Flyout.create(
                     icon=InfoBarIcon.ERROR,
-                    title='错误！',
-                    content=f"数据库缩写 {self.db_short.text()} 已存在，请更换缩写。",
+                    title=self.tr('错误！'),
+                    content=self.tr("数据库缩写 {db_short} 已存在，请更换缩写。").format(db_short=self.db_short.text()),
                     target=self.add_button,
                     parent=self,
                     isClosable=True,
@@ -4341,8 +4341,8 @@ class SettingsMenu(FluentWindow):
 
             Flyout.create(
                 icon=InfoBarIcon.SUCCESS,
-                title='保存成功',
-                content=f"已保存至 {base_directory / 'config' / 'schedule_db.json'}",
+                title=self.tr('保存成功'),
+                content=self.tr("已保存至 ./config/schedule_db.json"),
                 target=self.save_button,
                 parent=self,
                 isClosable=True,

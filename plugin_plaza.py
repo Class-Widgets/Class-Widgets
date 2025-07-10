@@ -27,6 +27,7 @@ from utils import restart, calculate_size
 import platform
 from loguru import logger
 
+from PyQt5.QtCore import QCoreApplication
 
 class ThreadManager:
     """线程管理器"""
@@ -144,7 +145,7 @@ class downloadProgressBar(InfoBar):  # 下载进度条(创建下载进程)
         self.bar = ProgressBar()
         self.bar.setFixedWidth(300)
         self.cancelBtn = HyperlinkLabel()
-        self.cancelBtn.setText("取消")
+        self.cancelBtn.setText(self.tr("取消"))
         self.cancelBtn.clicked.connect(self.cancelDownload)
         self.addWidget(self.bar)
         self.addWidget(self.cancelBtn)
@@ -222,8 +223,8 @@ def install_plugin(parent: Any, p_name: str, data: Dict[str, Any]) -> bool:
     plugin_ver = str(data.get('plugin_ver'))
     if plugin_ver != SELF_PLUGIN_VERSION:  # 插件版本不匹配
         if plugin_ver > SELF_PLUGIN_VERSION:
-            content = (f'此插件版本（{plugin_ver}）高于当前设备中 Class Widgets 兼容的插件版本（{SELF_PLUGIN_VERSION}）；\n'
-                       f'请更新 Class Widgets 后再尝试安装此插件。')
+            content = (QCoreApplication.translate("plugin_plaza", '此插件版本（{plugin_ver}）高于当前设备中 Class Widgets 兼容的插件版本（{SELF_PLUGIN_VERSION}）；\n'
+                       '请更新 Class Widgets 后再尝试安装此插件。').format(plugin_ver=plugin_ver, SELF_PLUGIN_VERSION=SELF_PLUGIN_VERSION))
         else:
             content = (f'此插件版本（{plugin_ver}）低于当前设备中 Class Widgets 兼容的插件版本（{SELF_PLUGIN_VERSION}）；\n'
                        f'可能是插件缺乏维护，请联系插件作者更新插件，或在社区（GitHub、QQ群）中提出问题。')
@@ -233,8 +234,8 @@ def install_plugin(parent: Any, p_name: str, data: Dict[str, Any]) -> bool:
             f"{content}\n\n不建议安装此插件，否则将出现不可预料（包括崩溃、闪退等故障）的问题。",
             parent
         )  # 兼容性检查窗口
-        cc.yesButton.setText("取消安装")
-        cc.cancelButton.setText("强制安装（不建议）")
+        cc.yesButton.setText(QCoreApplication.translate("plugin_plaza", "取消安装"))
+        cc.cancelButton.setText(QCoreApplication.translate("plugin_plaza", "强制安装（不建议）"))
         if cc.exec():  # 取消安装
             return False
 
@@ -295,28 +296,28 @@ class PluginDetailPage(MessageBoxBase):  # 插件详情页面
         self.openGitHub.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(url)))
 
         self.installButton = self.findChild(PrimarySplitPushButton, 'installButton')
-        self.installButton.setText("  安装  ")
+        self.installButton.setText(self.tr("  安装  "))
         self.installButton.setIcon(fIcon.DOWNLOAD)
         self.installButton.clicked.connect(self.install)
 
         if self.p_name in download_progress:  # 如果正在下载
-            self.installButton.setText("  安装中  ")
+            self.installButton.setText(self.tr("  安装中  "))
             self.installButton.setEnabled(False)
         if self.p_name in installed_plugins:  # 如果已安装
-            self.installButton.setText("  已安装  ")
+            self.installButton.setText(self.tr("  已安装  "))
             self.installButton.setEnabled(False)
 
         if self.p_name in local_plugins_version:  # 如果本地版本低于仓库版本
             print(local_plugins_version[self.p_name], version)
             if local_plugins_version[self.p_name] < version:
-                self.installButton.setText("更新")
+                self.installButton.setText(self.tr("更新"))
                 self.installButton.setIcon(fIcon.SYNC)
                 self.installButton.setEnabled(True)
 
         menu = RoundMenu(parent=self.installButton)
         menu.addActions([
-            Action(fIcon.DOWNLOAD, "为 Class Widgets 安装", triggered=self.install),
-            Action(fIcon.LINK, "下载到本地",
+            Action(fIcon.DOWNLOAD, self.tr("为 Class Widgets 安装"), triggered=self.install),
+            Action(fIcon.LINK, self.tr("下载到本地"),
                    triggered=lambda: QDesktopServices.openUrl(QUrl(f"{url}/releases/latest")))
         ])
         self.installButton.setFlyout(menu)
@@ -328,7 +329,7 @@ class PluginDetailPage(MessageBoxBase):  # 插件详情页面
 
     def install(self) -> None:
         if install_plugin(self.parent, self.p_name, self.data):
-            self.installButton.setText("  安装中  ")
+            self.installButton.setText(self.tr("  安装中  "))
             self.installButton.setEnabled(False)
 
     def download_readme(self) -> None:
@@ -408,20 +409,20 @@ class PluginCard_Horizontal(CardWidget):  # 插件卡片（横向）
         self.versionLabel.setTextColor("#999999", "#999999")
         self.titleLabel.setSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Fixed)
 
-        self.installButton.setText("安装")
+        self.installButton.setText(self.tr("安装"))
         self.installButton.setMaximumSize(100, 36)
         self.installButton.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         self.installButton.setIcon(fIcon.DOWNLOAD)
         self.installButton.clicked.connect(self.install)
 
         if self.p_name in installed_plugins:  # 如果已安装
-            self.installButton.setText("已安装")
+            self.installButton.setText(self.tr("已安装"))
             self.installButton.setEnabled(False)
 
         if self.p_name in local_plugins_version:  # 如果本地版本低于仓库版本
             print(local_plugins_version[self.p_name], version)
             if local_plugins_version[self.p_name] < version:
-                self.installButton.setText("更新")
+                self.installButton.setText(self.tr("更新"))
                 self.installButton.setIcon(fIcon.SYNC)
                 self.installButton.setEnabled(True)
 
@@ -600,7 +601,8 @@ class PluginPlaza(MSFluentWindow):
         # 标题和副标题
         home_scroll = self.homeInterface.findChild(SmoothScrollArea, 'home_scroll')
         time_today_label = self.homeInterface.findChild(TitleLabel, 'time_today_label')
-        time_today_label.setText(f"{datetime.now().month}月{datetime.now().day}日 {l.week[datetime.now().weekday()]}")
+        time_today_label.setText(self.tr("{month}月{day}日 {weekday}").format(
+            month=datetime.now().month, day=datetime.now().day, weekday=l.week[datetime.now().weekday()]))
 
         # Banner
         self.banner_view = self.homeInterface.findChild(HorizontalFlipView, 'banner_view')
@@ -721,7 +723,7 @@ class PluginPlaza(MSFluentWindow):
                 else:
                     error_info = data.get("error", "未知错误")
                     logger.error(f'PluginPlaza 无法联网,错误：{error_info}')
-                    self.findChild(BodyLabel, 'tips').setText(f'错误原因：{error_info}')
+                    self.findChild(BodyLabel, 'tips').setText(self.tr('错误原因：{error_info}').format(error_info=error_info))
                     self.banner_view.addImage("img/plaza/banner_network-failed.png")
                     self.banner_view.addImage("img/plaza/banner_network-failed.png")
                     self.splashScreen.hide()
