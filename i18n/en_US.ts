@@ -91,7 +91,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="2120"/>
         <source>&lt; - 分钟</source>
-        <translation type="unfinished">&lt; - minute</translation>
+        <translation>&lt; - minute</translation>
     </message>
     <message>
         <location filename="../main.py" line="2122"/>
@@ -1781,12 +1781,12 @@ But make sure that the plugins you need in the plugin square are secure.</transl
     <message>
         <location filename="../plugin_plaza.py" line="604"/>
         <source>{month}月{day}日 {weekday}</source>
-        <translation>{month}  {day}  {weekday}</translation>
+        <translation>{month} {day} {weekday}</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="726"/>
         <source>错误原因：{error_info}</source>
-        <translation type="unfinished"></translation>
+        <translation>Error: {error_info}</translation>
     </message>
 </context>
 <context>
@@ -1982,7 +1982,7 @@ Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, 
     <message>
         <location filename="../menu.py" line="1575"/>
         <source>知道啦~</source>
-        <translation type="unfinished">Got it~</translation>
+        <translation>Got it~</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1616"/>
@@ -2423,7 +2423,7 @@ Inspection of effective domain name or IP address （︶^︶）</translation>
     <message>
         <location filename="../menu.py" line="3699"/>
         <source>预览 - {schedule_name}</source>
-        <translation type="unfinished"></translation>
+        <translation>Preview - {schedule_name}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3754"/>
@@ -2488,19 +2488,19 @@ Inspection of effective domain name or IP address （︶^︶）</translation>
         <location filename="../menu.py" line="3908"/>
         <location filename="../menu.py" line="3958"/>
         <source>文件已存在</source>
-        <translation type="unfinished"></translation>
+        <translation>File exists</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3908"/>
         <location filename="../menu.py" line="3958"/>
         <source>文件 {file_name} 已存在，是否覆盖？</source>
-        <translation type="unfinished"></translation>
+        <translation>{file_name} already exists, overwrite it?</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3909"/>
         <location filename="../menu.py" line="3959"/>
         <source>覆盖</source>
-        <translation type="unfinished"></translation>
+        <translation>Overwrite</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3925"/>
@@ -2574,32 +2574,32 @@ For details, please see the log located in ./log/.</translation>
     <message>
         <location filename="../menu.py" line="4062"/>
         <source>文件名不能为空</source>
-        <translation type="unfinished"></translation>
+        <translation>The file name cannot be empty</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4067"/>
         <source>文件名包含非法字符</source>
-        <translation type="unfinished"></translation>
+        <translation>The file name contains illegal characters</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4071"/>
         <source>文件名过长</source>
-        <translation type="unfinished"></translation>
+        <translation>The file name is too long</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4077"/>
         <source>文件名是保留名称</source>
-        <translation type="unfinished"></translation>
+        <translation>The file name is a reserved name</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4080"/>
         <source>文件名不能包含路径分隔符</source>
-        <translation type="unfinished"></translation>
+        <translation>The file name cannot contain path separators</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4082"/>
         <source>文件名合法</source>
-        <translation type="unfinished"></translation>
+        <translation>The file name is valid</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4127"/>
@@ -2611,46 +2611,48 @@ For details, please see the log located in ./log/.</translation>
         <location filename="../menu.py" line="4161"/>
         <location filename="../menu.py" line="4191"/>
         <source>获取配置文件失败</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to get configuration file</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4152"/>
         <source>当前课表为本地课表，无法获取配置文件。请上传课表后再尝试获取配置文件。</source>
-        <translation type="unfinished"></translation>
+        <translation>The current schedule is a local schedule and the configuration file cannot be gotten. Please upload the schedule first.</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4168"/>
         <source>更新配置文件失败</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to update the configuration file</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4178"/>
         <location filename="../menu.py" line="4179"/>
         <source>请输入配置文件链接</source>
-        <translation type="unfinished"></translation>
+        <translation>Please enter the configuration files link</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4203"/>
         <source>保存配置文件失败，将自动保存为空课表</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to save the configuration file, it will be automatically saved as an empty schedule</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4215"/>
         <source>请输入课表链接</source>
-        <translation type="unfinished"></translation>
+        <translation>Please enter the schedule link</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4216"/>
         <source>当前可缩写数据库：
 {dbs}
 你可以使用缩写来代替完整的数据库链接</source>
-        <translation type="unfinished"></translation>
+        <translation>Currently available database abbreviations:
+{dbs}
+You can use abbreviations instead of full database links</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4235"/>
         <location filename="../menu.py" line="4240"/>
         <source>上传配置文件失败</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to upload configuration file</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4570"/>
@@ -3450,39 +3452,39 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../menu.py" line="4258"/>
         <source>添加课表数据库</source>
-        <translation type="unfinished"></translation>
+        <translation>Add schedule database</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4263"/>
         <source>删除课表数据库</source>
-        <translation type="unfinished"></translation>
+        <translation>Delete timetable database</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4266"/>
         <source>更改课表数据库</source>
-        <translation type="unfinished"></translation>
+        <translation>Edit timetable database</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4294"/>
         <location filename="../menu.py" line="4323"/>
         <source>错误！</source>
-        <translation type="unfinished">Error!</translation>
+        <translation>Error!</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4295"/>
         <location filename="../menu.py" line="4324"/>
         <source>数据库缩写 {db_short} 已存在，请更换缩写。</source>
-        <translation type="unfinished"></translation>
+        <translation>The database abbreviation {db_short} already exists, please change the abbreviation.</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4344"/>
         <source>保存成功</source>
-        <translation type="unfinished">Saved</translation>
+        <translation>Saved</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4345"/>
         <source>已保存至 ./config/schedule_db.json</source>
-        <translation type="unfinished"></translation>
+        <translation>Saved to ./config/schedule_db.json</translation>
     </message>
 </context>
 <context>
@@ -3490,7 +3492,7 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../plugin_plaza.py" line="148"/>
         <source>取消</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>Cancel</translation>
     </message>
 </context>
 <context>
