@@ -84,7 +84,7 @@
     </message>
     <message>
         <location filename="../main.py" line="2081"/>
-        <source>{year}&#x2005;年&#x2002;{month}&#x2005;月</source>
+        <source>{year}&#x2005;年&#x2002;{month}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -85,8 +85,12 @@ You can add more voice in system settings (*≧▽≦)</translation>
     </message>
     <message>
         <location filename="../main.py" line="2081"/>
+        <source>{year}&#x2005;年&#x2002;{month}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>{year}&#x2005;年&#x2002;{month}&#x2005;月</source>
-        <translation>{month} {year}</translation>
+        <translation type="vanished">{month} {year}</translation>
     </message>
     <message>
         <location filename="../main.py" line="2120"/>
