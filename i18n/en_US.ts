@@ -988,7 +988,7 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
         <location filename="../view/menu/plugin_mgr.ui" line="706"/>
         <location filename="../view/menu/plugin_mgr.ui" line="712"/>
         <source>关</source>
-        <translation>Disable</translation>
+        <translation>Off</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="741"/>
@@ -996,7 +996,7 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
         <location filename="../view/menu/custom.ui" line="914"/>
         <location filename="../view/menu/plugin_mgr.ui" line="709"/>
         <source>开</source>
-        <translation>Enable</translation>
+        <translation>On</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="780"/>
@@ -1607,12 +1607,12 @@ But make sure that the plugins you need in the plugin square are secure.</transl
     <message>
         <location filename="../view/menu/schedule_db_edit.ui" line="35"/>
         <source>课表数据库编辑</source>
-        <translation>Database Edit</translation>
+        <translation>Schedule Database Edit</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_db_edit.ui" line="76"/>
         <source>数据库简称</source>
-        <translation>Abbreviations</translation>
+        <translation>Abbreviation</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_db_edit.ui" line="102"/>
@@ -1745,7 +1745,7 @@ But make sure that the plugins you need in the plugin square are secure.</transl
         <location filename="../menu.py" line="1135"/>
         <location filename="../menu.py" line="1173"/>
         <source>导入成功</source>
-        <translation>Import successfully</translation>
+        <translation>Import Succeeded</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1136"/>
@@ -2667,7 +2667,7 @@ For details, see Log, located under./log/.</translation>
     <message>
         <location filename="../menu.py" line="3965"/>
         <source>您已成功导入课程表配置文件</source>
-        <translation>Import successfully</translation>
+        <translation>Schedule import succeeded</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3966"/>
