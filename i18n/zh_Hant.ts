@@ -2614,41 +2614,43 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
     <message>
         <location filename="../menu.py" line="4152"/>
         <source>当前课表为本地课表，无法获取配置文件。请上传课表后再尝试获取配置文件。</source>
-        <translation>當前課程時間表為本機課表，無法獲取設定檔。請上傳課程時間表後再次嘗試獲取設定檔</translation>
+        <translation>當前課程時間表為本機課表，無法獲取設定檔。請上傳課程時間表後再次嘗試獲取設定檔。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4168"/>
         <source>更新配置文件失败</source>
-        <translation type="unfinished"></translation>
+        <translation>更新設定檔失敗</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4178"/>
         <location filename="../menu.py" line="4179"/>
         <source>请输入配置文件链接</source>
-        <translation type="unfinished"></translation>
+        <translation>請輸入設定檔連結</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4203"/>
         <source>保存配置文件失败，将自动保存为空课表</source>
-        <translation type="unfinished"></translation>
+        <translation>保存設定檔失敗，將會自動保存為空白課程時間表</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4215"/>
         <source>请输入课表链接</source>
-        <translation type="unfinished"></translation>
+        <translation>請輸入課程時間表連結</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4216"/>
         <source>当前可缩写数据库：
 {dbs}
 你可以使用缩写来代替完整的数据库链接</source>
-        <translation type="unfinished"></translation>
+        <translation>當前可以縮寫資料庫：
+{dbs}
+你可以使用縮寫來代替完整的資料庫連結</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4235"/>
         <location filename="../menu.py" line="4240"/>
         <source>上传配置文件失败</source>
-        <translation type="unfinished"></translation>
+        <translation>上傳設定檔失敗</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4570"/>
@@ -3463,17 +3465,17 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../menu.py" line="4258"/>
         <source>添加课表数据库</source>
-        <translation type="unfinished"></translation>
+        <translation>添加課程時間表資料庫</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4263"/>
         <source>删除课表数据库</source>
-        <translation type="unfinished"></translation>
+        <translation>刪除課程時間表資料庫</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4266"/>
         <source>更改课表数据库</source>
-        <translation type="unfinished"></translation>
+        <translation>更改課程時間表資料庫</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4294"/>
@@ -3485,7 +3487,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <location filename="../menu.py" line="4295"/>
         <location filename="../menu.py" line="4324"/>
         <source>数据库缩写 {db_short} 已存在，请更换缩写。</source>
-        <translation type="unfinished"></translation>
+        <translation>資料庫縮寫 {db_short} 已存在，請更換縮寫。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4344"/>
@@ -3495,7 +3497,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../menu.py" line="4345"/>
         <source>已保存至 ./config/schedule_db.json</source>
-        <translation type="unfinished"></translation>
+        <translation>已儲存至 ./config/schedule_db.json</translation>
     </message>
 </context>
 <context>
@@ -3507,7 +3509,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <location filename="../conf.py" line="234"/>
         <location filename="../conf.py" line="238"/>
         <source>未设置</source>
-        <translation type="unfinished"></translation>
+        <translation>未設定</translation>
     </message>
 </context>
 <context>
@@ -3848,57 +3850,57 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>一月</source>
-        <translation type="unfinished"></translation>
+        <translation>一月</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>二月</source>
-        <translation type="unfinished"></translation>
+        <translation>二月</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>三月</source>
-        <translation type="unfinished"></translation>
+        <translation>三月</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>四月</source>
-        <translation type="unfinished"></translation>
+        <translation>四月</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>五月</source>
-        <translation type="unfinished"></translation>
+        <translation>五月</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>六月</source>
-        <translation type="unfinished"></translation>
+        <translation>六月</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>七月</source>
-        <translation type="unfinished"></translation>
+        <translation>七月</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>八月</source>
-        <translation type="unfinished"></translation>
+        <translation>八月</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>九月</source>
-        <translation type="unfinished"></translation>
+        <translation>九月</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>十月</source>
-        <translation type="unfinished"></translation>
+        <translation>十月</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>十一月</source>
-        <translation type="unfinished"></translation>
+        <translation>十一月</translation>
     </message>
     <message>
         <location filename="../list_.py" line="20"/>
@@ -3908,7 +3910,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../list_.py" line="20"/>
         <source>十二月</source>
-        <translation type="unfinished"></translation>
+        <translation>十二月</translation>
     </message>
     <message>
         <location filename="../list_.py" line="21"/>
@@ -4214,7 +4216,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../main.py" line="86"/>
         <source>未设置</source>
-        <translation type="unfinished"></translation>
+        <translation>未設定</translation>
     </message>
     <message>
         <location filename="../main.py" line="337"/>
@@ -4614,7 +4616,8 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <location filename="../plugin_plaza.py" line="227"/>
         <source>此插件版本（{plugin_ver}）高于当前设备中 Class Widgets 兼容的插件版本（{SELF_PLUGIN_VERSION}）；
 请更新 Class Widgets 后再尝试安装此插件。</source>
-        <translation type="unfinished"></translation>
+        <translation>本插件版本（{plugin_ver}）高於目前裝置中 Class Widgets 所支援的插件版本（{SELF_PLUGIN_VERSION}）；
+請先更新 Class Widgets，然後再次嘗試安裝本插件</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="237"/>
