@@ -37,7 +37,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="2003"/>
         <source>完全隐藏/显示小组件</source>
-        <translation>Completely hide/show widgets</translation>
+        <translation>Completely hide or show widgets</translation>
     </message>
     <message>
         <location filename="../main.py" line="2004"/>
@@ -3876,27 +3876,27 @@ Error occurred while switching component language: {e}</translation>
         <location filename="../main.py" line="437"/>
         <location filename="../main.py" line="501"/>
         <source>暂无课程</source>
-        <translation>No courses available at the moment</translation>
+        <translation>No courses set</translation>
     </message>
     <message>
         <location filename="../main.py" line="409"/>
         <source>当前活动结束还有</source>
-        <translation>Till the end of current activity</translation>
+        <translation>Till current activity ends</translation>
     </message>
     <message>
         <location filename="../main.py" line="411"/>
         <source>课间时长还有</source>
-        <translation>The duration of break time is still</translation>
+        <translation>Next Course</translation>
     </message>
     <message>
         <location filename="../main.py" line="446"/>
         <source>距离上课还有</source>
-        <translation>There is still time before class</translation>
+        <translation>Unill next course</translation>
     </message>
     <message>
         <location filename="../main.py" line="448"/>
         <source>目前课程已结束</source>
-        <translation>Current course is completed</translation>
+        <translation>Courses completed</translation>
     </message>
     <message>
         <location filename="../main.py" line="521"/>
