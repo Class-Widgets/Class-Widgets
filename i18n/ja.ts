@@ -6,7 +6,7 @@
     <message>
         <location filename="../file.py" line="61"/>
         <source>好</source>
-        <translation type="unfinished">はい</translation>
+        <translation>はい</translation>
     </message>
 </context>
 <context>
@@ -3735,14 +3735,14 @@
 若变更状态，将修改隐藏模式“灵活隐藏” (您稍后可以在“设置”中更改此选项)
 您确定要隐藏组件吗?</source>
         <translation>現在 {hide_mode_text} モードを使用しているため、非表示状態を変更できません。
-状態を変更すると、非表示モードが「柔軟な非表示」に変更されます（後で「設定」でこのオプションを変更できます）。
+状態を変更すると、非表示モードが「Flexible hiding」に変更されます（後で「設定」でこのオプションを変更できます）。
 コンポーネントを非表示にしてもよろしいですか？</translation>
     </message>
     <message>
         <location filename="../main.py" line="2514"/>
         <location filename="../main.py" line="2543"/>
         <source>确定</source>
-        <translation type="unfinished"></translation>
+        <translation>確定</translation>
     </message>
     <message>
         <location filename="../main.py" line="2516"/>
@@ -3755,31 +3755,35 @@
         <source>您正在使用 {hide_mode_text} 模式，无法变更隐藏状态
 若变更状态，将修改隐藏模式“灵活隐藏” (您可以在“设置”中更改此选项)
 您确定要隐藏组件吗?</source>
-        <translation type="unfinished"></translation>
+        <translation>現在 {hide_mode_text} モードを使用しているため、非表示状態を変更できません。
+状態を変更すると、非表示モードが「Flexible hiding」に変更されます（後で「設定」でこのオプションを変更できます）。
+コンポーネントを非表示にしてもよろしいですか？</translation>
     </message>
     <message>
         <location filename="../main.py" line="2860"/>
         <location filename="../main.py" line="2929"/>
         <source>Class Widgets 正在运行</source>
-        <translation type="unfinished"></translation>
+        <translation>Class Widgets が実行中です</translation>
     </message>
     <message>
         <location filename="../main.py" line="2863"/>
         <location filename="../main.py" line="2932"/>
         <source>Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。
 (若您需要打开多个实例，请在“设置”-&gt;“高级选项”中启用“允许程序多开”)</source>
-        <translation type="unfinished"></translation>
+        <translation>Class Widgets が実行中です！複数のインスタンスを開かないでください。予期しない問題が発生する可能性があります。
+（複数のインスタンスを開く必要がある場合は、「設定」→「高度なオプション」で「プログラムの多重起動を許可」を有効にしてください）</translation>
     </message>
     <message>
         <location filename="../main.py" line="2902"/>
         <source>缩放系数过大</source>
-        <translation type="unfinished"></translation>
+        <translation>拡大率が大きすぎます</translation>
     </message>
     <message>
         <location filename="../main.py" line="2903"/>
         <source>当前缩放系数为 {scale_factor}%，可能导致显示异常。
 建议将缩放系数设置为 100% 到 180% 之间。</source>
-        <translation type="unfinished"></translation>
+        <translation>現在の拡大率は {scale_factor}% です。表示に問題が発生する可能性があります。
+拡大率を100%から180%の間に設定することをお勧めします。</translation>
     </message>
     <message>
         <location filename="../main.py" line="2864"/>
@@ -4004,13 +4008,13 @@
         <location filename="../menu.py" line="631"/>
         <source>menu</source>
         <comment>您确定要删除插件“{title}”吗？</comment>
-        <translation type="unfinished"></translation>
+        <translation>プラグイン「{title}」を削除してもよろしいですか</translation>
     </message>
     <message>
         <location filename="../menu.py" line="631"/>
         <source>menu</source>
         <comment>删除此插件后，将无法恢复。</comment>
-        <translation type="unfinished"></translation>
+        <translation>このプラグインを削除すると、復元できません。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="656"/>
@@ -4044,17 +4048,18 @@
         <location filename="../plugin_plaza.py" line="227"/>
         <source>此插件版本（{plugin_ver}）高于当前设备中 Class Widgets 兼容的插件版本（{SELF_PLUGIN_VERSION}）；
 请更新 Class Widgets 后再尝试安装此插件。</source>
-        <translation type="unfinished"></translation>
+        <translation>このプラグインのバージョン（{plugin_ver}）は、現在のデバイスの Class Widgets が対応しているプラグインバージョン（{SELF_PLUGIN_VERSION}）より新しいです。
+Class Widgets を更新してから、このプラグインのインストールを再試行してください。</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="237"/>
         <source>取消安装</source>
-        <translation type="unfinished"></translation>
+        <translation>ｷｬﾝｾﾙ</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="238"/>
         <source>强制安装（不建议）</source>
-        <translation type="unfinished"></translation>
+        <translation>強制インストール（推奨しません）</translation>
     </message>
 </context>
 <context>
@@ -4062,7 +4067,7 @@
     <message>
         <location filename="../tip_toast.py" line="111"/>
         <source>活动开始</source>
-        <translation type="unfinished"></translation>
+        <translation>イベント開始</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="112"/>
@@ -4072,52 +4077,52 @@
     <message>
         <location filename="../tip_toast.py" line="119"/>
         <source>下课铃声显示</source>
-        <translation type="unfinished"></translation>
+        <translation>終了チャイムの表示</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="120"/>
         <source>下课</source>
-        <translation type="unfinished"></translation>
+        <translation>授業終了</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="122"/>
         <source>即将进行</source>
-        <translation type="unfinished"></translation>
+        <translation>開始間近</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="131"/>
         <source>放学铃声显示</source>
-        <translation type="unfinished"></translation>
+        <translation>下校チャイムの表示</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="132"/>
         <source>放学</source>
-        <translation type="unfinished"></translation>
+        <translation>下校</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="133"/>
         <source>当前课程已结束</source>
-        <translation type="unfinished"></translation>
+        <translation>現在の授業は終了しました</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="139"/>
         <source>预备铃声显示</source>
-        <translation type="unfinished"></translation>
+        <translation>予鈴の表示</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="140"/>
         <source>即将开始</source>
-        <translation type="unfinished"></translation>
+        <translation>開始間近</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="141"/>
         <source>下一节</source>
-        <translation type="unfinished"></translation>
+        <translation>次の授業</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="149"/>
         <source>通知显示: {title}</source>
-        <translation type="unfinished"></translation>
+        <translation>通知の表示: {title}</translation>
     </message>
 </context>
 </TS>
