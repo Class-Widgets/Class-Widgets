@@ -3891,7 +3891,7 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../main.py" line="446"/>
         <source>距离上课还有</source>
-        <translation>Unill next course</translation>
+        <translation>Unill Next Course</translation>
     </message>
     <message>
         <location filename="../main.py" line="448"/>
@@ -3906,12 +3906,12 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../main.py" line="800"/>
         <source>示例课程</source>
-        <translation>Example class</translation>
+        <translation>Example Class</translation>
     </message>
     <message>
         <location filename="../main.py" line="800"/>
         <source>通知示例</source>
-        <translation>Notification example</translation>
+        <translation>Example Notification</translation>
     </message>
     <message>
         <location filename="../main.py" line="800"/>
@@ -3921,7 +3921,7 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../main.py" line="801"/>
         <source>这是一条通知示例</source>
-        <translation>This is a notification example</translation>
+        <translation>This is a example notification</translation>
     </message>
     <message>
         <location filename="../main.py" line="2505"/>
