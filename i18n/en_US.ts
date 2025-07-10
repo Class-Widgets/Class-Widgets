@@ -1713,7 +1713,7 @@ But make sure that the plugins you need in the plugin square are secure.</transl
         <location filename="../menu.py" line="2663"/>
         <location filename="../menu.py" line="3317"/>
         <source>设置已保存ヾ(≧▽≦*)o</source>
-        <translation>Saved (≧▽≦*)o</translation>
+        <translation>Settings Saved (≧▽≦*)o</translation>
     </message>
 </context>
 <context>
@@ -1809,12 +1809,12 @@ But make sure that the plugins you need in the plugin square are secure.</transl
     <message>
         <location filename="../menu.py" line="944"/>
         <source>有设置项</source>
-        <translation>Available settings</translation>
+        <translation>Setting UI Available</translation>
     </message>
     <message>
         <location filename="../menu.py" line="947"/>
         <source>无设置项</source>
-        <translation>No settings available</translation>
+        <translation>No Setting UI Available</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1032"/>
@@ -4114,7 +4114,7 @@ Error occurred while switching component language: {e}</translation>
         <location filename="../list_.py" line="53"/>
         <location filename="../list_.py" line="188"/>
         <source>暂无课程</source>
-        <translation>No class</translation>
+        <translation>No course yet</translation>
     </message>
     <message>
         <location filename="../list_.py" line="58"/>
@@ -4219,7 +4219,7 @@ Error occurred while switching component language: {e}</translation>
         <location filename="../main.py" line="490"/>
         <location filename="../main.py" line="501"/>
         <source>暂无课程</source>
-        <translation>Not set</translation>
+        <translation>Not Set</translation>
     </message>
     <message>
         <location filename="../main.py" line="409"/>
@@ -4644,7 +4644,7 @@ Please update Class Widgets before trying to install this plugin.</translation>
     <message>
         <location filename="../tip_toast.py" line="122"/>
         <source>即将进行</source>
-        <translation>Coming Activity:</translation>
+        <translation>Coming Activity</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="131"/>
@@ -4669,12 +4669,12 @@ Please update Class Widgets before trying to install this plugin.</translation>
     <message>
         <location filename="../tip_toast.py" line="140"/>
         <source>即将开始</source>
-        <translation>Coming activity:</translation>
+        <translation>Coming Activity</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="141"/>
         <source>下一节</source>
-        <translation>Next lesson:</translation>
+        <translation>Next Course</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="149"/>
