@@ -47,7 +47,7 @@
         <location filename="../main.py" line="1732"/>
         <location filename="../main.py" line="2082"/>
         <source>{day}日  {week}</source>
-        <translation type="unfinished"></translation>
+        <translation>{day}日  {week}</translation>
     </message>
     <message>
         <location filename="../main.py" line="2003"/>
@@ -113,7 +113,7 @@
     <message>
         <location filename="../main.py" line="2473"/>
         <source>{city} · 未知</source>
-        <translation type="unfinished"></translation>
+        <translation>{city} · 未知</translation>
     </message>
 </context>
 <context>
@@ -1715,7 +1715,7 @@
     <message>
         <location filename="../menu.py" line="632"/>
         <source>永久删除</source>
-        <translation type="unfinished"></translation>
+        <translation>永久刪除</translation>
     </message>
 </context>
 <context>
@@ -1723,12 +1723,12 @@
     <message>
         <location filename="../plugin_plaza.py" line="412"/>
         <source>安装</source>
-        <translation type="unfinished"></translation>
+        <translation>安裝</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="419"/>
         <source>已安装</source>
-        <translation type="unfinished"></translation>
+        <translation>已安裝</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="425"/>
@@ -1741,18 +1741,18 @@
     <message>
         <location filename="../plugin_plaza.py" line="299"/>
         <source>  安装  </source>
-        <translation type="unfinished"></translation>
+        <translation>  安裝  </translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="304"/>
         <location filename="../plugin_plaza.py" line="332"/>
         <source>  安装中  </source>
-        <translation type="unfinished"></translation>
+        <translation>  安裝中  </translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="307"/>
         <source>  已安装  </source>
-        <translation type="unfinished"></translation>
+        <translation>  已安裝  </translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="313"/>
@@ -1762,12 +1762,12 @@
     <message>
         <location filename="../plugin_plaza.py" line="319"/>
         <source>为 Class Widgets 安装</source>
-        <translation type="unfinished"></translation>
+        <translation>為 Class Widgets 安裝</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="320"/>
         <source>下载到本地</source>
-        <translation type="unfinished"></translation>
+        <translation>下載到本機</translation>
     </message>
 </context>
 <context>
@@ -1775,12 +1775,12 @@
     <message>
         <location filename="../plugin_plaza.py" line="604"/>
         <source>{month}月{day}日 {weekday}</source>
-        <translation type="unfinished"></translation>
+        <translation>{month}月{day}日 {weekday}</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="726"/>
         <source>错误原因：{error_info}</source>
-        <translation type="unfinished"></translation>
+        <translation>錯誤原因：{error_info}</translation>
     </message>
 </context>
 <context>
@@ -2421,7 +2421,7 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
     <message>
         <location filename="../menu.py" line="3699"/>
         <source>预览 - {schedule_name}</source>
-        <translation type="unfinished"></translation>
+        <translation>預覽 - {schedule_name}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3754"/>
@@ -2486,19 +2486,19 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
         <location filename="../menu.py" line="3908"/>
         <location filename="../menu.py" line="3958"/>
         <source>文件已存在</source>
-        <translation type="unfinished"></translation>
+        <translation>文檔已存在</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3908"/>
         <location filename="../menu.py" line="3958"/>
         <source>文件 {file_name} 已存在，是否覆盖？</source>
-        <translation type="unfinished"></translation>
+        <translation>文檔{file_name} 已存在，是否覆蓋?</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3909"/>
         <location filename="../menu.py" line="3959"/>
         <source>覆盖</source>
-        <translation type="unfinished"></translation>
+        <translation>覆蓋</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3925"/>
@@ -2572,32 +2572,32 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
     <message>
         <location filename="../menu.py" line="4062"/>
         <source>文件名不能为空</source>
-        <translation type="unfinished"></translation>
+        <translation>文檔名不能為空</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4067"/>
         <source>文件名包含非法字符</source>
-        <translation type="unfinished"></translation>
+        <translation>文檔名包含非法字符</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4071"/>
         <source>文件名过长</source>
-        <translation type="unfinished"></translation>
+        <translation>文檔名過長</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4077"/>
         <source>文件名是保留名称</source>
-        <translation type="unfinished"></translation>
+        <translation>文檔名是保留名稱</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4080"/>
         <source>文件名不能包含路径分隔符</source>
-        <translation type="unfinished"></translation>
+        <translation>文檔名不能包含路徑分隔符</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4082"/>
         <source>文件名合法</source>
-        <translation type="unfinished"></translation>
+        <translation>文檔名合法</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4127"/>
@@ -2609,12 +2609,12 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
         <location filename="../menu.py" line="4161"/>
         <location filename="../menu.py" line="4191"/>
         <source>获取配置文件失败</source>
-        <translation type="unfinished"></translation>
+        <translation>獲取設定檔失敗</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4152"/>
         <source>当前课表为本地课表，无法获取配置文件。请上传课表后再尝试获取配置文件。</source>
-        <translation type="unfinished"></translation>
+        <translation>當前課程時間表為本機課表，無法獲取設定檔。請上傳課程時間表後再次嘗試獲取設定檔</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4168"/>
