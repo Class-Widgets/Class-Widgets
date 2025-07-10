@@ -3496,7 +3496,7 @@ Error occurred while switching component language: {e}</translation>
         <location filename="../conf.py" line="234"/>
         <location filename="../conf.py" line="238"/>
         <source>未设置</source>
-        <translation type="unfinished"></translation>
+        <translation>Not Set</translation>
     </message>
 </context>
 <context>
@@ -4203,7 +4203,7 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../main.py" line="86"/>
         <source>未设置</source>
-        <translation type="unfinished"></translation>
+        <translation>Not Set</translation>
     </message>
     <message>
         <location filename="../main.py" line="337"/>
