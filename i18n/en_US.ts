@@ -614,7 +614,7 @@ The start date of the school term needs to be set as the first day of the first 
     <message>
         <location filename="../view/menu/advance.ui" line="1317"/>
         <source>什么是灵活隐藏？</source>
-        <translation>What is flexible hiding?</translation>
+        <translation>What is Flexible hiding?</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1367"/>
@@ -2031,12 +2031,12 @@ Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, 
     <message>
         <location filename="../menu.py" line="2182"/>
         <source>灵活模式</source>
-        <translation>Flexible mode</translation>
+        <translation>Flexible hiding</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2182"/>
         <source>灵活模式为上课时自动隐藏，可手动改变隐藏状态，当前课程状态（上课/课间）改变后会清除手动隐藏状态，重新转为自动隐藏。</source>
-        <translation>The flexible mode is automatic hiding in class, and the hidden state can be changed manually. When the current course state (in class/between classes) is changed, the manual hidden state will be cleared and turned into automatic hiding again.</translation>
+        <translation>Flexible hiding is automatic hiding in class, and the hidden state can be changed manually. When the current course state (in class/between classes) is changed, the manual hidden state will be cleared and turned into automatic hiding again.</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2219"/>
@@ -3607,7 +3607,7 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <source>灵活隐藏</source>
         <comment>灵活隐藏</comment>
-        <translation type="vanished">flexible hiding</translation>
+        <translation type="vanished">Flexible hiding</translation>
     </message>
     <message>
         <source>正式版 (Release)</source>
@@ -3960,7 +3960,7 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../list_.py" line="25"/>
         <source>灵活隐藏</source>
-        <translation>flexible hiding</translation>
+        <translation>Flexible hiding</translation>
     </message>
     <message>
         <location filename="../list_.py" line="26"/>
