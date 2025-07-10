@@ -3921,7 +3921,7 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../main.py" line="801"/>
         <source>这是一条通知示例</source>
-        <translation>This is a example notification</translation>
+        <translation>This is a example notification.</translation>
     </message>
     <message>
         <location filename="../main.py" line="2505"/>
