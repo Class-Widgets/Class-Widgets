@@ -4280,7 +4280,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../tip_toast.py" line="112"/>
         <source>当前课程</source>
-        <translation type="unfinished">當前課堂</translation>
+        <translation>當前課程</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="119"/>
@@ -4305,7 +4305,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../tip_toast.py" line="132"/>
         <source>放学</source>
-        <translation type="unfinished">放學</translation>
+        <translation>放學</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="133"/>
