@@ -39,6 +39,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <name>DesktopWidget</name>
     <message>
         <location filename="../main.py" line="1730"/>
+        <location filename="../main.py" line="2081"/>
         <source>{year} 年 {month}</source>
         <translation>{month} {year}</translation>
     </message>
@@ -82,11 +83,6 @@ You can add more voice in system settings (*≧▽≦)</translation>
         <location filename="../main.py" line="2014"/>
         <source>退出</source>
         <translation>Exit</translation>
-    </message>
-    <message>
-        <location filename="../main.py" line="2081"/>
-        <source>{year}&#x2005;年&#x2002;{month}</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>{year}&#x2005;年&#x2002;{month}&#x2005;月</source>
@@ -3492,6 +3488,18 @@ Error occurred while switching component language: {e}</translation>
     </message>
 </context>
 <context>
+    <name>conf</name>
+    <message>
+        <location filename="../conf.py" line="222"/>
+        <location filename="../conf.py" line="224"/>
+        <location filename="../conf.py" line="231"/>
+        <location filename="../conf.py" line="234"/>
+        <location filename="../conf.py" line="238"/>
+        <source>未设置</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>downloadProgressBar</name>
     <message>
         <location filename="../plugin_plaza.py" line="148"/>
@@ -4192,6 +4200,11 @@ Error occurred while switching component language: {e}</translation>
 </context>
 <context>
     <name>main</name>
+    <message>
+        <location filename="../main.py" line="86"/>
+        <source>未设置</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <location filename="../main.py" line="337"/>
         <source>未添加</source>

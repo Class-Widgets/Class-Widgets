@@ -218,23 +218,23 @@ def update_countdown(cnt: int) -> None:
 def get_cd_text_custom() -> str:
     global countdown_cnt
     if countdown_cnt == -1:
-        return '未设置'
+        return QCoreApplication.translate("conf", '未设置')
     if countdown_cnt >= len(li:=config_center.read_conf('Date', 'cd_text_custom').split(',')):
-        return '未设置'
+        return QCoreApplication.translate("conf", '未设置')
     return li[countdown_cnt] if countdown_cnt >= 0 else ''
 
 
 def get_custom_countdown() -> str:
     global countdown_cnt
     if countdown_cnt == -1:
-        return '未设置'
+        return QCoreApplication.translate("conf", '未设置')
     li = config_center.read_conf('Date', 'countdown_date').split(',')
     if countdown_cnt == -1 or countdown_cnt >= len(li):
-        return '未设置'  # 获取自定义倒计时
+        return QCoreApplication.translate("conf", '未设置')  # 获取自定义倒计时
     else:
         custom_countdown = li[countdown_cnt]
         if custom_countdown == '':
-            return '未设置'
+            return QCoreApplication.translate("conf", '未设置')
         try:
             custom_countdown = parser.parse(custom_countdown)
         except Exception as e:

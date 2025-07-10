@@ -82,7 +82,7 @@ timeline_data = {}
 next_lessons = []
 parts_start_time = []
 
-temperature = '未设置'
+temperature = QCoreApplication.translate("main", '未设置')
 weather_icon = 0
 weather_name = ''
 weather_data_temp = None
@@ -2078,7 +2078,7 @@ class DesktopWidget(QWidget):  # 主要小组件
         cd_list = get_countdown()
 
         if path == 'widget-time.ui':  # 日期显示
-            self.date_text.setText(self.tr('{year} 年 {month}').format(year=today.year, month=list_.month[today.month]))
+            self.date_text.setText(self.tr('{year} 年 {month}').format(year=today.year, month=list_.month[today.month]))
             self.day_text.setText(self.tr('{day}日  {week}').format(day=today.day, week=list_.week[today.weekday()]))
 
         if path == 'widget-current-activity.ui':  # 当前活动

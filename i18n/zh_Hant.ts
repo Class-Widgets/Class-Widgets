@@ -39,6 +39,7 @@
     <name>DesktopWidget</name>
     <message>
         <location filename="../main.py" line="1730"/>
+        <location filename="../main.py" line="2081"/>
         <source>{year} 年 {month}</source>
         <translation>{year} 年 {month}</translation>
     </message>
@@ -82,11 +83,6 @@
         <location filename="../main.py" line="2014"/>
         <source>退出</source>
         <translation>退出</translation>
-    </message>
-    <message>
-        <location filename="../main.py" line="2081"/>
-        <source>{year}&#x2005;年&#x2002;{month}</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../main.py" line="2120"/>
@@ -3503,6 +3499,18 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     </message>
 </context>
 <context>
+    <name>conf</name>
+    <message>
+        <location filename="../conf.py" line="222"/>
+        <location filename="../conf.py" line="224"/>
+        <location filename="../conf.py" line="231"/>
+        <location filename="../conf.py" line="234"/>
+        <location filename="../conf.py" line="238"/>
+        <source>未设置</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>downloadProgressBar</name>
     <message>
         <location filename="../plugin_plaza.py" line="148"/>
@@ -4203,6 +4211,11 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
 </context>
 <context>
     <name>main</name>
+    <message>
+        <location filename="../main.py" line="86"/>
+        <source>未设置</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <location filename="../main.py" line="337"/>
         <source>未添加</source>
