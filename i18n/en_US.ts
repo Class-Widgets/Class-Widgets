@@ -441,8 +441,8 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../view/menu/advance.ui" line="278"/>
         <source>修正系统时间与学校铃声的时差，学校铃声慢于系统时间为正值，反之为负</source>
-        <translation>Correct the time difference between the system time and the ringtone.
-If the school ringtone is slower than the system time, it is positive; otherwise, it is negative</translation>
+        <translation>Correct the time difference between the system time and  school&apos;s ringtone.
+If school&apos;s ringtone is slower than the system time, it is positive; otherwise, it is negative</translation>
     </message>
     <message>
         <source>选择课程表配置</source>
@@ -477,7 +477,7 @@ If the school ringtone is slower than the system time, it is positive; otherwise
     <message>
         <location filename="../view/menu/advance.ui" line="195"/>
         <source>将用于计算单/双周，开学日期需设置为开学第一周第一天（即周一）</source>
-        <translation>It will be used to calculate single/even weeks.
+        <translation>It will be used to calculate single or even weeks.
 The start date of the school term needs to be set as the first day of the first week of school (i.e., Monday)</translation>
     </message>
     <message>
