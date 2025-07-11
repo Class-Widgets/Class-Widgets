@@ -386,11 +386,11 @@ You can add more voice in system settings (*≧▽≦)</translation>
         <location filename="../view/menu/about.ui" line="668"/>
         <location filename="../view/menu/advance.ui" line="143"/>
         <location filename="../view/menu/advance.ui" line="685"/>
-        <location filename="../view/menu/advance.ui" line="1400"/>
-        <location filename="../view/menu/advance.ui" line="1570"/>
-        <location filename="../view/menu/advance.ui" line="1901"/>
-        <location filename="../view/menu/advance.ui" line="1993"/>
-        <location filename="../view/menu/advance.ui" line="2068"/>
+        <location filename="../view/menu/advance.ui" line="1268"/>
+        <location filename="../view/menu/advance.ui" line="1438"/>
+        <location filename="../view/menu/advance.ui" line="1769"/>
+        <location filename="../view/menu/advance.ui" line="1861"/>
+        <location filename="../view/menu/advance.ui" line="1936"/>
         <location filename="../view/menu/sound.ui" line="136"/>
         <location filename="../view/menu/sound.ui" line="214"/>
         <location filename="../view/menu/sound.ui" line="292"/>
@@ -403,11 +403,11 @@ You can add more voice in system settings (*≧▽≦)</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="671"/>
-        <location filename="../view/menu/advance.ui" line="1403"/>
-        <location filename="../view/menu/advance.ui" line="1573"/>
-        <location filename="../view/menu/advance.ui" line="1904"/>
-        <location filename="../view/menu/advance.ui" line="1996"/>
-        <location filename="../view/menu/advance.ui" line="2071"/>
+        <location filename="../view/menu/advance.ui" line="1271"/>
+        <location filename="../view/menu/advance.ui" line="1441"/>
+        <location filename="../view/menu/advance.ui" line="1772"/>
+        <location filename="../view/menu/advance.ui" line="1864"/>
+        <location filename="../view/menu/advance.ui" line="1939"/>
         <location filename="../view/menu/sound.ui" line="139"/>
         <location filename="../view/menu/sound.ui" line="217"/>
         <location filename="../view/menu/sound.ui" line="295"/>
@@ -537,25 +537,21 @@ The start date of the school term needs to be set as the first day of the first 
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="712"/>
-        <location filename="../view/menu/advance.ui" line="918"/>
         <source>界面文字</source>
         <translation>Interface text language</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="719"/>
-        <location filename="../view/menu/advance.ui" line="925"/>
         <source>在此处您可以修改界面所显示的语言</source>
         <translation>Here you can change the language displayed by the interface</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="802"/>
-        <location filename="../view/menu/advance.ui" line="1008"/>
         <source>组件语言</source>
         <translation>Widgets language</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="809"/>
-        <location filename="../view/menu/advance.ui" line="1015"/>
         <source>选择你所需要组件显示的语言</source>
         <translation>Select the language in which the widget is displayed</translation>
     </message>
@@ -570,79 +566,79 @@ The start date of the school term needs to be set as the first day of the first 
         <translation>Select the language in which the interface is displayed</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1050"/>
+        <location filename="../view/menu/advance.ui" line="918"/>
         <source>隐藏方式</source>
         <translation>Hiding mode</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1057"/>
+        <location filename="../view/menu/advance.ui" line="925"/>
         <source>隐藏方式将会修改单击隐藏和自动隐藏的行为，可按需更改（重启后生效）</source>
         <translation>The hiding mode will modify the behaviors of single-click hiding and auto-hiding, and can be changed as needed (effective after restart)</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1131"/>
+        <location filename="../view/menu/advance.ui" line="999"/>
         <source>默认</source>
         <translation>Default</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1182"/>
+        <location filename="../view/menu/advance.ui" line="1050"/>
         <source>全部隐藏</source>
         <translation>Hide all</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1233"/>
+        <location filename="../view/menu/advance.ui" line="1101"/>
         <source>最小化为浮窗（推荐）</source>
         <translation>Minimize to a floating window</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1244"/>
-        <location filename="../view/menu/advance.ui" line="1921"/>
+        <location filename="../view/menu/advance.ui" line="1112"/>
+        <location filename="../view/menu/advance.ui" line="1789"/>
         <location filename="../view/menu/plugin_mgr.ui" line="637"/>
         <source>其他</source>
         <translation>Others</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1286"/>
+        <location filename="../view/menu/advance.ui" line="1154"/>
         <source>自动隐藏</source>
         <translation>Auto Hiding</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1293"/>
+        <location filename="../view/menu/advance.ui" line="1161"/>
         <source>选择你需要的自动隐藏方式</source>
         <translation>Select the auto hiding method you want</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1317"/>
+        <location filename="../view/menu/advance.ui" line="1185"/>
         <source>什么是灵活隐藏？</source>
         <translation>What is Flexible hiding?</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1367"/>
+        <location filename="../view/menu/advance.ui" line="1235"/>
         <source>特定课程不自动隐藏</source>
         <translation>Disable auto hiding in specific courses</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1374"/>
+        <location filename="../view/menu/advance.ui" line="1242"/>
         <source>若启用，在遇到下方设置的特定课程时不会自动隐藏，以英文逗号分隔</source>
         <translation>If enabled, it will not be automatically hidden when the specific course set below is encountered (comma-separated)</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1448"/>
+        <location filename="../view/menu/advance.ui" line="1316"/>
         <source>不自动隐藏的课程</source>
         <translation>Courses that disable auto hidding</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1455"/>
+        <location filename="../view/menu/advance.ui" line="1323"/>
         <source>配合 特定课程不自动隐藏 使用</source>
         <translation>Use with &quot;Disable auto hiding in specific courses&quot;</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1534"/>
+        <location filename="../view/menu/advance.ui" line="1402"/>
         <source>允许点击或触摸小组件</source>
         <translation>Prevent mouse penetration</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1541"/>
+        <location filename="../view/menu/advance.ui" line="1409"/>
         <source>允许通过点击或触摸小组件方式控制小组件
 若启用，单击小组件可显示或隐藏小组件，右键小组件可打开额外选项
 若禁用，点击小组件等同于点击小组件后方的窗口
@@ -653,98 +649,98 @@ If disabled, clicking a widget is equivalent to clicking the window behind the w
 * Effective after restart</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1625"/>
+        <location filename="../view/menu/advance.ui" line="1493"/>
         <source>自定义缩放</source>
         <translation>Custom scaling</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1632"/>
+        <location filename="../view/menu/advance.ui" line="1500"/>
         <source>更改自定义缩放系数百分比（重启后生效）
 *不建议使用 180% 以上的值，这可能会导致显示异常</source>
         <translation>Change the custom scaling factor percentage (effective after restart)
 * Values above 180% are not recommended as they may cause abnormal display</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1729"/>
+        <location filename="../view/menu/advance.ui" line="1597"/>
         <source>置顶/置底小组件</source>
         <translation>Top/bottom Widgets</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1742"/>
+        <location filename="../view/menu/advance.ui" line="1610"/>
         <source>更改小组件的窗口状态（重启后生效）
 *开启“置底”功能时，将会禁用“单击隐藏小组件”</source>
         <translation>Change widget window state (effective after restart)
 * &quot;Click to hide widgets&quot; is disabled when &quot;Bottom&quot; is enabled</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1801"/>
+        <location filename="../view/menu/advance.ui" line="1669"/>
         <source>边距大小</source>
         <translation>Margin size</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1808"/>
+        <location filename="../view/menu/advance.ui" line="1676"/>
         <source>设定桌面组件离屏幕边缘的大小（单位：px）</source>
         <translation>Set the size (in pixels) of the desktop component from the edge of the screen</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1860"/>
+        <location filename="../view/menu/advance.ui" line="1728"/>
         <source>启动</source>
         <translation>Launch</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1894"/>
+        <location filename="../view/menu/advance.ui" line="1762"/>
         <source>开机自启动</source>
         <translation>Launch at startup</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1960"/>
+        <location filename="../view/menu/advance.ui" line="1828"/>
         <source>安全模式</source>
         <translation>Safe mode</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="1967"/>
+        <location filename="../view/menu/advance.ui" line="1835"/>
         <source>若启用，Class Widgets 将在程序崩溃时自动忽略，并不再弹出窗口；以免影响教学任务。</source>
         <translation>If enabled, Class Widgets will be ignored when the program crashes and will not pop up any more.</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="2038"/>
+        <location filename="../view/menu/advance.ui" line="1906"/>
         <source>禁用日志</source>
         <translation>Disable logging</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="2045"/>
+        <location filename="../view/menu/advance.ui" line="1913"/>
         <source>若启用，应用将不再会保存日志到本地</source>
         <translation>If enabled, the application will no longer keep logs</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="2113"/>
-        <location filename="../view/menu/advance.ui" line="2143"/>
+        <location filename="../view/menu/advance.ui" line="1981"/>
+        <location filename="../view/menu/advance.ui" line="2011"/>
         <source>清空日志</source>
         <translation>Clear logs</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="2120"/>
+        <location filename="../view/menu/advance.ui" line="1988"/>
         <source>将会清空 软件根目录下log. 的所有内容</source>
         <translation>This will clear the log folder in the software root directory</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="2185"/>
+        <location filename="../view/menu/advance.ui" line="2053"/>
         <source>允许程序多开</source>
         <translation>Allow multiple instances</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="2192"/>
+        <location filename="../view/menu/advance.ui" line="2060"/>
         <source>程序多开后可能出现未知的问题，请谨慎使用</source>
         <translation>Enabling multiple instances may cause unexpected issues. Use with caution</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="2215"/>
-        <location filename="../view/menu/advance.ui" line="2221"/>
+        <location filename="../view/menu/advance.ui" line="2083"/>
+        <location filename="../view/menu/advance.ui" line="2089"/>
         <source>不允许</source>
         <translation>Disallowed</translation>
     </message>
     <message>
-        <location filename="../view/menu/advance.ui" line="2218"/>
+        <location filename="../view/menu/advance.ui" line="2086"/>
         <source>允许</source>
         <translation>Allowed</translation>
     </message>
@@ -3490,11 +3486,11 @@ Error occurred while switching component language: {e}</translation>
 <context>
     <name>conf</name>
     <message>
-        <location filename="../conf.py" line="222"/>
         <location filename="../conf.py" line="224"/>
-        <location filename="../conf.py" line="231"/>
-        <location filename="../conf.py" line="234"/>
-        <location filename="../conf.py" line="238"/>
+        <location filename="../conf.py" line="226"/>
+        <location filename="../conf.py" line="233"/>
+        <location filename="../conf.py" line="236"/>
+        <location filename="../conf.py" line="240"/>
         <source>未设置</source>
         <translation>Not Set</translation>
     </message>
