@@ -3243,7 +3243,7 @@
     <message>
         <location filename="../file.py" line="63"/>
         <source>好</source>
-        <translation type="unfinished">はい</translation>
+        <translation>はい</translation>
     </message>
 </context>
 <context>
