@@ -3525,22 +3525,22 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../file.py" line="501"/>
         <source>TTS.prepare_class</source>
-        <translation>活動即將開始，下一堂課: {lesson_name}。</translation>
+        <translation>活動即將開始，下一堂課: {lesson_name}</translation>
     </message>
     <message>
         <location filename="../file.py" line="502"/>
         <source>TTS.after_school</source>
-        <translation type="unfinished"></translation>
+        <translation>所有活動已結束</translation>
     </message>
     <message>
         <location filename="../file.py" line="503"/>
         <source>Date.cd_text_custom</source>
-        <translation type="unfinished"></translation>
+        <translation>未設定</translation>
     </message>
     <message>
         <location filename="../file.py" line="504"/>
         <source>Time.ntp_server</source>
-        <translation type="unfinished"></translation>
+        <translation>pool.ntp.org</translation>
     </message>
 </context>
 <context>
