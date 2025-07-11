@@ -3508,11 +3508,6 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
 <context>
     <name>file</name>
     <message>
-        <location filename="../file.py" line="55"/>
-        <source>{section}.{key}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../file.py" line="498"/>
         <source>General.schedule</source>
         <translation type="unfinished"></translation>
