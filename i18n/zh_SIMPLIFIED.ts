@@ -6,7 +6,7 @@
     <message>
         <location filename="../file.py" line="70"/>
         <source>好</source>
-        <translation type="unfinished">是个人物👍</translation>
+        <translation>是个人物👍</translation>
     </message>
 </context>
 <context>
