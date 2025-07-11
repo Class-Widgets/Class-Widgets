@@ -2,14 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
-    <name>ConfigCenter</name>
-    <message>
-        <location filename="../file.py" line="61"/>
-        <source>好</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>CustomMessageBox</name>
     <message>
         <location filename="../menu.py" line="1578"/>
@@ -3155,6 +3147,25 @@
     <message>
         <location filename="../plugin_plaza.py" line="148"/>
         <source>取消</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>file</name>
+    <message>
+        <location filename="../file.py" line="60"/>
+        <source>Class Widgets 启动失败w(ﾟДﾟ)w</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../file.py" line="62"/>
+        <source>加载默认配置文件失败,请检查文件完整性或尝试重新安装。
+错误信息: {e}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../file.py" line="63"/>
+        <source>好</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

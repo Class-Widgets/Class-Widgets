@@ -4,9 +4,8 @@
 <context>
     <name>ConfigCenter</name>
     <message>
-        <location filename="../file.py" line="61"/>
         <source>好</source>
-        <translation>是个人物👍</translation>
+        <translation type="vanished">是个人物👍</translation>
     </message>
 </context>
 <context>
@@ -3177,6 +3176,25 @@
         <location filename="../plugin_plaza.py" line="148"/>
         <source>取消</source>
         <translation type="unfinished">跑路</translation>
+    </message>
+</context>
+<context>
+    <name>file</name>
+    <message>
+        <location filename="../file.py" line="60"/>
+        <source>Class Widgets 启动失败w(ﾟДﾟ)w</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../file.py" line="62"/>
+        <source>加载默认配置文件失败,请检查文件完整性或尝试重新安装。
+错误信息: {e}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../file.py" line="63"/>
+        <source>好</source>
+        <translation type="unfinished">是个人物👍</translation>
     </message>
 </context>
 <context>

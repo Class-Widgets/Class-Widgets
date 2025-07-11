@@ -4,9 +4,8 @@
 <context>
     <name>ConfigCenter</name>
     <message>
-        <location filename="../file.py" line="61"/>
         <source>好</source>
-        <translation>好</translation>
+        <translation type="vanished">好</translation>
     </message>
 </context>
 <context>
@@ -3534,6 +3533,22 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <source>Time.ntp_server</source>
         <translation type="vanished">pool.ntp.org</translation>
+    </message>
+    <message>
+        <location filename="../file.py" line="60"/>
+        <source>Class Widgets 启动失败w(ﾟДﾟ)w</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../file.py" line="62"/>
+        <source>加载默认配置文件失败,请检查文件完整性或尝试重新安装。
+错误信息: {e}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../file.py" line="63"/>
+        <source>好</source>
+        <translation type="unfinished">好</translation>
     </message>
 </context>
 <context>

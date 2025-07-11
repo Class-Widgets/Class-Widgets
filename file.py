@@ -10,6 +10,8 @@ import configparser
 from packaging.version import Version
 import json
 
+from PyQt5.QtCore import QCoreApplication
+
 
 base_directory = Path(os.path.dirname(os.path.abspath(__file__)))
 '''
@@ -55,10 +57,10 @@ class ConfigCenter:
             import sys
             app = QApplication.instance() or QApplication(sys.argv)
             dlg = Dialog(
-                'Class Widgets 启动失败w(ﾟДﾟ)w',
-                f'加载默认配置文件失败,请检查文件完整性或尝试重新安装。\n错误信息: {e}'
+                QCoreApplication.translate("file", 'Class Widgets 启动失败w(ﾟДﾟ)w'),
+                QCoreApplication.translate("file", '加载默认配置文件失败,请检查文件完整性或尝试重新安装。\n错误信息: {e}')
             )
-            dlg.yesButton.setText(self.tr('好'))
+            dlg.yesButton.setText(QCoreApplication.translate("file", '好'))
             dlg.cancelButton.hide()
             dlg.buttonLayout.insertStretch(0, 1)
             dlg.setFixedWidth(550)
