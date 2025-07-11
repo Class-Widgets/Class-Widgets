@@ -3520,12 +3520,12 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../file.py" line="500"/>
         <source>TTS.finish_class</source>
-        <translation>活動結束，下一堂課是 {lesson_name}</translation>
+        <translation>活動結束，下一堂課: {lesson_name}</translation>
     </message>
     <message>
         <location filename="../file.py" line="501"/>
         <source>TTS.prepare_class</source>
-        <translation type="unfinished"></translation>
+        <translation>活動即將開始，下一堂課: {lesson_name}。</translation>
     </message>
     <message>
         <location filename="../file.py" line="502"/>
