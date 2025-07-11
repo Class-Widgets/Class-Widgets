@@ -66,7 +66,7 @@
     <message>
         <location filename="../main.py" line="2009"/>
         <source>额外选项</source>
-        <translation type="unfinished">追加オプション</translation>
+        <translation>追加オプション</translation>
     </message>
     <message>
         <location filename="../main.py" line="2010"/>
