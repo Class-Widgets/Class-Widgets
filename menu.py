@@ -5104,8 +5104,8 @@ class SettingsMenu(FluentWindow):
                     success = self.i18n_manager.load_language_view(selected_lang_code)
                     if success:
                         config_center.write_conf('General', 'language_view', selected_lang_code)
-                        title =self.tr('语言切换成功 ♪(´▽｀)')
-                        content = self.tr('语言已切换为 {selected_lang_name}\n' \
+                        title =self.tr('界面语言切换成功 ♪(´▽｀)')
+                        content = self.tr('界面语言已切换为 {selected_lang_name}\n' \
                                 '新语言将在重启程序后完全生效').format(selected_lang_name=selected_lang_name)
                         flyout = Flyout.create(title=title,
                                                content=content,
@@ -5127,18 +5127,18 @@ class SettingsMenu(FluentWindow):
                                 language_combo_view.setCurrentIndex(i)
                                 break
                         msg_box = MessageBox(
-                            self.tr('语言切换失败 (＃°Д°)'),
-                            self.tr('无法加载选定的语言包，请检查翻译文件是否存在'),
+                            self.tr('界面语言切换失败 (＃°Д°)'),
+                            self.tr('无法加载选定的界面语言包，请检查翻译文件是否存在'),
                             self
                         )
                         msg_box.yesButton.setText(self.tr('确定'))
                         msg_box.cancelButton.hide()
                         msg_box.exec()
         except Exception as e:
-            logger.error(self.tr("语言切换时出错: {e}").format(e=f"{e}"))
+            logger.error(self.tr("界面语言切换时出错: {e}").format(e=f"{e}"))
             msg_box = MessageBox(
-                self.tr('语言切换出错 (＃°Д°)'),
-                self.tr('切换语言时发生错误: {e}').format(e=f"{e}"),
+                self.tr('界面语言切换出错 (＃°Д°)'),
+                self.tr('界面切换语言时发生错误: {e}').format(e=f"{e}"),
                 self
             )
             msg_box.yesButton.setText(self.tr('确定'))

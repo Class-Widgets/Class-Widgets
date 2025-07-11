@@ -2526,39 +2526,8 @@ The file may be corrupted. Please report this issue to the developer.</translati
         <translation>Supported file types (*.json *.yaml *.yml);;JSON configuration file (*.json);;CSES file (*.yaml) (.*yaml *.yml)</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="5108"/>
-        <source>语言切换成功 ♪(´▽｀)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="5109"/>
-        <source>语言已切换为 {selected_lang_name}
-新语言将在重启程序后完全生效</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="5130"/>
-        <source>语言切换失败 (＃°Д°)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="5131"/>
-        <source>无法加载选定的语言包，请检查翻译文件是否存在</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="5138"/>
-        <source>语言切换时出错: {e}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="5140"/>
-        <source>语言切换出错 (＃°Д°)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../menu.py" line="5141"/>
-        <source>切换语言时发生错误: {e}</source>
+        <source>界面切换语言时发生错误: {e}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2718,14 +2687,16 @@ Save failed. Please submit the logs in ./log/ to the developer to report the iss
         <translation>Saved to ./config.ini</translation>
     </message>
     <message>
+        <location filename="../menu.py" line="5109"/>
         <source>界面语言已切换为 {selected_lang_name}
 新语言将在重启程序后完全生效</source>
-        <translation type="vanished">Interface language has been switched to {selected_lang_name}.
+        <translation>Interface language has been switched to {selected_lang_name}.
 The new language will take full effect after restarting the program</translation>
     </message>
     <message>
+        <location filename="../menu.py" line="5138"/>
         <source>界面语言切换时出错: {e}</source>
-        <translation type="vanished">Error switching interface language: {e}</translation>
+        <translation>Error switching interface language: {e}</translation>
     </message>
     <message>
         <source>组件语言已切换为 {selected_lang_name}
@@ -3135,8 +3106,9 @@ Saved to ./config.ini</translation>
         <translation>Class Widgets - Settings</translation>
     </message>
     <message>
+        <location filename="../menu.py" line="5108"/>
         <source>界面语言切换成功 ♪(´▽｀)</source>
-        <translation type="vanished">Interface language switched successfully ♪(´▽｀)</translation>
+        <translation>Interface language switched successfully ♪(´▽｀)</translation>
     </message>
     <message>
         <source>menu</source>
@@ -3147,12 +3119,14 @@ The interface language has been switched to {selected_lang_name}.
 The new language will take full effect after restarting the application.</translation>
     </message>
     <message>
+        <location filename="../menu.py" line="5130"/>
         <source>界面语言切换失败 (＃°Д°)</source>
-        <translation type="vanished">Interface language switch failed (＃°Д°)</translation>
+        <translation>Interface language switch failed (＃°Д°)</translation>
     </message>
     <message>
+        <location filename="../menu.py" line="5131"/>
         <source>无法加载选定的界面语言包，请检查翻译文件是否存在</source>
-        <translation type="vanished">Failed to load the selected interface language pack. Please check if the translation file exists</translation>
+        <translation>Failed to load the selected interface language pack. Please check if the translation file exists</translation>
     </message>
     <message>
         <location filename="../menu.py" line="5134"/>
@@ -3167,8 +3141,9 @@ The new language will take full effect after restarting the application.</transl
 Error occurred while switching interface language: {e}</translation>
     </message>
     <message>
+        <location filename="../menu.py" line="5140"/>
         <source>界面语言切换出错 (＃°Д°)</source>
-        <translation type="vanished">Interface language switch error (＃°Д°)</translation>
+        <translation>Interface language switch error (＃°Д°)</translation>
     </message>
     <message>
         <source>切换界面语言时发生错误: {e}</source>

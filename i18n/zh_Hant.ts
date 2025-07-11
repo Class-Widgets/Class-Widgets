@@ -2524,39 +2524,8 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
         <translation>支援的檔案類型 (*.json *.yaml *.yml);;Json 設定檔案 (*.json);;CSES 通用課程時間表交換檔案 (*.yaml) (*.yaml *.yml)</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="5108"/>
-        <source>语言切换成功 ♪(´▽｀)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="5109"/>
-        <source>语言已切换为 {selected_lang_name}
-新语言将在重启程序后完全生效</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="5130"/>
-        <source>语言切换失败 (＃°Д°)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="5131"/>
-        <source>无法加载选定的语言包，请检查翻译文件是否存在</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="5138"/>
-        <source>语言切换时出错: {e}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="5140"/>
-        <source>语言切换出错 (＃°Д°)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../menu.py" line="5141"/>
-        <source>切换语言时发生错误: {e}</source>
+        <source>界面切换语言时发生错误: {e}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2716,14 +2685,16 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
         <translation>已儲存至 ./config.ini</translation>
     </message>
     <message>
+        <location filename="../menu.py" line="5109"/>
         <source>界面语言已切换为 {selected_lang_name}
 新语言将在重启程序后完全生效</source>
-        <translation type="vanished">介面語言已切換為 {selected_lang_name}
+        <translation>介面語言已切換為 {selected_lang_name}
 新語言將會在重啟後完全生效</translation>
     </message>
     <message>
+        <location filename="../menu.py" line="5138"/>
         <source>界面语言切换时出错: {e}</source>
-        <translation type="vanished">介面語言切換時出現錯誤: {e}</translation>
+        <translation>介面語言切換時出現錯誤: {e}</translation>
     </message>
     <message>
         <source>组件语言已切换为 {selected_lang_name}
@@ -3146,8 +3117,9 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <translation>Class Widgets - 設定</translation>
     </message>
     <message>
+        <location filename="../menu.py" line="5108"/>
         <source>界面语言切换成功 ♪(´▽｀)</source>
-        <translation type="vanished">介面語言切換成功 ♪(´▽｀)</translation>
+        <translation>介面語言切換成功 ♪(´▽｀)</translation>
     </message>
     <message>
         <source>menu</source>
@@ -3158,12 +3130,14 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
 新語言將於重啟程式後完全生效</translation>
     </message>
     <message>
+        <location filename="../menu.py" line="5130"/>
         <source>界面语言切换失败 (＃°Д°)</source>
-        <translation type="vanished">介面語言切換失敗 (＃°Д°)</translation>
+        <translation>介面語言切換失敗 (＃°Д°)</translation>
     </message>
     <message>
+        <location filename="../menu.py" line="5131"/>
         <source>无法加载选定的界面语言包，请检查翻译文件是否存在</source>
-        <translation type="vanished">無法載入所選的介面語言包，請檢查翻譯檔案是否存在</translation>
+        <translation>無法載入所選的介面語言包，請檢查翻譯檔案是否存在</translation>
     </message>
     <message>
         <location filename="../menu.py" line="5134"/>
@@ -3178,8 +3152,9 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
 介面語言切換時出錯：{e}</translation>
     </message>
     <message>
+        <location filename="../menu.py" line="5140"/>
         <source>界面语言切换出错 (＃°Д°)</source>
-        <translation type="vanished">介面語言切換出錯 (＃°Д°)</translation>
+        <translation>介面語言切換出錯 (＃°Д°)</translation>
     </message>
     <message>
         <source>切换界面语言时发生错误: {e}</source>

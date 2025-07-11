@@ -2426,39 +2426,8 @@
         <translation>ファイルを選択</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="5108"/>
-        <source>语言切换成功 ♪(´▽｀)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="5109"/>
-        <source>语言已切换为 {selected_lang_name}
-新语言将在重启程序后完全生效</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="5130"/>
-        <source>语言切换失败 (＃°Д°)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="5131"/>
-        <source>无法加载选定的语言包，请检查翻译文件是否存在</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="5138"/>
-        <source>语言切换时出错: {e}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="5140"/>
-        <source>语言切换出错 (＃°Д°)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../menu.py" line="5141"/>
-        <source>切换语言时发生错误: {e}</source>
+        <source>界面切换语言时发生错误: {e}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2518,14 +2487,16 @@
         <translation>./config.ini に保存されました</translation>
     </message>
     <message>
+        <location filename="../menu.py" line="5109"/>
         <source>界面语言已切换为 {selected_lang_name}
 新语言将在重启程序后完全生效</source>
-        <translation type="vanished">インターフェース言語が {selected_lang_name} に切り替えられました。
+        <translation>インターフェース言語が {selected_lang_name} に切り替えられました。
 新しい言語はプログラム再起動後に完全に反映されます。</translation>
     </message>
     <message>
+        <location filename="../menu.py" line="5138"/>
         <source>界面语言切换时出错: {e}</source>
-        <translation type="vanished">インターフェース言語の切り替え中にエラーが発生しました: {e}</translation>
+        <translation>インターフェース言語の切り替え中にエラーが発生しました: {e}</translation>
     </message>
     <message>
         <source>组件语言已切换为 {selected_lang_name}
@@ -2898,16 +2869,19 @@
         <translation>Class Widgets - 設定</translation>
     </message>
     <message>
+        <location filename="../menu.py" line="5108"/>
         <source>界面语言切换成功 ♪(´▽｀)</source>
-        <translation type="vanished">インターフェース言語の切り替えが完了しました ♪(´▽｀)</translation>
+        <translation>インターフェース言語の切り替えが完了しました ♪(´▽｀)</translation>
     </message>
     <message>
+        <location filename="../menu.py" line="5130"/>
         <source>界面语言切换失败 (＃°Д°)</source>
-        <translation type="vanished">インターフェース言語の切り替えに失敗しました (＃°Д°)</translation>
+        <translation>インターフェース言語の切り替えに失敗しました (＃°Д°)</translation>
     </message>
     <message>
+        <location filename="../menu.py" line="5131"/>
         <source>无法加载选定的界面语言包，请检查翻译文件是否存在</source>
-        <translation type="vanished">選択されたインターフェース言語パックを読み込めません。翻訳ファイルが存在するかご確認ください</translation>
+        <translation>選択されたインターフェース言語パックを読み込めません。翻訳ファイルが存在するかご確認ください</translation>
     </message>
     <message>
         <location filename="../menu.py" line="5134"/>
@@ -2916,8 +2890,9 @@
         <translation>はい</translation>
     </message>
     <message>
+        <location filename="../menu.py" line="5140"/>
         <source>界面语言切换出错 (＃°Д°)</source>
-        <translation type="vanished">インターフェース言語の切り替えでエラーが発生しました (＃°Д°)</translation>
+        <translation>インターフェース言語の切り替えでエラーが発生しました (＃°Д°)</translation>
     </message>
     <message>
         <source>切换界面语言时发生错误: {e}</source>

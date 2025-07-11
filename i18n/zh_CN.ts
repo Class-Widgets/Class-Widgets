@@ -2408,39 +2408,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../menu.py" line="5108"/>
-        <source>语言切换成功 ♪(´▽｀)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="5109"/>
-        <source>语言已切换为 {selected_lang_name}
-新语言将在重启程序后完全生效</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="5130"/>
-        <source>语言切换失败 (＃°Д°)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="5131"/>
-        <source>无法加载选定的语言包，请检查翻译文件是否存在</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../menu.py" line="5138"/>
-        <source>语言切换时出错: {e}</source>
+        <source>界面语言切换时出错: {e}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../menu.py" line="5140"/>
-        <source>语言切换出错 (＃°Д°)</source>
+        <source>界面语言切换出错 (＃°Д°)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../menu.py" line="5141"/>
-        <source>切换语言时发生错误: {e}</source>
+        <source>界面切换语言时发生错误: {e}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2842,6 +2821,27 @@
     <message>
         <location filename="../menu.py" line="5045"/>
         <source>Class Widgets - 设置</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="5108"/>
+        <source>界面语言切换成功 ♪(´▽｀)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="5109"/>
+        <source>界面语言已切换为 {selected_lang_name}
+新语言将在重启程序后完全生效</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="5130"/>
+        <source>界面语言切换失败 (＃°Д°)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="5131"/>
+        <source>无法加载选定的界面语言包，请检查翻译文件是否存在</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
