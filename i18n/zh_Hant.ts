@@ -3510,17 +3510,17 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../file.py" line="498"/>
         <source>General.schedule</source>
-        <translation type="unfinished"></translation>
+        <translation>新課程時間表 - 1</translation>
     </message>
     <message>
         <location filename="../file.py" line="499"/>
         <source>TTS.attend_class</source>
-        <translation type="unfinished"></translation>
+        <translation>依家開始{lesson_name}課</translation>
     </message>
     <message>
         <location filename="../file.py" line="500"/>
         <source>TTS.finish_class</source>
-        <translation type="unfinished"></translation>
+        <translation>活動結束，下一堂課是 {lesson_name}</translation>
     </message>
     <message>
         <location filename="../file.py" line="501"/>
