@@ -124,17 +124,17 @@
     <message>
         <location filename="../main.py" line="626"/>
         <source>抱歉！Class Widgets 发生了严重的错误从而无法正常运行。您可以保存下方的错误信息并向他人求助。若您认为这是程序的Bug，请点击“报告此问题”或联系开发者。</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CW被玩坏了！这不是CW的错，绝对不是！快联系CW的主人把CW调教好吧</translation>
     </message>
     <message>
         <location filename="../main.py" line="641"/>
         <source>报告此问题</source>
-        <translation type="unfinished"></translation>
+        <translation>撅RinLit</translation>
     </message>
     <message>
         <location filename="../main.py" line="642"/>
         <source>复制日志</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">采集</translation>
     </message>
     <message>
         <location filename="../main.py" line="643"/>
