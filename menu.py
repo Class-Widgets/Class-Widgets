@@ -103,7 +103,7 @@ class I18nManager:
             'zh_Hant': '繁體中文（HK）',
             # 'zh_SIMPLIFIED': '梗体中文',
             'en_US': 'English',
-            # 'ja': '日本語',
+            'ja': '日本語',
             # 'ko_KR': '한국어',
             # 'fr_FR': 'Français',
             # 'de_DE': 'Deutsch',
