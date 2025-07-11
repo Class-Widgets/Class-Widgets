@@ -4,7 +4,7 @@
 <context>
     <name>ConfigCenter</name>
     <message>
-        <location filename="../file.py" line="61"/>
+        <location filename="../file.py" line="70"/>
         <source>好</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3155,6 +3155,49 @@
     <message>
         <location filename="../plugin_plaza.py" line="148"/>
         <source>取消</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>file</name>
+    <message>
+        <location filename="../file.py" line="55"/>
+        <source>{section}.{key}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../file.py" line="498"/>
+        <source>General.schedule</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../file.py" line="499"/>
+        <source>TTS.attend_class</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../file.py" line="500"/>
+        <source>TTS.finish_class</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../file.py" line="501"/>
+        <source>TTS.prepare_class</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../file.py" line="502"/>
+        <source>TTS.after_school</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../file.py" line="503"/>
+        <source>Date.cd_text_custom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../file.py" line="504"/>
+        <source>Time.ntp_server</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
