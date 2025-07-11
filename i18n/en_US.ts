@@ -4,7 +4,7 @@
 <context>
     <name>ConfigCenter</name>
     <message>
-        <location filename="../file.py" line="70"/>
+        <location filename="../file.py" line="61"/>
         <source>好</source>
         <translation>OK</translation>
     </message>
@@ -3495,39 +3495,32 @@ Error occurred while switching component language: {e}</translation>
 <context>
     <name>file</name>
     <message>
-        <location filename="../file.py" line="498"/>
         <source>General.schedule</source>
-        <translation>New schedule - 1</translation>
+        <translation type="vanished">New schedule - 1</translation>
     </message>
     <message>
-        <location filename="../file.py" line="499"/>
         <source>TTS.attend_class</source>
-        <translation>Class begins, {lesson_name}</translation>
+        <translation type="vanished">Class begins, {lesson_name}</translation>
     </message>
     <message>
-        <location filename="../file.py" line="500"/>
         <source>TTS.finish_class</source>
-        <translation>Class is over. Next class: {lesson_name}</translation>
+        <translation type="vanished">Class is over. Next class: {lesson_name}</translation>
     </message>
     <message>
-        <location filename="../file.py" line="501"/>
         <source>TTS.prepare_class</source>
-        <translation>Class is about to begin. Next class: {lesson}</translation>
+        <translation type="vanished">Class is about to begin. Next class: {lesson}</translation>
     </message>
     <message>
-        <location filename="../file.py" line="502"/>
         <source>TTS.after_school</source>
-        <translation>School is over</translation>
+        <translation type="vanished">School is over</translation>
     </message>
     <message>
-        <location filename="../file.py" line="503"/>
         <source>Date.cd_text_custom</source>
-        <translation>Not Set</translation>
+        <translation type="vanished">Not Set</translation>
     </message>
     <message>
-        <location filename="../file.py" line="504"/>
         <source>Time.ntp_server</source>
-        <translation>pool.ntp.org</translation>
+        <translation type="vanished">pool.ntp.org</translation>
     </message>
 </context>
 <context>
