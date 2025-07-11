@@ -3497,37 +3497,37 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../file.py" line="498"/>
         <source>General.schedule</source>
-        <translation type="unfinished"></translation>
+        <translation>New schedule - 1</translation>
     </message>
     <message>
         <location filename="../file.py" line="499"/>
         <source>TTS.attend_class</source>
-        <translation type="unfinished"></translation>
+        <translation>Class begins, {lesson_name}</translation>
     </message>
     <message>
         <location filename="../file.py" line="500"/>
         <source>TTS.finish_class</source>
-        <translation type="unfinished"></translation>
+        <translation>Class is over. Next class: {lesson_name}</translation>
     </message>
     <message>
         <location filename="../file.py" line="501"/>
         <source>TTS.prepare_class</source>
-        <translation type="unfinished"></translation>
+        <translation>Class is about to begin. Next class: {lesson}</translation>
     </message>
     <message>
         <location filename="../file.py" line="502"/>
         <source>TTS.after_school</source>
-        <translation type="unfinished"></translation>
+        <translation>School is over</translation>
     </message>
     <message>
         <location filename="../file.py" line="503"/>
         <source>Date.cd_text_custom</source>
-        <translation type="unfinished"></translation>
+        <translation>Not Set</translation>
     </message>
     <message>
         <location filename="../file.py" line="504"/>
         <source>Time.ntp_server</source>
-        <translation type="unfinished"></translation>
+        <translation>pool.ntp.org</translation>
     </message>
 </context>
 <context>
