@@ -7,7 +7,7 @@
   "height": 110,
   "shadow": true,
   "widget_width": {
-    "widget-time.ui": 170,
+    "widget-time.ui": 180,
     "widget-countdown.ui": 170,
     "widget-current-activity.ui": 290,
     "widget-next-activity.ui": 240,

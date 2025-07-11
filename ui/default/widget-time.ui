@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Theme</class>
+ <class>Form</class>
  <widget class="QWidget" name="Form">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>210</width>
+    <width>230</width>
     <height>125</height>
    </rect>
   </property>
@@ -30,7 +30,7 @@
     <rect>
      <x>20</x>
      <y>20</y>
-     <width>161</width>
+     <width>180</width>
      <height>31</height>
     </rect>
    </property>
@@ -38,7 +38,6 @@
     <font>
      <family>Microsoft YaHei UI</family>
      <pointsize>14</pointsize>
-     <weight>75</weight>
      <bold>true</bold>
     </font>
    </property>
@@ -61,7 +60,7 @@ font-weight: bold;</string>
     <rect>
      <x>30</x>
      <y>40</y>
-     <width>151</width>
+     <width>170</width>
      <height>51</height>
     </rect>
    </property>
@@ -69,7 +68,6 @@ font-weight: bold;</string>
     <font>
      <family>Microsoft YaHei UI</family>
      <pointsize>21</pointsize>
-     <weight>75</weight>
      <bold>true</bold>
     </font>
    </property>
@@ -93,7 +91,7 @@ font-weight: bold</string>
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>191</width>
+     <width>210</width>
      <height>91</height>
     </rect>
    </property>

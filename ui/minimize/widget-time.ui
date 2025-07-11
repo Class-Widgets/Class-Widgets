@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Theme</class>
+ <class>Form</class>
  <widget class="QWidget" name="Form">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>170</width>
+    <width>180</width>
     <height>110</height>
    </rect>
   </property>
@@ -61,7 +61,7 @@ font-weight: bold;</string>
     <rect>
      <x>20</x>
      <y>30</y>
-     <width>131</width>
+     <width>141</width>
      <height>61</height>
     </rect>
    </property>
@@ -93,7 +93,7 @@ font-weight: bold</string>
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>151</width>
+     <width>160</width>
      <height>81</height>
     </rect>
    </property>

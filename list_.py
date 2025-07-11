@@ -87,7 +87,7 @@ default_widgets = [
 ]
 
 widget_width = {  # 默认宽度
-    'widget-time.ui': 210,
+    'widget-time.ui': 230,
     'widget-countdown.ui': 200,
     'widget-current-activity.ui': 360,
     'widget-next-activity.ui': 290,
