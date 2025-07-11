@@ -454,7 +454,7 @@ If school&apos;s ringtone is slower than the system time, it is positive; otherw
     <message>
         <location filename="../view/menu/advance.ui" line="110"/>
         <source>启用 单/双 周课表</source>
-        <translation>Enable single/biweekly schedule</translation>
+        <translation>Enable odd or even schedule</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="117"/>
@@ -4272,7 +4272,7 @@ Error message: {e}</translation>
         <location filename="../main.py" line="421"/>
         <location filename="../main.py" line="448"/>
         <source>目前课程已结束</source>
-        <translation>Course Completed</translation>
+        <translation>Courses Cleared</translation>
     </message>
     <message>
         <location filename="../main.py" line="521"/>
