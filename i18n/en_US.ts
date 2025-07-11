@@ -4620,7 +4620,7 @@ Please update Class Widgets before trying to install this plugin.</translation>
     <message>
         <location filename="../tip_toast.py" line="111"/>
         <source>活动开始</source>
-        <translation>Activity Starts</translation>
+        <translation>Class Begin</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="112"/>
