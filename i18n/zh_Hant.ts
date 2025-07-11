@@ -3537,18 +3537,19 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../file.py" line="60"/>
         <source>Class Widgets 启动失败w(ﾟДﾟ)w</source>
-        <translation type="unfinished"></translation>
+        <translation>Class Widgets 啟動失敗 w(ﾟДﾟ)w</translation>
     </message>
     <message>
         <location filename="../file.py" line="62"/>
         <source>加载默认配置文件失败,请检查文件完整性或尝试重新安装。
 错误信息: {e}</source>
-        <translation type="unfinished"></translation>
+        <translation>加載預設設定檔失敗，請檢查檔案是否完整或嘗試重新安裝。 
+錯誤訊息: {e}</translation>
     </message>
     <message>
         <location filename="../file.py" line="63"/>
         <source>好</source>
-        <translation type="unfinished">好</translation>
+        <translation>好</translation>
     </message>
 </context>
 <context>
