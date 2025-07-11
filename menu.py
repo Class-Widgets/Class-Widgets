@@ -54,6 +54,9 @@ from plugin import p_loader
 from plugin_plaza import PluginPlaza
 
 from PyQt5.QtCore import QCoreApplication
+from qfluentwidgets import FluentTranslator
+from PyQt5.QtCore import QLocale
+
 class I18nManager:
     """i18n"""
     def __init__(self):
@@ -114,6 +117,15 @@ class I18nManager:
             # 'ar_SA': 'العربية'
         }
         return language_names.get(lang_code, None)
+
+    def get_available_languages_QLocale(self, lang_code):
+        locale_list = {
+            'zh_CN': QLocale(QLocale.Chinese, QLocale.China),
+            'zh_Hant': QLocale(QLocale.Chinese, QLocale.HongKong),
+            'en_US': QLocale(QLocale.English, QLocale.UnitedStates),
+            'ja': QLocale(QLocale.Japanese, QLocale.Japan),
+        }
+        return locale_list.get(lang_code, QLocale(QLocale.English, QLocale.UnitedStates))
         
     def get_available_languages_view(self):
         """获取可用界面语言列表"""
@@ -165,6 +177,12 @@ class I18nManager:
                 logger.warning(f"无法加载组件语言: {lang_code} ({self.available_languages_widgets.get(lang_code, lang_code)})")
                 self.load_language_view(current_lang)
                 return False
+            
+            translator_qfw = FluentTranslator(self.get_available_languages_QLocale(lang_code))
+            if translator_qfw:
+                self.translators.append(translator_qfw)
+                app.installTranslator(translator_qfw)
+                logger.success(f"成功加载 FluentWidgets 语言: {lang_code}")
 
             import importlib
             importlib.reload(list_)
