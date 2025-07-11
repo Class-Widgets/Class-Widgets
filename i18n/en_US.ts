@@ -476,8 +476,7 @@ If school&apos;s ringtone is slower than the system time, it is positive; otherw
     <message>
         <location filename="../view/menu/advance.ui" line="195"/>
         <source>将用于计算单/双周，开学日期需设置为开学第一周第一天（即周一）</source>
-        <translation>It will be used to calculate odd or even weeks.
-The start date of the school term needs to be set as the first day of the first week of school (i.e., Monday)</translation>
+        <translation>It will be used to calculate odd or even weeks, the start date of the school term needs to be set as the first day of the first week of school (i.e., Monday)</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="238"/>
