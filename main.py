@@ -51,13 +51,10 @@ if os.name == 'nt':
     import pygetwindow
 
 # 适配高DPI缩放
-if platform.system() == 'Windows' and platform.release() not in ['7', 'XP', 'Vista']:
-    QApplication.setHighDpiScaleFactorRoundingPolicy(
-        Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
-    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
-    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
-else:
-    logger.warning('不兼容的系统,跳过高DPI标识')
+QApplication.setHighDpiScaleFactorRoundingPolicy(
+    Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
 
 today = dt.date.today()
 

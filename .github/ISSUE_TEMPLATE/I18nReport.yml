@@ -1,0 +1,88 @@
+name: I18N / 国际化相关
+title: "[I18N] "
+description: 对i18n(国际化)提出相关问题或建议。 / Issues or suggestions about the i18n.
+labels: ["i18n"]
+type: "Task"
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        此模板用于提交翻译错误、缺失、建议或新增语言请求。
+        > This template is for submitting translation errors, omissions, suggestions, or new language requests.
+
+        ### 检查清单
+
+        在提出建议之前，请先确认以下所有事项：
+        > Before suggesting, please confirm:
+        
+        1. 我已更新到最新版 ![GitHub Release](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?include_prereleases)，并看过[最新提交](https://github.com/RinLit-233-shiroko/Class-Widgets/commits/main/)
+        > 1. Updated to the latest version ![GitHub Release](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?include_prereleases) and checked [latest commits](https://github.com/RinLit-233-shiroko/Class-Widgets/commits/main/).
+
+        2. 我已在 [Issues](https://github.com/Class-Widgets/Class-Widgets/issues?q=label:i18n) 中检索，确认这一类似的建议 / 问题 **未被提交过**。
+        > 2. Searched [Issues](https://github.com/Class-Widgets/Class-Widgets/issues?q=label:i18n) to ensure this hasn't been suggested/reported before.
+
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: 确认清单 / Checklist
+      description: 在反馈前，请确认事项： / Before submitting, please confirm the above：
+      options:
+        - label: 我已阅读并确认。 / I have read and confirmed.
+          required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ## 问题信息 / Issues Information
+
+  - type: checkboxes
+    id: i18n-type
+    attributes:
+      label: 问题类型 / Issue Type
+      description: 请选择issue类型（可多选） / Please select issue type(s)
+      options:
+        - label: 翻译有误 / Translation error
+        - label: 翻译缺失 / Missing translation
+        - label: 语言新增 / New language request
+        - label: 翻译优化 / Suggestion
+
+  - type: markdown
+    attributes:
+      value: |
+        描述您遇到的I18N相关问题。您可以附上截图、录屏等材料。
+        > Describe your I18N issues. You can provide screenshots, recordings, or other attachments.
+        
+        > [!WARNING]
+        > 若您要上传材料，请等待材料文件上传完成后再发布 Issue。
+        > If uploading materials, please wait for the files to finish uploading before submitting the Issue.
+        >
+        > 若显示为 `![Uploading 文件名]()` 即为上传中，请等待链接变动后再提交。
+        > If it shows `![Uploading filename]()`, it means uploading. Please submit once the link updates.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 问题描述 / Description
+      description: 详细描述你的 I18N 问题或建议 / Describe your I18N issue or suggestion in detail.
+      placeholder: 如:在...中的...存在问题... / e.g., There is an issue with... in...
+    validations:
+      required: true
+
+  - type: input
+    id: language
+    attributes:
+      label: 问题语言 / Language
+      description: 例如 zh-cn, en-us, jp ... / e.g., zh-cn, en-us, jp...
+      placeholder: zh-cn...
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: 其他信息 / Other Information
+      description: 若为翻译修正或建议，请提供相关修正信息 / For translation corrections or suggestions, please provide the details.
+    validations:
+      required: false

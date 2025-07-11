@@ -17,14 +17,12 @@ from qfluentwidgets import MSFluentWindow, FluentIcon as fIcon, NavigationItemPo
     IndeterminateProgressRing, ComboBox, ProgressBar, SmoothScrollArea, SearchLineEdit, HyperlinkButton, \
     MessageBox, SwitchButton, SubtitleLabel
 
-import conf
 import list_ as l
 import network_thread as nt
 from conf import base_directory
 from file import config_center
 from plugin import p_loader
 from utils import restart, calculate_size
-import platform
 from loguru import logger
 
 from PyQt5.QtCore import QCoreApplication
@@ -82,13 +80,10 @@ class ThreadManager:
         }
 
 # 适配高DPI缩放
-if platform.system() == 'Windows' and platform.release() not in ['7', 'XP', 'Vista']:
-    QApplication.setHighDpiScaleFactorRoundingPolicy(
-        Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
-    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
-    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
-else:
-    logger.warning('不兼容的系统,跳过高DPI标识')
+QApplication.setHighDpiScaleFactorRoundingPolicy(
+    Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
 
 CONF_PATH = f"{base_directory}/plugins/plugins_from_pp.json"
 PLAZA_REPO_URL = "https://raw.githubusercontent.com/Class-Widgets/plugin-plaza/"

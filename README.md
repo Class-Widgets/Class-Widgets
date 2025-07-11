@@ -25,6 +25,8 @@
 [![测试版](https://img.shields.io/github/v/tag/Class-Widgets/Class-Widgets?include_prereleases&label=当前测试版&color=yellow&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets/releases)
 [![开源许可](https://img.shields.io/badge/license-GPLv3-blue.svg?label=开源许可证&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets?tab=GPL-3.0-1-ov-file)
 [![下载量](https://img.shields.io/github/downloads/Class-Widgets/Class-Widgets/total.svg?label=下载量&color=green&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets)
+[![翻译状态](https://hosted.weblate.org/widget/class-widgets-1/view/svg-badge.svg)](https://hosted.weblate.org/engage/class-widgets-1/)
+[![翻译状态](https://hosted.weblate.org/widget/class-widgets-1/view/language-badge.svg)](https://hosted.weblate.org/engage/class-widgets-1/)
 
   
 
@@ -107,6 +109,14 @@ Copyright © 2025 RinLit.
 - [JerryQAQ](http://hub.rinlit.cn/)
 
 感谢以下赞助商对本项目的支持。
+
+由 [Weblate](https://hosted.weblate.org/engage/class-widgets-1/) 提供免费的翻译平台
+
+[![翻译状态](https://hosted.weblate.org/widget/class-widgets-1/view/open-graph.png)](https://hosted.weblate.org/engage/class-widgets-1/)
+
+#### 翻译状态
+
+[![翻译状态](https://hosted.weblate.org/widget/class-widgets-1/view/multi-auto.svg)](https://hosted.weblate.org/engage/class-widgets-1/)
 
 <table>
   <tr>

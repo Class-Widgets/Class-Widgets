@@ -2,6 +2,7 @@ name: Bug 反馈
 description: 在使用 Class Widgets 的过程中遇到了 Bug。
 title: "[BUG]: "
 labels: ["Bug"]
+type: "Bug"
 body:
   - type: markdown
     attributes:
@@ -20,7 +21,7 @@ body:
         1. 我已更新到最新版 ![GitHub Release](https://img.shields.io/github/v/release/RinLit-233-shiroko/Class-Widgets?include_prereleases)，并看过[最新提交](https://github.com/RinLit-233-shiroko/Class-Widgets/commits)。
         2. 我已在 [Issues](https://github.com/RinLit-233-shiroko/Class-Widgets/issues?q=label%3ABug) 中检索，确认这一 Bug 未被提交过。
         3. 我已知晓并同意，此处仅用于汇报程序中存在的问题（关于其他非程序本身的问题应当在 Discussion 板块提出）。
-        
+
   - type: checkboxes
     id: checklist
     attributes:
@@ -31,7 +32,7 @@ body:
           required: true
 
   - type: markdown
-    attributes: 
+    attributes:
       value: |
         ## Bug 信息
 

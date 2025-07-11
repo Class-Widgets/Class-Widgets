@@ -21,14 +21,14 @@ body:
     id: checklist
     attributes:
       label: 确认检查清单
-      description: 
+      description: 在反馈此问题之前，请先确认一下事项是否满足：
       options:
         - label: |
             我已阅读以上清单并确认。
           required: true
 
   - type: markdown
-    attributes: 
+    attributes:
       value: |
         ### 插件
         描述您想要的插件的功能。您可以附上截图、录屏、堆栈跟踪、日志等材料，便于插件开发者进行开发。
