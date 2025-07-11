@@ -2526,11 +2526,6 @@ The file may be corrupted. Please report this issue to the developer.</translati
         <translation>Supported file types (*.json *.yaml *.yml);;JSON configuration file (*.json);;CSES file (*.yaml) (.*yaml *.yml)</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="5141"/>
-        <source>界面切换语言时发生错误: {e}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>CSES 通用课程表交换文件 (*.yaml)</source>
         <translation type="vanished">CSES Generic Timetable Exchange File (*.yaml)</translation>
     </message>
@@ -3146,8 +3141,9 @@ Error occurred while switching interface language: {e}</translation>
         <translation>Interface language switch error (＃°Д°)</translation>
     </message>
     <message>
+        <location filename="../menu.py" line="5141"/>
         <source>切换界面语言时发生错误: {e}</source>
-        <translation type="vanished">An error occurred while switching the interface language: {e}</translation>
+        <translation>An error occurred while switching the interface language: {e}</translation>
     </message>
     <message>
         <source>组件语言切换成功 ♪(´▽｀)</source>

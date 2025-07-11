@@ -2440,7 +2440,7 @@
     </message>
     <message>
         <location filename="../menu.py" line="5141"/>
-        <source>界面切换语言时发生错误: {e}</source>
+        <source>切换界面语言时发生错误: {e}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

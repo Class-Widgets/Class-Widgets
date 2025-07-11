@@ -2426,11 +2426,6 @@
         <translation>ファイルを選択</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="5141"/>
-        <source>界面切换语言时发生错误: {e}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../menu.py" line="3899"/>
         <source>课程表文件转换失败！
 可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
@@ -2895,8 +2890,9 @@
         <translation>インターフェース言語の切り替えでエラーが発生しました (＃°Д°)</translation>
     </message>
     <message>
+        <location filename="../menu.py" line="5141"/>
         <source>切换界面语言时发生错误: {e}</source>
-        <translation type="vanished">インターフェース言語の切り替え時にエラーが発生しました: {e}</translation>
+        <translation>インターフェース言語の切り替え時にエラーが発生しました: {e}</translation>
     </message>
     <message>
         <source>组件语言切换成功 ♪(´▽｀)</source>

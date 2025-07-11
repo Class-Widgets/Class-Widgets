@@ -2524,11 +2524,6 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
         <translation>支援的檔案類型 (*.json *.yaml *.yml);;Json 設定檔案 (*.json);;CSES 通用課程時間表交換檔案 (*.yaml) (*.yaml *.yml)</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="5141"/>
-        <source>界面切换语言时发生错误: {e}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>CSES 通用课程表交换文件 (*.yaml)</source>
         <translation type="vanished">CSES 通用課程時間表交換文件 (*.yaml)</translation>
     </message>
@@ -3157,8 +3152,9 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <translation>介面語言切換出錯 (＃°Д°)</translation>
     </message>
     <message>
+        <location filename="../menu.py" line="5141"/>
         <source>切换界面语言时发生错误: {e}</source>
-        <translation type="vanished">切換介面語言時出現錯誤: {e}</translation>
+        <translation>切換介面語言時出現錯誤: {e}</translation>
     </message>
     <message>
         <source>组件语言切换成功 ♪(´▽｀)</source>

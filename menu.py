@@ -5138,7 +5138,7 @@ class SettingsMenu(FluentWindow):
             logger.error(self.tr("界面语言切换时出错: {e}").format(e=f"{e}"))
             msg_box = MessageBox(
                 self.tr('界面语言切换出错 (＃°Д°)'),
-                self.tr('界面切换语言时发生错误: {e}').format(e=f"{e}"),
+                self.tr('切换界面语言时发生错误: {e}').format(e=f"{e}"),
                 self
             )
             msg_box.yesButton.setText(self.tr('确定'))
