@@ -418,7 +418,7 @@ def get_countdown(toast: bool = False) -> Optional[List[Union[str, int]]]:  # �
                         return_text.append(int(100 - seconds / (int(item_time) * 60) * 100))
                         got_return_data = True
             if not return_text:
-                return_text = ['目前课程已结束', f'00:00', 100]
+                return_text = [QCoreApplication.translate('main', '目前课程已结束'), f'00:00', 100]
         else:
             prepare_minutes_str = config_center.read_conf('Toast', 'prepare_minutes')
             if prepare_minutes_str != '0' and toast:
@@ -2804,6 +2804,7 @@ def init() -> None:
     logger.info(f'应用主题：{theme}')
 
     mgr = WidgetsManager()
+    utils.main_mgr = mgr 
     fw = FloatingWidget()
 
     # 获取屏幕横向分辨率
@@ -2880,9 +2881,6 @@ if __name__ == '__main__':
 
     global_i18n_manager = I18nManager()
     global_i18n_manager.init_from_config()
-
-    import importlib
-    importlib.reload(list_)
     
     logger.debug(f"i18n加载,界面: {global_i18n_manager.get_current_language_view_name()},组件: {global_i18n_manager.get_current_language_widgets_name()}")
     menu.global_i18n_manager = global_i18n_manager
@@ -2940,6 +2938,7 @@ if __name__ == '__main__':
         mgr = WidgetsManager()
         app.aboutToQuit.connect(mgr.cleanup_resources)
         setup_signal_handlers_optimized(app)
+        utils.main_mgr = mgr  # 设置全局管理器
 
         if config_center.read_conf('Other', 'initialstartup') == '1':  # 首次启动
             try:

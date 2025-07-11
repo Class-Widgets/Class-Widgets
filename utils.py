@@ -726,6 +726,7 @@ class TimeManagerFactory:
             
             return cls._instance
 
+main_mgr = None
 
 tray_icon = None
 update_timer = UnionUpdateTimer()

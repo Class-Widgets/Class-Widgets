@@ -61,7 +61,6 @@ class I18nManager:
         self.available_languages_view = {}
         self.available_languages_widgets = {}
         self.current_language_view = 'zh_CN'
-        self.current_language_widgets = 'zh_CN'
         self.scan_available_languages()
         
     def scan_available_languages(self):
@@ -118,12 +117,9 @@ class I18nManager:
         
     def get_available_languages_view(self):
         """获取可用界面语言列表"""
-        return self.available_languages_view.copy()
+        keys = set(self.available_languages_view.keys()) & set(self.available_languages_widgets.keys())
+        return {key: self.available_languages_view[key] for key in keys}
         
-    def get_available_languages_widgets(self):
-        """获取可用组件语言列表"""
-        return self.available_languages_widgets.copy()
-
     def get_current_language_view_name(self):
         """获取当前界面语言名称"""
         return self._get_language_display_name(self.current_language_view)
@@ -134,11 +130,13 @@ class I18nManager:
         
     def load_language_view(self, lang_code):
         """加载界面语言文件"""
+        current_lang = self.current_language_view
         try:
             from pathlib import Path
             app = QApplication.instance()
             if not app:
                 return False
+            self.clear_translators()
 
             main_translator = self._load_translation_file(
                 Path(conf.base_directory) / 'i18n' / f'{lang_code}.qm'
@@ -149,20 +147,11 @@ class I18nManager:
                 self.current_language_view = lang_code
                 config_center.write_conf('General', 'language_view', lang_code)
                 logger.success(f"成功加载界面语言: {lang_code} ({self.available_languages_view.get(lang_code, lang_code)})")
-                return True
-            return False
-
-        except Exception as e:
-            logger.error(f"加载界面语言包 {lang_code} 时出错: {e}")
-            return False
-            
-    def load_language_widgets(self, lang_code):
-        """加载组件语言文件"""
-        try:
-            from pathlib import Path
-            app = QApplication.instance()
-            if not app:
+            else:
+                logger.warning(f"无法加载界面语言: {lang_code} ({self.available_languages_view.get(lang_code, lang_code)})")
+                self.load_language_view(current_lang)
                 return False
+
             current_theme = config_center.read_conf('General', 'theme')
             theme_translator = self._load_translation_file(
                 Path(conf.base_directory) / 'ui' / current_theme / 'i18n' / f'{lang_code}.qm'
@@ -170,13 +159,24 @@ class I18nManager:
             if theme_translator:
                 self.translators.append(theme_translator)
                 app.installTranslator(theme_translator)
-            self.current_language_widgets = lang_code
-            config_center.write_conf('General', 'language_widgets', lang_code)
-            logger.success(f"成功加载组件语言: {lang_code} ({self.available_languages_widgets.get(lang_code, lang_code)})")
+                self.current_language_widgets = lang_code
+                logger.success(f"成功加载组件语言: {lang_code} ({self.available_languages_widgets.get(lang_code, lang_code)})")
+            else:
+                logger.warning(f"无法加载组件语言: {lang_code} ({self.available_languages_widgets.get(lang_code, lang_code)})")
+                self.load_language_view(current_lang)
+                return False
+
+            import importlib
+            importlib.reload(list_)
+
+            if not utils.main_mgr is None:
+                utils.main_mgr.clear_widgets()
+            
             return True
 
         except Exception as e:
-            logger.error(f"加载组件语言 {lang_code} 时出错: {e}")
+            logger.error(f"加载界面语言包 {lang_code} 时出错: {e}")
+            self.load_language_view(current_lang)
             return False
 
     def _load_translation_file(self, qm_path):
@@ -238,21 +238,14 @@ class I18nManager:
         """初始化设置"""
         try:
             saved_language_view = config_center.read_conf('General', 'language_view', 'zh_CN')
-            if saved_language_view in self.available_languages_view:
+            if saved_language_view in self.get_available_languages_view():
                 self.load_language_view(saved_language_view)
             else:
                 logger.warning(f"配置的界面语言 {saved_language_view} 不可用")
                 self.load_language_view('zh_CN')
-            saved_language_widgets = config_center.read_conf('General', 'language_widgets', 'zh_CN')
-            if saved_language_widgets in self.available_languages_widgets:
-                self.load_language_widgets(saved_language_widgets)
-            else:
-                logger.warning(f"配置的组件语言 {saved_language_widgets} 不可用")
-                self.load_language_widgets('zh_CN')
         except Exception as e:
             logger.error(f"从配置初始化语言时出错: {e}")
             self.load_language_view('zh_CN')
-            self.load_language_widgets('zh_CN')
 
 
 # 适配高DPI缩放
@@ -2199,20 +2192,6 @@ class SettingsMenu(FluentWindow):
                     break
             language_combo_view.currentIndexChanged.connect(self.on_language_view_changed)
 
-        language_combo_widgets = self.adInterface.findChild(ComboBox, 'language_combo_widgets')
-        if language_combo_widgets:
-            available_languages = self.i18n_manager.get_available_languages_widgets()
-            language_combo_widgets.clear()
-            self.language_map_widgets = {}
-            for lang_code, lang_name in available_languages.items():
-                language_combo_widgets.addItem(lang_name)
-                self.language_map_widgets[lang_name] = lang_code
-            current_lang = self.i18n_manager.current_language_widgets
-            for i in range(language_combo_widgets.count()):
-                if self.language_map_widgets.get(language_combo_widgets.itemText(i)) == current_lang:
-                    language_combo_widgets.setCurrentIndex(i)
-                    break
-            language_combo_widgets.currentIndexChanged.connect(self.on_language_widgets_changed)
         
         # 时间获得方法配置
         conf_time_get = self.adInterface.findChild(ComboBox, 'conf_time_get')
@@ -5125,8 +5104,8 @@ class SettingsMenu(FluentWindow):
                     success = self.i18n_manager.load_language_view(selected_lang_code)
                     if success:
                         config_center.write_conf('General', 'language_view', selected_lang_code)
-                        title =self.tr('界面语言切换成功 ♪(´▽｀)')
-                        content = self.tr('界面语言已切换为 {selected_lang_name}\n' \
+                        title =self.tr('语言切换成功 ♪(´▽｀)')
+                        content = self.tr('语言已切换为 {selected_lang_name}\n' \
                                 '新语言将在重启程序后完全生效').format(selected_lang_name=selected_lang_name)
                         flyout = Flyout.create(title=title,
                                                content=content,
@@ -5148,18 +5127,18 @@ class SettingsMenu(FluentWindow):
                                 language_combo_view.setCurrentIndex(i)
                                 break
                         msg_box = MessageBox(
-                            self.tr('界面语言切换失败 (＃°Д°)'),
-                            self.tr('无法加载选定的界面语言包，请检查翻译文件是否存在'),
+                            self.tr('语言切换失败 (＃°Д°)'),
+                            self.tr('无法加载选定的语言包，请检查翻译文件是否存在'),
                             self
                         )
                         msg_box.yesButton.setText(self.tr('确定'))
                         msg_box.cancelButton.hide()
                         msg_box.exec()
         except Exception as e:
-            logger.error(self.tr("界面语言切换时出错: {e}").format(e=f"{e}"))
+            logger.error(self.tr("语言切换时出错: {e}").format(e=f"{e}"))
             msg_box = MessageBox(
-                self.tr('界面语言切换出错 (＃°Д°)'),
-                self.tr('切换界面语言时发生错误: {e}').format(e=f"{e}"),
+                self.tr('语言切换出错 (＃°Д°)'),
+                self.tr('切换语言时发生错误: {e}').format(e=f"{e}"),
                 self
             )
             msg_box.yesButton.setText(self.tr('确定'))
@@ -5169,56 +5148,7 @@ class SettingsMenu(FluentWindow):
 
     def on_language_widgets_changed(self):
         """组件语言切换"""
-        try:
-            language_combo_widgets = self.adInterface.findChild(ComboBox, 'language_combo_widgets')
-            if language_combo_widgets:
-                selected_lang_name = language_combo_widgets.currentText()
-                selected_lang_code = self.language_map_widgets.get(selected_lang_name)
-                if selected_lang_code and selected_lang_code != self.i18n_manager.current_language_widgets:
-                    success = self.i18n_manager.load_language_widgets(selected_lang_code)
-                    if success:
-                        config_center.write_conf('General', 'language_widgets', selected_lang_code)
-                        title = self.tr('组件语言切换成功 ♪(´▽｀)')
-                        content = self.tr('组件语言已切换为 {selected_lang_name}\n' \
-                                f'新语言将在重启程序后完全生效').format(selected_lang_name=selected_lang_name)
-
-                        flyout = Flyout.create(title=title,
-                                               content=content,
-                                               target=language_combo_widgets,
-                                               parent=self.window(),
-                                               isClosable=True,
-                                               aniType=FlyoutAnimationType.FADE_IN)
-                        if flyout:
-                            if hasattr(flyout, 'widget') and flyout.widget() and isinstance(flyout.widget(), FlyoutView):
-                                view = flyout.widget()
-                                content_label = view.findChild(QLabel)
-                                if content_label:
-                                    content_label.linkActivated.connect(self.handle_restart_link)
-                            flyout.show()
-                    else:
-                        current_lang = self.i18n_manager.current_language_widgets
-                        for i in range(language_combo_widgets.count()):
-                            if self.language_map_widgets.get(language_combo_widgets.itemText(i)) == current_lang:
-                                language_combo_widgets.setCurrentIndex(i)
-                                break
-                        msg_box = MessageBox(
-                            self.tr('组件语言切换失败 (｡•́︿•̀｡)'),
-                            self.tr('无法加载选定的组件语言包，请检查翻译文件是否存在'),
-                            self
-                        )
-                        msg_box.yesButton.setText(self.tr('确定'))
-                        msg_box.cancelButton.hide()
-                        msg_box.exec()
-        except Exception as e:
-            logger.error(self.tr("组件语言切换时出错: {e}").format(e=f"{e}"))
-            msg_box = MessageBox(
-                self.tr('组件语言切换出错 (｡•́︿•̀｡)'),
-                self.tr('切换组件语言时发生错误: {e}').format(e=f"{e}"),
-                self
-            )
-            msg_box.yesButton.setText(self.tr('确定'))
-            msg_box.cancelButton.hide()
-            msg_box.exec()
+        ...
 
 
 class NTPSyncWorker(QObject):
