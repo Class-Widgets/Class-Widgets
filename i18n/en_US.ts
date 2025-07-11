@@ -278,7 +278,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../view/widget-toast-bar.ui" line="123"/>
         <source>上课</source>
-        <translation>Class Starts</translation>
+        <translation>Class Begins</translation>
     </message>
     <message>
         <location filename="../view/widget-toast-bar.ui" line="151"/>
@@ -3281,7 +3281,7 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="556"/>
         <source>例如：距离{lesson_name}课还有{minutes}分钟，请做好准备。</source>
-        <translation>Example: &quot;There are {minutes} minutes left until the {lesson_name} class starts. Please get ready.&quot;</translation>
+        <translation>Example: &quot;There are {minutes} minutes left until the {lesson_name} class begins. Please get ready.&quot;</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="600"/>
@@ -4620,7 +4620,7 @@ Please update Class Widgets before trying to install this plugin.</translation>
     <message>
         <location filename="../tip_toast.py" line="111"/>
         <source>活动开始</source>
-        <translation>Class Starts</translation>
+        <translation>Class Begins</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="112"/>
