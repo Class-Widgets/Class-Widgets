@@ -3524,18 +3524,19 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../file.py" line="60"/>
         <source>Class Widgets 启动失败w(ﾟДﾟ)w</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to launch Class Widgets w(ﾟДﾟ)w</translation>
     </message>
     <message>
         <location filename="../file.py" line="62"/>
         <source>加载默认配置文件失败,请检查文件完整性或尝试重新安装。
 错误信息: {e}</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to load default configuration file. Please check file integrity or try reinstalling.
+Error message: {e}</translation>
     </message>
     <message>
         <location filename="../file.py" line="63"/>
         <source>好</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
