@@ -10,8 +10,6 @@ import configparser
 from packaging.version import Version
 import json
 
-from PyQt5.QtCore import QCoreApplication
-
 
 base_directory = Path(os.path.dirname(os.path.abspath(__file__)))
 '''
@@ -48,14 +46,7 @@ class ConfigCenter:
         """加载默认配置文件"""
         try:
             with open(self.default_config_path, encoding="utf-8") as default:
-                default_data = json.load(default)
-            for section, options in default_data.items():
-                for key, value in options.items():
-                    v = QCoreApplication.translate('file', f"{section}.{key}")
-                    if v == f"{section}.{key}":
-                        v = value
-                    default_data[section][key] = v
-
+                self.default_data = json.load(default)
         except Exception as e:
             logger.error(f"加载默认配置文件失败: {e}")
             self.default_data = {}
@@ -492,12 +483,3 @@ def save_data_to_json(data: Dict[str, Any], filename: str) -> None:
 config_center = ConfigCenter(base_directory)
 schedule_center = ScheduleCenter(config_center)
 config_center.schedule_update_callback = schedule_center.update_schedule
-
-if __name__ == "__main__":
-    QCoreApplication.translate('file', 'General.schedule')
-    QCoreApplication.translate('file', 'TTS.attend_class')
-    QCoreApplication.translate('file', 'TTS.finish_class')
-    QCoreApplication.translate('file', 'TTS.prepare_class')
-    QCoreApplication.translate('file', 'TTS.after_school')
-    QCoreApplication.translate('file', 'Date.cd_text_custom')
-    QCoreApplication.translate('file', 'Time.ntp_server')
