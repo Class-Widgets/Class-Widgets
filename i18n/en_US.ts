@@ -454,7 +454,7 @@ If school&apos;s ringtone is slower than the system time, it is positive; otherw
     <message>
         <location filename="../view/menu/advance.ui" line="110"/>
         <source>启用 单/双 周课表</source>
-        <translation>Enable odd or even schedule</translation>
+        <translation>Enable even schedule</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="117"/>
@@ -476,7 +476,7 @@ If school&apos;s ringtone is slower than the system time, it is positive; otherw
     <message>
         <location filename="../view/menu/advance.ui" line="195"/>
         <source>将用于计算单/双周，开学日期需设置为开学第一周第一天（即周一）</source>
-        <translation>It will be used to calculate single or even weeks.
+        <translation>It will be used to calculate odd or even weeks.
 The start date of the school term needs to be set as the first day of the first week of school (i.e., Monday)</translation>
     </message>
     <message>
@@ -1331,7 +1331,7 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="137"/>
         <source>选择单/双周课表</source>
-        <translation>Choose a single/even weekly schedule</translation>
+        <translation>Choose an odd or even weekly schedule</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="144"/>
@@ -1341,7 +1341,7 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="173"/>
         <source>复制单周课表</source>
-        <translation>Copy from single weekly schedule</translation>
+        <translation>Copy from odd week schedule</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="221"/>
@@ -3924,7 +3924,7 @@ Error message: {e}</translation>
     <message>
         <location filename="../list_.py" line="20"/>
         <source>单周</source>
-        <translation>single week</translation>
+        <translation>odd week</translation>
     </message>
     <message>
         <location filename="../list_.py" line="20"/>
