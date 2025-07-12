@@ -1220,7 +1220,7 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="153"/>
         <source>在“插件广场”中检查更新</source>
-        <translation>Check for updates in the Plugins square</translation>
+        <translation>Check for updates in the Plugins Plaza</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="160"/>
