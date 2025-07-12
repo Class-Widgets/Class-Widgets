@@ -36,7 +36,7 @@
 
 
 
-![Banner](../../img/Banner.png)
+![Banner](img/Banner.png)
 
 [![Q群](https://img.shields.io/badge/QQ%20群-169200380-blue.svg?logo=qq&color=blue&style=for-the-badge)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380)
 [![DC](https://img.shields.io/discord/1332636953719476284?style=for-the-badge&logo=discord&logoColor=ffffff&label=discord%20%E6%9C%8D%E5%8A%A1%E5%99%A8&labelColor=5865f2)](https://discord.gg/EFF4PpqpqZ)
@@ -161,4 +161,4 @@ Copyright © 2025 RinLit.
 这仅是我作为新人的练习作品，欢迎提供更多意见！
 
 ##
-最后一次编辑和翻译者：[某中学生叫姐姐Jerry](https://github.com/JerryZeng20142)
+最后一次编辑者：[某中学生叫姐姐Jerry](https://github.com/JerryZeng20142)
