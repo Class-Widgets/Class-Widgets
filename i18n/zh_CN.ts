@@ -991,269 +991,269 @@
     <message>
         <location filename="../view/menu/custom.ui" line="1135"/>
         <source>天气源 API Key</source>
-        <translation>天气源 API Key</translation>
+        <translation>天气数据来源 API Key</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="1142"/>
         <source>部分天气源可能需要设置 Key 才能正常使用，可在“帮助”页找到各个天气源获得 Key 的方法。</source>
-        <translation type="unfinished"></translation>
+        <translation>部分天气源可能需要设置 Key 才能正常使用，可在“帮助”页找到各个天气源获得 Key 的方法。</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="1233"/>
         <source>应用</source>
-        <translation type="unfinished"></translation>
+        <translation>应用</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="48"/>
         <source>帮助文档</source>
-        <translation type="unfinished"></translation>
+        <translation>帮助文档</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="55"/>
         <source>需连接到互联网</source>
-        <translation type="unfinished"></translation>
+        <translation>需连接到互联网</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="84"/>
         <source>在浏览器中浏览</source>
-        <translation type="unfinished"></translation>
+        <translation>在浏览器中浏览</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="128"/>
         <source>猜你想问</source>
-        <translation type="unfinished"></translation>
+        <translation>猜你想问</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="146"/>
         <source>如何设置课程表？</source>
-        <translation type="unfinished"></translation>
+        <translation>如何设置课程表？</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="150"/>
         <source>https://www.yuque.com/rinlit/class-widgets_help/swg86btkivirtnrl</source>
-        <translation type="unfinished"></translation>
+        <translation>https://www.yuque.com/rinlit/class-widgets_help/swg86btkivirtnrl</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="164"/>
         <source>如何切换主题？</source>
-        <translation type="unfinished"></translation>
+        <translation>如何切换主题？</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="168"/>
         <source>https://www.yuque.com/rinlit/class-widgets_help/lg0p91q2mg4yertn</source>
-        <translation type="unfinished"></translation>
+        <translation>https://www.yuque.com/rinlit/class-widgets_help/lg0p91q2mg4yertn</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="182"/>
         <source>软件的时间与铃声不符怎么办？如何设置时差偏移？</source>
-        <translation type="unfinished"></translation>
+        <translation>软件的时间与铃声不符怎么办？如何设置时差偏移？</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="186"/>
         <source>https://www.yuque.com/rinlit/class-widgets_help/vlk3plggb8edvub4#mHfUX</source>
-        <translation type="unfinished"></translation>
+        <translation>https://www.yuque.com/rinlit/class-widgets_help/vlk3plggb8edvub4#mHfUX</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="200"/>
         <source>怎么快速设置调休日和换课？</source>
-        <translation type="unfinished"></translation>
+        <translation>怎么快速设置调休日和换课？</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="204"/>
         <source>https://www.yuque.com/rinlit/class-widgets_help/gc4epffu7g5bf9os</source>
-        <translation type="unfinished"></translation>
+        <translation>https://www.yuque.com/rinlit/class-widgets_help/gc4epffu7g5bf9os</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="218"/>
         <source>如何开发插件？</source>
-        <translation type="unfinished"></translation>
+        <translation>如何开发插件？</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="222"/>
         <source>https://www.yuque.com/rinlit/cw-docs-dev</source>
-        <translation type="unfinished"></translation>
+        <translation>https://www.yuque.com/rinlit/cw-docs-dev</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="236"/>
         <source>什么是 CSES？</source>
-        <translation type="unfinished"></translation>
+        <translation>什么是 CSES？</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="240"/>
         <source>https://github.com/CSES-org/CSES</source>
-        <translation type="unfinished"></translation>
+        <translation>https://github.com/CSES-org/CSES</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="257"/>
         <source>社区</source>
-        <translation type="unfinished"></translation>
+        <translation>社区</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="272"/>
         <source>我们的Q群</source>
-        <translation type="unfinished"></translation>
+        <translation>我们的 QQ 群聊</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="285"/>
         <source>GitHub Discussion</source>
-        <translation type="unfinished"></translation>
+        <translation>GitHub Discussion</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="298"/>
         <source>Discord</source>
-        <translation type="unfinished"></translation>
+        <translation>Discord</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="35"/>
         <location filename="../view/pp/settings.ui" line="71"/>
         <source>插件</source>
-        <translation type="unfinished"></translation>
+        <translation>插件</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="67"/>
         <source>插件管理</source>
-        <translation type="unfinished"></translation>
+        <translation>插件管理</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="74"/>
         <source>已安装 0 个插件</source>
-        <translation type="unfinished"></translation>
+        <translation>已安装 0 个插件</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="98"/>
         <source>*对插件的任意操作将在重启后生效。</source>
-        <translation type="unfinished"></translation>
+        <translation>*对插件的任意操作将在重启后生效。</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="153"/>
         <source>在“插件广场”中检查更新</source>
-        <translation type="unfinished"></translation>
+        <translation>在“插件广场”中检查更新</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="160"/>
         <source>将跳转至“插件广场”以检查插件的更新状态</source>
-        <translation type="unfinished"></translation>
+        <translation>将跳转至“插件广场”以检查插件的更新状态</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="192"/>
         <source>在“插件广场”检查</source>
-        <translation type="unfinished"></translation>
+        <translation>在“插件广场”检查</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="239"/>
         <source>搜索插件名称、作者或描述...</source>
-        <translation type="unfinished"></translation>
+        <translation>搜索插件名称、作者或描述...</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="262"/>
         <source>刷新插件列表</source>
-        <translation type="unfinished"></translation>
+        <translation>刷新插件列表</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="362"/>
         <source>还未添加任何插件</source>
-        <translation type="unfinished"></translation>
+        <translation>还未添加任何插件</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="398"/>
         <source>添加插件</source>
-        <translation type="unfinished"></translation>
+        <translation>添加插件</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="431"/>
         <source>管理插件文件夹</source>
-        <translation type="unfinished"></translation>
+        <translation>管理插件文件夹</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="438"/>
         <source>可在此文件夹添加、删除和修改您所安装的插件</source>
-        <translation type="unfinished"></translation>
+        <translation>可在此文件夹添加、删除和修改您所安装的插件</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="506"/>
         <source>在“插件广场”中寻找</source>
-        <translation type="unfinished"></translation>
+        <translation>在“插件广场”中寻找</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="513"/>
         <source>将跳转至“插件广场”</source>
-        <translation type="unfinished"></translation>
+        <translation>将跳转至“插件广场”</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="545"/>
         <source>打开“插件广场”</source>
-        <translation type="unfinished"></translation>
+        <translation>打开“插件广场”</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="581"/>
         <source>导入本地插件</source>
-        <translation type="unfinished"></translation>
+        <translation>导入本地插件</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="588"/>
         <source>从本地文件导入插件包 (支持.zip格式与解压后的插件)</source>
-        <translation type="unfinished"></translation>
+        <translation>从本地文件导入插件包 (支持.zip格式与解压后的插件)</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="620"/>
         <source>选择文件导入</source>
-        <translation type="unfinished"></translation>
+        <translation>选择文件导入</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="670"/>
         <source>安全模式加载插件</source>
-        <translation type="unfinished"></translation>
+        <translation>安全模式加载插件</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="677"/>
         <source>当插件出现错误时自动禁用插件加载</source>
-        <translation type="unfinished"></translation>
+        <translation>当插件出现错误时自动禁用插件加载</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="748"/>
         <source>插件自动化执行延迟</source>
-        <translation type="unfinished"></translation>
+        <translation>插件自动化执行延迟</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="755"/>
         <source>当插件执行自动化操作时，需等待的时间（单位：秒）</source>
-        <translation type="unfinished"></translation>
+        <translation>当插件执行自动化操作时，需等待的时间（单位：秒）</translation>
     </message>
     <message>
         <location filename="../view/menu/preview.ui" line="50"/>
         <location filename="../view/menu/sound.ui" line="742"/>
         <source>预览</source>
-        <translation type="unfinished"></translation>
+        <translation>预览</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="35"/>
         <source>课程表编辑</source>
-        <translation type="unfinished"></translation>
+        <translation>课程表编辑</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="85"/>
         <source>选择星期</source>
-        <translation type="unfinished"></translation>
+        <translation>选择星期</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="137"/>
         <source>选择单/双周课表</source>
-        <translation type="unfinished"></translation>
+        <translation>选择单/双周课表</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="144"/>
         <source>若要启用双周课表，请在“高级选项”中 启用单双周课表和设置开学日期</source>
-        <translation type="unfinished"></translation>
+        <translation>若要启用双周课表，请在“高级选项”中 启用单双周课表和设置开学日期</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="173"/>
         <source>复制单周课表</source>
-        <translation type="unfinished"></translation>
+        <translation>复制单周课表</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="221"/>
         <source>快速添加课程</source>
-        <translation type="unfinished"></translation>
+        <translation>快速添加课程</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="271"/>
