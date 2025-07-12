@@ -1905,7 +1905,7 @@
         <location filename="../menu.py" line="1772"/>
         <source>加载TTS语音时发生错误:
 {error_message}</source>
-        <translation>加载TTS语音时发生错误:
+        <translation>加载TTS语音时发生错误：
 {error_message}</translation>
     </message>
     <message>
@@ -2153,14 +2153,14 @@
         <location filename="../menu.py" line="3103"/>
         <source>URL格式可能不正确: {url}
 请检查是否为有效的域名或IP地址（︶^︶）</source>
-        <translation>URL格式可能不正确: {url}
+        <translation>URL格式可能不正确： {url}
 请检查是否为有效的域名或IP地址（︶^︶）</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2700"/>
         <location filename="../menu.py" line="3354"/>
         <source>当前使用: 系统本地时间</source>
-        <translation>当前使用: 系统本地时间</translation>
+        <translation>当前使用：系统本地时间</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2704"/>
@@ -2202,83 +2202,83 @@
         <location filename="../menu.py" line="2756"/>
         <location filename="../menu.py" line="3410"/>
         <source>NTP时间同步成功!</source>
-        <translation>NTP时间同步成功!</translation>
+        <translation>NTP时间同步成功！</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2763"/>
         <location filename="../menu.py" line="3417"/>
         <source>NTP时间同步失败,请检查网络连接和url地址!</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP时间同步失败,请检查网络连接和url地址！</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3004"/>
         <source>时区已更新为 {ntp_sync_timezone}</source>
-        <translation type="unfinished"></translation>
+        <translation>时区已更新为 {ntp_sync_timezone}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3508"/>
         <source>编辑课程</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑课程</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3514"/>
         <source>清空课程</source>
-        <translation type="unfinished"></translation>
+        <translation>清空课程</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3553"/>
         <source>添加时间线</source>
-        <translation type="unfinished"></translation>
+        <translation>添加时间线</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3560"/>
         <source>添加节点</source>
-        <translation type="unfinished"></translation>
+        <translation>添加节点</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3574"/>
         <source>编辑节点开始时间</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑节点开始时间</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3581"/>
         <source>删除节点</source>
-        <translation type="unfinished"></translation>
+        <translation>删除节点</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3588"/>
         <source>编辑时间线</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑时间线</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3594"/>
         <source>删除时间线</source>
-        <translation type="unfinished"></translation>
+        <translation>删除时间线</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3602"/>
         <source>选择活动类型（“课程”或“课间”）</source>
-        <translation type="unfinished"></translation>
+        <translation>选择活动类型（“课程”或“课间”）</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3606"/>
         <source>默认</source>
-        <translation type="unfinished"></translation>
+        <translation>默认</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3608"/>
         <source>选择一周内的某一天的时间线</source>
-        <translation type="unfinished"></translation>
+        <translation>选择一周内的某一天的时间线</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3617"/>
         <source>重要提示</source>
-        <translation type="unfinished"></translation>
+        <translation>重要提示</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3617"/>
         <source>请使用 24 小时制</source>
-        <translation type="unfinished"></translation>
+        <translation>请使用 24 小时制</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3637"/>
@@ -3858,7 +3858,7 @@
     <message>
         <location filename="../menu.py" line="676"/>
         <source>卸载插件 “{title}” 时出错，请查看日志获取详细信息。</source>
-        <translation type="unfinished"></translation>
+        <translation>卸载插件 “{title}” 时出错，请查看日志获取详细信息。</translation>
     </message>
 </context>
 <context>
@@ -3867,17 +3867,18 @@
         <location filename="../plugin_plaza.py" line="227"/>
         <source>此插件版本（{plugin_ver}）高于当前设备中 Class Widgets 兼容的插件版本（{SELF_PLUGIN_VERSION}）；
 请更新 Class Widgets 后再尝试安装此插件。</source>
-        <translation type="unfinished"></translation>
+        <translation>此插件版本（{plugin_ver}）高于当前设备中 Class Widgets 兼容的插件版本（{SELF_PLUGIN_VERSION}）；
+请更新 Class Widgets 后再尝试安装此插件。</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="237"/>
         <source>取消安装</source>
-        <translation type="unfinished"></translation>
+        <translation>取消安装</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="238"/>
         <source>强制安装（不建议）</source>
-        <translation type="unfinished"></translation>
+        <translation>强制安装（不建议）</translation>
     </message>
 </context>
 <context>
@@ -3885,62 +3886,62 @@
     <message>
         <location filename="../tip_toast.py" line="111"/>
         <source>活动开始</source>
-        <translation type="unfinished"></translation>
+        <translation>活动开始</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="112"/>
         <source>当前课程</source>
-        <translation type="unfinished"></translation>
+        <translation>当前课程</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="119"/>
         <source>下课铃声显示</source>
-        <translation type="unfinished"></translation>
+        <translation>下课铃声显示</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="120"/>
         <source>下课</source>
-        <translation type="unfinished"></translation>
+        <translation>下课</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="122"/>
         <source>即将进行</source>
-        <translation type="unfinished"></translation>
+        <translation>即将进行</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="131"/>
         <source>放学铃声显示</source>
-        <translation type="unfinished"></translation>
+        <translation>放学铃声显示</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="132"/>
         <source>放学</source>
-        <translation type="unfinished"></translation>
+        <translation>放学</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="133"/>
         <source>当前课程已结束</source>
-        <translation type="unfinished"></translation>
+        <translation>当前课程已结束</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="139"/>
         <source>预备铃声显示</source>
-        <translation type="unfinished"></translation>
+        <translation>预备铃声显示</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="140"/>
         <source>即将开始</source>
-        <translation type="unfinished"></translation>
+        <translation>即将开始</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="141"/>
         <source>下一节</source>
-        <translation type="unfinished"></translation>
+        <translation>下一节</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="149"/>
         <source>通知显示: {title}</source>
-        <translation type="unfinished"></translation>
+        <translation>通知显示: {title}</translation>
     </message>
 </context>
 </TS>
