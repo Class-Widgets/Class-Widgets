@@ -2146,62 +2146,63 @@
         <location filename="../menu.py" line="2441"/>
         <location filename="../menu.py" line="3095"/>
         <source>NTP服务器已更新: {url}</source>
-        <translation>NTP服务器已更新: {url}</translation>
+        <translation>NTP服务器已更新： {url}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2449"/>
         <location filename="../menu.py" line="3103"/>
         <source>URL格式可能不正确: {url}
 请检查是否为有效的域名或IP地址（︶^︶）</source>
-        <translation type="unfinished"></translation>
+        <translation>URL格式可能不正确: {url}
+请检查是否为有效的域名或IP地址（︶^︶）</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2700"/>
         <location filename="../menu.py" line="3354"/>
         <source>当前使用: 系统本地时间</source>
-        <translation type="unfinished"></translation>
+        <translation>当前使用: 系统本地时间</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2704"/>
         <location filename="../menu.py" line="3358"/>
         <source>%Y年%m月%d日 - %H:%M:%S</source>
-        <translation type="unfinished"></translation>
+        <translation>%Y年%m月%d日 - %H:%M:%S</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2705"/>
         <location filename="../menu.py" line="3359"/>
         <source>上次NTP校准: {sync_time_str}</source>
-        <translation type="unfinished"></translation>
+        <translation>上次NTP校准： {sync_time_str}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2707"/>
         <location filename="../menu.py" line="3361"/>
         <source>NTP时间: 尚未进行校准</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP时间： 尚未进行校准</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2709"/>
         <location filename="../menu.py" line="3363"/>
         <source>时间状态: 未知</source>
-        <translation type="unfinished"></translation>
+        <translation>时间状态：未知</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2731"/>
         <location filename="../menu.py" line="3385"/>
         <source>同步正在进行中,请稍候~</source>
-        <translation type="unfinished"></translation>
+        <translation>同步正在进行中,请稍候~</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2749"/>
         <location filename="../menu.py" line="3403"/>
         <source>启动同步失败</source>
-        <translation type="unfinished"></translation>
+        <translation>启动同步失败</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2756"/>
         <location filename="../menu.py" line="3410"/>
         <source>NTP时间同步成功!</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP时间同步成功!</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2763"/>
