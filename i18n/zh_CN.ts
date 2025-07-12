@@ -2283,243 +2283,251 @@
     <message>
         <location filename="../menu.py" line="3637"/>
         <source>请先选择一个节点 o(TヘTo)</source>
-        <translation type="unfinished"></translation>
+        <translation>请先选择一个节点 o(TヘTo)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3638"/>
         <source>在编辑节点时间前，请先在左侧列表中选择要编辑的节点</source>
-        <translation type="unfinished"></translation>
+        <translation>在编辑节点时间前，请先在左侧列表中选择要编辑的节点</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3658"/>
         <source>节点时间已更新 ヾ(≧▽≦*)o</source>
-        <translation type="unfinished"></translation>
+        <translation>节点时间已更新 ヾ(≧▽≦*)o</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3659"/>
         <source>节点 &quot;{part_name}&quot; 的开始时间已更新为 {new_time}</source>
-        <translation type="unfinished"></translation>
+        <translation>节点 &quot;{part_name}&quot; 的开始时间已更新为 {new_time}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3668"/>
         <source>节点格式异常 (╥﹏╥)</source>
-        <translation type="unfinished"></translation>
+        <translation>节点格式异常 (╥﹏╥)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3669"/>
         <source>选中的节点格式不正确，无法编辑</source>
-        <translation type="unfinished"></translation>
+        <translation>选中的节点格式不正确，无法编辑</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3678"/>
         <source>预览 - {schedule_name}</source>
-        <translation type="unfinished"></translation>
+        <translation>预览 - {schedule_name}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3733"/>
         <location filename="../menu.py" line="3753"/>
         <source>已清除日志</source>
-        <translation type="unfinished"></translation>
+        <translation>已清除日志</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3734"/>
         <location filename="../menu.py" line="3754"/>
         <source>已清空所有日志文件，约 {size} KB</source>
-        <translation type="unfinished"></translation>
+        <translation>已清空所有日志文件，约 {size} KB</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3744"/>
         <source>日志目录下为空，已清理完成。</source>
-        <translation type="unfinished"></translation>
+        <translation>日志目录下为空，已清理完成。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3764"/>
         <source>清除日志失败：{e}</source>
-        <translation type="unfinished"></translation>
+        <translation>清除日志失败：{e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3803"/>
         <source>更改上课时主题色</source>
-        <translation type="unfinished"></translation>
+        <translation>更改上课时主题色</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3809"/>
         <source>更改课间时主题色</source>
-        <translation type="unfinished"></translation>
+        <translation>更改课间时主题色</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3815"/>
         <source>更改浮窗时间颜色</source>
-        <translation type="unfinished"></translation>
+        <translation>更改浮窗时间颜色</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3821"/>
         <source>保存文件</source>
-        <translation type="unfinished"></translation>
+        <translation>保存文件</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3822"/>
         <source>Json 配置文件 (*.json)</source>
-        <translation type="unfinished"></translation>
+        <translation>Json 配置文件 (*.json)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3851"/>
         <source>检查更新失败！</source>
-        <translation type="unfinished"></translation>
+        <translation>检查更新失败！</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3852"/>
         <source>检查更新失败！
 {data}</source>
-        <translation type="unfinished"></translation>
+        <translation>检查更新失败！
+{data}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3887"/>
         <location filename="../menu.py" line="3937"/>
         <source>文件已存在</source>
-        <translation type="unfinished"></translation>
+        <translation>文件已存在</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3887"/>
         <location filename="../menu.py" line="3937"/>
         <source>文件 {file_name} 已存在，是否覆盖？</source>
-        <translation type="unfinished"></translation>
+        <translation>文件 {file_name} 已存在，是否覆盖？</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3888"/>
         <location filename="../menu.py" line="3938"/>
         <source>覆盖</source>
-        <translation type="unfinished"></translation>
+        <translation>覆盖</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3904"/>
         <source>导入成功！</source>
-        <translation type="unfinished"></translation>
+        <translation>导入成功！</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3906"/>
         <source>课程表文件导入成功！
 请手动切换您的配置文件。</source>
-        <translation type="unfinished"></translation>
+        <translation>课程表文件导入成功！
+请手动切换您的配置文件。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3926"/>
         <source>课程表文件导出失败，
 可能为文件损坏，请将此情况反馈给开发者。</source>
-        <translation type="unfinished"></translation>
+        <translation>课程表文件导出失败，
+可能为文件损坏，请将此情况反馈给开发者。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3929"/>
         <source>选择文件</source>
-        <translation type="unfinished"></translation>
+        <translation>选择文件</translation>
     </message>
     <message>
         <location filename="../menu.py" line="5138"/>
         <source>界面语言切换时出错: {e}</source>
-        <translation type="unfinished"></translation>
+        <translation>界面语言切换时出错：{e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="5140"/>
         <source>界面语言切换出错 (＃°Д°)</source>
-        <translation type="unfinished"></translation>
+        <translation>界面语言切换出错 (＃°Д°)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="5141"/>
         <source>切换界面语言时发生错误: {e}</source>
-        <translation type="unfinished"></translation>
+        <translation>切换界面语言时发生错误：{e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3899"/>
         <source>课程表文件转换失败！
 可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
 详情请查看Log日志，日志位于./log/下。</source>
-        <translation type="unfinished"></translation>
+        <translation>课程表文件转换失败！
+可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
+详情请查看Log日志，日志位于./log/下。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3912"/>
         <source>课程表文件导入失败！
 可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
 详情请查看Log日志，日志位于./log/下。</source>
-        <translation type="unfinished"></translation>
+        <translation>课程表文件导入失败！
+可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
+详情请查看Log日志，日志位于./log/下。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3963"/>
         <source>已保存至 ./config/widget.json</source>
-        <translation type="unfinished"></translation>
+        <translation>已保存至 ./config/widget.json</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4106"/>
         <source>列表选项异常！{data}</source>
-        <translation type="unfinished"></translation>
+        <translation>列表选项异常！{data}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4549"/>
         <location filename="../menu.py" line="4629"/>
         <source>已保存至 ./config/schedule/{schedule_name}</source>
-        <translation type="unfinished"></translation>
+        <translation>已保存至 ./config/schedule/{schedule_name}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4640"/>
         <source>{e}
 保存失败，请将 ./log/ 中的日志提交给开发者以反馈问题。</source>
-        <translation type="unfinished"></translation>
+        <translation>{e}
+保存失败，请将 ./log/ 中的日志提交给开发者以反馈问题。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4714"/>
         <source>您确定要删除这个时段吗？</source>
-        <translation type="unfinished"></translation>
+        <translation>您确定要删除这个时段吗？</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4714"/>
         <source>删除该节点后，将一并删除该节点下所有课程安排，且无法恢复。</source>
-        <translation type="unfinished"></translation>
+        <translation>删除该节点后，将一并删除该节点下所有课程安排，且无法恢复。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4937"/>
         <source>已保存至 ./config.ini</source>
-        <translation type="unfinished"></translation>
+        <translation>已保存至 ./config.ini</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3743"/>
         <source>未找到日志</source>
-        <translation type="unfinished"></translation>
+        <translation>未找到日志</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3763"/>
         <source>清除日志失败！</source>
-        <translation type="unfinished"></translation>
+        <translation>清除日志失败！</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3796"/>
         <source>无法删除</source>
-        <translation type="unfinished"></translation>
+        <translation>无法删除</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3796"/>
         <source>至少需要保留两个小组件。</source>
-        <translation type="unfinished"></translation>
+        <translation>至少需要保留两个小组件。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3825"/>
         <location filename="../menu.py" line="3921"/>
         <source>您已成功导出课程表配置文件</source>
-        <translation type="unfinished"></translation>
+        <translation>您已成功导出课程表配置文件</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3826"/>
         <location filename="../menu.py" line="3922"/>
         <source>文件将导出于{file_path}</source>
-        <translation type="unfinished"></translation>
+        <translation>文件将导出于{file_path}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3924"/>
         <source>导出失败！</source>
-        <translation type="unfinished"></translation>
+        <translation>导出失败！</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3844"/>
         <source>版本号：获取失败！</source>
-        <translation type="unfinished"></translation>
+        <translation>无法获取版本号：</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2350"/>
@@ -3941,7 +3949,7 @@
     <message>
         <location filename="../tip_toast.py" line="149"/>
         <source>通知显示: {title}</source>
-        <translation>通知显示: {title}</translation>
+        <translation>通知显示：{title}</translation>
     </message>
 </context>
 </TS>
