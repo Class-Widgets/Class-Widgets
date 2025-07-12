@@ -1,3 +1,5 @@
+- 简体中文（当前） | [English](docs/readme/README.en_US.md) | ［日本語］(docs/readme/README.ja.md)
+
 > [!Warning]
 > Class Widgets *1* 目前完全由社区开发者进行开发
 > 
@@ -156,3 +158,6 @@ Copyright © 2025 RinLit.
 
 ##
 这仅是我作为新人的练习作品，欢迎提供更多意见！
+
+##
+翻译者：不对这是原文没有翻译者
