@@ -981,17 +981,17 @@
     <message>
         <location filename="../view/menu/custom.ui" line="1066"/>
         <source>设置天气源</source>
-        <translation>设置天气源</translation>
+        <translation>设置天气数据来源</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="1073"/>
         <source>将会影响“天气”小组件的天气数据源</source>
-        <translation type="unfinished"></translation>
+        <translation>将会影响“天气”小组件的天气数据源</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="1135"/>
         <source>天气源 API Key</source>
-        <translation type="unfinished"></translation>
+        <translation>天气源 API Key</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="1142"/>
