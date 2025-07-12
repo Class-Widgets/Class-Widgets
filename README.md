@@ -1,5 +1,5 @@
 
-简体中文（当前选择） | [English](docs/readme/README.en_US.md) | [日本語](docs/readme/README.ja.md)
+简体中文（当前选择） | [English](/docs/readme/README.en_US.md) | [日本語](/docs/readme/README.ja.md)
 
 > [!Warning]
 > Class Widgets *1* 目前完全由社区开发者进行开发
