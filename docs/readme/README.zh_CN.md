@@ -9,7 +9,7 @@
 > Class Widgets 有 QQ 群和 Discord 服务器啦！详见[此处](#社区)
 
 <p align="center">
-  <img width="16%" align="center" src="img/Logo.png" alt="logo">
+  <img width="16%" align="center" src="../../img/Logo.png" alt="logo">
 </p>
   <h1 align="center">
   Class Widgets
@@ -33,7 +33,7 @@
 
 
 
-![Banner](img/Banner.png)
+![Banner](../../img/Banner.png)
 
 [![Q群](https://img.shields.io/badge/QQ%20群-169200380-blue.svg?logo=qq&color=blue&style=for-the-badge)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380)
 [![DC](https://img.shields.io/discord/1332636953719476284?style=for-the-badge&logo=discord&logoColor=ffffff&label=discord%20%E6%9C%8D%E5%8A%A1%E5%99%A8&labelColor=5865f2)](https://discord.gg/EFF4PpqpqZ)
@@ -59,9 +59,9 @@
 
 ## 软件截图
 #### 主界面(亮色)
-![scrshot_0](img/screenshot_0.png)
+![scrshot_0](../../img/screenshot_0.png)
 #### 主界面(暗色)
-![scrshot_0](img/screenshot_1.png)
+![scrshot_0](../../img/screenshot_1.png)
 
 ## 安装&使用
 > [!TIP]
