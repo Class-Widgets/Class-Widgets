@@ -1220,12 +1220,12 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="153"/>
         <source>在“插件广场”中检查更新</source>
-        <translation>Check for updates in the Plugins Plaza</translation>
+        <translation>Check for updates in the Plugin Plaza</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="160"/>
         <source>将跳转至“插件广场”以检查插件的更新状态</source>
-        <translation>Will redirect to the plugin square to check the update status of the plugin</translation>
+        <translation>This action will redirect you to the Plugin Square to check the update status of the plugins.</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="192"/>
