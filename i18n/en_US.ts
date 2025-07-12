@@ -1220,17 +1220,17 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="153"/>
         <source>在“插件广场”中检查更新</source>
-        <translation>Check for updates in the Plugin Plaza</translation>
+        <translation>Check for updates in Plugin Plaza</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="160"/>
         <source>将跳转至“插件广场”以检查插件的更新状态</source>
-        <translation>This action will redirect you to the Plugin Plaza to check the update status of the plugins</translation>
+        <translation>This action will redirect you to Plugin Plaza to check for the updates of the plugins</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="192"/>
         <source>在“插件广场”检查</source>
-        <translation>Check for updates at the Plugin Plaza</translation>
+        <translation>Check for updates at Plugin Plaza</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="239"/>
@@ -1265,12 +1265,12 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="506"/>
         <source>在“插件广场”中寻找</source>
-        <translation>Search plugins you need in the Plugin Plaza</translation>
+        <translation>Search plugins you need in Plugin Plaza</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="513"/>
         <source>将跳转至“插件广场”</source>
-        <translation>This action will redirect you to the Plugin Plaza</translation>
+        <translation>This action will redirect you to Plugin Plaza</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="545"/>
@@ -1604,8 +1604,8 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
         <location filename="../view/pp/settings.ui" line="111"/>
         <source>在下载插件后，将为您自动启用插件以便您重启可以立即使用。
 但请确信您在“插件广场”中需要的插件是安全的。</source>
-        <translation>After downloading the plugin, it will be automatically enabled for you so that you can restart it immediately.
-But make sure that the plugins you need in the plugin square are secure.</translation>
+        <translation>After downloading the plugins, they will be automatically enabled so that you can use them immediately after you restart Class Widgets.
+But make sure that the plugins you have downloaded in Plugin Plaza are secure please.</translation>
     </message>
     <message>
         <location filename="../view/pp/settings.ui" line="164"/>
@@ -1620,7 +1620,7 @@ But make sure that the plugins you need in the plugin square are secure.</transl
     <message>
         <location filename="../view/pp/settings.ui" line="204"/>
         <source>若需要在中国大陆正常使用“插件广场”，最好为其设置一个镜像源。</source>
-        <translation>To ensure proper use of the Plugin Marketplace in China Mainland, it is recommended to configure a mirror source.</translation>
+        <translation>To use Plugin Plaza in China Mainland properly, it is recommended to configure a mirror source of it.</translation>
     </message>
     <message>
         <location filename="../view/menu/file_item.ui" line="89"/>
