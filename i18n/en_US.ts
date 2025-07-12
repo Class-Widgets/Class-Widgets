@@ -1225,12 +1225,12 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="160"/>
         <source>将跳转至“插件广场”以检查插件的更新状态</source>
-        <translation>This action will redirect you to the Plugin Square to check the update status of the plugins</translation>
+        <translation>This action will redirect you to the Plugin Plaza to check the update status of the plugins</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="192"/>
         <source>在“插件广场”检查</source>
-        <translation>Checking for updates at the Plugin Plaza</translation>
+        <translation>Check for updates at the Plugin Plaza</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="239"/>
@@ -1265,17 +1265,17 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="506"/>
         <source>在“插件广场”中寻找</source>
-        <translation>Search in the plugin square</translation>
+        <translation>Search plugins you need in the Plugin Plaza</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="513"/>
         <source>将跳转至“插件广场”</source>
-        <translation>Will redirect to the plugin square</translation>
+        <translation>This action will redirect you to the Plugin Plaza</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="545"/>
         <source>打开“插件广场”</source>
-        <translation>Open the plugin square</translation>
+        <translation>Open Plugin Plaza</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="581"/>
