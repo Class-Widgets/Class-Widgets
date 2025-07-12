@@ -87,9 +87,9 @@ Copyright © 2025 RinLit.
 
 ### アセット
 
-- [SF Symbols](https://developer.apple.com/cn/sf-symbols/)（一部アイコンは改変）
-- [QWeatherアイコン](https://icons.qweather.com/)（一部アイコンは改変）
-- [HarmonyOS Sans](https://developer.huawei.com/consumer/cn/design/resource/)
+- [SF Symbols](https://developer.apple.com/jp/sf-symbols/)（一部アイコンは改変）
+- [QWeatherアイコン](https://icons.qweather.com/en/)（一部アイコンは改変）
+- [HarmonyOS Sans](https://developer.huawei.com/consumer/en/design/resource/)
 
 ### 貢献
 
