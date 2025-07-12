@@ -5,10 +5,10 @@
 >
 > [![](https://github.com/pizeroLOL.png?size=80)](https://github.com/pizeroLOL) [![](https://github.com/IsHPDuwu.png?size=80)](https://github.com/IsHPDuwu) [![](https://github.com/baiyao105.png?size=80)](https://github.com/baiyao105) [![](https://github.com/Artist-MOBAI.png?size=80)](https://github.com/Artist-MOBAI)
 >
-> コミュニティ開発者のサポートが必要な場合は、プロジェクトのQQグループに参加するか、GitHubでIssueを作成してください。
+> コミュニティ開発者のサポートが必要な場合は、プロジェクトの QQ グループに参加するか、 GitHub で Issue を作成してください。
 
 > [!NOTE]
-> Class WidgetsはQQグループとDiscordサーバーを開設しました！詳細は[こちら](#community)をご覧ください。
+> Class Widgets は QQ グループと Discord サーバーを開設しました！詳細は[こちら](#community)をご覧ください。
 
 <p align="center">
   <img width="16%" align="center" src="../../img/Logo.png" alt="logo">
@@ -42,7 +42,7 @@
 ---
 
 ## 特徴
-- Pythonで書かれた**プラグインシステム**と**プラグインプラザ**（最新ビルドにて）
+- Python で書かれた**プラグインシステム**と**プラグインプラザ**（最新ビルドにて）
 - 今日の授業を**ウィジェット**として表示
 - [授業リマインダー](https://www.yuque.com/rinlit/class-widgets_help/fv2ou1i1ngap0hrl)や予鈴、TTS音声出力対応
 - **高いカスタマイズ性**のテーマシステム
@@ -63,16 +63,16 @@
 
 ## インストールと使い方
 > [!TIP]
-> [Class Widgets公式ドキュメント](https://www.yuque.com/rinlit/class-widgets_help/gs3gsbms1iivgibm)でチュートリアルをご覧いただけます。
+> [Class Widgets 公式ドキュメント](https://www.yuque.com/rinlit/class-widgets_help/gs3gsbms1iivgibm)でチュートリアルをご覧いただけます。
 
 > [!IMPORTANT]
-> このページで紹介されている機能を体験するには、[Actions](https://github.com/Class-Widgets/Class-Widgets/actions)ページからClass Widgetsをダウンロードしてください。
+> このページで紹介されている機能を体験するには、 [Actions](https://github.com/Class-Widgets/Class-Widgets/actions) ページから Class Widgets をダウンロードしてください。
 
-最新版のzipファイルを ![Latest Version](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?style=flat&color=purple&label=Latest) からダウンロードし、適切な場所に解凍後、`ClassWidgets.exe` を実行してください。
+最新版の zip ファイルを ![Latest Version](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?style=flat&color=purple&label=Latest) からダウンロードし、適切な場所に解凍後、`ClassWidgets.exe` を実行してください。
 設定やプログラムの終了はトレイメニューから行うことができます。
 
 ## ライセンス
-このプロジェクト（Class Widgets）はGPL-3.0ライセンスで公開されています。詳細は[LICENSE](./LICENSE)ファイルをご覧ください。
+このプロジェクト（Class Widgets）は GPL-3.0 ライセンスで公開されています。詳細は [LICENSE](./LICENSE) ファイルをご覧ください。
 
 Copyright © 2025 RinLit.
 
@@ -93,12 +93,12 @@ Copyright © 2025 RinLit.
 
 ### 貢献
 
-Class Widgetsに貢献してくださった皆様に感謝します。
+Class Widgets に貢献してくださった皆様に感謝します。
 
 [![Contributors](http://contrib.nn.ci/api?repo=Class-Widgets/Class-Widgets&repo=Class-Widgets/plugin-plaza&repo=Class-Widgets/cw-interim-site)](https://github.com/Class-Widgets/Class-Widgets/graphs/contributors)
 ![Repobeats](https://repobeats.axiom.co/api/embed/9d06f1435d1b14cb7837d1e863e55f24cc98df23.svg "Repobeats analytics image")
 
-Class Widgetsへの貢献を希望される方は、[Contributing Guide](CONTRIBUTING.md)をご一読ください。
+Class Widgets への貢献を希望される方は、 [Contributing Guide](CONTRIBUTING.md) をご一読ください。
 
 ### スポンサー
 
@@ -108,7 +108,7 @@ Class Widgetsへの貢献を希望される方は、[Contributing Guide](CONTRIB
 
 以下のスポンサーにも感謝いたします。
 
-[Weblate](https://hosted.weblate.org/engage/class-widgets-1/)による無料翻訳プラットフォーム提供
+[Weblate](https://hosted.weblate.org/engage/class-widgets-1/) による無料翻訳プラットフォーム提供
 
 [![Translation Status](https://hosted.weblate.org/widget/class-widgets-1/view/open-graph.png)](https://hosted.weblate.org/engage/class-widgets-1/)
 
@@ -122,7 +122,7 @@ Class Widgetsへの貢献を希望される方は、[Contributing Guide](CONTRIB
       <img alt="SignPath" src="https://signpath.org/assets/favicon-50x50.png" />
     </td>
     <td>
-    <a href="https://signpath.io">SignPath.io</a>によるWindows上での無料コード署名、証明書は<a href="https://signpath.org/">SignPath Foundation</a>より提供
+    <a href="https://signpath.io">SignPath.io</a>による Windows 上での無料コード署名、証明書は<a href="https://signpath.org/">SignPath Foundation</a>より提供
     </td>
   </tr>
 </table>
