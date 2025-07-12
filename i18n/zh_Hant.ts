@@ -1048,7 +1048,7 @@
     <message>
         <location filename="../view/menu/custom.ui" line="944"/>
         <source>*在 高德天气/腾讯天气 和 小米天气/和风天气 间切换后，需要重新选择城市</source>
-        <translation>*於高德天氣/騰訊天氣與小米天氣/和風天氣之間切換後，需重新選擇城市。</translation>
+        <translation>*於高德天氣/騰訊天氣與小米天氣/和風天氣之間切換後，需重新選擇城市</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="994"/>
@@ -1963,9 +1963,7 @@ https://classwidgets.rinlit.cn/docs-user/</translation>
         <source>Edge TTS 需要联网才能正常发声哦~
 请确保网络连接,不然会说不出话来(&gt;﹏&lt;)
 * 可能会有一定的延迟,耐心等待一下~</source>
-        <translation>SettingsMenu
-Edge TTS需要連結互聯網才能發出聲音喔～
-Edge TTS 需要連接互聯網才能正常發聲喔～
+        <translation>Edge TTS 需要連接互聯網才能正常發聲喔～
 請確保網絡已連接，否則將無法發聲 (&gt;﹏&lt;)
 ＊可能會有少許延遲，請耐心等候一下～</translation>
     </message>
@@ -2000,8 +1998,7 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
         <location filename="../menu.py" line="1772"/>
         <source>加载TTS语音时发生错误:
 {error_message}</source>
-        <translation>SettingsMenu
-載入 TTS 語音時發生錯誤：
+        <translation>載入 TTS 語音時發生錯誤：
 {error_message}</translation>
     </message>
     <message>
@@ -2831,8 +2828,7 @@ Json 設定檔 (*.json)</translation>
         <location filename="../menu.py" line="3878"/>
         <source>version</source>
         <comment>新版本速递：{new_version}</comment>
-        <translation>SettingsMenu
-新版本：{new_version}</translation>
+        <translation>新版本：{new_version}</translation>
     </message>
     <message>
         <source>menu</source>
@@ -3398,8 +3394,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../menu.py" line="1441"/>
         <source>启动TTS预览时出错: {e}</source>
-        <translation>TTSSettings
-啟動 TTS 預覽時出錯: {e}</translation>
+        <translation>啟動 TTS 預覽時出錯: {e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1449"/>
@@ -3409,8 +3404,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../menu.py" line="1450"/>
         <source>生成或播放语音时出错: {error_message}</source>
-        <translation>TTSSettings
-產生或播放語音時出錯: {error_message}</translation>
+        <translation>產生或播放語音時出錯: {error_message}</translation>
     </message>
 </context>
 <context>
@@ -4522,7 +4516,8 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <location filename="../menu.py" line="314"/>
         <source>Class Widgets 在您的系统下不支持自动打开文件夹，请手动打开以下地址：
 {path}</source>
-        <translation>Class Widgets 未能在你的系統中自動開啟資料夾，請手動開啟以下位置：{path}</translation>
+        <translation>Class Widgets 未能在你的系統中自動開啟資料夾，請手動開啟以下位置：
+{path}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="316"/>
@@ -4630,7 +4625,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../menu.py" line="665"/>
         <source>插件 “{title}” 已卸载。请重启 Class Widgets 以完全移除。</source>
-        <translation>插件“{title}”已卸載。請重啟 Class Widgets 以完成移除程式</translation>
+        <translation>插件“{title}”已卸載。請重啟 Class Widgets 以完成移除程式。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="675"/>
@@ -4640,7 +4635,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../menu.py" line="676"/>
         <source>卸载插件 “{title}” 时出错，请查看日志获取详细信息。</source>
-        <translation>卸載插件“{title}”時出錯，請查閱紀錄以獲取詳細資料</translation>
+        <translation>卸載插件“{title}”時出錯，請查閱紀錄以獲取詳細資料。</translation>
     </message>
 </context>
 <context>
