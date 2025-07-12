@@ -1,4 +1,4 @@
-[Simplified Chinese](/README.md) | English (Current) | [日本語](/docs/readme/README.ja.md)
+[简体中文](/README.md) | English (Current) | [日本語](/docs/readme/README.ja.md)
 
 > [!Warning]
 > Class Widgets *1* is currently developed entirely by community contributors.
