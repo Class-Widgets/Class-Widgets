@@ -9,19 +9,19 @@
         <location filename="../dark/toast-open_dialog.ui" line="20"/>
         <location filename="../dark/widget-floating.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../toast-open_dialog.ui" line="105"/>
         <location filename="../dark/toast-open_dialog.ui" line="105"/>
         <source>%p</source>
-        <translation type="unfinished"></translation>
+        <translation>%p</translation>
     </message>
     <message>
         <location filename="../toast-open_dialog.ui" line="142"/>
         <location filename="../dark/toast-open_dialog.ui" line="142"/>
         <source>即将打开</source>
-        <translation type="unfinished"></translation>
+        <translation>即将打开</translation>
     </message>
     <message>
         <location filename="../toast-open_dialog.ui" line="171"/>
@@ -29,31 +29,31 @@
         <location filename="../dark/toast-open_dialog.ui" line="171"/>
         <location filename="../dark/widget-floating.ui" line="153"/>
         <source>测试</source>
-        <translation type="unfinished"></translation>
+        <translation>测试</translation>
     </message>
     <message>
         <location filename="../toast-open_dialog.ui" line="210"/>
         <location filename="../dark/toast-open_dialog.ui" line="210"/>
         <source>取消</source>
-        <translation type="unfinished"></translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../widget-base.ui" line="26"/>
         <location filename="../dark/widget-base.ui" line="26"/>
         <source>基本组件</source>
-        <translation type="unfinished"></translation>
+        <translation>基本组件</translation>
     </message>
     <message>
         <location filename="../widget-base.ui" line="90"/>
         <location filename="../dark/widget-base.ui" line="90"/>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>标题</translation>
     </message>
     <message>
         <location filename="../widget-base.ui" line="127"/>
         <location filename="../dark/widget-base.ui" line="127"/>
         <source>Content</source>
-        <translation type="unfinished"></translation>
+        <translation>内容</translation>
     </message>
     <message>
         <location filename="../widget-countdown-day.ui" line="26"/>
