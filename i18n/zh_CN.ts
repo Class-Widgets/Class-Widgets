@@ -1258,299 +1258,301 @@
     <message>
         <location filename="../view/menu/schedule_edit.ui" line="271"/>
         <source>下一天</source>
-        <translation type="unfinished"></translation>
+        <translation>下一天</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="41"/>
         <source>上下课提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>上下课提醒</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="103"/>
         <source>启用上课提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>启用上课提醒</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="110"/>
         <source>启用后将在上课时弹窗且发出提示音提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>启用后将在上课时弹窗且发出提示音提醒</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="181"/>
         <source>启用下课提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>启用下课提醒</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="188"/>
         <source>启用后将在下课时弹窗且发出提示音提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>启用后将在下课时弹窗且发出提示音提醒</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="259"/>
         <source>启用放学提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>启用放学提醒</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="266"/>
         <source>启用后将在放学时弹窗且发出提示音提醒</source>
-        <translation type="unfinished"></translation>
+        <translation>启用后将在放学时弹窗且发出提示音提醒</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="337"/>
         <source>启用预备铃</source>
-        <translation type="unfinished"></translation>
+        <translation>启用预备铃</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="344"/>
         <source>在正式上课前发出预备铃（输入提前的分钟数）</source>
-        <translation type="unfinished"></translation>
+        <translation>在正式上课前发出预备铃（输入提前的分钟数）</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="428"/>
         <source>TTS语音播报</source>
-        <translation type="unfinished"></translation>
+        <translation>TTS语音播报</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="435"/>
         <source>调整关于TTS语音合成相关选项</source>
-        <translation type="unfinished"></translation>
+        <translation>调整关于TTS语音合成相关选项</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="458"/>
         <source>TTS语音设置</source>
-        <translation type="unfinished"></translation>
+        <translation>TTS语音设置</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="494"/>
         <source>音量</source>
-        <translation type="unfinished"></translation>
+        <translation>音量</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="501"/>
         <source>将调整提醒声音的音量大小</source>
-        <translation type="unfinished"></translation>
+        <translation>将调整提醒声音的音量大小</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="578"/>
         <source>是否置顶</source>
-        <translation type="unfinished"></translation>
+        <translation>是否置顶</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="585"/>
         <source>启用后将在提醒时置顶弹窗</source>
-        <translation type="unfinished"></translation>
+        <translation>启用后将在提醒时置顶弹窗</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="653"/>
         <source>启用强调特效</source>
-        <translation type="unfinished"></translation>
+        <translation>启用强调特效</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="660"/>
         <source>启用后弹出提醒弹窗同时会有水波强调及模糊淡入淡出效果
 *可能影响性能</source>
-        <translation type="unfinished"></translation>
+        <translation>启用后弹出提醒弹窗同时会有水波强调及模糊淡入淡出效果
+*可能影响性能</translation>
     </message>
     <message>
         <location filename="../view/menu/subject.ui" line="35"/>
         <source>学科编辑</source>
-        <translation type="unfinished"></translation>
+        <translation>学科编辑</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="35"/>
         <source>时间线编辑</source>
-        <translation type="unfinished"></translation>
+        <translation>时间线编辑</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="55"/>
         <source>节点</source>
-        <translation type="unfinished"></translation>
+        <translation>节点</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="99"/>
         <source>还未添加任何节点</source>
-        <translation type="unfinished"></translation>
+        <translation>还未添加任何节点</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="162"/>
         <source>节点名称</source>
-        <translation type="unfinished"></translation>
+        <translation>节点名称</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="188"/>
         <source>类型</source>
-        <translation type="unfinished"></translation>
+        <translation>类型</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="218"/>
         <source>开始时间</source>
-        <translation type="unfinished"></translation>
+        <translation>开始时间</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="240"/>
         <source>h:mm</source>
-        <translation type="unfinished"></translation>
+        <translation>h:mm</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="274"/>
         <source>时间线</source>
-        <translation type="unfinished"></translation>
+        <translation>时间线</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="330"/>
         <source>还未添加任何时间线</source>
-        <translation type="unfinished"></translation>
+        <translation>还未添加任何时间线</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="393"/>
         <source>活动类型</source>
-        <translation type="unfinished"></translation>
+        <translation>活动类型</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="419"/>
         <source>时段</source>
-        <translation type="unfinished"></translation>
+        <translation>时段</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="449"/>
         <source>时长（分钟）</source>
-        <translation type="unfinished"></translation>
+        <translation>时长（分钟）</translation>
     </message>
     <message>
         <location filename="../view/pp/home.ui" line="76"/>
         <source>今天</source>
-        <translation type="unfinished"></translation>
+        <translation>今天</translation>
     </message>
     <message>
         <location filename="../view/pp/home.ui" line="91"/>
         <source>11月45日 周日</source>
-        <translation type="unfinished"></translation>
+        <translation>11月45日 周日</translation>
     </message>
     <message>
         <location filename="../view/pp/home.ui" line="172"/>
         <source>推荐插件</source>
-        <translation type="unfinished"></translation>
+        <translation>推荐插件</translation>
     </message>
     <message>
         <location filename="../view/pp/home.ui" line="211"/>
         <source>这就到底了吗……(っ °Д °;)っ</source>
-        <translation type="unfinished"></translation>
+        <translation>这就到底了吗……(っ °Д °;)っ</translation>
     </message>
     <message>
         <location filename="../view/pp/latests.ui" line="70"/>
         <source>分类</source>
-        <translation type="unfinished"></translation>
+        <translation>分类</translation>
     </message>
     <message>
         <location filename="../view/pp/latests.ui" line="79"/>
         <source>所有插件</source>
-        <translation type="unfinished"></translation>
+        <translation>所有插件</translation>
     </message>
     <message>
         <location filename="../view/pp/latests.ui" line="89"/>
         <source>Coming Soon~</source>
-        <translation type="unfinished"></translation>
+        <translation>Coming Soon~</translation>
     </message>
     <message>
         <location filename="../view/pp/plugin_detail.ui" line="137"/>
         <source>PluginName</source>
-        <translation type="unfinished"></translation>
+        <translation>PluginName</translation>
     </message>
     <message>
         <location filename="../view/pp/plugin_detail.ui" line="147"/>
         <source>1.1.0</source>
-        <translation type="unfinished"></translation>
+        <translation>1.1.0</translation>
     </message>
     <message>
         <location filename="../view/pp/plugin_detail.ui" line="181"/>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation>Author</translation>
     </message>
     <message>
         <location filename="../view/pp/plugin_detail.ui" line="188"/>
         <source>|</source>
-        <translation type="unfinished"></translation>
+        <translation>|</translation>
     </message>
     <message>
         <location filename="../view/pp/plugin_detail.ui" line="215"/>
         <source>Tag</source>
-        <translation type="unfinished"></translation>
+        <translation>Tag</translation>
     </message>
     <message>
         <location filename="../view/pp/plugin_detail.ui" line="289"/>
         <source>Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description </source>
-        <translation type="unfinished"></translation>
+        <translation>Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description Plugin Description </translation>
     </message>
     <message>
         <location filename="../view/pp/plugin_detail.ui" line="301"/>
         <source>Install</source>
-        <translation type="unfinished"></translation>
+        <translation>Install</translation>
     </message>
     <message>
         <location filename="../view/pp/search.ui" line="74"/>
         <source>搜索你希望查找的插件、Tag等</source>
-        <translation type="unfinished"></translation>
+        <translation>搜索你希望查找的插件、Tag等</translation>
     </message>
     <message>
         <location filename="../view/pp/search.ui" line="86"/>
         <source>探索更多</source>
-        <translation type="unfinished"></translation>
+        <translation>探索更多</translation>
     </message>
     <message>
         <location filename="../view/pp/settings.ui" line="41"/>
         <source>设置</source>
-        <translation type="unfinished"></translation>
+        <translation>设置</translation>
     </message>
     <message>
         <location filename="../view/pp/settings.ui" line="104"/>
         <source>下载后自动启用插件</source>
-        <translation type="unfinished"></translation>
+        <translation>下载后自动启用插件</translation>
     </message>
     <message>
         <location filename="../view/pp/settings.ui" line="111"/>
         <source>在下载插件后，将为您自动启用插件以便您重启可以立即使用。
 但请确信您在“插件广场”中需要的插件是安全的。</source>
-        <translation type="unfinished"></translation>
+        <translation>在下载插件后，将为您自动启用插件以便您重启可以立即使用。
+但请确信您在“插件广场”中需要的插件是安全的。</translation>
     </message>
     <message>
         <location filename="../view/pp/settings.ui" line="164"/>
         <source>网络</source>
-        <translation type="unfinished"></translation>
+        <translation>网络</translation>
     </message>
     <message>
         <location filename="../view/pp/settings.ui" line="197"/>
         <source>选择镜像源</source>
-        <translation type="unfinished"></translation>
+        <translation>选择镜像源</translation>
     </message>
     <message>
         <location filename="../view/pp/settings.ui" line="204"/>
         <source>若需要在中国大陆正常使用“插件广场”，最好为其设置一个镜像源。</source>
-        <translation type="unfinished"></translation>
+        <translation>若需要在中国大陆正常使用“插件广场”，最好为其设置一个镜像源。</translation>
     </message>
     <message>
         <location filename="../view/menu/file_item.ui" line="89"/>
         <source>File name</source>
-        <translation type="unfinished"></translation>
+        <translation>File name</translation>
     </message>
     <message>
         <location filename="../view/menu/file_item.ui" line="99"/>
         <source>file url file url file url file url file url file url </source>
-        <translation type="unfinished"></translation>
+        <translation>file url file url file url file url file url file url </translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_db_edit.ui" line="35"/>
         <source>课表数据库编辑</source>
-        <translation type="unfinished"></translation>
+        <translation>课表数据库编辑</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_db_edit.ui" line="76"/>
         <source>数据库简称</source>
-        <translation type="unfinished"></translation>
+        <translation>数据库简称</translation>
     </message>
     <message>
         <location filename="../view/menu/schedule_db_edit.ui" line="102"/>
         <source>数据库地址</source>
-        <translation type="unfinished"></translation>
+        <translation>数据库地址</translation>
     </message>
 </context>
 <context>
@@ -1559,13 +1561,13 @@
         <location filename="../menu.py" line="2474"/>
         <location filename="../menu.py" line="3128"/>
         <source>设置成功 ✨</source>
-        <translation type="unfinished"></translation>
+        <translation>设置成功 ✨</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2477"/>
         <location filename="../menu.py" line="3131"/>
         <source>格式警告</source>
-        <translation type="unfinished"></translation>
+        <translation>格式警告</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2480"/>
@@ -1575,13 +1577,13 @@
         <location filename="../menu.py" line="3342"/>
         <location filename="../menu.py" line="3344"/>
         <source>NTP设置</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP设置</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2501"/>
         <location filename="../menu.py" line="3155"/>
         <source>推荐的NTP服务器:</source>
-        <translation type="unfinished"></translation>
+        <translation>推荐的NTP服务器:</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2503"/>
