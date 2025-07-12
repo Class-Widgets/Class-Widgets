@@ -1,7 +1,7 @@
 
 
 <p align="center">
-  简体中文（当前） | [English](README.en_US.md) | ［日本語］(docs/readme/README.ja.md)
+  简体中文（当前） | [English](README.en_US.md) | [日本語](README.ja.md)
 </p><br><br>
 
 > [!Warning]
