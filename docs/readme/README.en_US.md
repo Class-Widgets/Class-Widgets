@@ -66,7 +66,7 @@ and so on.
 > Tutorials available at [Class Widgets Official Documentation](https://www.yuque.com/rinlit/class-widgets_help/gs3gsbms1iivgibm).
 
 > [!IMPORTANT]
-> To experience the features on this page, please download Class Widgets from the Actions page.
+> To experience the features on this page, please download Class Widgets from the [Actions](https://github.com/Class-Widgets/Class-Widgets/actions) page.
 
 Download the latest zip from the ![Latest Version](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?style=flat&color=purple&label=Latest), extract it to a suitable location, and open `ClassWidgets.exe`.
 You can access settings or exit the program via the tray menu.
