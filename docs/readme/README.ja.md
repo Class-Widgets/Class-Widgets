@@ -66,7 +66,7 @@
 > [Class Widgets 公式ドキュメント](https://www.yuque.com/rinlit/class-widgets_help/gs3gsbms1iivgibm)でチュートリアルをご覧いただけます。
 
 > [!IMPORTANT]
-> このページで紹介されている機能を体験するには、 [Actions](https://github.com/Class-Widgets/Class-Widgets/actions) ページから Class Widgets をダウンロードしてください。
+> このページで紹介されている機能を体験するには、 [**Actions**](https://github.com/Class-Widgets/Class-Widgets/actions) ページから Class Widgets をダウンロードしてください。
 
 最新版の zip ファイルを ![Latest Version](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?style=flat&color=purple&label=Latest) からダウンロードし、適切な場所に解凍後、`ClassWidgets.exe` を実行してください。
 設定やプログラムの終了はトレイメニューから行うことができます。
