@@ -1,5 +1,5 @@
 
-简体中文（当前） | [English](docs/readme/README.en_US.md) | [日本語](docs/readme/README.ja.md)
+简体中文（当前选择） | [English](docs/readme/README.en_US.md) | [日本語](docs/readme/README.ja.md)
 
 > [!Warning]
 > Class Widgets *1* 目前完全由社区开发者进行开发
@@ -12,7 +12,7 @@
 > Class Widgets 有 QQ 群和 Discord 服务器啦！详见[此处](#社区)
 
 <p align="center">
-  <img width="16%" align="center" src="../../img/Logo.png" alt="logo">
+  <img width="16%" align="center" src="img/Logo.png" alt="logo">
 </p>
   <h1 align="center">
   Class Widgets
@@ -49,7 +49,7 @@
 ## 特性
 - 由 Python 编写的**插件**系统和插件广场（详见最新构建）
 - 将今日的课程安排以**小组件**的样式为你呈现；
-- 具有 [上下课提醒](https://www.yuque.com/rinlit/class-widgets_help/fv2ou1i1ngap0hrl) 和预备铃；
+- 具有 [上下课提醒](https://www.yuque.com/rinlit/class-widgets_help/fv2ou1i1ngap0hrl) 和预备铃，支持通过TTS进行提醒；
 - 拥有主题系统支持你高度自定义。
 - 简洁直观的 [课程表编辑](https://www.yuque.com/rinlit/class-widgets_help/oozelh8r56tmw0xb) 界面；
 - 同时存储多个课程表文件，并能在各个 Class Widgets 导入和导出；
@@ -57,21 +57,21 @@
 - 提供快捷的调休、换课 [应对方案](https://www.yuque.com/rinlit/class-widgets_help/gc4epffu7g5bf9os)。
 - 提供“天气”、“自定义倒计时”等实用小组件；
 - 通过 [“自定义”](https://www.yuque.com/rinlit/class-widgets_help/qyly70ht1ogge1pi) 个性化你的 Class Widgets；
-- 具有亮/暗色主题；
+- 具有亮/暗色主题，还能根据系统设置自动切换；
 - ……
 
 ## 软件截图
 #### 主界面(亮色)
-![scrshot_0](../../img/screenshot_0.png)
+![scrshot_0](img/screenshot_0.png)
 #### 主界面(暗色)
-![scrshot_0](../../img/screenshot_1.png)
+![scrshot_0](img/screenshot_1.png)
 
 ## 安装&使用
 > [!TIP]
 > 可在 [Class Widgets 官方文档](https://www.yuque.com/rinlit/class-widgets_help/gs3gsbms1iivgibm) 查看教程。
 
 > [!IMPORTANT]
-> 若要体验此页面的特性，请前往[此处](https://github.com/Class-Widgets/Class-Widgets/releases/tag/v1.1.7-b3)预发行版的页面下载。
+> 若要体验此页面的特性，请前往 Actions 页面下载最新构建。
 
 下载 ![当前版本](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?style=flat&color=purple&label=当前版本) 中最新版的压缩文件，解压到合适位置后，打开 `ClassWidgets.exe` 即可。
 可通过托盘菜单进入设置、或退出此程序。
@@ -161,4 +161,4 @@ Copyright © 2025 RinLit.
 这仅是我作为新人的练习作品，欢迎提供更多意见！
 
 ##
-翻译者：不对这是原文没有翻译者
+最后一次编辑和翻译者：[某中学生叫姐姐Jerry](https://github.com/JerryZeng20142)
