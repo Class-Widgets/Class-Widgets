@@ -1,4 +1,8 @@
-- 简体中文（当前） | [English](docs/readme/README.en_US.md) | ［日本語］(docs/readme/README.ja.md)
+
+
+<p align="center">
+  简体中文（当前） | [English](/docs/readme/README.en_US.md) | ［日本語］(docs/readme/README.ja.md)
+</p><br><br>
 
 > [!Warning]
 > Class Widgets *1* 目前完全由社区开发者进行开发
