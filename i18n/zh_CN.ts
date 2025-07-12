@@ -296,79 +296,79 @@
     <message>
         <location filename="../view/menu/about.ui" line="232"/>
         <source>版本号:获取失败！</source>
-        <translation>版本号：获取失败！</translation>
+        <translation>无法获取版本号！</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="259"/>
         <source>编译日期</source>
-        <translation type="unfinished"></translation>
+        <translation>编译日期</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="266"/>
         <location filename="../view/menu/about.ui" line="303"/>
         <location filename="../view/menu/about.ui" line="340"/>
         <source>获取失败！</source>
-        <translation type="unfinished"></translation>
+        <translation>获取失败！</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="296"/>
         <source>Build Commit</source>
-        <translation type="unfinished"></translation>
+        <translation>Build Commit</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="333"/>
         <source>Build UUID</source>
-        <translation type="unfinished"></translation>
+        <translation>Build UUID</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="359"/>
         <source>检查更新</source>
-        <translation type="unfinished"></translation>
+        <translation>检查更新</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="397"/>
         <source>此项目的 Github</source>
-        <translation type="unfinished"></translation>
+        <translation>此项目的 Github</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="425"/>
         <source>我的 哔哩哔哩 主页</source>
-        <translation type="unfinished"></translation>
+        <translation>我的 哔哩哔哩 主页</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="460"/>
         <source>查看开放源代码许可</source>
-        <translation type="unfinished"></translation>
+        <translation>查看开放源代码许可</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="498"/>
         <source>鸣谢</source>
-        <translation type="unfinished"></translation>
+        <translation>致谢</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="522"/>
         <source>更新</source>
-        <translation type="unfinished"></translation>
+        <translation>更新</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="557"/>
         <source>选择更新通道</source>
-        <translation type="unfinished"></translation>
+        <translation>选择更新通道</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="564"/>
         <source>将会获取选定更新通道的版本</source>
-        <translation type="unfinished"></translation>
+        <translation>将会获取选定更新通道的版本</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="635"/>
         <source>启动 Class Widgets 时自动检查更新</source>
-        <translation type="unfinished"></translation>
+        <translation>启动 Class Widgets 时自动检查更新</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="642"/>
         <source>若启用，Class Widgets 将在启动时联网检查选定的更新通道中是否有最新版本更新。</source>
-        <translation type="unfinished"></translation>
+        <translation>若启用，Class Widgets 将在启动时联网检查选定的更新通道中是否有最新版本更新。</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="668"/>
@@ -387,7 +387,7 @@
         <location filename="../view/menu/sound.ui" line="687"/>
         <location filename="../view/pp/settings.ui" line="144"/>
         <source>启用</source>
-        <translation type="unfinished"></translation>
+        <translation>启用</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="671"/>
@@ -404,84 +404,84 @@
         <location filename="../view/menu/sound.ui" line="690"/>
         <location filename="../view/pp/settings.ui" line="147"/>
         <source>禁用</source>
-        <translation type="unfinished"></translation>
+        <translation>禁用</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="700"/>
         <source>Copyright © 2025 RinLit, All Rights Reversed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Copyright © 2025 RinLit, All Rights Reversed.</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="41"/>
         <source>高级选项</source>
-        <translation type="unfinished"></translation>
+        <translation>高级选项</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="71"/>
         <source>课程</source>
-        <translation type="unfinished"></translation>
+        <translation>课程</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="271"/>
         <source>时差偏移</source>
-        <translation type="unfinished"></translation>
+        <translation>时差偏移</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="278"/>
         <source>修正系统时间与学校铃声的时差，学校铃声慢于系统时间为正值，反之为负</source>
-        <translation type="unfinished"></translation>
+        <translation>修正系统时间与学校铃声的时差，学校铃声慢于系统时间为正值，反之为负</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="110"/>
         <source>启用 单/双 周课表</source>
-        <translation type="unfinished"></translation>
+        <translation>启用 单/双 周课表</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="117"/>
         <source>若要启用此选项，需设定开学日期以计算</source>
-        <translation type="unfinished"></translation>
+        <translation>若要启用此选项，需设定开学日期以计算</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="146"/>
         <location filename="../view/menu/advance.ui" line="688"/>
         <source>关闭</source>
-        <translation type="unfinished"></translation>
+        <translation>关闭</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="188"/>
         <location filename="../view/menu/advance.ui" line="221"/>
         <source>选取开学日期</source>
-        <translation type="unfinished"></translation>
+        <translation>选取开学日期</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="195"/>
         <source>将用于计算单/双周，开学日期需设置为开学第一周第一天（即周一）</source>
-        <translation type="unfinished"></translation>
+        <translation>将用于计算单/双周，开学日期需设置为开学第一周第一天（即周一）</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="238"/>
         <source>时间</source>
-        <translation type="unfinished"></translation>
+        <translation>时间</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="349"/>
         <source>时间获得方法</source>
-        <translation type="unfinished"></translation>
+        <translation>时间获得方法</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="356"/>
         <source>选择时间获得方法</source>
-        <translation type="unfinished"></translation>
+        <translation>选择时间获得方法</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="457"/>
         <source>NTP服务器</source>
-        <translation type="unfinished"></translation>
+        <translation>NTP 服务器</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="464"/>
         <source>使用url链接NTP服务器同步时间</source>
-        <translation type="unfinished"></translation>
+        <translation>使用 url 链接 NTP 服务器同步时间</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="544"/>
