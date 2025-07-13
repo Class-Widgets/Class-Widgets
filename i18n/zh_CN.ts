@@ -223,7 +223,7 @@
     <message>
         <location filename="../view/extra_menu.ui" line="128"/>
         <source>换课</source>
-        <translation type="unfinished"></translation>
+        <translation>换课</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="135"/>
