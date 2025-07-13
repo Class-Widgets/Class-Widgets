@@ -147,6 +147,3 @@ Class Widgets への貢献を希望される方は、 [Contributing Guide](CONTR
 ##
 
 これは私の新人としての練習作品です。ご意見・ご感想をお待ちしています！
-
-##
-最終編集者・翻訳者：GitHub Copilot (GPT-4.1)
