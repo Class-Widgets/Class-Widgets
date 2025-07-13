@@ -148,6 +148,3 @@ We currently have [Discussions](https://github.com/orgs/Class-Widgets/discussion
 ##
 
 This is just my practice project as a newcomer—feedback is welcome!
-
-##
-Last editor and translator: [某中学生叫姐姐Jerry (sisJer)](https://github.com/JerryZeng20142)
