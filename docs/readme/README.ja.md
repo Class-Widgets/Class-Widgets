@@ -1,4 +1,4 @@
-[简体中文](/README.md) | [English](/docs/readme/README.en_US.md) | 日本語（現在）
+[简体中文](/../../README.md) | [English](/docs/readme/README.en_US.md) | 日本語（現在）
 
 > [!Warning]
 > Class Widgets *1* は現在、完全にコミュニティ開発者によって開発されています。
