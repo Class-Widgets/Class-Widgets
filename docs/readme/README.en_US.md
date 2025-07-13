@@ -147,4 +147,4 @@ We currently have [Discussions](https://github.com/orgs/Class-Widgets/discussion
 
 ##
 
-This is just my practice project as a newcomer—feedback is welcome!
+This is just my practice project as a newcomer developers, so feedback is deservedly welcome!
