@@ -159,6 +159,3 @@ Copyright © 2025 RinLit.
 
 ##
 这仅是我作为新人的练习作品，欢迎提供更多意见！
-
-##
-最后一次编辑者：[某中学生叫姐姐Jerry](https://github.com/JerryZeng20142)
