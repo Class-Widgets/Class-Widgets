@@ -144,8 +144,7 @@ Copyright © 2025 RinLit.
 - Approvers: [Owners](https://github.com/orgs/Class-Widgets/people?query=role%3Aowner)  
 审批者：[所有者](https://github.com/orgs/Class-Widgets/people?query=role%3Aowner)
 
-- This program will not transfer any information to other networked systems unless specifically requested by the user or the person installing or operating it.  
-除非用户或安装或操作它的人特别要求，否则本程序不会将任何信息传输到其他网络系统。
+-除非用户或安装或操作它的人特别要求，否则本程序不会将任何信息传输到其他网络系统。
 
 ## 社区
 我们目前开通了 [Discussions](https://github.com/orgs/Class-Widgets/discussions)、[QQ群](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380) 和 [Discord 服务器](https://discord.gg/EFF4PpqpqZ)。
