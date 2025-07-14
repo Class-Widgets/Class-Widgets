@@ -103,7 +103,7 @@ Class Widgets への貢献を希望される方は、 [Contributing Guide](CONTR
 ### スポンサー
 
 本プロジェクトをサポートしてくださった方々に感謝します：
-- [Lynx](http://dq6666.cn/)
+- [猞猁](http://dq6666.cn/)
 - [JerryQAQ](http://hub.rinlit.cn/)
 
 以下のスポンサーにも感謝いたします。
