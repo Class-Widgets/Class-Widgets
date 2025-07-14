@@ -103,7 +103,7 @@ If you want to contribute to Class Widgets, please read the [Contributing Guide]
 ### Sponsors
 
 Thanks to the following for supporting this project:
-- [Lynx](http://dq6666.cn/)
+- [猞猁](http://dq6666.cn/)
 - [JerryQAQ](http://hub.rinlit.cn/)
 
 Thanks to the following sponsors for supporting this project.
