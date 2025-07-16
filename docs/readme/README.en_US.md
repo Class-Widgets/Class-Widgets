@@ -49,8 +49,8 @@
 - Simple and intuitive [class schedule editor](https://www.yuque.com/rinlit/class-widgets_help/oozelh8r56tmw0xb);
 - Store multiple schedule files and import or export across Class Widgets on different devices;
 - Supports [**Course Schedule Exchange Schema** (CSES)](https://github.com/SmartTeachCN/CSES) for conversion between formats;
-- Quick solutions for rescheduling or class changes [see here](https://www.yuque.com/rinlit/class-widgets_help/gc4epffu7g5bf9os).
-- Practical widgets like "Weather", "Custom Countdown", etc.;
+- [Quick solutions](https://www.yuque.com/rinlit/class-widgets_help/gc4epffu7g5bf9os) for rescheduling or class changes;
+- Practical widgets like "Weather", "Custom Countdown", etc;
 - [Personalize](https://www.yuque.com/rinlit/class-widgets_help/qyly70ht1ogge1pi) your Class Widgets via "Custom";
 - Light or Dark theme support and **auto switch**,
 and so on.
