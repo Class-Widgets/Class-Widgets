@@ -51,8 +51,7 @@
 - [調整や授業変更](https://www.yuque.com/rinlit/class-widgets_help/gc4epffu7g5bf9os)へのクイックソリューション
 - 「天気」や「カスタムカウントダウン」など実用的なウィジェット
 - ["カスタム"](https://www.yuque.com/rinlit/class-widgets_help/qyly70ht1ogge1pi)でClass Widgetsをパーソナライズ
-- ライト/ダークテーマおよび**自動切り替え**対応
-- その他多数
+- ライト/ダークテーマおよび**自動切り替え**対応<br>その他多数
 
 ## アプリケーションのスクリーンショット
 #### メイン画面（ライト）
