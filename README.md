@@ -55,8 +55,7 @@
 - 提供快捷的调休、换课 [应对方案](https://www.yuque.com/rinlit/class-widgets_help/gc4epffu7g5bf9os)。
 - 提供“天气”、“自定义倒计时”等实用小组件；
 - 通过 [“自定义”](https://www.yuque.com/rinlit/class-widgets_help/qyly70ht1ogge1pi) 个性化你的 Class Widgets；
-- 具有亮/暗色主题，还能根据系统设置自动切换；
-  ……
+- 具有亮/暗色主题，还能根据系统设置自动切换；<br>……
 
 ## 软件截图
 #### 主界面(亮色)
