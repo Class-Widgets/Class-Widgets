@@ -51,12 +51,12 @@
 - 拥有主题系统支持你高度自定义。
 - 简洁直观的 [课程表编辑](https://www.yuque.com/rinlit/class-widgets_help/oozelh8r56tmw0xb) 界面；
 - 同时存储多个课程表文件，并能在各个 Class Widgets 导入和导出；
-- 支持 [**通用课程表交换格式**（Course Schedule Exchange Schema）](https://github.com/SmartTeachCN/CSES) ，能在不同格式间转换；
+- 支持 [**通用课程表交换格式**（CSES）](https://github.com/SmartTeachCN/CSES) ，能在不同格式间转换；
 - 提供快捷的调休、换课 [应对方案](https://www.yuque.com/rinlit/class-widgets_help/gc4epffu7g5bf9os)。
 - 提供“天气”、“自定义倒计时”等实用小组件；
 - 通过 [“自定义”](https://www.yuque.com/rinlit/class-widgets_help/qyly70ht1ogge1pi) 个性化你的 Class Widgets；
 - 具有亮/暗色主题，还能根据系统设置自动切换；
-- ……
+  ……
 
 ## 软件截图
 #### 主界面(亮色)
