@@ -51,12 +51,11 @@
 - 拥有主题系统支持你高度自定义。
 - 简洁直观的 [课程表编辑](https://www.yuque.com/rinlit/class-widgets_help/oozelh8r56tmw0xb) 界面；
 - 同时存储多个课程表文件，并能在各个 Class Widgets 导入和导出；
-- 支持 [**通用课程表交换格式**（Course Schedule Exchange Schema）](https://github.com/SmartTeachCN/CSES) ，能在不同格式间转换；
+- 支持 [**通用课程表交换格式**（CSES）](https://github.com/SmartTeachCN/CSES) ，能在不同格式间转换；
 - 提供快捷的调休、换课 [应对方案](https://www.yuque.com/rinlit/class-widgets_help/gc4epffu7g5bf9os)。
 - 提供“天气”、“自定义倒计时”等实用小组件；
 - 通过 [“自定义”](https://www.yuque.com/rinlit/class-widgets_help/qyly70ht1ogge1pi) 个性化你的 Class Widgets；
-- 具有亮/暗色主题，还能根据系统设置自动切换；
-- ……
+- 具有亮/暗色主题，还能根据系统设置自动切换；<br>……
 
 ## 软件截图
 #### 主界面(亮色)
@@ -71,7 +70,7 @@
 > [!IMPORTANT]
 > 若要体验此页面的特性，请前往 [**Actions**](https://github.com/Class-Widgets/Class-Widgets/actions) 页面下载最新构建。
 
-下载 ![当前版本](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?style=flat&color=purple&label=当前版本) 中最新版的压缩文件，解压到合适位置后，打开 `ClassWidgets.exe` 即可。
+下载 ![当前版本](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?style=flat&color=purple&label=当前版本) 中最新版的压缩文件，解压到合适位置后，运行 `ClassWidgets.exe` 即可。
 可通过托盘菜单进入设置、或退出此程序。
 
 ## 协议
@@ -103,7 +102,7 @@ Copyright © 2025 RinLit.
 
 如果您想要为 Class Widgets 作出贡献，请阅读[贡献指南](CONTRIBUTING.md)
 
-### 赞助商 / Sponsors
+### 赞助商
 
 感谢以下人员对本项目的支持。
 - [猞猁](http://dq6666.cn/)
@@ -131,16 +130,13 @@ Copyright © 2025 RinLit.
   </tr>
 </table>
 
-## 代码签名策略 / Code signing policy
+## 代码签名策略
 
-- Free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/)  
-由 [SignPath.io](https://about.signpath.io/) 提供代码签名，由 [SignPath Foundation](https://signpath.org/) 提供证书
+- 由 [SignPath.io](https://about.signpath.io/) 提供代码签名，由 [SignPath Foundation](https://signpath.org/) 提供证书
 
-- Committers and reviewers: [Organization Members](https://github.com/orgs/Class-Widgets/people)  
-提交者和审阅者：[团队成员](https://github.com/orgs/Class-Widgets/people)
+- 提交者和审阅者：[团队成员](https://github.com/orgs/Class-Widgets/people)
 
-- Approvers: [Owners](https://github.com/orgs/Class-Widgets/people?query=role%3Aowner)  
-审批者：[所有者](https://github.com/orgs/Class-Widgets/people?query=role%3Aowner)
+- 审批者：[所有者](https://github.com/orgs/Class-Widgets/people?query=role%3Aowner)
 
 -除非用户或安装或操作它的人特别要求，否则本程序不会将任何信息传输到其他网络系统。
 

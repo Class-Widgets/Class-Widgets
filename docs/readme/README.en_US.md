@@ -51,8 +51,7 @@
 - [Quick solutions](https://www.yuque.com/rinlit/class-widgets_help/gc4epffu7g5bf9os) for rescheduling or class changes;
 - Practical widgets like "Weather", "Custom Countdown", etc;
 - [Personalize](https://www.yuque.com/rinlit/class-widgets_help/qyly70ht1ogge1pi) your Class Widgets via "Custom";
-- Light or Dark theme support and **auto switch**,
-and so on.
+- Light or Dark theme support and **auto switch**,<br>and so on.
 
 ## Screenshots of the application
 #### Main Interface (Light)
@@ -67,7 +66,7 @@ and so on.
 > [!IMPORTANT]
 > To experience the features on this page, please download Class Widgets from the [**Actions**](https://github.com/Class-Widgets/Class-Widgets/actions) page.
 
-Download the latest zip from the ![Latest Version](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?style=flat&color=purple&label=Latest), extract it to a suitable location, and open `ClassWidgets.exe`.
+Download the latest zip file from the ![Latest Version](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?style=flat&color=purple&label=Latest), extract it to a suitable location, and run `ClassWidgets.exe`.
 You can access settings or exit the program via the tray menu.
 
 ## License
