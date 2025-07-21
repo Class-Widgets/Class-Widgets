@@ -14,10 +14,9 @@ from abc import ABC, abstractmethod
 from typing import Dict, Any, Optional, Union, Callable, Type, Tuple
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QSystemTrayIcon, QApplication
-from PyQt5.QtCore import QSharedMemory, QTimer, QObject, pyqtSignal
+from PyQt5.QtCore import QTimer, QObject, pyqtSignal, QLockFile, QDir
 from file import base_directory, config_center
 
-share = QSharedMemory('ClassWidgets')
 _stop_in_progress = False
 update_timer: Optional['UnionUpdateTimer'] = None
 
@@ -28,16 +27,6 @@ def _reset_signal_handlers() -> None:
         signal.signal(signal.SIGINT, signal.SIG_DFL)
     except (AttributeError, ValueError):
         pass
-
-def _cleanup_shared_memory() -> None:
-    """清理共享内存"""
-    global share
-    if share and share.isAttached():
-        try:
-            share.detach()
-            logger.debug("共享内存已分离")
-        except Exception as e:
-            logger.error(f"分离共享内存时出错: {e}")
 
 def _terminate_child_processes() -> None:
     """终止所有子进程"""
@@ -82,7 +71,8 @@ def restart() -> None:
         app.quit()
         app.processEvents()
 
-    _cleanup_shared_memory()
+    guard.release()
+
     os.execl(sys.executable, sys.executable, *sys.argv)
 
 def stop(status: int = 0) -> None:
@@ -103,12 +93,12 @@ def stop(status: int = 0) -> None:
         except Exception as e:
             logger.warning(f"停止全局更新定时器时出错: {e}")
     app = QApplication.instance()
+    guard.release()
     if app:
         _reset_signal_handlers()
         app.quit()
 
     _terminate_child_processes()
-    _cleanup_shared_memory()
     logger.debug(f"程序退出({status})")
     if not app:
         os._exit(status)
@@ -728,6 +718,32 @@ class TimeManagerFactory:
 
 main_mgr = None
 
+class SingleInstanceGuard:
+    def __init__(self, lock_name="ClassWidgets.lock"):
+        lock_path = QDir.temp().absoluteFilePath(lock_name)
+        self.lock_file = QLockFile(lock_path)
+        self.lock_acquired = False
+
+    def try_acquire(self, timeout=100):
+        self.lock_acquired = self.lock_file.tryLock(timeout)
+        return self.lock_acquired
+
+    def release(self):
+        if self.lock_acquired:
+            self.lock_file.unlock()
+
+    def get_lock_info(self):
+        ok, pid, hostname, appname = self.lock_file.getLockInfo()
+        if ok:
+            return {
+                "pid": pid,
+                "hostname": hostname,
+                "appname": appname
+            }
+        return None
+
+
 tray_icon = None
 update_timer = UnionUpdateTimer()
 time_manager = TimeManagerFactory.get_instance()
+guard:Optional[SingleInstanceGuard] = None

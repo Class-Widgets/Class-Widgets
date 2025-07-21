@@ -44,7 +44,7 @@ from weather import get_unified_weather_alerts, get_alert_image
 from network_thread import check_update
 from play_audio import play_audio
 from plugin import p_loader
-from utils import restart, stop, share, update_timer, DarkModeWatcher, TimeManagerFactory
+from utils import restart, stop, update_timer, DarkModeWatcher, TimeManagerFactory
 from file import config_center, schedule_center
 
 if os.name == 'nt':
@@ -2849,25 +2849,24 @@ def setup_signal_handlers_optimized(app: QApplication) -> None:
         signal.signal(signal.SIGHUP, signal_handler)  # 终端挂起
 
 if __name__ == '__main__':
-    if not share.create(1):
-        if share.attach() and config_center.read_conf('Other', 'multiple_programs') != '1':
-            logger.debug('不允许多开实例')
-            from qfluentwidgets import Dialog
-            app = QApplication.instance() or QApplication(sys.argv)
-            dlg = Dialog(
-                QCoreApplication.translate('main', 'Class Widgets 正在运行'),
-                QCoreApplication.translate('main', 'Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。'
-                '\n(若您需要打开多个实例，请在“设置”->“高级选项”中启用“允许程序多开”)')
-            )
-            dlg.yesButton.setText(QCoreApplication.translate('main', '好'))
-            dlg.cancelButton.hide()
-            dlg.buttonLayout.insertStretch(0, 1)
-            dlg.setFixedWidth(550)
-            dlg.exec()
-            sys.exit(0)
-        else:
-            print(f'无法创建共享内存: {share.errorString()}') # logger 可能还没准备好
-            sys.exit(1)
+    utils.guard = utils.SingleInstanceGuard("ClassWidgets.lock")
+    if config_center.read_conf('Other', 'multiple_programs') != '1':
+        if not utils.guard.try_acquire():
+            if (info:=utils.guard.get_lock_info()):
+                logger.debug(f'不允许多开实例，{info}')
+                from qfluentwidgets import Dialog
+                app = QApplication.instance() or QApplication(sys.argv)
+                dlg = Dialog(
+                    QCoreApplication.translate('main', 'Class Widgets 正在运行'),
+                    QCoreApplication.translate('main', 'Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。'
+                    '\n(若您需要打开多个实例，请在“设置”->“高级选项”中启用“允许程序多开”)')
+                )
+                dlg.yesButton.setText(QCoreApplication.translate('main', '好'))
+                dlg.cancelButton.hide()
+                dlg.buttonLayout.insertStretch(0, 1)
+                dlg.setFixedWidth(550)
+                dlg.exec()
+                sys.exit(0)
 
     scale_factor = float(config_center.read_conf('General', 'scale'))
     os.environ['QT_SCALE_FACTOR'] = str(scale_factor)
@@ -2883,7 +2882,7 @@ if __name__ == '__main__':
     menu.global_i18n_manager = global_i18n_manager
 
     logger.info(
-        f"共享内存：{share.isAttached()} 是否允许多开实例：{config_center.read_conf('Other', 'multiple_programs')}")
+        f"是否允许多开实例：{config_center.read_conf('Other', 'multiple_programs')}")
     try:
         dark_mode_watcher = DarkModeWatcher(parent=app)
         dark_mode_watcher.darkModeChanged.connect(handle_dark_mode_change) # 连接信号
@@ -2919,60 +2918,47 @@ if __name__ == '__main__':
 
     # list_pyttsx3_voices()
 
-    if share.attach() and config_center.read_conf('Other', 'multiple_programs') != '1':
-        msg_box = Dialog(
-            QCoreApplication.translate('main', 'Class Widgets 正在运行'),
-            QCoreApplication.translate('main', 'Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。'
-            '\n(若您需要打开多个实例，请在“设置”->“高级选项”中启用“允许程序多开”)')
-        )
-        msg_box.yesButton.setText(QCoreApplication.translate('main', '好'))
-        msg_box.cancelButton.hide()
-        msg_box.buttonLayout.insertStretch(0, 1)
-        msg_box.setFixedWidth(550)
-        msg_box.exec()
-        stop(-1)
+    mgr = WidgetsManager()
+    app.aboutToQuit.connect(mgr.cleanup_resources)
+    setup_signal_handlers_optimized(app)
+    utils.main_mgr = mgr
+
+    if config_center.read_conf('Other', 'initialstartup') == '1':  # 首次启动
+        try:
+            conf.add_shortcut('ClassWidgets.exe', f'{base_directory}/img/favicon.ico')
+            conf.add_shortcut_to_startmenu(f'{base_directory}/ClassWidgets.exe',
+                                            f'{base_directory}/img/favicon.ico')
+            config_center.write_conf('Other', 'initialstartup', '')
+        except Exception as e:
+            logger.error(f'添加快捷方式失败：{e}')
+        try:
+            list_.create_new_profile('新课表 - 1.json')
+        except Exception as e:
+            logger.error(f'创建新课表失败：{e}')
+
+    p_mgr = PluginManager()
+    p_loader.set_manager(p_mgr)
+    p_loader.load_plugins()
+
+    init()
+    get_start_time()
+    get_current_lessons()
+    get_current_lesson_name()
+    get_next_lessons()
+
+    # 如果在全屏或最大化模式下启动，首先折叠主组件后显示浮动窗口动画。
+    if check_windows_maximize() or check_fullscreen():
+        mgr.decide_to_hide()  # 折叠动画,其实这里可用`mgr.full_hide_windows()`但是播放动画似乎更好()
+
+    if current_state == 1:
+        setThemeColor(f"#{config_center.read_conf('Color', 'attend_class')}")
     else:
-        mgr = WidgetsManager()
-        app.aboutToQuit.connect(mgr.cleanup_resources)
-        setup_signal_handlers_optimized(app)
-        utils.main_mgr = mgr  # 设置全局管理器
+        setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}")
 
-        if config_center.read_conf('Other', 'initialstartup') == '1':  # 首次启动
-            try:
-                conf.add_shortcut('ClassWidgets.exe', f'{base_directory}/img/favicon.ico')
-                conf.add_shortcut_to_startmenu(f'{base_directory}/ClassWidgets.exe',
-                                               f'{base_directory}/img/favicon.ico')
-                config_center.write_conf('Other', 'initialstartup', '')
-            except Exception as e:
-                logger.error(f'添加快捷方式失败：{e}')
-            try:
-                list_.create_new_profile('新课表 - 1.json')
-            except Exception as e:
-                logger.error(f'创建新课表失败：{e}')
-
-        p_mgr = PluginManager()
-        p_loader.set_manager(p_mgr)
-        p_loader.load_plugins()
-
-        init()
-        get_start_time()
-        get_current_lessons()
-        get_current_lesson_name()
-        get_next_lessons()
-
-        # 如果在全屏或最大化模式下启动，首先折叠主组件后显示浮动窗口动画。
-        if check_windows_maximize() or check_fullscreen():
-            mgr.decide_to_hide()  # 折叠动画,其实这里可用`mgr.full_hide_windows()`但是播放动画似乎更好()
-
-        if current_state == 1:
-            setThemeColor(f"#{config_center.read_conf('Color', 'attend_class')}")
-        else:
-            setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}")
-
-        # w = ErrorDialog()
-        # w.exec()
-        if config_center.read_conf('Version', 'auto_check_update', '1') == '1':
-            check_update()
+    # w = ErrorDialog()
+    # w.exec()
+    if config_center.read_conf('Version', 'auto_check_update', '1') == '1':
+        check_update()
 
     status = app.exec()
 
