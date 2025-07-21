@@ -110,6 +110,7 @@ jobs:
             img=img
             ui=ui
             view=view
+            i18n=i18n
           include-package: |
             pyttsx3.drivers
             comtypes
@@ -132,6 +133,7 @@ jobs:
             img=img
             ui=ui
             view=view
+            i18n=i18n
           include-package: pyttsx3.drivers
           macos-app-icon: ./img/favicon.icns
           macos-signed-app-name: cn.rinlit.classwidgets
@@ -268,6 +270,7 @@ jobs:
             --include-data-dir=config=config \
             --include-data-dir=font=font \
             --include-data-dir=audio=audio \
+            --include-data-dir=i18n=i18n \
             --include-data-files=LICENSE=LICENSE \
             --include-package=pyttsx3.drivers
 

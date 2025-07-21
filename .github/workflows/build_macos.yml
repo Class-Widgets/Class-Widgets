@@ -204,6 +204,7 @@ jobs:
             --add-data "ui:ui" \
             --add-data "font:font" \
             --add-data "view:view" \
+            --add-data "i18n:i18n" \
             --add-data "LICENSE:." \
             --hidden-import darkdetect
           cp -R dist/"Class Widgets.app" .
