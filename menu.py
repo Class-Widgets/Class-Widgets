@@ -103,10 +103,10 @@ class I18nManager:
         """todo:获取的优化修正"""
         language_names = {
             'zh_CN': '简体中文',
-            'zh_Hant': '繁體中文（HK）',
+            'zh_HK': '繁體中文（HK）',
             # 'zh_SIMPLIFIED': '梗体中文',
             'en_US': 'English',
-            'ja': '日本語',
+            'ja_JP': '日本語',
             # 'ko_KR': '한국어',
             # 'fr_FR': 'Français',
             # 'de_DE': 'Deutsch',
@@ -121,9 +121,9 @@ class I18nManager:
     def get_available_languages_QLocale(self, lang_code):
         locale_list = {
             'zh_CN': QLocale(QLocale.Chinese, QLocale.China),
-            'zh_Hant': QLocale(QLocale.Chinese, QLocale.HongKong),
+            'zh_HK': QLocale(QLocale.Chinese, QLocale.HongKong),
             'en_US': QLocale(QLocale.English, QLocale.UnitedStates),
-            'ja': QLocale(QLocale.Japanese, QLocale.Japan),
+            'ja_JP': QLocale(QLocale.Japanese, QLocale.Japan),
         }
         return locale_list.get(lang_code, QLocale(QLocale.English, QLocale.UnitedStates))
         
