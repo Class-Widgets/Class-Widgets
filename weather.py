@@ -55,6 +55,8 @@ def retry_on_failure(max_retries: int = 3, delay: float = 1.0):
                         time.sleep(delay)
                     else:
                         logger.error(f"{func.__name__} 所有重试均失败: {e}")
+            if last_exception is None:
+                raise RuntimeError(f"{func.__name__} 在 {max_retries} 次重试后出现未知问题")
             raise last_exception
         return wrapper
     return decorator

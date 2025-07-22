@@ -528,7 +528,7 @@ def get_hide_status() -> int:
         '1': lambda: current_state,
         '2': lambda: check_windows_maximize() or check_fullscreen(),
         '3': lambda: current_state
-    }[config_center.read_conf('General', 'hide')]() and not (current_lesson_name in excluded_lessons) else 0
+    }[str(config_center.read_conf('General', 'hide'))]() and not (current_lesson_name in excluded_lessons) else 0
 
 
 # 定义 RECT 结构体
