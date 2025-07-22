@@ -1,11 +1,11 @@
 @echo off
-echo 鍒涘缓铏氭嫙鐜
+echo 创建虚拟环境
 uv venv
 call .venv\Scripts\activate
-echo 瀹夎渚濊禆
+echo 安装依赖
 uv pip install -r requirements.txt
 uv pip install nuitka imageio
-echo 鎵撳寘
+echo 打包
 python -m nuitka main.py ^
 --enable-plugin=pyqt5 ^
 --disable-console ^
@@ -14,7 +14,7 @@ python -m nuitka main.py ^
 --windows-icon-from-ico=img/favicon.icns ^
 --product-name="Class Widgets" ^
 --product-version="1.1.7.1" ^
---file-description="鍏ㄦ柊妗岄潰璇捐〃" ^
+--file-description="全新桌面课表" ^
 --include-data-dir=img=img ^
 --include-data-dir=ui=ui ^
 --include-data-dir=view=view ^
