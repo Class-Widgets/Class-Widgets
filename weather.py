@@ -1,5 +1,8 @@
-# -*- coding: utf-8 -*-
-"""天气统一封装模块"""
+"""
+weather.py
+
+天气数据相关接口封装
+"""
 
 import json
 import sqlite3
@@ -9,7 +12,7 @@ import requests
 import os
 import re
 from abc import ABC, abstractmethod
-from typing import Dict, Any, Optional, List, Union
+from typing import Dict, Any, Optional, List
 from PyQt5.QtCore import QThread, pyqtSignal, QEventLoop
 from loguru import logger
 from functools import wraps
@@ -22,7 +25,7 @@ def cache_result(expire_seconds: int = 300):
     # 她还是忘了不了她的缓存
     def decorator(func):
         cache = {}
-        
+
         @wraps(func)
         def wrapper(*args, **kwargs):
             cache_key = str(args) + str(sorted(kwargs.items()))
@@ -63,42 +66,42 @@ def retry_on_failure(max_retries: int = 3, delay: float = 1.0):
 
 class WeatherapiProvider(ABC):
     """天气api数据基类"""
-    
+
     def __init__(self, api_name: str, config: Dict[str, Any]):
         self.api_name = api_name
         self.config = config
         self.base_url = config.get('url', '')
         self.parameters = config.get('parameters', {})
-    
+
     @abstractmethod
     def fetch_current_weather(self, location_key: str, api_key: str) -> Dict[str, Any]:
         """获取当前天气数据"""
         pass
-    
+
     @abstractmethod
     def fetch_weather_alerts(self, location_key: str, api_key: str) -> Optional[Dict[str, Any]]:
         """获取天气预警数据"""
         pass
-    
+
     @abstractmethod
     def parse_temperature(self, data: Dict[str, Any]) -> Optional[str]:
         """解析温度数据"""
         pass
-    
+
     @abstractmethod
     def parse_weather_icon(self, data: Dict[str, Any]) -> Optional[str]:
         """解析天气图标代码"""
         pass
-    
+
     @abstractmethod
     def parse_weather_description(self, data: Dict[str, Any]) -> Optional[str]:
         """解析天气描述"""
         pass
-    
+
     def supports_alerts(self) -> bool:
         """检查是否支持天气预警"""
         return 'alerts' in self.config and bool(self.config['alerts'])
-    
+
     def get_database_name(self) -> str:
         """获取数据库文件名"""
         return self.config.get('database', 'xiaomi_weather.db')
@@ -106,11 +109,11 @@ class WeatherapiProvider(ABC):
 
 class WeatherDataCache:
     """天气数据缓存管理器"""
-    
+
     def __init__(self, default_expire: int = 300):
         self._cache = {}
         self.default_expire = default_expire
-    
+
     def get(self, key: str) -> Optional[Any]:
         """获取缓存数据"""
         if key in self._cache:
@@ -120,11 +123,11 @@ class WeatherDataCache:
             else:
                 del self._cache[key]
         return None
-    
+
     def set(self, key: str, value: Any, expire: Optional[int] = None) -> None:
         """设置缓存数据"""
         self._cache[key] = (value, time.time())
-    
+
     def clear(self) -> None:
         """清空缓存"""
         self._cache.clear()
@@ -132,14 +135,14 @@ class WeatherDataCache:
 
 class WeatherManager:
     """天气管理"""
-    
+
     def __init__(self):
         self.api_config = self._load_api_config()
         self.cache = WeatherDataCache()
         self.providers = self._initialize_providers()
         self.current_weather_data = None
         self.current_alert_data = None
-        
+
     def _load_api_config(self) -> Dict[str, Any]:
         """加载天气api"""
         try:
@@ -149,7 +152,7 @@ class WeatherManager:
         except Exception as e:
             logger.error(f'加载天气api配置失败: {e}')
             return {}
-    
+
     def _initialize_providers(self) -> Dict[str, WeatherapiProvider]:
         """初始化天气api数据"""
         providers = {}
@@ -170,47 +173,47 @@ class WeatherManager:
                     provider_class_name = 'QWeatherProvider'
                 else:
                     provider_class_name = f'{api_name.capitalize()}WeatherProvider'
-                
+
                 if provider_class_name in globals():
                     provider_class = globals()[provider_class_name]
                 else:
                     # 通用(你认为永远是你认为的)
                     provider_class = GenericWeatherProvider
                 providers[api_name] = provider_class(api_name, config)
-                    
+
             except Exception as e:
                 logger.error(f'初始化天气提供者 {api_name} 失败: {e}')
-        
+
         return providers
-    
+
     def get_current_api(self) -> str:
         """获取当前选择的天气api"""
         return config_center.read_conf('Weather', 'api')
-    
+
     def get_current_provider(self) -> Optional[WeatherapiProvider]:
         """获取当前天气api提供者"""
         current_api = self.get_current_api()
         return self.providers.get(current_api)
-    
+
     def get_api_list(self) -> List[str]:
         """获取可用的天气api列表"""
         return self.api_config.get('weather_api_list', [])
-    
+
     def get_api_list_zh(self) -> List[str]:
         """获取天气api中文名称列表"""
         return self.api_config.get('weather_api_list_zhCN', [])
-    
+
     def on_api_changed(self, new_api: str):
         """清理缓存"""
         self.cache.clear()
         self.current_weather_data = None
         self.current_alert_data = None
-    
+
     def clear_processor_cache(self, processor):
         """清理数据处理器缓存"""
         if hasattr(processor, 'clear_cache'):
             processor.clear_cache()
-    
+
     @retry_on_failure(max_retries=3, delay=1.0)
     @cache_result(expire_seconds=300)
     def fetch_weather_data(self) -> Dict[str, Any]:
@@ -219,7 +222,7 @@ class WeatherManager:
         if not provider:
             logger.error(f'未找到天气提供源: {self.get_current_api()}')
             return self._get_fallback_data()
-        
+
         try:
             location_key = self._get_location_key()
             api_key = config_center.read_conf('Weather', 'api_key')
@@ -237,25 +240,25 @@ class WeatherManager:
                     alert_data = provider.fetch_weather_alerts(location_key, api_key)
                 except Exception as e:
                     logger.warning(f'获取天气预警失败: {e}')
-            
+
             result = {
                 'now': weather_data,
                 'alert': alert_data or {}
             }
             self.current_weather_data = result
             return result
-            
+
         except Exception as e:
             logger.error(f'获取天气数据失败: {e}')
             return self._get_fallback_data(error_code='NETWORK_ERROR')
-    
+
     def _get_location_key(self) -> str:
         """获取位置值"""
         location_key = config_center.read_conf('Weather', 'city')
         if location_key == '0' or not location_key:
             location_key = self._get_auto_location()
         return location_key
-    
+
     def _get_auto_location(self) -> str:
         """自动获取位置"""
         try:
@@ -272,7 +275,7 @@ class WeatherManager:
         except Exception as e:
             logger.error(f'自动获取位置失败: {e}')
             return '101010100'
-    
+
     def _is_api_key_required(self, api_name: str) -> bool:
         """最神经病的一集"""
         return api_name in ['qweather', 'amap_weather', 'qq_weather']
@@ -294,12 +297,12 @@ class WeatherManager:
             'now': {},
             'alert': {}
         }
-    
+
     def get_unified_weather_data(self, data_type: str) -> Optional[str]:
         """获取统一格式数据"""
         if not self.current_weather_data:
             return None
-        
+
         provider = self.get_current_provider()
         if not provider:
             return None
@@ -321,13 +324,13 @@ class WeatherManager:
 
 class GenericWeatherProvider(WeatherapiProvider):
     """通用天气api获得"""
-    
+
     @retry_on_failure(max_retries=2, delay=0.5)
     def fetch_current_weather(self, location_key: str, api_key: str) -> Dict[str, Any]:
         """获取当前天气数据"""
         if not location_key:
             raise ValueError(f'{self.api_name}: location_key 参数不能为空')
-        
+
         try:
             from network_thread import proxies
             url = self.base_url.format(location_key=location_key, days=1, key=api_key)
@@ -338,21 +341,21 @@ class GenericWeatherProvider(WeatherapiProvider):
         except Exception as e:
             logger.error(f'{self.api_name} 获取天气数据失败: {e}')
             raise
-    
+
     def fetch_weather_alerts(self, location_key: str, api_key: str) -> Optional[Dict[str, Any]]:
         """获取天气预警数据"""
         if not self.supports_alerts():
             return None
-        
+
         if not location_key:
             raise ValueError(f'{self.api_name}: location_key 参数不能为空')
-        
+
         try:
             from network_thread import proxies
             alert_url = self.config['alerts'].get('url', '')
             if not alert_url:
                 return None
-            
+
             url = alert_url.format(location_key=location_key, key=api_key)
             # logger.debug(f'{self.api_name} 预警请求URL: {url.replace(api_key, "***" if api_key else "(空)")}')
             response = requests.get(url, proxies=proxies, timeout=10)
@@ -361,19 +364,19 @@ class GenericWeatherProvider(WeatherapiProvider):
         except Exception as e:
             logger.warning(f'{self.api_name} 获取预警数据失败: {e}')
             return None
-    
+
     def parse_temperature(self, data: Dict[str, Any]) -> Optional[str]:
         """解析温度数据"""
         temp_path = self.parameters.get('temp', '')
         if not temp_path:
             logger.error(f"温度路径为空: {self.api_name}")
             return None
-        
+
         # logger.debug(f"解析温度 - api: {self.api_name}, 路径: {temp_path}")
         value = self._extract_value_by_path(data, temp_path)
         # logger.debug(f"提取的温度值: {value}")
         return f"{value}°" if value is not None else None
-    
+
     def parse_weather_icon(self, data: Dict[str, Any]) -> Optional[str]:
         """解析天气图标代码"""
         icon_path = self.parameters.get('icon', '')
@@ -385,27 +388,27 @@ class GenericWeatherProvider(WeatherapiProvider):
         # 神经天气服务商
         if self.config.get('return_desc', False) and value:
             pass
-        
+
         return str(value) if value is not None else None
-    
+
     def parse_weather_description(self, data: Dict[str, Any]) -> Optional[str]:
         """解析天气描述"""
         desc_path = self.parameters.get('description', '')
         if desc_path:
             return self._extract_value_by_path(data, desc_path)
-        
+
         icon_code = self.parse_weather_icon(data)
         if icon_code:
             # 通过WeatherDataProcessor获得
             return None
-        
+
         return None
-    
+
     def _extract_value_by_path(self, data: Dict[str, Any], path: str) -> Any:
         """根据路径提取数据值"""
         if not path or not data:
             return None
-        
+
         try:
             value = data
             for key in path.split('.'):
@@ -415,10 +418,10 @@ class GenericWeatherProvider(WeatherapiProvider):
                     value = value.get(key)
                 else:
                     return None
-                
+
                 if value is None:
                     return None
-            
+
             return value
         except Exception as e:
             logger.error(f'解析数据路径 {path} 失败: {e}')
@@ -427,7 +430,7 @@ class GenericWeatherProvider(WeatherapiProvider):
 
 class XiaomiWeatherProvider(GenericWeatherProvider):
     """小米天气api获得"""
-    
+
     def parse_temperature(self, data: Dict[str, Any]) -> Optional[str]:
         """解析小米天气api的温度数据"""
         try:
@@ -436,7 +439,7 @@ class XiaomiWeatherProvider(GenericWeatherProvider):
             temperature = current.get('temperature', {})
             temp_unit = temperature.get('unit')
             temp_value = temperature.get('value')
-            
+
             if temp_value is not None:
                 return f"{temp_value}{temp_unit}"
             else:
@@ -445,7 +448,7 @@ class XiaomiWeatherProvider(GenericWeatherProvider):
         except Exception as e:
             logger.error(f"解析小米天气温度失败: {e}")
             return None
-    
+
     def parse_weather_icon(self, data: Dict[str, Any]) -> Optional[str]:
         """解析天气图标代码"""
         try:
@@ -469,7 +472,7 @@ class XiaomiWeatherProvider(GenericWeatherProvider):
         except Exception as e:
             logger.error(f"解析小米天气描述失败: {e}")
             return None
-    
+
     def fetch_weather_alerts(self, location_key: str, api_key: str) -> Optional[Dict[str, Any]]:
         """获取小米天气预警数据"""
         try:
@@ -482,16 +485,16 @@ class XiaomiWeatherProvider(GenericWeatherProvider):
             return None
         except Exception as e:
             return None
-    
+
     def parse_weather_alerts(self, data: Dict[str, Any]) -> List[Dict[str, Any]]:
         """解析小米天气预警数据"""
         alerts = []
         try:
             alerts_data = data.get('alerts', [])
-            
+
             if not alerts_data:
                 return alerts
-            
+
             for i, alert_item in enumerate(alerts_data):
                 if isinstance(alert_item, dict):
                     alert = {
@@ -506,7 +509,7 @@ class XiaomiWeatherProvider(GenericWeatherProvider):
                     }
                     alerts.append(alert)
             return alerts
-            
+
         except Exception as e:
             return alerts
 
@@ -514,42 +517,42 @@ class XiaomiWeatherProvider(GenericWeatherProvider):
 
 class QWeatherProvider(GenericWeatherProvider):
     """和风天气api提供者"""
-    
+
     def parse_temperature(self, data: Dict[str, Any]) -> Optional[str]:
         """解析温度数据(和风天气)"""
         try:
             # 和风天气api结构: now.temp
             now = data.get('now', {})
             temp = now.get('temp')
-            
+
             if temp is not None:
                 return f"{temp}°"
             return None
         except Exception as e:
             logger.error(f"解析和风天气温度失败: {e}")
             return None
-    
+
     def parse_weather_icon(self, data: Dict[str, Any]) -> Optional[str]:
         """解析天气图标代码(和风天气)"""
         try:
             # 和风天气api结构: now.icon
             now = data.get('now', {})
             icon_code = now.get('icon')
-            
+
             if icon_code is not None:
                 return str(icon_code)
             return None
         except Exception as e:
             logger.error(f"解析和风天气图标失败: {e}")
             return None
-    
+
     def parse_weather_description(self, data: Dict[str, Any]) -> Optional[str]:
         """解析天气描述(和风天气)"""
         try:
             # 和风天气api结构: now.text
             now = data.get('now', {})
             text = now.get('text')
-            
+
             if text:
                 return text
             icon_code = self.parse_weather_icon(data)
@@ -557,25 +560,25 @@ class QWeatherProvider(GenericWeatherProvider):
         except Exception as e:
             logger.error(f"解析和风天气描述失败: {e}")
             return None
-    
+
     def fetch_weather_alerts(self, location_key: str, api_key: str) -> Optional[Dict[str, Any]]:
         """获取和风天气预警数据"""
         if not location_key:
             raise ValueError(f'{self.api_name}: location_key 参数不能为空')
-        
+
         try:
             from network_thread import proxies
             # 和风天气预警API
             alert_url = f"https://devapi.qweather.com/v7/warning/now?location={location_key}&key={api_key}"
             # logger.debug(f'和风天气预警请求URL: {alert_url.replace(api_key, "***" if api_key else "(空)")}')
-            
+
             response = requests.get(alert_url, proxies=proxies, timeout=10)
             response.raise_for_status()
             return response.json()
         except Exception as e:
             logger.warning(f'和风天气获取预警数据失败: {e}')
             return None
-    
+
     def parse_weather_alerts(self, data: Dict[str, Any]) -> List[Dict[str, Any]]:
         """解析和风天气预警数据"""
         alerts = []
@@ -587,7 +590,7 @@ class QWeatherProvider(GenericWeatherProvider):
             if not warning_list:
                 #logger.debug("和风天气: 当前无预警信息")
                 return alerts
-            
+
             for warning in warning_list:
                 try:
                     alert = {
@@ -613,14 +616,14 @@ class QWeatherProvider(GenericWeatherProvider):
                 except Exception as e:
                     logger.error(f"解析单个预警失败: {e}")
                     continue
-            
+
             logger.info(f"和风天气成功解析 {len(alerts)} 条预警信息")
             return alerts
-            
+
         except Exception as e:
             logger.error(f"解析和风天气预警数据失败: {e}")
             return alerts
-    
+
     def supports_alerts(self) -> bool:
         """和风天气支持预警功能"""
         return True
@@ -628,7 +631,7 @@ class QWeatherProvider(GenericWeatherProvider):
 
 class AmapWeatherProvider(GenericWeatherProvider):
     """高德天气api提供者"""
-    
+
     def parse_temperature(self, data: Dict[str, Any]) -> Optional[str]:
         """解析温度数据(高德天气)"""
         try:
@@ -642,7 +645,7 @@ class AmapWeatherProvider(GenericWeatherProvider):
         except Exception as e:
             logger.error(f"解析高德天气温度失败: {e}")
             return None
-    
+
     def parse_weather_icon(self, data: Dict[str, Any]) -> Optional[str]:
         """解析天气图标代码(高德天气)"""
         try:
@@ -656,7 +659,7 @@ class AmapWeatherProvider(GenericWeatherProvider):
         except Exception as e:
             logger.error(f"解析高德天气图标失败: {e}")
             return None
-    
+
     def parse_weather_description(self, data: Dict[str, Any]) -> Optional[str]:
         """解析天气描述(高德天气)"""
         try:
@@ -666,7 +669,7 @@ class AmapWeatherProvider(GenericWeatherProvider):
                 weather = lives[0].get('weather')
                 if weather:
                     return weather
-            
+
             return None
         except Exception as e:
             logger.error(f"解析高德天气描述失败: {e}")
@@ -675,7 +678,7 @@ class AmapWeatherProvider(GenericWeatherProvider):
 
 class QQWeatherProvider(GenericWeatherProvider):
     """腾讯天气api提供者"""
-    
+
     def parse_temperature(self, data: Dict[str, Any]) -> Optional[str]:
         """解析温度数据(腾讯天气)"""
         try:
@@ -689,7 +692,7 @@ class QQWeatherProvider(GenericWeatherProvider):
         except Exception as e:
             logger.error(f"解析腾讯天气温度失败: {e}")
             return None
-    
+
     def parse_weather_icon(self, data: Dict[str, Any]) -> Optional[str]:
         """解析天气图标代码(腾讯天气)"""
         try:
@@ -703,7 +706,7 @@ class QQWeatherProvider(GenericWeatherProvider):
         except Exception as e:
             logger.error(f"解析腾讯天气图标失败: {e}")
             return None
-    
+
     def parse_weather_description(self, data: Dict[str, Any]) -> Optional[str]:
         """解析天气描述(腾讯天气)"""
         try:
@@ -713,7 +716,7 @@ class QQWeatherProvider(GenericWeatherProvider):
                 weather = realtime[0].get('infos', {}).get('weather')
                 if weather:
                     return weather
-            
+
             return None
         except Exception as e:
             logger.error(f"解析腾讯天气描述失败: {e}")
@@ -722,11 +725,11 @@ class QQWeatherProvider(GenericWeatherProvider):
 
 class WeatherDatabase:
     """天气数据库管理类"""
-    
+
     def __init__(self, weather_manager: WeatherManager):
         self.weather_manager = weather_manager
         self._update_db_path()
-    
+
     def _update_db_path(self) -> str:
         """更新数据库路径"""
         current_api = self.weather_manager.get_current_api()
@@ -734,7 +737,7 @@ class WeatherDatabase:
         db_name = api_params.get(current_api, {}).get('database', 'xiaomi_weather.db')
         self.db_path = os.path.join(base_directory, 'config', 'data', db_name)
         return self.db_path
-    
+
     def search_city_by_name(self, search_term: str) -> List[str]:
         """根据城市名称搜索城市"""
         self._update_db_path()
@@ -744,12 +747,12 @@ class WeatherDatabase:
             cursor.execute('SELECT * FROM citys WHERE name LIKE ?', ('%' + search_term + '%',))
             cities_results = cursor.fetchall()
             conn.close()
-            
+
             return [city[2] for city in cities_results]
         except Exception as e:
             logger.error(f'搜索城市失败: {e}')
             return []
-    
+
     def search_code_by_name(self, city_name: str, district_name: str = '') -> str:
         """根据城市名称获取城市代码"""
         if not city_name:
@@ -758,10 +761,10 @@ class WeatherDatabase:
             city_name = str(city_name[0]) if city_name else ''
         if isinstance(district_name, (tuple, list)):
             district_name = str(district_name[0]) if district_name else ''
-            
+
         if not city_name:
             return '101010100'  # 默认北京
-            
+
         self._update_db_path()
         try:
             conn = sqlite3.connect(self.db_path)
@@ -783,14 +786,14 @@ class WeatherDatabase:
             if fuzzy_results:
                 logger.debug(f'模糊找到城市: {fuzzy_results[0][2]}，代码: {fuzzy_results[0][3]}')
                 return str(fuzzy_results[0][3])
-            
+
             logger.warning(f'未找到城市: {city_name}，使用默认城市代码')
             return '101010100'
-            
+
         except Exception as e:
             logger.error(f'搜索城市代码失败: {e}')
             return '101010100'
-    
+
     def search_city_by_code(self, city_code: str) -> str:
         """根据城市代码获取城市名称"""
         self._update_db_path()
@@ -800,11 +803,11 @@ class WeatherDatabase:
             cursor.execute('SELECT * FROM citys WHERE city_num LIKE ?', ('%' + city_code + '%',))
             cities_results = cursor.fetchall()
             conn.close()
-            
+
             if cities_results:
                 return cities_results[0][2]
             return '北京'  # 默认城市
-            
+
         except Exception as e:
             logger.error(f'根据代码搜索城市失败: {e}')
             return '北京'
@@ -812,27 +815,27 @@ class WeatherDatabase:
 
 class WeatherDataProcessor:
     """统一天气数据处理"""
-    
+
     def __init__(self, weather_manager: WeatherManager):
         self.weather_manager = weather_manager
         self._status_cache = {}
-    
+
     def clear_cache(self):
         """清理所有缓存"""
         self._status_cache.clear()
-    
+
     def clear_api_cache(self, api_name: str):
         """清理指定api的缓存"""
         if api_name in self._status_cache:
             del self._status_cache[api_name]
-    
+
     def _load_weather_status(self, api_name: Optional[str] = None) -> Dict[str, Any]:
         """加载天气状态配置"""
         if not api_name:
             api_name = self.weather_manager.get_current_api()
         if api_name in self._status_cache:
             return self._status_cache[api_name]
-        
+
         try:
             with open(os.path.join(base_directory, 'config', 'data', f'{api_name}_status.json'), 'r', encoding='utf-8') as f:
                 status_data = json.load(f)
@@ -841,7 +844,7 @@ class WeatherDataProcessor:
         except Exception as e:
             logger.error(f'加载天气状态配置失败: {e}')
             return {'weatherinfo': []}
-    
+
     def get_weather_by_code(self, code: str, api_name: Optional[str] = None) -> str:
         """根据天气代码获取天气描述"""
         weather_status = self._load_weather_status(api_name)
@@ -850,13 +853,13 @@ class WeatherDataProcessor:
                 # logger.debug(f'天气代码 {code} 对应的天气描述为: {weather.get("wea", "未知")}')
                 return weather.get('wea', '未知')
         return '未知'
-    
+
     def get_weather_icon_by_code(self, code: str, api_name: Optional[str] = None) -> str:
         """根据天气代码获取天气图标路径"""
         weather_status = self._load_weather_status(api_name)
         weather_code = None
         current_time = datetime.datetime.now()
-        
+
         # 查找天气代码
         for weather in weather_status.get('weatherinfo', []):
             if str(weather.get('code')) == str(code):
@@ -866,11 +869,11 @@ class WeatherDataProcessor:
                 else:
                     weather_code = str(weather.get('code'))
                 break
-        
+
         if not weather_code:
             logger.error(f'未找到天气代码({api_name}) {code}')
             return os.path.join(base_directory, 'img', 'weather', '99.svg')
-        
+
         # 根据时间和天气类型选择图标
         if weather_code in ('0', '1', '3', '13'):  # 晴、多云、阵雨、阵雪
             if current_time.hour < 6 or current_time.hour >= 18:  # 夜间
@@ -879,29 +882,29 @@ class WeatherDataProcessor:
         if not os.path.exists(icon_path):
             logger.warning(f'天气图标文件不存在: {icon_path}')
             return os.path.join(base_directory, 'img', 'weather', '99.svg')
-            
+
         return icon_path
-    
+
     def get_weather_stylesheet(self, code: str, api_name: Optional[str] = None) -> str:
         """获取天气背景样式"""
         current_time = datetime.datetime.now()
         weather_status = self._load_weather_status(api_name)
         weather_code = '99'
-        
+
         for weather in weather_status.get('weatherinfo', []):
             if str(weather.get('code')) == str(code):
                 original_code = weather.get('original_code')
                 weather_code = str(original_code) if original_code is not None else str(weather.get('code'))
                 break
-        
+
         if weather_code in ('0', '1', '3', '99', '900'):  # 晴、多云、阵雨、未知
             if 6 <= current_time.hour < 18:  # 日间
                 return os.path.join('img', 'weather', 'bkg', 'day.png')
             else:  # 夜间
                 return os.path.join('img', 'weather', 'bkg', 'night.png')
-        
+
         return os.path.join('img', 'weather', 'bkg', 'rain.png')
-    
+
     def get_weather_code_by_description(self, description: str, api_name: Optional[str] = None) -> str:
         """根据天气描述获取天气代码"""
         weather_status = self._load_weather_status(api_name)
@@ -909,19 +912,19 @@ class WeatherDataProcessor:
             if str(weather.get('wea')) == description:
                 return str(weather.get('code'))
         return '99'
-    
+
     def get_alert_image_path(self, alert_type: str) -> str:
         """获取天气预警图标路径"""
         provider = self.weather_manager.get_current_provider()
         if not provider or not provider.supports_alerts():
             return os.path.join(base_directory, 'img', 'weather', 'alerts', 'blue.png')
-        
+
         alerts_config = provider.config.get('alerts', {})
         alerts_types = alerts_config.get('types', {})
-        
+
         color_mapping = {
             'blue': '蓝色',
-            'yellow': '黄色', 
+            'yellow': '黄色',
             'orange': '橙色',
             'red': '红色'
         }
@@ -931,22 +934,22 @@ class WeatherDataProcessor:
         if not icon_name:
             icon_name = 'blue.png'
         return os.path.join(base_directory, 'img', 'weather', 'alerts', icon_name)
-    
+
     def is_alert_supported(self) -> bool:
         """检查当前api是否支持天气预警"""
         provider = self.weather_manager.get_current_provider()
         return provider.supports_alerts() if provider else False
-    
+
     def extract_weather_data(self, key: str, weather_data: Dict[str, Any]) -> Optional[str]:
         """从天气数据中提取指定字段的值（兼容旧接口）"""
         if not weather_data:
             logger.error('weather_data is None!')
             return None
-        
+
         provider = self.weather_manager.get_current_provider()
         if not provider:
             return self._legacy_extract_weather_data(key, weather_data)
-        
+
         try:
             if key == 'temp':
                 return provider.parse_temperature(weather_data)
@@ -963,18 +966,18 @@ class WeatherDataProcessor:
         except Exception as e:
             logger.error(f'提取天气数据失败 ({key}): {e}')
             return self._legacy_extract_weather_data(key, weather_data)
-    
+
     def _extract_alert_data(self, key: str, weather_data: Dict[str, Any]) -> Optional[str]:
         """提取预警数据"""
         provider = self.weather_manager.get_current_provider()
         if not provider or not provider.supports_alerts():
             return None
-        
+
         if isinstance(provider, QWeatherProvider):
             return self._extract_qweather_alert_data(key, weather_data)
         elif isinstance(provider, XiaomiWeatherProvider):
             return self._extract_xiaomi_alert_data(key, weather_data)
-        
+
         alerts_config = provider.config.get('alerts', {})
         if key == 'alert':
             path = alerts_config.get('type', '')
@@ -988,9 +991,9 @@ class WeatherDataProcessor:
             return None
         if hasattr(provider, '_extract_value_by_path'):
             return provider._extract_value_by_path(weather_data, path)
-        
+
         return None
-    
+
     def _extract_qweather_alert_data(self, key: str, weather_data: Dict[str, Any]) -> Optional[str]:
         """提取和风天气预警数据"""
         try:
@@ -1009,11 +1012,11 @@ class WeatherDataProcessor:
                 return first_warning.get('text', '')
             else:
                 return None
-                
+
         except Exception as e:
             logger.error(f"提取和风天气预警数据失败: {e}")
             return None
-    
+
     def _extract_xiaomi_alert_data(self, key: str, weather_data: Dict[str, Any]) -> Optional[str]:
         """提取小米天气预警数据"""
         try:
@@ -1037,24 +1040,24 @@ class WeatherDataProcessor:
             else:
                 return None
             return result
-                
+
         except Exception as e:
             return None
-    
+
     def get_weather_alerts(self, weather_data: Dict[str, Any]) -> List[Dict[str, Any]]:
         """获取所有预警信息"""
         provider = self.weather_manager.get_current_provider()
         if not provider or not provider.supports_alerts():
             return []
-        
+
         if isinstance(provider, QWeatherProvider):
             alert_data = weather_data.get('alert', {})
             if hasattr(provider, 'parse_weather_alerts'):
                 return provider.parse_weather_alerts(alert_data)
-        
+
         if isinstance(provider, XiaomiWeatherProvider):
             alert_data = weather_data.get('alert', {})
-            
+
             if alert_data and 'warning' in alert_data and isinstance(alert_data.get('warning'), list):
                 warnings = alert_data.get('warning', [])
                 return warnings
@@ -1071,12 +1074,12 @@ class WeatherDataProcessor:
                 return alerts
             if 'alerts' in alert_data:
                 return alert_data.get('alerts', [])
-        
+
         return []
-    
+
     def get_unified_alert_data(self, weather_data: Dict[str, Any]) -> Dict[str, Any]:
         """获取统一格式的预警数据
-        
+
         returns:
         {
             'has_alert': bool,  # 是否有预警
@@ -1114,7 +1117,7 @@ class WeatherDataProcessor:
             unified_alert = self._normalize_alert_data(alert, provider)
             if unified_alert:
                 unified_alerts.append(unified_alert)
-        
+
         if not unified_alerts:
             return {
                 'has_alert': False,
@@ -1130,7 +1133,7 @@ class WeatherDataProcessor:
             'primary_alert': primary_alert,
             'all_alerts': unified_alerts
         }
-    
+
     def _normalize_alert_data(self, alert: Dict[str, Any], provider) -> Optional[Dict[str, Any]]:
         """预警数据标准化统一格式"""
         try:
@@ -1145,7 +1148,7 @@ class WeatherDataProcessor:
         except Exception as e:
             logger.error(f"标准化预警数据失败: {e}")
             return None
-    
+
     def _normalize_qweather_alert(self, alert: Dict[str, Any]) -> Dict[str, Any]:
         """标准化和风天气预警数据"""
         title = alert.get('title', '')
@@ -1175,7 +1178,7 @@ class WeatherDataProcessor:
             'end_time': alert.get('endTime', ''),
             'source': 'qweather'
         }
-    
+
     def _normalize_xiaomi_alert(self, alert: Dict[str, Any]) -> Dict[str, Any]:
         """标准化小米天气预警数据"""
         title = alert.get('title', '')
@@ -1200,7 +1203,7 @@ class WeatherDataProcessor:
             'end_time': alert.get('end_time', ''),
             'source': 'xiaomi'
         }
-    
+
     def _normalize_generic_alert(self, alert: Dict[str, Any]) -> Dict[str, Any]:
         """标准化通用预警数据(其他天气API)"""
         title = alert.get('title', alert.get('name', ''))
@@ -1225,12 +1228,12 @@ class WeatherDataProcessor:
             'end_time': alert.get('end_time', ''),
             'source': 'generic'
         }
-    
+
     def _extract_alert_info_from_title(self, title: str) -> tuple:
         """从预警标题中提取预警类型和级别"""
         pattern = r'发布(\w+)(蓝|黄|橙|红)色预警'
         match = re.search(pattern, title)
-        
+
         if match:
             alert_type = match.group(1)  # 预警类型
             alert_level = match.group(2)  # 预警级别
@@ -1241,7 +1244,7 @@ class WeatherDataProcessor:
             r'(\w+)(蓝|黄|橙|红)色预警',
             r'(\w+)预警'
         ]
-        
+
         for pattern in type_patterns:
             match = re.search(pattern, title)
             if match:
@@ -1249,9 +1252,9 @@ class WeatherDataProcessor:
                     return match.group(1), match.group(2)
                 else:
                     return match.group(1), None
-        
+
         return None, None
-    
+
     def _legacy_extract_weather_data(self, key: str, weather_data: Dict[str, Any]) -> Optional[str]:
         """数据提取(向后兼容)"""
         current_api = self.weather_manager.get_current_api()
@@ -1265,7 +1268,7 @@ class WeatherDataProcessor:
             parameter_path = alerts_config.get('title', '')
         else:
             parameter_path = current_params.get(key, '')
-        
+
         if not parameter_path:
             logger.error(f'未找到参数路径: {key}')
             return None
@@ -1280,12 +1283,12 @@ class WeatherDataProcessor:
         else:
             value = weather_data
             parameters = parameter_path.split('.')
-            
+
             for param in parameters:
                 if not value:
                     logger.warning(f'天气信息值{key}为空')
                     return None
-                
+
                 if param == '0':
                     if isinstance(value, list) and len(value) > 0:
                         value = value[0]
@@ -1301,18 +1304,18 @@ class WeatherDataProcessor:
             value = str(value) + '°'
         elif key == 'icon' and current_params.get('return_desc', False):
             value = self.get_weather_code_by_description(str(value))
-        
+
         return str(value) if value is not None else None
 
 
 class WeatherReportThread(QThread):
     """天气数据获取"""
     weather_signal = pyqtSignal(dict)
-    
+
     def __init__(self):
         super().__init__()
         self.weather_manager = WeatherManager()
-    
+
     def run(self):
         """线程运行方法"""
         try:
@@ -1374,14 +1377,14 @@ def get_weather_data(key: str = 'temp', weather_data: Dict[str, Any] = None) -> 
 
 def get_unified_weather_alerts(weather_data: Dict[str, Any]) -> Dict[str, Any]:
     """获取统一格式的天气预警数据
-    
+
     Args:
         weather_data: 天气数据字典
-        
+
     Returns:
         统一格式的预警数据字典，包含:
         - has_alert: 是否有预警
-        - alert_count: 预警数量  
+        - alert_count: 预警数量
         - primary_alert: 主要预警信息
         - all_alerts: 所有预警列表
     """
@@ -1426,7 +1429,7 @@ if __name__ == '__main__':
         if weather_data:
             print(f"获取到的天气数据结构: {type(weather_data)}")
             print(f"天气数据键: {list(weather_data.keys()) if isinstance(weather_data, dict) else 'Not a dict'}")
-            
+
             if 'now' in weather_data:
                 now_data = weather_data['now']
                 print(f"当前天气数据: {now_data}")
@@ -1443,7 +1446,7 @@ if __name__ == '__main__':
         icon_path = get_weather_icon_by_code('0')
         print(f"天气代码0对应的图标: {icon_path}")
 
-        
+
     except Exception as e:
         print(f"测试出错: {e}")
         import traceback
