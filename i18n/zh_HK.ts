@@ -2022,7 +2022,7 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
         <location filename="../menu.py" line="2208"/>
         <location filename="../menu.py" line="2209"/>
         <source>跟随系统</source>
-        <translation type="unfinished">跟從系統</translation>
+        <translation>跟從系統</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2223"/>
@@ -3450,47 +3450,47 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../file.py" line="304"/>
         <source>{section}.{key}</source>
-        <translation type="unfinished"></translation>
+        <translation>这个不需要翻译！</translation>
     </message>
     <message>
         <location filename="../file.py" line="454"/>
         <source>General.schedule</source>
-        <translation type="unfinished">新課程時間表 - 1</translation>
+        <translation>新課程時間表 - 1</translation>
     </message>
     <message>
         <location filename="../file.py" line="455"/>
         <source>TTS.language</source>
-        <translation type="unfinished"></translation>
+        <translation>zh-CN</translation>
     </message>
     <message>
         <location filename="../file.py" line="456"/>
         <source>TTS.attend_class</source>
-        <translation type="unfinished">依家開始{lesson_name}課</translation>
+        <translation>依家開始{lesson_name}課</translation>
     </message>
     <message>
         <location filename="../file.py" line="457"/>
         <source>TTS.finish_class</source>
-        <translation type="unfinished">活動結束，下一堂課: {lesson_name}</translation>
+        <translation>活動結束，下一堂課: {lesson_name}</translation>
     </message>
     <message>
         <location filename="../file.py" line="458"/>
         <source>TTS.prepare_class</source>
-        <translation type="unfinished">活動即將開始，下一堂課: {lesson_name}</translation>
+        <translation>活動即將開始，下一堂課: {lesson_name}</translation>
     </message>
     <message>
         <location filename="../file.py" line="459"/>
         <source>TTS.after_school</source>
-        <translation type="unfinished">所有活動已結束</translation>
+        <translation>所有活動已結束</translation>
     </message>
     <message>
         <location filename="../file.py" line="460"/>
         <source>Weather.api</source>
-        <translation type="unfinished"></translation>
+        <translation>xiaomi_weather</translation>
     </message>
     <message>
         <location filename="../file.py" line="461"/>
         <source>Plugin.mirror</source>
-        <translation type="unfinished"></translation>
+        <translation>original</translation>
     </message>
 </context>
 <context>
