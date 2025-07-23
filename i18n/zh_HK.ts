@@ -2778,8 +2778,7 @@ Json 設定檔 (*.json)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3249"/>
-        <source>version</source>
-        <comment>新版本速递：{new_version}</comment>
+        <source>新版本速递：{new_version}</source>
         <translation>SettingsMenu
 新版本：{new_version}</translation>
     </message>

@@ -2527,8 +2527,7 @@
     </message>
     <message>
         <location filename="../menu.py" line="3249"/>
-        <source>version</source>
-        <comment>新版本速递：{new_version}</comment>
+        <source>新版本速递：{new_version}</source>
         <translation>バージョン</translation>
     </message>
     <message>

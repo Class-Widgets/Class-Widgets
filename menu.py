@@ -3246,7 +3246,7 @@ class SettingsMenu(FluentWindow):
             self.build_date_label.setText(f'{build_time if build_time != "__BUILD_TIME__" else "Debug"}')
 
             if utils.tray_icon:
-                utils.tray_icon.push_update_notification(self.tr('version', "新版本速递：{new_version}").format(new_version=new_version))
+                utils.tray_icon.push_update_notification(self.tr("新版本速递：{new_version}").format(new_version=new_version))
 
     def cf_import_schedule_cses(self, file_path):  # 导入课程表（CSES）
         if file_path:

@@ -2477,6 +2477,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../menu.py" line="3249"/>
+        <source>新版本速递：{new_version}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../menu.py" line="3267"/>
         <source>转换失败！</source>
         <translation type="unfinished"></translation>
