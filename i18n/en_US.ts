@@ -2024,7 +2024,7 @@ Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, 
         <location filename="../menu.py" line="2208"/>
         <location filename="../menu.py" line="2209"/>
         <source>跟随系统</source>
-        <translation type="unfinished">Follow system</translation>
+        <translation>Follow system</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2223"/>
@@ -3437,47 +3437,47 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../file.py" line="304"/>
         <source>{section}.{key}</source>
-        <translation type="unfinished"></translation>
+        <translation>这个不需要翻译！</translation>
     </message>
     <message>
         <location filename="../file.py" line="454"/>
         <source>General.schedule</source>
-        <translation type="unfinished">New schedule - 1</translation>
+        <translation>New schedule - 1</translation>
     </message>
     <message>
         <location filename="../file.py" line="455"/>
         <source>TTS.language</source>
-        <translation type="unfinished"></translation>
+        <translation>en-US</translation>
     </message>
     <message>
         <location filename="../file.py" line="456"/>
         <source>TTS.attend_class</source>
-        <translation type="unfinished">Class begins, {lesson_name}</translation>
+        <translation>Class begins, {lesson_name}</translation>
     </message>
     <message>
         <location filename="../file.py" line="457"/>
         <source>TTS.finish_class</source>
-        <translation type="unfinished">Class is over. Next class: {lesson_name}</translation>
+        <translation>Class is over. Next class: {lesson_name}</translation>
     </message>
     <message>
         <location filename="../file.py" line="458"/>
         <source>TTS.prepare_class</source>
-        <translation type="unfinished">Class is about to begin. Next class: {lesson}</translation>
+        <translation>Class is about to begin. Next class: {lesson_name}</translation>
     </message>
     <message>
         <location filename="../file.py" line="459"/>
         <source>TTS.after_school</source>
-        <translation type="unfinished">School is over</translation>
+        <translation>School is over</translation>
     </message>
     <message>
         <location filename="../file.py" line="460"/>
         <source>Weather.api</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Weather.api</translation>
     </message>
     <message>
         <location filename="../file.py" line="461"/>
         <source>Plugin.mirror</source>
-        <translation type="unfinished"></translation>
+        <translation>original</translation>
     </message>
 </context>
 <context>
