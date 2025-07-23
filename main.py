@@ -2931,10 +2931,6 @@ if __name__ == '__main__':
             config_center.write_conf('Other', 'initialstartup', '')
         except Exception as e:
             logger.error(f'添加快捷方式失败：{e}')
-        try:
-            list_.create_new_profile('新课表 - 1.json')
-        except Exception as e:
-            logger.error(f'创建新课表失败：{e}')
 
     p_mgr = PluginManager()
     p_loader.set_manager(p_mgr)
