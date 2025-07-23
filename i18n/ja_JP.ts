@@ -3186,22 +3186,22 @@
     <message>
         <location filename="../file.py" line="456"/>
         <source>TTS.attend_class</source>
-        <translation type="unfinished"></translation>
+        <translation>Class begins, {lesson_name}</translation>
     </message>
     <message>
         <location filename="../file.py" line="457"/>
         <source>TTS.finish_class</source>
-        <translation type="unfinished"></translation>
+        <translation>Class is over. Next class: {lesson_name}</translation>
     </message>
     <message>
         <location filename="../file.py" line="458"/>
         <source>TTS.prepare_class</source>
-        <translation type="unfinished"></translation>
+        <translation>Class is about to begin. Next class: {lesson_name}</translation>
     </message>
     <message>
         <location filename="../file.py" line="459"/>
         <source>TTS.after_school</source>
-        <translation type="unfinished"></translation>
+        <translation>School is over</translation>
     </message>
     <message>
         <location filename="../file.py" line="460"/>
