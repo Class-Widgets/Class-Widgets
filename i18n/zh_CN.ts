@@ -2556,23 +2556,6 @@
 可更新版本: {new_version}</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="3878"/>
-        <source>version</source>
-        <comment>新版本速递：{new_version}</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="3896"/>
-        <source>转换失败！</source>
-        <translation>version</source>
-        <comment>新版本速递：{new_version}</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../menu.py" line="3896"/>
-        <source>转换失败！</translation>
-    </message>
-    <message>
         <location filename="../menu.py" line="3909"/>
         <location filename="../menu.py" line="3947"/>
         <source>导入失败！</source>
