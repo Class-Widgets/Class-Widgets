@@ -1952,8 +1952,7 @@ https://classwidgets.rinlit.cn/docs-user/</translation>
         <source>Edge TTS 需要联网才能正常发声哦~
 请确保网络连接,不然会说不出话来(&gt;﹏&lt;)
 * 可能会有一定的延迟,耐心等待一下~</source>
-        <translation>SettingsMenu
-Edge TTS需要連結互聯網才能發出聲音喔～
+        <translation>Edge TTS需要連結互聯網才能發出聲音喔～
 Edge TTS 需要連接互聯網才能正常發聲喔～
 請確保網絡已連接，否則將無法發聲 (&gt;﹏&lt;)
 ＊可能會有少許延遲，請耐心等候一下～</translation>
@@ -1989,8 +1988,7 @@ Edge TTS 需要連接互聯網才能正常發聲喔～
         <location filename="../menu.py" line="1792"/>
         <source>加载TTS语音时发生错误:
 {error_message}</source>
-        <translation>SettingsMenu
-載入 TTS 語音時發生錯誤：
+        <translation>載入 TTS 語音時發生錯誤：
 {error_message}</translation>
     </message>
     <message>
@@ -2779,8 +2777,7 @@ Json 設定檔 (*.json)</translation>
     <message>
         <location filename="../menu.py" line="3249"/>
         <source>新版本速递：{new_version}</source>
-        <translation>SettingsMenu
-新版本：{new_version}</translation>
+        <translation>新版本：{new_version}</translation>
     </message>
     <message>
         <source>menu</source>
