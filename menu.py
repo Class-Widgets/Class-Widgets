@@ -641,7 +641,7 @@ class PluginCard(CardWidget):  # 插件卡片
             w.exec()
 
     def remove_plugin(self):
-        alert = MessageBox(QCoreApplication.translate('menu','menu', "您确定要删除插件“{title}”吗？").format(title=self.title), QCoreApplication.translate('menu','menu', "删除此插件后，将无法恢复。"), self.parent)
+        alert = MessageBox(QCoreApplication.translate('menu', "您确定要删除插件“{title}”吗？").format(title=self.title), QCoreApplication.translate('menu',"删除此插件后，将无法恢复。"), self.parent)
         alert.yesButton.setText(self.tr('永久删除'))
         alert.yesButton.setStyleSheet("""
                 PushButton{

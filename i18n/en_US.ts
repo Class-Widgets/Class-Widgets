@@ -4590,14 +4590,12 @@ It is recommended to set the scaling factor to a value between 100% and 180%.</t
     </message>
     <message>
         <location filename="../menu.py" line="644"/>
-        <source>menu</source>
-        <comment>您确定要删除插件“{title}”吗？</comment>
+        <source>您确定要删除插件“{title}”吗？</source>
         <translation>menu</translation>
     </message>
     <message>
         <location filename="../menu.py" line="644"/>
-        <source>menu</source>
-        <comment>删除此插件后，将无法恢复。</comment>
+        <source>删除此插件后，将无法恢复。</source>
         <translation>menu</translation>
     </message>
     <message>

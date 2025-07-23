@@ -4231,14 +4231,12 @@
     </message>
     <message>
         <location filename="../menu.py" line="644"/>
-        <source>menu</source>
-        <comment>您确定要删除插件“{title}”吗？</comment>
+        <source>您确定要删除插件“{title}”吗？</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../menu.py" line="644"/>
-        <source>menu</source>
-        <comment>删除此插件后，将无法恢复。</comment>
+        <source>删除此插件后，将无法恢复。</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
