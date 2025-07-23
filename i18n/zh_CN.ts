@@ -2503,7 +2503,7 @@
     <message>
         <location filename="../menu.py" line="3249"/>
         <source>新版本速递：{new_version}</source>
-        <translation type="unfinished"></translation>
+        <translation>新版本速递：{new_version}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3267"/>
@@ -3128,42 +3128,42 @@
     <message>
         <location filename="../file.py" line="454"/>
         <source>General.schedule</source>
-        <translation>General.schedule</translation>
+        <translation>新课表 - 1.json</translation>
     </message>
     <message>
         <location filename="../file.py" line="455"/>
         <source>TTS.language</source>
-        <translation>TTS.language</translation>
+        <translation>zh-CN</translation>
     </message>
     <message>
         <location filename="../file.py" line="456"/>
         <source>TTS.attend_class</source>
-        <translation>TTS.attend_class</translation>
+        <translation>活动开始, {lesson_name}</translation>
     </message>
     <message>
         <location filename="../file.py" line="457"/>
         <source>TTS.finish_class</source>
-        <translation>TTS.finish_class</translation>
+        <translation>活动结束, 下一节课 {lesson_name}</translation>
     </message>
     <message>
         <location filename="../file.py" line="458"/>
         <source>TTS.prepare_class</source>
-        <translation>TTS.prepare_class</translation>
+        <translation>活动即将开始, 下一节课 {lesson_name}</translation>
     </message>
     <message>
         <location filename="../file.py" line="459"/>
         <source>TTS.after_school</source>
-        <translation>TTS.after_school</translation>
+        <translation>活动全部结束</translation>
     </message>
     <message>
         <location filename="../file.py" line="460"/>
         <source>Weather.api</source>
-        <translation>Weather.api</translation>
+        <translation>xiaomi_weather</translation>
     </message>
     <message>
         <location filename="../file.py" line="461"/>
         <source>Plugin.mirror</source>
-        <translation>Plugin.mirror</translation>
+        <translation>gh_proxy</translation>
     </message>
 </context>
 <context>
