@@ -1935,7 +1935,7 @@
         <location filename="../menu.py" line="2208"/>
         <location filename="../menu.py" line="2209"/>
         <source>跟随系统</source>
-        <translation type="unfinished">システムに従う</translation>
+        <translation>システムに従う</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2223"/>
@@ -3172,7 +3172,7 @@
     <message>
         <location filename="../file.py" line="304"/>
         <source>{section}.{key}</source>
-        <translation type="unfinished"></translation>
+        <translation>{section}.{key}</translation>
     </message>
     <message>
         <location filename="../file.py" line="454"/>
@@ -3182,7 +3182,7 @@
     <message>
         <location filename="../file.py" line="455"/>
         <source>TTS.language</source>
-        <translation type="unfinished"></translation>
+        <translation>ja-JP</translation>
     </message>
     <message>
         <location filename="../file.py" line="456"/>
@@ -3207,12 +3207,12 @@
     <message>
         <location filename="../file.py" line="460"/>
         <source>Weather.api</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Weather.api</translation>
     </message>
     <message>
         <location filename="../file.py" line="461"/>
         <source>Plugin.mirror</source>
-        <translation type="unfinished"></translation>
+        <translation>original</translation>
     </message>
 </context>
 <context>
