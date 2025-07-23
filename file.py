@@ -301,11 +301,12 @@ class ConfigCenter:
         if section in self.default_data:
             item_info = self.default_data[section].get(key)
             if item_info is not None:
+                if (translation := QCoreApplication.translate('config', f'{section}.{key}')) != f'{section}.{key}':
+                    return translation
                 if isinstance(item_info, dict) and "type" in item_info and "default" in item_info:
                     return self._convert_value(item_info["default"], item_info["type"])
                 else:
                     return item_info
-
         logger.warning(f"配置项未找到: Section='{section}', Key='{key}'")
         return fallback
 
@@ -447,3 +448,13 @@ def save_data_to_json(data: Dict[str, Any], filename: str) -> None:
 config_center = ConfigCenter(base_directory)
 schedule_center = ScheduleCenter(config_center)
 config_center.schedule_update_callback = schedule_center.update_schedule
+
+if __name__ == '__main__':
+    QCoreApplication.translate('config', 'General.schedule')
+    QCoreApplication.translate('config', 'TTS.language')
+    QCoreApplication.translate('config', 'TTS.attend_class')
+    QCoreApplication.translate('config', 'TTS.finish_class')
+    QCoreApplication.translate('config', 'TTS.prepare_class')
+    QCoreApplication.translate('config', 'TTS.after_school')
+    QCoreApplication.translate('config', 'Weather.api')
+    QCoreApplication.translate('config', 'Plugin.mirror')
