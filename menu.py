@@ -2774,23 +2774,7 @@ class SettingsMenu(FluentWindow):
             self.show_warning_toast(self.tr('NTP同步'), self.tr('启动同步失败'))
             self._cleanup_ntp_thread()
     
-    def _on_ntp_sync_finished(self, success):
-        """NTP同步完成"""
-        try:
-            if success:
-                self.show_success_toast(self.tr('NTP同步'), self.tr('NTP时间同步成功!'))
-                # 异步更新UI状态，避免阻塞
-                QTimer.singleShot(50, self.update_ntp_status_display)
-                # 延迟更新父组件数据
-                if hasattr(self, 'parent') and self.parent and hasattr(self.parent, 'update_data'):
-                    QTimer.singleShot(100, self.parent.update_data)
-            else:
-                self.show_warning_toast(self.tr('NTP同步'), self.tr('NTP时间同步失败,请检查网络连接和url地址!'))
-        except Exception as e:
-            logger.error(f"NTP同步完成回调失败: {e}")
-        finally:
-            QTimer.singleShot(100, self._cleanup_ntp_thread)
-    
+
     def _cleanup_ntp_thread(self):
         """清理NTP线程资源"""
         try:
