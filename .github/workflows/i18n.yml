@@ -10,6 +10,11 @@ on:
       - 'ui/**/i18n/**/*.ts'
   workflow_dispatch:
     inputs:
+      update_all_ts:
+        description: '更新全部.ts文件'
+        required: true
+        default: true
+        type: boolean
       compile_to_qm:
         description: '编译.ts为.qm文件'
         required: true
@@ -67,7 +72,7 @@ jobs:
               should_compile="true"
             fi
           elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            should_update_all="true"
+            should_update_all=${{ github.event.inputs.update_all_ts }}
             should_compile="${{ github.event.inputs.compile_to_qm }}"
             echo "[DEBUG] 手动触发 - 更新全部: $should_update_all; 是否编译: $should_compile"
           fi
@@ -176,19 +181,20 @@ jobs:
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v6
+        continue-on-error: true
         with:
           commit_message: |
-            i18n: 更新翻译文件(.ts) (Auto-Commit)
+            chore(i18n): 更新翻译文件 (.ts) (Auto-Commit)
+
             - 触发事件: ${{ github.event_name }}
             - 提交哈希: ${{ github.sha }}
             - 工作流运行: ${{ github.run_id }}
 
-            *由 GitHub Actions 自动生成
-          skip_dirty_check: true
+            * 由 GitHub Actions 自动生成
           commit_options: '--signoff'
           file_pattern: 'i18n/*.ts ui/*/i18n/*.ts'
           commit_user_name: 'github-actions[bot]'
-          commit_user_email: '41898282+github-actions[bot]@users.noreply.github.com'
+          commit_user_email: 'github-actions[bot]@users.noreply.github.com'
 
   compile-translations:
     name: Compile .ts files
@@ -259,19 +265,20 @@ jobs:
 
       - name: Commit compiled files
         uses: stefanzweifel/git-auto-commit-action@v6
+        continue-on-error: true
         with:
           commit_message: |
-            i18n: 编译.ts文件 (Auto-Commit)
+            chore(i18n): 编译翻译文件(.qm) (Auto-Commit)
+
             - 触发事件: ${{ github.event_name }}
             - 提交哈希: ${{ github.sha }}
             - 工作流运行: ${{ github.run_id }}
 
             * 由 GitHub Actions 自动生成
-          skip_dirty_check: true
           commit_options: '--signoff'
           file_pattern: 'i18n/*.qm ui/*/i18n/*.qm'
           commit_user_name: 'github-actions[bot]'
-          commit_user_email: '41898282+github-actions[bot]@users.noreply.github.com'
+          commit_user_email: 'github-actions[bot]@users.noreply.github.com'
 
   summary:
     name: Update Summary
