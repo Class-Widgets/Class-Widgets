@@ -358,7 +358,8 @@ def get_countdown(toast: bool = False) -> Optional[List[Union[str, int]]]:  # �
             if config_center.read_conf('Toast', 'after_school') == '1':
                 notification.push_notification(2)  # 放学
 
-    current_dt = TimeManagerFactory.get_instance().get_current_time()  # 当前时间
+    # 当前时间舍去毫秒，否则后面判定时间相等始终是False
+    current_dt = TimeManagerFactory.get_instance().get_current_time_without_ms()  
     return_text = []
     got_return_data = False
 
@@ -371,7 +372,7 @@ def get_countdown(toast: bool = False) -> Optional[List[Union[str, int]]]:  # �
                     # 判断时间是否上下课，发送通知
                     if current_dt == c_time and toast:
                         if item_name.startswith('a'):
-                            notification.push_notification(1, current_lesson_name)  # 上课
+                            notification.push_notification(1, next_lessons[0])  # 上课
                             last_notify_time = current_dt
                         else:
                             if next_lessons:  # 下课/放学
@@ -380,17 +381,17 @@ def get_countdown(toast: bool = False) -> Optional[List[Union[str, int]]]:  # �
                             else:
                                 after_school()
 
-                    if current_dt == c_time - dt.timedelta(
-                            minutes=int(config_center.read_conf('Toast', 'prepare_minutes'))):
-                        if config_center.read_conf('Toast',
-                                                   'prepare_minutes') != '0' and toast and item_name.startswith('a'):
+                    if (current_dt == c_time - dt.timedelta(
+                            minutes=int(config_center.read_conf('Toast', 'prepare_minutes')))
+                            and current_dt != last_notify_time):
+                        if (config_center.read_conf('Toast', 'prepare_minutes') != '0' and toast and item_name.startswith('a')):
                             if not current_state:  # 课间
                                 notification.push_notification(3, next_lessons[0])  # 准备上课（预备铃）
                                 last_notify_time = current_dt
 
                     # 放学
-                    if (c_time + dt.timedelta(minutes=int(item_time)) == current_dt and not next_lessons and
-                            not current_state and toast):
+                    if (c_time + dt.timedelta(minutes=int(item_time)) == current_dt 
+                        and not next_lessons and toast):
                         after_school()
                         last_notify_time = current_dt
 
