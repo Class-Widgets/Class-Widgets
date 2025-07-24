@@ -104,12 +104,6 @@ jobs:
           queries:
             - uses: security-and-quality
             - uses: security-extended
-          paths:
-          EOF
-              for file in $changed_files; do
-                echo "    - \"$file\"" >> "$config_file"
-              done
-              cat >> "$config_file" << 'EOF'
           paths-ignore:
             - "**/__pycache__/**"
             - "**/node_modules/**"
@@ -182,6 +176,10 @@ jobs:
           uv venv .venv
           source .venv/bin/activate
           uv pip install -r requirements.txt
+
+      - name: Autobuild for CodeQL
+        if: steps.codeql-config.outputs.scan_mode != 'skip'
+        uses: github/codeql-action/autobuild@v3
 
       - name: Cache CodeQL queries
         uses: actions/cache@v4
