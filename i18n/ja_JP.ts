@@ -3176,7 +3176,7 @@
     <message>
         <location filename="../file.py" line="454"/>
         <source>General.schedule</source>
-        <translation>General.schedule</translation>
+        <translation>新しいスケジュール - 1</translation>
     </message>
     <message>
         <location filename="../file.py" line="455"/>
