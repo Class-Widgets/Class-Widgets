@@ -185,6 +185,7 @@ jobs:
 
             *由 GitHub Actions 自动生成
           skip_dirty_check: true
+          commit_options: '--signoff'
           file_pattern: 'i18n/*.ts ui/*/i18n/*.ts'
           commit_user_name: 'github-actions[bot]'
           commit_user_email: '41898282+github-actions[bot]@users.noreply.github.com'
@@ -267,6 +268,7 @@ jobs:
 
             * 由 GitHub Actions 自动生成
           skip_dirty_check: true
+          commit_options: '--signoff'
           file_pattern: 'i18n/*.qm ui/*/i18n/*.qm'
           commit_user_name: 'github-actions[bot]'
           commit_user_email: '41898282+github-actions[bot]@users.noreply.github.com'
