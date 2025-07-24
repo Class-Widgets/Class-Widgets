@@ -188,27 +188,27 @@ You can add more voice in system settings (*≧▽≦)</translation>
 <context>
     <name>Form</name>
     <message>
-        <location filename="../view/extra_menu.ui" line="14"/>
-        <location filename="../view/widget-toast-bar.ui" line="26"/>
-        <location filename="../view/menu/about.ui" line="14"/>
-        <location filename="../view/menu/advance.ui" line="20"/>
-        <location filename="../view/menu/configs.ui" line="20"/>
-        <location filename="../view/menu/countdown_custom_edit.ui" line="14"/>
-        <location filename="../view/menu/custom.ui" line="20"/>
-        <location filename="../view/menu/file_item.ui" line="14"/>
-        <location filename="../view/menu/help.ui" line="14"/>
-        <location filename="../view/menu/plugin_mgr.ui" line="14"/>
-        <location filename="../view/menu/preview.ui" line="14"/>
-        <location filename="../view/menu/schedule_db_edit.ui" line="14"/>
-        <location filename="../view/menu/schedule_edit.ui" line="14"/>
-        <location filename="../view/menu/sound.ui" line="20"/>
-        <location filename="../view/menu/subject.ui" line="14"/>
-        <location filename="../view/menu/timeline_edit.ui" line="14"/>
-        <location filename="../view/pp/home.ui" line="20"/>
+        <location filename="../view/pp/settings.ui" line="20"/>
         <location filename="../view/pp/latests.ui" line="20"/>
+        <location filename="../view/pp/home.ui" line="20"/>
         <location filename="../view/pp/plugin_detail.ui" line="20"/>
         <location filename="../view/pp/search.ui" line="20"/>
-        <location filename="../view/pp/settings.ui" line="20"/>
+        <location filename="../view/menu/advance.ui" line="20"/>
+        <location filename="../view/menu/about.ui" line="14"/>
+        <location filename="../view/menu/subject.ui" line="14"/>
+        <location filename="../view/menu/schedule_edit.ui" line="14"/>
+        <location filename="../view/menu/sound.ui" line="20"/>
+        <location filename="../view/menu/help.ui" line="14"/>
+        <location filename="../view/menu/plugin_mgr.ui" line="14"/>
+        <location filename="../view/menu/custom.ui" line="20"/>
+        <location filename="../view/menu/schedule_db_edit.ui" line="14"/>
+        <location filename="../view/menu/configs.ui" line="20"/>
+        <location filename="../view/menu/timeline_edit.ui" line="14"/>
+        <location filename="../view/menu/file_item.ui" line="14"/>
+        <location filename="../view/menu/preview.ui" line="14"/>
+        <location filename="../view/menu/countdown_custom_edit.ui" line="14"/>
+        <location filename="../view/extra_menu.ui" line="14"/>
+        <location filename="../view/widget-toast-bar.ui" line="26"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
@@ -243,14 +243,14 @@ You can add more voice in system settings (*≧▽≦)</translation>
         <translation>Temporary replacement of the course of the day, invalid after restart</translation>
     </message>
     <message>
-        <location filename="../view/extra_menu.ui" line="208"/>
         <location filename="../view/menu/schedule_edit.ui" line="294"/>
+        <location filename="../view/extra_menu.ui" line="208"/>
         <source>课程/活动</source>
         <translation>Courses/Activities</translation>
     </message>
     <message>
-        <location filename="../view/extra_menu.ui" line="234"/>
         <location filename="../view/menu/schedule_edit.ui" line="320"/>
+        <location filename="../view/extra_menu.ui" line="234"/>
         <source>自定义课程</source>
         <translation>Custom courses</translation>
     </message>
@@ -265,12 +265,12 @@ You can add more voice in system settings (*≧▽≦)</translation>
         <translation>View more Settings</translation>
     </message>
     <message>
-        <location filename="../view/extra_menu.ui" line="306"/>
-        <location filename="../view/menu/countdown_custom_edit.ui" line="229"/>
-        <location filename="../view/menu/schedule_db_edit.ui" line="160"/>
-        <location filename="../view/menu/schedule_edit.ui" line="378"/>
         <location filename="../view/menu/subject.ui" line="89"/>
+        <location filename="../view/menu/schedule_edit.ui" line="378"/>
+        <location filename="../view/menu/schedule_db_edit.ui" line="160"/>
         <location filename="../view/menu/timeline_edit.ui" line="520"/>
+        <location filename="../view/menu/countdown_custom_edit.ui" line="229"/>
+        <location filename="../view/extra_menu.ui" line="306"/>
         <source>保存</source>
         <translation>Save</translation>
     </message>
@@ -382,7 +382,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
         <translation>If enabled, Class Widgets will check on the network at startup to see if the selected update channel has the latest version updated.</translation>
     </message>
     <message>
-        <location filename="../view/menu/about.ui" line="668"/>
+        <location filename="../view/pp/settings.ui" line="144"/>
         <location filename="../view/menu/advance.ui" line="143"/>
         <location filename="../view/menu/advance.ui" line="685"/>
         <location filename="../view/menu/advance.ui" line="1167"/>
@@ -390,30 +390,30 @@ You can add more voice in system settings (*≧▽≦)</translation>
         <location filename="../view/menu/advance.ui" line="1668"/>
         <location filename="../view/menu/advance.ui" line="1760"/>
         <location filename="../view/menu/advance.ui" line="1835"/>
+        <location filename="../view/menu/about.ui" line="668"/>
         <location filename="../view/menu/sound.ui" line="136"/>
         <location filename="../view/menu/sound.ui" line="214"/>
         <location filename="../view/menu/sound.ui" line="292"/>
         <location filename="../view/menu/sound.ui" line="383"/>
         <location filename="../view/menu/sound.ui" line="608"/>
         <location filename="../view/menu/sound.ui" line="687"/>
-        <location filename="../view/pp/settings.ui" line="144"/>
         <source>启用</source>
         <translation>Enable</translation>
     </message>
     <message>
-        <location filename="../view/menu/about.ui" line="671"/>
+        <location filename="../view/pp/settings.ui" line="147"/>
         <location filename="../view/menu/advance.ui" line="1170"/>
         <location filename="../view/menu/advance.ui" line="1340"/>
         <location filename="../view/menu/advance.ui" line="1671"/>
         <location filename="../view/menu/advance.ui" line="1763"/>
         <location filename="../view/menu/advance.ui" line="1838"/>
+        <location filename="../view/menu/about.ui" line="671"/>
         <location filename="../view/menu/sound.ui" line="139"/>
         <location filename="../view/menu/sound.ui" line="217"/>
         <location filename="../view/menu/sound.ui" line="295"/>
         <location filename="../view/menu/sound.ui" line="386"/>
         <location filename="../view/menu/sound.ui" line="611"/>
         <location filename="../view/menu/sound.ui" line="690"/>
-        <location filename="../view/pp/settings.ui" line="147"/>
         <source>禁用</source>
         <translation>Disable</translation>
     </message>
@@ -782,8 +782,8 @@ If disabled, clicking a widget is equivalent to clicking the window behind the w
         <translation>Database Edit</translation>
     </message>
     <message>
-        <location filename="../view/menu/preview.ui" line="35"/>
         <location filename="../view/menu/schedule_edit.ui" line="44"/>
+        <location filename="../view/menu/preview.ui" line="35"/>
         <source>课程表</source>
         <translation>Schedule</translation>
     </message>
@@ -1007,22 +1007,22 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
         <translation>The countdown will be blurry as &quot;&lt; x minutes&quot;</translation>
     </message>
     <message>
+        <location filename="../view/menu/plugin_mgr.ui" line="706"/>
+        <location filename="../view/menu/plugin_mgr.ui" line="712"/>
         <location filename="../view/menu/custom.ui" line="738"/>
         <location filename="../view/menu/custom.ui" line="744"/>
         <location filename="../view/menu/custom.ui" line="816"/>
         <location filename="../view/menu/custom.ui" line="822"/>
         <location filename="../view/menu/custom.ui" line="911"/>
         <location filename="../view/menu/custom.ui" line="917"/>
-        <location filename="../view/menu/plugin_mgr.ui" line="706"/>
-        <location filename="../view/menu/plugin_mgr.ui" line="712"/>
         <source>关</source>
         <translation>Off</translation>
     </message>
     <message>
+        <location filename="../view/menu/plugin_mgr.ui" line="709"/>
         <location filename="../view/menu/custom.ui" line="741"/>
         <location filename="../view/menu/custom.ui" line="819"/>
         <location filename="../view/menu/custom.ui" line="914"/>
-        <location filename="../view/menu/plugin_mgr.ui" line="709"/>
         <source>开</source>
         <translation>On</translation>
     </message>
@@ -1197,8 +1197,8 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
         <translation>Discord</translation>
     </message>
     <message>
-        <location filename="../view/menu/plugin_mgr.ui" line="35"/>
         <location filename="../view/pp/settings.ui" line="71"/>
+        <location filename="../view/menu/plugin_mgr.ui" line="35"/>
         <source>插件</source>
         <translation>Plugins</translation>
     </message>
@@ -1313,8 +1313,8 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
         <translation>The time to wait when the plugin performs an automated operation (seconds)</translation>
     </message>
     <message>
-        <location filename="../view/menu/preview.ui" line="50"/>
         <location filename="../view/menu/sound.ui" line="742"/>
+        <location filename="../view/menu/preview.ui" line="50"/>
         <source>预览</source>
         <translation>Preview</translation>
     </message>
