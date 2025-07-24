@@ -986,10 +986,10 @@ def stop_tts() -> bool:
     global _tts_playing
     try:
         from play_audio import stop_audio
-        success = stop_audio()
+        stop_audio()
         with _tts_lock:
             _tts_playing = False
-        return success
+        return True
     except Exception as e:
         logger.warning(f"停止TTS播放失败: {e}")
         with _tts_lock:
