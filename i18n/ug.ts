@@ -59,7 +59,7 @@ Siz sistem bexatliridin ta yana köp avaaz qoshaliysiz (*≧▽≦)</translation
     <message>
         <location filename="../main.py" line="2006"/>
         <source>额外选项</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Qoşumcha tallimlar</translation>
     </message>
     <message>
         <location filename="../main.py" line="2007"/>
@@ -1494,7 +1494,7 @@ Siz sistem bexatliridin ta yana köp avaaz qoshaliysiz (*≧▽≦)</translation
     <message>
         <location filename="../view/pp/settings.ui" line="41"/>
         <source>设置</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bexat</translation>
     </message>
     <message>
         <location filename="../view/pp/settings.ui" line="104"/>
@@ -1621,7 +1621,7 @@ Siz sistem bexatliridin ta yana köp avaaz qoshaliysiz (*≧▽≦)</translation
     <message>
         <location filename="../plugin_plaza.py" line="420"/>
         <source>更新</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">yangilanma</translation>
     </message>
 </context>
 <context>
@@ -1645,7 +1645,7 @@ Siz sistem bexatliridin ta yana köp avaaz qoshaliysiz (*≧▽≦)</translation
     <message>
         <location filename="../plugin_plaza.py" line="308"/>
         <source>更新</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">yangilanma</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="314"/>
@@ -1856,7 +1856,7 @@ Siz sistem bexatliridin ta yana köp avaaz qoshaliysiz (*≧▽≦)</translation
     <message>
         <location filename="../menu.py" line="1588"/>
         <source>知道啦~</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tushundum~</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1629"/>
@@ -2463,7 +2463,7 @@ Siz sistem bexatliridin ta yana köp avaaz qoshaliysiz (*≧▽≦)</translation
         <location filename="../menu.py" line="3217"/>
         <location filename="../menu.py" line="3218"/>
         <source>获取失败！</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">erishshə almidi!</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3238"/>
@@ -2636,7 +2636,7 @@ Siz sistem bexatliridin ta yana köp avaaz qoshaliysiz (*≧▽≦)</translation
         <location filename="../menu.py" line="3817"/>
         <location filename="../menu.py" line="3972"/>
         <source>课程</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">dərs</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3955"/>
@@ -2748,7 +2748,7 @@ Siz sistem bexatliridin ta yana köp avaaz qoshaliysiz (*≧▽≦)</translation
     <message>
         <location filename="../menu.py" line="4384"/>
         <source>高级选项</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">aliy tallanmilar</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4385"/>
@@ -2813,12 +2813,12 @@ Siz sistem bexatliridin ta yana köp avaaz qoshaliysiz (*≧▽≦)</translation
     <message>
         <location filename="../view/menu/tts_settings.ui" line="169"/>
         <source>启用</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">qozghat</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="172"/>
         <source>禁用</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">chəklə</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="208"/>
@@ -3356,7 +3356,7 @@ Siz sistem bexatliridin ta yana köp avaaz qoshaliysiz (*≧▽≦)</translation
         <location filename="../list_.py" line="64"/>
         <location filename="../list_.py" line="169"/>
         <source>英语</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">inglizchə</translation>
     </message>
     <message>
         <location filename="../list_.py" line="35"/>
@@ -3484,7 +3484,7 @@ Siz sistem bexatliridin ta yana köp avaaz qoshaliysiz (*≧▽≦)</translation
     <message>
         <location filename="../list_.py" line="58"/>
         <source>课程</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">dərs</translation>
     </message>
     <message>
         <location filename="../list_.py" line="59"/>
@@ -3792,12 +3792,12 @@ Siz sistem bexatliridin ta yana köp avaaz qoshaliysiz (*≧▽≦)</translation
     <message>
         <location filename="../menu.py" line="598"/>
         <source>禁用</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">chəklə</translation>
     </message>
     <message>
         <location filename="../menu.py" line="599"/>
         <source>启用</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">qozghat</translation>
     </message>
     <message>
         <location filename="../menu.py" line="644"/>
@@ -3864,7 +3864,7 @@ Siz sistem bexatliridin ta yana köp avaaz qoshaliysiz (*≧▽≦)</translation
     <message>
         <location filename="../tip_toast.py" line="110"/>
         <source>当前课程</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">hazirqi dərs</translation>
     </message>
     <message>
         <location filename="../tip_toast.py" line="117"/>
