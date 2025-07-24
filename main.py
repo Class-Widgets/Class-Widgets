@@ -1031,6 +1031,16 @@ class WidgetsManager:
         else:
             self.hide_windows()
 
+    def reapply_window_states(self) -> None:
+        """应用组件窗口状态"""
+        self.full_hide_windows()
+        for widget in self.widgets:
+            try:
+                widget.apply_window_state()
+                # logger.debug(f'重新应用小组件窗口状态：{widget.path}')
+            except Exception as e:
+                logger.error(f'应用小组件 {widget.path} 窗口状态时出错: {e}')
+
     def cleanup_resources(self):
         self.hide_status = None # 重置hide_status
         widgets_to_clean = list(self.widgets)
@@ -1673,7 +1683,7 @@ class FloatingWidget(QWidget):  # 浮窗
 class DesktopWidget(QWidget):  # 主要小组件
     def __init__(self, parent: WidgetsManager = WidgetsManager, path: str = 'widget-time.ui', enable_tray: bool = False, cnt: int = 0, position: Optional[Tuple[int, int]] = None, widget_cnt: Optional[int] = None) -> None:
         super().__init__()
-        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint | Qt.Tool)
+        self.setWindowFlags(self.windowFlags() | Qt.Tool)
 
         self.cnt = cnt
         self.widget_cnt = widget_cnt
@@ -1856,49 +1866,70 @@ class DesktopWidget(QWidget):  # 主要小组件
 
         self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents, config_center.read_conf('General', 'enable_click') == '0')
 
-        if config_center.read_conf('General', 'pin_on_top') == '1':  # 置顶
-            self.setWindowFlags(
+        self.apply_window_state()
+        if sys.platform == 'darwin':
+            self.setWindowFlag(Qt.WindowType.Widget, True)
+        else:
+            self.setWindowFlag(Qt.WindowType.Tool, True)
+    def apply_window_state(self) -> None:
+        """应用窗口状态"""
+        if self._is_topmost_callback_added:
+            try:
+                utils.update_timer.remove_callback(self._ensure_topmost)
+                self._is_topmost_callback_added = False
+            except (ValueError, AttributeError):
+                pass
+        was_visible = self.isVisible()
+        current_geometry = self.geometry() if was_visible else None
+        current_opacity = self.windowOpacity() if was_visible else 1.0
+        pin_on_top = config_center.read_conf('General', 'pin_on_top')
+
+        if pin_on_top == '1':  # 置顶
+            new_flags = (
                 Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint |
-                Qt.WindowType.WindowDoesNotAcceptFocus | Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
+                Qt.WindowType.WindowDoesNotAcceptFocus | Qt.X11BypassWindowManagerHint | Qt.Tool
             )
-            # 修改为使用定时器确保持续置顶
+        elif pin_on_top == '2':  # 置底
+            new_flags = (
+                Qt.WindowType.FramelessWindowHint |
+                Qt.WindowType.WindowDoesNotAcceptFocus | Qt.Tool
+            )
+        else:  # 普通
+            new_flags = Qt.WindowType.FramelessWindowHint | Qt.Tool
+        self.setWindowFlags(new_flags)
+        # 恢复状态
+        if was_visible:
+            self.show()
+            if current_geometry:
+                self.setGeometry(current_geometry)
+            self.setWindowOpacity(current_opacity)
+            self.raise_()
+
+        if pin_on_top == '1':  # 置顶
             if os.name == 'nt':
                 if not self._is_topmost_callback_added:
                     try:
-                        # 确保 utils.update_timer 存在且有效
                         if hasattr(utils, 'update_timer') and utils.update_timer:
                             utils.update_timer.add_callback(self._ensure_topmost)
                             self._is_topmost_callback_added = True
-                            self._ensure_topmost() # 立即执行一次确保初始置顶
-                            # logger.debug("已添加置顶定时回调。")
+                            self._ensure_topmost()
                         else:
                             logger.warning("utils.update_timer 不可用，无法添加置顶回调。")
                     except Exception as e:
                         logger.error(f"添加置顶回调时出错: {e}")
 
-        elif config_center.read_conf('General', 'pin_on_top') == '2':  # 置底
-            # 避免使用WindowStaysOnBottomHint,防止争夺底层
-            self.setWindowFlags(
-                Qt.WindowType.FramelessWindowHint |
-                Qt.WindowType.WindowDoesNotAcceptFocus
-            )
+        elif pin_on_top == '2':  # 置底
             if os.name == 'nt':
                 def set_window_pos():
-                    hwnd = self.winId().__int__()
-                    # 稍高于最底层的值
-                    ctypes.windll.user32.SetWindowPos(hwnd, 2, 0, 0, 0, 0, 0x0214)
+                    try:
+                        if self.isVisible():
+                            hwnd = self.winId().__int__()
+                            ctypes.windll.user32.SetWindowPos(hwnd, 2, 0, 0, 0, 0, 0x0214)
+                    except Exception as e:
+                        logger.error(f"设置窗口置底时出错: {e}")
                 QTimer.singleShot(100, set_window_pos)
             else:
                 QTimer.singleShot(100, self.lower)
-        else:
-            self.setWindowFlags(
-                Qt.WindowType.FramelessWindowHint
-            )
-
-        if sys.platform == 'darwin':
-            self.setWindowFlag(Qt.WindowType.Widget, True)
-        else:
-            self.setWindowFlag(Qt.WindowType.Tool, True)
 
     def _ensure_topmost(self) -> None:
         # 突然忘记写移除了,不写了,应该没事(

@@ -2087,9 +2087,14 @@ class SettingsMenu(FluentWindow):
         window_status_combo = self.adInterface.findChild(ComboBox, 'window_status_combo')
         window_status_combo.addItems(list_.window_status)
         window_status_combo.setCurrentIndex(int(config_center.read_conf('General', 'pin_on_top')))
-        window_status_combo.currentIndexChanged.connect(
-            lambda: config_center.write_conf('General', 'pin_on_top', str(window_status_combo.currentIndex()))
-        )  # 窗口状态
+
+        def on_window_status_changed():
+            """状态改变时回调"""
+            config_center.write_conf('General', 'pin_on_top', str(window_status_combo.currentIndex()))
+            if hasattr(utils, 'main_mgr') and utils.main_mgr is not None:
+                utils.main_mgr.reapply_window_states()
+        
+        window_status_combo.currentIndexChanged.connect(on_window_status_changed)
 
         switch_startup = self.adInterface.findChild(SwitchButton, 'switch_startup')
         switch_startup.setChecked(int(config_center.read_conf('General', 'auto_startup')))
