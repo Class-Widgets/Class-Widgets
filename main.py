@@ -42,7 +42,6 @@ from menu import open_plaza, I18nManager
 from weather import WeatherReportThread as weatherReportThread
 from weather import get_unified_weather_alerts, get_alert_image
 from network_thread import check_update
-from play_audio import play_audio
 from plugin import p_loader
 from utils import restart, stop, update_timer, DarkModeWatcher, TimeManagerFactory
 from file import config_center, schedule_center
@@ -619,8 +618,8 @@ class ErrorDialog(Dialog):  # 重大错误提示框
             stop()
         
         super().__init__(
-            self.tr('Class Widgets 崩溃报告'),
-            self.tr('抱歉！Class Widgets 发生了严重的错误从而无法正常运行。您可以保存下方的错误信息并向他人求助。'
+            QCoreApplication.translate('ErrorDialog', 'Class Widgets 崩溃报告'),
+            QCoreApplication.translate('ErrorDialog', '抱歉！Class Widgets 发生了严重的错误从而无法正常运行。您可以保存下方的错误信息并向他人求助。'
             '若您认为这是程序的Bug，请点击“报告此问题”或联系开发者。'),
             parent
         )
@@ -849,14 +848,19 @@ class PluginMethod:  # 插件方法
         """
         播放音频文件
 
-        参数：
+        Args:
         file_path (str): 要播放的音频文件路径
         tts_delete_after (bool): 播放后是否删除文件（默认True）
 
-        说明：
+        Note:
         - 删除操作有重试机制（3次尝试）
         """
-        play_audio(file_path, tts_delete_after)
+        if tts_delete_after:
+            from play_audio import play_audio_async
+            play_audio_async(file_path, cleanup_callback=True)
+        else:
+            from play_audio import play_audio
+            play_audio(file_path)
 
 
 class WidgetsManager:

@@ -1,21 +1,24 @@
-import os
-import sys
-import time
-import pytz
-import ntplib
-import psutil
-import signal
-import inspect
-import threading
-import darkdetect
 import datetime as dt
+import inspect
+import ntplib
+import os
+import signal
+import sys
+import threading
+import time
+
+import darkdetect
+import psutil
+import pytz
 from loguru import logger
 from abc import ABC, abstractmethod
-from typing import Dict, Any, Optional, Union, Callable, Type, Tuple
+from typing import Callable, Dict, Any, Optional, Type, Union, Tuple
+from PyQt5.QtCore import QDir, QLockFile, QObject, QTimer, pyqtSignal
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QSystemTrayIcon, QApplication
-from PyQt5.QtCore import QTimer, QObject, pyqtSignal, QLockFile, QDir
+from PyQt5.QtWidgets import QApplication, QSystemTrayIcon
+
 from file import base_directory, config_center
+
 
 _stop_in_progress = False
 update_timer: Optional['UnionUpdateTimer'] = None
@@ -78,6 +81,7 @@ def restart() -> None:
 def stop(status: int = 0) -> None:
     """
     退出程序
+
     :param status: 退出状态码,0=正常退出,!=0表示异常退出
     """
     global update_timer, _stop_in_progress
@@ -86,17 +90,34 @@ def stop(status: int = 0) -> None:
     _stop_in_progress = True
 
     logger.debug('退出程序...')
+
+    try:
+        from generate_speech import get_tts_service
+        tts_service = get_tts_service()
+        if hasattr(tts_service, '_manager') and tts_service._manager:
+            tts_service._manager.stop()
+    except Exception as e:
+        logger.warning(f"清理TTS管理器时出错: {e}")
+
     if 'update_timer' in globals() and update_timer:
         try:
             update_timer.stop()
             update_timer = None
         except Exception as e:
             logger.warning(f"停止全局更新定时器时出错: {e}")
+    import gc
+    import asyncio
+    gc.collect()
+    try:
+        asyncio.set_event_loop(None)
+    except Exception as e:
+        logger.warning(f"清理异步引用时出错: {e}")
     app = QApplication.instance()
     guard.release()
     if app:
         _reset_signal_handlers()
         app.quit()
+        app.processEvents()
 
     _terminate_child_processes()
     logger.debug(f"程序退出({status})")
