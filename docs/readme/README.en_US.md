@@ -16,7 +16,7 @@
   Class Widgets
 </h1>
 <p align="center">
-  A brand new application to show class schedule on the desktop
+  Brand New Desktop Class Schedule
 </p>
 
 <div align="center">
