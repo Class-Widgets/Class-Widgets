@@ -113,42 +113,42 @@
     <message>
         <location filename="../generate_speech.py" line="378"/>
         <source>文本内容不能为空</source>
-        <translation type="unfinished"></translation>
+        <translation>文本内容不能为空</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="380"/>
         <source>语音ID不能为空</source>
-        <translation type="unfinished"></translation>
+        <translation>语音ID不能为空</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="388"/>
         <source>语音文件生成失败，文件不存在</source>
-        <translation type="unfinished"></translation>
+        <translation>语音文件生成失败，文件不存在</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="390"/>
         <source>语音文件生成失败，文件为空</source>
-        <translation type="unfinished"></translation>
+        <translation>语音文件生成失败，文件为空</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="396"/>
         <source>Edge TTS服务未返回音频数据,可能是网络问题或语音参数错误。语音ID: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Edge TTS服务未返回音频数据,可能是网络问题或语音参数错误。语音ID: {}</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="398"/>
         <source>连接问题,可能是代理设置导致: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>连接问题,可能是代理设置导致: {}</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="400"/>
         <source>超时,请检查网络连接: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>超时,请检查网络连接: {}</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="402"/>
         <source>Edge TTS合成失败: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Edge TTS合成失败: {}</translation>
     </message>
 </context>
 <context>
@@ -2995,7 +2995,7 @@
     <message>
         <location filename="../generate_speech.py" line="498"/>
         <source>热芝士: TTSManager.get_instance() 获取实例</source>
-        <translation type="unfinished"></translation>
+        <translation>热芝士: TTSManager.get_instance() 获取实例</translation>
     </message>
 </context>
 <context>
@@ -3003,12 +3003,12 @@
     <message>
         <location filename="../generate_speech.py" line="648"/>
         <source>热芝士: 使用 TTSService.get_instance() 获取实例</source>
-        <translation type="unfinished"></translation>
+        <translation>热芝士: 使用 TTSService.get_instance() 获取实例</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="696"/>
         <source>当前系统不支持Pyttsx3</source>
-        <translation type="unfinished"></translation>
+        <translation>当前系统不支持Pyttsx3</translation>
     </message>
 </context>
 <context>
