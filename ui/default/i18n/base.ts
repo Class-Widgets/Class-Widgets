@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="zh_SIMPLIFIED">
+<TS version="2.1" language="zh_CN">
 <context>
     <name>Theme</name>
     <message>
@@ -9,13 +9,13 @@
         <location filename="../widget-floating.ui" line="20"/>
         <location filename="../toast-open_dialog.ui" line="20"/>
         <source>Form</source>
-        <translation>心情</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dark/toast-open_dialog.ui" line="105"/>
         <location filename="../toast-open_dialog.ui" line="105"/>
         <source>%p</source>
-        <translation>%p</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dark/toast-open_dialog.ui" line="142"/>

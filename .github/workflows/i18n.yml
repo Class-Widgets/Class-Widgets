@@ -1,0 +1,334 @@
+name: I18n Update
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '**/*.ui'
+      - '**/*.py'
+      - 'i18n/**/*.ts'
+      - 'ui/**/i18n/**/*.ts'
+  workflow_dispatch:
+    inputs:
+      update_all_ts:
+        description: '更新全部.ts文件'
+        required: true
+        default: true
+        type: boolean
+      compile_to_qm:
+        description: '编译.ts为.qm文件'
+        required: true
+        default: true
+        type: boolean
+
+concurrency:
+  group: i18n-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  detect-changes:
+    name: Check File Changes
+    runs-on: ubuntu-latest
+    outputs:
+      has_ui_changes: ${{ steps.detect.outputs.has_ui_changes }}
+      has_py_changes: ${{ steps.detect.outputs.has_py_changes }}
+      has_ts_changes: ${{ steps.detect.outputs.has_ts_changes }}
+      should_update_all: ${{ steps.detect.outputs.should_update_all }}
+      should_compile: ${{ steps.detect.outputs.should_compile }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 2
+
+      - name: Detect file changes
+        id: detect
+        shell: bash
+        run: |
+          has_ui_changes="false"
+          has_py_changes="false"
+          has_ts_changes="false"
+          should_update_all="false"
+          should_compile="false"
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            changed_files=$(git diff --name-only HEAD~1 HEAD)
+            if echo "$changed_files" | grep -q '\.ui$'; then
+              has_ui_changes="true"
+              echo "[DEBUG] .ui Changes Detected"
+            fi
+            if echo "$changed_files" | grep -q '\.py$'; then
+              has_py_changes="true"
+              echo "[DEBUG] .py Changes Detected"
+            fi
+            if echo "$changed_files" | grep -q '\.ts$'; then
+              has_ts_changes="true"
+              echo "[DEBUG] .ts Changes Detected"
+            fi
+            if [[ "$has_ui_changes" == "true" || "$has_py_changes" == "true" || "$has_ts_changes" == "true" ]]; then
+              should_compile="true"
+            fi
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            should_update_all=${{ github.event.inputs.update_all_ts }}
+            should_compile="${{ github.event.inputs.compile_to_qm }}"
+            echo "[DEBUG] 手动触发 - 更新全部: $should_update_all; 是否编译: $should_compile"
+          fi
+          echo "has_ui_changes=$has_ui_changes" >> $GITHUB_OUTPUT
+          echo "has_py_changes=$has_py_changes" >> $GITHUB_OUTPUT
+          echo "has_ts_changes=$has_ts_changes" >> $GITHUB_OUTPUT
+          echo "should_update_all=$should_update_all" >> $GITHUB_OUTPUT
+          echo "should_compile=$should_compile" >> $GITHUB_OUTPUT
+          {
+            echo "## 文件变更"
+            echo "| 文件类型 | 状态 |"
+            echo "|----------|------|"
+            echo "| .py | $has_py_changes |"
+            echo "| .ui | $has_ui_changes |"
+            echo "| .ts | $has_ts_changes |"
+            echo "| 更新全部 | $should_update_all |"
+            echo "| 是否编译 | $should_compile |"
+          } >> $GITHUB_STEP_SUMMARY
+
+  update-translations:
+    name: Update .ts files
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: |
+      needs.detect-changes.outputs.has_ui_changes == 'true' ||
+      needs.detect-changes.outputs.has_py_changes == 'true' ||
+      needs.detect-changes.outputs.should_update_all == 'true'
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Update ref
+        shell: bash
+        run: |
+          git fetch origin
+          git rebase origin/${{ github.ref_name }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: ""
+
+      - name: Install PySide6 tools
+        run: uv pip install --system PySide6
+
+      - name: Update main .ts files
+        if: needs.detect-changes.outputs.has_py_changes == 'true' || needs.detect-changes.outputs.should_update_all == 'true'
+        shell: bash
+        run: |
+          echo "[DEBUG] 更新主程序翻译文件..."
+          py_files=$(find . -maxdepth 1 -name "*.py" | tr '\n' ' ')
+          ui_files=$(find ./view -name "*.ui" 2>/dev/null | tr '\n' ' ' || echo "")
+          if [ -n "$py_files" ] || [ -n "$ui_files" ]; then
+            for ts_file in i18n/*.ts; do
+              if [ -f "$ts_file" ]; then
+                echo "[DEBUG] 更新 $ts_file"
+                if [ -n "$py_files" ] && [ -n "$ui_files" ]; then
+                  pyside6-lupdate $py_files $ui_files -ts "$ts_file"
+                  echo "[DEBUG] 已更新 $ts_file on .py&.ui"
+                elif [ -n "$py_files" ]; then
+                  pyside6-lupdate $py_files -ts "$ts_file"
+                  echo "[DEBUG] 已更新 $ts_file on .py"
+                elif [ -n "$ui_files" ]; then
+                  pyside6-lupdate $ui_files -ts "$ts_file"
+                  echo "[DEBUG] 已更新 $ts_file on .ui"
+                fi
+              fi
+            done
+          fi
+
+      - name: Update theme .ts files
+        if: needs.detect-changes.outputs.has_ui_changes == 'true' || needs.detect-changes.outputs.should_update_all == 'true'
+        shell: bash
+        run: |
+          for theme_dir in ui/*/; do
+            if [ -d "$theme_dir" ]; then
+              theme_name=$(basename "$theme_dir")
+              echo "[DEBUG] 处理主题: $theme_name"
+              ui_files=$(find "$theme_dir" -name "*.ui" -type f | tr '\n' ' ')
+              if [ -n "$ui_files" ]; then
+                i18n_dir="${theme_dir}i18n"
+                mkdir -p "$i18n_dir"
+                echo "[DEBUG] 找到 UI 文件: $ui_files"
+                for ts_file in "${i18n_dir}"/*.ts; do
+                  if [ -f "$ts_file" ]; then
+                    echo "[DEBUG] 更新 $ts_file"
+                    pyside6-lupdate $ui_files -ts "$ts_file"
+                  fi
+                done
+              else
+                echo "[DEBUG] 主题 $theme_name 中未找到 UI 文件"
+              fi
+            fi
+          done
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v6
+        continue-on-error: true
+        with:
+          commit_message: |
+            chore(i18n): 更新翻译文件 (.ts) (Auto-Commit)
+
+            - 触发事件: ${{ github.event_name }}
+            - 提交哈希: ${{ github.sha }}
+            - 工作流运行: ${{ github.run_id }}
+
+            * 由 GitHub Actions 自动生成
+          commit_options: '--signoff'
+          file_pattern: 'i18n/*.ts ui/*/i18n/*.ts'
+          commit_user_name: 'github-actions[bot]'
+          commit_user_email: 'github-actions[bot]@users.noreply.github.com'
+
+  compile-translations:
+    name: Compile .ts files
+    runs-on: ubuntu-latest
+    needs: [detect-changes, update-translations]
+    if: always() && needs.detect-changes.outputs.should_compile == 'true'
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Update ref
+        shell: bash
+        run: |
+          git fetch origin
+          git rebase origin/${{ github.ref_name }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: ""
+
+      - name: Install PySide6 tools
+        run: uv pip install --system PySide6
+
+      - name: Compile main .ts files
+        shell: bash
+        run: |
+          for ts_file in i18n/*.ts; do
+            if [ -f "$ts_file" ]; then
+              qm_file="${ts_file%.ts}.qm"
+              echo "[DEBUG] 编译: $(basename "$ts_file") -> $(basename "$qm_file")"
+              pyside6-lrelease "$ts_file" -qm "$qm_file"
+            fi
+          done
+
+      - name: Compile theme .ts files
+        shell: bash
+        run: |
+          for theme_dir in ui/*/; do
+            if [ -d "$theme_dir" ]; then
+              theme_name=$(basename "$theme_dir")
+              i18n_dir="${theme_dir}i18n"
+              if [ -d "$i18n_dir" ]; then
+                echo "[DEBUG] 处理主题: $theme_name"
+                for ts_file in "$i18n_dir"/*.ts; do
+                  if [ -f "$ts_file" ]; then
+                    qm_file="${ts_file%.ts}.qm"
+                    echo "[DEBUG] 编译: $(basename "$ts_file") -> $(basename "$qm_file")"
+                    pyside6-lrelease "$ts_file" -qm "$qm_file"
+                  fi
+                done
+              else
+                echo "[DEBUG] 主题 $theme_name 没有翻译文件"
+              fi
+            fi
+          done
+
+      - name: Commit compiled files
+        uses: stefanzweifel/git-auto-commit-action@v6
+        continue-on-error: true
+        with:
+          commit_message: |
+            chore(i18n): 编译翻译文件(.qm) (Auto-Commit)
+
+            - 触发事件: ${{ github.event_name }}
+            - 提交哈希: ${{ github.sha }}
+            - 工作流运行: ${{ github.run_id }}
+
+            * 由 GitHub Actions 自动生成
+          commit_options: '--signoff'
+          file_pattern: 'i18n/*.qm ui/*/i18n/*.qm'
+          commit_user_name: 'github-actions[bot]'
+          commit_user_email: 'github-actions[bot]@users.noreply.github.com'
+
+  summary:
+    name: Update Summary
+    runs-on: ubuntu-latest
+    needs: [detect-changes, update-translations, compile-translations]
+    if: always()
+    steps:
+      - name: Generate summary
+        shell: bash
+        run: |
+          {
+            echo "### 执行状态"
+            echo "| 任务 | 状态 |"
+            echo "|------|------|"
+            if [[ "${{ needs.detect-changes.result }}" == "success" ]]; then
+              echo "| 检测变更 | 成功 |"
+            else
+              echo "| 检测变更 | 失败 |"
+            fi
+            if [[ "${{ needs.update-translations.result }}" == "success" ]]; then
+              echo "| 更新翻译 | 成功 |"
+            elif [[ "${{ needs.update-translations.result }}" == "failure" ]]; then
+              echo "| 更新翻译 | 失败 |"
+            elif [[ "${{ needs.update-translations.result }}" == "skipped" ]]; then
+              echo "| 更新翻译 | 跳过 |"
+            else
+              echo "| 更新翻译 | 取消 |"
+            fi
+            if [[ "${{ needs.compile-translations.result }}" == "success" ]]; then
+              echo "| 编译翻译 | 成功 |"
+            elif [[ "${{ needs.compile-translations.result }}" == "failure" ]]; then
+              echo "| 编译翻译 | 失败 |"
+            elif [[ "${{ needs.compile-translations.result }}" == "skipped" ]]; then
+              echo "| 编译翻译 | 跳过 |"
+            else
+              echo "| 编译翻译 | 取消 |"
+            fi
+            echo ""
+            echo "### 触发信息"
+            echo "- **触发事件**: ${{ github.event_name }}"
+            echo "- **分支**: ${{ github.ref_name }}"
+            echo "- **提交**: ${{ github.sha }}"
+            echo "- **执行时间**: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+            if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+              echo "- **更新全部**: true (默认)"
+              echo "- **编译 QM**: ${{ github.event.inputs.compile_to_qm }}"
+            fi
+            echo ""
+            echo "### 变更结果"
+            echo "- **Python 文件变更**: ${{ needs.detect-changes.outputs.has_py_changes }}"
+            echo "- **UI 文件变更**: ${{ needs.detect-changes.outputs.has_ui_changes }}"
+            echo "- **翻译文件变更**: ${{ needs.detect-changes.outputs.has_ts_changes }}"
+          } >> $GITHUB_STEP_SUMMARY

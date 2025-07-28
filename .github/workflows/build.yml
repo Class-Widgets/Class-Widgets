@@ -1,84 +1,105 @@
 name: 构建
 
 on:
-  workflow_dispatch:
   push:
     tags:
       - v*
+  workflow_dispatch:
+    inputs:
+      is_release:
+        description: '是否为发布版本'
+        required: true
+        default: false
+        type: boolean
+      release_version:
+        description: '发布版本号(仅发布版本有效)'
+        required: false
+        type: string
+  pull_request:
+    types: [opened, synchronize]
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.txt'
+      - 'docs/**'
+      - 'Scripts/**'
+      - '.gitignore'
+      - '.gitattributes'
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/DISCUSSION_TEMPLATE/**'
+      - '.github/PULL_REQUEST_TEMPLATE*'
 
 concurrency:
-  group: build-${{ github.ref }}
+  group: build-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
   contents: write
- 
+  pull-requests: read
+
 jobs:
-  check_commit:
+  prepare:
+    # 拆的稀碎,也许还行(x
+    name: Update Info
     runs-on: ubuntu-latest
     outputs:
-      has-new-commits: ${{ steps.check-new-commits.has-new-commits }}
-    steps:
-      - name: Check for new commits today
-        id: check-new-commits
-        uses: adriangl/check-new-commits-action@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          seconds: 86400
-          branch: 'main'
-
-  builder_matrix:
-    strategy:
-      fail-fast: false
-      matrix:
-        arch: [ x86, x64, arm64 ]
-        os: [ windows-latest, macos-13, macos-14 ]
-        exclude:
-          - os: macos-13
-            arch: x86
-          - os: macos-13
-            arch: arm64
-          - os: windows-latest
-            arch: arm64
-          - os: macos-14
-            arch: x86
-          - os: macos-14
-            arch: x64
-          - os: windows-latest
-            arch: x86
-    runs-on: ${{ matrix.os }}
-    needs: check_commit
-    if: ${{ needs.check_commit.outputs.has-new-commits == 'true' || github.event_name == 'workflow_dispatch' || (startsWith(github.ref, 'refs/tags/') && github.event_name != 'schedule') }}
+      is_release: ${{ steps.build-info.outputs.is_release }}
+      build_type: ${{ steps.build-info.outputs.build_type }}
+      skip_ci: ${{ steps.check-skip-ci.outputs.skip_ci }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4.2.2
-      - name: Setup Python
-        uses: actions/setup-python@v5.3.0
         with:
-          python-version: '3.8.10'
-          architecture: ${{ matrix.arch }}
-          cache: 'pip'
-          cache-dependency-path: |
-            **/requirements*.txt
+          fetch-depth: 2
 
-      - name: Init zip folder
-        run: mkdir zip
-
-      - name: Install Dependencies
-        run: pip install -r requirements.txt
-
-      - name: Set Build Info
+      - name: Check Skip CI
+        id: check-skip-ci
         shell: bash
         run: |
-          if [[ "$(uname)" == "Darwin" ]]; then
-            build_time=$(date -u -v+8H +"%Y-%m-%d %H:%M")
-          else
-            build_time=$(date -u -d "+8 hours" +"%Y-%m-%d %H:%M")
+          skip_ci=false
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            pr_title="${{ github.event.pull_request.title }}"
+            if [[ "$pr_title" =~ [Ss][Kk][Ii][Pp][[:space:]][Cc][Ii] ]]; then
+              skip_ci=true
+            fi
+            if [[ "${{ github.event.action }}" == "synchronize" && "$skip_ci" == "false" ]]; then
+              commit_sha="${{ github.event.pull_request.head.sha }}"
+              commit_message=$(git log -1 --pretty=%B "$commit_sha")
+              if echo "$commit_message" | grep -i -q "skip[[:space:]]*ci"; then
+                skip_ci=true
+              fi
+            fi
           fi
+          echo "skip_ci=$skip_ci" >> $GITHUB_OUTPUT
+          echo "::group::Commit Message"
+          echo "[DEBUG] commit-message: "$commit_message" ; sha: $commit_sha ; skip-ci: $skip_ci"
+          echo "::endgroup::"
+          echo "是否跳过 CI: $skip_ci" >> $GITHUB_STEP_SUMMARY
+
+      - name: Set Build Info
+        id: build-info
+        if: steps.check-skip-ci.outputs.skip_ci != 'true'
+        shell: bash
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number || 0 }}
+          PR_BRANCH: ${{ github.event.pull_request.head.repo.owner.login || github.repository_owner }}:${{ github.event.pull_request.head.ref || github.ref_name }}
+        run: |
+          build_time=$(date -u -d "+8 hours" +"%Y-%m-%d %H:%M")
           build_commit="${GITHUB_SHA:0:7}"
           build_branch="${GITHUB_REF_NAME}"
           build_runid="${GITHUB_RUN_ID}"
-          build_type="Nuitka - Release"
+          is_release=false
+          if [[ "${GITHUB_EVENT_NAME}" == "push" && "${GITHUB_REF}" =~ ^refs/tags/v ]]; then
+            is_release=true
+            build_type="PyInstaller - Release"
+          elif [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" && "${{ github.event.inputs.is_release }}" == "true" ]]; then
+            is_release=true
+            build_type="PyInstaller - Release"
+          elif [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
+            build_branch="$PR_BRANCH"
+            build_type="PyInstaller - Debug (PR-#${PR_NUMBER})"
+          else
+            build_type="PyInstaller - Debug"
+          fi
           config_path="config/default_config.json"
           config_text=$(cat "$config_path")
           config_text="${config_text//__BUILD_TIME__/$build_time}"
@@ -87,198 +108,432 @@ jobs:
           config_text="${config_text//__BUILD_RUNID__/$build_runid}"
           config_text="${config_text//__BUILD_TYPE__/$build_type}"
           printf "%s" "$config_text" > "$config_path"
-          echo "🧾 写入的构建信息："
-          echo "⏰ BUILD_TIME(UTC+8):   $build_time"
-          echo "🔗 COMMIT_HASH: $build_commit"
-          echo "🌿 BRANCH:      $build_branch"
-          echo "🆔 RUN_ID:      $build_runid"
-          echo "🧪 BUILD_TYPE:  $build_type"
+          echo "IS_RELEASE=$is_release" >> $GITHUB_ENV
+          echo "BUILD_TYPE=$build_type" >> $GITHUB_ENV
+          echo "is_release=$is_release" >> $GITHUB_OUTPUT
+          echo "build_type=$build_type" >> $GITHUB_OUTPUT
+          {
+            echo "## 📋 构建信息"
+            echo "| 项目 | 值 |"
+            echo "|------|----|"
+            echo "| ⏰ 构建时间 (UTC+8) | $build_time |"
+            echo "| 🔗 提交哈希 | $build_commit |"
+            echo "| 🌿 分支 | $build_branch |"
+            echo "| 🆔 运行 ID | $build_runid |"
+            echo "| 🧪 构建类型 | $build_type |"
+            echo "| 🚀 是否发布 | $is_release |"
+          } >> $GITHUB_STEP_SUMMARY
 
-      - name: Build (Windows)
-        if: ${{ startsWith(matrix.os, 'windows') }}
-        uses: Nuitka/Nuitka-Action@main
-        with:
-          mode: standalone
-          script-name: main.py
-          output-file: ClassWidgets
-          enable-plugins: pyqt5
-          include-data-files: LICENSE=LICENSE
-          include-data-dir: |
-            audio=audio
-            config=config
-            font=font
-            img=img
-            ui=ui
-            view=view
-          include-package: |
-            pyttsx3.drivers
-            comtypes
-          disable-console: true
-          product-name: Class Widgets
-          file-version: 1.1.7.2
-          windows-icon-from-ico: ./img/favicon.ico
-      - name: Build (macOS)
-        if: ${{ startsWith(matrix.os, 'macos') }}
-        uses: Nuitka/Nuitka-Action@main
-        with:
-          script-name: main.py
-          enable-plugins: pyqt5
-          output-file: ClassWidgets
-          include-data-files: LICENSE=LICENSE
-          include-data-dir: |
-            audio=audio
-            config=config
-            font=font
-            img=img
-            ui=ui
-            view=view
-          include-package: pyttsx3.drivers
-          macos-app-icon: ./img/favicon.icns
-          macos-signed-app-name: cn.rinlit.classwidgets
-          macos-app-name: Class Widgets
-          macos-app-version: 1.1.7.2
+  build:
+    needs: [prepare]
+    if: needs.prepare.result == 'success' && needs.prepare.outputs.skip_ci != 'true'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - os: windows-latest
+            arch: x64
+            platform: windows-x64
+          - os: windows-latest
+            arch: x86
+            platform: windows-x86
+          - os: macos-15
+            arch: x64
+            platform: macos-x64
+          - os: macos-15
+            arch: arm64
+            platform: macos-arm64
+          - os: ubuntu-latest
+            arch: x64
+            platform: linux-x64
+    env:
+      PYTHON_VERSION: ${{ (startsWith(matrix.os, 'macos') || matrix.platform == 'linux-x64') && '3.12' || '3.8' }}
+      IS_RELEASE: ${{ needs.prepare.outputs.is_release }}
+      BUILD_TYPE: ${{ needs.prepare.outputs.build_type }}
 
-
-      - name: Package (Windows)
-        if: ${{ matrix.os == 'windows-latest' }}
+    steps:
+      - name: Install dependencies (Linux)
+        if: matrix.platform == 'linux-x64'
+        shell: bash
         run: |
-          curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
-          xcopy build\main.dist\* ClassWidgets\ /e/y
-          ./zip -r -q "./zip/ClassWidgets-Windows-${{ matrix.arch }} (Unsigned).zip" ClassWidgets
+          sudo apt-get update
+          sudo apt-get install -y zip
 
-      - name: Package (macOS)
-        if: ${{ startsWith(matrix.os, 'macos') }}
+      - name: Checkout repository
+        uses: actions/checkout@v4.2.2
+
+      - name: Install gettext (macOS)
+        if: startsWith(matrix.os, 'macos')
         run: |
-          cp -R build/main.app Class\ Widgets.app
-          zip -r -q "./zip/ClassWidgets-macOS-${{ matrix.arch }}.zip" Class\ Widgets.app
+          if ! brew list gettext &>/dev/null; then
+            brew install gettext
+            brew link --overwrite --force gettext
+          fi
 
-      - name: Upload unsigned application
-        if: ${{ matrix.os != 'windows-latest' || !startsWith(github.ref, 'refs/tags/') }}
-        uses: actions/upload-artifact@v4.4.2
+      - name: Setup Python
+        uses: actions/setup-python@v5.6.0
         with:
-          name: ${{ matrix.os }}-${{ matrix.arch }}
-          path: ./zip
-      - name: Upload unsigned single file
-        if: ${{ matrix.os == 'windows-latest' && startsWith(github.ref, 'refs/tags/') }}
-        id: upload-unsigned-artifact
-        uses: actions/upload-artifact@v4.4.2
+          python-version: ${{ env.PYTHON_VERSION }}
+          architecture: ${{ matrix.arch }}
+
+      - name: Python Syntax Check
+        id: syntax_check
+        shell: bash
+        run: |
+          python_files=$(find . -name "*.py" -not -path "*/__pycache__/*" -not -path "*/.venv/*" -not -path "*/build/*" -not -path "*/dist/*")
+          has_errors=false
+          error_report="## 🔍 Python 语法检查 (${{ matrix.os }})\n\n"
+          for file in $python_files; do
+            echo "检查文件: $file"
+            if ! python -m py_compile "$file" 2>/dev/null; then
+              echo "❌ 语法错误在文件 $file"
+              error_output=$(python -m py_compile "$file" 2>&1)
+              has_errors=true
+              error_report+="### ❌ 语法错误: \`$file\`\n\n"
+              error_report+="\`\`\`\n$error_output\n\`\`\`\n\n"
+            fi
+          done
+          if [ "$has_errors" = true ]; then
+            echo "has_syntax_errors=true" >> $GITHUB_OUTPUT
+            exit 1
+          else
+            echo "has_syntax_errors=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Cache Python dependencies
+        uses: actions/cache@v4
         with:
-          name: windows-${{ matrix.arch }} (Unsigned single - DO NOT use)
-          path: ./ClassWidgets/ClassWidgets.exe
-      - name: Sign application (Release)
-        if: ${{ matrix.os == 'windows-latest' && startsWith(github.ref, 'refs/tags/') }}
-        uses: signpath/github-action-submit-signing-request@v1.1
+          path: |
+            ~/.cache/uv
+            ~\AppData\Local\uv
+            .venv
+          key: ${{ runner.os }}-${{ matrix.arch }}-uv-cache-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.arch }}-uv-cache-${{ hashFiles('requirements.txt') }}
+            ${{ runner.os }}-${{ matrix.arch }}-uv-cache-
+            ${{ runner.os }}-${{ matrix.arch }}-uv-
+
+      - name: Create venv and install dependencies
+        shell: bash
+        run: |
+          if [ ! -e ".venv/bin/python3" ] && [ ! -e ".venv/Scripts/python.exe" ]; then
+            echo "fuck cache"
+            rm -rf .venv
+          fi
+          if [[ "${{ runner.os }}" == "Windows" ]] && [ -d ".venv/Scripts" ]; then
+            source .venv/Scripts/activate
+          elif [ -d ".venv/bin" ]; then
+            source .venv/bin/activate
+          else
+            uv venv .venv
+            if [[ "${{ runner.os }}" == "Windows" ]]; then
+              source .venv/Scripts/activate
+            else
+              source .venv/bin/activate
+            fi
+          fi
+          uv pip install -r requirements.txt
+          uv pip install pyinstaller
+
+      - name: Prepare output directory
+        run: |
+          mkdir -p packages
+
+      - name: Set environment variables
+        shell: bash
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number || 0 }}
+        run: |
+          is_release=false
+          if [[ "${GITHUB_EVENT_NAME}" == "push" && "${GITHUB_REF}" =~ ^refs/tags/v ]]; then
+            is_release=true
+            build_type="PyInstaller - Release"
+          elif [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" && "${{ github.event.inputs.is_release }}" == "true" ]]; then
+            is_release=true
+            build_type="PyInstaller - Release"
+          elif [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
+            build_type="PyInstaller - Debug (PR-#${PR_NUMBER})"
+          else
+            build_type="PyInstaller - Debug"
+          fi
+          echo "IS_RELEASE=$is_release" >> $GITHUB_ENV
+          echo "BUILD_TYPE=$build_type" >> $GITHUB_ENV
+
+      - name: Build Windows (pyinstaller)
+        if: startsWith(matrix.os, 'windows')
+        shell: bash
+        run: |
+          if [[ "${{ runner.os }}" == "Windows" ]]; then
+            # 不理解,但尊重
+            source .venv/Scripts/activate
+            curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
+          fi
+          pyinstaller main.py \
+            -w \
+            -i ./img/favicon.ico \
+            -n ClassWidgets \
+            --contents-directory . \
+            --add-data config:config \
+            --add-data audio:audio \
+            --add-data img:img \
+            --add-data ui:ui \
+            --add-data font:font \
+            --add-data view:view \
+            --add-data LICENSE:. \
+            --add-data i18n:i18n \
+            --hidden-import darkdetect
+
+          if [[ "$IS_RELEASE" == "true" ]]; then
+            zip_name="ClassWidgets-Windows-${{ matrix.arch }}"
+          else
+            zip_name="Windows-${{ matrix.arch }}_debug-${GITHUB_RUN_ID}"
+          fi
+          ./zip.exe -r -q "packages/${zip_name}.zip" dist/ClassWidgets/*
+
+      - name: Build macOS (pyinstaller)
+        if: startsWith(matrix.os, 'macos')
+        shell: bash
+        run: |
+          source .venv/bin/activate
+          pyinstaller main.py \
+            -w \
+            -i ./img/favicon.icns \
+            -n "Class Widgets" \
+            --contents-directory . \
+            --add-data "config:config" \
+            --add-data "audio:audio" \
+            --add-data "img:img" \
+            --add-data "ui:ui" \
+            --add-data "font:font" \
+            --add-data "view:view" \
+            --add-data "i18n:i18n" \
+            --add-data "LICENSE:." \
+            --hidden-import darkdetect
+
+          cp -R dist/"Class Widgets.app" .
+          if [[ "$IS_RELEASE" == "true" ]]; then
+            zip_name="ClassWidgets-macOS-${{ matrix.arch }}"
+          else
+            zip_name="macOS(${{ matrix.arch }})_debug-${GITHUB_RUN_ID}"
+          fi
+          zip -r -q "packages/${zip_name}.zip" "Class Widgets.app"
+
+      - name: Build Linux (pyinstaller)
+        if: matrix.platform == 'linux-x64'
+        shell: bash
+        run: |
+          source .venv/bin/activate
+          pyinstaller main.py \
+            -w \
+            -n ClassWidgets \
+            --contents-directory . \
+            --add-data config:config \
+            --add-data audio:audio \
+            --add-data img:img \
+            --add-data ui:ui \
+            --add-data font:font \
+            --add-data view:view \
+            --add-data LICENSE:. \
+            --add-data i18n:i18n \
+            --hidden-import darkdetect
+
+          if [[ "$IS_RELEASE" == "true" ]]; then
+            zip_name="ClassWidgets-Linux-x64"
+          else
+            zip_name="Linux-x64_debug-${GITHUB_RUN_ID}"
+          fi
+          zip -r -q "packages/${zip_name}.zip" dist/ClassWidgets/*
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: ${{ matrix.platform }}-build
+          path: ./packages
+
+  sign:
+    needs: [prepare, build]
+    if: needs.prepare.outputs.is_release == 'true' && needs.build.result == 'success' && needs.prepare.outputs.skip_ci != 'true'
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        arch: [x64, x86]
+    steps:
+      - name: Download Windows build artifacts
+        uses: actions/download-artifact@v4.3.0
+        with:
+          name: windows-${{ matrix.arch }}-build
+          path: ./artifacts
+
+      - name: Extract executable for signing
+        shell: pwsh
+        run: |
+          $zipFile = Get-ChildItem -Path ./artifacts -Filter "*.zip" | Select-Object -First 1
+          if ($zipFile) {
+            Expand-Archive -Path $zipFile.FullName -DestinationPath ./extracted
+            $exeFile = Get-ChildItem -Path ./extracted -Filter "ClassWidgets.exe" -Recurse | Select-Object -First 1
+            if ($exeFile) {
+              Copy-Item $exeFile.FullName -Destination ./ClassWidgets.exe
+            } else {
+              exit 1
+            }
+          } else {
+            exit 1
+          }
+
+      - name: Sign application
+        uses: signpath/github-action-submit-signing-request@v1.2
         with:
           api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
           organization-id: '2e13633d-4e7d-4462-9091-27536751c84c'
           project-slug: 'Class-Widgets.git'
           signing-policy-slug: 'release-signing'
-          github-artifact-id: '${{ steps.upload-unsigned-artifact.outputs.artifact-id }}'
+          github-artifact-id: windows-${{ matrix.arch }}-build
           wait-for-completion: true
-          output-artifact-directory: '.\ClassWidgets'
-      - name: Recompress
-        if: ${{ matrix.os == 'windows-latest' && startsWith(github.ref, 'refs/tags/') }}
-        run: |
-          del "zip/ClassWidgets-Windows-${{ matrix.arch }} (Unsigned).zip"
-          ./zip -r -q zip/ClassWidgets-Windows-${{ matrix.arch }}.zip ClassWidgets
-      - name: Upload signed application
-        if: ${{ matrix.os == 'windows-latest' && startsWith(github.ref, 'refs/tags/') }}
-        uses: actions/upload-artifact@v4.4.2
-        with:
-          name: windows-latest-${{ matrix.arch }}
-          path: ./zip
+          output-artifact-directory: './signed'
 
-  debian:
-    runs-on: ubuntu-latest
-    needs: check_commit
-    if: ${{ needs.check_commit.outputs.has-new-commits == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/') }}
-    container:
-      image: debian:10
-    steps:
-      - name: Install dependencies
-        shell: bash
+      - name: Repackage signed application
+        shell: pwsh
         run: |
-          apt-get update
-          apt-get install -y ccache gcc wget zip binutils libglib2.0-dev libfreetype6 libxfixes3 libgssapi-krb5-2 libdbus-1-3 libxext6 libfontconfig1 libxrandr2 libnspr4 libx11-xcb1 libxrender1 libasound2 libxkbcommon0 libxtst6 libnss3 libxdamage1 libxcomposite1 libcups2 libwayland-client0 libwayland-cursor0 libcairo2 libcairo-gobject2 libpango-1.0-0 libgtk-3-0 libgdk-pixbuf2.0-0 libxkbcommon-x11-0 libwayland-egl1 libxcb-xinerama0 libxcb-render-util0 libxcb-randr0 libxcb-image0 libxcb-sync1 libxcb-keysyms1 libxcb-shape0 libxcb-xfixes0 libxcb-icccm4 libxcb-glx0 git patchelf
-          wget http://ftp.debian.org/debian/pool/main/x/xcb-util/libxcb-util1_0.4.0-1+b1_amd64.deb
-          dpkg -i libxcb-util1_0.4.0-1+b1_amd64.deb
+          $signedExe = Get-ChildItem -Path ./signed -Filter "ClassWidgets.exe" | Select-Object -First 1
+          $targetExe = Get-ChildItem -Path ./extracted -Filter "ClassWidgets.exe" -Recurse | Select-Object -First 1
+          if ($signedExe -and $targetExe) {
+            Copy-Item $signedExe.FullName -Destination $targetExe.FullName -Force
+          } else {
+            exit 1
+          }
+          curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
+          New-Item -ItemType Directory -Path "signed-packages" -Force
+          ./zip.exe -r -q "signed-packages/ClassWidgets-Windows-${{ matrix.arch }}.zip" extracted/*
+
+      - name: Upload signed application
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: windows-${{ matrix.arch }}-signed
+          path: ./signed-packages
+
+  package:
+    needs: [prepare, build, sign]
+    if: (needs.build.result == 'success') && (needs.sign.result == 'success' || needs.sign.result == 'failure') && needs.prepare.outputs.skip_ci != 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      package-count: ${{ steps.organize.outputs.package-count }}
+      is_release: ${{ needs.prepare.outputs.is_release }}
+      build_type: ${{ needs.prepare.outputs.build_type }}
+    env:
+      IS_RELEASE: ${{ needs.prepare.outputs.is_release }}
+      BUILD_TYPE: ${{ needs.prepare.outputs.build_type }}
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v4.2.2
-      - name: Setup uv & python
-        uses: astral-sh/setup-uv@v4
-        with:
-          python-version: 3.8.10
-      - name: Setup Environment Variables
-        shell: bash
-        run: |
-          echo "NUITKA_CACHE_DIR=${{ github.action_path }}/nuitka/cache" >> $GITHUB_ENV
-          echo "PYTHON_VERSION=3.8" >> $GITHUB_ENV
-      - name: Cache Nuitka cache directory
-        if: ${{ !inputs.disable-cache }}
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.NUITKA_CACHE_DIR }}
-          key: Debian-X64-python-${{ env.PYTHON_VERSION }}-nuitka-${{ github.sha }}
-          restore-keys: |
-            Debian-X64-python-${{ env.PYTHON_VERSION }}-
-            Debian-X64-python-
-            Debian-X64-
 
-      - name: Set Build Info
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4.3.0
+        with:
+          path: ./all-artifacts
+
+      - name: Organize and upload packages
+        id: organize
         shell: bash
         run: |
-          if [[ "$(uname)" == "Darwin" ]]; then
-            build_time=$(date -u -v+8H +"%Y-%m-%d %H:%M")
-          else
-            build_time=$(date -u -d "+8 hours" +"%Y-%m-%d %H:%M")
+          mkdir -p final-packages || { rm -rf final-packages; mkdir final-packages; }
+          package_count=0
+          platforms=("windows-x64" "windows-x86" "macos-x64" "macos-arm64" "linux-x64")
+          declare -A artifact_cache
+          for artifact_dir in ./all-artifacts/*/; do
+            if [[ -d "$artifact_dir" ]]; then
+              dir_name=$(basename "$artifact_dir")
+              zip_files=$(find "$artifact_dir" -name "*.zip" -type f | wc -l)
+              if [[ $zip_files -gt 0 ]]; then
+                artifact_cache["$dir_name"]="$artifact_dir"
+              fi
+            fi
+          done
+          # love comes from gpt
+          process_file() {
+            local zip_file=$1
+            local platform=$2
+            local signed=$3
+            cp -f "$zip_file" final-packages/
+            package_count=$(($package_count + 1))
+            filename=$(basename "$zip_file")
+            file_size=$(stat -c%s "$zip_file" 2>/dev/null || echo "未知")
+            file_md5=$(md5sum "$zip_file" 2>/dev/null | cut -d' ' -f1 || echo "未知")
+            if [[ "$file_size" != "未知" ]]; then
+              file_size_mb=$(echo "scale=2; $file_size / 1024 / 1024" | bc 2>/dev/null || echo "未知")
+            else
+              file_size_mb="未知"
+            fi
+            echo "[DEBUG] ($platform - $signed): $filename, $file_size_mb MB, $file_size bytes, $file_md5"
+          }
+          for platform in "${platforms[@]}"; do
+            signed_key="${platform}-signed"
+            build_key="${platform}-build"
+            if [[ -n "${artifact_cache[$signed_key]:-}" ]]; then
+              echo "使用 ${platform} 签名版本"
+              for zip_file in "${artifact_cache[$signed_key]}"/*.zip; do
+                if [[ -f "$zip_file" ]]; then
+                  process_file "$zip_file" "$platform" "已签名"
+                else
+                  echo "[DEBUG] ${platform} 签名版本文件不存在: $zip_file"
+                fi
+              done
+            elif [[ -n "${artifact_cache[$build_key]:-}" ]]; then
+              echo "使用 ${platform} 构建版本"
+              for zip_file in "${artifact_cache[$build_key]}"/*.zip; do
+                if [[ -f "$zip_file" ]]; then
+                  process_file "$zip_file" "$platform" "构建"
+                else
+                  echo "[DEBUG] ${platform} 构建版本文件不存在: $zip_file"
+                fi
+              done
+            else
+              echo "[DEBUG] ${platform} 版本未找到"
+            fi
+          done
+          echo "package-count=$package_count" >> $GITHUB_OUTPUT
+          if [[ $package_count -eq 0 ]]; then
+            echo "没有找到任何包文件"
           fi
-          build_commit="${GITHUB_SHA:0:7}"
-          build_branch="${GITHUB_REF_NAME}"
-          build_runid="${GITHUB_RUN_ID}"
-          build_type="Nuitka - Release"
-          config_path="config/default_config.json"
-          config_text=$(cat "$config_path")
-          config_text="${config_text//__BUILD_TIME__/$build_time}"
-          config_text="${config_text//__BUILD_COMMIT__/$build_commit}"
-          config_text="${config_text//__BUILD_BRANCH__/$build_branch}"
-          config_text="${config_text//__BUILD_RUNID__/$build_runid}"
-          config_text="${config_text//__BUILD_TYPE__/$build_type}"
-          printf "%s" "$config_text" > "$config_path"
-          echo "🧾 写入的构建信息："
-          echo "⏰ BUILD_TIME(UTC+8):   $build_time"
-          echo "🔗 COMMIT_HASH: $build_commit"
-          echo "🌿 BRANCH:      $build_branch"
-          echo "🆔 RUN_ID:      $build_runid"
-          echo "🧪 BUILD_TYPE:  $build_type"
+          ls -la final-packages/
 
-      - name: Build
+      - name: Calculate package properties
         shell: bash
         run: |
-          uv venv
-          source .venv/bin/activate
-          uv pip install -r requirements.txt
-          uv pip install nuitka==2.6.7
-          python -m nuitka main.py \
-            --enable-plugin=pyqt5 \
-            --mode=standalone \
-            -o"ClassWidgets" \
-            --include-data-dir=img=img \
-            --include-data-dir=ui=ui \
-            --include-data-dir=view=view \
-            --include-data-dir=config=config \
-            --include-data-dir=font=font \
-            --include-data-dir=audio=audio \
-            --include-data-files=LICENSE=LICENSE \
-            --include-package=pyttsx3.drivers
+          {
+            echo ""
+            echo "---"
+            echo ""
+            echo "## 包信息 (${{ steps.organize.outputs.package-count }}个文件)"
+            echo ""
+            echo "| 文件名 | 大小(MB) | 大小(字节) | MD5 |"
+            echo "|--------|----------|------------|-----|"
+          } >> $GITHUB_STEP_SUMMARY
 
-      - name: Package (Debian)
-        run: |
-          cp -R main.dist ClassWidgets
-          mkdir zip
-          zip -r -q zip/ClassWidgets-Debian10.zip ClassWidgets
+          for zip_file in final-packages/*.zip; do
+            if [[ -f "$zip_file" ]]; then
+              filename=$(basename "$zip_file")
+              file_size=$(stat -c%s "$zip_file" 2>/dev/null || wc -c < "$zip_file" 2>/dev/null || echo "未知")
+              file_md5=$(md5sum "$zip_file" 2>/dev/null | cut -d' ' -f1 || echo "未知")
+              file_size_mb=$(awk "BEGIN {printf \"%.2f\", $file_size / 1024 / 1024}" 2>/dev/null || echo "未知")
+              echo "| $filename | $file_size_mb | $file_size | $file_md5 |" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
 
-      - name: Upload
-        uses: actions/upload-artifact@v4.4.2
+      - name: Upload final packages
+        uses: actions/upload-artifact@v4.6.2
         with:
-          name: debian10-x64
-          path: ./zip
+          name: ClassWidgets-Packages
+          path: final-packages
+
+  publish:
+    name: Publish
+    needs: [package]
+    if: (startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && github.event.inputs.is_release == 'true')) && needs.package.result == 'success' && needs.package.outputs.package-count > 0
+    uses: ./.github/workflows/release.yml
+    with:
+      run_id: '${{ github.run_id }}'
+    secrets: inherit

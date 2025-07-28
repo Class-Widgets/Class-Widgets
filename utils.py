@@ -1,23 +1,25 @@
-import os
-import sys
-import time
-import pytz
-import ntplib
-import psutil
-import signal
-import inspect
-import threading
-import darkdetect
 import datetime as dt
+import inspect
+import ntplib
+import os
+import signal
+import sys
+import threading
+import time
+
+import darkdetect
+import psutil
+import pytz
 from loguru import logger
 from abc import ABC, abstractmethod
-from typing import Dict, Any, Optional, Union, Callable, Type, Tuple
+from typing import Callable, Dict, Any, Optional, Type, Union, Tuple
+from PyQt5.QtCore import QDir, QLockFile, QObject, QTimer, pyqtSignal
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QSystemTrayIcon, QApplication
-from PyQt5.QtCore import QSharedMemory, QTimer, QObject, pyqtSignal
+from PyQt5.QtWidgets import QApplication, QSystemTrayIcon
+
 from file import base_directory, config_center
 
-share = QSharedMemory('ClassWidgets')
+
 _stop_in_progress = False
 update_timer: Optional['UnionUpdateTimer'] = None
 
@@ -28,16 +30,6 @@ def _reset_signal_handlers() -> None:
         signal.signal(signal.SIGINT, signal.SIG_DFL)
     except (AttributeError, ValueError):
         pass
-
-def _cleanup_shared_memory() -> None:
-    """清理共享内存"""
-    global share
-    if share and share.isAttached():
-        try:
-            share.detach()
-            logger.debug("共享内存已分离")
-        except Exception as e:
-            logger.error(f"分离共享内存时出错: {e}")
 
 def _terminate_child_processes() -> None:
     """终止所有子进程"""
@@ -82,12 +74,14 @@ def restart() -> None:
         app.quit()
         app.processEvents()
 
-    _cleanup_shared_memory()
+    guard.release()
+
     os.execl(sys.executable, sys.executable, *sys.argv)
 
 def stop(status: int = 0) -> None:
     """
     退出程序
+
     :param status: 退出状态码,0=正常退出,!=0表示异常退出
     """
     global update_timer, _stop_in_progress
@@ -96,19 +90,36 @@ def stop(status: int = 0) -> None:
     _stop_in_progress = True
 
     logger.debug('退出程序...')
+
+    try:
+        from generate_speech import get_tts_service
+        tts_service = get_tts_service()
+        if hasattr(tts_service, '_manager') and tts_service._manager:
+            tts_service._manager.stop()
+    except Exception as e:
+        logger.warning(f"清理TTS管理器时出错: {e}")
+
     if 'update_timer' in globals() and update_timer:
         try:
             update_timer.stop()
             update_timer = None
         except Exception as e:
             logger.warning(f"停止全局更新定时器时出错: {e}")
+    import gc
+    import asyncio
+    gc.collect()
+    try:
+        asyncio.set_event_loop(None)
+    except Exception as e:
+        logger.warning(f"清理异步引用时出错: {e}")
     app = QApplication.instance()
+    guard.release()
     if app:
         _reset_signal_handlers()
         app.quit()
+        app.processEvents()
 
     _terminate_child_processes()
-    _cleanup_shared_memory()
     logger.debug(f"程序退出({status})")
     if not app:
         os._exit(status)
@@ -450,6 +461,11 @@ class TimeManagerInterface(ABC):
     def get_current_time(self) -> dt.datetime:
         """获取程序内时间 (偏移后)"""
         pass
+
+    @abstractmethod
+    def get_current_time_without_ms(self) -> dt.datetime:
+        """获取程序内时间 (偏移后，舍去毫秒)"""
+        pass
     
     @abstractmethod
     def get_current_time_str(self, format_str: str = '%H:%M:%S') -> str:
@@ -486,6 +502,10 @@ class LocalTimeManager(TimeManagerInterface):
         time_offset = float(self._config_center.read_conf('Time', 'time_offset', 0))
         return self.get_real_time() + dt.timedelta(seconds=time_offset)
     
+    def get_current_time_without_ms(self) -> dt.datetime:
+        """获取程序时间（含偏移，舍去毫秒）"""
+        return self.get_current_time().replace(microsecond=0)
+
     def get_current_time_str(self, format_str: str = '%H:%M:%S') -> str:
         """获取格式化时间字符串"""
         return self.get_current_time().strftime(format_str)
@@ -498,6 +518,10 @@ class LocalTimeManager(TimeManagerInterface):
         """获取当前星期几（0=周一, 6=周日）"""
         return self.get_current_time().weekday()
     
+    def get_time_offset(self) -> int:
+        """获取时差偏移(秒)"""
+        return float(self._config_center.read_conf('Time', 'time_offset', 0))
+
     def sync_with_ntp(self) -> bool:
         """为什么"""
         logger.warning("本地时间管理器不支持NTP同步")
@@ -612,6 +636,10 @@ class NTPTimeManager(TimeManagerInterface):
         time_offset = float(self._config_center.read_conf('Time', 'time_offset', 0))
         return self.get_real_time() + dt.timedelta(seconds=time_offset)
     
+    def get_current_time_without_ms(self) -> dt.datetime:
+        """获取程序时间（含偏移，舍去毫秒）"""
+        return self.get_current_time().replace(microsecond=0)
+
     def get_current_time_str(self, format_str: str = '%H:%M:%S') -> str:
         """获取格式化时间字符串"""
         return self.get_current_time().strftime(format_str)
@@ -728,6 +756,32 @@ class TimeManagerFactory:
 
 main_mgr = None
 
+class SingleInstanceGuard:
+    def __init__(self, lock_name="ClassWidgets.lock"):
+        lock_path = QDir.temp().absoluteFilePath(lock_name)
+        self.lock_file = QLockFile(lock_path)
+        self.lock_acquired = False
+
+    def try_acquire(self, timeout=100):
+        self.lock_acquired = self.lock_file.tryLock(timeout)
+        return self.lock_acquired
+
+    def release(self):
+        if self.lock_acquired:
+            self.lock_file.unlock()
+
+    def get_lock_info(self):
+        ok, pid, hostname, appname = self.lock_file.getLockInfo()
+        if ok:
+            return {
+                "pid": pid,
+                "hostname": hostname,
+                "appname": appname
+            }
+        return None
+
+
 tray_icon = None
 update_timer = UnionUpdateTimer()
 time_manager = TimeManagerFactory.get_instance()
+guard:Optional[SingleInstanceGuard] = None

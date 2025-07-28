@@ -15,29 +15,40 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4.2.2
         with:
           fetch-depth: 0
+
       - name: Set up git-cliff
         uses: kenji-miyake/setup-git-cliff@v1
+
       - name: Generate a changelog
         run: |
-          git cliff
-      - name: Prepare release
+          git cliff --output CHANGELOG.md
+
+      - name: Prepare release directory
         run: |
-          mkdir release
-          mkdir artifacts
+          mkdir -p release
+
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
+          name: ClassWidgets-Packages
           path: artifacts
-          run-id: ${{ github.event.workflow_run.id }}
-      - name: Prepare artifacts
+          run-id: ${{ inputs.run_id }}
+
+      - name: Prepare artifacts for release
+        shell: bash
         run: |
-          mv artifacts/windows-latest-x64/* release/
-          mv artifacts/debian10-x64/* release/
-          mv artifacts/macos-13-x64/* release/
-          mv artifacts/macos-14-arm64/* release/
+          if [ ! "$(ls -A artifacts 2>/dev/null)" ]; then
+            exit 1
+          fi
+          find artifacts -name "*.zip" -type f -exec cp {} release/ \;
+          if [ ! "$(ls -A release 2>/dev/null)" ]; then
+            exit 1
+          fi
+          echo "发布的文件:"
+          ls -la release/
 
       - name: Release
         uses: softprops/action-gh-release@v2
@@ -45,5 +56,7 @@ jobs:
           files: release/*
           body_path: CHANGELOG.md
           draft: true
+          generate_release_notes: true
+          make_latest: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

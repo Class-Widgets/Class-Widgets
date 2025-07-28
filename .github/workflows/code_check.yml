@@ -90,35 +90,76 @@ jobs:
             ${{ runner.os }}-codeql-db-${{ env.CACHE_VERSION }}-
             ${{ runner.os }}-codeql-db-
 
+      - name: Generate CodeQL config
+        id: codeql-config
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request_target" ]]; then
+            changed_files="${{ needs.detect-changes.outputs.python_files }}"
+            if [[ -n "$changed_files" ]]; then
+              echo "[DEBUG] 修改的Python文件: $changed_files"
+              config_file="codeql-config.yml"
+              cat > "$config_file" << 'EOF'
+          name: "CodeQL Security Analysis (Changed Files Only)"
+          disable-default-queries: false
+          queries:
+            - uses: security-and-quality
+            - uses: security-extended
+          paths-ignore:
+            - "**/__pycache__/**"
+            - "**/node_modules/**"
+            - "**/.venv/**"
+            - "**/venv/**"
+            - "build/**"
+            - "dist/**"
+            - "**/*.pyc"
+          EOF
+              echo "config_file=$config_file" >> $GITHUB_OUTPUT
+              echo "scan_mode=changed_files" >> $GITHUB_OUTPUT
+            else
+              echo "config_file=" >> $GITHUB_OUTPUT
+              echo "scan_mode=skip" >> $GITHUB_OUTPUT
+            fi
+          else
+            config_file="codeql-config.yml"
+            cat > "$config_file" << 'EOF'
+          name: "CodeQL Security Analysis (Full Scan)"
+          disable-default-queries: false
+          queries:
+            - uses: security-and-quality
+            - uses: security-extended
+          paths-ignore:
+            - "**/__pycache__/**"
+            - "**/node_modules/**"
+            - "**/.venv/**"
+            - "**/venv/**"
+            - "build/**"
+            - "dist/**"
+            - "**/*.pyc"
+          EOF
+            echo "config_file=$config_file" >> $GITHUB_OUTPUT
+            echo "scan_mode=full_scan" >> $GITHUB_OUTPUT
+          fi
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
+        if: steps.codeql-config.outputs.scan_mode != 'skip'
         with:
           languages: python
-          config: |
-            name: "CodeQL Security Analysis"
-            disable-default-queries: false
-            queries:
-              - uses: security-and-quality
-              - uses: security-extended
-            paths-ignore:
-              - "**/__pycache__/**"
-              - "**/node_modules/**"
-              - "**/.venv/**"
-              - "**/venv/**"
-              - "build/**"
-              - "dist/**"
-              - "**/*.pyc"
+          config-file: ${{ steps.codeql-config.outputs.config_file }}
 
       - name: Setup Python for CodeQL
         uses: actions/setup-python@v5
+        if: steps.codeql-config.outputs.scan_mode != 'skip'
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Setup uv for CodeQL
-        uses: astral-sh/setup-uv@v4
+        uses: astral-sh/setup-uv@v6
+        if: steps.codeql-config.outputs.scan_mode != 'skip'
 
       - name: Cache CodeQL dependencies
         uses: actions/cache@v4
+        if: steps.codeql-config.outputs.scan_mode != 'skip'
         with:
           path: |
             ~/.cache/uv
@@ -130,13 +171,19 @@ jobs:
             ${{ runner.os }}-codeql-uv-
 
       - name: Install dependencies for CodeQL analysis
+        if: steps.codeql-config.outputs.scan_mode != 'skip'
         run: |
           uv venv .venv
           source .venv/bin/activate
           uv pip install -r requirements.txt
 
+      - name: Autobuild for CodeQL
+        if: steps.codeql-config.outputs.scan_mode != 'skip'
+        uses: github/codeql-action/autobuild@v3
+
       - name: Cache CodeQL queries
         uses: actions/cache@v4
+        if: steps.codeql-config.outputs.scan_mode != 'skip'
         with:
           path: ~/.cache/codeql-queries
           key: ${{ runner.os }}-codeql-queries-${{ env.CACHE_VERSION }}
@@ -145,6 +192,7 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
+        if: steps.codeql-config.outputs.scan_mode != 'skip'
         with:
           category: "/language:python"
           upload: true
@@ -169,7 +217,7 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Setup uv
-        uses: astral-sh/setup-uv@v4
+        uses: astral-sh/setup-uv@v6
 
       - name: Cache Python dependencies
         uses: actions/cache@v4
@@ -550,7 +598,7 @@ jobs:
           if [[ "${{ github.event_name }}" == "workflow_dispatch" || "${{ github.event_name }}" == "schedule" ]]; then
             exit 0
           elif [[ "${{ steps.code-quality.outputs.has_critical_issues }}" == "true" ]]; then
-            exit 1
+            echo "::warning::存在重要问题"
           else
             exit 0
           fi

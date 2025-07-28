@@ -265,6 +265,25 @@
                   </property>
                  </widget>
                 </item>
+                <item row="0" column="1">
+                 <widget class="ComboBox" name="voice_language">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>10</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
                </layout>
               </widget>
              </item>
@@ -325,34 +344,21 @@
                  </layout>
                 </item>
                 <item>
-                 <widget class="ComboBox" name="voice_language">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>10</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-                <item>
                  <widget class="ComboBox" name="voice_selector">
                   <property name="enabled">
                    <bool>false</bool>
                   </property>
                   <property name="sizePolicy">
-                   <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                     <horstretch>0</horstretch>
                     <verstretch>0</verstretch>
                    </sizepolicy>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>450</width>
+                    <height>16777215</height>
+                   </size>
                   </property>
                  </widget>
                 </item>
@@ -747,7 +753,7 @@
                 <item>
                  <widget class="PrimaryDropDownPushButton" name="preview">
                   <property name="enabled">
-                   <bool>true</bool>
+                   <bool>false</bool>
                   </property>
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">

@@ -1,3 +1,4 @@
+import asyncio
 import hashlib
 import os
 import platform
@@ -12,12 +13,11 @@ from typing import Any, Callable, Dict, List, Optional, Tuple
 import edge_tts
 import pyttsx3
 from loguru import logger
-from PyQt5.QtCore import QObject, pyqtSignal
+from PyQt5.QtCore import QObject, pyqtSignal, QCoreApplication
 
 
 _tts_playing = False
 _tts_lock = threading.RLock()
-
 
 class TTSEngine(Enum):
     """TTS 引擎"""
@@ -221,6 +221,10 @@ class TTSVoiceProvider:
         """合成语音(同步)"""
         raise NotImplementedError
 
+    def shutdown(self) -> None:
+        """关闭提供器,清理资源(默认)"""
+        pass
+
 
 class EdgeTTSProvider(TTSVoiceProvider):
     """Edge TTS 提供器"""
@@ -228,11 +232,76 @@ class EdgeTTSProvider(TTSVoiceProvider):
     def __init__(self):
         super().__init__(TTSEngine.EDGE)
         self._executor = ThreadPoolExecutor(max_workers=2, thread_name_prefix="EdgeTTS")
+        self._shutdown = False
+
+    def shutdown(self) -> None:
+        """关闭提供器,清理资源"""
+        if not self._shutdown:
+            self._shutdown = True
+            try:
+                self._executor.shutdown(wait=True)
+            except Exception as e:
+                logger.warning(f"关闭 EdgeTTS 提供器时出错: {e}")
+
+    def __del__(self):
+        """析构函数"""
+        self.shutdown()
+
+    def _safe_cleanup_loop(self, loop: Optional[asyncio.AbstractEventLoop]):
+        """清理事件循环"""
+        if not loop:
+            return
+
+        def _delayed_cleanup():
+            """延迟清理"""
+            time.sleep(0.1)
+            try:
+                if not loop.is_closed():
+                    pending = asyncio.all_tasks(loop)
+                    if pending:
+                        try:
+                            loop.run_until_complete(asyncio.gather(*pending, return_exceptions=True))
+                        except RuntimeError:
+                            pass
+                    loop.close()
+            except Exception as e:
+                logger.warning(f"清理事件循环时出错: {e}")
+            try:
+                asyncio.set_event_loop(None)
+            except Exception as e:
+                logger.warning(f"清理事件循环引用时出错: {e}")
+        try:
+            cleanup_thread = threading.Thread(target=_delayed_cleanup, daemon=True)
+            cleanup_thread.start()
+        except Exception as e:
+            logger.warning(f"启动清理线程失败: {e}")
+            try:
+                if not loop.is_closed():
+                    pending = asyncio.all_tasks(loop)
+                    if pending:
+                        loop.run_until_complete(asyncio.gather(*pending, return_exceptions=True))
+                    loop.close()
+            except Exception:
+                pass
+            try:
+                asyncio.set_event_loop(None)
+            except Exception:
+                pass
 
     def _fetch_voices(self) -> List[TTSVoice]:
         """获取 Edge TTS 语音列表"""
         try:
             import asyncio
+            try:
+                current_loop = asyncio.get_running_loop()
+                if current_loop and not current_loop.is_closed():
+                    import concurrent.futures
+                    with concurrent.futures.ThreadPoolExecutor() as executor:
+                        future = executor.submit(self._fetch_voices_sync)
+                        return future.result(timeout=10.0)
+            except RuntimeError:
+                pass
+
             def _run_async():
                 loop = None
                 try:
@@ -242,31 +311,56 @@ class EdgeTTSProvider(TTSVoiceProvider):
                 except Exception:
                     raise
                 finally:
-                    if loop and not loop.is_closed():
-                        try:
-                            loop.close()
-                        except Exception as e:
-                            logger.warning(f"关闭事件循环时出错: {e}")
-                    asyncio.set_event_loop(None)
+                    self._safe_cleanup_loop(loop)
 
             future = self._executor.submit(_run_async)
             voices = future.result(timeout=10.0)
 
-            result = []
+            result: List[TTSVoice] = []
             for voice in voices:
+                voice_obj: Any = voice
                 tts_voice = TTSVoice(
-                    id=voice['ShortName'],
-                    name=voice['FriendlyName'],
-                    language=voice['Locale'][:2],
-                    gender=voice['Gender'],
+                    id=voice_obj['ShortName'],
+                    name=voice_obj['FriendlyName'],
+                    language=voice_obj['Locale'][:2],
+                    gender=voice_obj['Gender'],
                     engine=TTSEngine.EDGE,
-                    locale=voice['Locale']
+                    locale=voice_obj['Locale']
                 )
                 result.append(tts_voice)
 
             return result
         except Exception as e:
             logger.error(f"获取 Edge TTS 语音列表失败: {e}")
+            return []
+
+    def _fetch_voices_sync(self) -> List[TTSVoice]:
+        """同步方式获取 Edge TTS 语音列表"""
+        try:
+            import asyncio
+            loop = None
+            try:
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                voices = loop.run_until_complete(edge_tts.list_voices())
+
+                result: List[TTSVoice] = []
+                for voice in voices:
+                    voice_obj: Any = voice
+                    tts_voice = TTSVoice(
+                        id=voice_obj['ShortName'],
+                        name=voice_obj['FriendlyName'],
+                        language=voice_obj['Locale'][:2],
+                        gender=voice_obj['Gender'],
+                        engine=TTSEngine.EDGE,
+                        locale=voice_obj['Locale']
+                    )
+                    result.append(tts_voice)
+                return result
+            finally:
+                self._safe_cleanup_loop(loop)
+        except Exception as e:
+            logger.error(f"同步获取 Edge TTS 语音列表失败: {e}")
             return []
 
     def synthesize(self, text: str, voice_id: str, output_path: str, speed: float = 1.0) -> bool:
@@ -280,27 +374,45 @@ class EdgeTTSProvider(TTSVoiceProvider):
                     asyncio.set_event_loop(loop)
                     rate_percent = int((speed - 1) * 100)
                     rate_str = f"{rate_percent:+d}%" if rate_percent != 0 else "+0%"
+                    if not text or not text.strip():
+                        raise ValueError(QCoreApplication.translate("EdgeTTSProvider", "文本内容不能为空"))
+                    if not voice_id:
+                        raise ValueError(QCoreApplication.translate("EdgeTTSProvider", "语音ID不能为空"))
                     communicate = edge_tts.Communicate(
                         text=text,
                         voice=voice_id,
                         rate=rate_str
                     )
-                    return loop.run_until_complete(communicate.save(output_path))
-                except Exception:
-                    raise
+                    result = loop.run_until_complete(communicate.save(output_path))
+                    if not os.path.exists(output_path):
+                        raise RuntimeError(QCoreApplication.translate("EdgeTTSProvider", "语音文件生成失败，文件不存在"))
+                    if os.path.getsize(output_path) == 0:
+                        raise RuntimeError(QCoreApplication.translate("EdgeTTSProvider", "语音文件生成失败，文件为空"))
+
+                    return result
+                except Exception as e:
+                    error_msg = str(e)
+                    if "No audio was received" in error_msg:
+                        raise RuntimeError(QCoreApplication.translate("EdgeTTSProvider", "Edge TTS服务未返回音频数据,可能是网络问题或语音参数错误。语音ID: {}").format(voice_id))
+                    elif "proxy" in error_msg.lower() or "https" in error_msg.lower():
+                        raise RuntimeError(QCoreApplication.translate("EdgeTTSProvider", "连接问题,可能是代理设置导致: {}").format(error_msg))
+                    elif "timeout" in error_msg.lower():
+                        raise RuntimeError(QCoreApplication.translate("EdgeTTSProvider", "超时,请检查网络连接: {}").format(error_msg))
+                    else:
+                        raise RuntimeError(QCoreApplication.translate("EdgeTTSProvider", "Edge TTS合成失败: {}").format(error_msg))
                 finally:
-                    if loop and not loop.is_closed():
-                        try:
-                            loop.close()
-                        except Exception as e:
-                            logger.warning(f"关闭事件循环时出错: {e}")
-                    asyncio.set_event_loop(None)
+                    self._safe_cleanup_loop(loop)
 
             future = self._executor.submit(_run_synthesis)
-            future.result(timeout=15.0)
+            future.result(timeout=20.0)
             return os.path.exists(output_path) and os.path.getsize(output_path) > 0
         except Exception as e:
             logger.error(f"Edge TTS 合成失败: {e}")
+            if os.path.exists(output_path) and os.path.getsize(output_path) == 0:
+                try:
+                    os.remove(output_path)
+                except:
+                    pass
             return False
 
 
@@ -319,16 +431,17 @@ class Pyttsx3Provider(TTSVoiceProvider):
 
         try:
             with self._engine_lock:
-                engine = pyttsx3.init()
-                voices = engine.getProperty('voices')
+                engine: Any = pyttsx3.init()
+                voices: Any = engine.getProperty('voices')
                 engine.stop()
 
-            result = []
+            result: List[TTSVoice] = []
             for voice in voices:
-                language = 'zh' if any(keyword in voice.name.lower() for keyword in ['chinese', 'zh', '中文']) else 'en'
+                voice_obj: Any = voice
+                language = 'zh' if any(keyword in voice_obj.name.lower() for keyword in ['chinese', 'zh', '中文']) else 'en'
                 tts_voice = TTSVoice(
-                    id=voice.id,
-                    name=voice.name,
+                    id=voice_obj.id,
+                    name=voice_obj.name,
                     language=language,
                     gender='unknown',
                     engine=TTSEngine.PYTTSX3
@@ -348,7 +461,7 @@ class Pyttsx3Provider(TTSVoiceProvider):
 
         try:
             with self._engine_lock:
-                engine = pyttsx3.init()
+                engine: Any = pyttsx3.init()
                 engine.setProperty('voice', voice_id)
                 engine.setProperty('rate', int(200 * speed))
                 temp_path = output_path + '.tmp'
@@ -382,7 +495,7 @@ class TTSManager:
 
     def __init__(self, cache_dir: str):
         if TTSManager._instance is not None:
-            raise RuntimeError("热芝士: TTSManager.get_instance() 获取实例")
+            raise RuntimeError(QCoreApplication.translate("TTSManager", "热芝士: TTSManager.get_instance() 获取实例"))
         self.cache_dir = cache_dir
         self.cache = TTSCache(cache_dir)
         self.providers: Dict[TTSEngine, TTSVoiceProvider] = {
@@ -394,8 +507,13 @@ class TTSManager:
 
     def stop(self) -> None:
         """停止 TTS 管理器"""
-        self.executor.shutdown(wait=True)
-        logger.info("TTS 管理器已停止")
+        try:
+            for provider in self.providers.values():
+                if hasattr(provider, 'shutdown'):
+                    provider.shutdown()
+            self.executor.shutdown(wait=True)
+        except Exception as e:
+            logger.warning(f"停止 TTS 管理器时出错: {e}")
 
     def get_voices(self, engine: Optional[TTSEngine] = None,
                   language_filter: Optional[str] = None) -> List[TTSVoice]:
@@ -527,7 +645,7 @@ class TTSService(QObject):
 
     def __init__(self):
         if TTSService._instance is not None:
-            raise RuntimeError("热芝士: 使用 TTSService.get_instance() 获取实例")
+            raise RuntimeError(QCoreApplication.translate("TTSService", "热芝士: 使用 TTSService.get_instance() 获取实例"))
 
         super().__init__()
         self._manager = TTSManager.get_instance()
@@ -574,7 +692,7 @@ class TTSService(QObject):
                 engine = TTSEngine.EDGE
                 voice_id_only = None
             else:
-                error_msg = "当前系统不支持Pyttsx3"
+                error_msg = QCoreApplication.translate("TTSService", "当前系统不支持Pyttsx3")
                 logger.error(error_msg)
                 self.generation_error.emit(text, error_msg)
                 if on_error:
@@ -724,11 +842,9 @@ class TTSService(QObject):
     def _handle_play_complete(self, file_path: str, on_complete: Optional[Callable[[str], None]]) -> None:
         """处理播放完成"""
         try:
-            import importlib
-            play_audio_module = importlib.import_module('play_audio')
-            play_audio_func = play_audio_module.play_audio
-            play_audio_func(file_path)
-            if on_complete:
+            from play_audio import play_audio
+            success = play_audio(file_path, tts_delete_after=True)
+            if success and on_complete:
                 on_complete(file_path)
         except Exception as e:
             logger.error(f"播放音频文件失败: {e}")
@@ -821,7 +937,7 @@ def play_tts_with_audio(text: str, voice_id: Optional[str] = None,
             _tts_playing = True
 
         from play_audio import play_audio
-        success = play_audio(file_path, tts_delete_after, volume)
+        success = play_audio(file_path, tts_delete_after=tts_delete_after, volume=volume)
         with _tts_lock:
             _tts_playing = False
 
@@ -862,7 +978,7 @@ async def get_tts_voices(engine_filter: Optional[str] = None, language_filter: O
             except ValueError:
                 return [], f"未知的TTS引擎: {engine_filter}"
         voices = manager.get_voices(engine_enum, language_filter)
-        voice_list = []
+        voice_list: List[Dict[str, str]] = []
         for voice in voices:
             voice_list.append({
                 'id': voice.id,
@@ -942,7 +1058,7 @@ def list_pyttsx3_voices() -> List[Dict[str, str]]:
         manager = get_tts_service()._manager
         if TTSEngine.PYTTSX3 in manager.providers:
             voices = manager.providers[TTSEngine.PYTTSX3].get_voices()
-            voice_list = []
+            voice_list: List[Dict[str, str]] = []
             for voice in voices:
                 voice_list.append({
                     'id': voice.id,
@@ -960,7 +1076,6 @@ def list_pyttsx3_voices() -> List[Dict[str, str]]:
         logger.error(f"获取 Pyttsx3 语音列表失败: {e}")
         return []
 
-
 def on_audio_played(file_path: str) -> None:
     """音频播放完成后的回调函数"""
     try:
@@ -969,7 +1084,6 @@ def on_audio_played(file_path: str) -> None:
             logger.debug(f"已删除TTS临时文件: {file_path}")
     except Exception as e:
         logger.warning(f"删除TTS临时文件失败 {file_path}: {e}")
-
 
 def is_tts_playing() -> bool:
     """检查是否有TTS正在播放"""
@@ -980,16 +1094,15 @@ def is_tts_playing() -> bool:
         logger.warning(f"检查TTS播放状态失败: {e}")
         return False
 
-
 def stop_tts() -> bool:
     """停止TTS播放"""
     global _tts_playing
     try:
         from play_audio import stop_audio
-        success = stop_audio()
+        stop_audio()
         with _tts_lock:
             _tts_playing = False
-        return success
+        return True
     except Exception as e:
         logger.warning(f"停止TTS播放失败: {e}")
         with _tts_lock:
