@@ -7,24 +7,24 @@
         <location filename="../menu.py" line="1611"/>
         <source>系统 TTS（pyttsx3）用的是系统自带的语音服务噢~
 您可以在系统设置里添加更多语音(*≧▽≦)</source>
-        <translation>系统 TTS（pyttsx3）用的是系统自带的语音服务噢~
-您可以在系统设置里添加更多语音(*≧▽≦)</translation>
+        <translation>系统 TTS（pyttsx3）用的是系统自带的语音服务噢 ~
+您可以在系统设置里添加更多语音 (*≧▽≦)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1613"/>
         <source>打开Windows语音设置</source>
-        <translation>打开Windows语音设置</translation>
+        <translation>打开 Windows 语音设置</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1618"/>
         <location filename="../menu.py" line="1627"/>
         <source>知道啦~</source>
-        <translation>知道啦~</translation>
+        <translation>知道啦 ~</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1626"/>
         <source>这个语音引擎还没有提示信息呢~(・ω&lt;)</source>
-        <translation>这个语音引擎还没有提示信息呢~(・ω&lt;)</translation>
+        <translation>这个语音引擎还没有提示信息呢 ~ (・ω&lt;)</translation>
     </message>
 </context>
 <context>
@@ -118,7 +118,7 @@
     <message>
         <location filename="../generate_speech.py" line="380"/>
         <source>语音ID不能为空</source>
-        <translation>语音ID不能为空</translation>
+        <translation>语音 ID 不能为空</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="388"/>
@@ -133,22 +133,22 @@
     <message>
         <location filename="../generate_speech.py" line="396"/>
         <source>Edge TTS服务未返回音频数据,可能是网络问题或语音参数错误。语音ID: {}</source>
-        <translation>Edge TTS服务未返回音频数据,可能是网络问题或语音参数错误。语音ID: {}</translation>
+        <translation>Edge TTS 服务未返回音频数据，可能是网络问题或语音参数错误。语音ID：{}</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="398"/>
         <source>连接问题,可能是代理设置导致: {}</source>
-        <translation>连接问题,可能是代理设置导致: {}</translation>
+        <translation>连接问题，可能是代理设置导致：{}</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="400"/>
         <source>超时,请检查网络连接: {}</source>
-        <translation>超时,请检查网络连接: {}</translation>
+        <translation>超时，请检查网络连接：{}</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="402"/>
         <source>Edge TTS合成失败: {}</source>
-        <translation>Edge TTS合成失败: {}</translation>
+        <translation>Edge TTS 合成失败：{}</translation>
     </message>
 </context>
 <context>
@@ -161,7 +161,7 @@
     <message>
         <location filename="../main.py" line="623"/>
         <source>抱歉！Class Widgets 发生了严重的错误从而无法正常运行。您可以保存下方的错误信息并向他人求助。若您认为这是程序的Bug，请点击“报告此问题”或联系开发者。</source>
-        <translation>抱歉！Class Widgets 发生了严重的错误从而无法正常运行。您可以保存下方的错误信息并向他人求助。若您认为这是程序的Bug，请点击“报告此问题”或联系开发者。</translation>
+        <translation>抱歉！Class Widgets 发生了严重的错误从而无法正常运行。您可以保存下方的错误信息并向他人求助。若您认为这是程序的 Bug，请点击“报告此问题”或联系开发者。</translation>
     </message>
     <message>
         <location filename="../main.py" line="638"/>
@@ -289,7 +289,7 @@
     <message>
         <location filename="../view/extra_menu.ui" line="280"/>
         <source>*所有更改在重启后重置</source>
-        <translation>*所有更改在重启后重置</translation>
+        <translation>* 所有更改在重启后重置</translation>
     </message>
     <message>
         <location filename="../view/extra_menu.ui" line="287"/>
@@ -334,12 +334,12 @@
     <message>
         <location filename="../view/menu/about.ui" line="128"/>
         <source>Class Widgets 是一款能显示当前课程的桌面组件App。其提供了直观的图形化课程表编辑和美观的桌面组件。</source>
-        <translation>Class Widgets 是一款能显示当前课程的桌面组件App。其提供了直观的图形化课程表编辑和美观的桌面组件。</translation>
+        <translation>Class Widgets 是一款能显示当前课程的桌面组件 App。其提供了直观的图形化课程表编辑和美观的桌面组件。</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="232"/>
         <source>版本号:获取失败！</source>
-        <translation>版本号:获取失败！</translation>
+        <translation>版本号获取失败！</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="259"/>
@@ -371,7 +371,7 @@
     <message>
         <location filename="../view/menu/about.ui" line="397"/>
         <source>此项目的 Github</source>
-        <translation>此项目的 Github</translation>
+        <translation>此项目的 GitHub</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="425"/>
@@ -519,32 +519,32 @@
     <message>
         <location filename="../view/menu/advance.ui" line="457"/>
         <source>NTP服务器</source>
-        <translation>NTP服务器</translation>
+        <translation>NTP 服务器</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="464"/>
         <source>使用url链接NTP服务器同步时间</source>
-        <translation>使用url链接NTP服务器同步时间</translation>
+        <translation>使用 url 链接 NTP 服务器同步时间</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="544"/>
         <source>NTP同步使用的时区</source>
-        <translation>NTP同步使用的时区</translation>
+        <translation>NTP 同步使用的时区</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="551"/>
         <source>NTP同步时应使用的时区</source>
-        <translation>NTP同步时应使用的时区</translation>
+        <translation>NTP 同步时应使用的时区</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="622"/>
         <source>NTP自动校准</source>
-        <translation>NTP自动校准</translation>
+        <translation>NTP 自动校准</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="632"/>
         <source>上次校准: 1145年1月1日 - 11:45:14</source>
-        <translation>上次校准: 1145年1月1日 - 11:45:14</translation>
+        <translation>上次校准: 1145年1月4日 - 11:45:14</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="656"/>
@@ -669,7 +669,7 @@
         <source>更改自定义缩放系数百分比（重启后生效）
 *不建议使用 180% 以上的值，这可能会导致显示异常</source>
         <translation>更改自定义缩放系数百分比（重启后生效）
-*不建议使用 180% 以上的值，这可能会导致显示异常</translation>
+* 不建议使用 180% 以上的值，这可能会导致显示异常</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1496"/>
@@ -681,7 +681,7 @@
         <source>更改小组件的窗口状态（重启后生效）
 *开启“置底”功能时，将会禁用“单击隐藏小组件”</source>
         <translation>更改小组件的窗口状态（重启后生效）
-*开启“置底”功能时，将会禁用“单击隐藏小组件”</translation>
+* 开启“置底”功能时，将会禁用“单击隐藏小组件”</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1568"/>
@@ -732,7 +732,7 @@
     <message>
         <location filename="../view/menu/advance.ui" line="1887"/>
         <source>将会清空 软件根目录下log. 的所有内容</source>
-        <translation>将会清空 软件根目录下log. 的所有内容</translation>
+        <translation>将会清空 软件根目录下 log. 的所有内容</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1952"/>
@@ -849,7 +849,7 @@
     <message>
         <location filename="../view/menu/custom.ui" line="76"/>
         <source>*对小组件的显示、隐藏和拖拽操作将在重启后生效。</source>
-        <translation>*对小组件的显示、隐藏和拖拽操作将在重启后生效。</translation>
+        <translation>* 对小组件的显示、隐藏和拖拽操作将在重启后生效。</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="137"/>
@@ -916,7 +916,7 @@
         <location filename="../view/menu/custom.ui" line="467"/>
         <location filename="../view/menu/custom.ui" line="542"/>
         <source>将用于设置窗口、进度条和提醒弹窗 (为了提醒弹窗可读性，请不要设置过浅的颜色)</source>
-        <translation>将用于设置窗口、进度条和提醒弹窗 (为了提醒弹窗可读性，请不要设置过浅的颜色)</translation>
+        <translation>将用于设置窗口、进度条和提醒弹窗（为了提醒弹窗可读性，请不要设置过浅的颜色）</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="499"/>
@@ -938,7 +938,7 @@
     <message>
         <location filename="../view/menu/custom.ui" line="617"/>
         <source>将用于设置浮窗时间颜色 (为了时间的可读性，请不要设置过浅的颜色&amp;过高的透明度)</source>
-        <translation>将用于设置浮窗时间颜色 (为了时间的可读性，请不要设置过浅的颜色&amp;过高的透明度)</translation>
+        <translation>将用于设置浮窗时间颜色（为了时间的可读性，请不要设置过浅的颜色 &amp; 过高的透明度）</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="666"/>
@@ -1134,7 +1134,7 @@
     <message>
         <location filename="../view/menu/help.ui" line="272"/>
         <source>我们的Q群</source>
-        <translation>我们的Q群</translation>
+        <translation>我们的 Q 群</translation>
     </message>
     <message>
         <location filename="../view/menu/help.ui" line="285"/>
@@ -1165,7 +1165,7 @@
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="98"/>
         <source>*对插件的任意操作将在重启后生效。</source>
-        <translation>*对插件的任意操作将在重启后生效。</translation>
+        <translation>* 对插件的任意操作将在重启后生效。</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="153"/>
@@ -1235,7 +1235,7 @@
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="588"/>
         <source>从本地文件导入插件包 (支持.zip格式与解压后的插件)</source>
-        <translation>从本地文件导入插件包 (支持.zip格式与解压后的插件)</translation>
+        <translation>从本地文件导入插件包 (支持 .zip 格式与解压后的插件)</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="620"/>
@@ -1351,17 +1351,17 @@
     <message>
         <location filename="../view/menu/sound.ui" line="428"/>
         <source>TTS语音播报</source>
-        <translation>TTS语音播报</translation>
+        <translation>TTS 语音播报</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="435"/>
         <source>调整关于TTS语音合成相关选项</source>
-        <translation>调整关于TTS语音合成相关选项</translation>
+        <translation>调整关于 TTS 语音合成相关选项</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="458"/>
         <source>TTS语音设置</source>
-        <translation>TTS语音设置</translation>
+        <translation>TTS 语音设置</translation>
     </message>
     <message>
         <location filename="../view/menu/sound.ui" line="494"/>
@@ -1393,7 +1393,7 @@
         <source>启用后弹出提醒弹窗同时会有水波强调及模糊淡入淡出效果
 *可能影响性能</source>
         <translation>启用后弹出提醒弹窗同时会有水波强调及模糊淡入淡出效果
-*可能影响性能</translation>
+* 可能影响性能</translation>
     </message>
     <message>
         <location filename="../view/menu/subject.ui" line="35"/>
@@ -1493,7 +1493,7 @@
     <message>
         <location filename="../view/pp/latests.ui" line="89"/>
         <source>Coming Soon~</source>
-        <translation>Coming Soon~</translation>
+        <translation>Coming Soon ~</translation>
     </message>
     <message>
         <location filename="../view/pp/plugin_detail.ui" line="137"/>
@@ -1533,7 +1533,7 @@
     <message>
         <location filename="../view/pp/search.ui" line="74"/>
         <source>搜索你希望查找的插件、Tag等</source>
-        <translation>搜索你希望查找的插件、Tag等</translation>
+        <translation>搜索你希望查找的插件、Tag 等</translation>
     </message>
     <message>
         <location filename="../view/pp/search.ui" line="86"/>
@@ -1554,7 +1554,7 @@
         <location filename="../view/pp/settings.ui" line="111"/>
         <source>在下载插件后，将为您自动启用插件以便您重启可以立即使用。
 但请确信您在“插件广场”中需要的插件是安全的。</source>
-        <translation>在下载插件后，将为您自动启用插件以便您重启可以立即使用。
+        <translation>在下载插件后，将为您自动启用插件以便您重启后可以立即使用。
 但请确信您在“插件广场”中需要的插件是安全的。</translation>
     </message>
     <message>
@@ -1615,22 +1615,22 @@
         <location filename="../menu.py" line="2756"/>
         <location filename="../menu.py" line="2758"/>
         <source>NTP设置</source>
-        <translation>NTP设置</translation>
+        <translation>NTP 设置</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2569"/>
         <source>推荐的NTP服务器:</source>
-        <translation>推荐的NTP服务器:</translation>
+        <translation>推荐的 NTP 服务器：</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2571"/>
         <source>建议的修正:</source>
-        <translation>建议的修正:</translation>
+        <translation>建议的修正：</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2591"/>
         <source>执意保存当前输入的内容?</source>
-        <translation>执意保存当前输入的内容?</translation>
+        <translation>执意保存当前输入的内容？</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2608"/>
@@ -1640,7 +1640,7 @@
     <message>
         <location filename="../menu.py" line="2689"/>
         <source>NTP服务器已更新: {suggestion}</source>
-        <translation>NTP服务器已更新: {suggestion}</translation>
+        <translation>NTP 服务器已更新：{suggestion}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2710"/>
@@ -1713,7 +1713,7 @@
     <message>
         <location filename="../plugin_plaza.py" line="599"/>
         <source>{month}月{day}日 {weekday}</source>
-        <translation>{month}月{day}日 {weekday}</translation>
+        <translation>{month} 月 {day} 日 {weekday}</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="721"/>
@@ -1821,7 +1821,7 @@
     <message>
         <location filename="../menu.py" line="1199"/>
         <source>无效的ZIP文件</source>
-        <translation>无效的ZIP文件</translation>
+        <translation>无效的 ZIP 文件</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1205"/>
@@ -1902,14 +1902,14 @@
         <source>Edge TTS 需要联网才能正常发声哦~
 请确保网络连接,不然会说不出话来(&gt;﹏&lt;)
 * 可能会有一定的延迟,耐心等待一下~</source>
-        <translation>Edge TTS 需要联网才能正常发声哦~
-请确保网络连接,不然会说不出话来(&gt;﹏&lt;)
-* 可能会有一定的延迟,耐心等待一下~</translation>
+        <translation>Edge TTS 需要联网才能正常发声哦 ~
+请确保网络连接正常，不然会说不出话来 (&gt;﹏&lt;)
+* 可能会有一定的延迟，耐心等待一下 ~</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1601"/>
         <source>知道啦~</source>
-        <translation>知道啦~</translation>
+        <translation>知道啦 ~</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1647"/>
@@ -1931,13 +1931,13 @@
     <message>
         <location filename="../menu.py" line="1835"/>
         <source>TTS语音加载失败</source>
-        <translation>TTS语音加载失败</translation>
+        <translation>TTS 语音加载失败</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1835"/>
         <source>加载TTS语音时发生错误:
 {error_message}</source>
-        <translation>加载TTS语音时发生错误:
+        <translation>加载TTS语音时发生错误：
 {error_message}</translation>
     </message>
     <message>
@@ -1963,7 +1963,7 @@
     <message>
         <location filename="../menu.py" line="2238"/>
         <source>灵活模式为上课时自动隐藏，可手动改变隐藏状态，当前课程状态（上课/课间）改变后会清除手动隐藏状态，重新转为自动隐藏。</source>
-        <translation>灵活模式为上课时自动隐藏，可手动改变隐藏状态，当前课程状态（上课/课间）改变后会清除手动隐藏状态，重新转为自动隐藏。</translation>
+        <translation>开启灵活模式后，将在上课时自动隐藏，下课时显示，同时也能手动改变隐藏状态。手动改变的隐藏状态仅在当节课或课间生效。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2251"/>
@@ -1979,12 +1979,12 @@
     <message>
         <location filename="../menu.py" line="2266"/>
         <source>NTP时间</source>
-        <translation>NTP时间</translation>
+        <translation>NTP 时间</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2282"/>
         <source>立即同步NTP时间</source>
-        <translation>立即同步NTP时间</translation>
+        <translation>立即同步 NTP 时间</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2289"/>
@@ -2056,7 +2056,7 @@
     <message>
         <location filename="../menu.py" line="2346"/>
         <source>已切换到NTP时间,正在同步时间~</source>
-        <translation>已切换到NTP时间,正在同步时间~</translation>
+        <translation>已切换到 NTP 时间，正在同步时间 ~</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2352"/>
@@ -2078,44 +2078,44 @@
         <location filename="../menu.py" line="2824"/>
         <location filename="../menu.py" line="2831"/>
         <source>NTP同步</source>
-        <translation>NTP同步</translation>
+        <translation>NTP 同步</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2367"/>
         <source>当前无需NTP同步</source>
-        <translation>当前无需NTP同步</translation>
+        <translation>当前无需 NTP 同步</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2370"/>
         <source>当前时间管理器不支持NTP同步</source>
-        <translation>当前时间管理器不支持NTP同步</translation>
+        <translation>当前时间管理器不支持 NTP 同步</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2372"/>
         <source>正在同步NTP时间~</source>
-        <translation>正在同步NTP时间~</translation>
+        <translation>正在同步 NTP 时间 ~</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2376"/>
         <source>NTP时间同步失败</source>
-        <translation>NTP时间同步失败</translation>
+        <translation>NTP 时间同步失败</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2395"/>
         <location filename="../menu.py" line="2398"/>
         <location filename="../menu.py" line="2401"/>
         <source>NTP设置</source>
-        <translation>NTP设置</translation>
+        <translation>NTP 设置</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2395"/>
         <source>已开启NTP自动同步ヾ(≧▽≦*)o</source>
-        <translation>已开启NTP自动同步ヾ(≧▽≦*)o</translation>
+        <translation>已开启 NTP 自动同步ヾ(≧▽≦*)o</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2398"/>
         <source>已关闭NTP自动同步(≧﹏ ≦)</source>
-        <translation>已关闭NTP自动同步(≧﹏ ≦)</translation>
+        <translation>已关闭 NTP 自动同步 (≧﹏ ≦)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2401"/>
@@ -2132,7 +2132,7 @@
     <message>
         <location filename="../menu.py" line="2411"/>
         <source>时区已更新为 {ntp_sync_timezone}，正在重新同步时间~</source>
-        <translation>时区已更新为 {ntp_sync_timezone}，正在重新同步时间~</translation>
+        <translation>时区已更新为 {ntp_sync_timezone}，正在重新同步时间 ~</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2421"/>
@@ -2143,25 +2143,25 @@
         <location filename="../menu.py" line="2478"/>
         <source>NTP服务器URL不能为空 o(〃＾▽＾〃)o
 请输入有效的NTP服务器地址</source>
-        <translation>NTP服务器URL不能为空 o(〃＾▽＾〃)o
-请输入有效的NTP服务器地址</translation>
+        <translation>NTP 服务器 URL 不能为空 o(〃＾▽＾〃)o
+请输入有效的 NTP 服务器地址</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2509"/>
         <source>NTP服务器已更新: {url}</source>
-        <translation>NTP服务器已更新: {url}</translation>
+        <translation>NTP 服务器已更新：{url}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2517"/>
         <source>URL格式可能不正确: {url}
 请检查是否为有效的域名或IP地址（︶^︶）</source>
-        <translation>URL格式可能不正确: {url}
-请检查是否为有效的域名或IP地址（︶^︶）</translation>
+        <translation>URL 格式可能不正确：{url}
+请检查是否为有效的域名或 IP 地址（︶^︶）</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2768"/>
         <source>当前使用: 系统本地时间</source>
-        <translation>当前使用: 系统本地时间</translation>
+        <translation>当前使用：系统本地时间</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2772"/>
@@ -2171,22 +2171,22 @@
     <message>
         <location filename="../menu.py" line="2773"/>
         <source>上次NTP校准: {sync_time_str}</source>
-        <translation>上次NTP校准: {sync_time_str}</translation>
+        <translation>上次 NTP 校准：{sync_time_str}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2775"/>
         <source>NTP时间: 尚未进行校准</source>
-        <translation>NTP时间: 尚未进行校准</translation>
+        <translation>NTP 时间：尚未进行校准</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2777"/>
         <source>时间状态: 未知</source>
-        <translation>时间状态: 未知</translation>
+        <translation>时间状态：未知</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2799"/>
         <source>同步正在进行中,请稍候~</source>
-        <translation>同步正在进行中,请稍候~</translation>
+        <translation>同步正在进行中，请稍候 ~</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2817"/>
@@ -2196,12 +2196,12 @@
     <message>
         <location filename="../menu.py" line="2824"/>
         <source>NTP时间同步成功!</source>
-        <translation>NTP时间同步成功!</translation>
+        <translation>NTP 时间同步成功！</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2831"/>
         <source>NTP时间同步失败,请检查网络连接和url地址!</source>
-        <translation>NTP时间同步失败,请检查网络连接和url地址!</translation>
+        <translation>NTP 时间同步失败，请检查网络连接和 url 地址！</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2418"/>
@@ -2412,7 +2412,7 @@
     <message>
         <location filename="../menu.py" line="4560"/>
         <source>界面语言切换时出错: {e}</source>
-        <translation>界面语言切换时出错: {e}</translation>
+        <translation>界面语言切换时出错：{e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4562"/>
@@ -2422,7 +2422,7 @@
     <message>
         <location filename="../menu.py" line="4563"/>
         <source>切换界面语言时发生错误: {e}</source>
-        <translation>切换界面语言时发生错误: {e}</translation>
+        <translation>切换界面语言时发生错误：{e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3313"/>
@@ -2431,7 +2431,7 @@
 详情请查看Log日志，日志位于./log/下。</source>
         <translation>课程表文件转换失败！
 可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
-详情请查看Log日志，日志位于./log/下。</translation>
+详情请查看 Log 日志，日志位于 ./log/ 下。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3326"/>
@@ -2440,7 +2440,7 @@
 详情请查看Log日志，日志位于./log/下。</source>
         <translation>课程表文件导入失败！
 可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。
-详情请查看Log日志，日志位于./log/下。</translation>
+详情请查看 Log 日志，日志位于 ./log/ 下。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3377"/>
@@ -2510,7 +2510,7 @@
         <location filename="../menu.py" line="3240"/>
         <location filename="../menu.py" line="3336"/>
         <source>文件将导出于{file_path}</source>
-        <translation>文件将导出于{file_path}</translation>
+        <translation>文件将导出于 {file_path}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3338"/>
@@ -2541,7 +2541,7 @@
         <source>版本号：{local_version}
 可更新版本: {new_version}</source>
         <translation>版本号：{local_version}
-可更新版本: {new_version}</translation>
+可更新版本：{new_version}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3292"/>
@@ -2698,7 +2698,7 @@
     <message>
         <location filename="../menu.py" line="3856"/>
         <source>{data}分钟</source>
-        <translation>{data}分钟</translation>
+        <translation>{data} 分钟</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3860"/>
@@ -2741,7 +2741,7 @@
     <message>
         <location filename="../menu.py" line="4100"/>
         <source>{class_activity} - {spin_time}分钟 - {time_period}</source>
-        <translation>{class_activity} - {spin_time}分钟 - {time_period}</translation>
+        <translation>{class_activity} - {spin_time} 分钟 - {time_period}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4117"/>
@@ -2751,7 +2751,7 @@
     <message>
         <location filename="../menu.py" line="4118"/>
         <source>Class Widgets 最多只能添加10个“节点”！</source>
-        <translation>Class Widgets 最多只能添加10个“节点”！</translation>
+        <translation>Class Widgets 最多只能添加 10 个“节点”！</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4129"/>
@@ -2766,7 +2766,7 @@
     <message>
         <location filename="../menu.py" line="4308"/>
         <source>未添加-{data}</source>
-        <translation>未添加-{data}</translation>
+        <translation>未添加 - {data}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4416"/>
@@ -2867,17 +2867,17 @@
     <message>
         <location filename="../view/menu/tts_settings.ui" line="86"/>
         <source>TTS语音设置</source>
-        <translation>TTS语音设置</translation>
+        <translation>TTS 语音设置</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="130"/>
         <source>使用TTS语音</source>
-        <translation>使用TTS语音</translation>
+        <translation>使用 TTS 语音</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="143"/>
         <source>启用后将在提醒后使用TTS播报信息</source>
-        <translation>启用后将在提醒后使用TTS播报信息</translation>
+        <translation>启用后将在提醒后使用 TTS 播报信息</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="169"/>
@@ -2892,12 +2892,12 @@
     <message>
         <location filename="../view/menu/tts_settings.ui" line="208"/>
         <source>TTS生成引擎</source>
-        <translation>TTS生成引擎</translation>
+        <translation>TTS 生成引擎</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="215"/>
         <source>选择用于生成TTS语音的引擎</source>
-        <translation>选择用于生成TTS语音的引擎</translation>
+        <translation>选择用于生成 TTS 语音的引擎</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="252"/>
@@ -2907,12 +2907,12 @@
     <message>
         <location filename="../view/menu/tts_settings.ui" line="319"/>
         <source>TTS生成人</source>
-        <translation>TTS生成人</translation>
+        <translation>TTS 生成人</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="326"/>
         <source>用于生成TTS语音所用的语音id</source>
-        <translation>用于生成TTS语音所用的语音id</translation>
+        <translation>用于生成 TTS 语音所用的语音 ID</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="413"/>
@@ -2922,7 +2922,7 @@
     <message>
         <location filename="../view/menu/tts_settings.ui" line="420"/>
         <source>调整TTS的播放速度</source>
-        <translation>调整TTS的播放速度</translation>
+        <translation>调整 TTS 的播放速度</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="465"/>
@@ -2932,7 +2932,7 @@
     <message>
         <location filename="../view/menu/tts_settings.ui" line="504"/>
         <source>活动开始时:</source>
-        <translation>活动开始时:</translation>
+        <translation>活动开始时：</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="511"/>
@@ -2952,7 +2952,7 @@
     <message>
         <location filename="../view/menu/tts_settings.ui" line="606"/>
         <source>活动结束时:</source>
-        <translation>活动结束时:</translation>
+        <translation>活动结束时：</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="613"/>
@@ -2962,7 +2962,7 @@
     <message>
         <location filename="../view/menu/tts_settings.ui" line="657"/>
         <source>放学时:</source>
-        <translation>放学时:</translation>
+        <translation>放学时：</translation>
     </message>
     <message>
         <location filename="../view/menu/tts_settings.ui" line="664"/>
@@ -2995,7 +2995,7 @@
     <message>
         <location filename="../generate_speech.py" line="498"/>
         <source>热芝士: TTSManager.get_instance() 获取实例</source>
-        <translation>热芝士: TTSManager.get_instance() 获取实例</translation>
+        <translation>热芝士：TTSManager.get_instance() 获取实例</translation>
     </message>
 </context>
 <context>
@@ -3003,12 +3003,12 @@
     <message>
         <location filename="../generate_speech.py" line="648"/>
         <source>热芝士: 使用 TTSService.get_instance() 获取实例</source>
-        <translation>热芝士: 使用 TTSService.get_instance() 获取实例</translation>
+        <translation>热芝士：使用 TTSService.get_instance() 获取实例</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="696"/>
         <source>当前系统不支持Pyttsx3</source>
-        <translation>当前系统不支持Pyttsx3</translation>
+        <translation>当前系统不支持 Pyttsx3</translation>
     </message>
 </context>
 <context>
@@ -3021,7 +3021,7 @@
     <message>
         <location filename="../menu.py" line="1364"/>
         <source>小语法?</source>
-        <translation>小语法?</translation>
+        <translation>小语法？</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1369"/>
@@ -3031,11 +3031,14 @@
 - `{title}`: 通知标题 (例如：重要通知) *其他
 - `{content}`: 通知内容 (例如：这是一条测试通知) *其他
 </source>
-        <translation>可以使用以下占位符来动态插入信息：
-- `{lesson_name}`: 开始&amp;结束&amp;下节的课程名(例如：信息技术)
-- `{minutes}`: 分钟数 (例如：5) *其他
-- `{title}`: 通知标题 (例如：重要通知) *其他
-- `{content}`: 通知内容 (例如：这是一条测试通知) *其他
+        <translation>你可以使用占位符来插入动态信息。
+以下占位符适用于 所有通知：
+- `{lesson_name}`: 即将的进行课程名 (例如：信息技术)
+以下占位符仅适用于 预备铃 和 其它通知：
+- `{minutes}`: 倒计时上显示的分钟数 (例如：5)
+以下占位符仅适用于 其它通知：
+- `{title}`: 通知标题 (例如：重要通知)
+- `{content}`: 通知内容 (例如：这是一条测试通知)
 </translation>
     </message>
     <message>
@@ -3081,22 +3084,22 @@
     <message>
         <location filename="../menu.py" line="1463"/>
         <source>TTS预览失败</source>
-        <translation>TTS预览失败</translation>
+        <translation>TTS 预览失败</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1464"/>
         <source>启动TTS预览时出错: {e}</source>
-        <translation>启动TTS预览时出错: {e}</translation>
+        <translation>启动 TTS 预览时出错：{e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1472"/>
         <source>TTS生成失败</source>
-        <translation>TTS生成失败</translation>
+        <translation>TTS 生成失败</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1473"/>
         <source>生成或播放语音时出错: {error_message}</source>
-        <translation>生成或播放语音时出错: {error_message}</translation>
+        <translation>生成或播放语音时出错：{error_message}</translation>
     </message>
 </context>
 <context>
@@ -3243,14 +3246,14 @@
     <message>
         <location filename="../file.py" line="60"/>
         <source>Class Widgets 启动失败w(ﾟДﾟ)w</source>
-        <translation>Class Widgets 启动失败w(ﾟДﾟ)w</translation>
+        <translation>Class Widgets 启动失败 w(ﾟДﾟ)w</translation>
     </message>
     <message>
         <location filename="../file.py" line="62"/>
         <source>加载默认配置文件失败,请检查文件完整性或尝试重新安装。
 错误信息: {e}</source>
-        <translation>加载默认配置文件失败,请检查文件完整性或尝试重新安装。
-错误信息: {e}</translation>
+        <translation>加载默认配置文件失败，请检查文件完整性或尝试重新安装。
+错误信息：{e}</translation>
     </message>
     <message>
         <location filename="../file.py" line="63"/>
@@ -3752,8 +3755,8 @@
 若变更状态，将修改隐藏模式“灵活隐藏” (您稍后可以在“设置”中更改此选项)
 您确定要隐藏组件吗?</source>
         <translation>您正在使用 {hide_mode_text} 模式，无法变更隐藏状态
-若变更状态，将修改隐藏模式“灵活隐藏” (您稍后可以在“设置”中更改此选项)
-您确定要隐藏组件吗?</translation>
+若变更状态，将修改隐藏模式为“灵活隐藏”（您稍后可以在“设置”中更改此选项）
+您确定要隐藏组件吗？</translation>
     </message>
     <message>
         <location filename="../main.py" line="2516"/>
@@ -3773,8 +3776,8 @@
 若变更状态，将修改隐藏模式“灵活隐藏” (您可以在“设置”中更改此选项)
 您确定要隐藏组件吗?</source>
         <translation>您正在使用 {hide_mode_text} 模式，无法变更隐藏状态
-若变更状态，将修改隐藏模式“灵活隐藏” (您可以在“设置”中更改此选项)
-您确定要隐藏组件吗?</translation>
+若变更状态，将修改隐藏模式为“灵活隐藏”（您可以在“设置”中更改此选项）
+您确定要隐藏组件吗？</translation>
     </message>
     <message>
         <location filename="../main.py" line="2865"/>
@@ -4018,7 +4021,7 @@
     <message>
         <location filename="../tip_toast.py" line="145"/>
         <source>通知显示: {title}</source>
-        <translation>通知显示: {title}</translation>
+        <translation>通知显示：{title}</translation>
     </message>
 </context>
 </TS>
