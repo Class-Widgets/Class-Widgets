@@ -109,7 +109,7 @@
         <location filename="../dark/widget-floating.ui" line="178"/>
         <location filename="../widget-floating.ui" line="165"/>
         <source>&lt;0分钟</source>
-        <translation>&lt;-分钟</translation>
+        <translation>&lt; - 分钟</translation>
     </message>
     <message>
         <location filename="../dark/widget-floating.ui" line="219"/>
