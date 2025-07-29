@@ -71,7 +71,7 @@
         <location filename="../dark/widget-countdown-day.ui" line="82"/>
         <location filename="../widget-countdown-day.ui" line="82"/>
         <source>300 天</source>
-        <translation>300 天</translation>
+        <translation>-- 天</translation>
     </message>
     <message>
         <location filename="../widget-countdown.ui" line="26"/>
@@ -89,7 +89,7 @@
         <location filename="../widget-countdown.ui" line="116"/>
         <location filename="../dark/widget-countdown.ui" line="116"/>
         <source>00:00</source>
-        <translation>00:00</translation>
+        <translation>--:--</translation>
     </message>
     <message>
         <location filename="../widget-current-activity.ui" line="26"/>
@@ -103,13 +103,13 @@
         <location filename="../widget-current-activity.ui" line="51"/>
         <location filename="../dark/widget-current-activity.ui" line="56"/>
         <source>  测试</source>
-        <translation>  测试</translation>
+        <translation>  正在加载</translation>
     </message>
     <message>
         <location filename="../dark/widget-floating.ui" line="178"/>
         <location filename="../widget-floating.ui" line="165"/>
         <source>&lt;0分钟</source>
-        <translation>&lt;0分钟</translation>
+        <translation>&lt;-分钟</translation>
     </message>
     <message>
         <location filename="../dark/widget-floating.ui" line="219"/>
@@ -133,7 +133,7 @@
         <location filename="../widget-next-activity.ui" line="82"/>
         <location filename="../dark/widget-next-activity.ui" line="82"/>
         <source>测试测试</source>
-        <translation>测试测试</translation>
+        <translation>加载中...</translation>
     </message>
     <message>
         <location filename="../widget-time.ui" line="26"/>
@@ -145,13 +145,13 @@
         <location filename="../widget-time.ui" line="49"/>
         <location filename="../dark/widget-time.ui" line="50"/>
         <source>2025 年  13 月</source>
-        <translation>2025 年  13 月</translation>
+        <translation>-- 年  -- 月</translation>
     </message>
     <message>
         <location filename="../widget-time.ui" line="80"/>
         <location filename="../dark/widget-time.ui" line="82"/>
         <source>32 日 周二</source>
-        <translation>32 日 周二</translation>
+        <translation>-- 日  周 -</translation>
     </message>
     <message>
         <location filename="../widget-weather.ui" line="26"/>
@@ -169,7 +169,7 @@
         <location filename="../widget-weather.ui" line="128"/>
         <location filename="../dark/widget-weather.ui" line="128"/>
         <source>114℉</source>
-        <translation>114℉</translation>
+        <translation>--℉</translation>
     </message>
 </context>
 </TS>
