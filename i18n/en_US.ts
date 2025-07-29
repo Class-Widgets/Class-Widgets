@@ -3894,57 +3894,57 @@ Error message: {e}</translation>
     <message>
         <location filename="../list_.py" line="17"/>
         <source>周一</source>
-        <translation>Monday</translation>
+        <translation>Mon</translation>
     </message>
     <message>
         <location filename="../list_.py" line="17"/>
         <source>周二</source>
-        <translation>Tuesday</translation>
+        <translation>Tue</translation>
     </message>
     <message>
         <location filename="../list_.py" line="17"/>
         <source>周三</source>
-        <translation>Wednesday</translation>
+        <translation>Wed</translation>
     </message>
     <message>
         <location filename="../list_.py" line="17"/>
         <source>周四</source>
-        <translation>Thursday</translation>
+        <translation>Thu</translation>
     </message>
     <message>
         <location filename="../list_.py" line="17"/>
         <source>周五</source>
-        <translation>Friday</translation>
+        <translation>Fri</translation>
     </message>
     <message>
         <location filename="../list_.py" line="17"/>
         <source>周六</source>
-        <translation>Saturday</translation>
+        <translation>Sat</translation>
     </message>
     <message>
         <location filename="../list_.py" line="18"/>
         <source>周日</source>
-        <translation>Sunday</translation>
+        <translation>Sun</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>一月</source>
-        <translation>January</translation>
+        <translation>Jan</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>二月</source>
-        <translation>February</translation>
+        <translation>Feb</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>三月</source>
-        <translation>March</translation>
+        <translation>Mar</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>四月</source>
-        <translation>April</translation>
+        <translation>Apr</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
@@ -3964,37 +3964,37 @@ Error message: {e}</translation>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>八月</source>
-        <translation>August</translation>
+        <translation>Aug</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>九月</source>
-        <translation>September</translation>
+        <translation>Sep</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>十月</source>
-        <translation>October</translation>
+        <translation>Oct</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>十一月</source>
-        <translation>November</translation>
+        <translation>Nov</translation>
     </message>
     <message>
         <location filename="../list_.py" line="20"/>
         <source>单周</source>
-        <translation>odd week</translation>
+        <translation>Odd week</translation>
     </message>
     <message>
         <location filename="../list_.py" line="20"/>
         <source>十二月</source>
-        <translation>December</translation>
+        <translation>Dec</translation>
     </message>
     <message>
         <location filename="../list_.py" line="21"/>
         <source>双周</source>
-        <translation>even week</translation>
+        <translation>Even week</translation>
     </message>
     <message>
         <location filename="../list_.py" line="21"/>
