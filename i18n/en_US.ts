@@ -14,13 +14,13 @@
         <location filename="../menu.py" line="1611"/>
         <source>系统 TTS（pyttsx3）用的是系统自带的语音服务噢~
 您可以在系统设置里添加更多语音(*≧▽≦)</source>
-        <translation>System TTS (pyttsx3) uses the built-in voice service
+        <translation>TTS service uses the built-in voice service.
 You can add more voice in system settings (*≧▽≦)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1613"/>
         <source>打开Windows语音设置</source>
-        <translation>Open Windows Voice Settings Chinese</translation>
+        <translation>Open Windows Voice Settings</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1618"/>
@@ -106,7 +106,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
         <location filename="../main.py" line="2330"/>
         <location filename="../main.py" line="2351"/>
         <source>预警</source>
-        <translation>alert</translation>
+        <translation>Alert</translation>
     </message>
     <message>
         <location filename="../main.py" line="2353"/>
@@ -124,42 +124,42 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../generate_speech.py" line="378"/>
         <source>文本内容不能为空</source>
-        <translation type="unfinished"></translation>
+        <translation>Text input is required</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="380"/>
         <source>语音ID不能为空</source>
-        <translation type="unfinished"></translation>
+        <translation>Voice ID is required</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="388"/>
         <source>语音文件生成失败，文件不存在</source>
-        <translation type="unfinished"></translation>
+        <translation>Voice file generation failed: cannot find the file</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="390"/>
         <source>语音文件生成失败，文件为空</source>
-        <translation type="unfinished"></translation>
+        <translation>Voice file generation failed: the file is empty</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="396"/>
         <source>Edge TTS服务未返回音频数据,可能是网络问题或语音参数错误。语音ID: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>TTS service did not return audio data. Please check the network and Voice ID. Voice ID: {}</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="398"/>
         <source>连接问题,可能是代理设置导致: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Link Error. Please check proxy settings. {}</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="400"/>
         <source>超时,请检查网络连接: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Network connection timeout: {}</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="402"/>
         <source>Edge TTS合成失败: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>TTS voice generation failed: {}</translation>
     </message>
 </context>
 <context>
@@ -172,12 +172,12 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="623"/>
         <source>抱歉！Class Widgets 发生了严重的错误从而无法正常运行。您可以保存下方的错误信息并向他人求助。若您认为这是程序的Bug，请点击“报告此问题”或联系开发者。</source>
-        <translation>Sorry! Something went wrong with Class Widgets, causing it to stop working properly. You can save the following error information and seek help from others. If you believe this is a bug, click &apos;Report this issue&apos; or contact the developer.</translation>
+        <translation>Sorry! Class Widgets has encountered a critical error and cannot run. You can save the error details below and seek help. If this appears to be a bug, please click &apos;Report&apos; or contact the developer.</translation>
     </message>
     <message>
         <location filename="../main.py" line="638"/>
         <source>报告此问题</source>
-        <translation>Report this issue</translation>
+        <translation>Report</translation>
     </message>
     <message>
         <location filename="../main.py" line="639"/>
@@ -187,7 +187,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="640"/>
         <source>忽略错误</source>
-        <translation>Ignore the error</translation>
+        <translation>Ignore the Error</translation>
     </message>
     <message>
         <location filename="../main.py" line="642"/>
@@ -350,7 +350,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../view/menu/about.ui" line="232"/>
         <source>版本号:获取失败！</source>
-        <translation>Version number: Failed to get!</translation>
+        <translation>Failed to get the Version number!</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="259"/>
@@ -483,8 +483,8 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../view/menu/advance.ui" line="278"/>
         <source>修正系统时间与学校铃声的时差，学校铃声慢于系统时间为正值，反之为负</source>
-        <translation>Correct the time difference between the system time and  school&apos;s ringtone.
-If school&apos;s ringtone is slower than the system time, it is positive; otherwise, it is negative</translation>
+        <translation>Correct the time difference between the system time and school&apos;s ringtone.
+If school&apos;s ringtone is slower than the system time, it is positive; otherwise, it is negative.</translation>
     </message>
     <message>
         <source>选择课程表配置</source>
@@ -540,22 +540,22 @@ The start date of the school term needs to be set as the first day of the first 
     <message>
         <location filename="../view/menu/advance.ui" line="457"/>
         <source>NTP服务器</source>
-        <translation>NTP SERVER</translation>
+        <translation>NTP Server</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="464"/>
         <source>使用url链接NTP服务器同步时间</source>
-        <translation>Timing of the NTP server using url link</translation>
+        <translation>Connect to NTP server through URL to synchronize time</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="544"/>
         <source>NTP同步使用的时区</source>
-        <translation>Time Zone For NTP</translation>
+        <translation>Time Zone for NTP</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="551"/>
         <source>NTP同步时应使用的时区</source>
-        <translation>Time Zone For NTP</translation>
+        <translation>Time Zone for NTP</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="622"/>
@@ -565,7 +565,7 @@ The start date of the school term needs to be set as the first day of the first 
     <message>
         <location filename="../view/menu/advance.ui" line="632"/>
         <source>上次校准: 1145年1月1日 - 11:45:14</source>
-        <translation>Last Synchronize: 1 - 1145: 14</translation>
+        <translation>Last Synchronize: Get failed</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="656"/>
@@ -580,7 +580,7 @@ The start date of the school term needs to be set as the first day of the first 
     <message>
         <location filename="../view/menu/advance.ui" line="712"/>
         <source>界面文字</source>
-        <translation>Interface text language</translation>
+        <translation>Interface Text</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="719"/>
@@ -598,7 +598,7 @@ The start date of the school term needs to be set as the first day of the first 
     <message>
         <location filename="../view/menu/advance.ui" line="778"/>
         <source>界面语言</source>
-        <translation>Interface language</translation>
+        <translation>Interface Language</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="785"/>
@@ -613,7 +613,7 @@ The start date of the school term needs to be set as the first day of the first 
     <message>
         <location filename="../view/menu/advance.ui" line="824"/>
         <source>隐藏方式将会修改单击隐藏和自动隐藏的行为，可按需更改（重启后生效）</source>
-        <translation>The hiding mode will modify the behaviors of single-click hiding and auto-hiding, and can be changed as needed (effective after restart)</translation>
+        <translation>The hiding mode will modify the behaviors of single-click hiding and auto-hiding, you can be changed as needed. (Effective after Restart)</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="898"/>
@@ -660,7 +660,7 @@ The start date of the school term needs to be set as the first day of the first 
     <message>
         <location filename="../view/menu/advance.ui" line="1141"/>
         <source>若启用，在遇到下方设置的特定课程时不会自动隐藏，以英文逗号分隔</source>
-        <translation>If enabled, it will not be automatically hidden when the specific course set below is encountered (comma-separated)</translation>
+        <translation>If enabled, it will not be automatically hidden when the specific course set below is encountered. (Comma-separated)</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1215"/>
@@ -683,10 +683,10 @@ The start date of the school term needs to be set as the first day of the first 
 若启用，单击小组件可显示或隐藏小组件，右键小组件可打开额外选项
 若禁用，点击小组件等同于点击小组件后方的窗口
 * 重启后生效</source>
-        <translation>Allows the widget to be controlled by tapping or touching the widget
-If enabled, click the widget to show or hide it, and right-click the widget to open additional options
-If disabled, clicking a widget is equivalent to clicking the window behind the widget
-* Effective after restart</translation>
+        <translation>Allows the widget to be controlled by tapping or touching the widget.
+If enabled, click the widget to show or hide it, and right-click the widget to open additional options.
+If disabled, clicking a widget is equivalent to clicking the window behind the widget.
+* Effective after Restart</translation>
     </message>
     <message>
         <location filename="../view/menu/advance.ui" line="1392"/>
@@ -697,7 +697,7 @@ If disabled, clicking a widget is equivalent to clicking the window behind the w
         <location filename="../view/menu/advance.ui" line="1399"/>
         <source>更改自定义缩放系数百分比（重启后生效）
 *不建议使用 180% 以上的值，这可能会导致显示异常</source>
-        <translation>Change the custom scaling factor percentage (effective after restart)
+        <translation>Change the custom scaling factor percentage. (Effective after Restart)
 * Values above 180% are not recommended as they may cause abnormal display</translation>
     </message>
     <message>
@@ -709,7 +709,7 @@ If disabled, clicking a widget is equivalent to clicking the window behind the w
         <location filename="../view/menu/advance.ui" line="1509"/>
         <source>更改小组件的窗口状态（重启后生效）
 *开启“置底”功能时，将会禁用“单击隐藏小组件”</source>
-        <translation>Change widget window state (effective after restart)
+        <translation>Change widget window state. (Effective after Restart)
 * &quot;Click to hide widgets&quot; is disabled when &quot;Bottom&quot; is enabled</translation>
     </message>
     <message>
@@ -2056,7 +2056,7 @@ Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, 
     <message>
         <location filename="../menu.py" line="2238"/>
         <source>灵活模式</source>
-        <translation>Flexible hiding</translation>
+        <translation>Flexible hiding mode</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2238"/>
@@ -3308,7 +3308,7 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../generate_speech.py" line="498"/>
         <source>热芝士: TTSManager.get_instance() 获取实例</source>
-        <translation type="unfinished"></translation>
+        <translation>Tips: You can use TTSManager.get_instance() to get the instance.</translation>
     </message>
 </context>
 <context>
@@ -3316,12 +3316,12 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../generate_speech.py" line="648"/>
         <source>热芝士: 使用 TTSService.get_instance() 获取实例</source>
-        <translation type="unfinished"></translation>
+        <translation>Tips: You can use TTSService.get_instance() to get the instance.</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="696"/>
         <source>当前系统不支持Pyttsx3</source>
-        <translation type="unfinished"></translation>
+        <translation>The current system does not support Pyttsx3 to obtain instances.</translation>
     </message>
 </context>
 <context>
@@ -3500,12 +3500,12 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../file.py" line="304"/>
         <source>{section}.{key}</source>
-        <translation>这个不需要翻译！</translation>
+        <translation>{section}.{key}</translation>
     </message>
     <message>
         <location filename="../file.py" line="454"/>
         <source>General.schedule</source>
-        <translation>New schedule - 1</translation>
+        <translation type="unfinished">New schedule - 1</translation>
     </message>
     <message>
         <location filename="../file.py" line="455"/>
@@ -3535,7 +3535,7 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../file.py" line="460"/>
         <source>Weather.api</source>
-        <translation type="unfinished">Weather.api</translation>
+        <translation>Weather API</translation>
     </message>
     <message>
         <location filename="../file.py" line="461"/>
@@ -4654,12 +4654,12 @@ It is recommended to set the scaling factor to a value between 100% and 180%.</t
     <message>
         <location filename="../menu.py" line="644"/>
         <source>您确定要删除插件“{title}”吗？</source>
-        <translation>menu</translation>
+        <translation>Are you sure you want to delete the plugin named {title}?</translation>
     </message>
     <message>
         <location filename="../menu.py" line="644"/>
         <source>删除此插件后，将无法恢复。</source>
-        <translation>menu</translation>
+        <translation>it cannot be recovered after deleting.</translation>
     </message>
     <message>
         <location filename="../menu.py" line="669"/>
