@@ -14,7 +14,7 @@
         <location filename="../menu.py" line="1611"/>
         <source>系统 TTS（pyttsx3）用的是系统自带的语音服务噢~
 您可以在系统设置里添加更多语音(*≧▽≦)</source>
-        <translation>TTS service uses the built-in voice service.
+        <translation>System TTS (pyttsx3) uses the built-in voice service.
 You can add more voice in system settings (*≧▽≦)</translation>
     </message>
     <message>
@@ -3505,7 +3505,7 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../file.py" line="454"/>
         <source>General.schedule</source>
-        <translation type="unfinished">New schedule - 1</translation>
+        <translation>New schedule - 1</translation>
     </message>
     <message>
         <location filename="../file.py" line="455"/>
@@ -3535,7 +3535,7 @@ Error occurred while switching component language: {e}</translation>
     <message>
         <location filename="../file.py" line="460"/>
         <source>Weather.api</source>
-        <translation>Weather API</translation>
+        <translation>Weather.api</translation>
     </message>
     <message>
         <location filename="../file.py" line="461"/>
