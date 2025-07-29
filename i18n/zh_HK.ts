@@ -120,42 +120,42 @@
     <message>
         <location filename="../generate_speech.py" line="378"/>
         <source>文本内容不能为空</source>
-        <translation type="unfinished"></translation>
+        <translation>文本内容不能为空</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="380"/>
         <source>语音ID不能为空</source>
-        <translation type="unfinished"></translation>
+        <translation>語音 ID 不能為空</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="388"/>
         <source>语音文件生成失败，文件不存在</source>
-        <translation type="unfinished"></translation>
+        <translation>語音檔案生成失敗，檔案不存在</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="390"/>
         <source>语音文件生成失败，文件为空</source>
-        <translation type="unfinished"></translation>
+        <translation>語音檔案生成失敗，檔案為空</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="396"/>
         <source>Edge TTS服务未返回音频数据,可能是网络问题或语音参数错误。语音ID: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Edge TTS 服務未返回音訊資料， 可能是網路問題或語音參數錯誤。語音ID: {}</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="398"/>
         <source>连接问题,可能是代理设置导致: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>連線問題，可能是代理設定導致： {}</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="400"/>
         <source>超时,请检查网络连接: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>超時，請檢查網路連線： {}</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="402"/>
         <source>Edge TTS合成失败: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Edge TTS 合成失敗： {}</translation>
     </message>
 </context>
 <context>
@@ -1091,7 +1091,7 @@
     <message>
         <location filename="../view/menu/custom.ui" line="944"/>
         <source>*在 高德天气/腾讯天气 和 小米天气/和风天气 间切换后，需要重新选择城市</source>
-        <translation>*於高德天氣/騰訊天氣與小米天氣/和風天氣之間切換後，需重新選擇城市。</translation>
+        <translation>*於高德天氣/騰訊天氣與小米天氣/和風天氣之間切換後，需重新選擇城市</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="994"/>
@@ -1995,8 +1995,7 @@ https://classwidgets.rinlit.cn/docs-user/</translation>
         <source>Edge TTS 需要联网才能正常发声哦~
 请确保网络连接,不然会说不出话来(&gt;﹏&lt;)
 * 可能会有一定的延迟,耐心等待一下~</source>
-        <translation>Edge TTS需要連結互聯網才能發出聲音喔～
-Edge TTS 需要連接互聯網才能正常發聲喔～
+        <translation>Edge TTS 需要連接互聯網才能正常發聲喔～
 請確保網絡已連接，否則將無法發聲 (&gt;﹏&lt;)
 ＊可能會有少許延遲，請耐心等候一下～</translation>
     </message>
@@ -3316,7 +3315,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../generate_speech.py" line="498"/>
         <source>热芝士: TTSManager.get_instance() 获取实例</source>
-        <translation type="unfinished"></translation>
+        <translation>熱芝士： TTSManager.get_instance() 獲取實例</translation>
     </message>
 </context>
 <context>
@@ -3324,12 +3323,12 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../generate_speech.py" line="648"/>
         <source>热芝士: 使用 TTSService.get_instance() 获取实例</source>
-        <translation type="unfinished"></translation>
+        <translation>熱芝士： 使用 TTSManager.get_instance() 獲取實例</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="696"/>
         <source>当前系统不支持Pyttsx3</source>
-        <translation type="unfinished"></translation>
+        <translation>當前系統不支持 Pyttsx3</translation>
     </message>
 </context>
 <context>
@@ -3407,8 +3406,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../menu.py" line="1464"/>
         <source>启动TTS预览时出错: {e}</source>
-        <translation>TTSSettings
-啟動 TTS 預覽時出錯: {e}</translation>
+        <translation>啟動 TTS 預覽時出錯: {e}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1472"/>
@@ -3418,8 +3416,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../menu.py" line="1473"/>
         <source>生成或播放语音时出错: {error_message}</source>
-        <translation>TTSSettings
-產生或播放語音時出錯: {error_message}</translation>
+        <translation>產生或播放語音時出錯: {error_message}</translation>
     </message>
 </context>
 <context>
