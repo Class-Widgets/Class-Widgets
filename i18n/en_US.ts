@@ -3929,22 +3929,22 @@ Error message: {e}</translation>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>一月</source>
-        <translation>Jan</translation>
+        <translation>January</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>二月</source>
-        <translation>Feb</translation>
+        <translation>February</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>三月</source>
-        <translation>Mar</translation>
+        <translation>March</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>四月</source>
-        <translation>Apr</translation>
+        <translation>April</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
@@ -3964,22 +3964,22 @@ Error message: {e}</translation>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>八月</source>
-        <translation>Aug</translation>
+        <translation>August</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>九月</source>
-        <translation>Sep</translation>
+        <translation>September</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>十月</source>
-        <translation>Oct</translation>
+        <translation>October</translation>
     </message>
     <message>
         <location filename="../list_.py" line="19"/>
         <source>十一月</source>
-        <translation>Nov</translation>
+        <translation>November</translation>
     </message>
     <message>
         <location filename="../list_.py" line="20"/>
@@ -3989,7 +3989,7 @@ Error message: {e}</translation>
     <message>
         <location filename="../list_.py" line="20"/>
         <source>十二月</source>
-        <translation>Dec</translation>
+        <translation>December</translation>
     </message>
     <message>
         <location filename="../list_.py" line="21"/>
