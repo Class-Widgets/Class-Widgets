@@ -123,7 +123,7 @@ class ConfigCenter:
     def _check_schedule_config(self) -> None:
         """检查课程表配置文件"""
         schedule_dir = base_directory / 'config' / 'schedule'
-        schedule_name = self.read_conf('General', 'schedule', '新课表 - 1.json')
+        schedule_name = self.read_conf('General', 'schedule')
         current_schedule_file = schedule_dir / schedule_name
 
         if not current_schedule_file.exists():
@@ -370,6 +370,7 @@ class ScheduleCenter:
         self.config_center = config_center_instance
         self.schedule_data: Dict[str, Any] = {}
         self.update_schedule()
+        self.config_center.write_conf('General', 'schedule', self.config_center.read_conf('General', 'schedule'))
 
     def update_schedule(self) -> None:
         """

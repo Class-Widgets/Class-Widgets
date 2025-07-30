@@ -3510,42 +3510,42 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <translation>这个不需要翻译！</translation>
     </message>
     <message>
-        <location filename="../file.py" line="454"/>
+        <location filename="../file.py" line="455"/>
         <source>General.schedule</source>
         <translation>新課程時間表 - 1</translation>
     </message>
     <message>
-        <location filename="../file.py" line="455"/>
+        <location filename="../file.py" line="456"/>
         <source>TTS.language</source>
         <translation>zh-CN</translation>
     </message>
     <message>
-        <location filename="../file.py" line="456"/>
+        <location filename="../file.py" line="457"/>
         <source>TTS.attend_class</source>
         <translation>依家開始{lesson_name}課</translation>
     </message>
     <message>
-        <location filename="../file.py" line="457"/>
+        <location filename="../file.py" line="458"/>
         <source>TTS.finish_class</source>
         <translation>活動結束，下一堂課: {lesson_name}</translation>
     </message>
     <message>
-        <location filename="../file.py" line="458"/>
+        <location filename="../file.py" line="459"/>
         <source>TTS.prepare_class</source>
         <translation>活動即將開始，下一堂課: {lesson_name}</translation>
     </message>
     <message>
-        <location filename="../file.py" line="459"/>
+        <location filename="../file.py" line="460"/>
         <source>TTS.after_school</source>
         <translation>所有活動已結束</translation>
     </message>
     <message>
-        <location filename="../file.py" line="460"/>
+        <location filename="../file.py" line="461"/>
         <source>Weather.api</source>
         <translation>xiaomi_weather</translation>
     </message>
     <message>
-        <location filename="../file.py" line="461"/>
+        <location filename="../file.py" line="462"/>
         <source>Plugin.mirror</source>
         <translation>original</translation>
     </message>

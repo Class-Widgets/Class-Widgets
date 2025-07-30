@@ -3193,42 +3193,42 @@
         <translation>{section}.{key}</translation>
     </message>
     <message>
-        <location filename="../file.py" line="454"/>
+        <location filename="../file.py" line="455"/>
         <source>General.schedule</source>
         <translation>新课表 - 1.json</translation>
     </message>
     <message>
-        <location filename="../file.py" line="455"/>
+        <location filename="../file.py" line="456"/>
         <source>TTS.language</source>
         <translation>zh-CN</translation>
     </message>
     <message>
-        <location filename="../file.py" line="456"/>
+        <location filename="../file.py" line="457"/>
         <source>TTS.attend_class</source>
         <translation>活动开始, {lesson_name}</translation>
     </message>
     <message>
-        <location filename="../file.py" line="457"/>
+        <location filename="../file.py" line="458"/>
         <source>TTS.finish_class</source>
         <translation>活动结束, 下一节课 {lesson_name}</translation>
     </message>
     <message>
-        <location filename="../file.py" line="458"/>
+        <location filename="../file.py" line="459"/>
         <source>TTS.prepare_class</source>
         <translation>活动即将开始, 下一节课 {lesson_name}</translation>
     </message>
     <message>
-        <location filename="../file.py" line="459"/>
+        <location filename="../file.py" line="460"/>
         <source>TTS.after_school</source>
         <translation>活动全部结束</translation>
     </message>
     <message>
-        <location filename="../file.py" line="460"/>
+        <location filename="../file.py" line="461"/>
         <source>Weather.api</source>
         <translation>xiaomi_weather</translation>
     </message>
     <message>
-        <location filename="../file.py" line="461"/>
+        <location filename="../file.py" line="462"/>
         <source>Plugin.mirror</source>
         <translation>gh_proxy</translation>
     </message>
