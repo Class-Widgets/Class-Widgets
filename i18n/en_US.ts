@@ -3344,11 +3344,14 @@ Error occurred while switching component language: {e}</translation>
 - `{title}`: 通知标题 (例如：重要通知) *其他
 - `{content}`: 通知内容 (例如：这是一条测试通知) *其他
 </source>
-        <translation>Information can be inserted dynamically using the following placeholders:
-- &apos;{lesson_name}&apos; : start &amp; end &amp; next course name (e.g. Information Technology)
-- &apos;{minutes}&apos; : Number of minutes (ex: 5) * Other
-- &apos;{title}&apos; : notification title (e.g. important notification) * others
-- &apos;{content}&apos; : the content of the notification (ex: it&apos;s a test notification) * others
+        <translation>You can use placeholders to insert dynamic information.
+This placeholder apply to all notifications:
+- &apos;{lesson_name}&apos; : Name of upcoming course (e.g. Information Technology)
+This placeholder apply only to the “Preparation Bell” and “Other Notifications”:
+- &apos;{minutes}&apos; : Minutes displayed on Countdown (e.g. 5)
+These placeholders apply only to the “Other Notifications”:
+- &apos;{title}&apos; : Title of the notification (e.g. Important notification)
+- &apos;{content}&apos; : Content of the notification (e.g. It&apos;s a test notification)
 </translation>
     </message>
     <message>
