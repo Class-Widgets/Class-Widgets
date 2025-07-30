@@ -3238,42 +3238,42 @@
         <translation>{section}.{key}</translation>
     </message>
     <message>
-        <location filename="../file.py" line="454"/>
+        <location filename="../file.py" line="455"/>
         <source>General.schedule</source>
         <translation>新しいスケジュール - 1</translation>
     </message>
     <message>
-        <location filename="../file.py" line="455"/>
+        <location filename="../file.py" line="456"/>
         <source>TTS.language</source>
         <translation>ja-JP</translation>
     </message>
     <message>
-        <location filename="../file.py" line="456"/>
+        <location filename="../file.py" line="457"/>
         <source>TTS.attend_class</source>
         <translation>Class begins, {lesson_name}</translation>
     </message>
     <message>
-        <location filename="../file.py" line="457"/>
+        <location filename="../file.py" line="458"/>
         <source>TTS.finish_class</source>
         <translation>Class is over. Next class: {lesson_name}</translation>
     </message>
     <message>
-        <location filename="../file.py" line="458"/>
+        <location filename="../file.py" line="459"/>
         <source>TTS.prepare_class</source>
         <translation>Class is about to begin. Next class: {lesson_name}</translation>
     </message>
     <message>
-        <location filename="../file.py" line="459"/>
+        <location filename="../file.py" line="460"/>
         <source>TTS.after_school</source>
         <translation>School is over</translation>
     </message>
     <message>
-        <location filename="../file.py" line="460"/>
+        <location filename="../file.py" line="461"/>
         <source>Weather.api</source>
         <translation type="unfinished">Weather.api</translation>
     </message>
     <message>
-        <location filename="../file.py" line="461"/>
+        <location filename="../file.py" line="462"/>
         <source>Plugin.mirror</source>
         <translation>original</translation>
     </message>
