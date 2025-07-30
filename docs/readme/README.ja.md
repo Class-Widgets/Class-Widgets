@@ -3,7 +3,7 @@
 </div>
 
 > [!Warning]
-> Class Widgets *1* は現在、完全にコミュニティ開発者によって開発されています。
+Class Widgets *1* は現在、完全にコミュニティ開発者によって開発されています。Class Widgets のメインリポジトリ（本リポジトリ）で提起された課題や貢献は、主に以下の4名のメンバーによって受理・レビューされます：
 >
 > [![](https://github.com/pizeroLOL.png?size=80)](https://github.com/pizeroLOL) [![](https://github.com/IsHPDuwu.png?size=80)](https://github.com/IsHPDuwu) [![](https://github.com/baiyao105.png?size=80)](https://github.com/baiyao105) [![](https://github.com/Artist-MOBAI.png?size=80)](https://github.com/Artist-MOBAI)
 >

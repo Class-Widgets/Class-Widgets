@@ -3,7 +3,7 @@
 </div>
 
 > [!Warning]
-> Class Widgets *1* is currently developed entirely by community contributors.
+> Class Widgets *1* is currently developed entirely by community contributors. Any issues or contributions you submit to the Class Widgets main repository (this repository) will primarily be received and reviewed by the following four members:
 > 
 > [![](https://github.com/pizeroLOL.png?size=80)](https://github.com/pizeroLOL) [![](https://github.com/IsHPDuwu.png?size=80)](https://github.com/IsHPDuwu) [![](https://github.com/baiyao105.png?size=80)](https://github.com/baiyao105) [![](https://github.com/Artist-MOBAI.png?size=80)](https://github.com/Artist-MOBAI)
 > 

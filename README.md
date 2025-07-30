@@ -3,7 +3,7 @@
 </div>
 
 > [!Warning]
-> Class Widgets *1* 目前完全由社区开发者进行开发
+> Class Widgets *1* 目前完全由社区开发者进行开发，而您在 Class Widgets 主仓库（即本仓库）提出的议题和提交的贡献将主要由以下四位成员接收和审查：
 > 
 > [![](https://github.com/pizeroLOL.png?size=80)](https://github.com/pizeroLOL) [![](https://github.com/IsHPDuwu.png?size=80)](https://github.com/IsHPDuwu) [![](https://github.com/baiyao105.png?size=80)](https://github.com/baiyao105) [![](https://github.com/Artist-MOBAI.png?size=80)](https://github.com/Artist-MOBAI)
 > 
