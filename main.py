@@ -2148,6 +2148,8 @@ class DesktopWidget(QWidget):  # 主要小组件
 
     def toggle_weather_alert(self) -> None:
         """在温度和预警之间切换显示"""
+        SWITCH_INTERVAL = 6000  # 6秒切换间隔
+        
         if self.showing_temperature:
             self._fade_to_alert()
         else:
@@ -2161,6 +2163,10 @@ class DesktopWidget(QWidget):  # 主要小组件
                     self._cycle_to_next_alert_with_animation()
             else:
                 self._fade_to_temperature()
+        
+        # 统一重置定时器
+        if hasattr(self, 'weather_alert_timer'):
+            self.weather_alert_timer.start(SWITCH_INTERVAL)
     
     def _fade_to_alert(self) -> None:
         """从温度渐变到预警显示"""
@@ -2210,8 +2216,6 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.weather_alert_text.show()
             self.alert_icon.show()
             self.fade_in_group.start()
-            if hasattr(self, 'weather_info_timer'):
-                self.weather_info_timer.start(3000)
         try: 
             self.fade_out_group.finished.disconnect()
         except TypeError: 
@@ -2309,8 +2313,6 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.fade_in_group.addAnimation(alert_text_fade_in)
             self.fade_in_group.addAnimation(alert_icon_fade_in)
             self.fade_in_group.start()
-            if hasattr(self, 'weather_info_timer'):
-                self.weather_info_timer.start(3000)
         try: 
             self.fade_out_group.finished.disconnect()
         except TypeError: 
@@ -2367,7 +2369,7 @@ class DesktopWidget(QWidget):  # 主要小组件
 
     def _reset_weather_alert_state(self) -> None:
         """重置天气预警显示状态"""
-        for timer_name in ['weather_alert_timer', 'weather_info_timer']:
+        for timer_name in ['weather_alert_timer']:
             timer = getattr(self, timer_name, None)
             if timer:
                 timer.stop()
@@ -2406,13 +2408,27 @@ class DesktopWidget(QWidget):  # 主要小组件
             weather_data_temp = weather_data
             self._reset_weather_alert_state()
             try:
+                # 获取预警数据
                 unified_alert_data = get_unified_weather_alerts(original_weather_data)
-                self.current_alerts = unified_alert_data.get('all_alerts', [])
+                all_alerts = unified_alert_data.get('all_alerts', [])
+                
+                # 过滤相同预警
+                seen_titles = set()
+                unique_alerts = []
+                for alert in all_alerts:
+                    title = alert.get("title", "")
+                    if title not in seen_titles:
+                        seen_titles.add(title)
+                        unique_alerts.append(alert)
+                
+                self.current_alerts = unique_alerts
                 self.current_alert_index = 0
-                logger.debug(f'获取到 {len(self.current_alerts)} 个天气预警')
+                logger.debug(f'获取到 {len(self.current_alerts)} 个天气预警（去重后）')
+                
                 if self.current_alerts:
                     for i, alert in enumerate(self.current_alerts):
                         logger.debug(f'预警 {i+1}: {alert.get("title", "未知")}')
+
             except Exception as e:
                 logger.warning(f'获取预警数据失败：{e}')
                 self.current_alerts = []
@@ -2437,11 +2453,7 @@ class DesktopWidget(QWidget):  # 主要小组件
                     if not hasattr(self, 'weather_alert_timer') or not self.weather_alert_timer:
                         self.weather_alert_timer = QTimer(self)
                         self.weather_alert_timer.timeout.connect(self.toggle_weather_alert)
-                    self.weather_alert_timer.start(6000)  # 6秒切换一次
-                    if not hasattr(self, 'weather_info_timer') or not self.weather_info_timer:
-                        self.weather_info_timer = QTimer(self)
-                        self.weather_info_timer.timeout.connect(self.toggle_weather_alert)
-                        self.weather_info_timer.setSingleShot(True)
+                    self.weather_alert_timer.start(6000)  # 6秒切换间隔
                 else:
                     self.weather_alert_text.hide()
                     self.alert_icon.hide()
