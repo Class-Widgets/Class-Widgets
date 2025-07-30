@@ -23,7 +23,7 @@
 
 [![Stars](https://img.shields.io/github/stars/Class-Widgets/Class-Widgets?style=for-the-badge&color=orange&label=Stars)](https://github.com/Class-Widgets/Class-Widgets)
 [![Latest Version](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?style=for-the-badge&color=purple&label=Latest%20Version)](https://github.com/Class-Widgets/Class-Widgets/releases/latest)
-[![Beta Version](https://img.shields.io/github/v/tag/Class-Widgets/Class-Widgets?include_prereleases&label=Beta%20Version&color=yellow&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets/releases)
+[![Beta Version](https://img.shields.io/github/v/tag/Class-Widgets/Class-Widgets?include_prereleases&label=Beta%20Version&color=yellow&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets/actions)
 [![License](https://img.shields.io/badge/license-GPLv3-blue.svg?label=License&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets?tab=GPL-3.0-1-ov-file)
 [![Downloads](https://img.shields.io/github/downloads/Class-Widgets/Class-Widgets/total.svg?label=Downloads&color=green&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets)
 [![Translation Status](https://hosted.weblate.org/widget/class-widgets-1/view/svg-badge.svg)](https://hosted.weblate.org/engage/class-widgets-1/)
