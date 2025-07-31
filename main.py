@@ -2329,12 +2329,27 @@ class DesktopWidget(QWidget):  # 主要小组件
         if self.current_alert_index >= len(self.current_alerts):
             self.current_alert_index = 0
         current_alert = self.current_alerts[self.current_alert_index]
-        alert_text = self._simplify_alert_text(current_alert.get('title', self.tr('预警')))
+
+        alert_title = self._simplify_alert_text(current_alert.get('title'))
+        if len(alert_title) > 6:
+            alert_text = alert_title  # 极端情况去除预警二字
+        else:
+            alert_text = alert_title + '预警'
+
+        char_count = len(alert_text)  # 动态调整宽度
+        if char_count > 5:
+            new_width = min(80 + (char_count - 5) * 14, 118)  # 计算宽度
+            self.weather_alert_text.setFixedWidth(new_width)
+        else:
+            self.weather_alert_text.setFixedWidth(80)  # 默认
+
         font = self.weather_alert_text.font()
         if len(alert_text) <= 4:
             font.setPointSize(14)
-        elif len(alert_text) <= 8:
+        elif len(alert_text) <= 7:
             font.setPointSize(12)
+        elif len(alert_text) == 8:
+            font.setPointSize(11)
         else:
             font.setPointSize(10)
         self.weather_alert_text.setFont(font)
@@ -2352,7 +2367,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             return self.tr('预警')
         match = re.search(r'(发布|升级为)(\w+)(蓝色|黄色|橙色|红色)预警', text)
         if match:
-            return self.tr("{data}预警").format(data=match.group(2))
+            return self.tr("{data}").format(data=match.group(2))  # 简化至仅剩预警类别，如“暴雨” “雷暴大风”
         return '未知预警'
 
     def _get_alert_icon_by_severity(self, severity: Union[str, int]) -> str:
