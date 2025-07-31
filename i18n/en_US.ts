@@ -84,6 +84,11 @@ You can add more voice in system settings (*≧▽≦)</translation>
         <translation>Exit</translation>
     </message>
     <message>
+        <location filename="../main.py" line="2370"/>
+        <source>{data}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>{year}&#x2005;年&#x2002;{month}&#x2005;月</source>
         <translation type="vanished">{month} {year}</translation>
     </message>
@@ -103,18 +108,16 @@ You can add more voice in system settings (*≧▽≦)</translation>
         <translation>Till {cd_text}</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2332"/>
-        <location filename="../main.py" line="2353"/>
+        <location filename="../main.py" line="2368"/>
         <source>预警</source>
         <translation>Alert</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2355"/>
         <source>{data}预警</source>
-        <translation>{data} alert</translation>
+        <translation type="vanished">{data} alert</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2487"/>
+        <location filename="../main.py" line="2502"/>
         <source>{city} · 未知</source>
         <translation>{city} · Unknown</translation>
     </message>
@@ -4363,25 +4366,25 @@ Error message: {e}</translation>
         <translation>This is a example notification</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2519"/>
-        <location filename="../main.py" line="2548"/>
+        <location filename="../main.py" line="2534"/>
+        <location filename="../main.py" line="2563"/>
         <source>上课时自动隐藏</source>
         <translation>Auto hide when having classes</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2520"/>
-        <location filename="../main.py" line="2549"/>
+        <location filename="../main.py" line="2535"/>
+        <location filename="../main.py" line="2564"/>
         <source>窗口最大化时隐藏</source>
         <translation>Auto Hide when maximizing the window</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2521"/>
-        <location filename="../main.py" line="2550"/>
+        <location filename="../main.py" line="2536"/>
+        <location filename="../main.py" line="2565"/>
         <source>暂时无法变更“状态”</source>
         <translation>Unable to change &apos;status&apos; temporarily</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2524"/>
+        <location filename="../main.py" line="2539"/>
         <source>您正在使用 {hide_mode_text} 模式，无法变更隐藏状态
 若变更状态，将修改隐藏模式“灵活隐藏” (您稍后可以在“设置”中更改此选项)
 您确定要隐藏组件吗?</source>
@@ -4390,19 +4393,19 @@ If changing hiding status, we will change hiding mode to &quot;Flexible hiding&q
 Do you want to hide the widget?</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2528"/>
-        <location filename="../main.py" line="2557"/>
+        <location filename="../main.py" line="2543"/>
+        <location filename="../main.py" line="2572"/>
         <source>确定</source>
         <translation>Confirm</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2530"/>
-        <location filename="../main.py" line="2559"/>
+        <location filename="../main.py" line="2545"/>
+        <location filename="../main.py" line="2574"/>
         <source>取消</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2553"/>
+        <location filename="../main.py" line="2568"/>
         <source>您正在使用 {hide_mode_text} 模式，无法变更隐藏状态
 若变更状态，将修改隐藏模式“灵活隐藏” (您可以在“设置”中更改此选项)
 您确定要隐藏组件吗?</source>
@@ -4411,32 +4414,32 @@ If changing hiding status, we will change hiding mode to &quot;Flexible hiding&q
 Do you want to hide the widget?</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2877"/>
+        <location filename="../main.py" line="2892"/>
         <source>Class Widgets 正在运行</source>
         <translation>Class Widgets is running now</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2880"/>
+        <location filename="../main.py" line="2895"/>
         <source>Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。
 (若您需要打开多个实例，请在“设置”-&gt;“高级选项”中启用“允许程序多开”)</source>
         <translation>Class Widgets is running now! Do not start multiple instance,or it will cause unknown problems.
 (If you need to start multiple instance,Please enable&quot;Allow multiple instances&quot; In &quot;Settings&quot; -&gt; &quot;Advanced Options&quot;)</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2913"/>
+        <location filename="../main.py" line="2928"/>
         <source>缩放系数过大</source>
         <translation>The scaling factor is too large</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2914"/>
+        <location filename="../main.py" line="2929"/>
         <source>当前缩放系数为 {scale_factor}%，可能导致显示异常。
 建议将缩放系数设置为 100% 到 180% 之间。</source>
         <translation>Current scaling factor is {scale_factor}% now, and it may cause display problems.
 It is recommended to set the scaling factor to a value between 100% and 180%.</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2881"/>
-        <location filename="../main.py" line="2915"/>
+        <location filename="../main.py" line="2896"/>
+        <location filename="../main.py" line="2930"/>
         <source>好</source>
         <translation>OK</translation>
     </message>
