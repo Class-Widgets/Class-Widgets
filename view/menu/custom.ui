@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>706</width>
-    <height>1471</height>
+    <height>1505</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -66,7 +66,7 @@
         <x>0</x>
         <y>0</y>
         <width>658</width>
-        <height>1308</height>
+        <height>1383</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -1104,14 +1104,14 @@
           </widget>
          </item>
          <item>
-          <widget class="CardWidget" name="CardWidget_12">
+          <widget class="CardWidget" name="CardWidget_14">
            <property name="minimumSize">
             <size>
              <width>0</width>
              <height>70</height>
             </size>
            </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_16">
+           <layout class="QHBoxLayout" name="horizontalLayout_17">
             <property name="leftMargin">
              <number>16</number>
             </property>
@@ -1125,19 +1125,19 @@
              <number>16</number>
             </property>
             <item>
-             <layout class="QVBoxLayout" name="verticalLayout_20">
+             <layout class="QVBoxLayout" name="verticalLayout_21">
               <property name="spacing">
                <number>0</number>
               </property>
               <item>
-               <widget class="StrongBodyLabel" name="StrongBodyLabel_14">
+               <widget class="StrongBodyLabel" name="StrongBodyLabel_15">
                 <property name="text">
                  <string>天气源 API Key</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="CaptionLabel" name="CaptionLabel_15">
+               <widget class="CaptionLabel" name="CaptionLabel_17">
                 <property name="text">
                  <string>部分天气源可能需要设置 Key 才能正常使用，可在“帮助”页找到各个天气源获得 Key 的方法。</string>
                 </property>
@@ -1175,6 +1175,91 @@
                 <width>275</width>
                 <height>33</height>
                </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="CardWidget" name="CardWidget_12">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>70</height>
+            </size>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_16">
+            <property name="leftMargin">
+             <number>16</number>
+            </property>
+            <property name="topMargin">
+             <number>16</number>
+            </property>
+            <property name="rightMargin">
+             <number>16</number>
+            </property>
+            <property name="bottomMargin">
+             <number>16</number>
+            </property>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_20">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="StrongBodyLabel" name="StrongBodyLabel_14">
+                <property name="text">
+                 <string>排除的气象预警</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="CaptionLabel" name="CaptionLabel_15">
+                <property name="text">
+                 <string>包含该字符串内容的预警将不会被显示
+多个内容使用空格分隔</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+                <property name="lightColor" stdset="0">
+                 <color alpha="150">
+                  <red>0</red>
+                  <green>0</green>
+                  <blue>0</blue>
+                 </color>
+                </property>
+                <property name="darkColor" stdset="0">
+                 <color alpha="200">
+                  <red>255</red>
+                  <green>255</green>
+                  <blue>255</blue>
+                 </color>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="LineEdit" name="alert_exclude">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>275</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="frame">
+               <bool>true</bool>
               </property>
              </widget>
             </item>

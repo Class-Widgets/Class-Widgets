@@ -2438,9 +2438,9 @@ class DesktopWidget(QWidget):  # 主要小组件
                 
                 self.current_alerts = unique_alerts
                 self.current_alert_index = 0
-                logger.debug(f'获取到 {len(self.current_alerts)} 个天气预警（去重后）')
                 
                 if self.current_alerts:
+                    logger.debug(f'获取到 {len(self.current_alerts)} 个天气预警')
                     for i, alert in enumerate(self.current_alerts):
                         logger.debug(f'预警 {i+1}: {alert.get("title", "未知")}')
 

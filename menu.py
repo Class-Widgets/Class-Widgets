@@ -1,4 +1,3 @@
-import datetime as dt
 import json
 import os
 import re
@@ -11,7 +10,6 @@ from shutil import rmtree
 import re
 import zipfile
 import shutil
-import asyncio
 
 from PyQt5 import uic, QtCore
 from PyQt5.QtCore import Qt, QTime, QUrl, QDate, pyqtSignal, QSize, QThread, QTranslator, QObject, QTimer
@@ -40,12 +38,11 @@ import conf
 import list_ as list_
 import tip_toast
 import utils
-from utils import time_manager, TimeManagerFactory
+from utils import TimeManagerFactory
 import weather
 import weather as wd
 from conf import base_directory, load_theme_config
 from cses_mgr import CSES_Converter
-from generate_speech import get_tts_voices
 import generate_speech
 from file import config_center, schedule_center
 import file
@@ -2074,8 +2071,13 @@ class SettingsMenu(FluentWindow):
         )
 
         api_key_edit = self.findChild(LineEdit, 'api_key_edit')  # API密钥
-        api_key_edit.setText(config_center.read_conf('Weather', 'api_key'))
+        api_key_edit.setText(config_center.read_conf('Weather', 'api_key', ''))
         api_key_edit.textChanged.connect(lambda: config_center.write_conf('Weather', 'api_key', api_key_edit.text()))
+
+        alert_exclude = self.findChild(LineEdit, 'alert_exclude') # 预警排除
+        alert_exclude.setText(config_center.read_conf('Weather', 'alert_exclude', ''))
+        alert_exclude.setPlaceholderText(self.tr('大风 雷电 地质...'))
+        alert_exclude.textChanged.connect(lambda: config_center.write_conf('Weather', 'alert_exclude', alert_exclude.text()))
 
     def setup_about_interface(self):
         ab_scroll = self.findChild(SmoothScrollArea, 'ab_scroll')  # 触摸屏适配
