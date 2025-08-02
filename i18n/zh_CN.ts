@@ -660,7 +660,8 @@
         <location filename="../view/menu/advance.ui" line="1308"/>
         <source>启用后：轻点小组件即可切换显示/隐藏, 右键会弹出更多选项哟
 禁用时：点击小组件会像不存在一样, 直接穿透到后面的窗口</source>
-        <translation type="unfinished"></translation>
+        <translation>启用后：轻点小组件即可切换显示/隐藏, 右键会弹出更多选项哟
+禁用时：点击小组件会像不存在一样, 直接穿透到后面的窗口</translation>
     </message>
     <message>
         <source>允许通过点击或触摸小组件方式控制小组件
