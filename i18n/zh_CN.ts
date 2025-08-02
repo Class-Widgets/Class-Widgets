@@ -1993,24 +1993,24 @@
     <message>
         <location filename="../menu.py" line="2324"/>
         <source> (仅Windows)</source>
-        <translation type="unfinished"></translation>
+        <translation> (仅Windows)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2332"/>
         <location filename="../menu.py" line="2345"/>
         <location filename="../menu.py" line="2409"/>
         <source>提示</source>
-        <translation type="unfinished"></translation>
+        <translation>提示</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2335"/>
         <source>窗口会置于次底部, 但仍然比普通置顶要高一点点~</source>
-        <translation type="unfinished"></translation>
+        <translation>窗口会置于次底部, 但仍然比普通置顶要高一点点~</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2346"/>
         <source>当前平台可能不完全支持该功能~</source>
-        <translation type="unfinished"></translation>
+        <translation>当前平台可能不完全支持该功能~</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2414"/>
@@ -2018,7 +2018,10 @@
 会认真挡住前面的点击哦~
 
 *请重启应用以完全生效</source>
-        <translation type="unfinished"></translation>
+        <translation>窗口实体状态
+会认真挡住前面的点击哦~
+
+*请重启应用以完全生效</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2418"/>
@@ -2026,7 +2029,10 @@
 窗口不挡你啦,可以点穿它~
 
 *请重启应用以完全生效</source>
-        <translation type="unfinished"></translation>
+        <translation>鼠标穿透启用
+窗口不挡你啦,可以点穿它~
+
+*请重启应用以完全生效</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2483"/>
@@ -3491,7 +3497,7 @@
     <message>
         <location filename="../list_.py" line="23"/>
         <source>置于次级底部</source>
-        <translation type="unfinished"></translation>
+        <translation>置于次级底部</translation>
     </message>
     <message>
         <location filename="../list_.py" line="24"/>
