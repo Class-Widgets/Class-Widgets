@@ -100,18 +100,14 @@ jobs:
           else
             build_type="PyInstaller - Debug"
           fi
-          config_path="config/default_config.json"
-          config_text=$(cat "$config_path")
-          config_text="${config_text//__BUILD_TIME__/$build_time}"
-          config_text="${config_text//__BUILD_COMMIT__/$build_commit}"
-          config_text="${config_text//__BUILD_BRANCH__/$build_branch}"
-          config_text="${config_text//__BUILD_RUNID__/$build_runid}"
-          config_text="${config_text//__BUILD_TYPE__/$build_type}"
-          printf "%s" "$config_text" > "$config_path"
-          echo "IS_RELEASE=$is_release" >> $GITHUB_ENV
+          echo "BUILD_TIME=$build_time" >> $GITHUB_ENV
+          echo "BUILD_COMMIT=$build_commit" >> $GITHUB_ENV
+          echo "BUILD_BRANCH=$build_branch" >> $GITHUB_ENV
+          echo "BUILD_RUNID=$build_runid" >> $GITHUB_ENV
           echo "BUILD_TYPE=$build_type" >> $GITHUB_ENV
-          echo "is_release=$is_release" >> $GITHUB_OUTPUT
+          echo "IS_RELEASE=$is_release" >> $GITHUB_ENV
           echo "build_type=$build_type" >> $GITHUB_OUTPUT
+          echo "is_release=$is_release" >> $GITHUB_OUTPUT
           {
             echo "## 📋 构建信息"
             echo "| 项目 | 值 |"
@@ -181,25 +177,57 @@ jobs:
         id: syntax_check
         shell: bash
         run: |
-          python_files=$(find . -name "*.py" -not -path "*/__pycache__/*" -not -path "*/.venv/*" -not -path "*/build/*" -not -path "*/dist/*")
+          python_files=$(find . -name "*.py" -not -path "*/__pycache__/*" -not -path "*/.venv/*" -not -path "*/build/*" -not -path "*/dist/*" | sort)
+          total_files=$(echo "$python_files" | wc -l)
+          echo "[DEBUG] 发现 $total_files 个文件"
           has_errors=false
-          error_report="## 🔍 Python 语法检查 (${{ matrix.os }})\n\n"
+          error_count=0
+          error_report="## 🔍 Python 语法检查\n\n"
+          error_report+="**检查时间**: $(date '+%Y-%m-%d %H:%M:%S')  \n"
+          error_report+="**Python版本**: $(python --version)  \n"
+          error_report+="**操作系统**: ${{ matrix.os }} - ${{ matrix.arch }}  \n"
+          error_report+="**检查文件数**: $total_files  \n\n"
+          error_report+="---  \n\n"
           for file in $python_files; do
             echo "检查文件: $file"
             if ! python -m py_compile "$file" 2>/dev/null; then
-              echo "❌ 语法错误在文件 $file"
               error_output=$(python -m py_compile "$file" 2>&1)
+              echo "❌ 语法错误: $file"
+              echo "错误详情: $error_output"
               has_errors=true
-              error_report+="### ❌ 语法错误: \`$file\`\n\n"
-              error_report+="\`\`\`\n$error_output\n\`\`\`\n\n"
+              error_count=$((error_count + 1))
+              rel_path=$(realpath --relative-to="." "$file")
+              error_report+="### 问题 #$error_count: \`$rel_path\`\n\n"
+              error_report+="> [!CAUTION]  \n"
+              error_report+="> **错误信息**:  \n"
+              error_report+="> \`\`\`  \n"
+              formatted_error=$(echo "$error_output" | sed 's/^/> /')
+              error_report+="> $formatted_error  \n"
+              error_report+="> \`\`\`  \n\n"
+              error_report+="---  \n\n"
             fi
           done
           if [ "$has_errors" = true ]; then
             echo "has_syntax_errors=true" >> $GITHUB_OUTPUT
+            echo "error_count=$error_count" >> $GITHUB_OUTPUT
+            error_report+="### ❌ 发现 **$error_count** 个语法错误"
+            echo "$error_report" >> $GITHUB_STEP_SUMMARY
             exit 1
           else
             echo "has_syntax_errors=false" >> $GITHUB_OUTPUT
-          fi
+            echo "error_count=0" >> $GITHUB_OUTPUT
+
+      - name: Update config
+        shell: bash
+        run: |
+          config_path="config/default_config.json"
+          config_text=$(cat "$config_path")
+          config_text="${config_text//__BUILD_TIME__/$BUILD_TIME}"
+          config_text="${config_text//__BUILD_COMMIT__/$BUILD_COMMIT}"
+          config_text="${config_text//__BUILD_BRANCH__/$BUILD_BRANCH}"
+          config_text="${config_text//__BUILD_RUNID__/$BUILD_RUNID}"
+          config_text="${config_text//__BUILD_TYPE__/$BUILD_TYPE}"
+          printf "%s" "$config_text" > "$config_path"
 
       - name: Setup uv
         uses: astral-sh/setup-uv@v6
@@ -473,7 +501,7 @@ jobs:
             signed_key="${platform}-signed"
             build_key="${platform}-build"
             if [[ -n "${artifact_cache[$signed_key]:-}" ]]; then
-              echo "使用 ${platform} 签名版本"
+              echo "[DEBUG] 使用 ${platform} 签名版本"
               for zip_file in "${artifact_cache[$signed_key]}"/*.zip; do
                 if [[ -f "$zip_file" ]]; then
                   process_file "$zip_file" "$platform" "已签名"
@@ -482,7 +510,7 @@ jobs:
                 fi
               done
             elif [[ -n "${artifact_cache[$build_key]:-}" ]]; then
-              echo "使用 ${platform} 构建版本"
+              echo "[DEBUG] 使用 ${platform} 构建版本"
               for zip_file in "${artifact_cache[$build_key]}"/*.zip; do
                 if [[ -f "$zip_file" ]]; then
                   process_file "$zip_file" "$platform" "构建"
@@ -496,7 +524,7 @@ jobs:
           done
           echo "package-count=$package_count" >> $GITHUB_OUTPUT
           if [[ $package_count -eq 0 ]]; then
-            echo "没有找到任何包文件"
+            echo "[DEBUG] 没有找到任何包文件"
           fi
           ls -la final-packages/
 
