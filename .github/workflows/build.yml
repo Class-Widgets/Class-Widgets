@@ -179,7 +179,7 @@ jobs:
         run: |
           python_files=$(find . -name "*.py" -not -path "*/__pycache__/*" -not -path "*/.venv/*" -not -path "*/build/*" -not -path "*/dist/*" | sort)
           total_files=$(echo "$python_files" | wc -l)
-          echo "[DEBUG] 发现 $total_files 个文件"
+          echo "[DEBUG] 发现$total_files个文件"
           has_errors=false
           error_count=0
           error_report="## 🔍 Python 语法检查\n\n"
@@ -192,8 +192,8 @@ jobs:
             echo "检查文件: $file"
             if ! python -m py_compile "$file" 2>/dev/null; then
               error_output=$(python -m py_compile "$file" 2>&1)
-              echo "❌ 语法错误: $file"
-              echo "错误详情: $error_output"
+              echo "[DEBUG] ❌ 语法错误: $file"
+              echo "[DEBUG] 错误详情: $error_output"
               has_errors=true
               error_count=$((error_count + 1))
               rel_path=$(realpath --relative-to="." "$file")
@@ -216,6 +216,7 @@ jobs:
           else
             echo "has_syntax_errors=false" >> $GITHUB_OUTPUT
             echo "error_count=0" >> $GITHUB_OUTPUT
+          fi
 
       - name: Update config
         shell: bash
