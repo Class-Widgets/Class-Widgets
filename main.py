@@ -2478,8 +2478,12 @@ class DesktopWidget(QWidget):  # 主要小组件
                     self.temperature.setText(temp_data)
                 else:
                     self.temperature.setText('--°')
-                current_city.setText(f"{db.search_by_num(config_center.read_conf('Weather', 'city'))} · "
-                                     f"{weather_name}")
+                city_name = db.search_by_num(config_center.read_conf('Weather', 'city'))
+                if city_name != 'coordinates':
+                    current_city.setText(f"{city_name} · "
+                                        f"{weather_name}")
+                else:
+                    current_city.setText(f'{weather_name}')
                 path = db.get_weather_stylesheet(db.get_weather_data('icon', weather_data)).replace('\\', '/')
                 update_stylesheet = re.sub(
                     r'border-image: url\([^)]*\);',
@@ -2499,7 +2503,11 @@ class DesktopWidget(QWidget):  # 主要小组件
                     self.temperature.setText('--°')
                     current_city = self.findChild(QLabel, 'current_city')
                     if current_city:
-                        current_city.setText(self.tr("{city} · 未知").format(city=db.search_by_num(config_center.read_conf('Weather', 'city'))))
+                        city_name = city=db.search_by_num(config_center.read_conf('Weather', 'city'))
+                        if city_name != 'coordinates':
+                            current_city.setText(self.tr("{city} · 未知").format(city=city_name))
+                        else:
+                            current_city.setText(self.tr("未知"))
                     if hasattr(self, 'backgnd'):
                         path = db.get_weather_stylesheet('99').replace('\\', '/')
                         update_stylesheet = re.sub(

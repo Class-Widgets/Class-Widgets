@@ -35,4 +35,7 @@ annotated-types==0.7.0
 pydantic==2.10.6
 pydantic-core==2.27.2
 typing-extensions==4.13.2
+# winrt-Windows.Devices.Geolocation==3.2.1; platform_system == "Windows"
+# winrt-windows.foundation==3.2.1; platform_system == "Windows"
+# pyobjc==11.0; platform_system == "Darwin"
 git+https://github.com/SmartTeachCN/pycses.git

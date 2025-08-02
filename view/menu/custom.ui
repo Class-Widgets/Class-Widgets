@@ -941,7 +941,7 @@
          <item>
           <widget class="CaptionLabel" name="CaptionLabel_16">
            <property name="text">
-            <string>*在 高德天气/腾讯天气 和 小米天气/和风天气 间切换后，需要重新选择城市</string>
+            <string>*在切换天气源后，需要重新选择城市</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
