@@ -45,6 +45,7 @@ from network_thread import check_update
 from plugin import p_loader
 from utils import restart, stop, update_timer, DarkModeWatcher, TimeManagerFactory
 from file import config_center, schedule_center
+import updater
 
 if os.name == 'nt':
     import pygetwindow
@@ -2980,7 +2981,7 @@ def setup_signal_handlers_optimized(app: QApplication) -> None:
     signal.signal(signal.SIGTERM, signal_handler)  # taskkill
     signal.signal(signal.SIGINT, signal_handler)   # Ctrl+C
     if os.name == 'posix':
-        signal.signal(signal.SIGQUIT, signal_handler) # 终端退出
+        signal.signal(signal.SIGQUIT, signal_handler) # 终端退出      
         signal.signal(signal.SIGHUP, signal_handler)  # 终端挂起
 
 if __name__ == '__main__':
@@ -3002,14 +3003,14 @@ if __name__ == '__main__':
                 dlg.setFixedWidth(550)
                 dlg.exec()
                 sys.exit(0)
-
+    if updater.handle_update_args():
+        sys.exit(0)
     scale_factor = float(config_center.read_conf('General', 'scale'))
     os.environ['QT_SCALE_FACTOR'] = str(scale_factor)
     logger.info(f"当前缩放系数：{scale_factor * 100}%")
 
     app = QApplication(sys.argv)
     app.setQuitOnLastWindowClosed(False)
-
     global_i18n_manager = I18nManager()
     global_i18n_manager.init_from_config()
     
@@ -3098,7 +3099,11 @@ if __name__ == '__main__':
     # w.exec()
     if config_center.read_conf('Version', 'auto_check_update', '1') == '1':
         check_update()
-
+    try:
+        upgrade_thread = updater.AutomaticUpdateThread(onstart=True)
+        upgrade_thread.start()
+    except Exception as e:
+        logger.error(f"自动更新检测异常: {e}")
     status = app.exec()
 
     utils.stop(status)

@@ -15,7 +15,7 @@ from PyQt5 import uic, QtCore
 from PyQt5.QtCore import Qt, QTime, QUrl, QDate, pyqtSignal, QSize, QThread, QTranslator, QObject, QTimer
 from PyQt5.QtGui import QIcon, QDesktopServices, QColor
 # from PyQt5.QtPrintSupport import QPrinter
-from PyQt5.QtCore import Qt, pyqtSignal, QRectF
+from PyQt5.QtCore import Qt, pyqtSignal, QRectF, QEventLoop
 from PyQt5.QtGui import QPainter
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidgetItem, QLabel, QHBoxLayout, QSizePolicy, \
     QSpacerItem, QFileDialog, QVBoxLayout, QScroller, QWidget, QFrame, QListWidgetItem, QWidget, QStyle
@@ -40,6 +40,7 @@ import list_ as list_
 import tip_toast
 import utils
 from utils import TimeManagerFactory
+from updater import update_status, silent_update_check, AutomaticUpdateThread
 import weather
 import weather as wd
 from conf import base_directory, load_theme_config
@@ -2269,9 +2270,9 @@ class SettingsMenu(FluentWindow):
 
         self.version = self.findChild(BodyLabel, 'version')
 
-        check_update_btn = self.findChild(PrimaryPushButton, 'check_update')
-        check_update_btn.setIcon(fIcon.SYNC)
-        check_update_btn.clicked.connect(self.check_update)
+        self.check_update_btn = self.findChild(PrimaryPushButton, 'check_update')
+        self.check_update_btn.setIcon(fIcon.SYNC)
+        self.check_update_btn.clicked.connect(self.check_update)
 
         self.auto_check_update = self.ifInterface.findChild(SwitchButton, 'auto_check_update')
         self.auto_check_update.setChecked(int(config_center.read_conf("Version", "auto_check_update", "1")))
@@ -2279,14 +2280,26 @@ class SettingsMenu(FluentWindow):
             lambda checked: switch_checked("Version", "auto_check_update", checked)
         )  # 自动检查更新
 
+        self.auto_upgrade = self.ifInterface.findChild(SwitchButton,"switch_auto_upgrade_2")
+        self.auto_upgrade.setChecked(int(config_center.read_conf("Version", "auto_upgrade", "1")))
+        self.auto_upgrade.checkedChanged.connect(
+            lambda checked: switch_checked("Version","auto_upgrade",checked)
+        )
+        self.auto_check_update.checkedChanged.connect(
+            lambda checked: self.auto_upgrade.setEnabled(checked)
+        )
+        self.auto_check_update.checkedChanged.connect(
+            lambda checked: self.auto_upgrade.setChecked(checked)
+        )
         self.version_channel = self.findChild(ComboBox, 'version_channel')
         self.version_channel.addItems(list_.version_channel)
         self.version_channel.setCurrentIndex(int(config_center.read_conf("Version", "version_channel")))
         self.version_channel.currentIndexChanged.connect(
             lambda: config_center.write_conf("Version", "version_channel", self.version_channel.currentIndex())
         )  # 版本更新通道
-
         github_page = self.findChild(PushButton, "button_github")
+
+
         github_page.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(
             self.tr('https://github.com/RinLit-233-shiroko/Class-Widgets'))))
 
@@ -2300,8 +2313,16 @@ class SettingsMenu(FluentWindow):
         thanks_button = self.findChild(PushButton, 'button_thanks')
         thanks_button.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(
             self.tr('https://github.com/RinLit-233-shiroko/Class-Widgets?tab=readme-ov-file#致谢'))))
-
+        self.update_thread = AutomaticUpdateThread()
         self.check_update()
+        # 初始化时同步按钮状态
+        enabled, text = update_status.get()
+        self._on_update_status_changed(enabled,text)
+        # 监听 update_status.status_changed 信号，实时刷新按钮
+        update_status.status_changed.connect(self._on_update_status_changed)
+    def _on_update_status_changed(self, enabled, text):
+        self.check_update_btn.setEnabled(enabled)
+        self.check_update_btn.setText(text)
 
     def setup_advance_interface(self):
         adv_scroll = self.adInterface.findChild(SmoothScrollArea, 'adv_scroll')  # 触摸屏适配
@@ -3553,7 +3574,12 @@ class SettingsMenu(FluentWindow):
 
             if utils.tray_icon:
                 utils.tray_icon.push_update_notification(self.tr("新版本速递：{new_version}").format(new_version=new_version))
-
+            if config_center.read_conf("Version","auto_upgrade"):
+                self.check_update_btn.setText("立即更新")
+                self.check_update_btn.disconnect()
+                self.update_thread.version_info = version
+                self.check_update_btn.clicked.connect(self.update_thread.start)
+        self.version_info = version
     def cf_import_schedule_cses(self, file_path):  # 导入课程表（CSES）
         if file_path:
             file_name = file_path.split("/")[-1]
@@ -4695,7 +4721,6 @@ class SettingsMenu(FluentWindow):
                 self.stackedWidget.currentChanged.connect(self._on_page_changed)
             except AttributeError:
                 pass
-
     def init_window(self):
         self.stackedWidget.setCurrentIndex(0)  # 设置初始页面
         self.load_all_item()
