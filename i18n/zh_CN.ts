@@ -347,7 +347,7 @@
     <message>
         <location filename="../view/menu/about.ui" line="232"/>
         <source>版本号:获取失败！</source>
-        <translation>版本号获取失败！</translation>
+        <translation>版本号：获取失败！</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="259"/>
