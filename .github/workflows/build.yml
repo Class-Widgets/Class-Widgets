@@ -183,28 +183,28 @@ jobs:
           has_errors=false
           error_count=0
           error_report="## 🔍 Python 语法检查\n\n"
-          error_report+="**检查时间**: $(date '+%Y-%m-%d %H:%M:%S')  \n"
-          error_report+="**Python版本**: $(python --version)  \n"
-          error_report+="**操作系统**: ${{ matrix.os }} - ${{ matrix.arch }}  \n"
-          error_report+="**检查文件数**: $total_files  \n\n"
-          error_report+="---  \n\n"
+          error_report+="**检查时间**: $(date '+%Y-%m-%d %H:%M:%S') \n"
+          error_report+="**Python版本**: $(python --version) \n"
+          error_report+="**操作系统**: ${{ matrix.os }} - ${{ matrix.arch }} \n"
+          error_report+="**检查文件数**: $total_files \n\n"
+          error_report+="--- \n\n"
           for file in $python_files; do
             echo "检查文件: $file"
             if ! python -m py_compile "$file" 2>/dev/null; then
-              error_output=$(python -m py_compile "$file" 2>&1)
+              error_output=$(python -m py_compile "$file" 2>&1 || true)
               echo "[DEBUG] ❌ 语法错误: $file"
               echo "[DEBUG] 错误详情: $error_output"
               has_errors=true
               error_count=$((error_count + 1))
               rel_path=$(realpath --relative-to="." "$file")
-              error_report+="### 问题 #$error_count: \`$rel_path\`\n\n"
-              error_report+="> [!CAUTION]  \n"
-              error_report+="> **错误信息**:  \n"
-              error_report+="> \`\`\`  \n"
+              error_report+="### 问题 #$error_count: \`$rel_path\` \n\n"
+              error_report+="> [!CAUTION] \n"
+              error_report+="> **错误信息**: \n"
+              error_report+="> \`\`\` \n"
               formatted_error=$(echo "$error_output" | sed 's/^/> /')
-              error_report+="> $formatted_error  \n"
-              error_report+="> \`\`\`  \n\n"
-              error_report+="---  \n\n"
+              error_report+="> $formatted_error \n"
+              error_report+="> \`\`\` \n\n"
+              error_report+="--- \n\n"
             fi
           done
           if [ "$has_errors" = true ]; then
