@@ -2315,10 +2315,46 @@ class SettingsMenu(FluentWindow):
 
         window_status_combo = self.adInterface.findChild(ComboBox, 'window_status_combo')
         window_status_combo.addItems(list_.window_status)
-        window_status_combo.setCurrentIndex(int(config_center.read_conf('General', 'pin_on_top')))
-        window_status_combo.currentIndexChanged.connect(
-            lambda: config_center.write_conf('General', 'pin_on_top', str(window_status_combo.currentIndex()))
-        )  # 窗口状态
+        window_status_combo.setCurrentIndex(int(config_center.read_conf('General', 'pin_on_top', '0')))
+        if os.name != 'nt':
+            if window_status_combo.count() > 3:
+                window_status_combo.setItemEnabled(3, False)
+                original_text = window_status_combo.itemText(3)
+                if ' (仅Windows)' not in original_text:
+                    window_status_combo.setItemText(3, original_text + self.tr(' (仅Windows)'))
+
+        def on_window_status_changed():
+            """刷新窗口状态"""
+            current_index = window_status_combo.currentIndex()
+            if os.name == 'nt' and current_index == 3:
+                flyout = Flyout.create(
+                    icon=fIcon.INFO,
+                    title=self.tr('提示'),
+                    content=self.tr(
+                        '窗口会置于次底部, 但仍然比普通置顶要高一点点~'
+                        ),
+                    target=window_status_combo,
+                    parent=self,
+                    isClosable=True
+                )
+                flyout.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+                flyout.show()
+            elif os.name != 'nt':
+                flyout = Flyout.create(
+                    icon=fIcon.REMOVE_FROM,
+                    title=self.tr('提示'),
+                    content=self.tr('当前平台可能不完全支持该功能~'),
+                    target=window_status_combo,
+                    parent=self,
+                    isClosable=True
+                )
+                flyout.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+                flyout.show()
+            config_center.write_conf('General', 'pin_on_top', str(current_index))
+            if hasattr(utils, 'main_mgr') and utils.main_mgr is not None:
+                utils.main_mgr.reapply_window_states()
+        
+        window_status_combo.currentIndexChanged.connect(on_window_status_changed)
 
         switch_startup = self.adInterface.findChild(SwitchButton, 'switch_startup')
         switch_startup.setChecked(int(config_center.read_conf('General', 'auto_startup')))
@@ -2365,8 +2401,31 @@ class SettingsMenu(FluentWindow):
 
         switch_enable_click = self.adInterface.findChild(SwitchButton, 'switch_enable_click')
         switch_enable_click.setChecked(int(config_center.read_conf('General', 'enable_click')))
-        switch_enable_click.checkedChanged.connect(lambda checked: switch_checked('General', 'enable_click', checked))
-        # 允许点击
+
+        def on_enable_click_changed(checked):
+            switch_checked('General', 'enable_click', checked)
+            flyout = Flyout.create(
+                icon=fIcon.INFO,
+                title=self.tr('提示'),
+                content = self.tr(
+                    "窗口实体状态\n"
+                    "会认真挡住前面的点击哦~\n\n"
+                    "*请重启应用以完全生效"
+                ) if checked else self.tr(
+                    "鼠标穿透启用\n"
+                    "窗口不挡你啦,可以点穿它~\n\n"
+                    "*请重启应用以完全生效"
+                ),
+                target=switch_enable_click,
+                parent=self,
+                isClosable=True
+            )
+            flyout.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+            flyout.show()
+            if hasattr(utils, 'main_mgr') and utils.main_mgr is not None:
+                utils.main_mgr.reapply_window_states()
+        switch_enable_click.checkedChanged.connect(on_enable_click_changed)
+        # 允许点击/鼠标穿透
 
         switch_enable_alt_schedule = self.adInterface.findChild(SwitchButton, 'switch_enable_alt_schedule')
         switch_enable_alt_schedule.setChecked(int(config_center.read_conf('General', 'enable_alt_schedule')))
@@ -4806,6 +4865,11 @@ def sp_get_class_num():  # 获取当前周课程数（未完成）
 
 
 if __name__ == '__main__':
+    QApplication.setHighDpiScaleFactorRoundingPolicy(
+            Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
+    
     app = QApplication(sys.argv)
     settings = SettingsMenu()
     settings.show()

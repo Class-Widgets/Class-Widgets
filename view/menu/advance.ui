@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>765</width>
-    <height>1331</height>
+    <height>2322</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -56,7 +56,7 @@
         <x>0</x>
         <y>0</y>
         <width>717</width>
-        <height>2226</height>
+        <height>2240</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -1305,10 +1305,8 @@
                 <item>
                  <widget class="CaptionLabel" name="CaptionLabel_15">
                   <property name="text">
-                   <string>允许通过点击或触摸小组件方式控制小组件
-若启用，单击小组件可显示或隐藏小组件，右键小组件可打开额外选项
-若禁用，点击小组件等同于点击小组件后方的窗口
-* 重启后生效</string>
+                   <string>启用后：轻点小组件即可切换显示/隐藏, 右键会弹出更多选项哟
+禁用时：点击小组件会像不存在一样, 直接穿透到后面的窗口</string>
                   </property>
                   <property name="wordWrap">
                    <bool>false</bool>

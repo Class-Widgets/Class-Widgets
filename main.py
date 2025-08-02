@@ -930,15 +930,18 @@ class WidgetsManager:
             logger.info(f'显示小组件：{widget.path, widget.windowTitle()}')
 
     def adjust_ui(self) -> None:  # 更新小组件UI
+        if self.state == 0:
+            return
         for widget in self.widgets:
             # 调整窗口尺寸
             width = self.get_widget_width(widget.path)
             height = self.get_widgets_height()
-            pos_x = self.get_widget_pos(widget.path, widget.widget_cnt)[0]
+            pos = self.get_widget_pos(widget.path, widget.widget_cnt)
+            pos_x, pos_y = pos[0], pos[1]
             op = int(config_center.read_conf('General', 'opacity')) / 100
 
             if widget.animation is None:
-                widget.widget_transition(pos_x, width, height, op)
+                widget.widget_transition(pos_x, width, height, op, pos_y)
 
     def get_widget_pos(self, path: str, cnt: Optional[int] = None) -> List[int]:  # 获取小组件位置
         num = self.widgets_list.index(path) if cnt is None else cnt
@@ -1035,6 +1038,15 @@ class WidgetsManager:
         else:
             self.hide_windows()
 
+    def reapply_window_states(self) -> None:
+        """应用组件窗口状态"""
+        for widget in self.widgets:
+            try:
+                widget.apply_window_state()
+                # logger.debug(f'重新应用小组件窗口状态：{widget.path}')
+            except Exception as e:
+                logger.error(f'应用小组件 {widget.path} 窗口状态时出错: {e}')
+
     def cleanup_resources(self):
         self.hide_status = None # 重置hide_status
         widgets_to_clean = list(self.widgets)
@@ -1075,7 +1087,8 @@ class WidgetsManager:
 class openProgressDialog(QWidget):
     def __init__(self, action_title='打开 记事本', action='notepad'):
         super().__init__()
-        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint | Qt.Tool)
+        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint |
+        Qt.WindowType.WindowDoesNotAcceptFocus | Qt.Tool)
         time = int(config_center.read_conf('Plugin', 'aguto_delay'))
         self.action = action
 
@@ -1122,7 +1135,7 @@ class openProgressDialog(QWidget):
     def init_ui(self) -> None:
         self.setWindowFlags(
             Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint |
-            Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
+            Qt.BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
         )
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
@@ -1191,7 +1204,8 @@ class openProgressDialog(QWidget):
 class FloatingWidget(QWidget):  # 浮窗
     def __init__(self):
         super().__init__()
-        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint | Qt.Tool)
+        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint |
+        Qt.WindowType.WindowDoesNotAcceptFocus | Qt.Tool)
         self.animation_rect = None
         self.animation = None
         self.m_Position = None
@@ -1366,9 +1380,9 @@ class FloatingWidget(QWidget):  # 浮窗
 
         # 根据平台和设置应用窗口标志
         if sys.platform == 'darwin':
-            flags = Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Widget | Qt.X11BypassWindowManagerHint
+            flags = Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Widget | Qt.BypassWindowManagerHint
         else:
-            flags = Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Tool | Qt.X11BypassWindowManagerHint
+            flags = Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Tool | Qt.BypassWindowManagerHint
 
         self.setWindowFlags(flags)
 
@@ -1377,7 +1391,7 @@ class FloatingWidget(QWidget):  # 浮窗
             if not self._is_topmost_callback_added:
                 try:
                     if hasattr(utils, 'update_timer') and utils.update_timer:
-                        utils.update_timer.add_callback(self._ensure_topmost)
+                        utils.update_timer.add_callback(self._ensure_topmost, 0.5)
                         self._is_topmost_callback_added = True
                         self._ensure_topmost() # 立即执行一次确保初始置顶
                     else:
@@ -1389,12 +1403,12 @@ class FloatingWidget(QWidget):  # 浮窗
             self.setWindowFlags(
                 Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint |
                 Qt.WindowType.Widget |  # macOS 失焦时仍然显示
-                Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
+                Qt.BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
             )
         else:
             self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint |
                                 Qt.WindowType.Tool |
-                                Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
+                                Qt.BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
                                 )
 
         backgnd = self.findChild(QFrame, 'backgnd')
@@ -1677,7 +1691,8 @@ class FloatingWidget(QWidget):  # 浮窗
 class DesktopWidget(QWidget):  # 主要小组件
     def __init__(self, parent: WidgetsManager = WidgetsManager, path: str = 'widget-time.ui', enable_tray: bool = False, cnt: int = 0, position: Optional[Tuple[int, int]] = None, widget_cnt: Optional[int] = None) -> None:
         super().__init__()
-        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint | Qt.Tool)
+        self.setWindowFlags(self.windowFlags() |
+        Qt.WindowType.WindowDoesNotAcceptFocus | Qt.Tool)
 
         self.cnt = cnt
         self.widget_cnt = widget_cnt
@@ -1858,51 +1873,130 @@ class DesktopWidget(QWidget):  # 主要小组件
         # 设置窗口无边框和透明背景
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
-        self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents, config_center.read_conf('General', 'enable_click') == '0')
-
-        if config_center.read_conf('General', 'pin_on_top') == '1':  # 置顶
-            self.setWindowFlags(
-                Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint |
-                Qt.WindowType.WindowDoesNotAcceptFocus | Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
-            )
-            # 修改为使用定时器确保持续置顶
-            if os.name == 'nt':
-                if not self._is_topmost_callback_added:
-                    try:
-                        # 确保 utils.update_timer 存在且有效
-                        if hasattr(utils, 'update_timer') and utils.update_timer:
-                            utils.update_timer.add_callback(self._ensure_topmost)
-                            self._is_topmost_callback_added = True
-                            self._ensure_topmost() # 立即执行一次确保初始置顶
-                            # logger.debug("已添加置顶定时回调。")
-                        else:
-                            logger.warning("utils.update_timer 不可用，无法添加置顶回调。")
-                    except Exception as e:
-                        logger.error(f"添加置顶回调时出错: {e}")
-
-        elif config_center.read_conf('General', 'pin_on_top') == '2':  # 置底
-            # 避免使用WindowStaysOnBottomHint,防止争夺底层
-            self.setWindowFlags(
-                Qt.WindowType.FramelessWindowHint |
-                Qt.WindowType.WindowDoesNotAcceptFocus
-            )
-            if os.name == 'nt':
-                def set_window_pos():
-                    hwnd = self.winId().__int__()
-                    # 稍高于最底层的值
-                    ctypes.windll.user32.SetWindowPos(hwnd, 2, 0, 0, 0, 0, 0x0214)
-                QTimer.singleShot(100, set_window_pos)
-            else:
-                QTimer.singleShot(100, self.lower)
-        else:
-            self.setWindowFlags(
-                Qt.WindowType.FramelessWindowHint
-            )
-
+        self.apply_window_state()
         if sys.platform == 'darwin':
             self.setWindowFlag(Qt.WindowType.Widget, True)
         else:
             self.setWindowFlag(Qt.WindowType.Tool, True)
+
+    def apply_window_state(self) -> None:
+        """应用窗口状态"""
+        if self._is_topmost_callback_added:
+            try:
+                utils.update_timer.remove_callback(self._ensure_topmost)
+                self._is_topmost_callback_added = False
+            except (ValueError, AttributeError):
+                pass
+
+        was_visible = self.isVisible()
+        current_geometry = self.geometry() if was_visible else None
+        current_opacity = self.windowOpacity() if was_visible else 1.0
+        pin_on_top = config_center.read_conf('General', 'pin_on_top', '0')
+        enable_click = config_center.read_conf('General', 'enable_click', '1')
+        self.state_animation_group = QParallelAnimationGroup(self)
+        if was_visible:
+            self.fade_out_animation = QPropertyAnimation(self, b"windowOpacity")
+            self.fade_out_animation.setDuration(200)  # 淡出
+            self.fade_out_animation.setStartValue(current_opacity)
+            self.fade_out_animation.setEndValue(0.0)
+            self.fade_out_animation.setEasingCurve(QEasingCurve.OutCubic)
+            self.state_animation_group.addAnimation(self.fade_out_animation)
+
+        def apply_state_changes():
+            self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents, enable_click == '0')
+            if pin_on_top == '1':  # 置顶
+                new_flags = (
+                    Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint |
+                    Qt.WindowType.WindowDoesNotAcceptFocus | Qt.BypassWindowManagerHint | Qt.Tool
+                )
+            elif pin_on_top == '2':  # 置底
+                new_flags = (
+                    Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnBottomHint |
+                    Qt.WindowType.WindowDoesNotAcceptFocus | Qt.Tool
+                )
+            elif pin_on_top == '3':  # 置于次级底部
+                new_flags = (
+                    Qt.WindowType.FramelessWindowHint |
+                    Qt.WindowType.WindowDoesNotAcceptFocus | Qt.Tool
+                )
+            else:
+                new_flags = Qt.WindowType.FramelessWindowHint | Qt.Tool
+            self.setWindowFlags(new_flags)
+
+            QApplication.processEvents()
+            self.update()
+            if pin_on_top == '2':  # 置底
+                self.show()
+                parent = self.parent()
+                if hasattr(parent, 'get_widget_pos'):
+                    if hasattr(parent, 'get_start_pos'):
+                        parent.get_start_pos()
+                    pos = parent.get_widget_pos(self.path, None)
+                    if pos:
+                        self.move(pos[0], pos[1])
+                if self.width() == 0 or self.height() == 0:
+                    self.resize(self.w, self.h)
+            else:
+                self.show()
+                if current_geometry and current_geometry.isValid():
+                    self.setGeometry(current_geometry)
+                else:
+                    parent = self.parent()
+                    if hasattr(parent, 'get_widget_pos'):
+                        if hasattr(parent, 'get_start_pos'):
+                            parent.get_start_pos()
+                        pos = parent.get_widget_pos(self.path, None)
+                        if pos:
+                            self.move(pos[0], pos[1])
+                self.raise_()
+            self.fade_in_animation = QPropertyAnimation(self, b"windowOpacity")
+            self.fade_in_animation.setDuration(250)  # 淡入
+            self.fade_in_animation.setStartValue(0.0)
+            self.fade_in_animation.setEndValue(current_opacity)
+            self.fade_in_animation.setEasingCurve(QEasingCurve.OutCubic)
+            self.fade_in_animation.start()
+
+            if pin_on_top == '1':  # 置顶
+                if os.name == 'nt':
+                    if not self._is_topmost_callback_added:
+                        try:
+                            if hasattr(utils, 'update_timer') and utils.update_timer:
+                                utils.update_timer.add_callback(self._ensure_topmost, 0.5)
+                                self._is_topmost_callback_added = True
+                                self._ensure_topmost()
+                            else:
+                                logger.warning("utils.update_timer 不可用，无法添加置顶回调。")
+                        except Exception as e:
+                            logger.error(f"添加置顶回调时出错: {e}")
+            
+            elif pin_on_top == '2':  # 置底
+                self.lower()
+            
+            elif pin_on_top == '3':  # 置于次级底部
+                if os.name == 'nt':
+                    def set_window_pos_secondary():
+                        try:
+                            if self.isVisible() and self.width() > 0 and self.height() > 0:
+                                hwnd = self.winId().__int__()
+                                SWP_NOSIZE = 0x0001
+                                SWP_NOMOVE = 0x0002
+                                SWP_NOACTIVATE = 0x0010
+                                SWP_SHOWWINDOW = 0x0040
+                                HWND_NOTOPMOST = 2
+                                ctypes.windll.user32.SetWindowPos(hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW)
+                                self.lower()
+                        except Exception as e:
+                            logger.error(f"设置窗口次级置底时出错: {e}")
+                    if self.width() == 0 or self.height() == 0:
+                        self.resize(self.w, self.h)
+                    set_window_pos_secondary()
+                else:
+                    self.lower()
+        if was_visible:
+            self.state_animation_group.finished.connect(apply_state_changes)
+            self.state_animation_group.start()
+        else:
+            apply_state_changes()
 
     def _ensure_topmost(self) -> None:
         # 突然忘记写移除了,不写了,应该没事(
@@ -2654,8 +2748,9 @@ class DesktopWidget(QWidget):  # 主要小组件
         self.animation = QPropertyAnimation(self, b"geometry")
         self.animation.setDuration(525)  # 持续时间
         # 获取当前窗口的宽度和高度，确保动画过程中保持一致
+        margin = max(0, int(config_center.read_conf('General', 'margin')))
         self.animation.setEndValue(
-        QRect(self.x(), int(config_center.read_conf('General', 'margin')), self.width(), self.height()))
+        QRect(self.x(), margin, self.width(), self.height()))
         self.animation.setEasingCurve(QEasingCurve.Type.InOutCirc)  # 设置动画效果
         self.animation.finished.connect(self.clear_animation)
 
@@ -2664,11 +2759,13 @@ class DesktopWidget(QWidget):  # 主要小组件
 
         self.animation.start()
 
-    def widget_transition(self, pos_x: int, width: int, height: int, opacity: float = 1) -> None:  # 窗口形变
+    def widget_transition(self, pos_x: int, width: int, height: int, opacity: float = 1, pos_y: int = None) -> None:  # 窗口形变
         self.animation = QPropertyAnimation(self, b"geometry")
         self.animation.setDuration(525)  # 持续时间
         self.animation.setStartValue(QRect(self.x(), self.y(), self.width(), self.height()))
-        self.animation.setEndValue(QRect(pos_x, self.y(), width, height))
+        if pos_y is None:
+            pos_y = max(0, int(config_center.read_conf('General', 'margin')))
+        self.animation.setEndValue(QRect(pos_x, pos_y, width, height))
         self.animation.setEasingCurve(QEasingCurve.Type.OutCubic)  # 设置动画效果
         self.animation.start()
 
@@ -2685,8 +2782,6 @@ class DesktopWidget(QWidget):  # 主要小组件
     def mouseReleaseEvent(self, event: QMouseEvent) -> None:
         if event.button() == Qt.MouseButton.RightButton:
             return  # 右键不执行
-        if config_center.read_conf('General', 'pin_on_top') == '2':  # 置底
-            return  # 置底不执行
         if config_center.read_conf('General', 'hide') == '0':  # 置顶
             if mgr.state:
                 mgr.decide_to_hide()
@@ -2982,9 +3077,17 @@ if __name__ == '__main__':
     get_current_lesson_name()
     get_next_lessons()
 
-    # 如果在全屏或最大化模式下启动，首先折叠主组件后显示浮动窗口动画。
-    if check_windows_maximize() or check_fullscreen():
-        mgr.decide_to_hide()  # 折叠动画,其实这里可用`mgr.full_hide_windows()`但是播放动画似乎更好()
+    hide_mode = config_center.read_conf('General', 'hide')
+    should_hide = False
+    if hide_mode == '1':  # 上课自动隐藏
+        should_hide = current_state == 1  # 判断是否为上课状态
+    elif hide_mode == '2':  # 全屏自动隐藏
+        should_hide = check_windows_maximize() or check_fullscreen()  # 检查是否全屏
+    elif hide_mode == '3':  # 灵活隐藏
+        should_hide = current_state == 1
+
+    if should_hide:
+        mgr.decide_to_hide()
 
     if current_state == 1:
         setThemeColor(f"#{config_center.read_conf('Color', 'attend_class')}")
