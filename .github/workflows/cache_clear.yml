@@ -1,7 +1,7 @@
 name: Delete Action Cache
 
 on:
-  # 删除缓存,仅此而已(意义不明
+  # 删除缓存,仅此而已(意义不明)
   pull_request_target:
     types: [closed]
   workflow_call:
@@ -19,7 +19,7 @@ on:
   workflow_dispatch:
     inputs:
       branch:
-        description: '缓存所在分支 (留空main)'
+        description: '缓存所在分支 (留空全部)'
         required: false
         type: string
         default: ''
@@ -28,6 +28,11 @@ on:
         required: false
         type: number
         default: 100
+      delete_all:
+        description: '一次性删除所有缓存 (忽略分支和数量限制)'
+        required: false
+        type: boolean
+        default: false
   schedule:
     - cron: '0 2 * * 1'
 
@@ -47,5 +52,5 @@ jobs:
         uses: toshimaru/delete-action-cache@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ inputs.branch || github.head_ref || github.ref_name }}
-          limit: ${{ inputs.limit || 100 }}
+          branch: ${{ inputs.delete_all && '' || inputs.branch || github.head_ref || github.ref_name }}
+          limit: ${{ inputs.delete_all && 0 || inputs.limit || 100 }}
