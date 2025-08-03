@@ -1,0 +1,51 @@
+name: Delete Action Cache
+
+on:
+  # 删除缓存,仅此而已(意义不明
+  pull_request_target:
+    types: [closed]
+  workflow_call:
+    inputs:
+      branch:
+        description: '缓存所在分支'
+        required: false
+        type: string
+        default: ''
+      limit:
+        description: '删除缓存的最大数量'
+        required: false
+        type: number
+        default: 100
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: '缓存所在分支 (留空main)'
+        required: false
+        type: string
+        default: ''
+      limit:
+        description: '删除缓存的最大数量'
+        required: false
+        type: number
+        default: 100
+  schedule:
+    - cron: '0 2 * * 1'
+
+concurrency:
+  group: cache-cleanup
+  cancel-in-progress: false
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  delete-cache:
+    name: Delete Action Cache
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete Action Cache
+        uses: toshimaru/delete-action-cache@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ inputs.branch || github.head_ref || github.ref_name }}
+          limit: ${{ inputs.limit || 100 }}

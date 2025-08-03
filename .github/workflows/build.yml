@@ -242,11 +242,9 @@ jobs:
             ~/.cache/uv
             ~\AppData\Local\uv
             .venv
-          key: ${{ runner.os }}-${{ matrix.arch }}-uv-cache-${{ hashFiles('requirements.txt') }}
+          key: ${{ runner.os }}-${{ matrix.arch }}-python${{ env.PYTHON_VERSION }}-uv-cache-${{ hashFiles('requirements.txt') }}
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.arch }}-uv-cache-${{ hashFiles('requirements.txt') }}
-            ${{ runner.os }}-${{ matrix.arch }}-uv-cache-
-            ${{ runner.os }}-${{ matrix.arch }}-uv-
+            ${{ runner.os }}-${{ matrix.arch }}-python${{ env.PYTHON_VERSION }}-uv-cache-
 
       - name: Create venv and install dependencies
         shell: bash
