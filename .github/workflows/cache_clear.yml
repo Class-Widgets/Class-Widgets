@@ -52,5 +52,5 @@ jobs:
         uses: toshimaru/delete-action-cache@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ inputs.delete_all && '' || inputs.branch || github.head_ref || github.ref_name }}
-          limit: ${{ inputs.delete_all && 0 || inputs.limit || 100 }}
+          branch: ${{ inputs.delete_all && '' || inputs.branch || (github.event_name == 'pull_request_target' && format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.head_ref || github.ref_name }}
+          limit: ${{ inputs.delete_all && '' || inputs.limit || 100 }}
