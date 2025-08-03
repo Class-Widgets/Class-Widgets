@@ -239,6 +239,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
+            C:\hostedtoolcache\windows\Python\${{ env.PYTHON_VERSION }}*
             ~/.cache/uv
             ~\AppData\Local\uv
             .venv
@@ -358,6 +359,7 @@ jobs:
           source .venv/bin/activate
           pyinstaller main.py \
             -w \
+            -i ./img/favicon.png \
             -n ClassWidgets \
             --contents-directory . \
             --add-data config:config \
