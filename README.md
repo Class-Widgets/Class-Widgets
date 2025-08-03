@@ -37,7 +37,7 @@
 ![Banner](img/Banner.png)
 
 [![Q群](https://img.shields.io/badge/QQ%20群-169200380-blue.svg?logo=qq&color=blue&style=for-the-badge)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380)
-[![Q群](https://img.shields.io/badge/QQ%20群-698599898-blue.svg?logo=qq&color=blue&style=for-the-badge)](https://qun.qq.com/universal-share/share?ac=1&authKey=5dWz5uXHzq7gnJYdbss6fot%2F8tEIYdHSmBlSl%2Fg7aR%2BOuIlrOFxTFDt2sc8%2FGJE0&busi_data=eyJncm91cENvZGUiOiI2OTg1OTk4OTgiLCJ0b2tlbiI6IlI2V1BhUjdjNW90ZkVhbWE1ekx2OGN5dU12bVVPVWhKVzFnRTJvZVZIOURiUUd0MEpMT1A1TkdKZEpKS2xNYjUiLCJ1aW4iOiIyNDczNzY4NzcxIn0%3D&data=2L6-IGqGAMpt7n2v2c1KE3y4lugYE--NxAwMEfKfF0AnG7eUmRXVxwKRBhXz4-Fi8dwwxBKhiFiG1qxom1sUBA&svctype=4&tempid=h5_group_info))
+[![Q群](https://img.shields.io/badge/QQ%20群-698599898-blue.svg?logo=qq&color=blue&style=for-the-badge)](https://qm.qq.com/cgi-bin/qm/qr?k=f3uyP-yI-0oEOwiHFTFjJo-aQpkoNaiX&jump_from=webapi&authKey=Ok+lW0D8TrjFwgP5WSOVxFM4s97thPk36WOmMKXSyroP8MDmDPS22bPqT/+6uMgN)
 [![DC](https://img.shields.io/discord/1332636953719476284?style=for-the-badge&logo=discord&logoColor=ffffff&label=Discord%20服务器&labelColor=5865f2)](https://discord.gg/EFF4PpqpqZ)
 
 #### [了解更多 >](https://www.bilibili.com/video/BV1xwW9eyEGu/)
