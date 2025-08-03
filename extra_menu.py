@@ -1,7 +1,6 @@
-import datetime as dt
 import sys
 from shutil import copy
-from typing import Optional, List
+from typing import List
 
 from PyQt5 import uic
 from PyQt5.QtCore import Qt
@@ -10,7 +9,7 @@ from PyQt5.QtWidgets import QApplication, QScroller
 from loguru import logger
 from qfluentwidgets import FluentWindow, FluentIcon as fIcon, ComboBox, \
     PrimaryPushButton, Flyout, FlyoutAnimationType, InfoBarIcon, ListWidget, LineEdit, ToolButton, HyperlinkButton, \
-    SmoothScrollArea, Dialog
+    SmoothScrollArea
 
 import conf
 import file
@@ -19,17 +18,13 @@ import list_
 from file import config_center, schedule_center
 from menu import SettingsMenu
 from utils import TimeManagerFactory
-import platform
 from loguru import logger
 
 # 适配高DPI缩放
-if platform.system() == 'Windows' and platform.release() not in ['7', 'XP', 'Vista']:
-    QApplication.setHighDpiScaleFactorRoundingPolicy(
-            Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
-    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
-    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
-else:
-    logger.warning('不兼容的系统,跳过高DPI标识')
+QApplication.setHighDpiScaleFactorRoundingPolicy(
+        Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
 
 settings = None
 

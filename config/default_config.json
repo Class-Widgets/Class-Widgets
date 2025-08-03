@@ -44,7 +44,8 @@
   "Weather": {
     "city": "0",
     "api": "xiaomi_weather",
-    "api_key": ""
+    "api_key": "",
+    "alert_exclude": ""
   },
   "Color": {
     "floating_time": "959595",

@@ -1,4 +1,3 @@
-import datetime as dt
 import json
 import os
 import re
@@ -11,7 +10,6 @@ from shutil import rmtree
 import re
 import zipfile
 import shutil
-import asyncio
 
 from PyQt5 import uic, QtCore
 from PyQt5.QtCore import Qt, QTime, QUrl, QDate, pyqtSignal, QSize, QThread, QTranslator, QObject, QTimer
@@ -34,22 +32,22 @@ from qfluentwidgets import (
 )
 from qfluentwidgets.common import themeColor
 from qfluentwidgets.components.widgets import ListItemDelegate
+from typing import Tuple
 
 from basic_dirs import THEME_HOME
 import conf
 import list_ as list_
 import tip_toast
 import utils
-from utils import time_manager, TimeManagerFactory
+from utils import TimeManagerFactory
 import weather
 import weather as wd
 from conf import base_directory, load_theme_config
 from cses_mgr import CSES_Converter
-from generate_speech import get_tts_voices
 import generate_speech
 from file import config_center, schedule_center
 import file
-from network_thread import VersionThread, scheduleThread
+from network_thread import VersionThread, scheduleThread, proxies
 from plugin import p_loader
 from plugin_plaza import PluginPlaza
 
@@ -429,39 +427,72 @@ def cd_load_item():
 
 
 class selectCity(MessageBoxBase):  # 选择城市
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, method='location_key'):
         super().__init__(parent)
         title_label = SubtitleLabel()
         subtitle_label = BodyLabel()
-        self.search_edit = SearchLineEdit()
+        self.method = method
 
-        title_label.setText(QCoreApplication.translate('menu','搜索城市'))
-        subtitle_label.setText(QCoreApplication.translate('menu','请输入当地城市名进行搜索'))
-        self.yesButton.setText(QCoreApplication.translate('menu','选择此城市'))  # 按钮组件汉化
-        self.cancelButton.setText(QCoreApplication.translate('menu','取消'))
+        if method == 'location_key':
+            self.search_edit = SearchLineEdit()
+            title_label.setText(QCoreApplication.translate('menu','搜索城市'))
+            subtitle_label.setText(QCoreApplication.translate('menu','请输入当地城市名进行搜索'))
+            self.yesButton.setText(QCoreApplication.translate('menu','选择此城市'))
+            self.cancelButton.setText(QCoreApplication.translate('menu','取消'))
+            self.search_edit.setPlaceholderText(QCoreApplication.translate('menu','输入城市名'))
+            self.search_edit.setClearButtonEnabled(True)
+            self.search_edit.textChanged.connect(self.search_city)
+            self.city_list = ListWidget()
+            self.city_list.addItems(wd.search_by_name(''))
+            self.get_selected_city()
+            self.viewLayout.addWidget(title_label)
+            self.viewLayout.addWidget(subtitle_label)
+            self.viewLayout.addWidget(self.search_edit)
+            self.viewLayout.addWidget(self.city_list)
+            self.widget.setMinimumWidth(500)
+            self.widget.setMinimumHeight(600)
+        else:
+            title_label.setText(QCoreApplication.translate('menu','手动输入经纬度'))
+            subtitle_label.setText(QCoreApplication.translate('menu','请输入当地的经度和纬度'))
+            self.yesButton.setText(QCoreApplication.translate('menu','确定'))
+            self.cancelButton.setText(QCoreApplication.translate('menu','取消'))
 
-        self.search_edit.setPlaceholderText(QCoreApplication.translate('menu','输入城市名'))
-        self.search_edit.setClearButtonEnabled(True)
-        self.search_edit.textChanged.connect(self.search_city)
+            longitude_label = QLabel(QCoreApplication.translate('menu','经度'))
+            latitude_label = QLabel(QCoreApplication.translate('menu','纬度'))
+            self.longitude_edit = LineEdit()
+            self.latitude_edit = LineEdit()
+            self.longitude_edit.setPlaceholderText(QCoreApplication.translate('menu','经度，例如 116.40'))
+            self.latitude_edit.setPlaceholderText(QCoreApplication.translate('menu','纬度，例如 39.90'))
 
-        self.city_list = ListWidget()
-        self.city_list.addItems(wd.search_by_name(''))
-        self.get_selected_city()
+            # 新增按钮
+            self.btn_internet = PushButton(QCoreApplication.translate('menu', '通过互联网获取经纬度'))
+            self.btn_internet.clicked.connect(self.get_coordinates_from_internet)
+            # if platform.system() in ['Windows', 'Darwin']:
+            #     btn_sysapi = PushButton(QCoreApplication.translate('menu', '通过系统获取经纬度'))
+            #     btn_sysapi.clicked.connect(self.get_coordinates_from_system)
 
-        # 将组件添加到布局中
-        self.viewLayout.addWidget(title_label)
-        self.viewLayout.addWidget(subtitle_label)
-        self.viewLayout.addWidget(self.search_edit)
-        self.viewLayout.addWidget(self.city_list)
-        self.widget.setMinimumWidth(500)
-        self.widget.setMinimumHeight(600)
+            self.viewLayout.addWidget(title_label)
+            self.viewLayout.addWidget(subtitle_label)
+            self.viewLayout.addWidget(longitude_label)
+            self.viewLayout.addWidget(self.longitude_edit)
+            self.viewLayout.addWidget(latitude_label)
+            self.viewLayout.addWidget(self.latitude_edit)
+            self.viewLayout.addWidget(self.btn_internet)
+            # if platform.system() in ['Windows', 'Darwin']:
+            #     self.viewLayout.addWidget(btn_sysapi)
+            self.widget.setMinimumWidth(400)
+            self.widget.setMinimumHeight(250)
 
     def search_city(self):
+        if self.method != 'location_key':
+            raise ValueError("Method must be 'location_key' for city search.")
         self.city_list.clear()
         self.city_list.addItems(wd.search_by_name(self.search_edit.text()))
         self.city_list.clearSelection()  # 清除选中项
 
     def get_selected_city(self):
+        if self.method != 'location_key':
+            raise ValueError("Method must be 'location_key' for city search.")
         selected_city = self.city_list.findItems(
             wd.search_by_num(str(config_center.read_conf('Weather', 'city'))), QtCore.Qt.MatchFlag.MatchExactly
         )
@@ -471,6 +502,155 @@ class selectCity(MessageBoxBase):  # 选择城市
             self.city_list.setCurrentItem(item)
             # 聚焦该项
             self.city_list.scrollToItem(item)
+
+    def _lock_input(self):
+        """锁定输入框"""
+        self.longitude_edit.setReadOnly(True)
+        self.latitude_edit.setReadOnly(True)
+        self.btn_internet.setEnabled(False)
+
+    def _unlock_input(self):
+        """解锁输入框"""
+        self.longitude_edit.setReadOnly(False)
+        self.latitude_edit.setReadOnly(False)
+        self.btn_internet.setEnabled(True)
+
+    def _catch_error(self, error_message: str):
+        """处理错误"""
+        self._unlock_input()
+        Flyout.create(
+            icon=InfoBarIcon.ERROR,
+            title=self.tr("经纬度获取失败"),
+            content=f"{error_message}",
+            target=self.btn_internet,
+            parent=self,
+            isClosable=True,
+            aniType=FlyoutAnimationType.PULL_UP,  
+        )
+        logger.error(f"获取经纬度失败: {error_message}")
+
+    class getCoordinatesInternet(QThread):
+        corrdinates = pyqtSignal(float, float)
+        error = pyqtSignal(str)
+
+        def __init__(self, url: str = 'http://ip-api.com/json/?fields=status,lat,lon'):
+            super().__init__()
+            self.download_url = url
+        
+        def run(self) -> None:
+            try:
+                coordinates_data = self.get_coordinates()
+                if coordinates_data:
+                    self.corrdinates.emit(coordinates_data[0], coordinates_data[1])
+
+            except Exception as e:
+                logger.error(f"获取坐标失败: {e}")
+                self.error.emit(str(e))
+
+        def get_coordinates(self) -> Tuple[float, float]:
+            import requests
+            try:
+                req = requests.get(self.download_url, proxies=proxies)
+                if req.status_code == 200:
+                    data = req.json()
+                    if data['status'] == 'success':
+                        logger.info(f"获取坐标成功：{data['lat']}, {data['lon']}")
+                        return (data['lat'], data['lon'])
+                    else:
+                        logger.error(f"获取坐标失败：{data['message']}")
+                        raise ValueError(f"获取坐标失败：{data['message']}")
+                else:
+                    logger.error(f"获取坐标失败：{req.status_code}")
+                    raise ValueError(f"获取坐标失败：{req.status_code}")
+            except Exception as e:
+                logger.error(f"获取坐标失败：{e}")
+                raise ValueError(f"获取坐标失败：{e}")
+
+    def get_coordinates_from_internet(self):
+        """通过网络获取经纬度"""
+        self._lock_input()
+        self.coordinates_thread = self.getCoordinatesInternet()
+        self.coordinates_thread.corrdinates.connect(self.set_coordinates)
+        self.coordinates_thread.error.connect(self._catch_error)
+        self.coordinates_thread.start()
+
+    def set_coordinates(self, latitude, longitude):
+        """设置经纬度到输入框"""
+        self._unlock_input()
+        self.latitude_edit.setText(str(latitude))
+        self.longitude_edit.setText(str(longitude))
+
+    # class getCoordinatesSystem(QThread):
+    #     location_ready = pyqtSignal(float, float)
+
+    #     def run(self):
+    #         if platform.system() == 'Windows':
+    #             loop = asyncio.new_event_loop()
+    #             asyncio.set_event_loop(loop)
+
+    #             try:
+    #                 result = loop.run_until_complete(self.get_location_windows())
+    #                 self.location_ready.emit(*result)
+    #             except Exception as e:
+    #                 logger.error(f"获取位置失败: {e}")
+    #             finally:
+    #                 loop.close()
+    #         elif platform.system() == 'Darwin':
+    #             self.get_location_macos()
+
+
+    #     async def get_location_windows(self):
+    #         if platform.system() != 'Windows':
+    #             raise ValueError("This method is only for Windows.")
+    #         from winrt.windows.devices.geolocation import Geolocator
+    #         geolocator = Geolocator()
+    #         pos = await geolocator.get_geoposition_async()
+    #         coord = pos.coordinate.point.position
+    #         return coord.latitude, coord.longitude
+
+    #     def get_location_macos(self):
+    #         if platform.system() != 'Darwin':
+    #             raise ValueError("This method is only for macOS.")
+    #         try:
+    #             from Cocoa import NSObject, NSRunLoop, NSDefaultRunLoopMode
+    #             from CoreLocation import CLLocationManager, kCLLocationAccuracyBest
+    #             import time
+    #             class LocationDelegate(NSObject):
+    #                 def init(self):
+    #                     self = super(LocationDelegate, self).init()
+    #                     if self:
+    #                         self.location = None
+    #                     return self
+
+    #                 def locationManager_didUpdateLocations_(self, manager, locations):
+    #                     self.location = locations[-1]
+    #                     manager.stopUpdatingLocation()
+
+    #             delegate = LocationDelegate.alloc().init()
+    #             manager = CLLocationManager.alloc().init()
+    #             manager.setDelegate_(delegate)
+    #             manager.setDesiredAccuracy_(kCLLocationAccuracyBest)
+    #             manager.requestWhenInUseAuthorization()
+    #             manager.startUpdatingLocation()
+
+    #             timeout = time.time() + 10  # 最多等待10秒
+    #             while not delegate.location and time.time() < timeout:
+    #                 NSRunLoop.currentRunLoop().runMode_beforeDate_(
+    #                     NSDefaultRunLoopMode, time.time() + 0.1
+    #                 )
+
+    #             if delegate.location:
+    #                 coord = delegate.location.coordinate()
+    #                 return coord.latitude(), coord.longitude()
+
+    #         except Exception as e:
+    #             self.location_error.emit(str(e))
+    
+    # def get_coordinates_from_system(self):
+    #     """通过系统获取经纬度"""
+    #     self.coordinates_thread = self.getCoordinatesSystem()
+    #     self.coordinates_thread.location_ready.connect(self.set_coordinates)
+    #     self.coordinates_thread.start()
 
 
 class licenseDialog(MessageBoxBase):  # 显示软件许可协议
@@ -2068,14 +2248,20 @@ class SettingsMenu(FluentWindow):
             config_center.read_conf('Weather', 'api')
         ))
         select_weather_api.currentIndexChanged.connect(
-            lambda: config_center.write_conf('Weather', 'api',
+            lambda:( config_center.write_conf('Weather', 'api',
                                              weather.weather_manager.api_config['weather_api_list'][
-                                                 select_weather_api.currentIndex()])
+                                                 select_weather_api.currentIndex()]), 
+                          config_center.write_conf('Weather', 'city', '0'))
         )
 
         api_key_edit = self.findChild(LineEdit, 'api_key_edit')  # API密钥
-        api_key_edit.setText(config_center.read_conf('Weather', 'api_key'))
+        api_key_edit.setText(config_center.read_conf('Weather', 'api_key', ''))
         api_key_edit.textChanged.connect(lambda: config_center.write_conf('Weather', 'api_key', api_key_edit.text()))
+
+        alert_exclude = self.findChild(LineEdit, 'alert_exclude') # 预警排除
+        alert_exclude.setText(config_center.read_conf('Weather', 'alert_exclude', ''))
+        alert_exclude.setPlaceholderText(self.tr('大风 雷电 地质...'))
+        alert_exclude.textChanged.connect(lambda: config_center.write_conf('Weather', 'alert_exclude', alert_exclude.text()))
 
     def setup_about_interface(self):
         ab_scroll = self.findChild(SmoothScrollArea, 'ab_scroll')  # 触摸屏适配
@@ -2129,10 +2315,46 @@ class SettingsMenu(FluentWindow):
 
         window_status_combo = self.adInterface.findChild(ComboBox, 'window_status_combo')
         window_status_combo.addItems(list_.window_status)
-        window_status_combo.setCurrentIndex(int(config_center.read_conf('General', 'pin_on_top')))
-        window_status_combo.currentIndexChanged.connect(
-            lambda: config_center.write_conf('General', 'pin_on_top', str(window_status_combo.currentIndex()))
-        )  # 窗口状态
+        window_status_combo.setCurrentIndex(int(config_center.read_conf('General', 'pin_on_top', '0')))
+        if os.name != 'nt':
+            if window_status_combo.count() > 3:
+                window_status_combo.setItemEnabled(3, False)
+                original_text = window_status_combo.itemText(3)
+                if ' (仅Windows)' not in original_text:
+                    window_status_combo.setItemText(3, original_text + self.tr(' (仅Windows)'))
+
+        def on_window_status_changed():
+            """刷新窗口状态"""
+            current_index = window_status_combo.currentIndex()
+            if os.name == 'nt' and current_index == 3:
+                flyout = Flyout.create(
+                    icon=fIcon.INFO,
+                    title=self.tr('提示'),
+                    content=self.tr(
+                        '窗口会置于次底部, 但仍然比普通置顶要高一点点~'
+                        ),
+                    target=window_status_combo,
+                    parent=self,
+                    isClosable=True
+                )
+                flyout.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+                flyout.show()
+            elif os.name != 'nt':
+                flyout = Flyout.create(
+                    icon=fIcon.REMOVE_FROM,
+                    title=self.tr('提示'),
+                    content=self.tr('当前平台可能不完全支持该功能~'),
+                    target=window_status_combo,
+                    parent=self,
+                    isClosable=True
+                )
+                flyout.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+                flyout.show()
+            config_center.write_conf('General', 'pin_on_top', str(current_index))
+            if hasattr(utils, 'main_mgr') and utils.main_mgr is not None:
+                utils.main_mgr.reapply_window_states()
+        
+        window_status_combo.currentIndexChanged.connect(on_window_status_changed)
 
         switch_startup = self.adInterface.findChild(SwitchButton, 'switch_startup')
         switch_startup.setChecked(int(config_center.read_conf('General', 'auto_startup')))
@@ -2179,8 +2401,31 @@ class SettingsMenu(FluentWindow):
 
         switch_enable_click = self.adInterface.findChild(SwitchButton, 'switch_enable_click')
         switch_enable_click.setChecked(int(config_center.read_conf('General', 'enable_click')))
-        switch_enable_click.checkedChanged.connect(lambda checked: switch_checked('General', 'enable_click', checked))
-        # 允许点击
+
+        def on_enable_click_changed(checked):
+            switch_checked('General', 'enable_click', checked)
+            flyout = Flyout.create(
+                icon=fIcon.INFO,
+                title=self.tr('提示'),
+                content = self.tr(
+                    "窗口实体状态\n"
+                    "会认真挡住前面的点击哦~\n\n"
+                    "*请重启应用以完全生效"
+                ) if checked else self.tr(
+                    "鼠标穿透启用\n"
+                    "窗口不挡你啦,可以点穿它~\n\n"
+                    "*请重启应用以完全生效"
+                ),
+                target=switch_enable_click,
+                parent=self,
+                isClosable=True
+            )
+            flyout.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+            flyout.show()
+            if hasattr(utils, 'main_mgr') and utils.main_mgr is not None:
+                utils.main_mgr.reapply_window_states()
+        switch_enable_click.checkedChanged.connect(on_enable_click_changed)
+        # 允许点击/鼠标穿透
 
         switch_enable_alt_schedule = self.adInterface.findChild(SwitchButton, 'switch_enable_alt_schedule')
         switch_enable_alt_schedule.setChecked(int(config_center.read_conf('General', 'enable_alt_schedule')))
@@ -3112,11 +3357,29 @@ class SettingsMenu(FluentWindow):
         config_center.write_conf('Audio', 'volume', str(slider_volume.value()))
 
     def show_search_city(self):
-        search_city_dialog = selectCity(self)
+        method = wd.weather_manager.get_current_provider().config["method"]
+        search_city_dialog = selectCity(self, method=method)
         if search_city_dialog.exec():
-            selected_city = search_city_dialog.city_list.selectedItems()
-            if selected_city:
-                config_center.write_conf('Weather', 'city', wd.search_code_by_name((selected_city[0].text(),'')))
+            if method == 'location_key':
+                selected_city = search_city_dialog.city_list.selectedItems()
+                if selected_city:
+                    config_center.write_conf('Weather', 'city', wd.search_code_by_name((selected_city[0].text(),'')))
+            else:
+                lon = search_city_dialog.longitude_edit.text()
+                lat = search_city_dialog.latitude_edit.text()
+                if lon and lat:
+                    try:
+                        config_center.write_conf('Weather', 'city', f"{float(lon)},{float(lat)}")
+                    except ValueError:
+                        Flyout.create(
+                            icon=InfoBarIcon.ERROR,
+                            title=self.tr('无效的经纬度'),
+                            content=self.tr("请输入有效的经度和纬度值。"),
+                            target=search_city_dialog,
+                            parent=self,
+                            isClosable=True,
+                            aniType=FlyoutAnimationType.PULL_UP
+                        )
 
     def show_license(self):
         license_dialog = licenseDialog(self)
@@ -3895,8 +4158,7 @@ class SettingsMenu(FluentWindow):
             target=target,
             parent=self,
             isClosable=True,
-            aniType=aniType,
-            
+            aniType=aniType,  
         )
 
     # 上传课表到列表组件
@@ -4603,6 +4865,11 @@ def sp_get_class_num():  # 获取当前周课程数（未完成）
 
 
 if __name__ == '__main__':
+    QApplication.setHighDpiScaleFactorRoundingPolicy(
+            Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
+    
     app = QApplication(sys.argv)
     settings = SettingsMenu()
     settings.show()

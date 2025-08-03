@@ -314,7 +314,8 @@ class UnionUpdateTimer(QObject):
         with self._lock:
             removed: Optional[Dict[str, Union[float, dt.datetime]]] = self.callback_info.pop(callback, None)
             if removed:
-                logger.debug(f"移除回调函数(间隔:{removed['interval']}s)")
+                pass
+                # logger.debug(f"移除回调函数(间隔:{removed['interval']}s)")
 
     def remove_all_callbacks(self) -> None:
         """移除所有回调函数"""

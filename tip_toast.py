@@ -60,7 +60,7 @@ class tip_toast(QWidget):
         if config_center.read_conf('Toast', 'pin_on_top') == '1':
             self.setWindowFlags(
                 Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.FramelessWindowHint |
-                Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
+                Qt.BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
             )
         else:
             self.setWindowFlags(
@@ -317,12 +317,12 @@ class wave_Effect(QWidget):
         if config_center.read_conf('Toast', 'pin_on_top') == '1':
             self.setWindowFlags(
                 Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.FramelessWindowHint |
-                Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
+                Qt.BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
             )
         else:
             self.setWindowFlags(
                 Qt.WindowType.WindowStaysOnBottomHint | Qt.WindowType.FramelessWindowHint |
-                Qt.X11BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
+                Qt.BypassWindowManagerHint  # 绕过窗口管理器以在全屏显示通知
             )
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 

@@ -19,7 +19,7 @@ logger.debug(week)
 month = [QCoreApplication.translate("list_", '一月'), QCoreApplication.translate("list_", '二月'), QCoreApplication.translate("list_", '三月'), QCoreApplication.translate("list_", '四月'), QCoreApplication.translate("list_", '五月'), QCoreApplication.translate("list_", '六月'), QCoreApplication.translate("list_", '七月'), QCoreApplication.translate("list_", '八月'), QCoreApplication.translate("list_", '九月'), QCoreApplication.translate("list_", '十月'), QCoreApplication.translate("list_", '十一月'), QCoreApplication.translate("list_", '十二月')]
 week_type = [QCoreApplication.translate("list_", '单周'), QCoreApplication.translate("list_", '双周')]
 part_type = [QCoreApplication.translate("list_", '节点'), QCoreApplication.translate("list_", '休息段')]
-window_status = [QCoreApplication.translate("list_", '无'), QCoreApplication.translate("list_", '置于顶部'), QCoreApplication.translate("list_", '置于底部')]
+window_status = [QCoreApplication.translate("list_", '无'), QCoreApplication.translate("list_", '置于顶部'), QCoreApplication.translate("list_", '置于底部'), QCoreApplication.translate("list_", '置于次级底部')]
 color_mode = [QCoreApplication.translate("list_", '浅色'), QCoreApplication.translate("list_", '深色'), QCoreApplication.translate("list_", '跟随系统')]
 hide_mode = [QCoreApplication.translate("list_", '无'), QCoreApplication.translate("list_", '上课时自动隐藏'), QCoreApplication.translate("list_", '窗口最大化时隐藏'), QCoreApplication.translate("list_", '灵活隐藏')]
 non_nt_hide_mode = [QCoreApplication.translate("list_", '无'), QCoreApplication.translate("list_", '上课时自动隐藏')]

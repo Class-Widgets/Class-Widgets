@@ -1,25 +1,20 @@
-"""
-weather.py
-
-天气数据相关接口封装
-"""
-
-import json
-import sqlite3
-import datetime
-import time
-import requests
 import os
 import re
+import json
+import time
+import sqlite3
+import datetime
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Dict, Any, Optional, List, Tuple, Type, Union
-from PyQt5.QtCore import QThread, pyqtSignal, QEventLoop
-from loguru import logger
 from functools import wraps
+from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
-from conf import base_directory  # type: ignore[attr-defined]
-from file import config_center
+import requests
+from loguru import logger
+from PyQt5.QtCore import QThread, pyqtSignal, QEventLoop
+
+from file import config_center, base_directory
+
 
 def cache_result(expire_seconds: int = 300):
     """缓存装饰器 """
@@ -193,7 +188,8 @@ class WeatherManager:
             'parameters': api_params,
             'alerts': api_params.get('alerts', {}),
             'database': api_params.get('database', 'xiaomi_weather.db'),
-            'return_desc': api_params.get('return_desc', False)
+            'return_desc': api_params.get('return_desc', False),
+            'method': api_params.get('method', 'location_key')
         }
 
     def _get_provider_class(self, api_name: str) -> Type[WeatherapiProvider]:
@@ -202,6 +198,8 @@ class WeatherManager:
             provider_class_name = 'XiaomiWeatherProvider'
         elif api_name == 'qweather':
             provider_class_name = 'QWeatherProvider'
+        elif api_name == 'open_meteo':
+            provider_class_name = 'OpenMeteoProvider'
         else:
             provider_class_name = f'{api_name.capitalize()}WeatherProvider'
         if provider_class_name in globals():
@@ -305,6 +303,9 @@ class WeatherManager:
     def _get_auto_location(self) -> str:
         """自动获取位置"""
         try:
+            method = self.get_current_provider().config['method']
+            if method == 'coordinates':
+                return self._get_coordinates_location()
             from network_thread import getCity
             city_thread = getCity()
             loop = QEventLoop()
@@ -318,6 +319,23 @@ class WeatherManager:
         except Exception as e:
             logger.error(f'自动获取位置失败: {e}')
             return '101010100'
+        
+    def _get_coordinates_location(self) -> str:
+        """获取坐标位置"""
+        try:
+            from network_thread import getCoordinates
+            coordinates_thread = getCoordinates()
+            loop = QEventLoop()
+            coordinates_thread.finished.connect(loop.quit)
+            coordinates_thread.start()
+            loop.exec_()  # 阻塞到完成
+            coordinates_data = config_center.read_conf('Weather', 'city')
+            if coordinates_data and ',' in coordinates_data:
+                return coordinates_data
+            return '116.0,40.0'  # 默认北京
+        except Exception as e:
+            logger.error(f'获取坐标位置失败: {e}')
+            return '116.0,40.0'
 
     def _is_api_key_required(self, api_name: str) -> bool:
         """最神经病的一集"""
@@ -788,6 +806,66 @@ class QQWeatherProvider(GenericWeatherProvider):
         except Exception as e:
             logger.error(f"解析腾讯天气描述失败: {e}")
             return None
+        
+
+class OpenMeteoProvider(GenericWeatherProvider):
+    @retry_on_failure(max_retries=2, delay=0.5)
+    def fetch_current_weather(self, location_key, api_key):
+        if not location_key:
+            raise ValueError(f'{self.api_name}: location_key 参数不能为空')
+
+        try:
+            lon, lat = location_key.split(',')
+        except:
+            raise ValueError(f'{self.api_name}: location_key 不为逗号分隔的经纬度模式')
+
+        try:
+            from network_thread import proxies
+            url = self.base_url.format(lon=lon,lat=lat)
+            #logger.debug(f'{self.api_name} 请求URL: {url}')
+            headers = {
+                'User-Agent': 'ClassWidgets/1.1.7.2 (contact: IsHPDuwu@outlook.com)'
+            }
+            response = requests.get(url, proxies=proxies, timeout=10, headers=headers)
+            response.raise_for_status()
+            return response.json()
+        except Exception as e:
+            logger.error(f'{self.api_name} 获取天气数据失败: {e}')
+            raise
+
+    def parse_temperature(self, data: Dict[str, Any]) -> Optional[str]:
+        """解析温度数据(Open-Meteo)"""
+        try:
+            current = data.get('current', {})
+            temp = current.get('temperature_2m')
+            current_units = data.get('current_units', {})
+            unit = current_units.get('temperature_2m', '°C')
+            if temp is not None:
+                return f"{temp}{unit}"
+            return None
+        except Exception as e:
+            logger.error(f"解析 Open-Meteo 温度失败: {e}")
+            return None
+    
+    def parse_weather_icon(self, data: Dict[str, Any]) -> Optional[str]:
+        """解析天气图标代码(Open-Meteo)"""
+        try:
+            current = data.get('current', {})
+            weather_code = current.get('weather_code')
+            if weather_code is not None:
+                return str(weather_code)
+            return None
+        except Exception as e:
+            logger.error(f"解析 Open-Meteo 天气图标失败: {e}")
+            return None
+    
+    def parse_weather_description(self, data: Dict[str, Any]) -> Optional[str]:
+        """解析天气描述(Open-Meteo)"""
+        try:
+            return self.parse_weather_icon(data)
+        except Exception as e:
+            logger.error(f"解析 Open-Meteo 描述失败: {e}")
+            return None
 
 
 class WeatherDatabase:
@@ -887,6 +965,8 @@ class WeatherDatabase:
         return None
 
     def search_city_by_code(self, city_code: str) -> str:
+        if len(city_code.split(',')) != 1:
+            return 'coordinates'
         """根据城市代码获取城市名称"""
         self._update_db_path()
         try:
@@ -1242,11 +1322,41 @@ class WeatherDataProcessor:
     def _process_all_alerts(self, all_alerts: List[Dict[str, Any]], provider) -> List[Dict[str, Any]]:
         """处理预警数据"""
         unified_alerts = []
+        exclude_keywords = self._get_alert_exclude_keywords()
+
         for alert in all_alerts:
             unified_alert = self._normalize_alert_data(alert, provider)
-            if unified_alert:
+            if unified_alert and not self._should_exclude_alert(unified_alert, exclude_keywords):
                 unified_alerts.append(unified_alert)
         return unified_alerts
+
+    def _get_alert_exclude_keywords(self) -> List[str]:
+        try:
+            exclude_str = config_center.read_conf('Weather', 'alert_exclude', '')
+            if not exclude_str or not exclude_str.strip():
+                return []
+            keywords = [keyword.strip() for keyword in re.split(r'\s+', exclude_str.strip()) if keyword.strip()]
+            unique_keywords = []
+            seen = set()
+            for keyword in keywords:
+                if keyword not in seen:
+                    unique_keywords.append(keyword)
+                    seen.add(keyword)
+            return unique_keywords
+        except Exception as e:
+            logger.error(f"获得排除关键词失败: {e}")
+            return []
+
+    def _should_exclude_alert(self, alert: Dict[str, Any], exclude_keywords: List[str]) -> bool:
+        if not exclude_keywords:
+            return False
+        title = alert.get('title', '').lower()
+        for keyword in exclude_keywords:
+            if keyword.lower() in title:
+                logger.debug(f"预警被排除:'{keyword}' 标题: '{alert.get('title', '未知预警')}'")
+                return True
+
+        return False
 
     def _build_unified_alert_result(self, unified_alerts: List[Dict[str, Any]]) -> Dict[str, Any]:
         """构建预警模板"""

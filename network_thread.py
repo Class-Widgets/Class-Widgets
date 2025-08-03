@@ -226,14 +226,44 @@ class getCity(QThread):
                     return (data['city'], data['district'])
                 else:
                     logger.error(f"获取城市失败：{data['message']}")
-                    return ('', '')
+                    raise ValueError(f"获取城市失败：{data['message']}")
             else:
                 logger.error(f"获取城市失败：{req.status_code}")    
-                return ('', '')
+                raise ValueError(f"获取城市失败：{req.status_code}")
             
         except Exception as e:
             logger.error(f"获取城市失败：{e}")
-            return ('', '')
+            raise ValueError(f"获取城市失败：{e}")
+        
+class getCoordinates(QThread):
+    def __init__(self, url: str = 'http://ip-api.com/json/?fields=status,lat,lon'):
+        super().__init__()
+        self.download_url = url
+    
+    def run(self) -> None:
+        try:
+            coordinates_data = self.get_coordinates()
+            config_center.write_conf('Weather', 'city', f"{coordinates_data[1]},{coordinates_data[0]}")
+        except Exception as e:
+            logger.error(f"获取坐标失败: {e}")
+
+    def get_coordinates(self) -> Tuple[float, float]:
+        try:
+            req = requests.get(self.download_url, proxies=proxies)
+            if req.status_code == 200:
+                data = req.json()
+                if data['status'] == 'success':
+                    logger.info(f"获取坐标成功：{data['lat']}, {data['lon']}")
+                    return (data['lat'], data['lon'])
+                else:
+                    logger.error(f"获取坐标失败：{data['message']}")
+                    raise ValueError(f"获取坐标失败：{data['message']}")
+            else:
+                logger.error(f"获取坐标失败：{req.status_code}")
+                raise ValueError(f"获取坐标失败：{req.status_code}")
+        except Exception as e:
+            logger.error(f"获取坐标失败：{e}")
+            raise ValueError(f"获取坐标失败：{e}")
 
 class VersionThread(QThread):  # 获取最新版本号
     version_signal = pyqtSignal(dict)
