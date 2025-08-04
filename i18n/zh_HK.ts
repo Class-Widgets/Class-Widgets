@@ -3601,7 +3601,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../file.py" line="455"/>
         <source>General.schedule</source>
-        <translation>新課程時間表 - 1</translation>
+        <translation>新課程時間表 - 1.json</translation>
     </message>
     <message>
         <location filename="../file.py" line="456"/>
