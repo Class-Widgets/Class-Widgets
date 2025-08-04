@@ -593,8 +593,8 @@
         <location filename="../view/menu/advance.ui" line="1308"/>
         <source>启用后：轻点小组件即可切换显示/隐藏, 右键会弹出更多选项哟
 禁用时：点击小组件会像不存在一样, 直接穿透到后面的窗口</source>
-        <translation>启用後： 輕點小組件即可切換顯示/隱藏，右鍵會彈出更多選項喔
-禁用時： 點擊小組件會像不存在一樣，直接穿透到後面的窗口</translation>
+        <translation>启用後： 輕點小組件即可切換顯示/隱藏，右鍵會彈出更多選項
+停用時： 點擊小組件會無法顯示，直接穿透到後面的窗口</translation>
     </message>
     <message>
         <source>组件语言</source>
@@ -2098,7 +2098,7 @@ https://classwidgets.rinlit.cn/docs-user/</translation>
     <message>
         <location filename="../menu.py" line="2335"/>
         <source>窗口会置于次底部, 但仍然比普通置顶要高一点点~</source>
-        <translation>窗口會置於次底部，但仍然比普通置頂要高一點點~</translation>
+        <translation>窗口會置於次底部，但仍然會比普通置頂要高</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2346"/>
@@ -2112,9 +2112,9 @@ https://classwidgets.rinlit.cn/docs-user/</translation>
 
 *请重启应用以完全生效</source>
         <translation>窗口實體狀態
-會認真擋住前面的點擊喔~
+可能會擋住前面的點擊
 
-*請重啟應用以完全生效</translation>
+*請重啟應用程式以完全生效</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2418"/>
@@ -2122,10 +2122,10 @@ https://classwidgets.rinlit.cn/docs-user/</translation>
 窗口不挡你啦,可以点穿它~
 
 *请重启应用以完全生效</source>
-        <translation>鼠標穿透啟用
-窗口不擋你啦，可以點穿它~
+        <translation>滑鼠穿透啟用
+視窗將不會阻擋點擊~
 
-*請重啟應用以完全生效</translation>
+*請重啟應用程式以完全生效</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2483"/>
@@ -4795,12 +4795,12 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../menu.py" line="824"/>
         <source>您确定要删除插件“{title}”吗？</source>
-        <translation>您確定要刪除插件“{title}”嗎？</translation>
+        <translation>你確定要刪除插件“{title}”嗎？</translation>
     </message>
     <message>
         <location filename="../menu.py" line="824"/>
         <source>删除此插件后，将无法恢复。</source>
-        <translation>刪除此插件後，將無法恢復。</translation>
+        <translation>刪除本插件後，將會無法恢復。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="849"/>
