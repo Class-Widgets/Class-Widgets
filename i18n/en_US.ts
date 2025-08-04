@@ -3620,7 +3620,7 @@ These placeholders apply only to the “Other Notifications”:
     <message>
         <location filename="../file.py" line="461"/>
         <source>Weather.api</source>
-        <translation>Weather.api</translation>
+        <translation>open-meteo</translation>
     </message>
     <message>
         <location filename="../file.py" line="462"/>
