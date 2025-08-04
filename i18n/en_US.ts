@@ -599,7 +599,8 @@ The start date of the school term needs to be set as the first day of the first 
         <location filename="../view/menu/advance.ui" line="1308"/>
         <source>启用后：轻点小组件即可切换显示/隐藏, 右键会弹出更多选项哟
 禁用时：点击小组件会像不存在一样, 直接穿透到后面的窗口</source>
-        <translation type="unfinished"></translation>
+        <translation>When enabled: Tap the widget to toggle showing/hiding. Right-click for more options
+When disabled: Clicking on the widget will appear as if it&apos;s not there, directly transitioning to the window behind it</translation>
     </message>
     <message>
         <source>组件语言</source>
@@ -1161,7 +1162,7 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
         <source>包含该字符串内容的预警将不会被显示
 多个内容使用空格分隔</source>
         <translation>Weather alerts containing this string will not be displayed
-Use spaces to separate multiple strings.</translation>
+Use spaces to separate multiple strings</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="1318"/>
@@ -2090,24 +2091,24 @@ Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, 
     <message>
         <location filename="../menu.py" line="2324"/>
         <source> (仅Windows)</source>
-        <translation type="unfinished"></translation>
+        <translation> Windows Only</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2332"/>
         <location filename="../menu.py" line="2345"/>
         <location filename="../menu.py" line="2409"/>
         <source>提示</source>
-        <translation type="unfinished"></translation>
+        <translation>Tip</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2335"/>
         <source>窗口会置于次底部, 但仍然比普通置顶要高一点点~</source>
-        <translation type="unfinished"></translation>
+        <translation>The window will be placed at the bottom, but still a little higher than the normal top~</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2346"/>
         <source>当前平台可能不完全支持该功能~</source>
-        <translation type="unfinished"></translation>
+        <translation>The current platform may not fully support this function~</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2414"/>
@@ -2115,7 +2116,10 @@ Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, 
 会认真挡住前面的点击哦~
 
 *请重启应用以完全生效</source>
-        <translation type="unfinished"></translation>
+        <translation>Window entity state
+It will block the previous clicks
+
+*Please restart the app for full effect</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2418"/>
@@ -2123,7 +2127,10 @@ Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, 
 窗口不挡你啦,可以点穿它~
 
 *请重启应用以完全生效</source>
-        <translation type="unfinished"></translation>
+        <translation>Mouse Penetration
+The window is not blocking you, you can tap through it.
+
+*Please restart the app for full effect</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2483"/>
@@ -3590,7 +3597,7 @@ These placeholders apply only to the “Other Notifications”:
     <message>
         <location filename="../file.py" line="455"/>
         <source>General.schedule</source>
-        <translation>New schedule - 1</translation>
+        <translation>New schedule - 1.json</translation>
     </message>
     <message>
         <location filename="../file.py" line="456"/>
@@ -4121,7 +4128,7 @@ Error message: {e}</translation>
     <message>
         <location filename="../list_.py" line="23"/>
         <source>置于次级底部</source>
-        <translation type="unfinished"></translation>
+        <translation>On less bottom</translation>
     </message>
     <message>
         <location filename="../list_.py" line="24"/>
