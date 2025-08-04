@@ -3321,7 +3321,7 @@
     <message>
         <location filename="../file.py" line="455"/>
         <source>General.schedule</source>
-        <translation>新しいスケジュール - 1</translation>
+        <translation>新しいスケジュール - 1.json</translation>
     </message>
     <message>
         <location filename="../file.py" line="456"/>
