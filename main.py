@@ -1744,7 +1744,7 @@ class DesktopWidget(QWidget):  # 主要小组件
 
         if path == 'widget-time.ui':  # 日期显示
             self.date_text = self.findChild(QLabel, 'date_text')
-            self.date_text.setText(self.tr('{year} 年 {month}').format(year=today.year, month=list_.month[today.month]))
+            self.date_text.setText(self.tr('{year} 年 {month}').format(year=today.year, month=list_.month[today.month - 1]))
             self.day_text = self.findChild(QLabel, 'day_text')
             self.day_text.setText(self.tr('{day}日  {week}').format(day=today.day, week=list_.week[today.weekday()]))
 
@@ -2174,7 +2174,7 @@ class DesktopWidget(QWidget):  # 主要小组件
         cd_list = get_countdown()
 
         if path == 'widget-time.ui':  # 日期显示
-            self.date_text.setText(self.tr('{year} 年 {month}').format(year=today.year, month=list_.month[today.month]))
+            self.date_text.setText(self.tr('{year} 年 {month}').format(year=today.year, month=list_.month[today.month - 1]))
             self.day_text.setText(self.tr('{day}日  {week}').format(day=today.day, week=list_.week[today.weekday()]))
 
         if path == 'widget-current-activity.ui':  # 当前活动
