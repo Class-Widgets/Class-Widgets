@@ -239,14 +239,13 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
+            C:\hostedtoolcache\windows\Python\${{ env.PYTHON_VERSION }}*
             ~/.cache/uv
             ~\AppData\Local\uv
             .venv
-          key: ${{ runner.os }}-${{ matrix.arch }}-uv-cache-${{ hashFiles('requirements.txt') }}
+          key: ${{ runner.os }}-${{ matrix.arch }}-python${{ env.PYTHON_VERSION }}-uv-cache-${{ hashFiles('requirements.txt') }}
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.arch }}-uv-cache-${{ hashFiles('requirements.txt') }}
-            ${{ runner.os }}-${{ matrix.arch }}-uv-cache-
-            ${{ runner.os }}-${{ matrix.arch }}-uv-
+            ${{ runner.os }}-${{ matrix.arch }}-python${{ env.PYTHON_VERSION }}-uv-cache-
 
       - name: Create venv and install dependencies
         shell: bash
@@ -360,6 +359,7 @@ jobs:
           source .venv/bin/activate
           pyinstaller main.py \
             -w \
+            -i ./img/favicon.png \
             -n ClassWidgets \
             --contents-directory . \
             --add-data config:config \
