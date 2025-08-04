@@ -3351,7 +3351,7 @@
     <message>
         <location filename="../file.py" line="461"/>
         <source>Weather.api</source>
-        <translation type="unfinished">Weather.api</translation>
+        <translation>open-meteo</translation>
     </message>
     <message>
         <location filename="../file.py" line="462"/>
