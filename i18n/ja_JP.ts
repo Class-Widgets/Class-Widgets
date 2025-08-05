@@ -105,7 +105,7 @@
     <message>
         <location filename="../main.py" line="2714"/>
         <source>{data}</source>
-        <translation type="unfinished"></translation>
+        <translation>{data}</translation>
     </message>
     <message>
         <location filename="../main.py" line="2914"/>
