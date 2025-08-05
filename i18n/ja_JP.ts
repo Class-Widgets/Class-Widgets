@@ -110,7 +110,7 @@
     <message>
         <location filename="../main.py" line="2914"/>
         <source>未知</source>
-        <translation type="unfinished"></translation>
+        <translation>未知の</translation>
     </message>
     <message>
         <source>{data}预警</source>
