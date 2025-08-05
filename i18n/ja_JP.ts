@@ -127,42 +127,42 @@
     <message>
         <location filename="../generate_speech.py" line="378"/>
         <source>文本内容不能为空</source>
-        <translation type="unfinished"></translation>
+        <translation>テキスト内容はできません</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="380"/>
         <source>语音ID不能为空</source>
-        <translation type="unfinished"></translation>
+        <translation>音声IDは空にできません</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="388"/>
         <source>语音文件生成失败，文件不存在</source>
-        <translation type="unfinished"></translation>
+        <translation>音声文書の生成に失敗する、文書は存在じゃない</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="390"/>
         <source>语音文件生成失败，文件为空</source>
-        <translation type="unfinished"></translation>
+        <translation>音声文書に生成は失敗する、文書は空です</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="396"/>
         <source>Edge TTS服务未返回音频数据,可能是网络问题或语音参数错误。语音ID: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Edge TTSサーイスの帰還音声データわありません、実話インターネットの問題あど音声のパラメータ間違いです、音声ID:{}</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="398"/>
         <source>连接问题,可能是代理设置导致: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>接続問題です、実はプロキシの設定です:{}</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="400"/>
         <source>超时,请检查网络连接: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>チイムアウト、インターネヅトの接続でご注意ください</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="402"/>
         <source>Edge TTS合成失败: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Edge TTSは合成失敗です:{}</translation>
     </message>
 </context>
 <context>
