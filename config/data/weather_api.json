@@ -24,7 +24,26 @@
       },
       "database": "xiaomi_weather.db",
       "return_desc": false,
-      "method": "location_key"
+      "method": "location_key",
+      "hourly_forecast": {
+        "url": "https://weatherapi.market.xiaomi.com/wtr-v3/weather/all?latitude=0&longitude=0&locationKey=weathercn:{location_key}&appKey=weather20151024&sign=zUFJoAR2ZVrDy1vF3D07&isGlobal=false&locale=zh_cn&days=1",
+        "data_path": "forecastHourly",
+        "fields": {
+          "temperature": "temperature.value.{index}",
+          "weather_code": "weather.value.{index}",
+          "hour": "{index}"
+        }
+      },
+      "daily_forecast": {
+        "url": "https://weatherapi.market.xiaomi.com/wtr-v3/weather/all?latitude=0&longitude=0&locationKey=weathercn:{location_key}&appKey=weather20151024&sign=zUFJoAR2ZVrDy1vF3D07&isGlobal=false&locale=zh_cn&days={days}",
+        "data_path": "forecastDaily",
+        "fields": {
+          "temp_high": "temperature.value.{index}.to",
+          "temp_low": "temperature.value.{index}.from",
+          "weather_day": "weather.value.{index}.from",
+          "weather_night": "weather.value.{index}.to"
+        }
+      }
     },
     "qweather": {
       "temp": "now.temp",
