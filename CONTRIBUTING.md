@@ -1,3 +1,7 @@
+<div align="right">
+简体中文 | <a href="/docs/contributing/CONTRIBUTING.en_US.md">English</a> | <a href="/docs/contributing/CONTRIBUTING.ja.md">日本語</a>
+</div>
+
 # 向 Class Widgets 贡献代码
 
 ## 反馈
@@ -94,7 +98,7 @@ Class Widgets 支持多语言国际化（i18n），您可通过以下方式贡�
 
 ## 还有问题？
 
-可加入 README 中提到的 QQ 群或 Discord 服务器，与开发者及其他贡献者讨论。
+可加入 [README](/README.md) 中提到的 QQ 群或 Discord 服务器，与开发者及其他贡献者讨论。
 
 ## 附录：功能对照表
 

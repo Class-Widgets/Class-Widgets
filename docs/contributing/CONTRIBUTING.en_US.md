@@ -1,3 +1,7 @@
+<div align="right">
+<a href="/CONTRIBUTING.md">简体中文</a> | English | <a href="/docs/contributing/CONTRIBUTING.ja.md">日本語</a>
+</div>
+
 # Contributing to Class Widgets
 
 ## Feedback
@@ -94,7 +98,7 @@ Class Widgets supports multilingual internationalization (i18n). Contribute tran
 
 ## Still Have Questions?
 
-Join the QQ group or Discord server mentioned in the README to discuss with developers and contributors.
+Join the QQ group or Discord server mentioned in the [README](/docs/readme/README.en_US.md) to discuss with developers and contributors.
 
 ## Appendix: Feature Terminology Table
 
