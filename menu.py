@@ -3015,7 +3015,7 @@ class SettingsMenu(FluentWindow):
                 last_sync = current_manager.get_last_ntp_sync()
                 if last_sync:
                     sync_time_str = last_sync.strftime(self.tr('%Y年%m月%d日 - %H:%M:%S'))
-                    caption_label.setText(self.tr('上次NTP校准: {sync_time_str}'))
+                    caption_label.setText(self.tr('上次NTP校准: {sync_time_str}').format(sync_time_str=sync_time_str))
                 else:
                     caption_label.setText(self.tr('NTP时间: 尚未进行校准'))
             else:
