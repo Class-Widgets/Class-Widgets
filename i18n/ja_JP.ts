@@ -990,7 +990,7 @@
     <message>
         <location filename="../view/menu/custom.ui" line="944"/>
         <source>*在切换天气源后，需要重新选择城市</source>
-        <translation type="unfinished"></translation>
+        <translation>*気象源に作り後、都市で選択があります</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="706"/>
@@ -1079,7 +1079,7 @@
     <message>
         <location filename="../view/menu/custom.ui" line="1213"/>
         <source>排除的气象预警</source>
-        <translation type="unfinished"></translation>
+        <translation>排除の天気警報です</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="1220"/>
@@ -1980,7 +1980,7 @@
     <message>
         <location filename="../menu.py" line="2263"/>
         <source>大风 雷电 地质...</source>
-        <translation type="unfinished"></translation>
+        <translation>大風&#x3000;雷&#x3000;地質......</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2291"/>
@@ -2000,19 +2000,19 @@
     <message>
         <location filename="../menu.py" line="2324"/>
         <source> (仅Windows)</source>
-        <translation type="unfinished"></translation>
+        <translation> (ただWindowsする）</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2332"/>
         <location filename="../menu.py" line="2345"/>
         <location filename="../menu.py" line="2409"/>
         <source>提示</source>
-        <translation type="unfinished"></translation>
+        <translation>提示</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2335"/>
         <source>窗口会置于次底部, 但仍然比普通置顶要高一点点~</source>
-        <translation type="unfinished"></translation>
+        <translation>窓は底に置きデス、ただ普通の置け高いです〜</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2346"/>
