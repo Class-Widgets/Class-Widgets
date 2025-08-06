@@ -97,7 +97,7 @@ Thanks to the following comrades for contributing to Class Widgets.
 [![Contributors](http://contrib.nn.ci/api?repo=Class-Widgets/Class-Widgets&repo=Class-Widgets/plugin-plaza&repo=Class-Widgets/cw-interim-site)](https://github.com/Class-Widgets/Class-Widgets/graphs/contributors)
 ![Repobeats](https://repobeats.axiom.co/api/embed/9d06f1435d1b14cb7837d1e863e55f24cc98df23.svg "Repobeats analytics image")
 
-If you want to contribute to Class Widgets, please read the [Contributing Guide](CONTRIBUTING.md)
+If you want to contribute to Class Widgets, please read the [Contributing Guide](/docs/contributing/CONTRIBUTING.en_US.md)
 
 ### Sponsors
 
