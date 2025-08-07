@@ -185,3 +185,8 @@ cython_debug/
 # Visual Studio
 /.vs
 /.vscode
+
+# Updates
+/update.json
+/updpack.zip
+/updpackage
