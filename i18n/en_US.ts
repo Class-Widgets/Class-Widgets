@@ -3532,42 +3532,42 @@ These placeholders apply only to the “Other Notifications”:
     <message>
         <location filename="../weather.py" line="590"/>
         <source>降水将持续 {} 小时</source>
-        <translation type="unfinished"></translation>
+        <translation>Rain for {} hrs</translation>
     </message>
     <message>
         <location filename="../weather.py" line="599"/>
         <source>降水将持续很久</source>
-        <translation type="unfinished"></translation>
+        <translation>Prolonged Rain</translation>
     </message>
     <message>
         <location filename="../weather.py" line="610"/>
         <source>{} 小时后有降水</source>
-        <translation type="unfinished"></translation>
+        <translation>Rain in {} hrs</translation>
     </message>
     <message>
         <location filename="../weather.py" line="621"/>
         <source>明日有降水</source>
-        <translation type="unfinished"></translation>
+        <translation>Rain tomorrow</translation>
     </message>
     <message>
         <location filename="../weather.py" line="631"/>
         <source>雨快要停了</source>
-        <translation type="unfinished"></translation>
+        <translation>Rain ending soon</translation>
     </message>
     <message>
         <location filename="../weather.py" line="640"/>
         <source>快要下雨了</source>
-        <translation type="unfinished"></translation>
+        <translation>Rain starting soon</translation>
     </message>
     <message>
         <location filename="../weather.py" line="651"/>
         <source>明日气温陡升</source>
-        <translation type="unfinished"></translation>
+        <translation>Hotter tomorrow</translation>
     </message>
     <message>
         <location filename="../weather.py" line="660"/>
         <source>明日气温骤降</source>
-        <translation type="unfinished"></translation>
+        <translation>Colder tomorrow</translation>
     </message>
 </context>
 <context>
