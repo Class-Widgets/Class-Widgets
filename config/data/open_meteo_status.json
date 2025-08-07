@@ -2,142 +2,142 @@
     "weatherinfo": [
         {
             "code": 0,
-            "wea": "晴",
+            "wea": "Clear",
             "original_code": 0
         },
         {
             "code": 1,
-            "wea": "主要晴朗",
+            "wea": "Mostly clear",
             "original_code": 1
         },
         {
             "code": 2,
-            "wea": "部分多云",
+            "wea": "Partly cloudy",
             "original_code": 1
         },
         {
             "code": 3,
-            "wea": "阴天",
+            "wea": "Overcast",
             "original_code": 2
         },
         {
             "code": 45,
-            "wea": "雾",
+            "wea": "Fog",
             "original_code": 18
         },
         {
             "code": 48,
-            "wea": "沉积雾凇雾",
+            "wea": "Rime fog",
             "original_code": 18
         },
         {
             "code": 51,
-            "wea": "轻度毛毛雨",
+            "wea": "Drizzle L",
             "original_code": 7
         },
         {
             "code": 53,
-            "wea": "中度毛毛雨",
+            "wea": "Drizzle M",
             "original_code": 7
         },
         {
             "code": 55,
-            "wea": "浓强毛毛雨",
+            "wea": "Drizzle H",
             "original_code": 7
         },
         {
             "code": 56,
-            "wea": "轻度冰冻毛毛雨",
+            "wea": "Frz drizzle L",
             "original_code": 19
         },
         {
             "code": 57,
-            "wea": "浓强冰冻毛毛雨",
+            "wea": "Frz drizzle H",
             "original_code": 19
         },
         {
             "code": 61,
-            "wea": "小雨",
+            "wea": "Rain L",
             "original_code": 7
         },
         {
             "code": 63,
-            "wea": "中雨",
+            "wea": "Rain M",
             "original_code": 8
         },
         {
             "code": 65,
-            "wea": "大雨",
+            "wea": "Rain H",
             "original_code": 9
         },
         {
             "code": 66,
-            "wea": "轻度冻雨",
+            "wea": "Frz rain L",
             "original_code": 19
         },
         {
             "code": 67,
-            "wea": "重度冻雨",
+            "wea": "Frz rain H",
             "original_code": 19
         },
         {
             "code": 71,
-            "wea": "小雪",
+            "wea": "Snow L",
             "original_code": 14
         },
         {
             "code": 73,
-            "wea": "中雪",
+            "wea": "Snow M",
             "original_code": 15
         },
         {
             "code": 75,
-            "wea": "大雪",
+            "wea": "Snow H",
             "original_code": 16
         },
         {
             "code": 77,
-            "wea": "雪粒",
+            "wea": "Snow grains",
             "original_code": 16
         },
         {
             "code": 80,
-            "wea": "小阵雨",
+            "wea": "Rain shwr L",
             "original_code": 9
         },
         {
             "code": 81,
-            "wea": "中阵雨",
+            "wea": "Rain shwr M",
             "original_code": 10
         },
         {
             "code": 82,
-            "wea": "强阵雨",
+            "wea": "Rain shwr V",
             "original_code": 11
         },
         {
             "code": 85,
-            "wea": "小阵雪",
+            "wea": "Snow shwr L",
             "original_code": 15
         },
         {
             "code": 86,
-            "wea": "大阵雪",
+            "wea": "Snow shwr H",
             "original_code": 17
         },
         {
             "code": 95,
-            "wea": "轻度雷暴",
+            "wea": "Thunder",
             "original_code": 4
         },
         {
             "code": 96,
-            "wea": "雷暴伴轻冰雹",
+            "wea": "Th+hail L",
             "original_code": 5
         },
         {
             "code": 99,
-            "wea": "雷暴伴大冰雹",
+            "wea": "Th+hail H",
             "original_code": 5
         }
     ]

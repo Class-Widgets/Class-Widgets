@@ -97,7 +97,7 @@ Class Widgets への貢献に感謝いたします。
 [![Contributors](http://contrib.nn.ci/api?repo=Class-Widgets/Class-Widgets&repo=Class-Widgets/plugin-plaza&repo=Class-Widgets/cw-interim-site)](https://github.com/Class-Widgets/Class-Widgets/graphs/contributors)
 ![Repobeats](https://repobeats.axiom.co/api/embed/9d06f1435d1b14cb7837d1e863e55f24cc98df23.svg "Repobeats analytics image")
 
-Class Widgets への貢献を希望される方は、 [Contributing Guide](CONTRIBUTING.md) をご一読ください。
+Class Widgets への貢献を希望される方は、 [Contributing Guide](/docs/contributing/CONTRIBUTING.ja.md) をご一読ください。
 
 ### スポンサー
 

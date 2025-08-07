@@ -99,12 +99,12 @@
     <message>
         <location filename="../main.py" line="2714"/>
         <source>{data}</source>
-        <translation type="unfinished"></translation>
+        <translation>{data}</translation>
     </message>
     <message>
         <location filename="../main.py" line="2914"/>
         <source>未知</source>
-        <translation type="unfinished"></translation>
+        <translation>未知</translation>
     </message>
     <message>
         <source>{data}预警</source>
@@ -347,7 +347,7 @@
     <message>
         <location filename="../view/menu/about.ui" line="232"/>
         <source>版本号:获取失败！</source>
-        <translation>版本号获取失败！</translation>
+        <translation>版本号：获取失败！</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="259"/>
@@ -660,7 +660,8 @@
         <location filename="../view/menu/advance.ui" line="1308"/>
         <source>启用后：轻点小组件即可切换显示/隐藏, 右键会弹出更多选项哟
 禁用时：点击小组件会像不存在一样, 直接穿透到后面的窗口</source>
-        <translation type="unfinished"></translation>
+        <translation>启用后：轻点小组件即可切换显示/隐藏, 右键会弹出更多选项哟
+禁用时：点击小组件会像不存在一样, 直接穿透到后面的窗口</translation>
     </message>
     <message>
         <source>允许通过点击或触摸小组件方式控制小组件
@@ -972,7 +973,7 @@
     <message>
         <location filename="../view/menu/custom.ui" line="944"/>
         <source>*在切换天气源后，需要重新选择城市</source>
-        <translation type="unfinished"></translation>
+        <translation>*在切换天气源后，需要重新选择城市</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="706"/>
@@ -1061,13 +1062,14 @@
     <message>
         <location filename="../view/menu/custom.ui" line="1213"/>
         <source>排除的气象预警</source>
-        <translation type="unfinished"></translation>
+        <translation>排除的气象预警</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="1220"/>
         <source>包含该字符串内容的预警将不会被显示
 多个内容使用空格分隔</source>
-        <translation type="unfinished"></translation>
+        <translation>包含该字符串内容的预警将不会被显示
+多个内容使用空格分隔</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="1318"/>
@@ -1971,7 +1973,7 @@
     <message>
         <location filename="../menu.py" line="2263"/>
         <source>大风 雷电 地质...</source>
-        <translation type="unfinished"></translation>
+        <translation>大风 雷电 地质...</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2291"/>
@@ -1991,24 +1993,24 @@
     <message>
         <location filename="../menu.py" line="2324"/>
         <source> (仅Windows)</source>
-        <translation type="unfinished"></translation>
+        <translation> (仅Windows)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2332"/>
         <location filename="../menu.py" line="2345"/>
         <location filename="../menu.py" line="2409"/>
         <source>提示</source>
-        <translation type="unfinished"></translation>
+        <translation>提示</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2335"/>
         <source>窗口会置于次底部, 但仍然比普通置顶要高一点点~</source>
-        <translation type="unfinished"></translation>
+        <translation>窗口会置于次底部, 但仍然比普通置顶要高一点点~</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2346"/>
         <source>当前平台可能不完全支持该功能~</source>
-        <translation type="unfinished"></translation>
+        <translation>当前平台可能不完全支持该功能~</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2414"/>
@@ -2016,7 +2018,10 @@
 会认真挡住前面的点击哦~
 
 *请重启应用以完全生效</source>
-        <translation type="unfinished"></translation>
+        <translation>窗口实体状态
+会认真挡住前面的点击哦~
+
+*请重启应用以完全生效</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2418"/>
@@ -2024,7 +2029,10 @@
 窗口不挡你啦,可以点穿它~
 
 *请重启应用以完全生效</source>
-        <translation type="unfinished"></translation>
+        <translation>鼠标穿透启用
+窗口不挡你啦,可以点穿它~
+
+*请重启应用以完全生效</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2483"/>
@@ -2596,12 +2604,12 @@
     <message>
         <location filename="../menu.py" line="3376"/>
         <source>无效的经纬度</source>
-        <translation type="unfinished"></translation>
+        <translation>无效的经纬度</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3377"/>
         <source>请输入有效的经度和纬度值。</source>
-        <translation type="unfinished"></translation>
+        <translation>请输入有效的经度和纬度值。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3522"/>
@@ -3211,42 +3219,42 @@
     <message>
         <location filename="../weather.py" line="590"/>
         <source>降水将持续 {} 小时</source>
-        <translation type="unfinished"></translation>
+        <translation>降水将持续 {} 小时</translation>
     </message>
     <message>
         <location filename="../weather.py" line="599"/>
         <source>降水将持续很久</source>
-        <translation type="unfinished"></translation>
+        <translation>降水将持续很久</translation>
     </message>
     <message>
         <location filename="../weather.py" line="610"/>
         <source>{} 小时后有降水</source>
-        <translation type="unfinished"></translation>
+        <translation>{} 小时后有降水</translation>
     </message>
     <message>
         <location filename="../weather.py" line="621"/>
         <source>明日有降水</source>
-        <translation type="unfinished"></translation>
+        <translation>明日有降水</translation>
     </message>
     <message>
         <location filename="../weather.py" line="631"/>
         <source>雨快要停了</source>
-        <translation type="unfinished"></translation>
+        <translation>雨快要停了</translation>
     </message>
     <message>
         <location filename="../weather.py" line="640"/>
         <source>快要下雨了</source>
-        <translation type="unfinished"></translation>
+        <translation>快要下雨了</translation>
     </message>
     <message>
         <location filename="../weather.py" line="651"/>
         <source>明日气温陡升</source>
-        <translation type="unfinished"></translation>
+        <translation>明日气温陡升</translation>
     </message>
     <message>
         <location filename="../weather.py" line="660"/>
         <source>明日气温骤降</source>
-        <translation type="unfinished"></translation>
+        <translation>明日气温骤降</translation>
     </message>
 </context>
 <context>
@@ -3532,7 +3540,7 @@
     <message>
         <location filename="../list_.py" line="23"/>
         <source>置于次级底部</source>
-        <translation type="unfinished"></translation>
+        <translation>置于次级底部</translation>
     </message>
     <message>
         <location filename="../list_.py" line="24"/>
@@ -3993,42 +4001,42 @@
     <message>
         <location filename="../menu.py" line="455"/>
         <source>手动输入经纬度</source>
-        <translation type="unfinished"></translation>
+        <translation>手动输入经纬度</translation>
     </message>
     <message>
         <location filename="../menu.py" line="456"/>
         <source>请输入当地的经度和纬度</source>
-        <translation type="unfinished"></translation>
+        <translation>请输入当地的经度和纬度</translation>
     </message>
     <message>
         <location filename="../menu.py" line="457"/>
         <source>确定</source>
-        <translation type="unfinished">确定</translation>
+        <translation>确定</translation>
     </message>
     <message>
         <location filename="../menu.py" line="460"/>
         <source>经度</source>
-        <translation type="unfinished"></translation>
+        <translation>经度</translation>
     </message>
     <message>
         <location filename="../menu.py" line="461"/>
         <source>纬度</source>
-        <translation type="unfinished"></translation>
+        <translation>纬度</translation>
     </message>
     <message>
         <location filename="../menu.py" line="464"/>
         <source>经度，例如 116.40</source>
-        <translation type="unfinished"></translation>
+        <translation>经度，例如 116.40</translation>
     </message>
     <message>
         <location filename="../menu.py" line="465"/>
         <source>纬度，例如 39.90</source>
-        <translation type="unfinished"></translation>
+        <translation>纬度，例如 39.90</translation>
     </message>
     <message>
         <location filename="../menu.py" line="468"/>
         <source>通过互联网获取经纬度</source>
-        <translation type="unfinished"></translation>
+        <translation>通过互联网获取经纬度</translation>
     </message>
     <message>
         <location filename="../menu.py" line="663"/>
@@ -4136,7 +4144,7 @@
     <message>
         <location filename="../menu.py" line="523"/>
         <source>经纬度获取失败</source>
-        <translation type="unfinished"></translation>
+        <translation>经纬度获取失败</translation>
     </message>
 </context>
 <context>

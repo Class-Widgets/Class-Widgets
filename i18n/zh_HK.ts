@@ -106,12 +106,12 @@
     <message>
         <location filename="../main.py" line="2714"/>
         <source>{data}</source>
-        <translation type="unfinished"></translation>
+        <translation>{data}</translation>
     </message>
     <message>
         <location filename="../main.py" line="2914"/>
         <source>未知</source>
-        <translation type="unfinished"></translation>
+        <translation>未知</translation>
     </message>
     <message>
         <source>{data}预警</source>
@@ -593,7 +593,8 @@
         <location filename="../view/menu/advance.ui" line="1308"/>
         <source>启用后：轻点小组件即可切换显示/隐藏, 右键会弹出更多选项哟
 禁用时：点击小组件会像不存在一样, 直接穿透到后面的窗口</source>
-        <translation type="unfinished"></translation>
+        <translation>启用後： 輕點小組件即可切換顯示/隱藏，右鍵會彈出更多選項
+停用時： 點擊小組件會無法顯示，直接穿透到後面的窗口</translation>
     </message>
     <message>
         <source>组件语言</source>
@@ -1059,7 +1060,7 @@
     <message>
         <location filename="../view/menu/custom.ui" line="944"/>
         <source>*在切换天气源后，需要重新选择城市</source>
-        <translation type="unfinished"></translation>
+        <translation>*在切換天氣源後，需要重新選擇城市</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="706"/>
@@ -1148,13 +1149,14 @@
     <message>
         <location filename="../view/menu/custom.ui" line="1213"/>
         <source>排除的气象预警</source>
-        <translation type="unfinished"></translation>
+        <translation>排除的氣象預警</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="1220"/>
         <source>包含该字符串内容的预警将不会被显示
 多个内容使用空格分隔</source>
-        <translation type="unfinished"></translation>
+        <translation>包含該字符串內容的預警將不會被顯示
+多個內容使用空格分隔</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="1318"/>
@@ -2064,7 +2066,7 @@ https://classwidgets.rinlit.cn/docs-user/</translation>
     <message>
         <location filename="../menu.py" line="2263"/>
         <source>大风 雷电 地质...</source>
-        <translation type="unfinished"></translation>
+        <translation>大風 雷電 地質...</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2291"/>
@@ -2084,24 +2086,24 @@ https://classwidgets.rinlit.cn/docs-user/</translation>
     <message>
         <location filename="../menu.py" line="2324"/>
         <source> (仅Windows)</source>
-        <translation type="unfinished"></translation>
+        <translation> (僅Windows)</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2332"/>
         <location filename="../menu.py" line="2345"/>
         <location filename="../menu.py" line="2409"/>
         <source>提示</source>
-        <translation type="unfinished"></translation>
+        <translation>提示</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2335"/>
         <source>窗口会置于次底部, 但仍然比普通置顶要高一点点~</source>
-        <translation type="unfinished"></translation>
+        <translation>窗口會置於次底部，但仍然會比普通置頂要高</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2346"/>
         <source>当前平台可能不完全支持该功能~</source>
-        <translation type="unfinished"></translation>
+        <translation>當前平台可能不完全支持該功能~</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2414"/>
@@ -2109,7 +2111,10 @@ https://classwidgets.rinlit.cn/docs-user/</translation>
 会认真挡住前面的点击哦~
 
 *请重启应用以完全生效</source>
-        <translation type="unfinished"></translation>
+        <translation>窗口實體狀態
+可能會擋住前面的點擊
+
+*請重啟應用程式以完全生效</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2418"/>
@@ -2117,7 +2122,10 @@ https://classwidgets.rinlit.cn/docs-user/</translation>
 窗口不挡你啦,可以点穿它~
 
 *请重启应用以完全生效</source>
-        <translation type="unfinished"></translation>
+        <translation>滑鼠穿透啟用
+視窗將不會阻擋點擊~
+
+*請重啟應用程式以完全生效</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2483"/>
@@ -2479,12 +2487,12 @@ https://classwidgets.rinlit.cn/docs-user/</translation>
     <message>
         <location filename="../menu.py" line="3376"/>
         <source>无效的经纬度</source>
-        <translation type="unfinished"></translation>
+        <translation>無效的經緯度</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3377"/>
         <source>请输入有效的经度和纬度值。</source>
-        <translation type="unfinished"></translation>
+        <translation>請輸入有效的經度和緯度值。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3410"/>
@@ -3528,42 +3536,42 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../weather.py" line="590"/>
         <source>降水将持续 {} 小时</source>
-        <translation type="unfinished"></translation>
+        <translation>降雨將持續 {} 小時</translation>
     </message>
     <message>
         <location filename="../weather.py" line="599"/>
         <source>降水将持续很久</source>
-        <translation type="unfinished"></translation>
+        <translation>降雨將持續一段時間</translation>
     </message>
     <message>
         <location filename="../weather.py" line="610"/>
         <source>{} 小时后有降水</source>
-        <translation type="unfinished"></translation>
+        <translation>{} 小時後有降雨</translation>
     </message>
     <message>
         <location filename="../weather.py" line="621"/>
         <source>明日有降水</source>
-        <translation type="unfinished"></translation>
+        <translation>明日有降雨</translation>
     </message>
     <message>
         <location filename="../weather.py" line="631"/>
         <source>雨快要停了</source>
-        <translation type="unfinished"></translation>
+        <translation>雨快將停止</translation>
     </message>
     <message>
         <location filename="../weather.py" line="640"/>
         <source>快要下雨了</source>
-        <translation type="unfinished"></translation>
+        <translation>快將下雨</translation>
     </message>
     <message>
         <location filename="../weather.py" line="651"/>
         <source>明日气温陡升</source>
-        <translation type="unfinished"></translation>
+        <translation>明日氣溫急升</translation>
     </message>
     <message>
         <location filename="../weather.py" line="660"/>
         <source>明日气温骤降</source>
-        <translation type="unfinished"></translation>
+        <translation>明日氣溫驟降</translation>
     </message>
 </context>
 <context>
@@ -3636,7 +3644,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../file.py" line="455"/>
         <source>General.schedule</source>
-        <translation>新課程時間表 - 1</translation>
+        <translation>新課程時間表 - 1.json</translation>
     </message>
     <message>
         <location filename="../file.py" line="456"/>
@@ -4167,7 +4175,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../list_.py" line="23"/>
         <source>置于次级底部</source>
-        <translation type="unfinished"></translation>
+        <translation>置於次級底部</translation>
     </message>
     <message>
         <location filename="../list_.py" line="24"/>
@@ -4702,7 +4710,8 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <location filename="../menu.py" line="332"/>
         <source>Class Widgets 在您的系统下不支持自动打开文件夹，请手动打开以下地址：
 {path}</source>
-        <translation>Class Widgets 未能在你的系統中自動開啟資料夾，請手動開啟以下位置：{path}</translation>
+        <translation>Class Widgets 未能在你的系統中自動開啟資料夾，請手動開啟以下位置:
+{path}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="334"/>
@@ -4744,42 +4753,42 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../menu.py" line="455"/>
         <source>手动输入经纬度</source>
-        <translation type="unfinished"></translation>
+        <translation>手動輸入經緯度</translation>
     </message>
     <message>
         <location filename="../menu.py" line="456"/>
         <source>请输入当地的经度和纬度</source>
-        <translation type="unfinished"></translation>
+        <translation>請輸入當地的經度和緯度</translation>
     </message>
     <message>
         <location filename="../menu.py" line="457"/>
         <source>确定</source>
-        <translation type="unfinished">確定</translation>
+        <translation>確定</translation>
     </message>
     <message>
         <location filename="../menu.py" line="460"/>
         <source>经度</source>
-        <translation type="unfinished"></translation>
+        <translation>經度</translation>
     </message>
     <message>
         <location filename="../menu.py" line="461"/>
         <source>纬度</source>
-        <translation type="unfinished"></translation>
+        <translation>緯度</translation>
     </message>
     <message>
         <location filename="../menu.py" line="464"/>
         <source>经度，例如 116.40</source>
-        <translation type="unfinished"></translation>
+        <translation>經度，例如 116.40</translation>
     </message>
     <message>
         <location filename="../menu.py" line="465"/>
         <source>纬度，例如 39.90</source>
-        <translation type="unfinished"></translation>
+        <translation>緯度，例如 39.90</translation>
     </message>
     <message>
         <location filename="../menu.py" line="468"/>
         <source>通过互联网获取经纬度</source>
-        <translation type="unfinished"></translation>
+        <translation>通過互聯網獲取經緯度</translation>
     </message>
     <message>
         <location filename="../menu.py" line="663"/>
@@ -4829,12 +4838,12 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../menu.py" line="824"/>
         <source>您确定要删除插件“{title}”吗？</source>
-        <translation>menu</translation>
+        <translation>你確定要刪除插件“{title}”嗎？</translation>
     </message>
     <message>
         <location filename="../menu.py" line="824"/>
         <source>删除此插件后，将无法恢复。</source>
-        <translation>menu</translation>
+        <translation>刪除本插件後，將會無法恢復。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="849"/>
@@ -4849,7 +4858,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../menu.py" line="865"/>
         <source>插件 “{title}” 已卸载。请重启 Class Widgets 以完全移除。</source>
-        <translation>插件“{title}”已卸載。請重啟 Class Widgets 以完成移除程式</translation>
+        <translation>插件“{title}”已卸載。請重啟 Class Widgets 以完成移除程式。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="875"/>
@@ -4859,7 +4868,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../menu.py" line="876"/>
         <source>卸载插件 “{title}” 时出错，请查看日志获取详细信息。</source>
-        <translation>卸載插件“{title}”時出錯，請查閱紀錄以獲取詳細資料</translation>
+        <translation>卸載插件“{title}”時出錯，請查閱紀錄以獲取詳細資料。</translation>
     </message>
 </context>
 <context>
@@ -4887,7 +4896,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../menu.py" line="523"/>
         <source>经纬度获取失败</source>
-        <translation type="unfinished"></translation>
+        <translation>經緯度獲取失敗</translation>
     </message>
 </context>
 <context>

@@ -105,12 +105,12 @@
     <message>
         <location filename="../main.py" line="2714"/>
         <source>{data}</source>
-        <translation type="unfinished"></translation>
+        <translation>{data}</translation>
     </message>
     <message>
         <location filename="../main.py" line="2914"/>
         <source>未知</source>
-        <translation type="unfinished"></translation>
+        <translation>未知の</translation>
     </message>
     <message>
         <source>{data}预警</source>
@@ -127,42 +127,42 @@
     <message>
         <location filename="../generate_speech.py" line="378"/>
         <source>文本内容不能为空</source>
-        <translation type="unfinished"></translation>
+        <translation>テキスト内容はできません</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="380"/>
         <source>语音ID不能为空</source>
-        <translation type="unfinished"></translation>
+        <translation>音声IDは空にできません</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="388"/>
         <source>语音文件生成失败，文件不存在</source>
-        <translation type="unfinished"></translation>
+        <translation>音声文書の生成に失敗する、文書は存在じゃない</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="390"/>
         <source>语音文件生成失败，文件为空</source>
-        <translation type="unfinished"></translation>
+        <translation>音声文書に生成は失敗する、文書は空です</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="396"/>
         <source>Edge TTS服务未返回音频数据,可能是网络问题或语音参数错误。语音ID: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Edge TTSサーイスの帰還音声データわありません、実話インターネットの問題あど音声のパラメータ間違いです、音声ID:{}</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="398"/>
         <source>连接问题,可能是代理设置导致: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>接続問題です、実はプロキシの設定です:{}</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="400"/>
         <source>超时,请检查网络连接: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>チイムアウト、インターネヅトの接続でご注意ください</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="402"/>
         <source>Edge TTS合成失败: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Edge TTSは合成失敗です:{}</translation>
     </message>
 </context>
 <context>
@@ -584,7 +584,8 @@
         <location filename="../view/menu/advance.ui" line="1308"/>
         <source>启用后：轻点小组件即可切换显示/隐藏, 右键会弹出更多选项哟
 禁用时：点击小组件会像不存在一样, 直接穿透到后面的窗口</source>
-        <translation type="unfinished"></translation>
+        <translation>有効時：ウィジェットをタップすると表示／非表示を切り替えます。右クリックで詳細オプションが表示されます
+無効時：ウィジェットをクリックしても反応せず、背後のウィンドウに直接アクセスされます</translation>
     </message>
     <message>
         <source>组件语言</source>
@@ -990,7 +991,7 @@
     <message>
         <location filename="../view/menu/custom.ui" line="944"/>
         <source>*在切换天气源后，需要重新选择城市</source>
-        <translation type="unfinished"></translation>
+        <translation>*気象源に作り後、都市で選択があります</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="706"/>
@@ -1079,13 +1080,14 @@
     <message>
         <location filename="../view/menu/custom.ui" line="1213"/>
         <source>排除的气象预警</source>
-        <translation type="unfinished"></translation>
+        <translation>排除の天気警報です</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="1220"/>
         <source>包含该字符串内容的预警将不会被显示
 多个内容使用空格分隔</source>
-        <translation type="unfinished"></translation>
+        <translation>この文字列を含む警報は表示されません
+複数の文字列はスペースで区切ってください</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="1318"/>
@@ -1980,7 +1982,7 @@
     <message>
         <location filename="../menu.py" line="2263"/>
         <source>大风 雷电 地质...</source>
-        <translation type="unfinished"></translation>
+        <translation>大風&#x3000;雷&#x3000;地質......</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2291"/>
@@ -2000,24 +2002,24 @@
     <message>
         <location filename="../menu.py" line="2324"/>
         <source> (仅Windows)</source>
-        <translation type="unfinished"></translation>
+        <translation> (ただWindowsする）</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2332"/>
         <location filename="../menu.py" line="2345"/>
         <location filename="../menu.py" line="2409"/>
         <source>提示</source>
-        <translation type="unfinished"></translation>
+        <translation>提示</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2335"/>
         <source>窗口会置于次底部, 但仍然比普通置顶要高一点点~</source>
-        <translation type="unfinished"></translation>
+        <translation>窓は底に置きデス、ただ普通の置け高いです〜</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2346"/>
         <source>当前平台可能不完全支持该功能~</source>
-        <translation type="unfinished"></translation>
+        <translation>現在のプラットフォームでは、この機能が完全にサポートされていない可能性があります〜</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2414"/>
@@ -2025,7 +2027,10 @@
 会认真挡住前面的点击哦~
 
 *请重启应用以完全生效</source>
-        <translation type="unfinished"></translation>
+        <translation>ウィンドウ実体の状態
+前面のクリックを遮ります
+
+※再起動で完全に反映されます</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2418"/>
@@ -2033,7 +2038,10 @@
 窗口不挡你啦,可以点穿它~
 
 *请重启应用以完全生效</source>
-        <translation type="unfinished"></translation>
+        <translation>マウス透過を有効化
+ウィンドウはクリックを遮りません〜
+
+※再起動で完全に反映されます</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2483"/>
@@ -2390,12 +2398,12 @@
     <message>
         <location filename="../menu.py" line="3376"/>
         <source>无效的经纬度</source>
-        <translation type="unfinished"></translation>
+        <translation>無効な緯度経度</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3377"/>
         <source>请输入有效的经度和纬度值。</source>
-        <translation type="unfinished"></translation>
+        <translation>有効な緯度と経度を入力してください。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3410"/>
@@ -3124,7 +3132,7 @@
     <message>
         <location filename="../generate_speech.py" line="498"/>
         <source>热芝士: TTSManager.get_instance() 获取实例</source>
-        <translation type="unfinished"></translation>
+        <translation>お役立ち情報：TTSManager.get_instance() でインスタンス取得</translation>
     </message>
 </context>
 <context>
@@ -3132,12 +3140,12 @@
     <message>
         <location filename="../generate_speech.py" line="648"/>
         <source>热芝士: 使用 TTSService.get_instance() 获取实例</source>
-        <translation type="unfinished"></translation>
+        <translation>お役立ち情報：TTSManager.get_instance() でインスタンス取得</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="696"/>
         <source>当前系统不支持Pyttsx3</source>
-        <translation type="unfinished"></translation>
+        <translation>現在のシステムでは Pyttsx3 はサポートされていません</translation>
     </message>
 </context>
 <context>
@@ -3256,42 +3264,42 @@
     <message>
         <location filename="../weather.py" line="590"/>
         <source>降水将持续 {} 小时</source>
-        <translation type="unfinished"></translation>
+        <translation>降水は {} 時間続く</translation>
     </message>
     <message>
         <location filename="../weather.py" line="599"/>
         <source>降水将持续很久</source>
-        <translation type="unfinished"></translation>
+        <translation>降水は長く続く</translation>
     </message>
     <message>
         <location filename="../weather.py" line="610"/>
         <source>{} 小时后有降水</source>
-        <translation type="unfinished"></translation>
+        <translation>{} 時間後に降水</translation>
     </message>
     <message>
         <location filename="../weather.py" line="621"/>
         <source>明日有降水</source>
-        <translation type="unfinished"></translation>
+        <translation>明日は降水</translation>
     </message>
     <message>
         <location filename="../weather.py" line="631"/>
         <source>雨快要停了</source>
-        <translation type="unfinished"></translation>
+        <translation>まもなく止む</translation>
     </message>
     <message>
         <location filename="../weather.py" line="640"/>
         <source>快要下雨了</source>
-        <translation type="unfinished"></translation>
+        <translation>まもなく降り出す</translation>
     </message>
     <message>
         <location filename="../weather.py" line="651"/>
         <source>明日气温陡升</source>
-        <translation type="unfinished"></translation>
+        <translation>明日は急に暑くなる</translation>
     </message>
     <message>
         <location filename="../weather.py" line="660"/>
         <source>明日气温骤降</source>
-        <translation type="unfinished"></translation>
+        <translation>明日は急に寒くなる</translation>
     </message>
 </context>
 <context>
@@ -3364,7 +3372,7 @@
     <message>
         <location filename="../file.py" line="455"/>
         <source>General.schedule</source>
-        <translation>新しいスケジュール - 1</translation>
+        <translation>新しいスケジュール - 1.json</translation>
     </message>
     <message>
         <location filename="../file.py" line="456"/>
@@ -3394,7 +3402,7 @@
     <message>
         <location filename="../file.py" line="461"/>
         <source>Weather.api</source>
-        <translation type="unfinished">Weather.api</translation>
+        <translation>open-meteo</translation>
     </message>
     <message>
         <location filename="../file.py" line="462"/>
@@ -3577,7 +3585,7 @@
     <message>
         <location filename="../list_.py" line="23"/>
         <source>置于次级底部</source>
-        <translation type="unfinished"></translation>
+        <translation>下位に配置</translation>
     </message>
     <message>
         <location filename="../list_.py" line="24"/>
@@ -4154,42 +4162,42 @@
     <message>
         <location filename="../menu.py" line="455"/>
         <source>手动输入经纬度</source>
-        <translation type="unfinished"></translation>
+        <translation>手動で緯度と経度を入力</translation>
     </message>
     <message>
         <location filename="../menu.py" line="456"/>
         <source>请输入当地的经度和纬度</source>
-        <translation type="unfinished"></translation>
+        <translation>現地の緯度と経度を入力してください</translation>
     </message>
     <message>
         <location filename="../menu.py" line="457"/>
         <source>确定</source>
-        <translation type="unfinished"></translation>
+        <translation>確定</translation>
     </message>
     <message>
         <location filename="../menu.py" line="460"/>
         <source>经度</source>
-        <translation type="unfinished"></translation>
+        <translation>経度</translation>
     </message>
     <message>
         <location filename="../menu.py" line="461"/>
         <source>纬度</source>
-        <translation type="unfinished"></translation>
+        <translation>緯度</translation>
     </message>
     <message>
         <location filename="../menu.py" line="464"/>
         <source>经度，例如 116.40</source>
-        <translation type="unfinished"></translation>
+        <translation>経度、例：116.40</translation>
     </message>
     <message>
         <location filename="../menu.py" line="465"/>
         <source>纬度，例如 39.90</source>
-        <translation type="unfinished"></translation>
+        <translation>緯度、例：39.90</translation>
     </message>
     <message>
         <location filename="../menu.py" line="468"/>
         <source>通过互联网获取经纬度</source>
-        <translation type="unfinished"></translation>
+        <translation>インターネット経由で緯度と経度を取得</translation>
     </message>
     <message>
         <location filename="../menu.py" line="663"/>
@@ -4297,7 +4305,7 @@ Class Widgets を更新してから、このプラグインのインストール
     <message>
         <location filename="../menu.py" line="523"/>
         <source>经纬度获取失败</source>
-        <translation type="unfinished"></translation>
+        <translation>緯度と経度の取得に失敗しました</translation>
     </message>
 </context>
 <context>

@@ -86,12 +86,12 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="2714"/>
         <source>{data}</source>
-        <translation type="unfinished"></translation>
+        <translation>{data}</translation>
     </message>
     <message>
         <location filename="../main.py" line="2914"/>
         <source>未知</source>
-        <translation type="unfinished"></translation>
+        <translation>Unknown</translation>
     </message>
     <message>
         <source>{year}&#x2005;年&#x2002;{month}&#x2005;月</source>
@@ -599,7 +599,8 @@ The start date of the school term needs to be set as the first day of the first 
         <location filename="../view/menu/advance.ui" line="1308"/>
         <source>启用后：轻点小组件即可切换显示/隐藏, 右键会弹出更多选项哟
 禁用时：点击小组件会像不存在一样, 直接穿透到后面的窗口</source>
-        <translation type="unfinished"></translation>
+        <translation>When enabled: Tap the widget to toggle showing/hiding. Right-click for more options
+When disabled: Clicking on the widget will appear as if it&apos;s not there, directly transitioning to the window behind it</translation>
     </message>
     <message>
         <source>组件语言</source>
@@ -1065,7 +1066,7 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
     <message>
         <location filename="../view/menu/custom.ui" line="944"/>
         <source>*在切换天气源后，需要重新选择城市</source>
-        <translation type="unfinished"></translation>
+        <translation>* After changing weather sources, you need to select the city again</translation>
     </message>
     <message>
         <location filename="../view/menu/plugin_mgr.ui" line="706"/>
@@ -1154,13 +1155,14 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
     <message>
         <location filename="../view/menu/custom.ui" line="1213"/>
         <source>排除的气象预警</source>
-        <translation type="unfinished"></translation>
+        <translation>Excluded Weather Alert</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="1220"/>
         <source>包含该字符串内容的预警将不会被显示
 多个内容使用空格分隔</source>
-        <translation type="unfinished"></translation>
+        <translation>Weather alerts containing this string will not be displayed
+Use spaces to separate multiple strings</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="1318"/>
@@ -2069,7 +2071,7 @@ Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, 
     <message>
         <location filename="../menu.py" line="2263"/>
         <source>大风 雷电 地质...</source>
-        <translation type="unfinished"></translation>
+        <translation>Strong winds, thunder and lightning, geological...</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2291"/>
@@ -2089,24 +2091,24 @@ Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, 
     <message>
         <location filename="../menu.py" line="2324"/>
         <source> (仅Windows)</source>
-        <translation type="unfinished"></translation>
+        <translation> Windows Only</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2332"/>
         <location filename="../menu.py" line="2345"/>
         <location filename="../menu.py" line="2409"/>
         <source>提示</source>
-        <translation type="unfinished"></translation>
+        <translation>Tip</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2335"/>
         <source>窗口会置于次底部, 但仍然比普通置顶要高一点点~</source>
-        <translation type="unfinished"></translation>
+        <translation>The window will be placed at the bottom, but still a little higher than the normal top~</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2346"/>
         <source>当前平台可能不完全支持该功能~</source>
-        <translation type="unfinished"></translation>
+        <translation>The current platform may not fully support this function~</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2414"/>
@@ -2114,7 +2116,10 @@ Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, 
 会认真挡住前面的点击哦~
 
 *请重启应用以完全生效</source>
-        <translation type="unfinished"></translation>
+        <translation>Window entity state
+It will block the previous clicks
+
+*Please restart the app for full effect</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2418"/>
@@ -2122,7 +2127,10 @@ Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, 
 窗口不挡你啦,可以点穿它~
 
 *请重启应用以完全生效</source>
-        <translation type="unfinished"></translation>
+        <translation>Mouse Penetration
+The window is not blocking you, you can tap through it.
+
+*Please restart the app for full effect</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2483"/>
@@ -2484,12 +2492,12 @@ Inspection of effective domain name or IP address （︶^︶）</translation>
     <message>
         <location filename="../menu.py" line="3376"/>
         <source>无效的经纬度</source>
-        <translation type="unfinished"></translation>
+        <translation>Invalid latitude and longitude</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3377"/>
         <source>请输入有效的经度和纬度值。</source>
-        <translation type="unfinished"></translation>
+        <translation>Please enter valid longitude and latitude values.</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3410"/>
@@ -3524,42 +3532,42 @@ These placeholders apply only to the “Other Notifications”:
     <message>
         <location filename="../weather.py" line="590"/>
         <source>降水将持续 {} 小时</source>
-        <translation type="unfinished"></translation>
+        <translation>Rain for {} hrs</translation>
     </message>
     <message>
         <location filename="../weather.py" line="599"/>
         <source>降水将持续很久</source>
-        <translation type="unfinished"></translation>
+        <translation>Prolonged Rain</translation>
     </message>
     <message>
         <location filename="../weather.py" line="610"/>
         <source>{} 小时后有降水</source>
-        <translation type="unfinished"></translation>
+        <translation>Rain in {} hrs</translation>
     </message>
     <message>
         <location filename="../weather.py" line="621"/>
         <source>明日有降水</source>
-        <translation type="unfinished"></translation>
+        <translation>Rain tomorrow</translation>
     </message>
     <message>
         <location filename="../weather.py" line="631"/>
         <source>雨快要停了</source>
-        <translation type="unfinished"></translation>
+        <translation>Rain ending soon</translation>
     </message>
     <message>
         <location filename="../weather.py" line="640"/>
         <source>快要下雨了</source>
-        <translation type="unfinished"></translation>
+        <translation>Rain starting soon</translation>
     </message>
     <message>
         <location filename="../weather.py" line="651"/>
         <source>明日气温陡升</source>
-        <translation type="unfinished"></translation>
+        <translation>Hotter tomorrow</translation>
     </message>
     <message>
         <location filename="../weather.py" line="660"/>
         <source>明日气温骤降</source>
-        <translation type="unfinished"></translation>
+        <translation>Colder tomorrow</translation>
     </message>
 </context>
 <context>
@@ -3632,7 +3640,7 @@ These placeholders apply only to the “Other Notifications”:
     <message>
         <location filename="../file.py" line="455"/>
         <source>General.schedule</source>
-        <translation>New schedule - 1</translation>
+        <translation>New schedule - 1.json</translation>
     </message>
     <message>
         <location filename="../file.py" line="456"/>
@@ -3662,7 +3670,7 @@ These placeholders apply only to the “Other Notifications”:
     <message>
         <location filename="../file.py" line="461"/>
         <source>Weather.api</source>
-        <translation>Weather.api</translation>
+        <translation>open-meteo</translation>
     </message>
     <message>
         <location filename="../file.py" line="462"/>
@@ -4163,7 +4171,7 @@ Error message: {e}</translation>
     <message>
         <location filename="../list_.py" line="23"/>
         <source>置于次级底部</source>
-        <translation type="unfinished"></translation>
+        <translation>On less bottom</translation>
     </message>
     <message>
         <location filename="../list_.py" line="24"/>
@@ -4742,42 +4750,42 @@ It is recommended to set the scaling factor to a value between 100% and 180%.</t
     <message>
         <location filename="../menu.py" line="455"/>
         <source>手动输入经纬度</source>
-        <translation type="unfinished"></translation>
+        <translation>Manually enter</translation>
     </message>
     <message>
         <location filename="../menu.py" line="456"/>
         <source>请输入当地的经度和纬度</source>
-        <translation type="unfinished"></translation>
+        <translation>Please enter the local longitude and latitude</translation>
     </message>
     <message>
         <location filename="../menu.py" line="457"/>
         <source>确定</source>
-        <translation type="unfinished"></translation>
+        <translation>Yes</translation>
     </message>
     <message>
         <location filename="../menu.py" line="460"/>
         <source>经度</source>
-        <translation type="unfinished"></translation>
+        <translation>Longitude</translation>
     </message>
     <message>
         <location filename="../menu.py" line="461"/>
         <source>纬度</source>
-        <translation type="unfinished"></translation>
+        <translation>Latitude</translation>
     </message>
     <message>
         <location filename="../menu.py" line="464"/>
         <source>经度，例如 116.40</source>
-        <translation type="unfinished"></translation>
+        <translation>Longitude, e.g. 116.40</translation>
     </message>
     <message>
         <location filename="../menu.py" line="465"/>
         <source>纬度，例如 39.90</source>
-        <translation type="unfinished"></translation>
+        <translation>Latitude, e.g. 39.90</translation>
     </message>
     <message>
         <location filename="../menu.py" line="468"/>
         <source>通过互联网获取经纬度</source>
-        <translation type="unfinished"></translation>
+        <translation>Get latitude and longitude via the Internet</translation>
     </message>
     <message>
         <location filename="../menu.py" line="663"/>
@@ -4885,7 +4893,7 @@ Please update Class Widgets before trying to install this plugin.</translation>
     <message>
         <location filename="../menu.py" line="523"/>
         <source>经纬度获取失败</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to get longitude and latitude</translation>
     </message>
 </context>
 <context>
