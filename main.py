@@ -2848,7 +2848,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             try:
                 icon_path = f"{base_directory}/img/weather/reminders/{reminder['icon']}.svg"
                 if os.path.exists(icon_path):
-                    self.reminder_icon.setImage(icon_path)
+                    self.reminder_icon.setIcon(icon_path)
                     self.reminder_icon.show()
                 else:
                     logger.warning(f'天气提醒图标不存在: {icon_path}')

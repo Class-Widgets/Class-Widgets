@@ -469,6 +469,7 @@ class selectCity(MessageBoxBase):  # 选择城市
             self.latitude_edit = LineEdit()
             self.longitude_edit.setPlaceholderText(QCoreApplication.translate('menu','经度，例如 116.40'))
             self.latitude_edit.setPlaceholderText(QCoreApplication.translate('menu','纬度，例如 39.90'))
+            self._populate_coordinates_from_config()
 
             # 新增按钮
             self.btn_internet = PushButton(QCoreApplication.translate('menu', '通过互联网获取经纬度'))
@@ -585,6 +586,23 @@ class selectCity(MessageBoxBase):  # 选择城市
         self._unlock_input()
         self.latitude_edit.setText(str(latitude))
         self.longitude_edit.setText(str(longitude))
+
+    def _populate_coordinates_from_config(self):
+        """从配置文件中读取经纬度信息并填充到输入框"""
+        try:
+            city_config = config_center.read_conf('Weather', 'city')
+            if city_config and ',' in city_config:
+                coords = city_config.split(',')
+                if len(coords) == 2:
+                    try:
+                        longitude = float(coords[0].strip())
+                        latitude = float(coords[1].strip())
+                        self.longitude_edit.setText(str(longitude))
+                        self.latitude_edit.setText(str(latitude))
+                    except ValueError:
+                        logger.debug("配置文件中的城市信息不是有效的经纬度格式")
+        except Exception as e:
+            logger.error(f"从配置文件读取经纬度信息失败: {e}")
 
     # class getCoordinatesSystem(QThread):
     #     location_ready = pyqtSignal(float, float)
@@ -1651,7 +1669,7 @@ class SettingsMenu(FluentWindow):
                 alert_title.setText(display_text)
             publish_time = detail_widget.findChild(QLabel, 'publishTime')
             if publish_time:
-                time_str = (alert_data.get('start_time') or self.tr('未知时间'))
+                time_str = (alert_data.get('start_time') or alert_data.get('pub_time') or self.tr('未知时间'))
                 if time_str and time_str != '未知时间':
                     try:
                         if 'T' in time_str:
@@ -3935,7 +3953,7 @@ class SettingsMenu(FluentWindow):
                 if selected_city:
                     config_center.write_conf('Weather', 'city', wd.search_code_by_name((selected_city[0].text(),'')))
                     city_changed = True
-            else:  # coordinates method
+            else:  # coordinates
                 lon = search_city_dialog.longitude_edit.text()
                 lat = search_city_dialog.latitude_edit.text()
                 if lon and lat:

@@ -515,7 +515,7 @@ class WeatherManager:
 
         Args:
             forecast_type: 预报类型 ('hourly' 或 'daily')
-            days: 仅对 daily 类型有效，预报天数
+            days: 仅对 daily 类型有效, 预报天数
         """
         provider = self.get_current_provider()
         if not provider:
@@ -713,7 +713,7 @@ class WeatherManager:
                 if hourly_forecast and len(hourly_forecast) > 0:
                     same_precipitation = precip_info['same_precipitation']
                     if same_precipitation:  # 当前降水和第一个小时的降水状态相同
-                        if precip_info['precipitation']:  # 当前正在降水，降水持续
+                        if precip_info['precipitation']:  # 当前正在降水, 降水持续
                             if precip_info['precipitation_time'] and precip_info['precipitation_time'][0] <= 2:
                                 duration = precip_info['precipitation_time'][0]
                                 reminders.append({
@@ -733,7 +733,7 @@ class WeatherManager:
                                     ),
                                     'icon': 'rain'
                                 })
-                        else:  # 当前没有降水，很久后才有降水
+                        else:  # 当前没有降水, 很久后才有降水
                             if precip_info['precipitation_time'] and precip_info['precipitation_time'][0] <= 3:
                                 hours = precip_info['precipitation_time'][0]
                                 reminders.append({
@@ -988,7 +988,7 @@ class GenericWeatherProvider(WeatherapiProvider):
         return forecast_items
 
     def fetch_hourly_forecast(self, location_key: str, api_key: str) -> List[Dict[str, Any]]:
-        """获取逐小时天气预报数据（兼容接口）"""
+        """获取逐小时天气预报数据(兼容接口)"""
         try:
             raw_data = self.fetch_forecast_data(location_key, api_key, "hourly")
             return self.parse_forecast_data(raw_data, "hourly")
@@ -997,7 +997,7 @@ class GenericWeatherProvider(WeatherapiProvider):
             return []
 
     def fetch_daily_forecast(self, location_key: str, api_key: str, days: int = 5) -> List[Dict[str, Any]]:
-        """获取多天天气预报数据（兼容接口）"""
+        """获取多天天气预报数据(兼容接口)"""
         try:
             raw_data = self.fetch_forecast_data(location_key, api_key, "daily", days)
             return self.parse_forecast_data(raw_data, "daily")
@@ -1006,7 +1006,7 @@ class GenericWeatherProvider(WeatherapiProvider):
             return []
 
     def parse_update_time(self, data: Dict[str, Any]) -> Optional[str]:
-        """解析更新时间（通用实现）"""
+        """解析更新时间(通用实现)"""
         try:
             # 尝试从配置的路径获取更新时间
             update_time_path = self.parameters.get('updateTime', '')
@@ -1308,7 +1308,7 @@ class XiaomiWeatherProvider(GenericWeatherProvider):
         return any(keyword in weather_desc for keyword in ["雨", "雪", "雹"])
 
     def parse_hourly_forecast(self, data: Dict[str, Any]) -> List[Dict[str, Any]]:
-        """解析逐小时天气预报数据，添加降水判断"""
+        """解析逐小时天气预报数据, 添加降水判断"""
         result = []
         precipitation_time = []  # 存储降水时间分组
         current_precip = None    # 当前降水状态
@@ -1355,7 +1355,7 @@ class XiaomiWeatherProvider(GenericWeatherProvider):
         return result
 
     def parse_daily_forecast(self, data: Dict[str, Any]) -> List[Dict[str, Any]]:
-        """解析多天天气预报数据，添加降水日统计"""
+        """解析多天天气预报数据, 添加降水日统计"""
         result = []
         precipitation_days = []  # 存储降水日标记
         tomorrow_precipitation = False  # 明日白天是否降水
@@ -1449,7 +1449,7 @@ class QWeatherProvider(GenericWeatherProvider):
 
     @retry_on_failure(max_retries=2, delay=0.5)
     def fetch_current_weather(self, location_key: str, api_key: str) -> Dict[str, Any]:
-        """获取当前天气数据（支持经纬度和城市ID）"""
+        """获取当前天气数据(支持经纬度和城市ID)"""
         if not location_key:
             raise ValueError(f'{self.api_name}: location_key 参数不能为空')
 
@@ -1457,11 +1457,11 @@ class QWeatherProvider(GenericWeatherProvider):
             from network_thread import proxies
             if ',' in location_key:
                 lat, lon = location_key.split(',')
-                # 和风天气坐标格式：经度,纬度（经度在前纬度在后），只支持小数点后两位
+                # 和风天气坐标格式：经度,纬度(经度在前纬度在后), 只支持小数点后两位
                 lat = f"{float(lat):.2f}"
                 lon = f"{float(lon):.2f}"
-                # Note：和风天气API要求经度在前，纬度在后
-                url = self.base_url.format(location_key=f"{lon},{lat}", key=api_key)
+                # Note：和风天气API要求经度在前, 纬度在后
+                url = self.base_url.format(location_key=f"{lat},{lon}", key=api_key)
             else:
                 url = self.base_url.format(location_key=location_key, key=api_key)
             # logger.debug(f'{self.api_name} 请求URL: {url.replace(api_key, "***" if api_key else "(空)")}')
@@ -1525,7 +1525,7 @@ class QWeatherProvider(GenericWeatherProvider):
             if update_time:
                 return str(update_time)
 
-            # 如果顶层没有，尝试从now中获取
+            # 如果顶层没有, 尝试从now中获取
             now = data.get('now', {})
             update_time = now.get('updateTime')
             if update_time:
@@ -1648,11 +1648,11 @@ class QWeatherProvider(GenericWeatherProvider):
             from network_thread import proxies
             if ',' in location_key:
                 lon, lat = location_key.split(',')
-                # 和风天气坐标格式：经度,纬度（经度在前纬度在后），只支持小数点后两位
+                # 和风天气坐标格式：经度,纬度(经度在前纬度在后), 只支持小数点后两位
                 lat = f"{float(lat):.2f}"
                 lon = f"{float(lon):.2f}"
-                # Note：和风天气API要求经度在前，纬度在后
-                air_url = f"https://devapi.qweather.com/v7/air/now?location={lon},{lat}&key={api_key}"
+                # Note：和风天气API要求经度在前, 纬度在后
+                air_url = f"https://devapi.qweather.com/v7/air/now?location={lat},{lon}&key={api_key}"
             else:
                 air_url = f"https://devapi.qweather.com/v7/air/now?location={location_key}&key={api_key}"
 
@@ -1730,8 +1730,8 @@ class QWeatherProvider(GenericWeatherProvider):
                 lat, lon = location_key.split(',')
                 lat = f"{float(lat):.2f}"
                 lon = f"{float(lon):.2f}"
-                # Note：和风天气API要求经度在前，纬度在后
-                alert_url = f"https://devapi.qweather.com/v7/warning/now?location={lon},{lat}&key={api_key}"
+                # Note：和风天气API要求经度在前, 纬度在后
+                alert_url = f"https://devapi.qweather.com/v7/warning/now?location={lat},{lon}&key={api_key}"
             else:
                 alert_url = f"https://devapi.qweather.com/v7/warning/now?location={location_key}&key={api_key}"
             # logger.debug(f'和风天气预警请求URL: {alert_url.replace(api_key, "***" if api_key else "(空)")}')
@@ -1761,7 +1761,7 @@ class QWeatherProvider(GenericWeatherProvider):
     def _validate_qweather_response(self, data: Dict[str, Any]) -> bool:
         """验证和风天气响应"""
         if data.get('code') != '200':
-            logger.warning(f"和风天气预警API返回错误: {data.get('code')}，完整响应: {data}")
+            logger.warning(f"和风天气预警API返回错误: {data.get('code')}, 完整响应: {data}")
             return False
         return True
 
@@ -1806,7 +1806,7 @@ class QWeatherProvider(GenericWeatherProvider):
         return True
 
     def _is_precipitation(self, weather_code: str) -> bool:
-        """判断天气是否为降水类型（和风天气）"""
+        """判断天气是否为降水类型(和风天气)"""
         if weather_code.isdigit():
             code = int(weather_code)
             # 和风天气降水代码：
@@ -2168,7 +2168,7 @@ class OpenMeteoProvider(GenericWeatherProvider):
             return None
 
     def _is_precipitation(self, weather_code: str) -> bool:
-        """判断天气是否为降水类型（Open-Meteo）"""
+        """判断天气是否为降水类型(Open-Meteo)"""
         # Open-Meteo降水代码: 51-67, 71-77, 80-86, 95-99
         if weather_code.isdigit():
             code = int(weather_code)
@@ -2221,7 +2221,7 @@ class OpenMeteoProvider(GenericWeatherProvider):
             current = data.get('current', {})
             wind_direction = current.get('wind_direction_10m')
             if wind_direction is not None:
-                # 将角度转换为方向描述，使用与小米天气相同的格式
+                # 将角度转换为方向描述, 使用与小米天气相同的格式
                 direction_desc = self._convert_wind_direction(float(wind_direction))
                 return f"{direction_desc}"
             return None
@@ -2515,7 +2515,7 @@ class WeatherDatabase:
             fuzzy_result = self._try_fuzzy_match(cursor, clean_city)
             if fuzzy_result:
                 return fuzzy_result
-            logger.warning(f'未找到城市: {clean_city}，使用默认城市代码')
+            logger.warning(f'未找到城市: {clean_city}, 使用默认城市代码')
             return '101010100'
         finally:
             conn.close()
@@ -2527,7 +2527,7 @@ class WeatherDatabase:
         exact_results = cursor.fetchall()
 
         if exact_results:
-            logger.debug(f'找到城市: {exact_results[0][2]}，代码: {exact_results[0][3]}')
+            logger.debug(f'找到城市: {exact_results[0][2]}, 代码: {exact_results[0][3]}')
             return str(exact_results[0][3])
         return None
 
@@ -2537,7 +2537,7 @@ class WeatherDatabase:
         fuzzy_results = cursor.fetchall()
 
         if fuzzy_results:
-            logger.debug(f'模糊找到城市: {fuzzy_results[0][2]}，代码: {fuzzy_results[0][3]}')
+            logger.debug(f'模糊找到城市: {fuzzy_results[0][2]}, 代码: {fuzzy_results[0][3]}')
             return str(fuzzy_results[0][3])
         return None
 
@@ -2749,7 +2749,7 @@ class WeatherDataProcessor:
         return provider.supports_alerts() if provider else False
 
     def extract_weather_data(self, key: str, weather_data: Dict[str, Any]) -> Optional[str]:
-        """从天气数据中提取指定字段的值（兼容旧接口）"""
+        """从天气数据中提取指定字段的值(兼容旧接口)"""
         if not weather_data:
             logger.error('weather_data is None!')
             return None
@@ -3052,14 +3052,26 @@ class WeatherDataProcessor:
     def _normalize_qweather_alert(self, alert: Dict[str, Any]) -> Dict[str, Any]:
         """标准化和风天气预警"""
         title = alert.get('title', '')
-        severity_color = alert.get('severityColor', '')
+        severity_text = alert.get('severity', '')  # API返回的严重等级文本
+        severity_color = alert.get('severityColor', '')  # API返回的严重等级颜色
         alert_type, alert_level = self._extract_alert_info_from_title(title)
-        severity_map = {
-            'Blue': 1, 'Yellow': 2, 'Orange': 3, 'Red': 4,
-            'blue': 1, 'yellow': 2, 'orange': 3, 'red': 4,
-            '蓝': 1, '黄': 2, '橙': 3, '红': 4
+        # 严重等级：Cancel, None, Unknown, Standard, Minor, Moderate, Major, Severe, Extreme
+        severity_text_map = {
+            'Cancel': 0, 'None': 0, 'Unknown': 1, 'Standard': 1,
+            'Minor': 1, 'Moderate': 2, 'Major': 3, 'Severe': 3, 'Extreme': 4
         }
-        severity = severity_map.get(severity_color, 1)
+        severity_color_map = {
+            'White': 0, 'Blue': 1, 'Green': 1, 'Yellow': 2,
+            'Orange': 3, 'Red': 4, 'Black': 4,
+            'white': 0, 'blue': 1, 'green': 1, 'yellow': 2,
+            'orange': 3, 'red': 4, 'black': 4
+        }
+        if severity_text and severity_text in severity_text_map:
+            severity = severity_text_map[severity_text]
+        elif severity_color and severity_color in severity_color_map:
+            severity = severity_color_map[severity_color]
+        else:
+            severity = 1  # 默认为Minor
         if alert_type and alert_level:
             display_text = f"{alert_type}{alert_level}色预警"
         elif alert_type:
@@ -3263,7 +3275,7 @@ class WeatherDataProcessor:
         elif isinstance(value, dict) and param in value:
             return value[param]
         else:
-            logger.error(f'获取天气参数失败，{param}不存在于{current_api}中')
+            logger.error(f'获取天气参数失败, {param}不存在于{current_api}中')
             return '错误'
 
     def _format_extracted_value(self, key: str, value: Any, current_params: Dict[str, Any]) -> Optional[str]:
@@ -3366,7 +3378,7 @@ def get_unified_weather_alerts(weather_data: Dict[str, Any]) -> Dict[str, Any]:
         weather_data: 天气数据字典
 
     Returns:
-        统一格式的预警数据字典，包含:
+        统一格式的预警数据字典, 包含:
         - has_alert: 是否有预警
         - alert_count: 预警数量
         - primary_alert: 主要预警信息
@@ -3409,7 +3421,7 @@ def simplify_alert_text(text: str) -> str:
     try:
         match = re.search(r'(发布|升级为)(\w+)(蓝色|黄色|橙色|红色)预警', text)
         if match:
-            return match.group(2)  # 简化至仅剩预警类别，如"暴雨" "雷暴大风"
+            return match.group(2)  # 简化至仅剩预警类别, 如"暴雨" "雷暴大风"
         return text.replace('预警', '').strip() or '未知预警'
     except Exception as e:
         logger.error(f"简化预警文本失败: {e}")
@@ -3471,7 +3483,7 @@ def get_hourly_forecast() -> Dict[str, Any]:
             - success: bool, 是否成功获取数据
             - supported: bool, 当前提供者是否支持逐小时预报
             - data: List[Dict[str, Any]], 预报数据列表
-            - error: str, 错误信息（如果有）
+            - error: str, 错误信息(如果有)
     """
     try:
         provider = weather_manager.get_current_provider()
@@ -3514,7 +3526,7 @@ def get_daily_forecast(days: int = 5) -> Dict[str, Any]:
     """获取多天天气预报
 
     Args:
-        days: 预报天数，默认5天
+        days: 预报天数, 默认5天
 
     Returns:
         Dict[str, Any]: 包含预报数据和状态信息的字典
@@ -3522,7 +3534,7 @@ def get_daily_forecast(days: int = 5) -> Dict[str, Any]:
             - supported: bool, 当前提供者是否支持多天预报
             - data: List[Dict[str, Any]], 预报数据列表
             - days: int, 实际获取的天数
-            - error: str, 错误信息（如果有）
+            - error: str, 错误信息(如果有)
     """
     try:
         provider = weather_manager.get_current_provider()
@@ -3580,7 +3592,7 @@ def get_precipitation_info() -> Dict[str, Any]:
             - success: bool, 是否成功获取数据
             - supported: bool, 当前提供者是否支持降水分析
             - data: Dict[str, Any], 降水信息数据
-            - error: str, 错误信息（如果有）
+            - error: str, 错误信息(如果有)
     """
     try:
         provider = weather_manager.get_current_provider()
