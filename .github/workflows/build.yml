@@ -104,13 +104,12 @@ jobs:
           else
             build_type="PyInstaller - Debug"
           fi
-          echo "BUILD_TIME=$build_time" >> $GITHUB_ENV
-          echo "BUILD_COMMIT=$build_commit" >> $GITHUB_ENV
-          echo "BUILD_BRANCH=$build_branch" >> $GITHUB_ENV
-          echo "BUILD_RUNID=$build_runid" >> $GITHUB_ENV
-          echo "BUILD_TYPE=$build_type" >> $GITHUB_ENV
           echo "IS_RELEASE=$is_release" >> $GITHUB_ENV
           echo "build_type=$build_type" >> $GITHUB_OUTPUT
+          echo "build_time=$build_time" >> $GITHUB_OUTPUT
+          echo "build_commit=$build_commit" >> $GITHUB_OUTPUT
+          echo "build_branch=$build_branch" >> $GITHUB_OUTPUT
+          echo "build_runid=$build_runid" >> $GITHUB_OUTPUT
           echo "is_release=$is_release" >> $GITHUB_OUTPUT
           {
             echo "## 📋 构建信息"
@@ -174,6 +173,14 @@ jobs:
             brew install gettext
             brew link --overwrite --force gettext
           fi
+
+      - name: Cache Python (Windows)
+        if: runner.os == 'Windows'
+        uses: actions/cache@v4
+        with:
+          path: |
+            C:\hostedtoolcache\windows\Python\${{ env.PYTHON_VERSION }}*
+          key: ${{ runner.os }}-${{ matrix.arch }}-python${{ env.PYTHON_VERSION }}
 
       - name: Setup Python
         uses: actions/setup-python@v5.6.0
@@ -247,7 +254,6 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            C:\hostedtoolcache\windows\Python\${{ env.PYTHON_VERSION }}*
             ~/.cache/uv
             ~\AppData\Local\uv
             .venv

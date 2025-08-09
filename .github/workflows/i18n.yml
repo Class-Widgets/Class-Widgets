@@ -123,14 +123,6 @@ jobs:
       - name: Set up uv
         uses: astral-sh/setup-uv@v6
 
-      - name: Cache tools
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/uv
-            ~/.local/lib/python3.11/site-packages
-          key: ${{ runner.os }}-python3.11-pyside6-tools
-
       - name: Install PySide6 tools
         run: uv pip install --system PySide6
 
@@ -228,14 +220,6 @@ jobs:
 
       - name: Set up uv
         uses: astral-sh/setup-uv@v6
-
-      - name: Cache tools
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/uv
-            ~/.local/lib/python3.11/site-packages
-          key: ${{ runner.os }}-python3.11-pyside6-tools
 
       - name: Install PySide6 tools
         run: uv pip install --system PySide6
