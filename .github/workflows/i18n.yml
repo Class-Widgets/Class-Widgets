@@ -176,6 +176,15 @@ jobs:
             fi
           done
 
+      - name: Import GPG key
+        id: import-gpg
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v6
         continue-on-error: true
@@ -190,8 +199,7 @@ jobs:
             * 由 GitHub Actions 自动生成
           commit_options: '--signoff'
           file_pattern: 'i18n/*.ts ui/*/i18n/*.ts'
-          commit_user_name: 'github-actions[bot]'
-          commit_user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_author: 'ChimeYao-bot <ChimeYao@outlook.jp>'
 
   compile-translations:
     name: Compile .ts files
@@ -257,6 +265,15 @@ jobs:
             fi
           done
 
+      - name: Import GPG key
+        id: import-gpg-compile
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
       - name: Commit compiled files
         uses: stefanzweifel/git-auto-commit-action@v6
         continue-on-error: true
@@ -271,8 +288,7 @@ jobs:
             * 由 GitHub Actions 自动生成
           commit_options: '--signoff'
           file_pattern: 'i18n/*.qm ui/*/i18n/*.qm'
-          commit_user_name: 'github-actions[bot]'
-          commit_user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_author: 'ChimeYao-bot <ChimeYao@outlook.jp>'
 
   summary:
     name: Update Summary
