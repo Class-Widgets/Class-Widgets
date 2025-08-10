@@ -79,12 +79,6 @@ class ThreadManager:
             'finished_threads': finished
         }
 
-# 适配高DPI缩放
-QApplication.setHighDpiScaleFactorRoundingPolicy(
-    Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
-QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
-QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
-
 CONF_PATH = f"{base_directory}/plugins/plugins_from_pp.json"
 PLAZA_REPO_URL = "https://raw.githubusercontent.com/Class-Widgets/plugin-plaza/"
 PLAZA_REPO_DIR = "https://api.github.com/repos/Class-Widgets/plugin-plaza/contents/Plugins"
@@ -863,7 +857,7 @@ def load_local_plugins_version() -> None:
 
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
+    from i18n_manager import app
     pp = PluginPlaza()
     pp.show()
     sys.exit(app.exec())

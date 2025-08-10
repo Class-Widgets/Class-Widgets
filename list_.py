@@ -15,7 +15,6 @@ from PyQt5.QtCore import QCoreApplication
 
 
 week = [QCoreApplication.translate("list_", '周一'), QCoreApplication.translate("list_", '周二'), QCoreApplication.translate("list_", '周三'), QCoreApplication.translate("list_", '周四'), QCoreApplication.translate("list_", '周五'), QCoreApplication.translate("list_", '周六'), QCoreApplication.translate("list_", '周日')]
-logger.debug(week)
 month = [QCoreApplication.translate("list_", '一月'), QCoreApplication.translate("list_", '二月'), QCoreApplication.translate("list_", '三月'), QCoreApplication.translate("list_", '四月'), QCoreApplication.translate("list_", '五月'), QCoreApplication.translate("list_", '六月'), QCoreApplication.translate("list_", '七月'), QCoreApplication.translate("list_", '八月'), QCoreApplication.translate("list_", '九月'), QCoreApplication.translate("list_", '十月'), QCoreApplication.translate("list_", '十一月'), QCoreApplication.translate("list_", '十二月')]
 week_type = [QCoreApplication.translate("list_", '单周'), QCoreApplication.translate("list_", '双周')]
 part_type = [QCoreApplication.translate("list_", '节点'), QCoreApplication.translate("list_", '休息段')]
@@ -23,6 +22,7 @@ window_status = [QCoreApplication.translate("list_", '无'), QCoreApplication.tr
 color_mode = [QCoreApplication.translate("list_", '浅色'), QCoreApplication.translate("list_", '深色'), QCoreApplication.translate("list_", '跟随系统')]
 hide_mode = [QCoreApplication.translate("list_", '无'), QCoreApplication.translate("list_", '上课时自动隐藏'), QCoreApplication.translate("list_", '窗口最大化时隐藏'), QCoreApplication.translate("list_", '灵活隐藏')]
 non_nt_hide_mode = [QCoreApplication.translate("list_", '无'), QCoreApplication.translate("list_", '上课时自动隐藏')]
+temperature_units = [QCoreApplication.translate("list_", '摄氏度 (°C)'), QCoreApplication.translate("list_", '华氏度 (°F)')]
 version_channel = [QCoreApplication.translate("list_", '正式版 (Release)'), QCoreApplication.translate("list_", '测试版 (Beta)')]
 
 theme_folder = []
@@ -44,7 +44,6 @@ subject = {
     QCoreApplication.translate("list_", '信息技术'): '(84, 135, 190',  # 蓝
     QCoreApplication.translate("list_", '电脑'): '(84, 135, 190',  # 蓝
     QCoreApplication.translate("list_", '课程表未加载'): '(255, 151, 135',  # 红
-
     QCoreApplication.translate("list_", '班会'): '(255, 151, 135',  # 红
     QCoreApplication.translate("list_", '自习'): '(115, 255, 150',  # 绿
     QCoreApplication.translate("list_", '课间'): '(135, 255, 191',  # 绿
@@ -179,7 +178,6 @@ except Exception as e:
         QCoreApplication.translate("list_", '信息技术'): 'it',
         QCoreApplication.translate("list_", '电脑'): 'it',
         QCoreApplication.translate("list_", '课程表未加载'): 'xmark',
-
         QCoreApplication.translate("list_", '班会'): 'meeting',
         QCoreApplication.translate("list_", '自习'): 'self_study',
         QCoreApplication.translate("list_", '课间'): 'break',
@@ -341,7 +339,6 @@ def convert_schedule(check_data: Dict[str, Any]) -> Dict[str, Any]:  # 转换课
         except Exception as e:
             logger.error(f"转换数据时出错: {e}")
             raise e
-          
     return check_data
 
 

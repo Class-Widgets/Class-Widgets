@@ -20,22 +20,16 @@ from menu import SettingsMenu
 from utils import TimeManagerFactory
 from loguru import logger
 
-# 适配高DPI缩放
-QApplication.setHighDpiScaleFactorRoundingPolicy(
-        Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
-QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
-QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
-
 settings = None
 
 current_week = TimeManagerFactory.get_instance().get_current_weekday()
 temp_schedule = {'schedule': {}, 'schedule_even': {}}
 
 
-def open_settings() -> None:
+def open_settings(main_window=None) -> None:
     global settings
     if settings is None or not settings.isVisible():
-        settings = SettingsMenu()
+        settings = SettingsMenu(main_window=main_window)
         settings.closed.connect(cleanup_settings)
         settings.show()
         logger.info('打开“设置”')
@@ -55,6 +49,7 @@ class ExtraMenu(FluentWindow):
     def __init__(self) -> None:
         super().__init__()
         self.menu = None
+        self.main_window = None
         self.interface = uic.loadUi(f'{base_directory}/view/extra_menu.ui')
         self.initUI()
         self.init_interface()
@@ -87,7 +82,7 @@ class ExtraMenu(FluentWindow):
         save_temp_conf.clicked.connect(self.save_temp_conf)
 
         redirect_to_settings = self.findChild(HyperlinkButton, 'redirect_to_settings')
-        redirect_to_settings.clicked.connect(open_settings)
+        redirect_to_settings.clicked.connect(lambda: open_settings(self.main_window))
 
     @staticmethod
     def load_schedule() -> List[str]:
@@ -220,7 +215,7 @@ class ExtraMenu(FluentWindow):
 
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
+    from i18n_manager import app
     ex = ExtraMenu()
     ex.show()
     sys.exit(app.exec())

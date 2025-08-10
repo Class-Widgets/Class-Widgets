@@ -40,20 +40,20 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widget-countdown.ui" line="26"/>
         <location filename="../dark/widget-countdown.ui" line="26"/>
+        <location filename="../widget-countdown.ui" line="26"/>
         <source>活动倒计时</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widget-countdown.ui" line="93"/>
         <location filename="../dark/widget-countdown.ui" line="93"/>
+        <location filename="../widget-countdown.ui" line="93"/>
         <source>倒计时</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widget-countdown.ui" line="125"/>
         <location filename="../dark/widget-countdown.ui" line="125"/>
+        <location filename="../widget-countdown.ui" line="125"/>
         <source>00:00</source>
         <translation type="unfinished"></translation>
     </message>
@@ -72,56 +72,56 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widget-next-activity.ui" line="26"/>
         <location filename="../dark/widget-next-activity.ui" line="26"/>
+        <location filename="../widget-next-activity.ui" line="26"/>
         <source>更多活动</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widget-next-activity.ui" line="50"/>
         <location filename="../dark/widget-next-activity.ui" line="50"/>
+        <location filename="../widget-next-activity.ui" line="50"/>
         <source>接下来</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widget-next-activity.ui" line="82"/>
         <location filename="../dark/widget-next-activity.ui" line="82"/>
+        <location filename="../widget-next-activity.ui" line="82"/>
         <source>一  二  三  四  五</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widget-time.ui" line="26"/>
         <location filename="../dark/widget-time.ui" line="26"/>
+        <location filename="../widget-time.ui" line="26"/>
         <source>时间</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widget-time.ui" line="50"/>
         <location filename="../dark/widget-time.ui" line="50"/>
+        <location filename="../widget-time.ui" line="50"/>
         <source>2025 年  13 月</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widget-time.ui" line="82"/>
         <location filename="../dark/widget-time.ui" line="82"/>
+        <location filename="../widget-time.ui" line="82"/>
         <source>32 日 周二</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widget-weather.ui" line="26"/>
         <location filename="../dark/widget-weather.ui" line="26"/>
+        <location filename="../widget-weather.ui" line="26"/>
         <source>天气</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widget-weather.ui" line="50"/>
         <location filename="../dark/widget-weather.ui" line="50"/>
+        <location filename="../widget-weather.ui" line="50"/>
         <source>当前城市</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widget-weather.ui" line="129"/>
         <location filename="../dark/widget-weather.ui" line="129"/>
+        <location filename="../widget-weather.ui" line="129"/>
         <source>114℉</source>
         <translation type="unfinished"></translation>
     </message>

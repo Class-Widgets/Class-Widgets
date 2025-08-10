@@ -43,6 +43,7 @@ def __load_json(path: Path) -> ThemeConfig:
         return ThemeConfig.model_validate_json(file.read())
 
 
+# 此函数在 i18n_manager.py 有重复定义，更新时需同步
 def load_theme_config(theme: str) -> ThemeInfo:
     default_path = CW_HOME / 'ui' / 'default' / 'theme.json'
     try:

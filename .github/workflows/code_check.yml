@@ -26,7 +26,6 @@ permissions:
 
 env:
   PYTHON_VERSION: '3.8'
-  CACHE_VERSION: 'v1'
 
 jobs:
   detect-changes:
@@ -85,9 +84,8 @@ jobs:
           path: |
             ~/.cache/codeql
             ${{ github.workspace }}/.codeql
-          key: ${{ runner.os }}-codeql-db-${{ env.CACHE_VERSION }}-${{ hashFiles('**/*.py') }}
+          key: ${{ runner.os }}-codeql-db-${{ hashFiles('**/*.py') }}
           restore-keys: |
-            ${{ runner.os }}-codeql-db-${{ env.CACHE_VERSION }}-
             ${{ runner.os }}-codeql-db-
 
       - name: Generate CodeQL config
@@ -164,11 +162,9 @@ jobs:
           path: |
             ~/.cache/uv
             .venv
-          key: ${{ runner.os }}-codeql-uv-${{ env.CACHE_VERSION }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('**/requirements.txt') }}
+          key: ${{ runner.os }}-x64-python${{ env.PYTHON_VERSION }}-uv-cache-${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
-            ${{ runner.os }}-codeql-uv-${{ env.CACHE_VERSION }}-${{ env.PYTHON_VERSION }}-
-            ${{ runner.os }}-codeql-uv-${{ env.CACHE_VERSION }}-
-            ${{ runner.os }}-codeql-uv-
+            ${{ runner.os }}-x64-python${{ env.PYTHON_VERSION }}-uv-cache-
 
       - name: Install dependencies for CodeQL analysis
         if: steps.codeql-config.outputs.scan_mode != 'skip'
@@ -186,9 +182,7 @@ jobs:
         if: steps.codeql-config.outputs.scan_mode != 'skip'
         with:
           path: ~/.cache/codeql-queries
-          key: ${{ runner.os }}-codeql-queries-${{ env.CACHE_VERSION }}
-          restore-keys: |
-            ${{ runner.os }}-codeql-queries-
+          key: ${{ runner.os }}-codeql-queries
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
@@ -225,11 +219,10 @@ jobs:
           path: |
             ~/.cache/uv
             .venv
-          key: ${{ runner.os }}-uv-${{ env.CACHE_VERSION }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('**/requirements.txt') }}
+          key: ${{ runner.os }}-x64-python${{ env.PYTHON_VERSION }}-uv-cache-${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
-            ${{ runner.os }}-uv-${{ env.CACHE_VERSION }}-${{ env.PYTHON_VERSION }}-
-            ${{ runner.os }}-uv-${{ env.CACHE_VERSION }}-
-            ${{ runner.os }}-uv-
+            ${{ runner.os }}-x64-python${{ env.PYTHON_VERSION }}-uv-cache-
+
       - name: Create venv and install dependencies
         run: |
           uv venv .venv

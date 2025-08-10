@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="19.061" height="27.791" viewBox="0 0 19.061 27.791">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="auto" height="auto" viewBox="0 0 19.061 27.791">
   <defs>
     <clipPath id="clip-path">
-      <rect id="Rectangle_83" data-name="Rectangle 83" width="19.061" height="27.791" transform="translate(0.32 0.961)" fill="#fff"/>
+      <rect id="Rectangle_83" data-name="Rectangle 83" width="auto" height="auto" transform="translate(0.32 0.961)" fill="#fff"/>
     </clipPath>
   </defs>
   <g id="thermometer.low" transform="translate(-0.32 -0.961)" clip-path="url(#clip-path)">

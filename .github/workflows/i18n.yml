@@ -122,9 +122,6 @@ jobs:
 
       - name: Set up uv
         uses: astral-sh/setup-uv@v6
-        with:
-          enable-cache: true
-          cache-dependency-glob: ""
 
       - name: Install PySide6 tools
         run: uv pip install --system PySide6
@@ -179,6 +176,15 @@ jobs:
             fi
           done
 
+      - name: Import GPG key
+        id: import-gpg
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v6
         continue-on-error: true
@@ -186,6 +192,7 @@ jobs:
           commit_message: |
             chore(i18n): 更新翻译文件 (.ts) (Auto-Commit)
 
+            - 初始触发者: ${{ github.actor }}
             - 触发事件: ${{ github.event_name }}
             - 提交哈希: ${{ github.sha }}
             - 工作流运行: ${{ github.run_id }}
@@ -193,8 +200,9 @@ jobs:
             * 由 GitHub Actions 自动生成
           commit_options: '--signoff'
           file_pattern: 'i18n/*.ts ui/*/i18n/*.ts'
-          commit_user_name: 'github-actions[bot]'
-          commit_user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_user_name: 'ChimeYao-bot'
+          commit_user_email: 'ChimeYao@outlook.jp'
+          commit_author: 'ChimeYao-bot <ChimeYao@outlook.jp>'
 
   compile-translations:
     name: Compile .ts files
@@ -223,9 +231,6 @@ jobs:
 
       - name: Set up uv
         uses: astral-sh/setup-uv@v6
-        with:
-          enable-cache: true
-          cache-dependency-glob: ""
 
       - name: Install PySide6 tools
         run: uv pip install --system PySide6
@@ -263,6 +268,15 @@ jobs:
             fi
           done
 
+      - name: Import GPG key
+        id: import-gpg-compile
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
       - name: Commit compiled files
         uses: stefanzweifel/git-auto-commit-action@v6
         continue-on-error: true
@@ -270,6 +284,7 @@ jobs:
           commit_message: |
             chore(i18n): 编译翻译文件(.qm) (Auto-Commit)
 
+            - 初始触发者: ${{ github.actor }}
             - 触发事件: ${{ github.event_name }}
             - 提交哈希: ${{ github.sha }}
             - 工作流运行: ${{ github.run_id }}
@@ -277,8 +292,9 @@ jobs:
             * 由 GitHub Actions 自动生成
           commit_options: '--signoff'
           file_pattern: 'i18n/*.qm ui/*/i18n/*.qm'
-          commit_user_name: 'github-actions[bot]'
-          commit_user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_user_name: 'ChimeYao-bot'
+          commit_user_email: 'ChimeYao@outlook.jp'
+          commit_author: 'ChimeYao-bot <ChimeYao@outlook.jp>'
 
   summary:
     name: Update Summary

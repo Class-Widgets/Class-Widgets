@@ -36,7 +36,8 @@
 
 ![Banner](img/Banner.png)
 
-[![Q群](https://img.shields.io/badge/QQ%20群-169200380-blue.svg?logo=qq&color=blue&style=for-the-badge)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380)
+[![Q群](https://img.shields.io/badge/QQ%20群1-169200380-blue.svg?logo=qq&color=blue&style=for-the-badge)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380)
+[![Q群](https://img.shields.io/badge/QQ%20群2-698599898-blue.svg?logo=qq&color=blue&style=for-the-badge)](https://qm.qq.com/cgi-bin/qm/qr?k=f3uyP-yI-0oEOwiHFTFjJo-aQpkoNaiX&jump_from=webapi&authKey=Ok+lW0D8TrjFwgP5WSOVxFM4s97thPk36WOmMKXSyroP8MDmDPS22bPqT/+6uMgN)
 [![DC](https://img.shields.io/discord/1332636953719476284?style=for-the-badge&logo=discord&logoColor=ffffff&label=Discord%20服务器&labelColor=5865f2)](https://discord.gg/EFF4PpqpqZ)
 
 #### [了解更多 >](https://www.bilibili.com/video/BV1xwW9eyEGu/)
@@ -91,6 +92,7 @@ Copyright © 2025 RinLit.
 
 - [SF Symbols](https://developer.apple.com/cn/sf-symbols/) （部分图标已做修改）
 - [和风天气图标](https://icons.qweather.com/)（部分图标已做修改）
+- [Segoe Fluent Icons](https://learn.microsoft.com/zh-cn/windows/apps/design/style/segoe-fluent-icons-font)（图标已修改）
 - [HarmonyOS Sans](https://developer.huawei.com/consumer/cn/design/resource/)
 
 ### 贡献
