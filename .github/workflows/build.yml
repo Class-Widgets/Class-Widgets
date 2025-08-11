@@ -261,27 +261,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-${{ matrix.arch }}-python${{ env.PYTHON_VERSION }}-uv-cache-
 
-      - name: Create venv and install dependencies
-        shell: bash
+      - name: Install dependencies
         run: |
-          if [ ! -e ".venv/bin/python3" ] && [ ! -e ".venv/Scripts/python.exe" ]; then
-            echo "fuck cache"
-            rm -rf .venv
-          fi
-          if [[ "${{ runner.os }}" == "Windows" ]] && [ -d ".venv/Scripts" ]; then
-            source .venv/Scripts/activate
-          elif [ -d ".venv/bin" ]; then
-            source .venv/bin/activate
-          else
-            uv venv .venv
-            if [[ "${{ runner.os }}" == "Windows" ]]; then
-              source .venv/Scripts/activate
-            else
-              source .venv/bin/activate
-            fi
-          fi
-          uv pip install -r requirements.txt
-          uv pip install pyinstaller
+          uv sync --group package --no-dev
 
       - name: Prepare output directory
         run: |
@@ -312,11 +294,9 @@ jobs:
         shell: bash
         run: |
           if [[ "${{ runner.os }}" == "Windows" ]]; then
-            # 不理解,但尊重
-            source .venv/Scripts/activate
             curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
           fi
-          pyinstaller main.py \
+          uv run pyinstaller main.py \
             -w \
             -i ./img/favicon.ico \
             -n ClassWidgets \
@@ -342,8 +322,7 @@ jobs:
         if: startsWith(matrix.os, 'macos')
         shell: bash
         run: |
-          source .venv/bin/activate
-          pyinstaller main.py \
+          uv run pyinstaller main.py \
             -w \
             -i ./img/favicon.icns \
             -n "Class Widgets" \
@@ -370,8 +349,7 @@ jobs:
         if: matrix.platform == 'linux-x64'
         shell: bash
         run: |
-          source .venv/bin/activate
-          pyinstaller main.py \
+          uv run pyinstaller main.py \
             -w \
             -i ./img/favicon.png \
             -n ClassWidgets \
