@@ -55,7 +55,7 @@ class I18nManager:
             from pathlib import Path
             main_i18n_dir = Path(base_directory) / 'i18n'
             if main_i18n_dir.exists():
-                for ts_file in main_i18n_dir.glob('*.ts'):
+                for ts_file in main_i18n_dir.glob('*.qm'):
                     lang_code = ts_file.stem
                     if name:=self._get_language_display_name(lang_code):
                         self.available_languages_view[lang_code] = name
@@ -68,7 +68,7 @@ class I18nManager:
                     if theme_dir.is_dir():
                         theme_i18n_dir = theme_dir / 'i18n'
                         if theme_i18n_dir.exists():
-                            for ts_file in theme_i18n_dir.glob('*.ts'):
+                            for ts_file in theme_i18n_dir.glob('*.qm'):
                                 lang_code = ts_file.stem
                                 if lang_code not in self.available_languages_widgets:
                                     self.available_languages_widgets[lang_code] = self._get_language_display_name(lang_code)
