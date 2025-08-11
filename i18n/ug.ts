@@ -54,12 +54,12 @@ Siz sistem bexatliridin ta yana köp avaaz qoshaliysiz (*≧▽≦)</translation
     <message>
         <location filename="../main.py" line="2135"/>
         <source>插件广场</source>
-        <translation type="unfinished"></translation>
+        <translation>قىستۇرما مەيدانى</translation>
     </message>
     <message>
         <location filename="../main.py" line="2136"/>
         <source>额外选项</source>
-        <translation type="unfinished">Qoşumcha tallimlar</translation>
+        <translation>قوشۇمچە تاللاشلار</translation>
     </message>
     <message>
         <location filename="../main.py" line="2137"/>
@@ -98,7 +98,7 @@ Siz sistem bexatliridin ta yana köp avaaz qoshaliysiz (*≧▽≦)</translation
     <message>
         <location filename="../main.py" line="2971"/>
         <source>未知</source>
-        <translation type="unfinished"></translation>
+        <translation>نامەلۇم</translation>
     </message>
     <message>
         <source>{data}预警</source>
@@ -120,7 +120,7 @@ Siz sistem bexatliridin ta yana köp avaaz qoshaliysiz (*≧▽≦)</translation
     <message>
         <location filename="../generate_speech.py" line="380"/>
         <source>语音ID不能为空</source>
-        <translation type="unfinished"></translation>
+        <translation>ئاۋازلىق ID بوش بولماسلىقى كېرەك</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="388"/>
