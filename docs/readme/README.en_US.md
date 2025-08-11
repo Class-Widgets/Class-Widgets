@@ -4,9 +4,9 @@
 
 > [!Warning]
 > Class Widgets *1* is currently developed entirely by community contributors. Any issues or contributions you submit to the Class Widgets main repository (this repository) will primarily be received and reviewed by the following four members:
-> 
-> [![](https://github.com/pizeroLOL.png?size=80)](https://github.com/pizeroLOL) [![](https://github.com/IsHPDuwu.png?size=80)](https://github.com/IsHPDuwu) [![](https://github.com/baiyao105.png?size=80)](https://github.com/baiyao105) [![](https://github.com/Artist-MOBAI.png?size=80)](https://github.com/Artist-MOBAI)
-> 
+>
+> [![](https://images.weserv.nl/?url=github.com/pizeroLOL.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/pizeroLOL) [![](https://images.weserv.nl/?url=github.com/IsHPDuwu.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/IsHPDuwu) [![](https://images.weserv.nl/?url=github.com/baiyao105.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/baiyao105) [![](https://images.weserv.nl/?url=github.com/Artist-MOBAI.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/Artist-MOBAI)
+>
 > If you need help from community contributors, please join the project's QQ group or open an GitHub issue.
 
 <p align="center">
@@ -42,6 +42,7 @@
 ---
 
 ## Features
+
 - **Plugin System** and **Plugin Plaza** written in Python (latest builds)
 - Displays today's courses as **widgets**;
 - [Class reminders](https://www.yuque.com/rinlit/class-widgets_help/fv2ou1i1ngap0hrl) and prep bell, supports TTS voice out put;
@@ -55,12 +56,17 @@
 - Light or Dark theme support and **auto switch**,<br>and so on.
 
 ## Screenshots of the application
+
 #### Main Interface (Light)
+
 ![scrshot_0](../../img/screenshot_0.png)
+
 #### Main Interface (Dark)
+
 ![scrshot_0](../../img/screenshot_1.png)
 
 ## Installation & Usage
+>
 > [!TIP]
 > Tutorials available at [Class Widgets Official Documentation](https://www.yuque.com/rinlit/class-widgets_help/gs3gsbms1iivgibm).
 
@@ -71,6 +77,7 @@ Download the latest zip file from the ![Latest Version](https://img.shields.io/g
 You can access settings or exit the program via the tray menu.
 
 ## License
+
 This project (Class Widgets) is licensed under GPL-3.0. For details, see the [LICENSE](./LICENSE) file.
 
 Copyright © 2025 RinLit.
@@ -102,6 +109,7 @@ If you want to contribute to Class Widgets, please read the [Contributing Guide]
 ### Sponsors
 
 Thanks to the following for supporting this project:
+
 - [猞猁](http://dq6666.cn/)
 - [JerryQAQ](http://hub.rinlit.cn/)
 
@@ -135,9 +143,11 @@ Free translation platform provided by [Weblate](https://hosted.weblate.org/engag
 - This program will not transfer any information to other networked systems unless specifically requested by the user or the person installing or operating it.
 
 ## Community
+
 We currently have [Discussions](https://github.com/orgs/Class-Widgets/discussions), a [QQ Group](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380), and a [Discord server](https://discord.gg/EFF4PpqpqZ).
 
 ## Star History
+
  <picture>
    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Class-Widgets/Class-Widgets&type=Date&theme=dark" />
    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Class-Widgets/Class-Widgets&type=Date" />
@@ -145,4 +155,5 @@ We currently have [Discussions](https://github.com/orgs/Class-Widgets/discussion
  </picture>
 
 ##
+
 This is just my practice project as a newcomer developers, so feedback is deservedly welcome!

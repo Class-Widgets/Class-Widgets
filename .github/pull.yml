@@ -1,0 +1,9 @@
+# Pull App
+version: "1"
+rules:
+  - base: main
+    upstream: Class-Widgets:main # 上游仓库的主分支
+    mergeMethod: hardreset # 使用硬重置方式同步
+    mergeUnstable: false # 可选: 当mergeable_state不是clean时是否合并
+
+conflictLabel: "Pull合并冲突" # 可选: 当出现合并冲突时添加的标签

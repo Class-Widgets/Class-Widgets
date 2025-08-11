@@ -5,7 +5,7 @@
 > [!Warning]
 Class Widgets *1* は現在、完全にコミュニティ開発者によって開発されています。Class Widgets のメインリポジトリ（本リポジトリ）で提起された課題や貢献は、主に以下の4名のメンバーによって受理・レビューされます：
 >
-> [![](https://github.com/pizeroLOL.png?size=80)](https://github.com/pizeroLOL) [![](https://github.com/IsHPDuwu.png?size=80)](https://github.com/IsHPDuwu) [![](https://github.com/baiyao105.png?size=80)](https://github.com/baiyao105) [![](https://github.com/Artist-MOBAI.png?size=80)](https://github.com/Artist-MOBAI)
+> [![](https://images.weserv.nl/?url=github.com/pizeroLOL.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/pizeroLOL) [![](https://images.weserv.nl/?url=github.com/IsHPDuwu.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/IsHPDuwu) [![](https://images.weserv.nl/?url=github.com/baiyao105.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/baiyao105) [![](https://images.weserv.nl/?url=github.com/Artist-MOBAI.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/Artist-MOBAI)
 >
 > コミュニティ開発者のサポートが必要な場合は、プロジェクトの QQ グループに参加するか、 GitHub で Issue を作成してください。
 
@@ -42,6 +42,7 @@ Class Widgets *1* は現在、完全にコミュニティ開発者によって�
 ---
 
 ## 特徴
+
 - Python で書かれた**プラグインシステム**と**プラグインプラザ**（最新ビルドにて）
 - 今日の授業を**ウィジェット**として表示
 - [授業リマインダー](https://www.yuque.com/rinlit/class-widgets_help/fv2ou1i1ngap0hrl)や予鈴、TTS音声出力対応
@@ -55,12 +56,17 @@ Class Widgets *1* は現在、完全にコミュニティ開発者によって�
 - ライト/ダークテーマおよび**自動切り替え**対応<br>その他多数
 
 ## アプリケーションのスクリーンショット
+
 #### メイン画面（ライト）
+
 ![scrshot_0](../../img/screenshot_0.png)
+
 #### メイン画面（ダーク）
+
 ![scrshot_0](../../img/screenshot_1.png)
 
 ## インストールと使い方
+>
 > [!TIP]
 > [Class Widgets 公式ドキュメント](https://www.yuque.com/rinlit/class-widgets_help/gs3gsbms1iivgibm)でチュートリアルをご覧いただけます。
 
@@ -71,6 +77,7 @@ Class Widgets *1* は現在、完全にコミュニティ開発者によって�
 設定やプログラムの終了はトレイメニューから行うことができます。
 
 ## ライセンス
+
 このプロジェクト（Class Widgets）は GPL-3.0 ライセンスで公開されています。詳細は [LICENSE](./LICENSE) ファイルをご覧ください。
 
 Copyright © 2025 RinLit.
@@ -102,6 +109,7 @@ Class Widgets への貢献を希望される方は、 [Contributing Guide](/docs
 ### スポンサー
 
 本プロジェクトをサポートしてくださった方々に感謝します：
+
 - [猞猁](http://dq6666.cn/)
 - [JerryQAQ](http://hub.rinlit.cn/)
 
@@ -134,9 +142,11 @@ Class Widgets への貢献を希望される方は、 [Contributing Guide](/docs
 - 本プログラムは、ユーザーまたはインストール・操作する方による明示的な要求が無い限り、他のネットワークシステムへ情報を転送しません。
 
 ## コミュニティ
+
 現在、[Discussions](https://github.com/orgs/Class-Widgets/discussions)、[QQグループ](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380)、[Discordサーバー](https://discord.gg/EFF4PpqpqZ)を用意しています。
 
 ## スター履歴
+
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Class-Widgets/Class-Widgets&type=Date&theme=dark" />
   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Class-Widgets/Class-Widgets&type=Date" />
@@ -144,4 +154,5 @@ Class Widgets への貢献を希望される方は、 [Contributing Guide](/docs
 </picture>
 
 ##
+
 これは私の新人としての練習作品です。ご意見・ご感想をお待ちしています！

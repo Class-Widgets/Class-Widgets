@@ -4,9 +4,9 @@
 
 > [!Warning]
 > Class Widgets *1* 目前完全由社区开发者进行开发，而您在 Class Widgets 主仓库（即本仓库）提出的议题和提交的贡献将主要由以下四位成员接收和审查：
-> 
-> [![](https://github.com/pizeroLOL.png?size=80)](https://github.com/pizeroLOL) [![](https://github.com/IsHPDuwu.png?size=80)](https://github.com/IsHPDuwu) [![](https://github.com/baiyao105.png?size=80)](https://github.com/baiyao105) [![](https://github.com/Artist-MOBAI.png?size=80)](https://github.com/Artist-MOBAI)
-> 
+>
+> [![](https://images.weserv.nl/?url=github.com/pizeroLOL.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/pizeroLOL) [![](https://images.weserv.nl/?url=github.com/IsHPDuwu.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/IsHPDuwu) [![](https://images.weserv.nl/?url=github.com/baiyao105.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/baiyao105) [![](https://images.weserv.nl/?url=github.com/Artist-MOBAI.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/Artist-MOBAI)
+>
 > 有任何需要社区开发者帮忙的地方，请前往 QQ 群或提 issue
 
 <p align="center">
@@ -29,11 +29,6 @@
 [![翻译状态](https://hosted.weblate.org/widget/class-widgets-1/view/svg-badge.svg)](https://hosted.weblate.org/engage/class-widgets-1/)
 [![翻译状态](https://hosted.weblate.org/widget/class-widgets-1/view/language-badge.svg)](https://hosted.weblate.org/engage/class-widgets-1/)
 
-  
-
-
-
-
 ![Banner](img/Banner.png)
 
 [![Q群](https://img.shields.io/badge/QQ%20群1-169200380-blue.svg?logo=qq&color=blue&style=for-the-badge)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380)
@@ -44,8 +39,8 @@
 
 </div>
 
-
 ## 特性
+
 - 由 Python 编写的**插件**系统和插件广场（详见最新构建）
 - 将今日的课程安排以**小组件**的样式为你呈现；
 - 具有 [上下课提醒](https://www.yuque.com/rinlit/class-widgets_help/fv2ou1i1ngap0hrl) 和预备铃，支持通过TTS进行提醒；
@@ -59,12 +54,17 @@
 - 具有亮/暗色主题，还能根据系统设置自动切换；<br>……
 
 ## 软件截图
+
 #### 主界面(亮色)
+
 ![scrshot_0](img/screenshot_0.png)
+
 #### 主界面(暗色)
+
 ![scrshot_0](img/screenshot_1.png)
 
 ## 安装&使用
+>
 > [!TIP]
 > 可在 [Class Widgets 官方文档](https://www.yuque.com/rinlit/class-widgets_help/gs3gsbms1iivgibm) 查看教程。
 
@@ -75,6 +75,7 @@
 可通过托盘菜单进入设置、或退出此程序。
 
 ## 协议
+
 此项目 (Class Widgets) 基于 GPL-3.0 许可证授权发布，详情请参阅 [LICENSE](./LICENSE) 文件。
 
 Copyright © 2025 RinLit.
@@ -107,6 +108,7 @@ Copyright © 2025 RinLit.
 ### 赞助商
 
 感谢以下人员对本项目的支持。
+
 - [猞猁](http://dq6666.cn/)
 - [JerryQAQ](http://hub.rinlit.cn/)
 
@@ -143,9 +145,11 @@ Copyright © 2025 RinLit.
 -除非用户或安装或操作它的人特别要求，否则本程序不会将任何信息传输到其他网络系统。
 
 ## 社区
+
 我们目前开通了 [Discussions](https://github.com/orgs/Class-Widgets/discussions)、[QQ群](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380) 和 [Discord 服务器](https://discord.gg/EFF4PpqpqZ)。
 
 ## 星标历史
+
  <picture>
    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Class-Widgets/Class-Widgets&type=Date&theme=dark" />
    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Class-Widgets/Class-Widgets&type=Date" />
@@ -153,4 +157,5 @@ Copyright © 2025 RinLit.
  </picture>
 
 ##
+
 这仅是我作为新人的练习作品，欢迎提供更多意见！
