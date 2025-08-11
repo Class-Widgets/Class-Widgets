@@ -7,10 +7,10 @@ from typing import Dict, List, Optional, Any
 from loguru import logger
 
 import conf
-
+from main import PluginManager
 
 class PluginLoader:  # 插件加载器
-    def __init__(self, p_mgr: Optional[Any] = None) -> None:
+    def __init__(self, p_mgr: Optional[PluginManager] = None) -> None:
         self.plugins_settings: Dict[str, Any] = {}
         self.plugins_name: List[str] = []
         self.plugins_dict: Dict[str, Any] = {}
@@ -95,7 +95,8 @@ class PluginLoader:  # 插件加载器
     def update_plugins(self) -> None:
         for plugin in self.plugins_dict.values():
             if hasattr(plugin, 'update'):
-                plugin.update(self.manager.get_app_contexts())
+                if self.manager:
+                    plugin.update(self.manager.get_app_contexts())
 
     def delete_plugin(self, plugin_name: str) -> bool:
         plugin_dir = Path(conf.PLUGINS_DIR) / plugin_name
