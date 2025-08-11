@@ -399,7 +399,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../view/menu/about.ui" line="450"/>
         <source>翻译此应用</source>
-        <translation type="unfinished"></translation>
+        <translation>Translate Class Widgets</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="485"/>
@@ -1144,77 +1144,77 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
     <message>
         <location filename="../view/menu/weather.ui" line="137"/>
         <source>北京市 · 当前天气</source>
-        <translation type="unfinished"></translation>
+        <translation>Beijing · Current Weather</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="157"/>
         <source>最后更新于 00/00/0000 00:00:00</source>
-        <translation type="unfinished"></translation>
+        <translation>Last updated on 00/00/0000 00:00:00</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="286"/>
         <source>-- °C</source>
-        <translation type="unfinished"></translation>
+        <translation>-- °C</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="330"/>
         <source>大部晴朗</source>
-        <translation type="unfinished"></translation>
+        <translation>Sunny</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="344"/>
         <source>体感温度: -- °C</source>
-        <translation type="unfinished"></translation>
+        <translation>Feeling temperature: -- °C</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="472"/>
         <source>风速</source>
-        <translation type="unfinished"></translation>
+        <translation>Wind velocity</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="534"/>
         <source>-- km/h</source>
-        <translation type="unfinished"></translation>
+        <translation>-- km/h</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="599"/>
         <source>湿度</source>
-        <translation type="unfinished"></translation>
+        <translation>Humidity</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="661"/>
         <source>-- %</source>
-        <translation type="unfinished"></translation>
+        <translation>-- %</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="729"/>
         <source>能见度</source>
-        <translation type="unfinished"></translation>
+        <translation>Visibility</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="791"/>
         <source>-- km</source>
-        <translation type="unfinished"></translation>
+        <translation>-- km</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="859"/>
         <source>气压</source>
-        <translation type="unfinished"></translation>
+        <translation>Atmospheric pressure</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="921"/>
         <source>---- hPa</source>
-        <translation type="unfinished"></translation>
+        <translation>---- hPa</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="949"/>
         <source>天气预警</source>
-        <translation type="unfinished"></translation>
+        <translation>Weather Alert</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="995"/>
         <source>天气源</source>
-        <translation type="unfinished"></translation>
+        <translation>Weather Source</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="1038"/>
@@ -1246,27 +1246,27 @@ Use spaces to separate multiple strings</translation>
     <message>
         <location filename="../view/menu/weather.ui" line="1355"/>
         <source>计时自动刷新</source>
-        <translation type="unfinished"></translation>
+        <translation>The timer will automatically refresh</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="1362"/>
         <source>按照设定的分钟数定时执行天气数据刷新</source>
-        <translation type="unfinished"></translation>
+        <translation>Refresh weather data regularly according to the set number of minutes</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="1436"/>
         <source>显示温度单位</source>
-        <translation type="unfinished"></translation>
+        <translation>Temperature units</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="1443"/>
         <source>调整显示的温度单位</source>
-        <translation type="unfinished"></translation>
+        <translation>Adjust the displayed temperature units</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="1481"/>
         <source>摄氏度 (°C)</source>
-        <translation type="unfinished"></translation>
+        <translation>°C</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="973"/>
@@ -2180,42 +2180,42 @@ Make sure you have an Internet connection, otherwise you&apos;ll be lost (&gt;, 
     <message>
         <location filename="../menu.py" line="1615"/>
         <source>未知</source>
-        <translation type="unfinished">Unknown</translation>
+        <translation>Unknown</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1617"/>
         <source>预警</source>
-        <translation type="unfinished">Alert</translation>
+        <translation>Alert</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1672"/>
         <source>未知时间</source>
-        <translation type="unfinished"></translation>
+        <translation>Unknown time</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1683"/>
         <source>暂无详细描述</source>
-        <translation type="unfinished"></translation>
+        <translation>No detailed description</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1686"/>
         <source>不再显示该类型预警</source>
-        <translation type="unfinished"></translation>
+        <translation>Do not show again</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1693"/>
         <source>天气预警详情</source>
-        <translation type="unfinished"></translation>
+        <translation>Weather alert details</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1766"/>
         <source>天气API已切换</source>
-        <translation type="unfinished"></translation>
+        <translation>Weather API changed</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1767"/>
         <source>建议重新选择城市以获取准确的天气数据</source>
-        <translation type="unfinished"></translation>
+        <translation>Reselect your city to get accurate weather data</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2862"/>
@@ -2636,22 +2636,22 @@ Inspection of effective domain name or IP address （︶^︶）</translation>
     <message>
         <location filename="../menu.py" line="3941"/>
         <source>选择位置输入方式</source>
-        <translation type="unfinished"></translation>
+        <translation>Select location input method</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3942"/>
         <source>和风天气支持城市ID和经纬度两种方式，请选择您偏好的输入方式：</source>
-        <translation type="unfinished"></translation>
+        <translation>Hefeng Weather supports two input methods: location code or latitude and longitude. Please select your preferred input method:</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3945"/>
         <source>城市搜索</source>
-        <translation type="unfinished"></translation>
+        <translation>Location code</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3946"/>
         <source>经纬度输入</source>
-        <translation type="unfinished"></translation>
+        <translation>Latitude and longitude</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3970"/>
@@ -2928,7 +2928,7 @@ Save failed. Please submit the logs in ./log/ to the developer to report the iss
     <message>
         <location filename="../menu.py" line="5283"/>
         <source>天气</source>
-        <translation type="unfinished"></translation>
+        <translation>Weather</translation>
     </message>
     <message>
         <location filename="../menu.py" line="5389"/>
@@ -3699,7 +3699,7 @@ These placeholders apply only to the “Other Notifications”:
     <message>
         <location filename="../view/menu/weather_alert_card.ui" line="190"/>
         <source>-- 预警</source>
-        <translation type="unfinished"></translation>
+        <translation>-- Alert</translation>
     </message>
 </context>
 <context>
@@ -3707,22 +3707,22 @@ These placeholders apply only to the “Other Notifications”:
     <message>
         <location filename="../view/menu/weather_alert_msgbox.ui" line="15"/>
         <source>WeatherAlertMsgbox</source>
-        <translation type="unfinished"></translation>
+        <translation>WeatherAlertMsgbox</translation>
     </message>
     <message>
         <location filename="../view/menu/weather_alert_msgbox.ui" line="106"/>
         <source>-- 红色预警</source>
-        <translation type="unfinished"></translation>
+        <translation>-- Red Alert</translation>
     </message>
     <message>
         <location filename="../view/menu/weather_alert_msgbox.ui" line="141"/>
         <source>0000-00-00 00:00</source>
-        <translation type="unfinished"></translation>
+        <translation>0000-00-00 00:00</translation>
     </message>
     <message>
         <location filename="../view/menu/weather_alert_msgbox.ui" line="241"/>
         <source>NAN</source>
-        <translation type="unfinished"></translation>
+        <translation>NAN</translation>
     </message>
 </context>
 <context>
@@ -4395,7 +4395,7 @@ Error message: {e}</translation>
     <message>
         <location filename="../list_.py" line="25"/>
         <source>摄氏度 (°C)</source>
-        <translation type="unfinished"></translation>
+        <translation>°C</translation>
     </message>
     <message>
         <location filename="../list_.py" line="26"/>
@@ -4405,7 +4405,7 @@ Error message: {e}</translation>
     <message>
         <location filename="../list_.py" line="26"/>
         <source>华氏度 (°F)</source>
-        <translation type="unfinished"></translation>
+        <translation>°F</translation>
     </message>
     <message>
         <location filename="../list_.py" line="28"/>
