@@ -88,7 +88,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
         <translation type="vanished">{data}</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2971"/>
+        <location filename="../main.py" line="2972"/>
         <source>未知</source>
         <translation>Unknown</translation>
     </message>
@@ -120,7 +120,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
         <translation type="vanished">{data} alert</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2969"/>
+        <location filename="../main.py" line="2970"/>
         <source>{city} · 未知</source>
         <translation>{city} · Unknown</translation>
     </message>
@@ -4708,25 +4708,25 @@ Error message: {e}</translation>
         <translation>This is a example notification</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3019"/>
-        <location filename="../main.py" line="3048"/>
+        <location filename="../main.py" line="3020"/>
+        <location filename="../main.py" line="3049"/>
         <source>上课时自动隐藏</source>
         <translation>Auto hide when having classes</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3020"/>
-        <location filename="../main.py" line="3049"/>
+        <location filename="../main.py" line="3021"/>
+        <location filename="../main.py" line="3050"/>
         <source>窗口最大化时隐藏</source>
         <translation>Auto Hide when maximizing the window</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3021"/>
-        <location filename="../main.py" line="3050"/>
+        <location filename="../main.py" line="3022"/>
+        <location filename="../main.py" line="3051"/>
         <source>暂时无法变更“状态”</source>
         <translation>Unable to change &apos;status&apos; temporarily</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3024"/>
+        <location filename="../main.py" line="3025"/>
         <source>您正在使用 {hide_mode_text} 模式，无法变更隐藏状态
 若变更状态，将修改隐藏模式“灵活隐藏” (您稍后可以在“设置”中更改此选项)
 您确定要隐藏组件吗?</source>
@@ -4735,19 +4735,19 @@ If changing hiding status, we will change hiding mode to &quot;Flexible hiding&q
 Do you want to hide the widget?</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3028"/>
-        <location filename="../main.py" line="3057"/>
+        <location filename="../main.py" line="3029"/>
+        <location filename="../main.py" line="3058"/>
         <source>确定</source>
         <translation>Confirm</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3030"/>
-        <location filename="../main.py" line="3059"/>
+        <location filename="../main.py" line="3031"/>
+        <location filename="../main.py" line="3060"/>
         <source>取消</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3053"/>
+        <location filename="../main.py" line="3054"/>
         <source>您正在使用 {hide_mode_text} 模式，无法变更隐藏状态
 若变更状态，将修改隐藏模式“灵活隐藏” (您可以在“设置”中更改此选项)
 您确定要隐藏组件吗?</source>
@@ -4756,32 +4756,32 @@ If changing hiding status, we will change hiding mode to &quot;Flexible hiding&q
 Do you want to hide the widget?</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3378"/>
+        <location filename="../main.py" line="3379"/>
         <source>Class Widgets 正在运行</source>
         <translation>Class Widgets is running now</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3381"/>
+        <location filename="../main.py" line="3382"/>
         <source>Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。
 (若您需要打开多个实例，请在“设置”-&gt;“高级选项”中启用“允许程序多开”)</source>
         <translation>Class Widgets is running now! Do not start multiple instance,or it will cause unknown problems.
 (If you need to start multiple instance,Please enable&quot;Allow multiple instances&quot; In &quot;Settings&quot; -&gt; &quot;Advanced Options&quot;)</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3409"/>
+        <location filename="../main.py" line="3410"/>
         <source>缩放系数过大</source>
         <translation>The scaling factor is too large</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3410"/>
+        <location filename="../main.py" line="3411"/>
         <source>当前缩放系数为 {scale_factor}%，可能导致显示异常。
 建议将缩放系数设置为 100% 到 180% 之间。</source>
         <translation>Current scaling factor is {scale_factor}% now, and it may cause display problems.
 It is recommended to set the scaling factor to a value between 100% and 180%.</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3382"/>
-        <location filename="../main.py" line="3411"/>
+        <location filename="../main.py" line="3383"/>
+        <location filename="../main.py" line="3412"/>
         <source>好</source>
         <translation>OK</translation>
     </message>
