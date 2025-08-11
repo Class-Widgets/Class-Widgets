@@ -4357,12 +4357,12 @@
     <message>
         <location filename="../menu.py" line="580"/>
         <source>经度和纬度必须是数字。</source>
-        <translation type="unfinished"></translation>
+        <translation>经度和纬度必须是数字。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="582"/>
         <source>经度必须在 -180 到 180 之间，纬度必须在 -90 到 90 之间。</source>
-        <translation type="unfinished"></translation>
+        <translation>经度必须在 -180 到 180 之间，纬度必须在 -90 到 90 之间。</translation>
     </message>
 </context>
 <context>
