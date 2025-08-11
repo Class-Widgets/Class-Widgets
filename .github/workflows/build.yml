@@ -389,6 +389,7 @@ jobs:
         arch: [x64, x86]
     steps:
       - name: Download Windows build artifacts
+        id: download-artifact
         uses: actions/download-artifact@v4.3.0
         with:
           name: windows-${{ matrix.arch }}-build
@@ -402,22 +403,32 @@ jobs:
             Expand-Archive -Path $zipFile.FullName -DestinationPath ./extracted
             $exeFile = Get-ChildItem -Path ./extracted -Filter "ClassWidgets.exe" -Recurse | Select-Object -First 1
             if ($exeFile) {
-              Copy-Item $exeFile.FullName -Destination ./ClassWidgets.exe
+              New-Item -ItemType Directory -Path "./exe-only" -Force
+              Copy-Item $exeFile.FullName -Destination "./exe-only/ClassWidgets.exe"
             } else {
+              Write-Error "ClassWidgets.exe not found in extracted files"
               exit 1
             }
           } else {
+            Write-Error "ZIP file not found in artifacts"
             exit 1
           }
 
+      - name: Upload exe for signing
+        id: upload-for-signing
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: windows-${{ matrix.arch }}-exe-unsigned
+          path: ./exe-only
+
       - name: Sign application
-        uses: signpath/github-action-submit-signing-request@v1.2
+        uses: signpath/github-action-submit-signing-request@v1.1
         with:
           api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
           organization-id: '2e13633d-4e7d-4462-9091-27536751c84c'
           project-slug: 'Class-Widgets.git'
           signing-policy-slug: 'release-signing'
-          github-artifact-id: windows-${{ matrix.arch }}-build
+          github-artifact-id: '${{ steps.upload-for-signing.outputs.artifact-id }}'
           wait-for-completion: true
           output-artifact-directory: './signed'
 
@@ -425,15 +436,19 @@ jobs:
         shell: pwsh
         run: |
           $signedExe = Get-ChildItem -Path ./signed -Filter "ClassWidgets.exe" | Select-Object -First 1
-          $targetExe = Get-ChildItem -Path ./extracted -Filter "ClassWidgets.exe" -Recurse | Select-Object -First 1
-          if ($signedExe -and $targetExe) {
-            Copy-Item $signedExe.FullName -Destination $targetExe.FullName -Force
+          if ($signedExe) {
+            $targetExe = Get-ChildItem -Path ./extracted -Filter "ClassWidgets.exe" -Recurse | Select-Object -First 1
+            if ($targetExe) {
+              Copy-Item $signedExe.FullName -Destination $targetExe.FullName -Force
+            } else {
+              exit 1
+            }
+            curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
+            New-Item -ItemType Directory -Path "signed-packages" -Force
+            ./zip.exe -r -q "signed-packages/ClassWidgets-Windows-${{ matrix.arch }}.zip" extracted/*
           } else {
             exit 1
           }
-          curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
-          New-Item -ItemType Directory -Path "signed-packages" -Force
-          ./zip.exe -r -q "signed-packages/ClassWidgets-Windows-${{ matrix.arch }}.zip" extracted/*
 
       - name: Upload signed application
         uses: actions/upload-artifact@v4.6.2
