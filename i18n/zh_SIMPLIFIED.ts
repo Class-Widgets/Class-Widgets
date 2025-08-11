@@ -186,7 +186,7 @@
     <message>
         <location filename="../main.py" line="639"/>
         <source>重新启动</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">坠后原神</translation>
     </message>
     <message>
         <location filename="../main.py" line="643"/>
@@ -209,12 +209,12 @@
     <message>
         <location filename="../main.py" line="1450"/>
         <source>&lt; - 分钟</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt; - /24 小时</translation>
     </message>
     <message>
         <location filename="../main.py" line="1453"/>
         <source>&lt;&#x2005;{minutes}&#x2005;分钟</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">{minutes} 分钟后还是一条好汉</translation>
     </message>
 </context>
 <context>
@@ -1676,7 +1676,7 @@
     <message>
         <location filename="../view/pp/settings.ui" line="41"/>
         <source>设置</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">高级货</translation>
     </message>
     <message>
         <location filename="../view/pp/settings.ui" line="104"/>
@@ -2686,7 +2686,7 @@
     <message>
         <location filename="../menu.py" line="1615"/>
         <source>未知</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">我咋知道</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1617"/>

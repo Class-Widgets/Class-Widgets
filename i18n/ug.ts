@@ -2660,7 +2660,7 @@ Siz sistem bexatliridin ta yana köp avaaz qoshaliysiz (*≧▽≦)</translation
     <message>
         <location filename="../menu.py" line="1615"/>
         <source>未知</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">نامەلۇم</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1617"/>
