@@ -395,7 +395,7 @@
     <message>
         <location filename="../view/menu/about.ui" line="450"/>
         <source>翻译此应用</source>
-        <translation type="unfinished"></translation>
+        <translation>翻譯此應用</translation>
     </message>
     <message>
         <location filename="../view/menu/about.ui" line="485"/>
@@ -1138,77 +1138,77 @@
     <message>
         <location filename="../view/menu/weather.ui" line="137"/>
         <source>北京市 · 当前天气</source>
-        <translation type="unfinished"></translation>
+        <translation>北京市 · 當前天氣</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="157"/>
         <source>最后更新于 00/00/0000 00:00:00</source>
-        <translation type="unfinished"></translation>
+        <translation>最後更新於 00/00/0000 00:00:00</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="286"/>
         <source>-- °C</source>
-        <translation type="unfinished"></translation>
+        <translation>-- °C</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="330"/>
         <source>大部晴朗</source>
-        <translation type="unfinished"></translation>
+        <translation>大部分晴朗</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="344"/>
         <source>体感温度: -- °C</source>
-        <translation type="unfinished"></translation>
+        <translation>體感溫度: -- °C</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="472"/>
         <source>风速</source>
-        <translation type="unfinished"></translation>
+        <translation>風速</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="534"/>
         <source>-- km/h</source>
-        <translation type="unfinished"></translation>
+        <translation>-- km/h</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="599"/>
         <source>湿度</source>
-        <translation type="unfinished"></translation>
+        <translation>濕度</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="661"/>
         <source>-- %</source>
-        <translation type="unfinished"></translation>
+        <translation>-- %</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="729"/>
         <source>能见度</source>
-        <translation type="unfinished"></translation>
+        <translation>能見度</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="791"/>
         <source>-- km</source>
-        <translation type="unfinished"></translation>
+        <translation>-- km</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="859"/>
         <source>气压</source>
-        <translation type="unfinished"></translation>
+        <translation>氣壓</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="921"/>
         <source>---- hPa</source>
-        <translation type="unfinished"></translation>
+        <translation>---- hPa</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="949"/>
         <source>天气预警</source>
-        <translation type="unfinished"></translation>
+        <translation>天氣預警</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="995"/>
         <source>天气源</source>
-        <translation type="unfinished"></translation>
+        <translation>天氣源</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="1038"/>
@@ -1240,27 +1240,27 @@
     <message>
         <location filename="../view/menu/weather.ui" line="1355"/>
         <source>计时自动刷新</source>
-        <translation type="unfinished"></translation>
+        <translation>計時自動更新</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="1362"/>
         <source>按照设定的分钟数定时执行天气数据刷新</source>
-        <translation type="unfinished"></translation>
+        <translation>按照設定的分鐘數定時執行天氣數據更新</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="1436"/>
         <source>显示温度单位</source>
-        <translation type="unfinished"></translation>
+        <translation>選擇溫度單位</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="1443"/>
         <source>调整显示的温度单位</source>
-        <translation type="unfinished"></translation>
+        <translation>調整顯示的溫度單位</translation>
     </message>
     <message>
         <location filename="../view/menu/weather.ui" line="1481"/>
         <source>摄氏度 (°C)</source>
-        <translation type="unfinished"></translation>
+        <translation>°C</translation>
     </message>
     <message>
         <location filename="../view/menu/custom.ui" line="973"/>
@@ -2175,42 +2175,42 @@ https://classwidgets.rinlit.cn/docs-user/</translation>
     <message>
         <location filename="../menu.py" line="1615"/>
         <source>未知</source>
-        <translation type="unfinished">未知</translation>
+        <translation>未知</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1617"/>
         <source>预警</source>
-        <translation type="unfinished">預警</translation>
+        <translation>預警</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1672"/>
         <source>未知时间</source>
-        <translation type="unfinished"></translation>
+        <translation>時間資訊未提供</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1683"/>
         <source>暂无详细描述</source>
-        <translation type="unfinished"></translation>
+        <translation>暫無詳細描述</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1686"/>
         <source>不再显示该类型预警</source>
-        <translation type="unfinished"></translation>
+        <translation>停止顯示此類預警</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1693"/>
         <source>天气预警详情</source>
-        <translation type="unfinished"></translation>
+        <translation>氣象警報詳情</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1766"/>
         <source>天气API已切换</source>
-        <translation type="unfinished"></translation>
+        <translation>天氣 API 已更換</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1767"/>
         <source>建议重新选择城市以获取准确的天气数据</source>
-        <translation type="unfinished"></translation>
+        <translation>請重新選擇城市以取得準確的天氣資料</translation>
     </message>
     <message>
         <location filename="../menu.py" line="2862"/>
@@ -2631,22 +2631,22 @@ https://classwidgets.rinlit.cn/docs-user/</translation>
     <message>
         <location filename="../menu.py" line="3941"/>
         <source>选择位置输入方式</source>
-        <translation type="unfinished"></translation>
+        <translation>選擇地點輸入方式</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3942"/>
         <source>和风天气支持城市ID和经纬度两种方式，请选择您偏好的输入方式：</source>
-        <translation type="unfinished"></translation>
+        <translation>和風天氣支援以城市 ID 或經緯度輸入，請選擇您偏好的方式：</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3945"/>
         <source>城市搜索</source>
-        <translation type="unfinished"></translation>
+        <translation>搜尋城市名稱</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3946"/>
         <source>经纬度输入</source>
-        <translation type="unfinished"></translation>
+        <translation>經緯度輸入</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3970"/>
@@ -2923,7 +2923,7 @@ https://classwidgets.rinlit.cn/docs-user/</translation>
     <message>
         <location filename="../menu.py" line="5283"/>
         <source>天气</source>
-        <translation type="unfinished">天氣</translation>
+        <translation>天氣</translation>
     </message>
     <message>
         <location filename="../menu.py" line="5389"/>
@@ -3703,7 +3703,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../view/menu/weather_alert_card.ui" line="190"/>
         <source>-- 预警</source>
-        <translation type="unfinished"></translation>
+        <translation>-- 預警</translation>
     </message>
 </context>
 <context>
@@ -3711,22 +3711,22 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../view/menu/weather_alert_msgbox.ui" line="15"/>
         <source>WeatherAlertMsgbox</source>
-        <translation type="unfinished"></translation>
+        <translation>WeatherAlertMsgbox</translation>
     </message>
     <message>
         <location filename="../view/menu/weather_alert_msgbox.ui" line="106"/>
         <source>-- 红色预警</source>
-        <translation type="unfinished"></translation>
+        <translation>-- 紅色預警</translation>
     </message>
     <message>
         <location filename="../view/menu/weather_alert_msgbox.ui" line="141"/>
         <source>0000-00-00 00:00</source>
-        <translation type="unfinished"></translation>
+        <translation>0000-00-00 00:00</translation>
     </message>
     <message>
         <location filename="../view/menu/weather_alert_msgbox.ui" line="241"/>
         <source>NAN</source>
-        <translation type="unfinished"></translation>
+        <translation>NAN</translation>
     </message>
 </context>
 <context>
@@ -3837,7 +3837,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../file.py" line="304"/>
         <source>{section}.{key}</source>
-        <translation>这个不需要翻译！</translation>
+        <translation>{section}.{key}</translation>
     </message>
     <message>
         <location filename="../file.py" line="455"/>
@@ -4399,7 +4399,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../list_.py" line="25"/>
         <source>摄氏度 (°C)</source>
-        <translation type="unfinished"></translation>
+        <translation>°C</translation>
     </message>
     <message>
         <location filename="../list_.py" line="26"/>
@@ -4409,7 +4409,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../list_.py" line="26"/>
         <source>华氏度 (°F)</source>
-        <translation type="unfinished"></translation>
+        <translation>°F</translation>
     </message>
     <message>
         <location filename="../list_.py" line="28"/>
