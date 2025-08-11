@@ -26,10 +26,8 @@ dependencies = [
     "pyqt-fluent-widgets~=1.8.1",
     "pyqt5~=5.15.11",
     "pyqt5-frameless-window~=0.7.3",
-    "pyqt5-qt5~=5.15.2",
     "pyqt5-sip==12.15.0",
     "pyqt5-stubs==5.15.6.0",
-    "pyqtwebengine~=5.15.7",
     "python-dateutil~=2.9.0",
     "pyttsx3~=2.99",
     "pytz~=2025.2",
@@ -38,13 +36,15 @@ dependencies = [
     "typing-extensions==4.13.2",
     "urllib3==2.2.3",
     "win32-setctime~=1.2.0",
+    "pyqt5-qt5==5.15.2 ; sys_platform == 'win32'",
+    "pyqtwebengine==5.15.2 ; sys_platform == 'win32'",
+    "pyqt5-qt5",
+    "pyqtwebengine",
 ]
 
 [dependency-groups]
 dev = ["pre-commit>=3.5.0", "pyright>=1.1.403", "ruff>=0.12.8"]
-package = [
-    "pyinstaller>=6.15.0",
-]
+package = ["pyinstaller>=6.15.0"]
 
 [tool.uv.sources]
 pycses = { git = "https://github.com/SmartTeachCN/pycses.git" }
@@ -89,9 +89,7 @@ ignore = [
 "**/migrations/*" = ["E501"]
 
 [tool.pyright]
-"include" = [
-    "**/*.py"
-]
+"include" = ["**/*.py"]
 "exclude" = [
     "**/__pycache__",
     "**/node_modules",
