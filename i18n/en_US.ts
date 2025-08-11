@@ -5106,12 +5106,12 @@ Please update Class Widgets before trying to install this plugin.</translation>
     <message>
         <location filename="../menu.py" line="580"/>
         <source>经度和纬度必须是数字。</source>
-        <translation type="unfinished"></translation>
+        <translation>Longitude and latitude must be numeric.</translation>
     </message>
     <message>
         <location filename="../menu.py" line="582"/>
         <source>经度必须在 -180 到 180 之间，纬度必须在 -90 到 90 之间。</source>
-        <translation type="unfinished"></translation>
+        <translation>Longitude must be between -180 and 180, and latitude must be between -90 and 90.</translation>
     </message>
 </context>
 <context>
