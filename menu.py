@@ -76,30 +76,57 @@ class I18nManager:
         self.available_languages_view = {}
         self.available_languages_widgets = {}
         self.current_language_view = 'zh_CN'
+        self.completed_i18n_config = {}
+        self.config_file_path = Path(conf.base_directory) / 'config' / 'completed_i18n.json'
+        self.load_completed_i18n_config()
         self.scan_available_languages()
-        
+
+    def load_completed_i18n_config(self):
+        """加载完整翻译配置文件"""
+        try:
+            if self.config_file_path.exists():
+                with open(self.config_file_path, 'r', encoding='utf-8') as f:
+                    self.completed_i18n_config = json.load(f)
+                logger.info(f"已加载翻译完整性配置: {self.config_file_path}")
+            else:
+                self.completed_i18n_config = {
+                    "last_updated": "",
+                    "completed_languages": {
+                        "main": ["zh_CN"],
+                        "themes": {}
+                    }
+                }
+                logger.warning(f"翻译完整性配置文件不存在")
+        except Exception as e:
+            logger.error(f"加载翻译完整性配置时出错: {e}")
+            self.completed_i18n_config = {
+                "last_updated": "",
+                "completed_languages": {
+                    "main": ["zh_CN"],
+                    "themes": {}
+                }
+            }
+
     def scan_available_languages(self):
         try:
-            main_i18n_dir = Path(conf.base_directory) / 'i18n'
-            if main_i18n_dir.exists():
-                for ts_file in main_i18n_dir.glob('*.ts'):
-                    lang_code = ts_file.stem
-                    if name:=self._get_language_display_name(lang_code):
-                        self.available_languages_view[lang_code] = name
-                    else:
-                        logger.warning(f"{lang_code} 未做完全的语言支持，不显示。")
-
-            ui_dir = Path(conf.base_directory) / 'ui'
-            if ui_dir.exists():
-                for theme_dir in ui_dir.iterdir():
-                    if theme_dir.is_dir():
-                        theme_i18n_dir = theme_dir / 'i18n'
-                        if theme_i18n_dir.exists():
-                            for ts_file in theme_i18n_dir.glob('*.ts'):
-                                lang_code = ts_file.stem
-                                if lang_code not in self.available_languages_widgets:
-                                    self.available_languages_widgets[lang_code] = self._get_language_display_name(lang_code)
-                                    
+            completed_main_langs = self.completed_i18n_config.get("completed_languages", {}).get("main", [])
+            for lang_code in completed_main_langs:
+                if name := self._get_language_display_name(lang_code):
+                    self.available_languages_view[lang_code] = name
+                else:
+                    logger.warning(f"{lang_code} 未在语言映射中找到显示名称")
+            completed_themes = self.completed_i18n_config.get("completed_languages", {}).get("themes", {})
+            all_theme_langs = set()
+            for theme_name, lang_list in completed_themes.items():
+                all_theme_langs.update(lang_list)
+            for lang_code in all_theme_langs:
+                if name := self._get_language_display_name(lang_code):
+                    self.available_languages_widgets[lang_code] = name
+            if not self.available_languages_view:
+                self.available_languages_view['zh_CN'] = '简体中文'
+            if not self.available_languages_widgets:
+                self.available_languages_widgets['zh_CN'] = '简体中文'
+                
             logger.info(f"可用界面语言: {list(self.available_languages_view.keys())}")
             logger.info(f"可用组件语言: {list(self.available_languages_widgets.keys())}")
             
@@ -111,21 +138,23 @@ class I18nManager:
                 self.available_languages_widgets['zh_CN'] = '简体中文'
                 
     def _get_language_display_name(self, lang_code):
-        """todo:获取的优化修正"""
+        """获取语言显示名称"""
         language_names = {
             'zh_CN': '简体中文',
             'zh_HK': '繁體中文（HK）',
-            # 'zh_SIMPLIFIED': '梗体中文',
+            'zh_SIMPLIFIED': '梗体中文',
             'en_US': 'English',
             'ja_JP': '日本語',
-            # 'ko_KR': '한국어',
-            # 'fr_FR': 'Français',
-            # 'de_DE': 'Deutsch',
-            # 'es_ES': 'Español',
-            # 'ru_RU': 'Русский',
-            # 'pt_BR': 'Português (Brasil)',
-            # 'it_IT': 'Italiano',
-            # 'ar_SA': 'العربية'
+            'bo': 'བོད་ཡིག',  # 藏语
+            'ug': 'ئۇيغۇرچە',  # 维吾尔语
+            'ko_KR': '한국어',
+            'fr_FR': 'Français',
+            'de_DE': 'Deutsch',
+            'es_ES': 'Español',
+            'ru_RU': 'Русский',
+            'pt_BR': 'Português (Brasil)',
+            'it_IT': 'Italiano',
+            'ar_SA': 'العربية'
         }
         return language_names.get(lang_code, None)
 

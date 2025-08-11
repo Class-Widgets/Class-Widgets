@@ -269,6 +269,93 @@ jobs:
             fi
           done
 
+      - name: Check translation completeness and update config
+        shell: bash
+        run: |
+          mkdir -p config
+          echo '{"last_updated":"","completed_languages":{"main":[],"themes":{}}}' > config/completed_i18n.json
+          completed_main_langs="[]"
+          if [ -d "i18n" ]; then
+            echo "[DEBUG] 检查Main翻译文件..."
+            completed_main_langs="["
+            first_main=true
+            for ts_file in i18n/*.ts; do
+              if [ -f "$ts_file" ]; then
+                lang_code=$(basename "$ts_file" .ts)
+                if ! grep -q 'type="unfinished"' "$ts_file"; then
+                  echo "[DEBUG] main翻译 $lang_code 完整"
+                  if [ "$first_main" = true ]; then
+                    completed_main_langs="${completed_main_langs}\"$lang_code\""
+                    first_main=false
+                  else
+                    completed_main_langs="${completed_main_langs},\"$lang_code\""
+                  fi
+                else
+                  echo "[DEBUG] main翻译 $lang_code 不完整"
+                fi
+              fi
+            done
+            completed_main_langs="${completed_main_langs}]"
+          fi
+          completed_themes="{}"
+          if [ -d "ui" ]; then
+            echo "[DEBUG] 检查Theme翻译文件..."
+            completed_themes="{"
+            first_theme=true
+            for theme_dir in ui/*/; do
+              if [ -d "$theme_dir" ]; then
+                theme_name=$(basename "$theme_dir")
+                i18n_dir="${theme_dir}i18n"
+                theme_langs="[]"
+                if [ -d "$i18n_dir" ]; then
+                  echo "[DEBUG] 处理主题: $theme_name"
+                  theme_langs="["
+                  first_lang=true
+                  for ts_file in "$i18n_dir"/*.ts; do
+                    if [ -f "$ts_file" ]; then
+                      lang_code=$(basename "$ts_file" .ts)
+                      if ! grep -q 'type="unfinished"' "$ts_file"; then
+                        echo "[DEBUG] 主题 $theme_name 翻译 $lang_code 完整"
+                        if [ "$first_lang" = true ]; then
+                          theme_langs="${theme_langs}\"$lang_code\""
+                          first_lang=false
+                        else
+                          theme_langs="${theme_langs},\"$lang_code\""
+                        fi
+                      else
+                        echo "[DEBUG] 主题 $theme_name 翻译 $lang_code 不完整"
+                      fi
+                    fi
+                  done
+                  theme_langs="${theme_langs}]"
+                else
+                  echo "[DEBUG] 主题 $theme_name 没有翻译文件"
+                fi
+                if [ "$first_theme" = true ]; then
+                  completed_themes="${completed_themes}\"$theme_name\":$theme_langs"
+                  first_theme=false
+                else
+                  completed_themes="${completed_themes},\"$theme_name\":$theme_langs"
+                fi
+              fi
+            done
+            completed_themes="${completed_themes}}"
+          fi
+          current_time=$(date -u +"%Y-%m-%dT%H:%M:%S.%3NZ")
+          cat > config/completed_i18n.json << EOF
+          {
+            "last_updated": "$current_time",
+            "completed_languages": {
+              "main": $completed_main_langs,
+              "themes": $completed_themes
+            }
+          }
+          EOF
+          echo "::group::翻译配置"
+          echo "[DEBUG] 已更新翻译配置: config/completed_i18n.json"
+          cat config/completed_i18n.json
+          echo "::endgroup::"
+
       - name: Import GPG key
         id: import-gpg-compile
         uses: crazy-max/ghaction-import-gpg@v6
@@ -278,12 +365,13 @@ jobs:
           git_user_signingkey: true
           git_commit_gpgsign: true
 
-      - name: Commit compiled files
+      - name: Commit compiled and config files
         uses: stefanzweifel/git-auto-commit-action@v6
         continue-on-error: true
         with:
           commit_message: |
             chore(i18n): 编译翻译文件(.qm) (Auto-Commit)
+            chore(i18n): 更新翻译可用性 (Auto-Commit)
 
             - 初始触发者: ${{ github.actor }}
             - 触发事件: ${{ github.event_name }}
@@ -293,7 +381,7 @@ jobs:
 
             Co-authored-by: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
           commit_options: '--signoff'
-          file_pattern: 'i18n/*.qm ui/*/i18n/*.qm'
+          file_pattern: 'i18n/*.qm ui/*/i18n/*.qm config/completed_i18n.json'
           commit_user_name: 'ChimeYao-bot'
           commit_user_email: 'ChimeYao@outlook.jp'
           commit_author: 'ChimeYao-bot <ChimeYao@outlook.jp>'
