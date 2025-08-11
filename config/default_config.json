@@ -90,7 +90,7 @@
     "set_schedule": ""
   },
   "Version": {
-    "version": "v1.1.7.2",
+    "version": "v1.2.0.0",
     "version_channel": "0",
     "auto_check_update": "1",
     "cses_version": "1",
