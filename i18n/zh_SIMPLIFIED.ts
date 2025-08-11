@@ -45,67 +45,67 @@
         <location filename="../main.py" line="1747"/>
         <location filename="../main.py" line="2209"/>
         <source>{day}日  {week}</source>
-        <translation type="unfinished"></translation>
+        <translation>{day}日是{week}</translation>
     </message>
     <message>
         <location filename="../main.py" line="2130"/>
         <source>完全隐藏/显示小组件</source>
-        <translation type="unfinished"></translation>
+        <translation>让小组件彻底死掉/复活</translation>
     </message>
     <message>
         <location filename="../main.py" line="2131"/>
         <source>最小化为浮窗</source>
-        <translation type="unfinished"></translation>
+        <translation>死成小盒子</translation>
     </message>
     <message>
         <location filename="../main.py" line="2135"/>
         <source>插件广场</source>
-        <translation type="unfinished"></translation>
+        <translation>插件跳广场舞基地</translation>
     </message>
     <message>
         <location filename="../main.py" line="2136"/>
         <source>额外选项</source>
-        <translation type="unfinished">Extraaaaaa!</translation>
+        <translation>Extraaaaaa!</translation>
     </message>
     <message>
         <location filename="../main.py" line="2137"/>
         <source>设置</source>
-        <translation type="unfinished"></translation>
+        <translation>高级货</translation>
     </message>
     <message>
         <location filename="../main.py" line="2140"/>
         <source>重新启动</source>
-        <translation type="unfinished"></translation>
+        <translation>坠后原神</translation>
     </message>
     <message>
         <location filename="../main.py" line="2141"/>
         <source>退出</source>
-        <translation type="unfinished"></translation>
+        <translation>溜了</translation>
     </message>
     <message>
         <location filename="../main.py" line="2247"/>
         <source>&lt; - 分钟</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt; - /24 小时</translation>
     </message>
     <message>
         <location filename="../main.py" line="2249"/>
         <source>&lt;&#x2005;{minutes}&#x2005;分钟</source>
-        <translation type="unfinished"></translation>
+        <translation>{minutes} 分钟后还是一条好汉</translation>
     </message>
     <message>
         <location filename="../main.py" line="2257"/>
         <source>距离 {cd_text} 还有</source>
-        <translation type="unfinished"></translation>
+        <translation>{cd_text} 降临日</translation>
     </message>
     <message>
         <location filename="../main.py" line="2969"/>
         <source>{city} · 未知</source>
-        <translation type="unfinished"></translation>
+        <translation>{city} · 我咋知道</translation>
     </message>
     <message>
         <location filename="../main.py" line="2971"/>
         <source>未知</source>
-        <translation type="unfinished"></translation>
+        <translation>我咋知道</translation>
     </message>
 </context>
 <context>

@@ -21,7 +21,7 @@
         <location filename="../dark/toast-open_dialog.ui" line="142"/>
         <location filename="../toast-open_dialog.ui" line="142"/>
         <source>即将打开</source>
-        <translation type="unfinished"></translation>
+        <translation>开！</translation>
     </message>
     <message>
         <location filename="../dark/toast-open_dialog.ui" line="171"/>
@@ -29,67 +29,67 @@
         <location filename="../toast-open_dialog.ui" line="171"/>
         <location filename="../widget-floating.ui" line="146"/>
         <source>测试</source>
-        <translation type="unfinished"></translation>
+        <translation>捉虫子</translation>
     </message>
     <message>
         <location filename="../dark/toast-open_dialog.ui" line="210"/>
         <location filename="../toast-open_dialog.ui" line="210"/>
         <source>取消</source>
-        <translation type="unfinished"></translation>
+        <translation>跑路</translation>
     </message>
     <message>
         <location filename="../dark/widget-base.ui" line="26"/>
         <location filename="../widget-base.ui" line="26"/>
         <source>基本组件</source>
-        <translation type="unfinished"></translation>
+        <translation>基件</translation>
     </message>
     <message>
         <location filename="../dark/widget-base.ui" line="90"/>
         <location filename="../widget-base.ui" line="90"/>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>抬头</translation>
     </message>
     <message>
         <location filename="../dark/widget-base.ui" line="127"/>
         <location filename="../widget-base.ui" line="127"/>
         <source>Content</source>
-        <translation type="unfinished"></translation>
+        <translation>康疼特</translation>
     </message>
     <message>
         <location filename="../dark/widget-countdown-day.ui" line="26"/>
         <location filename="../widget-countdown-day.ui" line="26"/>
         <source>倒计日</source>
-        <translation type="unfinished"></translation>
+        <translation>压迫感</translation>
     </message>
     <message>
         <location filename="../dark/widget-countdown-day.ui" line="50"/>
         <location filename="../widget-countdown-day.ui" line="50"/>
         <source>距离 中考 还有</source>
-        <translation type="unfinished"></translation>
+        <translation>死期</translation>
     </message>
     <message>
         <location filename="../dark/widget-countdown-day.ui" line="82"/>
         <location filename="../widget-countdown-day.ui" line="82"/>
         <source>300 天</source>
-        <translation type="unfinished"></translation>
+        <translation>三倍伤筋动骨</translation>
     </message>
     <message>
         <location filename="../dark/widget-countdown.ui" line="26"/>
         <location filename="../widget-countdown.ui" line="26"/>
         <source>活动倒计时</source>
-        <translation type="unfinished"></translation>
+        <translation>幸福倒计时</translation>
     </message>
     <message>
         <location filename="../dark/widget-countdown.ui" line="84"/>
         <location filename="../widget-countdown.ui" line="84"/>
         <source>倒计时</source>
-        <translation type="unfinished"></translation>
+        <translation>几点了啊</translation>
     </message>
     <message>
         <location filename="../dark/widget-countdown.ui" line="116"/>
         <location filename="../widget-countdown.ui" line="116"/>
         <source>00:00</source>
-        <translation type="unfinished"></translation>
+        <translation>11:45</translation>
     </message>
     <message>
         <location filename="../widget-current-activity.ui" line="26"/>
@@ -97,31 +97,31 @@
         <location filename="../dark/widget-current-activity.ui" line="26"/>
         <location filename="../dark/widget-current-activity.ui" line="108"/>
         <source>当前活动</source>
-        <translation type="unfinished"></translation>
+        <translation>活跃的当前</translation>
     </message>
     <message>
         <location filename="../widget-current-activity.ui" line="51"/>
         <location filename="../dark/widget-current-activity.ui" line="56"/>
         <source>  测试</source>
-        <translation type="unfinished"></translation>
+        <translation>  捉虫子</translation>
     </message>
     <message>
         <location filename="../dark/widget-floating.ui" line="178"/>
         <location filename="../widget-floating.ui" line="165"/>
         <source>&lt;0分钟</source>
-        <translation type="unfinished"></translation>
+        <translation>没时间了</translation>
     </message>
     <message>
         <location filename="../dark/widget-floating.ui" line="219"/>
         <location filename="../widget-floating.ui" line="206"/>
         <source>%p%</source>
-        <translation type="unfinished"></translation>
+        <translation>@w@</translation>
     </message>
     <message>
         <location filename="../dark/widget-next-activity.ui" line="26"/>
         <location filename="../widget-next-activity.ui" line="26"/>
         <source>更多活动</source>
-        <translation type="unfinished"></translation>
+        <translation>刑罚列表</translation>
     </message>
     <message>
         <location filename="../dark/widget-next-activity.ui" line="50"/>
