@@ -2915,7 +2915,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             weather_name = db.get_weather_by_code(db.get_weather_data('icon', weather_data))
             temp_data = db.get_weather_data('temp', weather_data)
             if temp_data and temp_data.lower() != 'none':
-                temperature = temp_data
+                temperature = db.weather_processor._convert_temperature_unit(temp_data)
             else:
                 temperature = '--°'
             current_city = self.findChild(QLabel, 'current_city')
@@ -2929,7 +2929,8 @@ class DesktopWidget(QWidget):  # 主要小组件
 
                 temp_data = db.get_weather_data('temp', weather_data)
                 if temp_data and temp_data.lower() != 'none':
-                    self.temperature.setText(temp_data)
+                    converted_temp = db.weather_processor._convert_temperature_unit(temp_data)
+                    self.temperature.setText(converted_temp)
                 else:
                     self.temperature.setText('--°')
                 city_name = db.search_by_num(config_center.read_conf('Weather', 'city'))
