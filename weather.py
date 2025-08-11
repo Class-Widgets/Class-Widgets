@@ -2352,7 +2352,7 @@ class OpenMeteoProvider(GenericWeatherProvider):
             # Open-Meteo的预报数据已经在主API中包含了
             url = self.base_url.format(lon=lon, lat=lat)
             headers = {
-                'User-Agent': 'ClassWidgets/1.1.7.2 (contact: IsHPDuwu@outlook.com)'
+                'User-Agent': f"ClassWidgets/{config_center.read_conf('Version', 'version')} (contact: IsHPDuwu@outlook.com)"
             }
             response = requests.get(url, proxies=proxies, timeout=10, headers=headers)
             response.raise_for_status()
