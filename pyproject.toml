@@ -43,7 +43,13 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = ["pre-commit>=3.5.0", "pyright>=1.1.403", "ruff>=0.12.8"]
+dev = [
+    "mypy>=1.14.1",
+    "pre-commit>=3.5.0",
+    "pylint>=3.2.7",
+    "pyright>=1.1.403",
+    "ruff>=0.12.8",
+]
 package = ["pyinstaller>=6.15.0"]
 
 [tool.uv.sources]

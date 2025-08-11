@@ -162,16 +162,14 @@ jobs:
           path: |
             ~/.cache/uv
             .venv
-          key: ${{ runner.os }}-x64-python${{ env.PYTHON_VERSION }}-uv-cache-${{ hashFiles('**/requirements.txt') }}
+          key: ${{ runner.os }}-x64-python${{ env.PYTHON_VERSION }}-uv-cache-${{ hashFiles('**/uv.lock') }}
           restore-keys: |
             ${{ runner.os }}-x64-python${{ env.PYTHON_VERSION }}-uv-cache-
 
       - name: Install dependencies for CodeQL analysis
         if: steps.codeql-config.outputs.scan_mode != 'skip'
         run: |
-          uv venv .venv
-          source .venv/bin/activate
-          uv pip install -r requirements.txt
+          uv sync
 
       - name: Autobuild for CodeQL
         if: steps.codeql-config.outputs.scan_mode != 'skip'
@@ -219,133 +217,20 @@ jobs:
           path: |
             ~/.cache/uv
             .venv
-          key: ${{ runner.os }}-x64-python${{ env.PYTHON_VERSION }}-uv-cache-${{ hashFiles('**/requirements.txt') }}
+          key: ${{ runner.os }}-x64-python${{ env.PYTHON_VERSION }}-uv-cache-${{ hashFiles('**/uv.lock') }}
           restore-keys: |
             ${{ runner.os }}-x64-python${{ env.PYTHON_VERSION }}-uv-cache-
 
       - name: Create venv and install dependencies
         run: |
-          uv venv .venv
+          uv sync
           source .venv/bin/activate
           echo "$PWD/.venv/bin" >> $GITHUB_PATH
           echo "Python 版本: $(python --version)"
-          uv pip install -r requirements.txt
-          uv pip install ruff pylint pyright mypy
           echo "🔧 工具版本信息:"
           echo "PyLint: $(pylint --version | head -1)"
           echo "MyPy: $(mypy --version)"
           echo "📦 包安装位置: $(python -c 'import site; print(site.getsitepackages()[0])')"
-
-      - name: Generate tool configurations
-        run: |
-          # 生成 pyrightconfig.json
-          cat > pyrightconfig.json << 'EOF'
-          {
-            "include": [
-              "**/*.py"
-            ],
-            "exclude": [
-              "**/__pycache__",
-              "**/node_modules",
-              "**/.venv",
-              "**/venv",
-              "build",
-              "dist"
-            ],
-            "reportMissingImports": "error",
-            "reportMissingTypeStubs": "warning",
-            "reportImportCycles": "error",
-            "reportUnusedImport": "warning",
-            "reportUnusedClass": "warning",
-            "reportUnusedFunction": "warning",
-            "reportUnusedVariable": "warning",
-            "reportDuplicateImport": "error",
-            "reportOptionalSubscript": "warning",
-            "reportOptionalMemberAccess": "warning",
-            "reportOptionalCall": "warning",
-            "reportOptionalIterable": "warning",
-            "reportOptionalContextManager": "warning",
-            "reportOptionalOperand": "warning",
-            "reportGeneralTypeIssues": "error",
-            "reportUntypedFunctionDecorator": "warning",
-            "reportUntypedClassDecorator": "warning",
-            "reportUntypedBaseClass": "warning",
-            "reportUntypedNamedTuple": "warning",
-            "reportPrivateUsage": "warning",
-            "reportConstantRedefinition": "error",
-            "reportIncompatibleMethodOverride": "error",
-            "reportIncompatibleVariableOverride": "error",
-            "reportOverlappingOverload": "error",
-            "reportMissingParameterType": "warning",
-            "reportMissingReturnType": "warning",
-            "reportUnnecessaryIsInstance": "warning",
-            "reportUnnecessaryCast": "warning",
-            "reportAssertAlwaysTrue": "warning",
-            "reportSelfClsParameterName": "warning",
-            "reportImplicitStringConcatenation": "warning",
-
-            "pythonVersion": "${{ env.PYTHON_VERSION }}",
-            "pythonPlatform": "All",
-            "executionEnvironments": [
-              {
-                "root": ".",
-                "pythonVersion": "${{ env.PYTHON_VERSION }}",
-                "pythonPlatform": "All",
-                "extraPaths": [
-                  ".",
-                  "./config",
-                  "./ui",
-                  "./view"
-                ]
-              }
-            ],
-            "typeCheckingMode": "strict",
-            "useLibraryCodeForTypes": true,
-            "autoImportCompletions": true,
-            "strictListInference": false,
-            "strictDictionaryInference": false,
-            "strictSetInference": false
-          }
-          EOF
-          cat > pyproject.toml << 'EOF'
-          [tool.ruff]
-          line-length = 120
-          target-version = "py38"
-          [tool.ruff.lint]
-          select = [
-              "E",    # pycodestyle errors
-              "W",    # pycodestyle warnings
-              "F",    # pyflakes
-              "I",    # isort
-              "N",    # pep8-naming
-              "UP",   # pyupgrade
-              "B",    # flake8-bugbear
-              "C4",   # flake8-comprehensions
-              "SIM",  # flake8-simplify
-              "PIE",  # flake8-pie
-              "RET",  # flake8-return
-              "ARG",  # flake8-unused-arguments
-              "PTH",  # flake8-use-pathlib
-              "ERA",  # eradicate
-              "PL",   # pylint
-              "RUF",  # ruff-specific rules
-          ]
-          ignore = [
-              "E501",    # line too long
-              "E203",    # whitespace before ':'
-              "F841",    # local variable assigned but never used
-              "PLR0913", # too many arguments
-              "PLR0912", # too many branches
-              "PLR0915", # too many statements
-              "PLR2004", # magic value used in comparison
-              "ARG002",  # unused method argument
-              "PTH123",  # pathlib instead of os.path.join
-          ]
-          [tool.ruff.lint.per-file-ignores]
-          "__init__.py" = ["F401"]
-          "**/migrations/*" = ["E501"]
-          EOF
-          echo "✅ 配置文件生成完成"
 
       - name: Run Ruff check
         uses: astral-sh/ruff-action@v3
