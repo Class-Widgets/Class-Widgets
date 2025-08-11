@@ -296,6 +296,7 @@ jobs:
           if [[ "${{ runner.os }}" == "Windows" ]]; then
             curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
           fi
+          find ui -name "*.ts" -delete
           uv run pyinstaller main.py \
             -w \
             -i ./img/favicon.ico \
@@ -308,7 +309,7 @@ jobs:
             --add-data font:font \
             --add-data view:view \
             --add-data LICENSE:. \
-            --add-data i18n:i18n \
+            --add-data "i18n/*.qm:i18n" \
             --hidden-import darkdetect
 
           if [[ "$IS_RELEASE" == "true" ]]; then
@@ -316,12 +317,13 @@ jobs:
           else
             zip_name="Windows-${{ matrix.arch }}_debug-${GITHUB_RUN_ID}"
           fi
-          ./zip.exe -r -q "packages/${zip_name}.zip" dist/ClassWidgets/*
+          cd dist && mv ClassWidgets "${zip_name}" && ../zip.exe -r -q "../packages/${zip_name}.zip" "${zip_name}"/* && cd ..
 
       - name: Build macOS (pyinstaller)
         if: startsWith(matrix.os, 'macos')
         shell: bash
         run: |
+          find ui -name "*.ts" -delete
           uv run pyinstaller main.py \
             -w \
             -i ./img/favicon.icns \
@@ -333,7 +335,7 @@ jobs:
             --add-data "ui:ui" \
             --add-data "font:font" \
             --add-data "view:view" \
-            --add-data "i18n:i18n" \
+            --add-data "i18n/*.qm:i18n" \
             --add-data "LICENSE:." \
             --hidden-import darkdetect
 
@@ -349,6 +351,7 @@ jobs:
         if: matrix.platform == 'linux-x64'
         shell: bash
         run: |
+          find ui -name "*.ts" -delete
           uv run pyinstaller main.py \
             -w \
             -i ./img/favicon.png \
@@ -361,7 +364,7 @@ jobs:
             --add-data font:font \
             --add-data view:view \
             --add-data LICENSE:. \
-            --add-data i18n:i18n \
+            --add-data "i18n/*.qm:i18n" \
             --hidden-import darkdetect
 
           if [[ "$IS_RELEASE" == "true" ]]; then
@@ -369,7 +372,7 @@ jobs:
           else
             zip_name="Linux-x64_debug-${GITHUB_RUN_ID}"
           fi
-          zip -r -q "packages/${zip_name}.zip" dist/ClassWidgets/*
+          cd dist && mv ClassWidgets "${zip_name}" && zip -r -q "../packages/${zip_name}.zip" "${zip_name}"/* && cd ..
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4.6.2

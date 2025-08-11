@@ -57,36 +57,27 @@ class I18nManager:
         
     def scan_available_languages(self):
         try:
-            from pathlib import Path
-            main_i18n_dir = Path(base_directory) / 'i18n'
-            if main_i18n_dir.exists():
-                for ts_file in main_i18n_dir.glob('*.qm'):
-                    lang_code = ts_file.stem
-                    if name:=self._get_language_display_name(lang_code):
-                        self.available_languages_view[lang_code] = name
-                    else:
-                        logger.warning(f"{lang_code} 未做完全的语言支持，不显示。")
+            completed_main = self.completed_i18n_config.get('completed_languages', {}).get('main', [])
+            completed_themes = self.completed_i18n_config.get('completed_languages', {}).get('themes', {})
+            for lang_code in completed_main:
+                if display_name := self._get_language_display_name(lang_code):
+                    self.available_languages_view[lang_code] = display_name
+            all_theme_languages = set()
+            for theme_name, theme_languages in completed_themes.items():
+                all_theme_languages.update(theme_languages)
+            for lang_code in all_theme_languages:
+                if display_name := self._get_language_display_name(lang_code):
+                    self.available_languages_widgets[lang_code] = display_name
 
-            ui_dir = Path(base_directory) / 'ui'
-            if ui_dir.exists():
-                for theme_dir in ui_dir.iterdir():
-                    if theme_dir.is_dir():
-                        theme_i18n_dir = theme_dir / 'i18n'
-                        if theme_i18n_dir.exists():
-                            for ts_file in theme_i18n_dir.glob('*.qm'):
-                                lang_code = ts_file.stem
-                                if lang_code not in self.available_languages_widgets:
-                                    self.available_languages_widgets[lang_code] = self._get_language_display_name(lang_code)
-                                    
             logger.info(f"可用界面语言: {list(self.available_languages_view.keys())}")
             logger.info(f"可用组件语言: {list(self.available_languages_widgets.keys())}")
-            
         except Exception as e:
             logger.error(f"扫描语言包时出错: {e}")
-            if not self.available_languages_view:
-                self.available_languages_view['zh_CN'] = '简体中文'
-            if not self.available_languages_widgets:
-                self.available_languages_widgets['zh_CN'] = '简体中文'
+
+        if not self.available_languages_view:
+            self.available_languages_view['zh_CN'] = '简体中文'
+        if not self.available_languages_widgets:
+            self.available_languages_widgets['zh_CN'] = '简体中文'
 
     def load_completed_i18n_config(self):
         """加载完整翻译配置文件"""
@@ -109,21 +100,23 @@ class I18nManager:
             }
 
     def _get_language_display_name(self, lang_code):
-        """todo:获取的优化修正"""
+        """获取语言代码对应的显示名称"""
         language_names = {
             'zh_CN': '简体中文',
             'zh_HK': '繁體中文（HK）',
-            # 'zh_SIMPLIFIED': '梗体中文',
+            'zh_SIMPLIFIED': '梗体中文',
             'en_US': 'English',
             'ja_JP': '日本語',
-            # 'ko_KR': '한국어',
-            # 'fr_FR': 'Français',
-            # 'de_DE': 'Deutsch',
-            # 'es_ES': 'Español',
-            # 'ru_RU': 'Русский',
-            # 'pt_BR': 'Português (Brasil)',
-            # 'it_IT': 'Italiano',
-            # 'ar_SA': 'العربية'
+            'ko_KR': '한국어',
+            'fr_FR': 'Français',
+            'de_DE': 'Deutsch',
+            'es_ES': 'Español',
+            'ru_RU': 'Русский',
+            'pt_BR': 'Português (Brasil)',
+            'it_IT': 'Italiano',
+            'ar_SA': 'العربية',
+            'bo': 'བོད་ཡིག',  # 藏语
+            'ug': 'ئۇيغۇرچە'   # 维吾尔语
         }
         return language_names.get(lang_code, None)
 
