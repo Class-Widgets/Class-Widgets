@@ -185,12 +185,6 @@ class I18nManager:
     def _load_translation_file(self, qm_path):
         """加载翻译"""
         try:
-            if not qm_path.exists():
-                # 编译,仅开发用(不应该在这编译)
-                ts_path = qm_path.with_suffix('.ts')
-                if ts_path.exists():
-                    self._compile_ts_to_qm(ts_path, qm_path)
-
             if qm_path.exists():
                 translator = QTranslator()
                 if translator.load(str(qm_path)):
@@ -205,29 +199,6 @@ class I18nManager:
             logger.error(f"加载文件 {qm_path} 时出错: {e}")
             
         return None
-        
-    def _compile_ts_to_qm(self, ts_path, qm_path):
-        try:
-            import subprocess
-            
-            result = subprocess.run(
-                ['lrelease', str(ts_path), '-qm', str(qm_path)],
-                capture_output=True,
-                text=True
-            )
-            
-            if result.returncode == 0:
-                logger.info(f"成功编译翻译文件: {ts_path} -> {qm_path}")
-                return True
-            else:
-                logger.warning(f"编译翻译文件失败: {result.stderr}")
-                
-        except FileNotFoundError:
-            logger.warning("未找到lrelease工具，无法编译翻译文件")
-        except Exception as e:
-            logger.error(f"编译翻译文件时出错: {e}")
-            
-        return False
         
     def clear_translators(self):
         """清除翻译器"""
