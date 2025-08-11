@@ -67,12 +67,12 @@ def load_theme_config(theme: str) -> ThemeInfo:
         )
 
 
-def load_plugin_config() -> Optional[Dict[str, Any]]:
+def load_plugin_config() -> Dict[str, List[str]]:
     try:
         plugin_config_path = base_directory / 'config' / 'plugin.json'
         if plugin_config_path.exists():
             with open(plugin_config_path, 'r', encoding='utf-8') as file:
-                data = json.load(file)
+                data : Dict[str, List[str]] = json.load(file)
         else:
             with open(plugin_config_path, 'w', encoding='utf-8') as file:
                 data = {"enabled_plugins": []}
@@ -80,7 +80,7 @@ def load_plugin_config() -> Optional[Dict[str, Any]]:
         return data
     except Exception as e:
         logger.error(f"加载启用插件数据时出错: {e}")
-        return None
+        return {"enabled_plugins": []}
 
 
 def save_plugin_config(data: Dict[str, Any]) -> bool:
