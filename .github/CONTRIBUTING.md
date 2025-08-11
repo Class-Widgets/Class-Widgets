@@ -70,7 +70,12 @@ Bug 反馈需包含的信息：
 
 ### 发起拉取请求（PR）
 
-1. **分支准备**：
+1. **环境准备**
+
+   - 本项目使用 [`uv`](https://docs.astral.sh/uv/getting-started/installation/) 作为项目包管理器，请使用任意方式安装最新的 uv 并在项目文件夹执行 `uv sync` 来配置环境
+   - 推荐随后执行 `uv run pre-commit install` 添加提交前钩子进行代码风格统一
+
+2. **分支准备**：
 
    - 基于主仓库 main 分支创建个人分支，命名建议：feat/功能名 或 fix/bug描述；
    - 确保分支与主仓库 main 分支同步（减少合并冲突）：
@@ -78,12 +83,12 @@ Bug 反馈需包含的信息：
      git fetch origin
      git rebase origin/main
      ```
-2. **提交前检查**：
+3. **提交前检查**：
 
    - 本地测试通过（至少在一个操作系统上验证功能）；
    - 代码无语法错误，运行 pylint 检查基本规范；
-   - 新增依赖已添加至 `requirements.txt`，并尽量兼容多平台。
-3. **PR 描述**：
+   - 新增依赖已添加至 `pyproject.toml`，并尽量兼容多平台。
+4. **PR 描述**：
 
    - 标题：简要说明修改（建议与提交信息一致）；
    - 内容：
