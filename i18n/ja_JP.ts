@@ -4518,12 +4518,12 @@ Class Widgets を更新してから、このプラグインのインストール
     <message>
         <location filename="../menu.py" line="580"/>
         <source>经度和纬度必须是数字。</source>
-        <translation type="unfinished"></translation>
+        <translation>緯度と経度は数値でなければなりません。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="582"/>
         <source>经度必须在 -180 到 180 之间，纬度必须在 -90 到 90 之间。</source>
-        <translation type="unfinished"></translation>
+        <translation>経度は -180 から 180 の間、緯度は -90 から 90 の間である必要があります。</translation>
     </message>
 </context>
 <context>
