@@ -10,8 +10,8 @@ python -m nuitka main.py \
 --include-data-dir=img=img \
 --include-data-dir=ui=ui \
 --include-data-dir=view=view \
+--include-data-dir=i18n=i18n \
 --include-data-dir=config=config \
---include-data-dir=plugins=plugins \
 --include-data-dir=font=font \
 --include-data-dir=audio=audio \
 --include-data-files=LICENSE=LICENSE \
