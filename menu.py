@@ -507,6 +507,12 @@ class selectCity(MessageBoxBase):  # 选择城市
             #     btn_sysapi = PushButton(QCoreApplication.translate('menu', '通过系统获取经纬度'))
             #     btn_sysapi.clicked.connect(self.get_coordinates_from_system)
 
+            self.error_text = QLabel()
+            self.error_text.setStyleSheet("color: red;")
+            self.error_text.hide()
+            self.longitude_edit.textChanged.connect(lambda: self._check_coordinates())
+            self.latitude_edit.textChanged.connect(lambda: self._check_coordinates())
+
             self.viewLayout.addWidget(title_label)
             self.viewLayout.addWidget(subtitle_label)
             self.viewLayout.addWidget(longitude_label)
@@ -514,6 +520,7 @@ class selectCity(MessageBoxBase):  # 选择城市
             self.viewLayout.addWidget(latitude_label)
             self.viewLayout.addWidget(self.latitude_edit)
             self.viewLayout.addWidget(self.btn_internet)
+            self.viewLayout.addWidget(self.error_text)
             # if platform.system() in ['Windows', 'Darwin']:
             #     self.viewLayout.addWidget(btn_sysapi)
             self.widget.setMinimumWidth(400)
@@ -564,6 +571,21 @@ class selectCity(MessageBoxBase):  # 选择城市
             aniType=FlyoutAnimationType.PULL_UP,  
         )
         logger.error(f"获取经纬度失败: {error_message}")
+    
+    def _check_coordinates(self):
+        try:
+            try:
+                lon, lat = float(self.longitude_edit.text()), float(self.latitude_edit.text())
+            except ValueError:
+                raise ValueError(self.tr("经度和纬度必须是数字。"))
+            if not (-180 <= lon <= 180 and -90 <= lat <= 90):
+                raise ValueError(self.tr("经度必须在 -180 到 180 之间，纬度必须在 -90 到 90 之间。"))
+            self.yesButton.setEnabled(True)
+            self.error_text.hide()
+        except Exception as e:
+            self.yesButton.setEnabled(False)
+            self.error_text.setText(f"{e}")
+            self.error_text.show()
 
     class getCoordinatesInternet(QThread):
         corrdinates = pyqtSignal(float, float)

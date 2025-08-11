@@ -7,10 +7,9 @@ from typing import Dict, List, Optional, Any
 from loguru import logger
 
 import conf
-from main import PluginManager
 
 class PluginLoader:  # 插件加载器
-    def __init__(self, p_mgr: Optional[PluginManager] = None) -> None:
+    def __init__(self, p_mgr: Optional[Any] = None) -> None:
         self.plugins_settings: Dict[str, Any] = {}
         self.plugins_name: List[str] = []
         self.plugins_dict: Dict[str, Any] = {}
