@@ -2786,7 +2786,7 @@ class SettingsMenu(FluentWindow):
                 self.setDefaultDropAction(Qt.IgnoreAction)
 
             def resizeEvent(self, event):
-                logger.debug(f"{self.width()}, {self.height()}")
+                logger.debug(f"UniformListWidget resizeEvent: {self.width()}, {self.height()}")
                 spacing = self.spacing()
                 margins = self.contentsMargins()
                 available_width = self.width() - margins.left() - margins.right()
@@ -2802,6 +2802,7 @@ class SettingsMenu(FluentWindow):
                     item.setSizeHint(QSize(item_width - spacing, self.item_height))
                 if event:
                     super().resizeEvent(event)
+                logger.debug(f"{self.width()}, {self.height()}, {self.spacing()}, {margins.left()}, {margins.right()}, {item_width}, {self.item_height}")
             
         self.table = UniformListWidget(parent=self.cfInterface)
         parent_layout.insertWidget(idx, self.table)
