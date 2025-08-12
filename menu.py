@@ -2785,7 +2785,7 @@ class SettingsMenu(FluentWindow):
                 self.setDragDropMode(ListWidget.NoDragDrop)
                 self.setDefaultDropAction(Qt.IgnoreAction)
 
-            def resizeEvent(self, event):
+            def resizeEvent(self, e):
                 logger.debug(f"UniformListWidget resizeEvent: {self.width()}, {self.height()}")
                 spacing = self.spacing()
                 logger.debug(f"{spacing}")
@@ -2808,7 +2808,7 @@ class SettingsMenu(FluentWindow):
                         logger.debug(f"Setting item {i} width to {item_width - spacing}")
                     item.setSizeHint(QSize(item_width - spacing, self.item_height))
                 if event:
-                    super().resizeEvent(event)
+                    super().resizeEvent(e)
                 logger.debug(f"{self.width()}, {self.height()}, {self.spacing()}, {margins.left()}, {margins.right()}, {item_width}, {self.item_height}")
             
         self.table = UniformListWidget(parent=self.cfInterface)
