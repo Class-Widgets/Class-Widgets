@@ -2807,7 +2807,7 @@ class SettingsMenu(FluentWindow):
                         widget.setFixedWidth(item_width - spacing)
                         logger.debug(f"Setting item {i} width to {item_width - spacing}")
                     item.setSizeHint(QSize(item_width - spacing, self.item_height))
-                if event:
+                if e:
                     super().resizeEvent(e)
                 logger.debug(f"{self.width()}, {self.height()}, {self.spacing()}, {margins.left()}, {margins.right()}, {item_width}, {self.item_height}")
             
