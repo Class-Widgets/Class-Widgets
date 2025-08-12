@@ -2706,7 +2706,6 @@ class SettingsMenu(FluentWindow):
         it.setSizeHint(QSize(self.table.min_item_width, self.table.item_height))
         self.table.addItem(it)
         self.table.setItemWidget(it, item_widget)
-        item_widget.setFixedWidth(self.table.gridSize().width())
         return item_widget
     
     def setup_configs_interface(self):  # 配置界面
@@ -2784,6 +2783,14 @@ class SettingsMenu(FluentWindow):
                 self.setDragEnabled(False)
                 self.setDragDropMode(ListWidget.NoDragDrop)
                 self.setDefaultDropAction(Qt.IgnoreAction)
+                self._initial_layout_done = False
+
+            def showEvent(self, event):
+                """重写 showEvent"""
+                super().showEvent(event)
+                if not self._initial_layout_done:
+                    self._initial_layout_done = True
+                    QTimer.singleShot(10, lambda: self.resizeEvent(None))
 
             def resizeEvent(self, event):
                 spacing = self.spacing()
@@ -2798,9 +2805,11 @@ class SettingsMenu(FluentWindow):
                     widget = self.itemWidget(item)
                     if widget:
                         widget.setFixedWidth(item_width - spacing)
+                        widget.updateGeometry()
                     item.setSizeHint(QSize(item_width - spacing, self.item_height))
                 if event:
                     super().resizeEvent(event)
+                self.update()
             
         self.table = UniformListWidget(parent=self.cfInterface)
         parent_layout.insertWidget(idx, self.table)
@@ -4352,7 +4361,7 @@ class SettingsMenu(FluentWindow):
         self.table.setCurrentRow(cur)
         
         self.table.currentRowChanged.connect(self.cf_change_file)
-        self.table.resizeEvent(None)
+        QTimer.singleShot(0, lambda: self.table.resizeEvent(None))
 
     def cf_new_config(self):
         try:
