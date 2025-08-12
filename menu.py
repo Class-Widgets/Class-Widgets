@@ -2786,6 +2786,7 @@ class SettingsMenu(FluentWindow):
                 self.setDefaultDropAction(Qt.IgnoreAction)
 
             def resizeEvent(self, event):
+                logger.debug(f"{self.width()}, {self.height()}")
                 spacing = self.spacing()
                 margins = self.contentsMargins()
                 available_width = self.width() - margins.left() - margins.right()
