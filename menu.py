@@ -2788,17 +2788,24 @@ class SettingsMenu(FluentWindow):
             def resizeEvent(self, event):
                 logger.debug(f"UniformListWidget resizeEvent: {self.width()}, {self.height()}")
                 spacing = self.spacing()
+                logger.debug(f"{spacing}")
                 margins = self.contentsMargins()
+                logger.debug(f"Margins: {margins.left()}, {margins.right()}")
                 available_width = self.width() - margins.left() - margins.right()
+                logger.debug(f"Available width: {available_width}")
                 n = max(1, available_width // (self.min_item_width + spacing))
+                logger.debug(f"Number of items per row: {n}")
                 item_width = (available_width - (n - 1) * spacing) // n
+                logger.debug(f"Calculated item width: {item_width}")
                 item_width = min(max(item_width, self.min_item_width), self.max_item_width)
+                logger.debug(f"Final item width: {item_width}")
                 self.setGridSize(QSize(item_width, self.item_height))
                 for i in range(self.count()):
                     item = self.item(i)
                     widget = self.itemWidget(item)
                     if widget:
                         widget.setFixedWidth(item_width - spacing)
+                        logger.debug(f"Setting item {i} width to {item_width - spacing}")
                     item.setSizeHint(QSize(item_width - spacing, self.item_height))
                 if event:
                     super().resizeEvent(event)
