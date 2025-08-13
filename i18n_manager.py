@@ -254,6 +254,8 @@ QApplication.setHighDpiScaleFactorRoundingPolicy(
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
 QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
 
+os.environ['QT_SCALE_FACTOR'] = config_center.read_conf('General', 'scale')
+
 app = QApplication(sys.argv)
 global_i18n_manager = I18nManager()
 global_i18n_manager.init_from_config()
