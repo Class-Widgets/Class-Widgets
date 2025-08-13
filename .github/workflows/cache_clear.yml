@@ -50,11 +50,11 @@ jobs:
           echo "::endgroup::"
           for cache_id in $cache_list; do
             echo "[DEBUG] 正在删除缓存 ID: $cache_id"
-            gh cache delete $cache_id --repo ${{ github.repository }}
+            gh cache delete "$cache_id" --repo ${{ github.repository }}
             if [ $? -eq 0 ]; then
-              echo "[DEBUG] 成功删除缓存: `$cache_id`"
+              echo "[DEBUG] 成功删除缓存: $cache_id"
             else
-              echo "[DEBUG] 删除ID为 `$cache_id` 的缓存时失败"
+              echo "[DEBUG] 删除ID为 $cache_id 的缓存时失败"
             fi
           done
         fi
@@ -91,7 +91,7 @@ jobs:
           for cache_id in $cache_list; do
             count=$((count + 1))
             echo "[DEBUG] 正在删除缓存: $cache_id (第 $count 个)"
-            gh cache delete $cache_id --repo ${{ github.repository }}
+            gh cache delete "$cache_id" --repo ${{ github.repository }}
             if [ $? -eq 0 ]; then
               echo "[DEBUG] 成功删除缓存: $cache_id"
             else
