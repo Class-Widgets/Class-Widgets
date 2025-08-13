@@ -4772,12 +4772,12 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
 （若您需要開啟多個實例，請於「設定」→「進階選項」中啟用「允許程式多開」）</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3412"/>
+        <location filename="../main.py" line="3411"/>
         <source>缩放系数过大</source>
         <translation>縮放係數過大</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3413"/>
+        <location filename="../main.py" line="3412"/>
         <source>当前缩放系数为 {scale_factor}%，可能导致显示异常。
 建议将缩放系数设置为 100% 到 180% 之间。</source>
         <translation>當前縮放係數為 {scale_factor}%，可能導致顯示異常。
@@ -4785,7 +4785,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     </message>
     <message>
         <location filename="../main.py" line="3385"/>
-        <location filename="../main.py" line="3414"/>
+        <location filename="../main.py" line="3413"/>
         <source>好</source>
         <translation>好</translation>
     </message>

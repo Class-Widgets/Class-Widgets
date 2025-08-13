@@ -4137,12 +4137,12 @@
 (若您需要打开多个实例，请在“设置”-&gt;“高级选项”中启用“允许程序多开”)</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3412"/>
+        <location filename="../main.py" line="3411"/>
         <source>缩放系数过大</source>
         <translation>缩放系数过大</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3413"/>
+        <location filename="../main.py" line="3412"/>
         <source>当前缩放系数为 {scale_factor}%，可能导致显示异常。
 建议将缩放系数设置为 100% 到 180% 之间。</source>
         <translation>当前缩放系数为 {scale_factor}%，可能导致显示异常。
@@ -4150,7 +4150,7 @@
     </message>
     <message>
         <location filename="../main.py" line="3385"/>
-        <location filename="../main.py" line="3414"/>
+        <location filename="../main.py" line="3413"/>
         <source>好</source>
         <translation>好</translation>
     </message>
