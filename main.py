@@ -3390,7 +3390,6 @@ if __name__ == '__main__':
                 sys.exit(0)
 
     scale_factor = float(config_center.read_conf('General', 'scale'))
-    os.environ['QT_SCALE_FACTOR'] = str(scale_factor)
     logger.info(f"当前缩放系数：{scale_factor * 100}%")
     app.setQuitOnLastWindowClosed(False)
     
