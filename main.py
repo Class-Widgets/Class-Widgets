@@ -1737,7 +1737,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.backgnd = self.findChild(QLabel, 'backgnd')
 
         stylesheet = self.backgnd.styleSheet()  # 应用圆角
-        updated_stylesheet = re.sub(r'border-radius:\d+px;', f'border-radius:{self.radius}px;', stylesheet)
+        updated_stylesheet = re.sub(r'border-radius:\s*\d+px', f'border-radius: {self.radius}', stylesheet)
         self.backgnd.setStyleSheet(updated_stylesheet)
 
         if path == 'widget-time.ui':  # 日期显示
