@@ -62,13 +62,10 @@ class I18nManager:
             for lang_code in completed_main:
                 if display_name := self._get_language_display_name(lang_code):
                     self.available_languages_view[lang_code] = display_name
-            all_theme_languages = set()
-            for theme_name, theme_languages in completed_themes.items():
-                all_theme_languages.update(theme_languages)
-            for lang_code in all_theme_languages:
+            theme_languages = completed_themes.get(config_center.read_conf('General', 'theme'), [])
+            for lang_code in theme_languages:
                 if display_name := self._get_language_display_name(lang_code):
                     self.available_languages_widgets[lang_code] = display_name
-
             logger.info(f"可用界面语言: {list(self.available_languages_view.keys())}")
             logger.info(f"可用组件语言: {list(self.available_languages_widgets.keys())}")
         except Exception as e:

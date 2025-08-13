@@ -3316,6 +3316,8 @@ def init() -> None:
     global theme, radius, mgr, screen_width, first_start, fw, was_floating_mode
     update_timer.remove_all_callbacks()
 
+    global_i18n_manager.scan_available_languages()
+
     theme = load_theme_config(config_center.read_conf('General', 'theme')).path.name # 主题
     logger.info(f'应用主题：{theme}')
 
