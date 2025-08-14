@@ -34,7 +34,7 @@
      <property name="text">
       <string>额外选项</string>
      </property>
-    </widget>
+    <property name="wordWrap"><bool>true</bool></property></widget>
    </item>
    <item>
     <widget class="QWidget" name="widget" native="true">
@@ -44,7 +44,7 @@
         <property name="text">
          <string>调休</string>
         </property>
-       </widget>
+       <property name="wordWrap"><bool>true</bool></property></widget>
       </item>
       <item>
        <widget class="CardWidget" name="CardWidget_2">
@@ -83,14 +83,14 @@
              <property name="text">
               <string>设置调休星期</string>
              </property>
-            </widget>
+            <property name="wordWrap"><bool>true</bool></property></widget>
            </item>
            <item>
             <widget class="CaptionLabel" name="CaptionLabel">
              <property name="text">
               <string>将替换当前调休日的课程表为选定星期</string>
              </property>
-            </widget>
+            <property name="wordWrap"><bool>true</bool></property></widget>
            </item>
           </layout>
          </item>
@@ -127,14 +127,14 @@
           <property name="text">
            <string>换课</string>
           </property>
-         </widget>
+         <property name="wordWrap"><bool>true</bool></property></widget>
         </item>
         <item>
          <widget class="CaptionLabel" name="CaptionLabel_3">
           <property name="text">
            <string>临时替换当天的课程，重启后失效</string>
           </property>
-         </widget>
+         <property name="wordWrap"><bool>true</bool></property></widget>
         </item>
        </layout>
       </item>
@@ -210,7 +210,7 @@
           <property name="alignment">
            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
           </property>
-         </widget>
+         <property name="wordWrap"><bool>true</bool></property></widget>
         </item>
         <item>
          <widget class="ComboBox" name="class_combo">
@@ -233,7 +233,7 @@
           <property name="text">
            <string>自定义课程</string>
           </property>
-         </widget>
+         <property name="wordWrap"><bool>true</bool></property></widget>
         </item>
         <item>
          <widget class="LineEdit" name="custom_class">
@@ -249,7 +249,7 @@
          </widget>
         </item>
         <item>
-         <widget class="ToolButton" name="set_button"/>
+         <widget class="ToolButton" name="set_button" />
         </item>
        </layout>
       </item>
@@ -279,7 +279,7 @@
        <property name="text">
         <string>*所有更改在重启后重置</string>
        </property>
-      </widget>
+      <property name="wordWrap"><bool>true</bool></property></widget>
      </item>
      <item>
       <widget class="HyperlinkButton" name="redirect_to_settings">
@@ -379,6 +379,6 @@
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
- <resources/>
- <connections/>
+ <resources />
+ <connections />
 </ui>

@@ -41,6 +41,9 @@
      <property name="text">
       <string>天气</string>
      </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item>
@@ -57,7 +60,7 @@
         <x>0</x>
         <y>0</y>
         <width>679</width>
-        <height>1170</height>
+        <height>1173</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -135,6 +138,9 @@
                  </property>
                  <property name="text">
                   <string>北京市 · 当前天气</string>
+                 </property>
+                 <property name="wordWrap">
+                  <bool>false</bool>
                  </property>
                 </widget>
                </item>
@@ -285,6 +291,9 @@
                <property name="text">
                 <string>-- °C</string>
                </property>
+               <property name="wordWrap">
+                <bool>false</bool>
+               </property>
               </widget>
              </item>
              <item>
@@ -329,6 +338,9 @@
                  <property name="text">
                   <string>大部晴朗</string>
                  </property>
+                 <property name="wordWrap">
+                  <bool>false</bool>
+                 </property>
                 </widget>
                </item>
                <item>
@@ -344,7 +356,7 @@
                   <string>体感温度: -- °C</string>
                  </property>
                  <property name="wordWrap">
-                  <bool>false</bool>
+                  <bool>true</bool>
                  </property>
                  <property name="lightColor" stdset="0">
                   <color alpha="150">
@@ -477,6 +489,9 @@ font-weight: bold;</string>
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
                       </property>
+                      <property name="wordWrap">
+                       <bool>true</bool>
+                      </property>
                      </widget>
                     </item>
                     <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
@@ -532,6 +547,9 @@ font-weight: bold;</string>
                       </property>
                       <property name="text">
                        <string>-- km/h</string>
+                      </property>
+                      <property name="wordWrap">
+                       <bool>false</bool>
                       </property>
                      </widget>
                     </item>
@@ -604,6 +622,9 @@ font-weight: bold;</string>
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
                       </property>
+                      <property name="wordWrap">
+                       <bool>true</bool>
+                      </property>
                      </widget>
                     </item>
                     <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
@@ -662,6 +683,9 @@ font-weight: bold;</string>
                       </property>
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
+                      </property>
+                      <property name="wordWrap">
+                       <bool>false</bool>
                       </property>
                      </widget>
                     </item>
@@ -734,6 +758,9 @@ font-weight: bold;</string>
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
                       </property>
+                      <property name="wordWrap">
+                       <bool>true</bool>
+                      </property>
                      </widget>
                     </item>
                     <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
@@ -792,6 +819,9 @@ font-weight: bold;</string>
                       </property>
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
+                      </property>
+                      <property name="wordWrap">
+                       <bool>false</bool>
                       </property>
                      </widget>
                     </item>
@@ -864,6 +894,9 @@ font-weight: bold;</string>
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
                       </property>
+                      <property name="wordWrap">
+                       <bool>true</bool>
+                      </property>
                      </widget>
                     </item>
                     <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
@@ -923,6 +956,9 @@ font-weight: bold;</string>
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
                       </property>
+                      <property name="wordWrap">
+                       <bool>false</bool>
+                      </property>
                      </widget>
                     </item>
                    </layout>
@@ -947,6 +983,9 @@ font-weight: bold;</string>
           <widget class="SubtitleLabel" name="alerts_title_label">
            <property name="text">
             <string>天气预警</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
            </property>
            <property name="pixelFontSize" stdset="0">
             <number>18</number>
@@ -994,6 +1033,9 @@ font-weight: bold;</string>
            <property name="text">
             <string>天气源</string>
            </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
            <property name="pixelFontSize" stdset="0">
             <number>18</number>
            </property>
@@ -1030,12 +1072,18 @@ font-weight: bold;</string>
                 <property name="text">
                  <string>设置天气源</string>
                 </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_13">
                 <property name="text">
                  <string>将会影响“天气”小组件的天气数据源</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
                 </property>
                 <property name="lightColor" stdset="0">
                  <color alpha="150">
@@ -1099,12 +1147,18 @@ font-weight: bold;</string>
                 <property name="text">
                  <string>选择城市</string>
                 </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_9">
                 <property name="text">
                  <string>将会用于获得天气数据</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
                 </property>
                 <property name="lightColor" stdset="0">
                  <color alpha="150">
@@ -1170,6 +1224,9 @@ font-weight: bold;</string>
                <widget class="StrongBodyLabel" name="StrongBodyLabel_15">
                 <property name="text">
                  <string>天气源 API Key</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
@@ -1249,6 +1306,9 @@ font-weight: bold;</string>
                 <property name="text">
                  <string>排除的气象预警</string>
                 </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
               <item>
@@ -1315,6 +1375,9 @@ font-weight: bold;</string>
            <property name="text">
             <string>显示</string>
            </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
           </widget>
          </item>
          <item>
@@ -1353,6 +1416,9 @@ font-weight: bold;</string>
                 </property>
                 <property name="text">
                  <string>计时自动刷新</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
@@ -1434,6 +1500,9 @@ font-weight: bold;</string>
                 </property>
                 <property name="text">
                  <string>显示温度单位</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>

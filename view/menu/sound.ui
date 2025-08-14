@@ -40,7 +40,7 @@
      <property name="text">
       <string>上下课提醒</string>
      </property>
-    </widget>
+    <property name="wordWrap"><bool>true</bool></property></widget>
    </item>
    <item>
     <widget class="SmoothScrollArea" name="sd_scroll">
@@ -102,7 +102,7 @@
                 <property name="text">
                  <string>启用上课提醒</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_5">
@@ -180,7 +180,7 @@
                 <property name="text">
                  <string>启用下课提醒</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_7">
@@ -258,7 +258,7 @@
                 <property name="text">
                  <string>启用放学提醒</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_10">
@@ -336,7 +336,7 @@
                 <property name="text">
                  <string>启用预备铃</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_8">
@@ -427,7 +427,7 @@
                 <property name="text">
                  <string>TTS语音播报</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_13">
@@ -448,7 +448,7 @@
                   <blue>255</blue>
                  </color>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
              </layout>
             </item>
@@ -493,7 +493,7 @@
                 <property name="text">
                  <string>音量</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_6">
@@ -514,7 +514,7 @@
                   <blue>255</blue>
                  </color>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
              </layout>
             </item>
@@ -577,7 +577,7 @@
                 <property name="text">
                  <string>是否置顶</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_12">
@@ -598,7 +598,7 @@
                   <blue>255</blue>
                  </color>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
              </layout>
             </item>
@@ -652,7 +652,7 @@
                 <property name="text">
                  <string>启用强调特效</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_9">
@@ -836,6 +836,6 @@
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
- <resources/>
- <connections/>
+ <resources />
+ <connections />
 </ui>

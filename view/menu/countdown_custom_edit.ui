@@ -34,7 +34,7 @@
      <property name="text">
       <string>自定义倒计时编辑</string>
      </property>
-    </widget>
+    <property name="wordWrap"><bool>true</bool></property></widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -43,7 +43,7 @@
        <property name="text">
         <string>自定义倒计时</string>
        </property>
-      </widget>
+      <property name="wordWrap"><bool>true</bool></property></widget>
      </item>
     </layout>
    </item>
@@ -89,7 +89,7 @@
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
-      </widget>
+      <property name="wordWrap"><bool>true</bool></property></widget>
      </item>
      <item>
       <widget class="LineEdit" name="text_cd">
@@ -112,7 +112,7 @@
        <property name="text">
         <string>选择日期</string>
        </property>
-      </widget>
+      <property name="wordWrap"><bool>true</bool></property></widget>
      </item>
      <item>
       <widget class="CalendarPicker" name="set_countdown_date">
@@ -134,13 +134,13 @@
       </widget>
      </item>
      <item>
-      <widget class="ToolButton" name="add_button_cd"/>
+      <widget class="ToolButton" name="add_button_cd" />
      </item>
      <item>
-      <widget class="ToolButton" name="set_button_cd"/>
+      <widget class="ToolButton" name="set_button_cd" />
      </item>
      <item>
-      <widget class="ToolButton" name="clear_button_cd"/>
+      <widget class="ToolButton" name="clear_button_cd" />
      </item>
     </layout>
    </item>
@@ -160,7 +160,7 @@
        <property name="text">
         <string>倒计时模式</string>
        </property>
-      </widget>
+      <property name="wordWrap"><bool>true</bool></property></widget>
      </item>
      <item>
       <widget class="ComboBox" name="countdown_mode">
@@ -183,7 +183,7 @@
        <property name="text">
         <string>轮播间隔（秒）</string>
        </property>
-      </widget>
+      <property name="wordWrap"><bool>true</bool></property></widget>
      </item>
      <item>
       <widget class="SpinBox" name="countdown_upd_cd">
@@ -291,6 +291,6 @@
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
- <resources/>
- <connections/>
+ <resources />
+ <connections />
 </ui>

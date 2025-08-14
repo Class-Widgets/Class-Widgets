@@ -34,7 +34,7 @@
      <property name="text">
       <string>关于</string>
      </property>
-    </widget>
+    <property name="wordWrap"><bool>true</bool></property></widget>
    </item>
    <item>
     <widget class="SmoothScrollArea" name="ab_scroll">
@@ -91,10 +91,10 @@
               </size>
              </property>
              <property name="styleSheet">
-              <string notr="true"/>
+              <string notr="true" />
              </property>
              <property name="text">
-              <string/>
+              <string />
              </property>
              <property name="pixmap">
               <pixmap>../../img/Logo.png</pixmap>
@@ -120,7 +120,7 @@
            <property name="alignment">
             <set>Qt::AlignCenter</set>
            </property>
-          </widget>
+          <property name="wordWrap"><bool>true</bool></property></widget>
          </item>
          <item>
           <widget class="CaptionLabel" name="CaptionLabel_3">
@@ -203,7 +203,7 @@
                 <property name="scaledContents">
                  <bool>true</bool>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <spacer name="horizontalSpacer">
@@ -231,7 +231,7 @@
                   <property name="text">
                    <string>版本号:获取失败！</string>
                   </property>
-                 </widget>
+                 <property name="wordWrap"><bool>true</bool></property></widget>
                 </item>
                 <item>
                  <spacer name="verticalSpacer_3">
@@ -258,14 +258,14 @@
                       <property name="text">
                        <string>编译日期</string>
                       </property>
-                     </widget>
+                     <property name="wordWrap"><bool>true</bool></property></widget>
                     </item>
                     <item>
                      <widget class="CaptionLabel" name="build_date_label">
                       <property name="text">
                        <string>获取失败！</string>
                       </property>
-                     </widget>
+                     <property name="wordWrap"><bool>true</bool></property></widget>
                     </item>
                    </layout>
                   </item>
@@ -295,14 +295,14 @@
                       <property name="text">
                        <string>Build Commit</string>
                       </property>
-                     </widget>
+                     <property name="wordWrap"><bool>true</bool></property></widget>
                     </item>
                     <item>
                      <widget class="CaptionLabel" name="build_commit_label">
                       <property name="text">
                        <string>获取失败！</string>
                       </property>
-                     </widget>
+                     <property name="wordWrap"><bool>true</bool></property></widget>
                     </item>
                    </layout>
                   </item>
@@ -332,14 +332,14 @@
                       <property name="text">
                        <string>Build UUID</string>
                       </property>
-                     </widget>
+                     <property name="wordWrap"><bool>true</bool></property></widget>
                     </item>
                     <item>
                      <widget class="CaptionLabel" name="build_uuid_label">
                       <property name="text">
                        <string>获取失败！</string>
                       </property>
-                     </widget>
+                     <property name="wordWrap"><bool>true</bool></property></widget>
                     </item>
                    </layout>
                   </item>
@@ -546,7 +546,7 @@
              <property name="text">
               <string>更新</string>
              </property>
-            </widget>
+            <property name="wordWrap"><bool>true</bool></property></widget>
            </item>
           </layout>
          </item>
@@ -581,7 +581,7 @@
                 <property name="text">
                  <string>选择更新通道</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_5">
@@ -659,7 +659,7 @@
                 <property name="text">
                  <string>启动 Class Widgets 时自动检查更新</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_12">
@@ -741,7 +741,7 @@
        <blue>185</blue>
       </color>
      </property>
-    </widget>
+    <property name="wordWrap"><bool>true</bool></property></widget>
    </item>
   </layout>
  </widget>
@@ -799,6 +799,6 @@
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
- <resources/>
- <connections/>
+ <resources />
+ <connections />
 </ui>

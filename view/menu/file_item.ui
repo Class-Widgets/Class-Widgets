@@ -91,7 +91,7 @@
           <property name="alignment">
            <set>Qt::AlignLeft|Qt::AlignVCenter</set>
           </property>
-         </widget>
+         <property name="wordWrap"><bool>true</bool></property></widget>
         </item>
         <item>
          <widget class="BodyLabel" name="file_path">
@@ -170,6 +170,6 @@
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
- <resources/>
- <connections/>
+ <resources />
+ <connections />
 </ui>

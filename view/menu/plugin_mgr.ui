@@ -34,7 +34,7 @@
      <property name="text">
       <string>插件</string>
      </property>
-    </widget>
+    <property name="wordWrap"><bool>true</bool></property></widget>
    </item>
    <item>
     <widget class="SmoothScrollArea" name="pm_scroll">
@@ -66,7 +66,7 @@
              <property name="text">
               <string>插件管理</string>
              </property>
-            </widget>
+            <property name="wordWrap"><bool>true</bool></property></widget>
            </item>
            <item>
             <widget class="CaptionLabel" name="plugin_count_label">
@@ -90,7 +90,7 @@
                <blue>210</blue>
               </color>
              </property>
-            </widget>
+            <property name="wordWrap"><bool>true</bool></property></widget>
            </item>
            <item>
             <widget class="CaptionLabel" name="CaptionLabel_3">
@@ -152,7 +152,7 @@
                 <property name="text">
                  <string>在“插件广场”中检查更新</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_9">
@@ -262,7 +262,7 @@
                <string>刷新插件列表</string>
               </property>
               <property name="text">
-               <string/>
+               <string />
               </property>
              </widget>
             </item>
@@ -381,7 +381,7 @@ FluentLabelBase{color:#7d000000}</string>
              <property name="pixelFontSize" stdset="0">
               <number>14</number>
              </property>
-            </widget>
+            <property name="wordWrap"><bool>true</bool></property></widget>
            </item>
           </layout>
          </item>
@@ -397,7 +397,7 @@ FluentLabelBase{color:#7d000000}</string>
            <property name="text">
             <string>添加插件</string>
            </property>
-          </widget>
+          <property name="wordWrap"><bool>true</bool></property></widget>
          </item>
          <item>
           <widget class="CardWidget" name="CardWidget_8">
@@ -430,7 +430,7 @@ FluentLabelBase{color:#7d000000}</string>
                 <property name="text">
                  <string>管理插件文件夹</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_7">
@@ -505,7 +505,7 @@ FluentLabelBase{color:#7d000000}</string>
                 <property name="text">
                  <string>在“插件广场”中寻找</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_6">
@@ -580,7 +580,7 @@ FluentLabelBase{color:#7d000000}</string>
                 <property name="text">
                  <string>导入本地插件</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_import">
@@ -636,7 +636,7 @@ FluentLabelBase{color:#7d000000}</string>
            <property name="text">
             <string>其他</string>
            </property>
-          </widget>
+          <property name="wordWrap"><bool>true</bool></property></widget>
          </item>
          <item>
           <widget class="CardWidget" name="CardWidget_2">
@@ -669,7 +669,7 @@ FluentLabelBase{color:#7d000000}</string>
                 <property name="text">
                  <string>安全模式加载插件</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_4">
@@ -690,7 +690,7 @@ FluentLabelBase{color:#7d000000}</string>
                   <blue>255</blue>
                  </color>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
              </layout>
             </item>
@@ -747,7 +747,7 @@ FluentLabelBase{color:#7d000000}</string>
                 <property name="text">
                  <string>插件自动化执行延迟</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_8">
@@ -878,6 +878,6 @@ FluentLabelBase{color:#7d000000}</string>
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
- <resources/>
- <connections/>
+ <resources />
+ <connections />
 </ui>

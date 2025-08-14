@@ -40,7 +40,7 @@
      <property name="text">
       <string>配置文件</string>
      </property>
-    </widget>
+    <property name="wordWrap"><bool>true</bool></property></widget>
    </item>
    <item>
     <widget class="SmoothScrollArea" name="SmoothScrollArea">
@@ -133,7 +133,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="ListWidget" name="config_table"/>
+        <widget class="ListWidget" name="config_table" />
        </item>
       </layout>
      </widget>
@@ -169,6 +169,6 @@
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
- <resources/>
- <connections/>
+ <resources />
+ <connections />
 </ui>

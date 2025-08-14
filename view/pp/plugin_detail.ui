@@ -84,7 +84,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="TransparentToolButton" name="closeButton"/>
+          <widget class="TransparentToolButton" name="closeButton" />
          </item>
         </layout>
        </item>
@@ -113,7 +113,7 @@
              <height>128</height>
             </size>
            </property>
-          </widget>
+          <property name="wordWrap"><bool>true</bool></property></widget>
          </item>
          <item>
           <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0">
@@ -160,7 +160,7 @@
                  <blue>153</blue>
                 </color>
                </property>
-              </widget>
+              <property name="wordWrap"><bool>true</bool></property></widget>
              </item>
             </layout>
            </item>
@@ -201,7 +201,7 @@
                  <blue>153</blue>
                 </color>
                </property>
-              </widget>
+              <property name="wordWrap"><bool>true</bool></property></widget>
              </item>
              <item>
               <widget class="HyperlinkLabel" name="tagButton">
@@ -307,7 +307,7 @@
               </widget>
              </item>
              <item>
-              <widget class="TransparentToolButton" name="openGitHub"/>
+              <widget class="TransparentToolButton" name="openGitHub" />
              </item>
              <item>
               <spacer name="horizontalSpacer_3">
@@ -400,6 +400,6 @@
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
- <resources/>
- <connections/>
+ <resources />
+ <connections />
 </ui>

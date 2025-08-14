@@ -34,7 +34,7 @@
      <property name="text">
       <string>课程表</string>
      </property>
-    </widget>
+    <property name="wordWrap"><bool>true</bool></property></widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -49,10 +49,10 @@
        <property name="text">
         <string>预览</string>
        </property>
-      </widget>
+      <property name="wordWrap"><bool>true</bool></property></widget>
      </item>
      <item>
-      <widget class="ComboBox" name="pre_week_type_combo"/>
+      <widget class="ComboBox" name="pre_week_type_combo" />
      </item>
     </layout>
    </item>
@@ -216,6 +216,6 @@ QTableCornerButton::section:pressed {
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
- <resources/>
- <connections/>
+ <resources />
+ <connections />
 </ui>
