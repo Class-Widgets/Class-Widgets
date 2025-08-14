@@ -1282,7 +1282,7 @@ class SettingsMenu(FluentWindow):
                 self.weather_refresh_picker.setRange(5, 120)  # 5分钟到120分钟
                 refresh_interval = int(config_center.read_conf('Weather', 'refresh_interval'))
                 self.weather_refresh_picker.setValue(refresh_interval)  # 从配置读取
-                self.weather_refresh_picker.setSuffix(' 分钟')
+                self.weather_refresh_picker.setSuffix(self.tr(' 分钟'))
                 self.weather_refresh_picker.valueChanged.connect(self._on_refresh_interval_changed)
             if self.weather_temperat_unit:
                 self.weather_temperat_unit.addItems(list_.temperature_units)
@@ -1433,9 +1433,9 @@ class SettingsMenu(FluentWindow):
                         city_name = ''
             if self.city_location_label:
                 if city_name:
-                    self.city_location_label.setText(f"{city_name} · 当前天气")
+                    self.city_location_label.setText(self.tr("{city_name} · 当前天气").format(city_name=city_name))
                 else:
-                    self.city_location_label.setText("当前天气")
+                    self.city_location_label.setText(self.tr("当前天气"))
             update_time_str = wd.get_weather_data('updateTime', weather_data)
             if update_time_str:
                 try:
@@ -1463,7 +1463,8 @@ class SettingsMenu(FluentWindow):
                 display_datetime = datetime.datetime.now().strftime("%m/%d/%Y %H:%M")
             
             if self.weather_update_time:
-                self.weather_update_time.setText(f"最后更新于 {display_datetime}")
+                self.weather_update_time.setText(self.tr("最后更新于 {display_datetime}").format(display_datetime=display_datetime))
+
             temp_data = wd.get_weather_data('temp', weather_data)
             if self.current_temperature and temp_data and temp_data.lower() != 'none':
                 self.current_temperature.setText(temp_data)
@@ -1476,9 +1477,9 @@ class SettingsMenu(FluentWindow):
                     self.weather_description.setText(description)
             feels_like_data = wd.get_weather_data('feels_like', weather_data)
             if self.feels_like_temperature and feels_like_data and feels_like_data.lower() != 'none':
-                self.feels_like_temperature.setText(f"体感温度: {feels_like_data}")
+                self.feels_like_temperature.setText(self.tr("体感温度: {feels_like_data}").format(feels_like_data=feels_like_data))
             elif self.feels_like_temperature:
-                self.feels_like_temperature.setText("体感温度: --°")
+                self.feels_like_temperature.setText(self.tr("体感温度: --°"))
             if self.weather_icon_label and icon_code:
                 icon_data = wd.get_weather_icon_by_code(icon_code)
                 self._update_weather_icon(icon_data)
