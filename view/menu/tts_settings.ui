@@ -85,7 +85,7 @@
              <property name="text">
               <string>TTS语音设置</string>
              </property>
-            </widget>
+            <property name="wordWrap"><bool>true</bool></property></widget>
            </item>
            <item>
             <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -129,7 +129,7 @@
                     <property name="text">
                      <string>使用TTS语音</string>
                     </property>
-                   </widget>
+                   <property name="wordWrap"><bool>true</bool></property></widget>
                   </item>
                   <item>
                    <widget class="CaptionLabel" name="CaptionLabel_13">
@@ -156,7 +156,7 @@
                       <blue>255</blue>
                      </color>
                     </property>
-                   </widget>
+                   <property name="wordWrap"><bool>true</bool></property></widget>
                   </item>
                  </layout>
                 </item>
@@ -207,7 +207,7 @@
                     <property name="text">
                      <string>TTS生成引擎</string>
                     </property>
-                   </widget>
+                   <property name="wordWrap"><bool>true</bool></property></widget>
                   </item>
                   <item>
                    <widget class="CaptionLabel" name="CaptionLabel_8">
@@ -228,7 +228,7 @@
                       <blue>255</blue>
                      </color>
                     </property>
-                   </widget>
+                   <property name="wordWrap"><bool>true</bool></property></widget>
                   </item>
                   <item>
                    <spacer name="verticalSpacer_for_note">
@@ -318,7 +318,7 @@
                     <property name="text">
                      <string>TTS生成人</string>
                     </property>
-                   </widget>
+                   <property name="wordWrap"><bool>true</bool></property></widget>
                   </item>
                   <item>
                    <widget class="CaptionLabel" name="CaptionLabel_7">
@@ -339,7 +339,7 @@
                       <blue>255</blue>
                      </color>
                     </property>
-                   </widget>
+                   <property name="wordWrap"><bool>true</bool></property></widget>
                   </item>
                  </layout>
                 </item>
@@ -412,7 +412,7 @@
                     <property name="text">
                      <string>语速调节</string>
                     </property>
-                   </widget>
+                   <property name="wordWrap"><bool>true</bool></property></widget>
                   </item>
                   <item>
                    <widget class="CaptionLabel" name="CaptionLabel_6">
@@ -433,7 +433,7 @@
                       <blue>255</blue>
                      </color>
                     </property>
-                   </widget>
+                   <property name="wordWrap"><bool>true</bool></property></widget>
                   </item>
                  </layout>
                 </item>
@@ -464,7 +464,7 @@
                <property name="text">
                 <string>自定义播报文本</string>
                </property>
-              </widget>
+              <property name="wordWrap"><bool>true</bool></property></widget>
              </item>
              <item>
               <widget class="CardWidget" name="CardWidget_11">
@@ -503,7 +503,7 @@
                     <property name="text">
                      <string>活动开始时:</string>
                     </property>
-                   </widget>
+                   <property name="wordWrap"><bool>true</bool></property></widget>
                   </item>
                   <item>
                    <widget class="LineEdit" name="text_attend_class">
@@ -554,7 +554,7 @@
                     <property name="text">
                      <string>即将开始时 (预备铃):</string>
                     </property>
-                   </widget>
+                   <property name="wordWrap"><bool>true</bool></property></widget>
                   </item>
                   <item>
                    <widget class="LineEdit" name="text_prepare_class">
@@ -605,7 +605,7 @@
                     <property name="text">
                      <string>活动结束时:</string>
                     </property>
-                   </widget>
+                   <property name="wordWrap"><bool>true</bool></property></widget>
                   </item>
                   <item>
                    <widget class="LineEdit" name="text_finish_class">
@@ -656,7 +656,7 @@
                     <property name="text">
                      <string>放学时:</string>
                     </property>
-                   </widget>
+                   <property name="wordWrap"><bool>true</bool></property></widget>
                   </item>
                   <item>
                    <widget class="LineEdit" name="text_after_school">
@@ -707,7 +707,7 @@
                     <property name="text">
                      <string>其他通知 (用于插件或手动触发):</string>
                     </property>
-                   </widget>
+                   <property name="wordWrap"><bool>true</bool></property></widget>
                   </item>
                   <item>
                    <widget class="LineEdit" name="text_notification">
@@ -881,6 +881,6 @@
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
- <resources/>
- <connections/>
+ <resources />
+ <connections />
 </ui>

@@ -40,6 +40,9 @@
      <property name="text">
       <string>高级选项</string>
      </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item>
@@ -56,7 +59,7 @@
         <x>0</x>
         <y>0</y>
         <width>717</width>
-        <height>2240</height>
+        <height>2243</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -69,6 +72,9 @@
           <widget class="SubtitleLabel" name="SubtitleLabel_3">
            <property name="text">
             <string>课程</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -109,6 +115,9 @@
                 <property name="text">
                  <string>启用 单/双 周课表</string>
                 </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
               <item>
@@ -117,7 +126,7 @@
                  <string>若要启用此选项，需设定开学日期以计算</string>
                 </property>
                 <property name="wordWrap">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="lightColor" stdset="0">
                  <color alpha="150">
@@ -187,6 +196,9 @@
                 <property name="text">
                  <string>选取开学日期</string>
                 </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
               <item>
@@ -195,7 +207,7 @@
                  <string>将用于计算单/双周，开学日期需设置为开学第一周第一天（即周一）</string>
                 </property>
                 <property name="wordWrap">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="lightColor" stdset="0">
                  <color alpha="150">
@@ -237,6 +249,9 @@
            <property name="text">
             <string>时间</string>
            </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
           </widget>
          </item>
          <item>
@@ -270,6 +285,9 @@
                 <property name="text">
                  <string>时差偏移</string>
                 </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
               <item>
@@ -278,7 +296,7 @@
                  <string>修正系统时间与学校铃声的时差，学校铃声慢于系统时间为正值，反之为负</string>
                 </property>
                 <property name="wordWrap">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="lightColor" stdset="0">
                  <color alpha="150">
@@ -348,6 +366,9 @@
                 <property name="text">
                  <string>时间获得方法</string>
                 </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
               <item>
@@ -356,7 +377,7 @@
                  <string>选择时间获得方法</string>
                 </property>
                 <property name="wordWrap">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="lightColor" stdset="0">
                  <color alpha="150">
@@ -456,6 +477,9 @@
                    <property name="text">
                     <string>NTP服务器</string>
                    </property>
+                   <property name="wordWrap">
+                    <bool>true</bool>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -464,7 +488,7 @@
                     <string>使用url链接NTP服务器同步时间</string>
                    </property>
                    <property name="wordWrap">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="lightColor" stdset="0">
                     <color alpha="150">
@@ -543,6 +567,9 @@
                    <property name="text">
                     <string>NTP同步使用的时区</string>
                    </property>
+                   <property name="wordWrap">
+                    <bool>true</bool>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -551,7 +578,7 @@
                     <string>NTP同步时应使用的时区</string>
                    </property>
                    <property name="wordWrap">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="lightColor" stdset="0">
                     <color alpha="150">
@@ -621,6 +648,9 @@
                    <property name="text">
                     <string>NTP自动校准</string>
                    </property>
+                   <property name="wordWrap">
+                    <bool>true</bool>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -632,7 +662,7 @@
                     <string>上次校准: 1145年1月1日 - 11:45:14</string>
                    </property>
                    <property name="wordWrap">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="lightColor" stdset="0">
                     <color alpha="150">
@@ -656,7 +686,7 @@
                     <string>按照设定的校准分钟数自动执行校准</string>
                    </property>
                    <property name="wordWrap">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="lightColor" stdset="0">
                     <color alpha="150">
@@ -704,12 +734,18 @@
            <property name="text">
             <string>外观</string>
            </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
           </widget>
          </item>
          <item>
           <widget class="StrongBodyLabel" name="StrongBodyLabel_20">
            <property name="text">
             <string>界面文字</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -719,7 +755,7 @@
             <string>在此处您可以修改界面所显示的语言</string>
            </property>
            <property name="wordWrap">
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <property name="lightColor" stdset="0">
             <color alpha="150">
@@ -777,6 +813,9 @@
                 <property name="text">
                  <string>界面语言</string>
                 </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
               <item>
@@ -816,6 +855,9 @@
            <property name="text">
             <string>隐藏方式</string>
            </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
           </widget>
          </item>
          <item>
@@ -824,7 +866,7 @@
             <string>隐藏方式将会修改单击隐藏和自动隐藏的行为，可按需更改（重启后生效）</string>
            </property>
            <property name="wordWrap">
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <property name="lightColor" stdset="0">
             <color alpha="150">
@@ -884,6 +926,9 @@
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
                </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
               </widget>
              </item>
              <item>
@@ -934,6 +979,9 @@
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -986,6 +1034,9 @@
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
                </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
               </widget>
              </item>
              <item>
@@ -1009,6 +1060,9 @@
           <widget class="StrongBodyLabel" name="StrongBodyLabel_13">
            <property name="text">
             <string>其他</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -1052,6 +1106,9 @@
                 <property name="text">
                  <string>自动隐藏</string>
                 </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
               <item>
@@ -1060,7 +1117,7 @@
                  <string>选择你需要的自动隐藏方式</string>
                 </property>
                 <property name="wordWrap">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="lightColor" stdset="0">
                  <color alpha="150">
@@ -1133,6 +1190,9 @@
                 <property name="text">
                  <string>特定课程不自动隐藏</string>
                 </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
               <item>
@@ -1141,7 +1201,7 @@
                  <string>若启用，在遇到下方设置的特定课程时不会自动隐藏，以英文逗号分隔</string>
                 </property>
                 <property name="wordWrap">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="lightColor" stdset="0">
                  <color alpha="150">
@@ -1214,6 +1274,9 @@
                 <property name="text">
                  <string>不自动隐藏的课程</string>
                 </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
               <item>
@@ -1222,7 +1285,7 @@
                  <string>配合 特定课程不自动隐藏 使用</string>
                 </property>
                 <property name="wordWrap">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="lightColor" stdset="0">
                  <color alpha="150">
@@ -1300,6 +1363,9 @@
                   <property name="text">
                    <string>允许点击或触摸小组件</string>
                   </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
                  </widget>
                 </item>
                 <item>
@@ -1309,7 +1375,7 @@
 禁用时：点击小组件会像不存在一样, 直接穿透到后面的窗口</string>
                   </property>
                   <property name="wordWrap">
-                   <bool>false</bool>
+                   <bool>true</bool>
                   </property>
                   <property name="lightColor" stdset="0">
                    <color alpha="150">
@@ -1389,6 +1455,9 @@
                   <property name="text">
                    <string>自定义缩放</string>
                   </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
                  </widget>
                 </item>
                 <item>
@@ -1398,7 +1467,7 @@
 *不建议使用 180% 以上的值，这可能会导致显示异常</string>
                   </property>
                   <property name="wordWrap">
-                   <bool>false</bool>
+                   <bool>true</bool>
                   </property>
                   <property name="lightColor" stdset="0">
                    <color alpha="150">
@@ -1493,6 +1562,9 @@
                 <property name="text">
                  <string>置顶/置底小组件</string>
                 </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
               <item>
@@ -1508,7 +1580,7 @@
 *开启“置底”功能时，将会禁用“单击隐藏小组件”</string>
                 </property>
                 <property name="wordWrap">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="lightColor" stdset="0">
                  <color alpha="150">
@@ -1565,6 +1637,9 @@
                 <property name="text">
                  <string>边距大小</string>
                 </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
               <item>
@@ -1573,7 +1648,7 @@
                  <string>设定桌面组件离屏幕边缘的大小（单位：px）</string>
                 </property>
                 <property name="wordWrap">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="lightColor" stdset="0">
                  <color alpha="150">
@@ -1624,6 +1699,9 @@
            <property name="text">
             <string>启动</string>
            </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
           </widget>
          </item>
          <item>
@@ -1658,6 +1736,9 @@
               <property name="text">
                <string>开机自启动</string>
               </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
              </widget>
             </item>
             <item>
@@ -1684,6 +1765,9 @@
           <widget class="SubtitleLabel" name="SubtitleLabel_4">
            <property name="text">
             <string>其他</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -1723,6 +1807,9 @@
                 </property>
                 <property name="text">
                  <string>安全模式</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
@@ -1802,12 +1889,18 @@
                 <property name="text">
                  <string>禁用日志</string>
                 </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_10">
                 <property name="text">
                  <string>若启用，应用将不再会保存日志到本地</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
                 </property>
                 <property name="lightColor" stdset="0">
                  <color alpha="150">
@@ -1877,12 +1970,18 @@
                 <property name="text">
                  <string>清空日志</string>
                 </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_11">
                 <property name="text">
                  <string>将会清空 软件根目录下log. 的所有内容</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
                 </property>
                 <property name="lightColor" stdset="0">
                  <color alpha="150">
@@ -1949,12 +2048,18 @@
                 <property name="text">
                  <string>允许程序多开</string>
                 </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_9">
                 <property name="text">
                  <string>程序多开后可能出现未知的问题，请谨慎使用</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
                 </property>
                 <property name="lightColor" stdset="0">
                  <color alpha="150">

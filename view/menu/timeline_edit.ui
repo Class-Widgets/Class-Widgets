@@ -34,7 +34,7 @@
      <property name="text">
       <string>时间线编辑</string>
      </property>
-    </widget>
+    <property name="wordWrap"><bool>true</bool></property></widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -54,7 +54,7 @@
          <property name="text">
           <string>节点</string>
          </property>
-        </widget>
+        <property name="wordWrap"><bool>true</bool></property></widget>
        </item>
        <item>
         <widget class="CaptionLabel" name="tips_1">
@@ -118,7 +118,7 @@ FluentLabelBase{color:#7d000000}</string>
          <property name="pixelFontSize" stdset="0">
           <number>14</number>
          </property>
-        </widget>
+        <property name="wordWrap"><bool>true</bool></property></widget>
        </item>
        <item>
         <widget class="ListWidget" name="part_list">
@@ -164,7 +164,7 @@ FluentLabelBase{color:#7d000000}</string>
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
            </property>
-          </widget>
+          <property name="wordWrap"><bool>true</bool></property></widget>
          </item>
          <item>
           <widget class="EditableComboBox" name="name_part_combo">
@@ -187,7 +187,7 @@ FluentLabelBase{color:#7d000000}</string>
            <property name="text">
             <string>类型</string>
            </property>
-          </widget>
+          <property name="wordWrap"><bool>true</bool></property></widget>
          </item>
          <item>
           <widget class="ComboBox" name="part_type">
@@ -217,7 +217,7 @@ FluentLabelBase{color:#7d000000}</string>
            <property name="text">
             <string>开始时间</string>
            </property>
-          </widget>
+          <property name="wordWrap"><bool>true</bool></property></widget>
          </item>
          <item>
           <widget class="TimeEdit" name="part_time">
@@ -249,20 +249,20 @@ FluentLabelBase{color:#7d000000}</string>
           </widget>
          </item>
          <item>
-          <widget class="ToolButton" name="add_part_button"/>
+          <widget class="ToolButton" name="add_part_button" />
          </item>
          <item>
-          <widget class="ToolButton" name="edit_part_button"/>
+          <widget class="ToolButton" name="edit_part_button" />
          </item>
          <item>
-          <widget class="ToolButton" name="delete_part_button"/>
+          <widget class="ToolButton" name="delete_part_button" />
          </item>
         </layout>
        </item>
       </layout>
      </item>
      <item>
-      <widget class="VerticalSeparator" name="VerticalSeparator"/>
+      <widget class="VerticalSeparator" name="VerticalSeparator" />
      </item>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -273,7 +273,7 @@ FluentLabelBase{color:#7d000000}</string>
            <property name="text">
             <string>时间线</string>
            </property>
-          </widget>
+          <property name="wordWrap"><bool>true</bool></property></widget>
          </item>
          <item>
           <widget class="ComboBox" name="select_timeline">
@@ -349,7 +349,7 @@ FluentLabelBase{color:#7d000000}</string>
          <property name="pixelFontSize" stdset="0">
           <number>14</number>
          </property>
-        </widget>
+        <property name="wordWrap"><bool>true</bool></property></widget>
        </item>
        <item>
         <widget class="ListWidget" name="timeline_list">
@@ -395,7 +395,7 @@ FluentLabelBase{color:#7d000000}</string>
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
            </property>
-          </widget>
+          <property name="wordWrap"><bool>true</bool></property></widget>
          </item>
          <item>
           <widget class="ComboBox" name="class_activity">
@@ -418,7 +418,7 @@ FluentLabelBase{color:#7d000000}</string>
            <property name="text">
             <string>时段</string>
            </property>
-          </widget>
+          <property name="wordWrap"><bool>true</bool></property></widget>
          </item>
          <item>
           <widget class="ComboBox" name="time_period">
@@ -448,7 +448,7 @@ FluentLabelBase{color:#7d000000}</string>
            <property name="text">
             <string>时长（分钟）</string>
            </property>
-          </widget>
+          <property name="wordWrap"><bool>true</bool></property></widget>
          </item>
          <item>
           <widget class="SpinBox" name="spin_time">
@@ -470,13 +470,13 @@ FluentLabelBase{color:#7d000000}</string>
           </widget>
          </item>
          <item>
-          <widget class="ToolButton" name="add_button"/>
+          <widget class="ToolButton" name="add_button" />
          </item>
          <item>
-          <widget class="ToolButton" name="edit_button"/>
+          <widget class="ToolButton" name="edit_button" />
          </item>
          <item>
-          <widget class="ToolButton" name="delete_button"/>
+          <widget class="ToolButton" name="delete_button" />
          </item>
         </layout>
        </item>
@@ -597,6 +597,6 @@ FluentLabelBase{color:#7d000000}</string>
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
- <resources/>
- <connections/>
+ <resources />
+ <connections />
 </ui>

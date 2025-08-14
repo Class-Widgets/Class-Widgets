@@ -98,12 +98,12 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgb
              <string notr="true">background: transparent</string>
             </property>
             <property name="text">
-             <string/>
+             <string />
             </property>
             <property name="pixmap">
              <pixmap>../img/attend_class.svg</pixmap>
             </property>
-           </widget>
+           <property name="wordWrap"><bool>true</bool></property></widget>
           </item>
           <item>
            <widget class="QLabel" name="title">
@@ -122,7 +122,7 @@ background: transparent</string>
             <property name="text">
              <string>上课</string>
             </property>
-           </widget>
+           <property name="wordWrap"><bool>true</bool></property></widget>
           </item>
          </layout>
         </item>
@@ -150,7 +150,7 @@ color: rgba(255, 255, 255, 200);</string>
             <property name="text">
              <string>当前课程</string>
             </property>
-           </widget>
+           <property name="wordWrap"><bool>true</bool></property></widget>
           </item>
           <item>
            <widget class="QLabel" name="lesson">
@@ -172,7 +172,7 @@ background: transparent</string>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
             </property>
-           </widget>
+           <property name="wordWrap"><bool>true</bool></property></widget>
           </item>
          </layout>
         </item>
@@ -196,6 +196,6 @@ background: transparent</string>
    </item>
   </layout>
  </widget>
- <resources/>
- <connections/>
+ <resources />
+ <connections />
 </ui>

@@ -75,7 +75,7 @@
            <property name="text">
             <string>今天</string>
            </property>
-          </widget>
+          <property name="wordWrap"><bool>true</bool></property></widget>
          </item>
          <item>
           <widget class="TitleLabel" name="time_today_label">
@@ -107,7 +107,7 @@
              <blue>209</blue>
             </color>
            </property>
-          </widget>
+          <property name="wordWrap"><bool>true</bool></property></widget>
          </item>
         </layout>
        </item>
@@ -137,31 +137,31 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <item/>
-           <item/>
-           <item/>
-           <item/>
-           <item/>
-           <item/>
-           <item/>
-           <item/>
-           <item/>
-           <item/>
-           <item/>
-           <item/>
-           <item/>
-           <item/>
-           <item/>
-           <item/>
-           <item/>
-           <item/>
-           <item/>
-           <item/>
-           <item/>
-           <item/>
-           <item/>
-           <item/>
-           <item/>
+           <item />
+           <item />
+           <item />
+           <item />
+           <item />
+           <item />
+           <item />
+           <item />
+           <item />
+           <item />
+           <item />
+           <item />
+           <item />
+           <item />
+           <item />
+           <item />
+           <item />
+           <item />
+           <item />
+           <item />
+           <item />
+           <item />
+           <item />
+           <item />
+           <item />
           </widget>
          </item>
         </layout>
@@ -171,10 +171,10 @@
          <property name="text">
           <string>推荐插件</string>
          </property>
-        </widget>
+        <property name="wordWrap"><bool>true</bool></property></widget>
        </item>
        <item>
-        <layout class="QGridLayout" name="rec_plugin_grid" rowstretch="0" columnstretch="0"/>
+        <layout class="QGridLayout" name="rec_plugin_grid" rowstretch="0" columnstretch="0" />
        </item>
        <item>
         <layout class="QHBoxLayout" name="progressRingLayout">
@@ -308,6 +308,6 @@
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
- <resources/>
- <connections/>
+ <resources />
+ <connections />
 </ui>

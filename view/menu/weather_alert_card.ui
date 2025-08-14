@@ -97,7 +97,7 @@
 font-weight: bold;</string>
          </property>
          <property name="text">
-          <string/>
+          <string />
          </property>
          <property name="textFormat">
           <enum>Qt::PlainText</enum>
@@ -155,7 +155,7 @@ font-weight: bold;</string>
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true"/>
+        <string notr="true" />
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -189,7 +189,7 @@ font-weight: bold;</string>
          <property name="text">
           <string>-- 预警</string>
          </property>
-        </widget>
+        <property name="wordWrap"><bool>true</bool></property></widget>
        </item>
       </layout>
      </item>
@@ -227,6 +227,6 @@ font-weight: bold;</string>
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
- <resources/>
- <connections/>
+ <resources />
+ <connections />
 </ui>

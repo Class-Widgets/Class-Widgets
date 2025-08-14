@@ -40,7 +40,7 @@
      <property name="text">
       <string>设置</string>
      </property>
-    </widget>
+    <property name="wordWrap"><bool>true</bool></property></widget>
    </item>
    <item>
     <widget class="SmoothScrollArea" name="SmoothScrollArea">
@@ -70,7 +70,7 @@
            <property name="text">
             <string>插件</string>
            </property>
-          </widget>
+          <property name="wordWrap"><bool>true</bool></property></widget>
          </item>
          <item>
           <widget class="CardWidget" name="CardWidget_4">
@@ -103,7 +103,7 @@
                 <property name="text">
                  <string>下载后自动启用插件</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_3">
@@ -163,7 +163,7 @@
            <property name="text">
             <string>网络</string>
            </property>
-          </widget>
+          <property name="wordWrap"><bool>true</bool></property></widget>
          </item>
          <item>
           <widget class="CardWidget" name="CardWidget_3">
@@ -196,7 +196,7 @@
                 <property name="text">
                  <string>选择镜像源</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_2">
@@ -321,6 +321,6 @@
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
- <resources/>
- <connections/>
+ <resources />
+ <connections />
 </ui>
