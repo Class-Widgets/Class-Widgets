@@ -4,9 +4,11 @@ import shutil
 import zipfile  # 解压插件zip
 from datetime import datetime
 from typing import Optional, Union, List, Tuple, Dict, Any
+import platform
 
 import requests
 from PyQt5.QtCore import QThread, pyqtSignal, QEventLoop
+from qfluentwidgets import InfoBar
 from loguru import logger
 from packaging.version import Version
 
@@ -281,7 +283,7 @@ class VersionThread(QThread):  # 获取最新版本号
 
     @staticmethod
     def get_latest_version() -> Dict[str, Any]:
-        url = "https://classwidgets.rinlit.cn/version.json"
+        url = "http://localhost:5000/version.json"  #测试用，正式版改成官网URL！！！
         try:
             logger.info(f"正在获取版本信息")
             response = requests.get(url, proxies=proxies, timeout=30)
@@ -327,8 +329,6 @@ class getDownloadUrl(QThread):
         except Exception as e:
             logger.error(f"获取下载链接错误: {e}")
             self.geturl_signal.emit(f"获取下载链接错误: {e}")
-
-
 class DownloadAndExtract(QThread):  # 下载并解压插件
     progress_signal = pyqtSignal(float)  # 进度
     status_signal = pyqtSignal(str)  # 状态
@@ -416,7 +416,6 @@ class DownloadAndExtract(QThread):  # 下载并解压插件
         except Exception as e:
             logger.error(f"解压失败: {e}")
 
-
 def check_update() -> None:
     global threads
 
@@ -452,7 +451,6 @@ def check_version(version: Dict[str, Any]) -> bool:  # 检查更新
     logger.debug(f"服务端版本: {Version(server_version)}，本地版本: {Version(local_version)}")
     if Version(server_version) > Version(local_version):
         utils.tray_icon.push_update_notification(f"新版本速递：{server_version}\n请在“设置”中了解更多。")
-
 
 class scheduleThread(QThread):  # 获取课表
     update_signal = pyqtSignal(dict)
