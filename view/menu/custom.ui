@@ -40,7 +40,7 @@
      <property name="text">
       <string>自定义</string>
      </property>
-    </widget>
+    <property name="wordWrap"><bool>true</bool></property></widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="widgets_preview">
@@ -136,7 +136,7 @@
            <property name="text">
             <string>选择小组件</string>
            </property>
-          </widget>
+          <property name="wordWrap"><bool>true</bool></property></widget>
          </item>
          <item>
           <widget class="ComboBox" name="widgets_combo">
@@ -182,7 +182,7 @@
          <property name="text">
           <string>小组件</string>
          </property>
-        </widget>
+        <property name="wordWrap"><bool>true</bool></property></widget>
        </item>
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -197,7 +197,7 @@
            <property name="pixelFontSize" stdset="0">
             <number>18</number>
            </property>
-          </widget>
+          <property name="wordWrap"><bool>true</bool></property></widget>
          </item>
          <item>
           <widget class="HyperlinkLabel" name="open_theme_folder">
@@ -237,7 +237,7 @@
                 <property name="text">
                  <string>主题</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_5">
@@ -258,7 +258,7 @@
                   <blue>255</blue>
                  </color>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
              </layout>
             </item>
@@ -306,7 +306,7 @@
                 <property name="text">
                  <string>颜色模式</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_10">
@@ -327,7 +327,7 @@
                   <blue>255</blue>
                  </color>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
              </layout>
             </item>
@@ -375,7 +375,7 @@
                 <property name="text">
                  <string>小组件透明度</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_11">
@@ -396,7 +396,7 @@
                   <blue>255</blue>
                  </color>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
              </layout>
             </item>
@@ -459,7 +459,7 @@
                 <property name="text">
                  <string>上课时主题色</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_7">
@@ -534,7 +534,7 @@
                 <property name="text">
                  <string>下课时主题色</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_6">
@@ -609,7 +609,7 @@
                 <property name="text">
                  <string>浮窗时间颜色</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_14">
@@ -668,7 +668,7 @@
            <property name="pixelFontSize" stdset="0">
             <number>18</number>
            </property>
-          </widget>
+          <property name="wordWrap"><bool>true</bool></property></widget>
          </item>
          <item>
           <widget class="CardWidget" name="CardWidget_2">
@@ -701,7 +701,7 @@
                 <property name="text">
                  <string>模糊主组件倒计时</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_4">
@@ -722,7 +722,7 @@
                   <blue>255</blue>
                  </color>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
              </layout>
             </item>
@@ -779,7 +779,7 @@
                 <property name="text">
                  <string>模糊浮窗倒计时</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_8">
@@ -800,7 +800,7 @@
                   <blue>255</blue>
                  </color>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
              </layout>
             </item>
@@ -841,7 +841,7 @@
            <property name="pixelFontSize" stdset="0">
             <number>18</number>
            </property>
-          </widget>
+          <property name="wordWrap"><bool>true</bool></property></widget>
          </item>
          <item>
           <widget class="CardWidget" name="CardWidget_3">
@@ -874,7 +874,7 @@
                 <property name="text">
                  <string>允许 “接下来” 组件显示多个课程</string>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
               <item>
                <widget class="CaptionLabel" name="CaptionLabel_12">
@@ -895,7 +895,7 @@
                   <blue>255</blue>
                  </color>
                 </property>
-               </widget>
+               <property name="wordWrap"><bool>true</bool></property></widget>
               </item>
              </layout>
             </item>
@@ -1052,6 +1052,6 @@
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
- <resources/>
- <connections/>
+ <resources />
+ <connections />
 </ui>

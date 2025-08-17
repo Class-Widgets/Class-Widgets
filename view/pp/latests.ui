@@ -69,7 +69,7 @@
            <property name="text">
             <string>分类</string>
            </property>
-          </widget>
+          <property name="wordWrap"><bool>true</bool></property></widget>
          </item>
         </layout>
        </item>
@@ -78,10 +78,10 @@
          <property name="text">
           <string>所有插件</string>
          </property>
-        </widget>
+        <property name="wordWrap"><bool>true</bool></property></widget>
        </item>
        <item>
-        <layout class="QGridLayout" name="all_plugin_grid" rowstretch="0" columnstretch="0"/>
+        <layout class="QGridLayout" name="all_plugin_grid" rowstretch="0" columnstretch="0" />
        </item>
        <item>
         <widget class="BodyLabel" name="BodyLabel">
@@ -105,7 +105,7 @@
            <blue>211</blue>
           </color>
          </property>
-        </widget>
+        <property name="wordWrap"><bool>true</bool></property></widget>
        </item>
        <item>
         <spacer name="verticalSpacer">
@@ -168,6 +168,6 @@
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
- <resources/>
- <connections/>
+ <resources />
+ <connections />
 </ui>

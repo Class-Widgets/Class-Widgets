@@ -34,7 +34,7 @@
      <property name="text">
       <string>课程表编辑</string>
      </property>
-    </widget>
+    <property name="wordWrap"><bool>true</bool></property></widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -43,7 +43,7 @@
        <property name="text">
         <string>课程表</string>
        </property>
-      </widget>
+      <property name="wordWrap"><bool>true</bool></property></widget>
      </item>
     </layout>
    </item>
@@ -84,7 +84,7 @@
           <property name="text">
            <string>选择星期</string>
           </property>
-         </widget>
+         <property name="wordWrap"><bool>true</bool></property></widget>
         </item>
         <item>
          <widget class="ComboBox" name="week_combo">
@@ -136,7 +136,7 @@
             <property name="text">
              <string>选择单/双周课表</string>
             </property>
-           </widget>
+           <property name="wordWrap"><bool>true</bool></property></widget>
           </item>
           <item>
            <widget class="CaptionLabel" name="CaptionLabel">
@@ -165,7 +165,7 @@
          </layout>
         </item>
         <item>
-         <widget class="ComboBox" name="week_type_combo"/>
+         <widget class="ComboBox" name="week_type_combo" />
         </item>
         <item>
          <widget class="PushButton" name="copy_schedule">
@@ -220,7 +220,7 @@
           <property name="text">
            <string>快速添加课程</string>
           </property>
-         </widget>
+         <property name="wordWrap"><bool>true</bool></property></widget>
         </item>
         <item>
          <widget class="ListWidget" name="subject_list">
@@ -296,7 +296,7 @@
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
-      </widget>
+      <property name="wordWrap"><bool>true</bool></property></widget>
      </item>
      <item>
       <widget class="ComboBox" name="class_combo">
@@ -319,7 +319,7 @@
        <property name="text">
         <string>自定义课程</string>
        </property>
-      </widget>
+      <property name="wordWrap"><bool>true</bool></property></widget>
      </item>
      <item>
       <widget class="LineEdit" name="custom_class">
@@ -335,10 +335,10 @@
       </widget>
      </item>
      <item>
-      <widget class="ToolButton" name="set_button"/>
+      <widget class="ToolButton" name="set_button" />
      </item>
      <item>
-      <widget class="ToolButton" name="clear_button"/>
+      <widget class="ToolButton" name="clear_button" />
      </item>
     </layout>
    </item>
@@ -458,6 +458,6 @@
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
- <resources/>
- <connections/>
+ <resources />
+ <connections />
 </ui>

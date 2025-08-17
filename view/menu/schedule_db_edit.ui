@@ -34,7 +34,7 @@
      <property name="text">
       <string>课表数据库编辑</string>
      </property>
-    </widget>
+    <property name="wordWrap"><bool>true</bool></property></widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_6">
@@ -78,7 +78,7 @@
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
-      </widget>
+      <property name="wordWrap"><bool>true</bool></property></widget>
      </item>
      <item>
       <widget class="LineEdit" name="db_short">
@@ -101,7 +101,7 @@
        <property name="text">
         <string>数据库地址</string>
        </property>
-      </widget>
+      <property name="wordWrap"><bool>true</bool></property></widget>
      </item>
      <item>
       <widget class="LineEdit" name="db_url">
@@ -114,13 +114,13 @@
       </widget>
      </item>
      <item>
-      <widget class="ToolButton" name="add_button"/>
+      <widget class="ToolButton" name="add_button" />
      </item>
      <item>
-      <widget class="ToolButton" name="set_button"/>
+      <widget class="ToolButton" name="set_button" />
      </item>
      <item>
-      <widget class="ToolButton" name="clear_button"/>
+      <widget class="ToolButton" name="clear_button" />
      </item>
     </layout>
    </item>
@@ -202,6 +202,6 @@
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
- <resources/>
- <connections/>
+ <resources />
+ <connections />
 </ui>

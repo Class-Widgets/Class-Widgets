@@ -47,7 +47,7 @@
          <property name="text">
           <string>帮助文档</string>
          </property>
-        </widget>
+        <property name="wordWrap"><bool>true</bool></property></widget>
        </item>
        <item>
         <widget class="CaptionLabel" name="CaptionLabel">
@@ -68,7 +68,7 @@
            <blue>255</blue>
           </color>
          </property>
-        </widget>
+        <property name="wordWrap"><bool>true</bool></property></widget>
        </item>
       </layout>
      </item>
@@ -127,7 +127,7 @@
            <property name="text">
             <string>猜你想问</string>
            </property>
-          </widget>
+          <property name="wordWrap"><bool>true</bool></property></widget>
          </item>
          <item>
           <layout class="QVBoxLayout" name="common_question">
@@ -256,7 +256,7 @@
            <property name="text">
             <string>社区</string>
            </property>
-          </widget>
+          <property name="wordWrap"><bool>true</bool></property></widget>
          </item>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -374,6 +374,6 @@
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
- <resources/>
- <connections/>
+ <resources />
+ <connections />
 </ui>
