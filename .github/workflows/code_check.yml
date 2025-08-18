@@ -36,7 +36,7 @@ jobs:
       python_files: ${{ steps.filter.outputs.python_files || steps.manual-check.outputs.python_files }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
@@ -73,7 +73,7 @@ jobs:
     if: needs.detect-changes.outputs.python == 'true' && github.event_name != 'pull_request_target'
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
@@ -198,7 +198,7 @@ jobs:
     if: needs.detect-changes.outputs.python == 'true'
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
