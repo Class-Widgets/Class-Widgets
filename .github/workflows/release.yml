@@ -20,7 +20,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set up git-cliff
-        uses: kenji-miyake/setup-git-cliff@v1
+        uses: kenji-miyake/setup-git-cliff@v2
 
       - name: Generate a changelog
         run: |
