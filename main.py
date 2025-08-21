@@ -70,7 +70,7 @@ excluded_lessons = []
 last_notify_time = None
 notify_cooldown = 2  # 2秒内仅能触发一次通知(防止触发114514个通知导致爆炸
 
-timeline_data = {}
+timeline_data = []
 next_lessons = []
 parts_start_time = []
 
@@ -180,24 +180,28 @@ def setTheme_() -> None:  # 设置主题
         setTheme(Theme.LIGHT)
 
 
-def get_timeline_data() -> Dict[str, Any]:
-    if len(loaded_data['timeline']) == 1:
-        return loaded_data['timeline']['default']
-    else:
-        if str(current_week) in loaded_data['timeline'] and loaded_data['timeline'][str(current_week)]:  # 如果此周有时间线
-            return loaded_data['timeline'][str(current_week)]
-        else:
-            return loaded_data['timeline']['default']
-
+def get_timeline_data() -> List[Tuple[int, str, int, int]]:
+    # if len(loaded_data['timeline']) == 1:
+    #     return loaded_data['timeline']['default']
+    # else:
+    #     if str(current_week) in loaded_data['timeline'] and loaded_data['timeline'][str(current_week)]:  # 如果此周有时间线
+    #         return loaded_data['timeline'][str(current_week)]
+    #     else:
+    #         return loaded_data['timeline']['default']
+    if str(current_week) in (data:=loaded_data['timeline_even' if conf.get_week_type() else 'timeline']) and data[str(current_week)]:  # 如果此周有时间线
+        return data[str(current_week)]
+    if conf.get_week_type() and (data:=loaded_data.get('timeline_even', {}).get('default', [])):
+        return data
+    return loaded_data['timeline'].get('default', [])
 
 # 获取Part开始时间
 def get_start_time() -> None:
     global parts_start_time, timeline_data, loaded_data, order, parts_type
     loaded_data = schedule_center.schedule_data
-    timeline = get_timeline_data()
-    part = loaded_data['part']
+    timeline = get_timeline_data() # 实际上这里的 Tuple 是靠 List 实现的
+    part: Dict[str, Tuple[int, int, str]] = loaded_data['part']
     parts_start_time = []
-    timeline_data = {}
+    timeline_data = []
     order = []
 
     for item_name, item_value in part.items():
@@ -225,33 +229,28 @@ def get_start_time() -> None:
     if paired_sorted:
         parts_start_time, order = zip(*paired_sorted)
 
-    def sort_timeline_key(item):
-        item_name = item[0]
-        prefix = item_name[0]
-        if len(item_name) > 1:
-            try:
-                # 提取节点序数
-                part_num = int(item_name[1])
-                # 提取课程序数
-                class_num = 0
-                if len(item_name) > 2:
-                    class_num = int(item_name[2:])
-                if prefix == 'a':
-                    return part_num, class_num, 0
-                else:
-                    return part_num, class_num, 1
-            except ValueError:
-                # 如果转换失败，返回原始字符串
-                return item_name
-        return item_name
+    def sort_timeline_key(item: Tuple[int, str, int, int]):
+        # if len(item_name) > 1:
+        #     try:
+        #         # 提取节点序数
+        #         part_num = int(item_name[1])
+        #         # 提取课程序数
+        #         class_num = 0
+        #         if len(item_name) > 2:
+        #             class_num = int(item_name[2:])
+        #         if prefix == 'a':
+        #             return part_num, class_num, 0
+        #         else:
+        #             return part_num, class_num, 1
+        #     except ValueError:
+        #         # 如果转换失败，返回原始字符串
+        #         return item_name
+        # return item_name
+        return item[1], item[2], item[0]
     
     # 对timeline排序后添加到timeline_data
-    sorted_timeline = sorted(timeline.items(), key=sort_timeline_key)
-    for item_name, item_time in sorted_timeline:
-        try:
-            timeline_data[item_name] = item_time
-        except Exception as e:
-            logger.error(f'加载课程表文件[课程数据]出错：{e}')
+    timeline_data = sorted(timeline, key=sort_timeline_key)
+    
 
 
 def get_part() -> Optional[Tuple[dt.datetime, int]]:
@@ -274,8 +273,9 @@ def get_part() -> Optional[Tuple[dt.datetime, int]]:
     for i in range(len(parts_start_time)):  # 遍历每个Part
         time_len = dt.timedelta(minutes=0)  # Part长度
 
-        for item_name, item_time in timeline_data.items():
-            if item_name.startswith(f'a{str(order[i])}') or item_name.startswith(f'f{str(order[i])}'):
+        for isbreak, item_name, item_index, item_time in timeline_data:
+            # if item_name.startswith(f'a{str(order[i])}') or item_name.startswith(f'f{str(order[i])}'):
+            if item_name == order[i]:
                 time_len += dt.timedelta(minutes=int(item_time))  # 累计Part的时间点总长度
             time_len += dt.timedelta(seconds=1)
 
@@ -321,8 +321,8 @@ def get_current_lessons() -> None:  # 获取当前课程
     else:
         schedule = loaded_data.get('schedule')
     class_count = 0
-    for item_name, _ in timeline.items():
-        if item_name.startswith('a'):
+    for isbreak, item_name, item_index, item_time in timeline:
+        if not isbreak:
             if schedule[str(current_week)]:
                 try:
                     if schedule[str(current_week)][class_count] != QCoreApplication.translate('main', '未添加'):
@@ -362,11 +362,12 @@ def get_countdown(toast: bool = False) -> Optional[List[Union[str, int]]]:  # �
         c_time, part = get_part()
 
         if current_dt >= c_time:
-            for item_name, item_time in timeline_data.items():
-                if item_name.startswith(f'a{str(part)}') or item_name.startswith(f'f{str(part)}'):
+            for isbreak, item_name, item_index, item_time in timeline_data:
+                # if item_name.startswith(f'a{str(part)}') or item_name.startswith(f'f{str(part)}'):
+                if item_name == str(part):
                     # 判断时间是否上下课，发送通知
                     if current_dt == c_time and toast:
-                        if item_name.startswith('a'):
+                        if not isbreak:
                             notification.push_notification(1, next_lessons[0])  # 上课
                             last_notify_time = current_dt
                         else:
@@ -420,9 +421,10 @@ def get_countdown(toast: bool = False) -> Optional[List[Union[str, int]]]:  # �
                     next_lesson_name = None
                     next_lesson_key = None
                     if timeline_data:
-                        for key in sorted(timeline_data.keys()):
-                            if key.startswith(f'a{str(part)}'):
-                                next_lesson_key = key
+                        for isbreak, item_name, item_index, item_time in timeline_data:
+                            # if key.startswith(f'a{str(part)}'):
+                            if not isbreak and item_name == str(part):
+                                next_lesson_key = part
                                 break
                     if next_lesson_key and next_lesson_key in current_lessons:
                         lesson_name = current_lessons[next_lesson_key]
@@ -433,7 +435,15 @@ def get_countdown(toast: bool = False) -> Optional[List[Union[str, int]]]:  # �
                         if not last_notify_time or (now - last_notify_time).seconds >= notify_cooldown:
                             if next_lesson_name != None:
                                     notification.push_notification(3, next_lesson_name)
-            if f'a{part}1' in timeline_data:
+            # if f'a{part}1' in timeline_data:
+
+            def have_class():
+                for data in timeline_data:
+                    if data[0] == False and data[1] == str(part) and data[2] == 1:
+                        return True
+                return False
+
+            if have_class():  # 有课程
                 time_diff = c_time - current_dt
                 minute, sec = divmod(time_diff.seconds, 60)
                 return_text = [QCoreApplication.translate('main', '距离上课还有'), f'{minute:02d}:{sec:02d}', 100]
@@ -468,10 +478,12 @@ def get_next_lessons() -> None:
                     return False
 
         if before_class():
-            for item_name, item_time in timeline_data.items():
-                if item_name.startswith(f'a{str(part)}') or item_name.startswith(f'f{str(part)}'):
+            for isbreak, item_name, item_index, item_time in timeline_data:
+                # if item_name.startswith(f'a{str(part)}') or item_name.startswith(f'f{str(part)}'):
+                if item_name == str(part):
                     add_time = int(item_time)
-                    if c_time > current_dt and item_name.startswith('a'):
+                    # if c_time > current_dt and item_name.startswith('a'):
+                    if c_time > current_dt and not isbreak:
                         next_lessons.append(current_lessons[item_name])
                     c_time += dt.timedelta(minutes=add_time)
 
@@ -501,12 +513,14 @@ def get_current_lesson_name() -> None:
                 current_lesson_name = loaded_data['part_name'][str(part)]
                 current_state = 2
 
-            for item_name, item_time in timeline_data.items():
-                if item_name.startswith(f'a{str(part)}') or item_name.startswith(f'f{str(part)}'):
+            for isbreak, item_name, item_index, item_time in timeline_data:
+                # if item_name.startswith(f'a{str(part)}') or item_name.startswith(f'f{str(part)}'):
+                if item_name == str(part):
                     add_time = int(item_time)
                     c_time += dt.timedelta(minutes=add_time)
                     if c_time > current_dt:
-                        if item_name.startswith('a'):
+                        # if item_name.startswith('a'):
+                        if not isbreak:
                             current_lesson_name = current_lessons[item_name]
                             current_state = 1
                         else:
