@@ -245,6 +245,10 @@ def get_custom_countdown() -> str:
 
 
 def get_week_type() -> int:
+    """
+    获取单双周类型
+    :return: 0 - 单周, 1 - 双周
+    """
     if (temp_schedule := config_center.read_conf('Temp', 'set_schedule')) not in ('', None):  # 获取单双周
         return int(temp_schedule)
     start_date_str = config_center.read_conf('Date', 'start_date')
