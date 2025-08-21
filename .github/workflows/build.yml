@@ -623,7 +623,7 @@ jobs:
   publish:
     name: Publish
     needs: [package]
-    if: (startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && github.event.inputs.build_type == 'Release')) && needs.package.result == 'success' && needs.package.outputs.package-count > 0
+    if: (startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && github.event.inputs.build_type == 'Release')) && needs.package.result == 'success' && needs.package.outputs.package-count > 0 && github.event_name != 'workflow_call'
     uses: ./.github/workflows/release.yml
     with:
       run_id: "${{ github.run_id }}"

@@ -3,37 +3,30 @@ body = """
 
 ## Class Widgets 新版本！{% if version %}({{ version }}){%- endif -%}
 {% for group, commits in commits | group_by(attribute="group") %}
-
-    ### {{ group | upper_first }}
-    {% for commit in commits | unique(attribute="message") %}
-        - {% if commit.scope %}{{ commit.scope }}: {%- endif -%}{{ commit.message | upper_first }}\
-          {% if commit.remote.username %} by @{{ commit.remote.username }}{%- endif -%}
-          {% if commit.remote.pr_number %} in \
-      [#{{ commit.remote.pr_number }}]({{ self::remote_url() }}/pull/{{ commit.remote.pr_number }}) \
-    {%- endif %}
+### {{ group | upper_first }}
+{% for commit in commits | unique(attribute="message") %}
+- {% if commit.scope %}{{ commit.scope }}: {%- endif -%}{{ commit.message | upper_first }}
+  {% if commit.remote.username %}by @{{ commit.remote.username }}{%- endif -%}
+  {% if commit.remote.pr_number %} in [#{{ commit.remote.pr_number }}]({{ self::remote_url() }}/pull/{{ commit.remote.pr_number }}){%- endif %}
 {% endfor %}
 {%- endfor -%}
 
 {%- if github -%}
 {% if github.contributors | filter(attribute="is_first_time", value=true) | length != 0 %}
-  {% raw %}\n{% endraw -%}
-  ## 🎉 新贡献者
+{% raw %}\n{% endraw -%}
+## 🎉 新贡献者
 {%- endif %}\
 {% for contributor in github.contributors | filter(attribute="is_first_time", value=true) %}
-  * @{{ contributor.username }}  {%- if contributor.pr_number %} 在
-      [#{{ contributor.pr_number }}]({{ self::remote_url() }}/pull/{{ contributor.pr_number }})  \
-    {%- endif %}\
-         第一次贡献
-
+* @{{ contributor.username }} {%- if contributor.pr_number %} 在 [#{{ contributor.pr_number }}]({{ self::remote_url() }}/pull/{{ contributor.pr_number }}) {%- endif %} 第一次贡献
 {%- endfor -%}
 {%- endif -%}
 
 {% if version %}
-    {% if previous.version %}
-      **Full Changelog**: {{ self::remote_url() }}/compare/{{ previous.version }}...{{ version }}
-    {% endif %}
+{% if previous.version %}
+**完整变更日志**: {{ self::remote_url() }}/compare/{{ previous.version }}...{{ version }}
+{% endif %}
 {% else -%}
-  {% raw %}\n{% endraw %}
+{% raw %}\n{% endraw %}
 {% endif %}
 
 {%- macro remote_url() -%}
