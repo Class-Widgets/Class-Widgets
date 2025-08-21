@@ -2,30 +2,64 @@ import json
 import sys
 from datetime import datetime
 from random import shuffle
-from typing import List, Dict, Optional, Any
+from typing import Any, Dict, List, Optional
 
-from PyQt5 import uic
-from PyQt5.QtCore import QSize, Qt, QTimer, QUrl, QStringListModel, pyqtSignal, QThread
-from PyQt5.QtGui import QIcon, QPixmap, QDesktopServices
-from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QGridLayout, QSpacerItem, QSizePolicy, QWidget, \
-    QScroller, QCompleter
 from loguru import logger
-from qfluentwidgets import MSFluentWindow, FluentIcon as fIcon, NavigationItemPosition, TitleLabel, \
-    ImageLabel, StrongBodyLabel, HyperlinkLabel, CaptionLabel, PrimaryPushButton, HorizontalFlipView, \
-    InfoBar, InfoBarPosition, SplashScreen, MessageBoxBase, TransparentToolButton, BodyLabel, \
-    PrimarySplitPushButton, RoundMenu, Action, PipsPager, TextBrowser, CardWidget, \
-    IndeterminateProgressRing, ComboBox, ProgressBar, SmoothScrollArea, SearchLineEdit, HyperlinkButton, \
-    MessageBox, SwitchButton, SubtitleLabel
+from PyQt5 import uic
+from PyQt5.QtCore import QCoreApplication, QSize, QStringListModel, Qt, QThread, QTimer, QUrl, pyqtSignal
+from PyQt5.QtGui import QDesktopServices, QIcon, QPixmap
+from PyQt5.QtWidgets import (
+    QApplication,
+    QCompleter,
+    QGridLayout,
+    QHBoxLayout,
+    QScroller,
+    QSizePolicy,
+    QSpacerItem,
+    QVBoxLayout,
+    QWidget,
+)
+from qfluentwidgets import (
+    Action,
+    BodyLabel,
+    CaptionLabel,
+    CardWidget,
+    ComboBox,
+    HorizontalFlipView,
+    HyperlinkButton,
+    HyperlinkLabel,
+    ImageLabel,
+    IndeterminateProgressRing,
+    InfoBar,
+    InfoBarPosition,
+    MessageBox,
+    MessageBoxBase,
+    MSFluentWindow,
+    NavigationItemPosition,
+    PipsPager,
+    PrimaryPushButton,
+    PrimarySplitPushButton,
+    ProgressBar,
+    RoundMenu,
+    SearchLineEdit,
+    SmoothScrollArea,
+    SplashScreen,
+    StrongBodyLabel,
+    SubtitleLabel,
+    SwitchButton,
+    TextBrowser,
+    TitleLabel,
+    TransparentToolButton,
+)
+from qfluentwidgets import FluentIcon as fIcon
 
+from basic_dirs import CW_HOME, PLUGIN_HOME
 import list_ as l
 import network_thread as nt
-from conf import base_directory
 from file import config_center
 from plugin import p_loader
-from utils import restart, calculate_size
-from loguru import logger
+from utils import calculate_size, restart
 
-from PyQt5.QtCore import QCoreApplication
 
 class ThreadManager:
     """线程管理器"""
@@ -79,7 +113,7 @@ class ThreadManager:
             'finished_threads': finished
         }
 
-CONF_PATH = f"{base_directory}/plugins/plugins_from_pp.json"
+CONF_PATH = PLUGIN_HOME / "plugins_from_pp.json"
 PLAZA_REPO_URL = "https://raw.githubusercontent.com/Class-Widgets/plugin-plaza/"
 PLAZA_REPO_DIR = "https://api.github.com/repos/Class-Widgets/plugin-plaza/contents/Plugins"
 TEST_DOWNLOAD_LINK = "https://dldir1.qq.com/qqfile/qq/PCQQ9.7.17/QQ9.7.17.29225.exe"
@@ -338,7 +372,7 @@ class PluginDetailPage(MessageBoxBase):  # 插件详情页面
     def init_ui(self) -> None:
         # 加载ui文件
         self.temp_widget = QWidget()
-        uic.loadUi(f'{base_directory}/view/pp/plugin_detail.ui', self.temp_widget)
+        uic.loadUi(str(CW_HOME / 'view' / 'pp' / 'plugin_detail.ui'), self.temp_widget)
         self.viewLayout.addWidget(self.temp_widget)
         self.viewLayout.setContentsMargins(0, 0, 0, 0)
         # 隐藏原有按钮
@@ -478,13 +512,13 @@ class PluginPlaza(MSFluentWindow):
         except Exception as e:
             logger.error(f"读取已安装的插件失败: {e}")
         try:
-            self.homeInterface = uic.loadUi(f'{base_directory}/view/pp/home.ui')  # 首页
+            self.homeInterface = uic.loadUi(str(CW_HOME / 'view' / 'pp' / 'home.ui'))  # 首页
             self.homeInterface.setObjectName("homeInterface")
-            self.latestsInterface = uic.loadUi(f'{base_directory}/view/pp/latests.ui')  # 最新更新
+            self.latestsInterface = uic.loadUi(str(CW_HOME / 'view' / 'pp' / 'latests.ui'))  # 最新更新
             self.latestsInterface.setObjectName("latestInterface")
-            self.settingsInterface = uic.loadUi(f'{base_directory}/view/pp/settings.ui')  # 设置
+            self.settingsInterface = uic.loadUi(str(CW_HOME / 'view' / 'pp' / 'settings.ui'))  # 设置
             self.settingsInterface.setObjectName("settingsInterface")
-            self.searchInterface = uic.loadUi(f'{base_directory}/view/pp/search.ui')  # 搜索
+            self.searchInterface = uic.loadUi(str(CW_HOME / 'view' / 'pp' / 'search.ui'))  # 搜索
             self.searchInterface.setObjectName("searchInterface")
 
             load_local_plugins_version()  # 加载本地插件版本
@@ -803,7 +837,7 @@ class PluginPlaza(MSFluentWindow):
         self.setMinimumWidth(850)
         self.setMinimumHeight(500)
         self.setWindowTitle('插件广场')
-        self.setWindowIcon(QIcon(f'{base_directory}/img/pp_favicon.png'))
+        self.setWindowIcon(QIcon(str(CW_HOME / 'img' / 'pp_favicon.png')))
 
         # 设置窗口大小
         size, pos = calculate_size()

@@ -1,28 +1,30 @@
-import os
 import json
+import os
 import shutil
 import zipfile  # 解压插件zip
 from datetime import datetime
-from typing import Optional, Union, List, Tuple, Dict, Any
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import requests
-from PyQt5.QtCore import QThread, pyqtSignal, QEventLoop
 from loguru import logger
 from packaging.version import Version
+from PyQt5.QtCore import QEventLoop, QThread, pyqtSignal
 
 import conf
+import list_
 import utils
 import weather as db
-from weather import WeatherReportThread as weatherReportThread
-from conf import base_directory
+from basic_dirs import CACHE_HOME, CW_HOME
 from file import config_center
-import list_
+from weather import WeatherReportThread as weatherReportThread
 
 headers = {"User-Agent": "Mozilla/5.0", "Cache-Control": "no-cache"}  # 设置请求头
-# proxies = {"http": "http://127.0.0.1:10809", "https": "http://127.0.0.1:10809"}  # 加速访问
+"""
+proxies = {"http": "http://127.0.0.1:10809", "https": "http://127.0.0.1:10809"}  # 加速访问
+"""
 proxies = {"http": None, "https": None}
 
-MIRROR_PATH = f"{base_directory}/config/mirror.json"
+MIRROR_PATH = CW_HOME / "data" / "mirror.json"
 PLAZA_REPO_URL = "https://raw.githubusercontent.com/Class-Widgets/plugin-plaza/"
 PLAZA_REPO_DIR = "https://api.github.com/repos/Class-Widgets/plugin-plaza/contents/"
 threads = []
@@ -152,7 +154,7 @@ class getImg(QThread):  # 获取图片
             if banner_data is not None:
                 self.repo_signal.emit(banner_data)
             else:
-                with open(f"{base_directory}/img/plaza/banner_pre.png", 'rb') as default_img:  # 读取默认图片
+                with open(CW_HOME / "img" / "plaza" / "banner_pre.png", 'rb') as default_img:  # 读取默认图片
                     self.repo_signal.emit(default_img.read())
         except Exception as e:
             logger.error(f"触发图片失败: {e}")
@@ -337,9 +339,9 @@ class DownloadAndExtract(QThread):  # 下载并解压插件
         super().__init__()
         self.download_url = url
         print(self.download_url)
-        self.cache_dir = "cache"
+        self.cache_dir = str(CACHE_HOME)
         self.plugin_name = plugin_name
-        self.extract_dir = conf.PLUGINS_DIR  # 插件目录
+        self.extract_dir = conf.PLUGIN_HOME  # 插件目录
 
     def run(self) -> None:
         try:

@@ -1,14 +1,11 @@
 import os
 from pathlib import Path
 from sys import platform
+
 from loguru import logger
 
 APP_NAME = "Class Widgets"
 CW_HOME = Path(__file__).parent
-
-# if str(CW_HOME).endswith("MacOS"):
-#     CW_HOME = Path(__file__).absolute().parent.parent / "Resources"
-
 IS_PORTABLE = os.environ.get("CLASSWIDGETS_NOT_PORTABLE", "") == ""
 
 
@@ -59,9 +56,18 @@ CONFIG_HOME = _get_app_dir(
     xdg_env_var="XDG_CONFIG_HOME",
     xdg_fallback=".config",
 )
+SCHEDULE_DIR = _ensure_dir(CONFIG_HOME / "schedule")
 LOG_HOME = _get_app_dir(
     purpose="LOG",
     default_subdir="log",
+    win_env_var="TMP",
+    mac_subpath="Library/Caches",
+    xdg_env_var="XDG_CACHE_HOME",
+    xdg_fallback=".cache",
+)
+CACHE_HOME = _get_app_dir(
+    purpose="CACHE",
+    default_subdir="cache",
     win_env_var="TMP",
     mac_subpath="Library/Caches",
     xdg_env_var="XDG_CACHE_HOME",

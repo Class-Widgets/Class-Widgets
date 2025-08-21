@@ -6,13 +6,11 @@ from shutil import copy
 from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
 
 from loguru import logger
-
-from basic_dirs import THEME_DIRS
-from data_model import ThemeConfig, ThemeInfo
-from file import base_directory, config_center, save_data_to_json
-
 from PyQt5.QtCore import QCoreApplication
 
+from basic_dirs import CONFIG_HOME, CW_HOME, SCHEDULE_DIR, THEME_DIRS
+from data_model import ThemeConfig, ThemeInfo
+from file import config_center, save_data_to_json
 
 week = [QCoreApplication.translate("list_", '周一'), QCoreApplication.translate("list_", '周二'), QCoreApplication.translate("list_", '周三'), QCoreApplication.translate("list_", '周四'), QCoreApplication.translate("list_", '周五'), QCoreApplication.translate("list_", '周六'), QCoreApplication.translate("list_", '周日')]
 month = [QCoreApplication.translate("list_", '一月'), QCoreApplication.translate("list_", '二月'), QCoreApplication.translate("list_", '三月'), QCoreApplication.translate("list_", '四月'), QCoreApplication.translate("list_", '五月'), QCoreApplication.translate("list_", '六月'), QCoreApplication.translate("list_", '七月'), QCoreApplication.translate("list_", '八月'), QCoreApplication.translate("list_", '九月'), QCoreApplication.translate("list_", '十月'), QCoreApplication.translate("list_", '十一月'), QCoreApplication.translate("list_", '十二月')]
@@ -52,7 +50,7 @@ subject = {
     QCoreApplication.translate("list_", '暂无课程'): '(84, 255, 101',  # 绿
 }
 
-schedule_dir = os.path.join(base_directory, 'config', 'schedule')
+schedule_dir = CONFIG_HOME / 'schedule'
 
 class_activity = [QCoreApplication.translate("list_", '课程'), QCoreApplication.translate("list_", '课间')]
 time = [QCoreApplication.translate("list_", '上午'), QCoreApplication.translate("list_", '下午'), QCoreApplication.translate("list_", '晚修')]
@@ -117,7 +115,7 @@ native_widget_name = [widget_name[i] for i in widget_name]
 not_exist_themes = []
 
 try:
-    with open(base_directory / "config" / "schedule_db.json") as f:
+    with open(CONFIG_HOME / "schedule_db.json") as f:
         schedule_dbs = json.load(f).get('db', {})
 except:
     logger.warning("读取数据库列表失败，重置为空。")
@@ -148,9 +146,13 @@ def __collect_themes(it: Iterable[Tuple[str, ThemeInfo]]) -> Dict[str, ThemeInfo
 
 
 try:  # 加载课程/主题配置文件
-    subject_info = json.load(open(f'{base_directory}/config/data/subject.json', 'r', encoding='utf-8'))
-    subject_icon = subject_info['subject_icon']
-    subject_abbreviation = subject_info['subject_abbreviation']
+    subject_info: Any
+    subject_icon: Any
+    subject_abbreviation: Any
+    with open(CW_HOME / "data" / "subject.json", encoding='utf-8') as file:
+        subject_info = json.load(file)
+        subject_icon = subject_info['subject_icon']
+        subject_abbreviation = subject_info['subject_abbreviation']
     __theme = __collect_themes(
         (dir.name, info)
         for root_dir in reversed(THEME_DIRS)
@@ -208,11 +210,12 @@ def get_widget_names() -> List[str]:
 
 
 def get_current_theme_num() -> Union[str, int]:
-    for i in range(len(theme_folder)):
-        if not os.path.exists(f'{base_directory}/config/schedule/{theme_folder[i]}.json'):
+    for index, value in enumerate(theme_folder):
+        if not (schedule_dir / value).exists():
             return "default"
-        if theme_folder[i] == config_center.read_conf('General', 'theme'):
-            return i
+        if value == config_center.read_conf('General', 'theme'):
+            return index
+    return "default"
 
 
 def get_theme_ui_path(name: str) -> str:
@@ -232,9 +235,8 @@ def get_subject_abbreviation(key: str) -> str:
 # 学科图标
 def get_subject_icon(key: str) -> str:
     if key in subject_icon:
-        return f'{base_directory}/img/subject/{subject_icon[key]}.svg'
-    else:
-        return f'{base_directory}/img/subject/self_study.svg'
+        return str(CW_HOME / "img" / "subject" / f"{subject_icon[key]}.svg")
+    return str(CW_HOME / "img" / "subject" / "self_study.svg")
 
 
 # 学科主题色
@@ -266,7 +268,7 @@ def return_default_schedule_number() -> int:
 
 
 def create_new_profile(filename: str) -> None:
-    copy(f'{base_directory}/config/default.json', f'{base_directory}/config/schedule/{filename}')
+    copy(CW_HOME / "data" / "default_schedule.json", SCHEDULE_DIR / filename)
 
 
 def import_schedule(filepath: str, filename: str) -> bool:  # 导入课表
@@ -285,7 +287,7 @@ def import_schedule(filepath: str, filename: str) -> bool:  # 导入课表
     # 保存文件
     try:
         print(checked_data)
-        copy(filepath, f'{base_directory}/config/schedule/{filename}')
+        copy(filepath, SCHEDULE_DIR / filename)
         save_data_to_json(checked_data, filename)
         config_center.write_conf('General', 'schedule', filename)
         return True
@@ -344,7 +346,7 @@ def convert_schedule(check_data: Dict[str, Any]) -> Dict[str, Any]:  # 转换课
 
 def export_schedule(filepath: str, filename: str) -> bool:  # 导出课表
     try:
-        copy(f'{base_directory}/config/schedule/{filename}', filepath)
+        copy(SCHEDULE_DIR / filename, filepath)
         return True
     except Exception as e:
         logger.error(f"导出文件时出错: {e}")
@@ -352,12 +354,13 @@ def export_schedule(filepath: str, filename: str) -> bool:  # 导出课表
 
 
 def get_widget_config() -> List[str]:
+    widget_config_path = CONFIG_HOME / "widget.json"
     try:
-        if os.path.exists(f'{base_directory}/config/widget.json'):
-            with open(f'{base_directory}/config/widget.json', 'r', encoding='utf-8') as file:
+        if widget_config_path.exists():
+            with open(widget_config_path, encoding='utf-8') as file:
                 data = json.load(file)
         else:
-            with open(f'{base_directory}/config/widget.json', 'w', encoding='utf-8') as file:
+            with open(widget_config_path, 'w', encoding='utf-8') as file:
                 data = {'widgets': [
                     'widget-weather.ui', 'widget-countdown.ui', 'widget-current-activity.ui', 'widget-next-activity.ui'
                 ]}

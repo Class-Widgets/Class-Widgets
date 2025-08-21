@@ -1,38 +1,26 @@
+import configparser
 import json
 import os
 import sys
 from pathlib import Path
 from shutil import copy
-from typing import Dict, Any, Optional, Union, Callable, List
+from typing import Any, Callable, Dict, List, Optional, Union
 
 from loguru import logger
-import configparser
 from packaging.version import Version
-import json
-
 from PyQt5.QtCore import QCoreApplication
 
-
-base_directory = Path(os.path.dirname(os.path.abspath(__file__)))
-'''
-if str(base_directory).endswith('MacOS'):
-    base_directory = (base_directory.parent / 'Resources').resolve()
-'''
-config_path = base_directory / 'config.ini'
-
-
+from basic_dirs import CONFIG_HOME, CW_HOME, PLUGIN_HOME, SCHEDULE_DIR
 
 
 class ConfigCenter:
     """
     Config中心
     """
-    def __init__(self, base_directory: Path, schedule_update_callback: Optional[Callable[[], None]] = None) -> None:
-        self.base_directory = base_directory
+    def __init__(self, schedule_update_callback: Optional[Callable[[], None]] = None) -> None:
         self.config_version = 1
-        self.config_file_name = 'config.ini'
-        self.user_config_path = self.base_directory / self.config_file_name
-        self.default_config_path = self.base_directory / 'config' / 'default_config.json'
+        self.user_config_path = CONFIG_HOME / "config.ini"
+        self.default_config_path = CW_HOME / 'data' / 'default_config.json'
         self.config = configparser.ConfigParser()
         self.default_data: Dict[str, Any] = {}
         self.schedule_update_callback = schedule_update_callback
@@ -122,7 +110,7 @@ class ConfigCenter:
 
     def _check_schedule_config(self) -> None:
         """检查课程表配置文件"""
-        schedule_dir = base_directory / 'config' / 'schedule'
+        schedule_dir = CONFIG_HOME / 'schedule'
         schedule_name = self.read_conf('General', 'schedule')
         current_schedule_file = schedule_dir / schedule_name
 
@@ -132,7 +120,7 @@ class ConfigCenter:
                 if file_name.suffix == '.json' and file_name.name != 'backup.json':
                     schedule_config.append(file_name.name)
             if not schedule_config:
-                copy(base_directory / 'config' / 'default.json',
+                copy(CW_HOME / 'data' / 'default_schedule.json',
                      schedule_dir / schedule_name)
                 logger.info(f"课程表不存在,已创建默认课程表")
             else:
@@ -141,12 +129,8 @@ class ConfigCenter:
 
     def _check_plugins_directory(self) -> None:
         """检查插件目录和文件"""
-        plugins_dir = base_directory / 'plugins'
-        if not plugins_dir.exists():
-            plugins_dir.mkdir()
-            logger.info("Plugins 文件夹不存在，已创建。")
 
-        plugins_file = plugins_dir / 'plugins_from_pp.json'
+        plugins_file = PLUGIN_HOME / 'plugins_from_pp.json'
         if not plugins_file.exists():
             with open(plugins_file, 'w', encoding='utf-8') as file:
                 json.dump({"plugins": []}, file, ensure_ascii=False, indent=4)
@@ -404,7 +388,7 @@ class ScheduleCenter:
 
         # 将更新后的数据保存回文件
         try:
-            with open(base_directory / 'config' / 'schedule' / filename, 'w', encoding='utf-8') as file:
+            with open(SCHEDULE_DIR / filename, 'w', encoding='utf-8') as file:
                 json.dump(self.schedule_data, file, ensure_ascii=False, indent=4)
             return f"数据已成功保存到 config/schedule/{filename}"
         except Exception as e:
@@ -419,13 +403,13 @@ def load_from_json(filename: str) -> Dict[str, Any]:
     :return: 返回从文件中加载的数据字典
     """
     try:
-        with open(base_directory / 'config' / 'schedule' / filename, 'r', encoding='utf-8') as file:
+        with open(SCHEDULE_DIR / filename, encoding='utf-8') as file:
             data: Dict[str, Any] = json.load(file)
-        return data
+            return data
     except FileNotFoundError:
         logger.error(f"文件未找到: {filename}")
         return {}
-    except json.JSONDecodeError:
+    except json.JSONDecodeError as e:
         logger.error(f"JSON 解码错误: {filename}")
         return {}
     except Exception as e:
@@ -440,13 +424,13 @@ def save_data_to_json(data: Dict[str, Any], filename: str) -> None:
     :param filename: 要保存到的文件
     """
     try:
-        with open(base_directory / 'config' / 'schedule' / filename, 'w', encoding='utf-8') as file:
+        with open(SCHEDULE_DIR / filename, 'w', encoding='utf-8') as file:
             json.dump(data, file, ensure_ascii=False, indent=4)
     except Exception as e:
         logger.error(f"保存数据到 JSON 文件时出错: {e}")
 
 
-config_center = ConfigCenter(base_directory)
+config_center = ConfigCenter()
 schedule_center = ScheduleCenter(config_center)
 config_center.schedule_update_callback = schedule_center.update_schedule
 

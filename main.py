@@ -1,52 +1,102 @@
 import ctypes
 import datetime as dt
-import time
 import json
 import os
+from pathlib import Path
 import platform
 import re
+import signal
 import subprocess
 import sys
-import psutil
-import signal
+import time
 import traceback
 from shutil import copy
-from typing import Optional, Dict, List, Any, Union, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
-from PyQt5 import uic
-from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QRect, QEasingCurve, QSize, QPoint, QUrl, QObject, QParallelAnimationGroup
-from PyQt5.QtGui import QColor, QIcon, QPixmap, QPainter, QDesktopServices
-from PyQt5.QtGui import QFontDatabase
-from PyQt5.QtSvg import QSvgRenderer
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QProgressBar, QGraphicsBlurEffect, QPushButton, \
-    QGraphicsDropShadowEffect, QSystemTrayIcon, QFrame, QGraphicsOpacityEffect, QHBoxLayout
+import psutil
 from loguru import logger
 from packaging.version import Version
-from qfluentwidgets import Theme, setTheme, setThemeColor, SystemTrayMenu, Action, FluentIcon as fIcon, isDarkTheme, \
-    Dialog, ProgressRing, PlainTextEdit, ImageLabel, PushButton, InfoBarIcon, Flyout, FlyoutAnimationType, CheckBox, \
-    PrimaryPushButton, IconWidget
+from PyQt5 import uic
+from PyQt5.QtCore import (
+    QCoreApplication,
+    QEasingCurve,
+    QObject,
+    QParallelAnimationGroup,
+    QPoint,
+    QPropertyAnimation,
+    QRect,
+    QSize,
+    Qt,
+    QTimer,
+    QUrl,
+)
+from PyQt5.QtGui import (
+    QCloseEvent,
+    QColor,
+    QDesktopServices,
+    QFocusEvent,
+    QFontDatabase,
+    QHideEvent,
+    QIcon,
+    QMouseEvent,
+    QPainter,
+    QPixmap,
+    QShowEvent,
+)
+from PyQt5.QtSvg import QSvgRenderer
+from PyQt5.QtWidgets import (
+    QApplication,
+    QFrame,
+    QGraphicsBlurEffect,
+    QGraphicsDropShadowEffect,
+    QGraphicsOpacityEffect,
+    QHBoxLayout,
+    QLabel,
+    QProgressBar,
+    QPushButton,
+    QSystemTrayIcon,
+    QWidget,
+)
+from qfluentwidgets import (
+    Action,
+    CheckBox,
+    Dialog,
+    Flyout,
+    FlyoutAnimationType,
+    IconWidget,
+    ImageLabel,
+    InfoBarIcon,
+    PlainTextEdit,
+    PrimaryPushButton,
+    ProgressRing,
+    PushButton,
+    SystemTrayMenu,
+    Theme,
+    isDarkTheme,
+    setTheme,
+    setThemeColor,
+)
+from qfluentwidgets import FluentIcon as fIcon
 
-from PyQt5.QtGui import QCloseEvent, QShowEvent, QHideEvent, QMouseEvent, QFocusEvent
-from PyQt5.QtCore import QCoreApplication
-
-from i18n_manager import global_i18n_manager, app
 import conf
 import list_
-import tip_toast
-from tip_toast import active_windows
-import utils
 import menu
+import tip_toast
+import utils
 import weather as db
-from conf import base_directory, load_theme_config
+from basic_dirs import CONFIG_HOME, CW_HOME, LOG_HOME, SCHEDULE_DIR
+from conf import load_theme_config
 from extra_menu import ExtraMenu, open_settings, settings
+from file import config_center, schedule_center
 from generate_speech import generate_speech_sync, list_pyttsx3_voices
+from i18n_manager import app, global_i18n_manager
 from menu import open_plaza
-from weather import WeatherReportThread as weatherReportThread
-from weather import get_unified_weather_alerts, get_alert_image, weather_manager
 from network_thread import check_update
 from plugin import p_loader
-from utils import restart, stop, update_timer, DarkModeWatcher, TimeManagerFactory
-from file import config_center, schedule_center
+from tip_toast import active_windows
+from utils import DarkModeWatcher, TimeManagerFactory, restart, stop, update_timer
+from weather import WeatherReportThread as weatherReportThread
+from weather import get_alert_image, get_unified_weather_alerts, weather_manager
 
 if os.name == 'nt':
     import pygetwindow
@@ -91,7 +141,7 @@ dark_mode_watcher = None
 was_floating_mode = False  # 浮窗状态
 
 if config_center.read_conf('Other', 'do_not_log') != '1':
-    logger.add(f"{base_directory}/log/ClassWidgets_main_{{time}}.log", rotation="1 MB", encoding="utf-8",
+    logger.add(str(LOG_HOME) + "/ClassWidgets_main_{{time}}.log", rotation="1 MB", encoding="utf-8",
                retention="1 minute")
     logger.info('未禁用日志输出')
 else:
@@ -629,7 +679,7 @@ class ErrorDialog(Dialog):  # 重大错误提示框
         self.title_layout = QHBoxLayout()
 
         self.iconLabel = ImageLabel()
-        self.iconLabel.setImage(f"{base_directory}/img/logo/favicon-error.ico")
+        self.iconLabel.setImage(str(CW_HOME / "img/logo/favicon-error.ico"))
         self.error_log = PlainTextEdit()
         self.report_problem = PushButton(fIcon.FEEDBACK, self.tr('报告此问题'))
         self.copy_log_btn = PushButton(fIcon.COPY, self.tr('复制日志'))
@@ -747,10 +797,10 @@ class PluginManager:  # 插件管理器
             "Notification": notification.notification_contents,  # 检测到的通知内容
             "Last_Notify_Time": last_notify_time,  # 上次通知时间
 
-            "PLUGIN_PATH": os.path.normpath(os.path.join(conf.PLUGINS_DIR, path)) if path else conf.PLUGINS_DIR,  # 传递插件目录
+            "PLUGIN_PATH": str(conf.PLUGIN_HOME /  path) if path else str(conf.PLUGIN_HOME),  # 传递插件目录
             "Config_Center": config_center,  # 配置中心实例
             "Schedule_Center": schedule_center,  # 课程表中心实例
-            "Base_Directory": base_directory,  # 资源目录
+            "Base_Directory": CW_HOME,  # 资源目录
             "Widgets_Mgr": mgr,  # 组件管理器实例
             "Theme": theme,  # 当前主题
         }
@@ -1136,9 +1186,9 @@ class openProgressDialog(QWidget):
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
         if isDarkTheme():
-            uic.loadUi(f'{base_directory}/ui/default/dark/toast-open_dialog.ui', self)
+            uic.loadUi(str(CW_HOME / 'ui/default/dark/toast-open_dialog.ui'), self)
         else:
-            uic.loadUi(f'{base_directory}/ui/default/toast-open_dialog.ui', self)
+            uic.loadUi(str(CW_HOME / 'ui/default/toast-open_dialog.ui'), self)
 
         backgnd = self.findChild(QFrame, 'backgnd')
         shadow_effect = QGraphicsDropShadowEffect(self)
@@ -1149,7 +1199,7 @@ class openProgressDialog(QWidget):
         backgnd.setGraphicsEffect(shadow_effect)
 
     def init_font(self) -> None:
-        font_path = f'{base_directory}/font/HarmonyOS_Sans_SC_Bold.ttf'
+        font_path = str(CW_HOME / 'font/HarmonyOS_Sans_SC_Bold.ttf')
         font_id = QFontDatabase.addApplicationFont(font_path)
         if font_id != -1:
             font_family = QFontDatabase.applicationFontFamilies(font_id)[0]
@@ -1367,9 +1417,9 @@ class FloatingWidget(QWidget):  # 浮窗
                 uic.loadUi(theme_path / 'widget-floating.ui', self)
         else:
             if isDarkTheme() and theme_config.support_dark_mode:
-                uic.loadUi(f'{base_directory}/ui/default/dark/widget-floating.ui', self)
+                uic.loadUi(str(CW_HOME / 'ui/default/dark/widget-floating.ui'), self)
             else:
-                uic.loadUi(f'{base_directory}/ui/default/widget-floating.ui', self)
+                uic.loadUi(str(CW_HOME / 'ui/default/widget-floating.ui'), self)
 
         # 设置窗口无边框和透明背景
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
@@ -1416,7 +1466,7 @@ class FloatingWidget(QWidget):  # 浮窗
         backgnd.setGraphicsEffect(shadow_effect)
 
     def init_font(self) -> None:
-        font_path = f'{base_directory}/font/HarmonyOS_Sans_SC_Bold.ttf'
+        font_path = str(CW_HOME / 'font/HarmonyOS_Sans_SC_Bold.ttf')
         font_id = QFontDatabase.addApplicationFont(font_path)
         if font_id != -1:
             font_family = QFontDatabase.applicationFontFamilies(font_id)[0]
@@ -2098,7 +2148,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.backgnd.setGraphicsEffect(shadow_effect)
 
     def init_font(self):
-        font_path = f'{base_directory}/font/HarmonyOS_Sans_SC_Bold.ttf'
+        font_path = str(CW_HOME / 'font/HarmonyOS_Sans_SC_Bold.ttf')
         font_id = QFontDatabase.addApplicationFont(font_path)
         if font_id != -1:
             font_family = QFontDatabase.applicationFontFamilies(font_id)[0]
@@ -2846,9 +2896,9 @@ class DesktopWidget(QWidget):  # 主要小组件
                 else:
                     content_layout.addWidget(self.reminder_icon)
             try:
-                icon_path = f"{base_directory}/img/weather/reminders/{reminder['icon']}.svg"
-                if os.path.exists(icon_path):
-                    self.reminder_icon.setIcon(icon_path)
+                icon_path = CW_HOME / "img/weather/reminders" / f"{reminder['icon']}.svg"
+                if icon_path.exists():
+                    self.reminder_icon.setIcon(str(icon_path))
                     self.reminder_icon.show()
                 else:
                     logger.warning(f'天气提醒图标不存在: {icon_path}')
@@ -2952,7 +3002,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             logger.error(f'获取天气数据出错：{weather_data}')
             try:
                 if hasattr(self, 'weather_icon'):
-                    self.weather_icon.setPixmap(QPixmap(f'{base_directory}/img/weather/99.svg'))
+                    self.weather_icon.setPixmap(QPixmap(CW_HOME / 'img/weather/99.svg'))
                     self.alert_icon.hide()
                     self.weather_alert_text.hide()
                     self.temperature.setText('--°')
@@ -3306,8 +3356,7 @@ def init_config() -> None:  # 重设配置文件
     config_center.write_conf('Temp', 'set_week', '')
     config_center.write_conf('Temp', 'set_schedule', '')
     if config_center.read_conf('Temp', 'temp_schedule') != '':  # 修复换课重置
-        copy(f'{base_directory}/config/schedule/backup.json',
-             f'{base_directory}/config/schedule/{config_center.schedule_name}')
+        copy(SCHEDULE_DIR / "backup.json", SCHEDULE_DIR / str(config_center.schedule_name))
         config_center.write_conf('Temp', 'temp_schedule', '')
         schedule_center.update_schedule()
 
@@ -3373,6 +3422,11 @@ def setup_signal_handlers_optimized(app: QApplication) -> None:
 
 if __name__ == '__main__':
     utils.guard = utils.SingleInstanceGuard("ClassWidgets.lock")
+
+    old_config_file = CW_HOME / "config.ini"
+    if old_config_file.exists():
+        old_config_file.replace(CONFIG_HOME / "config.ini")
+
     if config_center.read_conf('Other', 'multiple_programs') != '1':
         if not utils.guard.try_acquire():
             if (info:=utils.guard.get_lock_info()):
@@ -3442,9 +3496,11 @@ if __name__ == '__main__':
 
     if config_center.read_conf('Other', 'initialstartup') == '1':  # 首次启动
         try:
-            conf.add_shortcut('ClassWidgets.exe', f'{base_directory}/img/favicon.ico')
-            conf.add_shortcut_to_startmenu(f'{base_directory}/ClassWidgets.exe',
-                                            f'{base_directory}/img/favicon.ico')
+            conf.add_shortcut('ClassWidgets.exe', str(CW_HOME / 'img/favicon.ico'))
+            conf.add_shortcut_to_startmenu(
+                str(CW_HOME / 'ClassWidgets.exe'),
+                str(CW_HOME / 'img/favicon.ico')
+            )
             config_center.write_conf('Other', 'initialstartup', '')
         except Exception as e:
             logger.error(f'添加快捷方式失败：{e}')

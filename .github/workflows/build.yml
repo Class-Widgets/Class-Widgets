@@ -279,7 +279,7 @@ jobs:
       - name: Update config
         shell: bash
         run: |
-          config_path="config/default_config.json"
+          config_path="data/default_config.json"
           config_text=$(cat "$config_path")
           config_text="${config_text//__BUILD_TIME__/$BUILD_TIME}"
           config_text="${config_text//__BUILD_COMMIT__/$BUILD_COMMIT}"
