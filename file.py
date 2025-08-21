@@ -378,7 +378,9 @@ class ScheduleCenter:
         """
         self.schedule_data = load_from_json(self.config_center.read_conf('General', 'schedule'))
         if 'timeline' not in self.schedule_data:
-            self.schedule_data['timeline'] = {}
+            self.schedule_data['timeline'] = []
+        if 'timeline_even' not in self.schedule_data:
+            self.schedule_data['timeline_even'] = []
         if self.schedule_data.get('url', None) is None:
             self.schedule_data['url'] = 'local'
             self.save_data(self.schedule_data, config_center.schedule_name)
