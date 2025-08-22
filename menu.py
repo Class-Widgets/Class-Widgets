@@ -2055,7 +2055,7 @@ class SettingsMenu(FluentWindow):
         except Exception as e:
             logger.error(f"插件导入失败 - 文件夹复制错误: {raw_json_file_path}, 错误详情: {str(e)}")
             self._show_error_dialog(self.tr('复制插件文件夹时发生错误：{e}').format(e=f"{e}"))
-   
+
     def _import_from_zip(self, zip_file_path: str):
         try:
             with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
