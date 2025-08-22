@@ -5089,20 +5089,9 @@ class SettingsMenu(FluentWindow):
         te_name_part = self.findChild(EditableComboBox, 'name_part_combo')
         te_part_time = self.findChild(TimeEdit, 'part_time')
         te_part_type = self.findChild(ComboBox, 'part_type')
-        if te_part_list.count() < 10:
-            te_part_list.addItem(
-                f'{te_name_part.currentText()} - {te_part_time.time().toString("h:mm")} - {te_part_type.currentText()}'
-            )
-        else:  # 最多只能添加9个节点
-            Flyout.create(
-                icon=InfoBarIcon.WARNING,
-                title=self.tr('没办法继续添加了 o(TヘTo)'),
-                content=self.tr('Class Widgets 最多只能添加10个“节点”！'),
-                target=self.findChild(ToolButton, 'add_part_button'),
-                parent=self,
-                isClosable=True,
-                aniType=FlyoutAnimationType.PULL_UP
-            )
+        te_part_list.addItem(
+            f'{te_name_part.currentText()} - {te_part_time.time().toString("h:mm")} - {te_part_type.currentText()}'
+        )
         self.te_detect_item()
         self.te_update_parts_name()
 
