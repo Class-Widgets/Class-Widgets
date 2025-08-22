@@ -15,9 +15,9 @@ body:
 
         在提出建议之前，请先确认以下所有事项：
         > Before suggesting, please confirm:
-        
-        1. 我已更新到最新版 ![GitHub Release](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?include_prereleases)，并看过[最新提交](https://github.com/RinLit-233-shiroko/Class-Widgets/commits/main/)
-        > 1. Updated to the latest version ![GitHub Release](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?include_prereleases) and checked [latest commits](https://github.com/RinLit-233-shiroko/Class-Widgets/commits/main/).
+
+        1. 我已更新到最新版 ![GitHub Release](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?include_prereleases)，并看过[最新提交](https://github.com/Class-Widgets/Class-Widgets/commits/main/)
+        > 1. Updated to the latest version ![GitHub Release](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?include_prereleases) and checked [latest commits](https://github.com/Class-Widgets/Class-Widgets/commits/main/).
 
         2. 我已在 [Issues](https://github.com/Class-Widgets/Class-Widgets/issues?q=label:i18n) 中检索，确认这一类似的建议 / 问题 **未被提交过**。
         > 2. Searched [Issues](https://github.com/Class-Widgets/Class-Widgets/issues?q=label:i18n) to ensure this hasn't been suggested/reported before.
@@ -53,7 +53,7 @@ body:
       value: |
         描述您遇到的I18N相关问题。您可以附上截图、录屏等材料。
         > Describe your I18N issues. You can provide screenshots, recordings, or other attachments.
-        
+
         > [!WARNING]
         > 若您要上传材料，请等待材料文件上传完成后再发布 Issue。
         > If uploading materials, please wait for the files to finish uploading before submitting the Issue.

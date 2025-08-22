@@ -106,7 +106,7 @@ class ConfigCenter:
             {
                 'old_section': 'General',
                 'old_key': 'time_offset',
-                'new_section': 'Time', 
+                'new_section': 'Time',
                 'new_key': 'time_offset',
                 'remove_old': True
             },
@@ -114,7 +114,7 @@ class ConfigCenter:
                 'old_section': 'Other',
                 'old_key': 'auto_check_update',
                 'new_section': 'Version',
-                'new_key': 'auto_check_update', 
+                'new_key': 'auto_check_update',
                 'remove_old': True
             }
         ]
@@ -157,11 +157,11 @@ class ConfigCenter:
         with open(self.user_config_path, 'w', encoding='utf-8') as configfile:
             self.config.write(configfile)
 
-    def migrate_config_item(self, old_section: str, old_key: str, new_section: str, new_key: str, 
-                           transform_func: Optional[Callable[[Any], Any]] = None, 
+    def migrate_config_item(self, old_section: str, old_key: str, new_section: str, new_key: str,
+                           transform_func: Optional[Callable[[Any], Any]] = None,
                            remove_old: bool = True) -> bool:
         """配置项迁移函数
-        
+
         Args:
             old_section: 原配置节名
             old_key: 原配置键名
@@ -169,7 +169,7 @@ class ConfigCenter:
             new_key: 新配置键名
             transform_func: 值转换函数，可选
             remove_old: 是否删除原配置项，默认True
-            
+
         Returns:
             bool: 迁移是否成功
         """
@@ -194,9 +194,9 @@ class ConfigCenter:
         except Exception as e:
             logger.error(f"配置项迁移失败 {old_section}.{old_key} -> {new_section}.{new_key}: {e}")
             return False
-    
-    def migrate_config(self, old_section: str = None, old_key: str = None, new_section: str = None, 
-                       new_key: str = None, transform_func: Optional[Callable[[Any], Any]] = None, 
+
+    def migrate_config(self, old_section: str = None, old_key: str = None, new_section: str = None,
+                       new_key: str = None, transform_func: Optional[Callable[[Any], Any]] = None,
                        remove_old: bool = True, migration_rules: Optional[List[Dict[str, Any]]] = None) -> Union[bool, Dict[str, bool]]:
         """配置迁移
 
@@ -216,10 +216,10 @@ class ConfigCenter:
                 - new_key: 新配置键
                 - transform_func: 转换函数 (可选)
                 - remove_old: 是否删除原配置 (可选,默认True)
-                
+
         Returns:
             Union[bool, Dict[str, bool]]: 单个迁移返回bool，批量迁移返回Dict[str, bool]
-            
+
         Raises:
             ValueError: 当参数不正确时抛出异常
         """
@@ -229,12 +229,12 @@ class ConfigCenter:
             return self._batch_migrate_internal(migration_rules)
         if not all([old_section, old_key, new_section, new_key]):
             raise ValueError("需提供完整参数")
-        result = self.migrate_config_item(old_section, old_key, new_section, new_key, 
+        result = self.migrate_config_item(old_section, old_key, new_section, new_key,
                                          transform_func, remove_old)
         if result:
             self._write_config_to_file()
         return result
-    
+
     def _batch_migrate_internal(self, migration_rules: List[Dict[str, Any]]) -> Dict[str, bool]:
         results = {}
         for i, rule in enumerate(migration_rules):

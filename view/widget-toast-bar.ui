@@ -42,9 +42,9 @@
     <widget class="QFrame" name="backgnd">
      <property name="styleSheet">
       <string notr="true">border: none;
-color: rgba(255, 255, 255, 255); 
-font-weight: bold; 
-border-radius: 8px; 
+color: rgba(255, 255, 255, 255);
+font-weight: bold;
+border-radius: 8px;
 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 200, 150, 255), stop:1 rgba(217, 147, 107, 255));</string>
      </property>
      <property name="frameShape">

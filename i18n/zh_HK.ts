@@ -2776,7 +2776,7 @@ https://classwidgets.rinlit.cn/docs-user/</translation>
         <location filename="../menu.py" line="4240"/>
         <source>课程表文件导入成功！
 请手动切换您的配置文件。</source>
-        <translation>課程時間表文檔導入成功! 
+        <translation>課程時間表文檔導入成功!
 請手動切換設定檔。</translation>
     </message>
     <message>
@@ -3093,14 +3093,14 @@ Json 設定檔 (*.json)</translation>
         <location filename="../menu.py" line="4205"/>
         <source>版本号：{local_version}
 已是最新版本！</source>
-        <translation>版本號：{local_version} 
+        <translation>版本號：{local_version}
 已是最新版本!</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4207"/>
         <source>版本号：{local_version}
 可更新版本: {new_version}</source>
-        <translation>版本號：{local_version} 
+        <translation>版本號：{local_version}
 可更新版本：{new_version}</translation>
     </message>
     <message>
@@ -3959,7 +3959,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <location filename="../file.py" line="62"/>
         <source>加载默认配置文件失败,请检查文件完整性或尝试重新安装。
 错误信息: {e}</source>
-        <translation>加載預設設定檔失敗，請檢查檔案是否完整或嘗試重新安裝。 
+        <translation>加載預設設定檔失敗，請檢查檔案是否完整或嘗試重新安裝。
 錯誤訊息: {e}</translation>
     </message>
     <message>

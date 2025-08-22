@@ -2,7 +2,7 @@
 简体中文 | <a href="/docs/readme/README.en_US.md">English</a> | <a href="/docs/readme/README.ja.md">日本語</a>
 </div>
 
-> [!Warning]
+> [!WARNING]
 > Class Widgets *1* 目前完全由社区开发者进行开发，而您在 Class Widgets 主仓库（即本仓库）提出的议题和提交的贡献将主要由以下四位成员接收和审查：
 >
 > [![](https://images.weserv.nl/?url=github.com/pizeroLOL.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/pizeroLOL) [![](https://images.weserv.nl/?url=github.com/IsHPDuwu.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/IsHPDuwu) [![](https://images.weserv.nl/?url=github.com/baiyao105.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/baiyao105) [![](https://images.weserv.nl/?url=github.com/Artist-MOBAI.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/Artist-MOBAI)
@@ -21,19 +21,19 @@
 
 <div align="center">
 
-[![星标](https://img.shields.io/github/stars/Class-Widgets/Class-Widgets?style=for-the-badge&color=orange&label=星标)](https://github.com/Class-Widgets/Class-Widgets)
-[![当前版本](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?style=for-the-badge&color=purple&label=当前版本)](https://github.com/Class-Widgets/Class-Widgets/releases/latest)
-[![当前测试版](https://img.shields.io/github/v/tag/Class-Widgets/Class-Widgets?include_prereleases&label=当前测试版&color=yellow&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets/actions)
-[![开源许可](https://img.shields.io/badge/license-GPLv3-blue.svg?label=开源许可证&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets?tab=GPL-3.0-1-ov-file)
-[![下载量](https://img.shields.io/github/downloads/Class-Widgets/Class-Widgets/total.svg?label=下载量&color=green&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets)
+[![星标](https://img.shields.io/github/stars/Class-Widgets/Class-Widgets?style=for-the-badge&color=orange&label=%E6%98%9F%E6%A0%87)](https://github.com/Class-Widgets/Class-Widgets)
+[![当前版本](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?style=for-the-badge&color=purple&label=%E5%BD%93%E5%89%8D%E7%89%88%E6%9C%AC)](https://github.com/Class-Widgets/Class-Widgets/releases/latest)
+[![当前测试版](https://img.shields.io/github/v/tag/Class-Widgets/Class-Widgets?include_prereleases&label=%E5%BD%93%E5%89%8D%E6%B5%8B%E8%AF%95%E7%89%88&color=yellow&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets/actions)
+[![开源许可](https://img.shields.io/badge/license-GPLv3-blue.svg?label=%E5%BC%80%E6%BA%90%E8%AE%B8%E5%8F%AF%E8%AF%81&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets?tab=GPL-3.0-1-ov-file)
+[![下载量](https://img.shields.io/github/downloads/Class-Widgets/Class-Widgets/total.svg?label=%E4%B8%8B%E8%BD%BD%E9%87%8F&color=green&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets)
 [![翻译状态](https://hosted.weblate.org/widget/class-widgets-1/view/svg-badge.svg)](https://hosted.weblate.org/engage/class-widgets-1/)
 [![翻译状态](https://hosted.weblate.org/widget/class-widgets-1/view/language-badge.svg)](https://hosted.weblate.org/engage/class-widgets-1/)
 
 ![Banner](img/Banner.png)
 
-[![Q群](https://img.shields.io/badge/QQ%20群1-169200380-blue.svg?logo=qq&color=blue&style=for-the-badge)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380)
-[![Q群](https://img.shields.io/badge/QQ%20群2-698599898-blue.svg?logo=qq&color=blue&style=for-the-badge)](https://qm.qq.com/cgi-bin/qm/qr?k=f3uyP-yI-0oEOwiHFTFjJo-aQpkoNaiX&jump_from=webapi&authKey=Ok+lW0D8TrjFwgP5WSOVxFM4s97thPk36WOmMKXSyroP8MDmDPS22bPqT/+6uMgN)
-[![DC](https://img.shields.io/discord/1332636953719476284?style=for-the-badge&logo=discord&logoColor=ffffff&label=Discord%20服务器&labelColor=5865f2)](https://discord.gg/EFF4PpqpqZ)
+[![Q群](https://img.shields.io/badge/QQ%20%E7%BE%A41-169200380-blue.svg?logo=qq&color=blue&style=for-the-badge)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380)
+[![Q群](https://img.shields.io/badge/QQ%20%E7%BE%A42-698599898-blue.svg?logo=qq&color=blue&style=for-the-badge)](https://qm.qq.com/cgi-bin/qm/qr?k=f3uyP-yI-0oEOwiHFTFjJo-aQpkoNaiX&jump_from=webapi&authKey=Ok+lW0D8TrjFwgP5WSOVxFM4s97thPk36WOmMKXSyroP8MDmDPS22bPqT/+6uMgN)
+[![DC](https://img.shields.io/discord/1332636953719476284?style=for-the-badge&logo=discord&logoColor=ffffff&label=Discord%20%E6%9C%8D%E5%8A%A1%E5%99%A8&labelColor=5865f2)](https://discord.gg/EFF4PpqpqZ)
 
 #### [了解更多 >](https://www.bilibili.com/video/BV1xwW9eyEGu/)
 
@@ -64,14 +64,14 @@
 ![scrshot_0](img/screenshot_1.png)
 
 ## 安装&使用
->
+
 > [!TIP]
 > 可在 [Class Widgets 官方文档](https://www.yuque.com/rinlit/class-widgets_help/gs3gsbms1iivgibm) 查看教程。
 
 > [!IMPORTANT]
 > 若要体验此页面的特性，请前往 [**Actions**](https://github.com/Class-Widgets/Class-Widgets/actions) 页面下载最新构建。
 
-下载 ![当前版本](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?style=flat&color=purple&label=当前版本) 中最新版的压缩文件，解压到合适位置后，运行 `ClassWidgets.exe` 即可。
+下载 ![当前版本](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?style=flat&color=purple&label=%E5%BD%93%E5%89%8D%E7%89%88%E6%9C%AC) 中最新版的压缩文件，解压到合适位置后，运行 `ClassWidgets.exe` 即可。
 可通过托盘菜单进入设置、或退出此程序。
 
 ## 协议
@@ -126,7 +126,7 @@ Copyright © 2025 RinLit.
       <img alt="SignPath" src="https://signpath.org/assets/favicon-50x50.png" />
     </td>
     <td>
-    Free code signing on Windows provided by <a href="https://signpath.io">SignPath.io</a>, certficate by <a href="https://signpath.org/">SignPath Foundation</a><br/>
+    Free code signing on Windows provided by <a href="https://signpath.io">SignPath.io</a>, certificate by <a href="https://signpath.org/">SignPath Foundation</a><br/>
     由 <a href="https://signpath.io">SignPath.io</a> 提供 Windows 上的免费代码签名，由 <a href="https://signpath.org">SignPath Foundation</a> 提供证书
     </td>
   </tr>
@@ -148,7 +148,7 @@ Copyright © 2025 RinLit.
 
 ## 星标历史
 
- <picture>
+<picture>
    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Class-Widgets/Class-Widgets&type=Date&theme=dark" />
    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Class-Widgets/Class-Widgets&type=Date" />
    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Class-Widgets/Class-Widgets&type=Date" />

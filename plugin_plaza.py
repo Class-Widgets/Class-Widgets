@@ -29,23 +29,23 @@ from PyQt5.QtCore import QCoreApplication
 
 class ThreadManager:
     """线程管理器"""
-    
+
     def __init__(self) -> None:
         self.active_threads: List[QThread] = []
         self.logger = logger
-    
+
     def add_thread(self, thread: QThread) -> QThread:
         """添加线程到管理器"""
         if thread not in self.active_threads:
             self.active_threads.append(thread)
             thread.finished.connect(lambda: self._remove_thread(thread))
         return thread
-    
+
     def _remove_thread(self, thread: QThread) -> None:
         """从管理器中移除线程"""
         if thread in self.active_threads:
             self.active_threads.remove(thread)
-    
+
     def stop_all_threads(self) -> None:
         """停止所有活跃线程"""
         for thread in self.active_threads.copy():
@@ -62,11 +62,11 @@ class ThreadManager:
             except Exception as e:
                 self.logger.error(f"停止线程时发生错误: {e}")
         self.active_threads.clear()
-    
+
     def get_active_count(self) -> int:
         """获取活跃线程数量"""
         return len([t for t in self.active_threads if t.isRunning()])
-    
+
     def get_thread_status(self) -> Dict[str, Any]:
         """获取线程状态信息"""
         running = [t.__class__.__name__ for t in self.active_threads if t.isRunning()]
@@ -151,7 +151,7 @@ class downloadProgressBar(InfoBar):  # 下载进度条(创建下载进程)
         self.download_thread.status_signal.connect(self.detect_status)  # 判断状态
         if hasattr(self.parent(), 'thread_manager'):
             self.parent().thread_manager.add_thread(self.download_thread)
-        
+
         self.download_thread.start()
 
     def cancelDownload(self) -> None:
@@ -332,7 +332,7 @@ class PluginDetailPage(MessageBoxBase):  # 插件详情页面
         self.download_thread.html_signal.connect(display_readme)
         if hasattr(self.parent, 'thread_manager'):
             self.parent.thread_manager.add_thread(self.download_thread)
-        
+
         self.download_thread.start()
 
     def init_ui(self) -> None:
@@ -773,7 +773,7 @@ class PluginPlaza(MSFluentWindow):
         self.get_tags_list_thread.repo_signal.connect(self.set_tags_data)
         self.thread_manager.add_thread(self.get_tags_list_thread)
         self.get_tags_list_thread.start()
-    
+
     def closeEvent(self, event) -> None:
         self.thread_manager.stop_all_threads()
         super().closeEvent(event)

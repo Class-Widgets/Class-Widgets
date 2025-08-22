@@ -78,11 +78,13 @@ Please follow the [Conventional Commits](https://www.conventionalcommits.org/en/
      git fetch origin
      git rebase origin/main
      ```
+
 2. **Pre-Commit Checks**:
 
    - Pass local tests (verify functionality on at least one OS);
    - Ensure no syntax errors and pass basic pylint checks;
    - Add new dependencies to `requirements.txt` with cross-platform compatibility.
+
 3. **PR Description**:
 
    - Title: Briefly describe changes (match commit message when possible);
@@ -111,32 +113,31 @@ Join the QQ group or Discord server mentioned in the [README](/docs/readme/READM
 
 ## Appendix: Feature Terminology Table
 
-
-|     Chinese     |         English         |          Japanese          |
+| Chinese | English | Japanese |
 | :-------------: | :----------------------: | :-------------------------: |
-|      天气      |         weather         |            天気            |
-|      提醒      |           tip           |        リマインダー        |
-|       TTS       |           tts           |             TTS             |
-|    插件广场    |     pp/plugin_plaza     |       プラグイン広場       |
-|      设置      |         settings         |            設定            |
-|   设置 - 课表   |         schedule         |        設定 - 時間割        |
-|   设置 - CSES   |           cses           |         設定 - CSES         |
-|  设置 - 个性化  |        customize        |     設定 - カスタマイズ     |
-| 设置 - 高级选项 |         advanced         |    設定 - 詳細オプション    |
-|    额外选项    |    additional options    |       追加オプション       |
-|      轮播      |         carousel         |       スライドショー       |
-|    多小组件    |      multi-widgets      |      複数ウィジェット      |
-|     倒计日     |        countdown        |       カウントダウン       |
-|   倒计日编辑   |    countdown editing    |     カウントダウン編集     |
-|   课程表编辑   |     schedule editing     |         時間割編集         |
-|    插件管理    |    plugin management    |       プラグイン管理       |
-|      帮助      |           help           |           ヘルプ           |
-|   关于本产品   |    about this product    |       本製品について       |
-|    配置文件    |    configuration file    |        設定ファイル        |
-|     国际化     |           i18n           |           国際化           |
-|     时间线     |         timeline         |        タイムライン        |
-|      节点      |           node           |           ノード           |
-|   上下课提醒   | class start/end reminder | 授業開始 / 終了リマインダー |
-|      浮窗      |     floating window     |       浮動ウィンドウ       |
-|    课表预览    |     schedule preview     |      時間割プレビュー      |
-|   时间线编辑   |     timeline editing     |      タイムライン編集      |
+| 天气 | weather | 天気 |
+| 提醒 | tip | リマインダー |
+| TTS | tts | TTS |
+| 插件广场 | pp/plugin_plaza | プラグイン広場 |
+| 设置 | settings | 設定 |
+| 设置 - 课表 | schedule | 設定 - 時間割 |
+| 设置 - CSES | cses | 設定 - CSES |
+| 设置 - 个性化 | customize | 設定 - カスタマイズ |
+| 设置 - 高级选项 | advanced | 設定 - 詳細オプション |
+| 额外选项 | additional options | 追加オプション |
+| 轮播 | carousel | スライドショー |
+| 多小组件 | multi-widgets | 複数ウィジェット |
+| 倒计日 | countdown | カウントダウン |
+| 倒计日编辑 | countdown editing | カウントダウン編集 |
+| 课程表编辑 | schedule editing | 時間割編集 |
+| 插件管理 | plugin management | プラグイン管理 |
+| 帮助 | help | ヘルプ |
+| 关于本产品 | about this product | 本製品について |
+| 配置文件 | configuration file | 設定ファイル |
+| 国际化 | i18n | 国際化 |
+| 时间线 | timeline | タイムライン |
+| 节点 | node | ノード |
+| 上下课提醒 | class start/end reminder | 授業開始 / 終了リマインダー |
+| 浮窗 | floating window | 浮動ウィンドウ |
+| 课表预览 | schedule preview | 時間割プレビュー |
+| 时间线编辑 | timeline editing | タイムライン編集 |

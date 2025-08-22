@@ -103,7 +103,7 @@ class ExtraMenu(FluentWindow):
             current_full_schedule_data = schedule_center.schedule_data
             adjusted_week = str(temp_week.currentIndex())
             is_even_week = temp_schedule_set.currentIndex() == 1
-            
+
             if is_even_week:
                 if adjusted_week in temp_schedule.get('schedule_even', {}):
                     current_full_schedule_data['schedule_even'] = current_full_schedule_data.get('schedule_even', {})

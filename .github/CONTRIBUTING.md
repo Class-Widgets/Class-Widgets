@@ -78,11 +78,12 @@ Bug 反馈需包含的信息：
 2. **分支准备**：
 
    - 基于主仓库 main 分支创建个人分支，命名建议：feat/功能名 或 fix/bug描述；
+
    - 确保分支与主仓库 main 分支同步（减少合并冲突）：
 
      ```bash
-     git fetch origin
-     git rebase origin/main
+      git fetch origin
+      git rebase origin/main
      ```
 
 3. **提交前检查**：
@@ -90,6 +91,7 @@ Bug 反馈需包含的信息：
    - 本地测试通过（至少在一个操作系统上验证功能）；
    - 代码无语法错误，运行 pylint 检查基本规范；
    - 新增依赖已添加至 `pyproject.toml`，并尽量兼容多平台。
+
 4. **PR 描述**：
 
    - 标题：简要说明修改（建议与提交信息一致）；
@@ -118,31 +120,31 @@ Class Widgets 支持多语言国际化（i18n），您可通过以下方式贡�
 
 ## 附录：功能对照表
 
-|       中       |            英            |             日             |
+| 中 | 英 | 日 |
 | :-------------: | :----------------------: | :-------------------------: |
-|      天气      |         weather         |            天気            |
-|      提醒      |           tip           |        リマインダー        |
-|       TTS       |           tts           |             TTS             |
-|    插件广场    |     pp/plugin_plaza     |       プラグイン広場       |
-|      设置      |         settings         |            設定            |
-|   设置 - 课表   |         schedule         |        設定 - 時間割        |
-|   设置 - CSES   |           cses           |         設定 - CSES         |
-|  设置 - 个性化  |        customize        |     設定 - カスタマイズ     |
-| 设置 - 高级选项 |         advanced         |    設定 - 詳細オプション    |
-|    额外选项    |    additional options    |       追加オプション       |
-|      轮播      |         carousel         |       スライドショー       |
-|    多小组件    |      multi-widgets      |      複数ウィジェット      |
-|     倒计日     |        countdown        |       カウントダウン       |
-|   倒计日编辑   |    countdown editing    |     カウントダウン編集     |
-|   课程表编辑   |     schedule editing     |         時間割編集         |
-|    插件管理    |    plugin management    |       プラグイン管理       |
-|      帮助      |           help           |           ヘルプ           |
-|   关于本产品   |    about this product    |       本製品について       |
-|    配置文件    |    configuration file    |        設定ファイル        |
-|     国际化     |           i18n           |           国際化           |
-|     时间线     |         timeline         |        タイムライン        |
-|      节点      |           node           |           ノード           |
-|   上下课提醒   | class start/end reminder | 授業開始 / 終了リマインダー |
-|      浮窗      |     floating window     |       浮動ウィンドウ       |
-|    课表预览    |     schedule preview     |      時間割プレビュー      |
-|   时间线编辑   |     timeline editing     |      タイムライン編集      |
+| 天气 | weather | 天気 |
+| 提醒 | tip | リマインダー |
+| TTS | tts | TTS |
+| 插件广场 | pp/plugin_plaza | プラグイン広場 |
+| 设置 | settings | 設定 |
+| 设置 - 课表 | schedule | 設定 - 時間割 |
+| 设置 - CSES | cses | 設定 - CSES |
+| 设置 - 个性化 | customize | 設定 - カスタマイズ |
+| 设置 - 高级选项 | advanced | 設定 - 詳細オプション |
+| 额外选项 | additional options | 追加オプション |
+| 轮播 | carousel | スライドショー |
+| 多小组件 | multi-widgets | 複数ウィジェット |
+| 倒计日 | countdown | カウントダウン |
+| 倒计日编辑 | countdown editing | カウントダウン編集 |
+| 课程表编辑 | schedule editing | 時間割編集 |
+| 插件管理 | plugin management | プラグイン管理 |
+| 帮助 | help | ヘルプ |
+| 关于本产品 | about this product | 本製品について |
+| 配置文件 | configuration file | 設定ファイル |
+| 国际化 | i18n | 国際化 |
+| 时间线 | timeline | タイムライン |
+| 节点 | node | ノード |
+| 上下课提醒 | class start/end reminder | 授業開始 / 終了リマインダー |
+| 浮窗 | floating window | 浮動ウィンドウ |
+| 课表预览 | schedule preview | 時間割プレビュー |
+| 时间线编辑 | timeline editing | タイムライン編集 |

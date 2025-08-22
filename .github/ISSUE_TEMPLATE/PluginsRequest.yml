@@ -11,8 +11,8 @@ body:
         ### 检查清单
 
         在提出建议之前，请先确认以下所有事项：
-        
-        1. 我已更新到最新版 ![GitHub Release](https://img.shields.io/github/v/release/RinLit-233-shiroko/Class-Widgets?include_prereleases)，并看过[最新提交](https://github.com/RinLit-233-shiroko/Class-Widgets/commits/main/)，确认我想要的功能还没有实现。
+
+        1. 我已更新到最新版 ![GitHub Release](https://img.shields.io/github/v/release/RinLit-233-shiroko/Class-Widgets?include_prereleases)，并看过[最新提交](https://github.com/Class-Widgets/Class-Widgets/commits/main/)，确认我想要的功能还没有实现。
         2. 我已在 [Issues](https://github.com/Class-Widgets/Class-Widgets/issues?q=label%3A%E6%96%B0%E5%8A%9F%E8%83%BD) 中检索，确认这一类似的建议 **未被提交过**。
         3. 我认为我想要的功能是用户广泛需要的，插件可以替代的，且没有超出 **软件本来** 的开发目标，而非 **添加与课表及教学辅助无关的内容** 。
         4. 我已知晓由于插件开发者时间精力有限，我提交的插件请求可能需要比较久的时间才能实现。
@@ -32,7 +32,7 @@ body:
       value: |
         ### 插件
         描述您想要的插件的功能。您可以附上截图、录屏、堆栈跟踪、日志等材料，便于插件开发者进行开发。
-        
+
         > [!WARNING]
         > 若您要上传材料，请等待材料文件上传完成后再发布 Issue。
         >
