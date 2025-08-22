@@ -162,6 +162,8 @@ class CSES_Converter:
 
                     timelines_part = {str(day): []}  # 一个节点的时间线列表
                     for isbreak, item_name, item_index, item_time in timeline:  # 时间线循环
+                        if part != item_name:
+                            continue
                         # if key.startswith(f'a{part}'):  # 科目
                         if not isbreak:  # 科目
                             class_dict = {}
