@@ -101,11 +101,25 @@ class CSES_Converter:
                 if last_end_time:
                     time_diff = int((start_time - last_end_time).total_seconds() / 60)  # 时差
 
-                if not time_diff:  # 如果连堂或第一节课
-                    cw_format['timeline'][week][f'a{part_count - 1}{class_count}'] = duration
-                else:
-                    cw_format['timeline'][week][f'f{part_count - 1}{class_count - 1}'] = time_diff
-                    cw_format['timeline'][week][f'a{part_count - 1}{class_count}'] = duration
+                if weeks in ['odd', 'all']:
+                    if not time_diff:  # 如果连堂或第一节课
+                        # cw_format['timeline'][week][f'a{part_count - 1}{class_count}'] = duration
+                        cw_format['timeline'][week].append([0, f"{part_count-1}", class_count, duration])
+                    else:
+                        # cw_format['timeline'][week][f'f{part_count - 1}{class_count - 1}'] = time_diff
+                        # cw_format['timeline'][week][f'a{part_count - 1}{class_count}'] = duration
+                        cw_format['timeline'][week].append([1, f"{part_count-1}", class_count - 1, time_diff])
+                        cw_format['timeline'][week].append([0, f"{part_count-1}", class_count, duration])
+
+                if weeks in ['even', 'all']:
+                    if not time_diff:  # 如果连堂或第一节课
+                        # cw_format['timeline'][week][f'a{part_count - 1}{class_count}'] = duration
+                        cw_format['timeline_even'][week].append([0, f"{part_count-1}", class_count, duration])
+                    else:
+                        # cw_format['timeline'][week][f'f{part_count - 1}{class_count - 1}'] = time_diff
+                        # cw_format['timeline'][week][f'a{part_count - 1}{class_count}'] = duration
+                        cw_format['timeline_even'][week].append([1, f"{part_count-1}", class_count - 1, time_diff])
+                        cw_format['timeline_even'][week].append([0, f"{part_count-1}", class_count, duration])
 
                 last_end_time = end_time
 
@@ -141,14 +155,15 @@ class CSES_Converter:
                 for day, subjects in schedules.items():
                     time_counter = 0
                     class_counter = 0
-                    if timelines[day]:  # 自定时间线存在
-                        timeline = timelines[day]
+                    if timelines[type_][day]:  # 自定时间线存在
+                        timeline = timelines[type_][day]
                     else:  # 自定时间线不存在
-                        timeline = timelines['default']
+                        timeline = timelines[type_]['default']
 
                     timelines_part = {str(day): []}  # 一个节点的时间线列表
-                    for key, time in timeline.items():  # 时间线循环
-                        if key.startswith(f'a{part}'):  # 科目
+                    for isbreak, item_name, item_index, item_time in timeline:  # 时间线循环
+                        # if key.startswith(f'a{part}'):  # 科目
+                        if not isbreak:  # 科目
                             class_dict = {}
 
                             other_parts_classes = 0
@@ -163,12 +178,12 @@ class CSES_Converter:
                                 other_parts_classes += all_time
 
                             start_time = part_start_time + timedelta(minutes=time_counter)
-                            end_time = start_time + timedelta(minutes=int(time))
-                            subject = subjects[int(key[2:]) - 1 + other_parts_classes]
+                            end_time = start_time + timedelta(minutes=int(item_time))
+                            subject = subjects[item_index - 1 + other_parts_classes]
                             class_counter += 1
 
                             if subject == '未添加':  # 跳过未添加的科目
-                                time_counter += int(time)  # 时间叠加
+                                time_counter += int(item_time)  # 时间叠加
                                 continue
 
                             class_dict['subject'] = subject
@@ -176,8 +191,8 @@ class CSES_Converter:
                             class_dict['end_time'] = end_time.strftime('%H:%M:00')
 
                             timelines_part[str(day)].append(class_dict)
-                        if key[1] == part:  # 时间叠加counter
-                            time_counter += int(time)
+                        if item_name == part:  # 时间叠加counter
+                            time_counter += int(item_time)
 
                     class_counter_dict[part][day] = class_counter  # 记录一个节点当天的课程数
 
@@ -235,7 +250,7 @@ class CSES_Converter:
 
         parts = cw_data['part']
         part_names = cw_data['part_name']
-        timelines = cw_data['timeline']
+        timelines = {'odd': cw_data['timeline'], 'even': cw_data['timeline_even']}
         schedules_odd = cw_data['schedule']
         schedule_even = cw_data['schedule_even']
 
