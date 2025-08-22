@@ -33,7 +33,7 @@ class DarkModeWatcherThread(QThread):
             if self.interval is not None:
                 time.sleep(self.interval)
             self._checkTheme()  # 检查主题变化
-    
+
     def stop(self):
         """停止监听"""
         self._running = False
@@ -56,7 +56,7 @@ class Splash:
         self.splash_window.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint |
                     Qt.WindowType.WindowDoesNotAcceptFocus | Qt.BypassWindowManagerHint | Qt.Tool)
         self.splash_window.show()
-        
+
     def update_status(self, status: Tuple[int, str]):
         self.statusBar.setValue(status[0])
         self.statusLabel.setText(status[1])
@@ -66,11 +66,11 @@ class Splash:
             print("dark")
             # 暗色主题样式
             dark_stylesheet = """
-            QWidget#SplashWelcomePage { 
-                background: #1f1f1f; 
+            QWidget#SplashWelcomePage {
+                background: #1f1f1f;
                 background-image: url("./img/splash_right.svg");
                 background-repeat: no-repeat;
-                background-position: center right; 
+                background-position: center right;
             }
             #leftPanel {
                 background: qlineargradient(x1:0, y1:0, x2:0.7, y2:1,
@@ -92,11 +92,11 @@ class Splash:
             print("light")
             # 亮色主题样式
             light_stylesheet = """
-            QWidget#SplashWelcomePage { 
-                background: #1f1f1f; 
+            QWidget#SplashWelcomePage {
+                background: #1f1f1f;
                 background-image: url("./img/splash_right.svg");
                 background-repeat: no-repeat;
-                background-position: center right; 
+                background-position: center right;
             }
             #leftPanel {
                 background: qlineargradient(x1:0, y1:0, x2:0.7, y2:1,
@@ -123,7 +123,7 @@ class Splash:
         self.splash_window.close()
         self.splash_window.deleteLater()
         self.splash_window = None
-  
+
 if __name__ == '__main__':
     splash = Splash()
     splash.run()

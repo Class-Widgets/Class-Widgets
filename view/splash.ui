@@ -25,11 +25,11 @@
   <property name="styleSheet">
    <string notr="true">
 /* 使用QFluentWidgets主题变量 */
-QWidget#SplashWelcomePage { 
-    background: var(--backgroundColor); 
+QWidget#SplashWelcomePage {
+    background: var(--backgroundColor);
     background-image: url("./img/splash_right.svg");
     background-repeat: no-repeat;
-    background-position: center right; 
+    background-position: center right;
 }
 #leftPanel {
     background: var(--backgroundColorGradient);

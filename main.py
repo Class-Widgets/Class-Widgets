@@ -3466,7 +3466,7 @@ if __name__ == '__main__':
             config_center.write_conf('Other', 'initialstartup', '')
         except Exception as e:
             logger.error(f'添加快捷方式失败：{e}')
-    
+
     splash_window.update_status((60, QCoreApplication.translate('main', '初始化插件管理器...')))
 
     p_mgr = PluginManager()
