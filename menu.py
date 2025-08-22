@@ -4777,6 +4777,7 @@ class SettingsMenu(FluentWindow):
         else:
             subtitle.setText(self.tr('预览  -  {schedule_name}').format(schedule_name=schedule_name))
         schedule_view = self.findChild(TableWidget, 'schedule_view')
+        schedule_view.clear()
         schedule_view.setRowCount(sp_get_class_num())
 
         for i in range(len(schedule_dict_sp)):  # 周数
