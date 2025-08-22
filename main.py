@@ -249,7 +249,8 @@ def get_start_time() -> None:
         return item[1], item[2], item[0]
 
     # 对timeline排序后添加到timeline_data
-    timeline_data = sorted(timeline, key=sort_timeline_key)
+    # timeline_data = sorted(timeline, key=sort_timeline_key)
+    timeline_data = timeline.copy()  # 直接复制，避免修改原数据
     
 
 
