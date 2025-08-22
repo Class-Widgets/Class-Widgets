@@ -400,7 +400,7 @@ def get_countdown(toast: bool = False) -> Optional[List[Union[str, int]]]:  # �
 
                     if c_time >= current_dt:
                         # 根据所在时间段使用不同标语
-                        if item_name.startswith('a'):
+                        if not isbreak:
                             return_text.append(QCoreApplication.translate('main', '当前活动结束还有'))
                         else:
                             return_text.append(QCoreApplication.translate('main', '课间时长还有'))
