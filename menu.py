@@ -10,9 +10,6 @@ import zipfile
 from copy import deepcopy
 from pathlib import Path
 from shutil import rmtree
-import re
-import zipfile
-import shutil
 
 from PyQt5 import uic, QtCore
 from PyQt5.QtCore import Qt, QTime, QUrl, QDate, pyqtSignal, QSize, QThread, QTranslator, QObject, QTimer, QLocale
@@ -23,7 +20,7 @@ from PyQt5.QtGui import QPainter
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidgetItem, QLabel, QHBoxLayout, QSizePolicy, \
     QSpacerItem, QFileDialog, QVBoxLayout, QScroller, QWidget, QFrame, QListWidgetItem, QWidget, QStyle
 from packaging.version import Version
-from typing import Tuple, Union
+from typing import Tuple, Union, Dict, List, Optional
 
 from loguru import logger
 from packaging.version import Version
@@ -327,7 +324,7 @@ loaded_data = schedule_center.schedule_data
 schedule_dict = {}  # 对应时间线的课程表
 schedule_even_dict = {}  # 对应时间线的课程表（双周）
 
-timeline_dict = {}  # 时间线字典
+timeline_dict = {}  # 时间
 
 countdown_dict = {}
 
@@ -351,7 +348,7 @@ def cleanup_plaza():
     plugin_plaza = None
 
 
-def get_timeline():
+def get_timeline()-> Dict[str, List[Tuple[int, str, int, int]]]:
     global loaded_data
     loaded_data = schedule_center.schedule_data
     return loaded_data['timeline']
@@ -404,22 +401,22 @@ def load_schedule_dict(schedule, part, part_name):
         else:
             timeline = get_timeline()['default']
 
-        for item_name, item_time in timeline.items():
-            if item_name.startswith('a'):
+        for isbreak, item_name, item_index, item_time in timeline:
+            if not isbreak:
                 try:
-                    if int(item_name[1]) == 0:
+                    if item_name == '0':
                         count_num = 0
                     else:
-                        count_num = sum(count[:int(item_name[1])])
+                        count_num = sum(count[:int(item_name)])
 
-                    prefix = item[int(item_name[2:]) - 1 + count_num]
-                    period = part_name[str(item_name[1])]
+                    prefix = item[item_index - 1 + count_num]
+                    period = part_name[str(item_name)]
                     all_class.append(f'{prefix}-{period}')
                 except IndexError or ValueError:  # 未设置值
                     prefix = QCoreApplication.translate('menu','未添加')
-                    period = part_name[str(item_name[1])]
+                    period = part_name[str(item_name)]
                     all_class.append(f'{prefix}-{period}')
-                count[int(item_name[1])] += 1
+                count[int(item_name)] += 1
         schedule_dict_[week] = all_class
     return schedule_dict_
 
@@ -4769,17 +4766,17 @@ class SettingsMenu(FluentWindow):
             text = f'{prefix} - {period} - {part_type}'
             part_list.addItem(text)
 
-        for week, _ in timeline.items():  # 加载节点
+        for week, data in timeline.items():  # 加载节点
             all_line = []
-            for item_name, time in timeline[week].items():  # 加载时间线
+            for isbreak, item_name, item_index, item_time in data:  # 加载时间线
                 prefix = ''
-                item_time = self.tr('{data}分钟').format(data=timeline[week][item_name])
+                item_time = self.tr('{data}分钟').format(data=item_time)
                 # 判断前缀和时段
-                if item_name.startswith('a'):
+                if not isbreak:
                     prefix = self.tr('课程')
-                elif item_name.startswith('f'):
-                    prefix = '课间'
-                period = part_name[item_name[1]]
+                else:
+                    prefix = self.tr('课间')
+                period = part_name[item_name]
 
                 # 还原 item_text
                 item_text = f"{prefix} - {item_time} - {period}"
@@ -4905,7 +4902,7 @@ class SettingsMenu(FluentWindow):
     # 保存时间线
     def te_save_item(self):
         te_part_list = self.findChild(ListWidget, 'part_list')
-        data_dict = {"part": {}, "part_name": {}, "timeline": {'default': {}, **{str(w): {} for w in range(7)}}}
+        data_dict = {"part": {}, "part_name": {}, "timeline": {'default': [], **{str(w): [] for w in range(7)}}}
         data_timeline_dict = deepcopy(timeline_dict)
         # 逐条把列表里的信息整理保存
         for i in range(te_part_list.count()):
@@ -4928,26 +4925,28 @@ class SettingsMenu(FluentWindow):
                 lesson_num = 0
                 for i in range(len(data_timeline_dict[week])):
                     item_text = data_timeline_dict[week][i]
-                    item_info = item_text.split(' - ')
-                    item_name = ''
+                    item_info:List[str] = item_text.split(' - ')
+                    # item_name = ''
+                    isbreak, item_name, item_index, item_time = 0, '', 0, 0
                     if item_info[0] == self.tr('课程'): # 'Course - 40 minutes - a.m.'
-                        item_name += 'a'
+                        isbreak = 0
                         lesson_num += 1
                     if item_info[0] == self.tr('课间'):
-                        item_name += 'f'
+                        isbreak = 1
 
                     for key, value in data_dict['part_name'].items():  # 节点计数
                         if value == item_info[2]:
-                            item_name += str(key)  # +节点序数
+                            item_name = key
                             counter_key = int(key)  # 记录节点序数
                             break
 
-                    if item_name.startswith('a'):
+                    # if item_name.startswith('a'):
+                    if not isbreak:
                         counter[counter_key] += 1
 
-                    item_name += str(lesson_num - sum(counter[:counter_key]))  # 课程序数
-                    item_time = item_info[1].replace(self.tr('分钟'), '')  # 获取时间
-                    data_dict['timeline'][str(week)][item_name] = item_time
+                    item_index = lesson_num - sum(counter[:counter_key])
+                    item_time = item_info[1].replace(self.tr('分钟'), '').strip()  # 获取时间
+                    data_dict['timeline'][str(week)].append([isbreak, item_name, item_index, int(item_time)])
 
             schedule_center.save_data(data_dict, config_center.schedule_name)
             self.te_detect_item()
@@ -5513,8 +5512,8 @@ def sp_get_class_num():  # 获取当前周课程数（未完成）
     for timeline_ in get_timeline().keys():
         timeline = get_timeline()[timeline_]
         count = 0
-        for item_name, item_time in timeline.items():
-            if item_name.startswith('a'):
+        for isbreak, item_name, item_index, item_time in timeline:
+            if not isbreak:
                 count += 1
         if count > highest_count:
             highest_count = count
