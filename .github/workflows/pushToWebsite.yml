@@ -3,6 +3,10 @@ on:
   release:
     types: [published]
 
+permissions:
+  contents: write
+  actions: write
+
 jobs:
   send-dispatch:
     runs-on: ubuntu-latest
@@ -16,4 +20,4 @@ jobs:
                -H "Authorization: Bearer $GH_TOKEN" \
                -H "Content-Type: application/json" \
                -d "{\"event_type\": \"update-version\"}" \
-               https://api.github.com/repos/Class-Widgets/cw-interim-site/dispatches
+               https://api.github.com/repos/Class-Widgets/official_website/dispatches

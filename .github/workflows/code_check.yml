@@ -6,12 +6,12 @@ on:
   workflow_dispatch:
     inputs:
       check_all_files:
-        description: '检查分支内所有Python文件'
+        description: "检查分支内所有Python文件"
         required: true
         default: true
         type: boolean
   schedule:
-    - cron: '0 16 */7 * *'  # 每7天UTC16:00运行(UTC+8: 北京时间0点)
+    - cron: "0 16 */7 * *" # 每7天UTC16:00运行(UTC+8: 北京时间0点)
 
 concurrency:
   group: code-quality-${{ github.ref }}
@@ -25,7 +25,7 @@ permissions:
   actions: read
 
 env:
-  PYTHON_VERSION: '3.8'
+  PYTHON_VERSION: "3.8"
 
 jobs:
   detect-changes:
@@ -450,8 +450,8 @@ jobs:
         if: github.event_name == 'pull_request_target'
         with:
           issue-number: ${{ github.event.pull_request.number }}
-          comment-author: 'github-actions[bot]'
-          body-includes: '静态检查结果'
+          comment-author: "github-actions[bot]"
+          body-includes: "静态检查结果"
 
       - name: Post or update PR comment
         uses: peter-evans/create-or-update-comment@v4

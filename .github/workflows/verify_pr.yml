@@ -3,7 +3,7 @@ name: Verify PR
 on:
   pull_request_target:
     types: [opened, edited]
-    branches: [ main ]
+    branches: [main]
 
 permissions:
   contents: read
@@ -24,8 +24,8 @@ jobs:
         id: find-branch-comment
         with:
           issue-number: ${{ github.event.pull_request.number }}
-          comment-author: 'github-actions[bot]'
-          body-includes: '您的 PR 来自`main`分支'
+          comment-author: "github-actions[bot]"
+          body-includes: "您的 PR 来自`main`分支"
 
       - name: Comment on PR
         if: steps.branch.outputs.head_ref_branch == 'main' && steps.find-branch-comment.outputs.comment-id == ''
@@ -52,8 +52,8 @@ jobs:
         id: find-title-comment
         with:
           issue-number: ${{ github.event.pull_request.number }}
-          comment-author: 'github-actions[bot]'
-          body-includes: 'PR 标题格式不规范'
+          comment-author: "github-actions[bot]"
+          body-includes: "PR 标题格式不规范"
 
       - name: Comment on invalid PR title
         if: steps.semantic-check.outcome == 'failure' && steps.find-title-comment.outputs.comment-id == ''

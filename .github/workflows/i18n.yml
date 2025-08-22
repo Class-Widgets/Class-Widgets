@@ -2,21 +2,21 @@ name: I18n Update
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - '**/*.ui'
-      - '**/*.py'
-      - 'i18n/**/*.ts'
-      - 'ui/**/i18n/**/*.ts'
+      - "**/*.ui"
+      - "**/*.py"
+      - "i18n/**/*.ts"
+      - "ui/**/i18n/**/*.ts"
   workflow_dispatch:
     inputs:
       update_ts_files:
-        description: '是否更新.ts文件'
+        description: "是否更新.ts文件"
         required: true
         default: true
         type: boolean
       compile_to_qm:
-        description: '编译.ts为.qm文件'
+        description: "编译.ts为.qm文件"
         required: true
         default: true
         type: boolean
@@ -119,7 +119,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Set up uv
         uses: astral-sh/setup-uv@v6
@@ -200,11 +200,11 @@ jobs:
             * 由 GitHub Actions 自动生成
 
             Co-authored-by: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
-          commit_options: '--signoff'
-          file_pattern: 'i18n/*.ts ui/*/i18n/*.ts'
-          commit_user_name: 'ChimeYao-bot'
-          commit_user_email: 'ChimeYao@outlook.jp'
-          commit_author: 'ChimeYao-bot <ChimeYao@outlook.jp>'
+          commit_options: "--signoff"
+          file_pattern: "i18n/*.ts ui/*/i18n/*.ts"
+          commit_user_name: "ChimeYao-bot"
+          commit_user_email: "ChimeYao@outlook.jp"
+          commit_author: "ChimeYao-bot <ChimeYao@outlook.jp>"
 
   compile-translations:
     name: Compile .ts files
@@ -229,7 +229,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Set up uv
         uses: astral-sh/setup-uv@v6
@@ -407,11 +407,11 @@ jobs:
             * 由 GitHub Actions 自动生成
 
             Co-authored-by: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
-          commit_options: '--signoff'
-          file_pattern: 'i18n/*.qm ui/*/i18n/*.qm config/completed_i18n.json'
-          commit_user_name: 'ChimeYao-bot'
-          commit_user_email: 'ChimeYao@outlook.jp'
-          commit_author: 'ChimeYao-bot <ChimeYao@outlook.jp>'
+          commit_options: "--signoff"
+          file_pattern: "i18n/*.qm ui/*/i18n/*.qm config/completed_i18n.json"
+          commit_user_name: "ChimeYao-bot"
+          commit_user_email: "ChimeYao@outlook.jp"
+          commit_author: "ChimeYao-bot <ChimeYao@outlook.jp>"
 
   summary:
     name: Update Summary

@@ -2806,18 +2806,24 @@
         <translation type="vanished">获取失败！</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="4201"/>
+        <location filename="../menu.py" line="4205"/>
         <source>版本号：{local_version}
 已是最新版本！</source>
         <translation>版本号：{local_version}
 已是最新版本！</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="4206"/>
+        <location filename="../menu.py" line="4207"/>
         <source>版本号：{local_version}
 可更新版本: {new_version}</source>
         <translation>版本号：{local_version}
 可更新版本：{new_version}</translation>
+    </message>
+    <message>
+        <location filename="../menu.py" line="4209"/>
+        <source>版本号：Debug
+调试版本！</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../menu.py" line="4212"/>
@@ -3804,8 +3810,12 @@
     </message>
     <message>
         <location filename="../list_.py" line="28"/>
+        <source>快照版 (Nightly)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>测试版 (Beta)</source>
-        <translation>测试版 (Beta)</translation>
+        <translation type="vanished">测试版 (Beta)</translation>
     </message>
     <message>
         <location filename="../list_.py" line="32"/>
@@ -4151,32 +4161,32 @@
 您确定要隐藏组件吗？</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3381"/>
+        <location filename="../main.py" line="3383"/>
         <source>Class Widgets 正在运行</source>
         <translation>Class Widgets 正在运行</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3384"/>
+        <location filename="../main.py" line="3386"/>
         <source>Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。
 (若您需要打开多个实例，请在“设置”-&gt;“高级选项”中启用“允许程序多开”)</source>
         <translation>Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。
 (若您需要打开多个实例，请在“设置”-&gt;“高级选项”中启用“允许程序多开”)</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3411"/>
+        <location filename="../main.py" line="3413"/>
         <source>缩放系数过大</source>
         <translation>缩放系数过大</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3412"/>
+        <location filename="../main.py" line="3414"/>
         <source>当前缩放系数为 {scale_factor}%，可能导致显示异常。
 建议将缩放系数设置为 100% 到 180% 之间。</source>
         <translation>当前缩放系数为 {scale_factor}%，可能导致显示异常。
 建议将缩放系数设置为 100% 到 180% 之间。</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3385"/>
-        <location filename="../main.py" line="3413"/>
+        <location filename="../main.py" line="3387"/>
+        <location filename="../main.py" line="3415"/>
         <source>好</source>
         <translation>好</translation>
     </message>

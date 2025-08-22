@@ -23,7 +23,7 @@ color_mode = [QCoreApplication.translate("list_", '浅色'), QCoreApplication.tr
 hide_mode = [QCoreApplication.translate("list_", '无'), QCoreApplication.translate("list_", '上课时自动隐藏'), QCoreApplication.translate("list_", '窗口最大化时隐藏'), QCoreApplication.translate("list_", '灵活隐藏')]
 non_nt_hide_mode = [QCoreApplication.translate("list_", '无'), QCoreApplication.translate("list_", '上课时自动隐藏')]
 temperature_units = [QCoreApplication.translate("list_", '摄氏度 (°C)'), QCoreApplication.translate("list_", '华氏度 (°F)')]
-version_channel = [QCoreApplication.translate("list_", '正式版 (Release)'), QCoreApplication.translate("list_", '测试版 (Beta)')]
+version_channel = [QCoreApplication.translate("list_", '正式版 (Release)'), QCoreApplication.translate("list_", '快照版 (Nightly)')]
 
 theme_folder = []
 theme_names = []

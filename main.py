@@ -3359,6 +3359,8 @@ def init() -> None:
     update_timer.start()
 
     version = config_center.read_conf("Version", "version")
+    if version == "__BUILD_VERSION__":
+        version = "DEBUG"
     build_uuid = config_center.read_conf("Version", "build_runid") or "(Debug)"
     build_type = config_center.read_conf("Version", "build_type")
     if "__BUILD_RUNID__" in build_uuid or "__BUILD_TYPE__" in build_type:

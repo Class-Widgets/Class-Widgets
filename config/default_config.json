@@ -90,8 +90,8 @@
     "set_schedule": ""
   },
   "Version": {
-    "version": "v1.2.0.0",
-    "version_channel": "0",
+    "version": "__BUILD_VERSION__",
+    "version_channel": "__BUILD_CHANNEL__",
     "auto_check_update": "1",
     "cses_version": "1",
     "build_time": "__BUILD_TIME__",

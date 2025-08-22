@@ -6,6 +6,15 @@ on:
       run_id:
         required: true
         type: string
+      build_type:
+        description: "类型 (Release/Nightly)"
+        required: false
+        default: "Release"
+        type: string
+      release_version:
+        description: "发布版本号"
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -24,7 +33,11 @@ jobs:
 
       - name: Generate a changelog
         run: |
-          git cliff --output CHANGELOG.md
+          if [[ "${{ inputs.build_type }}" == "Nightly" ]]; then
+            git cliff --config .github/cliff.nightly.toml --output CHANGELOG.md
+          else
+            git cliff --config .github/cliff.toml --output CHANGELOG.md
+          fi
 
       - name: Prepare release directory
         run: |
@@ -50,13 +63,44 @@ jobs:
           echo "发布的文件:"
           ls -la release/
 
+      - name: Import GPG key
+        if: ${{ inputs.release_version != '' }}
+        id: import-gpg
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+          git_tag_gpgsign: true
+
+      - name: Create Tag
+        if: ${{ inputs.release_version != '' }}
+        run: |
+          tag_name="${{ inputs.release_version }}"
+          echo "[DEBUG] 创建tag: $tag_name"
+          if git rev-parse "$tag_name" >/dev/null 2>&1; then
+            echo "[DEBUG] 标签 $tag_name 已存在"
+          else
+            if [[ "${{ inputs.build_type }}" == "Nightly" ]]; then
+              tag_message="Nightly $tag_name"
+            else
+              tag_message="Release $tag_name"
+            fi
+            git tag -s "$tag_name" -m "$tag_message"
+            git push origin "$tag_name"
+          fi
+
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ inputs.release_version || github.ref_name }}
+          name: ${{ inputs.build_type == 'Nightly' && format('🌙 Nightly Build {0}', inputs.release_version) || format('🚀 Release {0}', inputs.release_version || github.ref_name) }}
           files: release/*
           body_path: CHANGELOG.md
-          draft: true
-          generate_release_notes: true
-          make_latest: true
+          draft: ${{ inputs.build_type != 'Release' }}
+          prerelease: ${{ inputs.build_type == 'Nightly' }}
+          generate_release_notes: false
+          make_latest: ${{ inputs.build_type == 'Release' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -6,27 +6,62 @@ on:
       - v*
   workflow_dispatch:
     inputs:
-      is_release:
-        description: '是否为发布版本'
+      build_type:
+        description: "构建类型"
         required: true
-        default: false
-        type: boolean
+        default: "Debug"
+        type: choice
+        options:
+          - "Release"
+          - "Nightly"
+          - "Debug"
       release_version:
-        description: '发布版本号(仅发布版本有效)'
+        description: "发布版本号(仅发布版本有效)"
         required: false
         type: string
+      is_signing:
+        description: "是否签名"
+        required: false
+        default: false
+        type: boolean
+  workflow_call:
+    inputs:
+      build_type:
+        description: "构建类型 (Release/Nightly/Debug)"
+        required: false
+        default: "Debug"
+        type: string
+      release_version:
+        description: "发布版本号(仅发布版本有效)"
+        required: false
+        type: string
+      is_signing:
+        description: "是否签名"
+        required: false
+        default: false
+        type: boolean
+    outputs:
+      run_id:
+        description: "构建运行ID"
+        value: ${{ jobs.prepare.outputs.build_runid }}
+      package_count:
+        description: "打包文件数量"
+        value: ${{ jobs.package.outputs.package-count }}
+      package_result:
+        description: "打包作业结果"
+        value: ${{ jobs.package.result }}
   pull_request:
     types: [opened, synchronize, closed]
     paths-ignore:
-      - '**/*.md'
-      - '**/*.txt'
-      - 'docs/**'
-      - 'Scripts/**'
-      - '.gitignore'
-      - '.gitattributes'
-      - '.github/ISSUE_TEMPLATE/**'
-      - '.github/DISCUSSION_TEMPLATE/**'
-      - '.github/PULL_REQUEST_TEMPLATE*'
+      - "**/*.md"
+      - "**/*.txt"
+      - "docs/**"
+      - "Scripts/**"
+      - ".gitignore"
+      - ".gitattributes"
+      - ".github/ISSUE_TEMPLATE/**"
+      - ".github/DISCUSSION_TEMPLATE/**"
+      - ".github/PULL_REQUEST_TEMPLATE*"
 
 concurrency:
   group: build-${{ github.event_name }}-${{ github.ref }}
@@ -34,6 +69,8 @@ concurrency:
 
 permissions:
   contents: write
+  id-token: write
+  attestations: write
   pull-requests: read
 
 jobs:
@@ -42,12 +79,12 @@ jobs:
     name: Update Info
     runs-on: ubuntu-latest
     outputs:
-      is_release: ${{ steps.build-info.outputs.is_release }}
       build_type: ${{ steps.build-info.outputs.build_type }}
       build_time: ${{ steps.build-info.outputs.build_time }}
       build_commit: ${{ steps.build-info.outputs.build_commit }}
       build_branch: ${{ steps.build-info.outputs.build_branch }}
       build_runid: ${{ steps.build-info.outputs.build_runid }}
+      release_version: ${{ steps.build-info.outputs.release_version }}
       skip_ci: ${{ steps.check-skip-ci.outputs.skip_ci }}
     steps:
       - name: Checkout repository
@@ -86,31 +123,36 @@ jobs:
         env:
           PR_NUMBER: ${{ github.event.pull_request.number || 0 }}
           PR_BRANCH: ${{ github.event.pull_request.head.repo.owner.login || github.repository_owner }}:${{ github.event.pull_request.head.ref || github.ref_name }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
         run: |
           build_time=$(date -u -d "+8 hours" +"%Y-%m-%d %H:%M")
           build_commit="${GITHUB_SHA:0:7}"
           build_branch="${GITHUB_REF_NAME}"
           build_runid="${GITHUB_RUN_ID}"
-          is_release=false
           if [[ "${GITHUB_EVENT_NAME}" == "push" && "${GITHUB_REF}" =~ ^refs/tags/v ]]; then
-            is_release=true
             build_type="Release"
-          elif [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" && "${{ github.event.inputs.is_release }}" == "true" ]]; then
-            is_release=true
-            build_type="Release"
+            echo "[DEBUG] Release (push,tag)"
+          elif [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+            build_type="${{ github.event.inputs.build_type || inputs.build_type }}"
+            echo "[DEBUG] (workflow_dispatch or workflow_call)"
+          elif [[ "${GITHUB_EVENT_NAME}" == "workflow_call" ]]; then
+            build_type="${{ inputs.build_type || 'Debug' }}"
+            echo "[DEBUG] (workflow_call)"
           elif [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
             build_branch="$PR_BRANCH"
             build_type="Debug (PR-#${PR_NUMBER})"
           else
+            echo "[DEBUG] (other)"
             build_type="Debug"
           fi
-          echo "IS_RELEASE=$is_release" >> $GITHUB_ENV
+          release_version="${{ inputs.release_version }}"
+
+          echo "release_version=$release_version" >> $GITHUB_OUTPUT
           echo "build_type=$build_type" >> $GITHUB_OUTPUT
           echo "build_time=$build_time" >> $GITHUB_OUTPUT
           echo "build_commit=$build_commit" >> $GITHUB_OUTPUT
           echo "build_branch=$build_branch" >> $GITHUB_OUTPUT
           echo "build_runid=$build_runid" >> $GITHUB_OUTPUT
-          echo "is_release=$is_release" >> $GITHUB_OUTPUT
           {
             echo "## 📋 构建信息"
             echo "| 项目 | 值 |"
@@ -120,7 +162,6 @@ jobs:
             echo "| 🌿 分支 | $build_branch |"
             echo "| 🆔 运行 ID | $build_runid |"
             echo "| 🧪 构建类型 | $build_type |"
-            echo "| 🚀 是否发布 | $is_release |"
           } >> $GITHUB_STEP_SUMMARY
 
   build:
@@ -148,7 +189,6 @@ jobs:
             platform: linux-x64
     env:
       PYTHON_VERSION: ${{ (startsWith(matrix.os, 'macos') || matrix.platform == 'linux-x64') && '3.12' || '3.8' }}
-      IS_RELEASE: ${{ needs.prepare.outputs.is_release }}
       BUILD_TYPE: ${{ needs.prepare.outputs.build_type }}
       BUILD_TIME: ${{ needs.prepare.outputs.build_time }}
       BUILD_COMMIT: ${{ needs.prepare.outputs.build_commit }}
@@ -245,6 +285,15 @@ jobs:
           config_text="${config_text//__BUILD_BRANCH__/$BUILD_BRANCH}"
           config_text="${config_text//__BUILD_RUNID__/$BUILD_RUNID}"
           config_text="${config_text//__BUILD_TYPE__/$BUILD_TYPE}"
+          if [[ "$BUILD_TYPE" == "Release" ]] || [[ "$BUILD_TYPE" == "Nightly" ]]; then
+            VERSION="${{ inputs.release_version }}"
+            config_text="${config_text//__BUILD_VERSION__/$VERSION}"
+          fi
+          if [[ "$BUILD_TYPE" == "Release" ]]; then
+            config_text="${config_text//__BUILD_CHANNEL__/0}"
+          else
+            config_text="${config_text//__BUILD_CHANNEL__/1}"
+          fi
           printf "%s" "$config_text" > "$config_path"
 
       - name: Setup uv
@@ -274,19 +323,17 @@ jobs:
         env:
           PR_NUMBER: ${{ github.event.pull_request.number || 0 }}
         run: |
-          is_release=false
           if [[ "${GITHUB_EVENT_NAME}" == "push" && "${GITHUB_REF}" =~ ^refs/tags/v ]]; then
-            is_release=true
             build_type="Release"
-          elif [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" && "${{ github.event.inputs.is_release }}" == "true" ]]; then
-            is_release=true
-            build_type="Release"
+          elif [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+            build_type="${{ github.event.inputs.build_type }}"
+          elif [[ "${GITHUB_EVENT_NAME}" == "workflow_call" ]]; then
+            build_type="${{ github.event.inputs.build_type || 'Debug' }}"
           elif [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
             build_type="Debug (PR-#${PR_NUMBER})"
           else
             build_type="Debug"
           fi
-          echo "IS_RELEASE=$is_release" >> $GITHUB_ENV
           echo "BUILD_TYPE=$build_type" >> $GITHUB_ENV
 
       - name: Build Windows (pyinstaller)
@@ -311,8 +358,7 @@ jobs:
             --add-data LICENSE:. \
             --add-data "i18n/*.qm:i18n" \
             --hidden-import darkdetect
-
-          if [[ "$IS_RELEASE" == "true" ]]; then
+          if [[ "$BUILD_TYPE" == "Release" ]]; then
             zip_name="ClassWidgets-Windows-${{ matrix.arch }}"
           else
             zip_name="Windows-${{ matrix.arch }}_debug-${GITHUB_RUN_ID}"
@@ -340,7 +386,7 @@ jobs:
             --hidden-import darkdetect
 
           cp -R dist/"Class Widgets.app" .
-          if [[ "$IS_RELEASE" == "true" ]]; then
+          if [[ "$BUILD_TYPE" == "Release" ]]; then
             zip_name="ClassWidgets-macOS-${{ matrix.arch }}"
           else
             zip_name="macOS(${{ matrix.arch }})_debug-${GITHUB_RUN_ID}"
@@ -367,7 +413,7 @@ jobs:
             --add-data "i18n/*.qm:i18n" \
             --hidden-import darkdetect
 
-          if [[ "$IS_RELEASE" == "true" ]]; then
+          if [[ "$BUILD_TYPE" == "Release" ]]; then
             zip_name="ClassWidgets-Linux-x64"
           else
             zip_name="Linux-x64_debug-${GITHUB_RUN_ID}"
@@ -382,7 +428,7 @@ jobs:
 
   sign:
     needs: [prepare, build]
-    if: needs.prepare.outputs.is_release == 'true' && needs.build.result == 'success' && needs.prepare.outputs.skip_ci != 'true'
+    if: needs.build.result == 'success' && needs.prepare.outputs.skip_ci != 'true' && (github.event.inputs.is_signing == 'true')
     runs-on: windows-latest
     strategy:
       matrix:
@@ -422,15 +468,15 @@ jobs:
           path: ./exe-only
 
       - name: Sign application
-        uses: signpath/github-action-submit-signing-request@v1.1
+        uses: signpath/github-action-submit-signing-request@v1
         with:
-          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
-          organization-id: '2e13633d-4e7d-4462-9091-27536751c84c'
-          project-slug: 'Class-Widgets.git'
-          signing-policy-slug: 'release-signing'
-          github-artifact-id: '${{ steps.upload-for-signing.outputs.artifact-id }}'
+          api-token: "${{ secrets.SIGNPATH_API_TOKEN }}"
+          organization-id: "2e13633d-4e7d-4462-9091-27536751c84c"
+          project-slug: "Class-Widgets.git"
+          signing-policy-slug: "release-signing"
+          github-artifact-id: "${{ steps.upload-for-signing.outputs.artifact-id }}"
           wait-for-completion: true
-          output-artifact-directory: './signed'
+          output-artifact-directory: "./signed"
 
       - name: Repackage signed application
         shell: pwsh
@@ -458,14 +504,13 @@ jobs:
 
   package:
     needs: [prepare, build, sign]
-    if: (needs.build.result == 'success') && (needs.sign.result == 'success' || needs.sign.result == 'failure') && needs.prepare.outputs.skip_ci != 'true'
+    if: always() && (needs.build.result == 'success') && (needs.sign.result == 'success' || needs.sign.result == 'skipped') && (needs.prepare.outputs.build_type== 'Release' || needs.prepare.outputs.build_type== 'Nightly') && needs.prepare.outputs.skip_ci != 'true'
     runs-on: ubuntu-latest
     outputs:
       package-count: ${{ steps.organize.outputs.package-count }}
-      is_release: ${{ needs.prepare.outputs.is_release }}
       build_type: ${{ needs.prepare.outputs.build_type }}
+      run_id: ${{ github.run_id }}
     env:
-      IS_RELEASE: ${{ needs.prepare.outputs.is_release }}
       BUILD_TYPE: ${{ needs.prepare.outputs.build_type }}
     steps:
       - name: Checkout repository
@@ -570,11 +615,18 @@ jobs:
           name: ClassWidgets-Packages
           path: final-packages
 
+      - name: Generate package provenance
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: "final-packages/*.zip"
+
   publish:
     name: Publish
     needs: [package]
-    if: (startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && github.event.inputs.is_release == 'true')) && needs.package.result == 'success' && needs.package.outputs.package-count > 0
+    if: (startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && github.event.inputs.build_type == 'Release')) && needs.package.result == 'success' && needs.package.outputs.package-count > 0 && github.event_name != 'workflow_call'
     uses: ./.github/workflows/release.yml
     with:
-      run_id: '${{ github.run_id }}'
+      run_id: "${{ github.run_id }}"
+      build_type: "Release"
+      release_version: "${{ github.event.inputs.release_version }}"
     secrets: inherit

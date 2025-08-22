@@ -1,0 +1,100 @@
+name: Nightly-Builds
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # UTC+8 00:00
+  workflow_dispatch:
+    inputs:
+      force_build:
+        description: "强制构建 nightly-version"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+  pull-requests: read
+  actions: write
+
+jobs:
+  check-commits:
+    name: Check Commits
+    runs-on: ubuntu-latest
+    outputs:
+      has_new_commits: ${{ steps.check-commits.outputs.has_new_commits }}
+      nightly_version: ${{ steps.generate-version.outputs.nightly_version }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Create Nightly Version
+        id: generate-version
+        run: |
+          nightly_version="v$(date -u +%Y%m%d)-nightly"
+          echo "nightly_version=$nightly_version" >> $GITHUB_OUTPUT
+          echo "Nightly-Version: $nightly_version" >> $GITHUB_STEP_SUMMARY
+
+      - name: Check for New Commits
+        id: check-commits
+        uses: adriangl/check-new-commits-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          seconds: 86400 # 24小时内的提交
+
+  cleanup-old-nightly:
+    name: Clear Old Nightly-Builds
+    runs-on: ubuntu-latest
+    needs: [check-commits]
+    if: needs.check-commits.outputs.has_new_commits == 'true' || github.event.inputs.force_build == 'true'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Clear Nightly-Builds
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CURRENT_VERSION: ${{ needs.check-commits.outputs.nightly_version }}
+        run: |
+          echo "当前要发布的版本: $CURRENT_VERSION"
+          nightly_releases=$(gh release list --limit 4 | grep "nightly-" | awk '{print $1}' || true)
+          if [ -z "$nightly_releases" ]; then
+            echo "[DEBUG] 未找到旧的 nightly 版本"
+            exit 0
+          fi
+          echo "[DEBUG] 找到的 nightly 版本:"
+          echo "$nightly_releases"
+
+          for release in $nightly_releases; do
+            if [ "$release" != "$CURRENT_VERSION" ]; then
+              echo "[DEBUG] 删除旧版本: $release"
+              gh release delete "$release" --yes --cleanup-tag || echo "[DEBUG] 删除 $release 时失败"
+            else
+              echo "[DEBUG] 保留版本: $release"
+            fi
+          done
+
+  build-nightly:
+    name: Build Nightly-Builds
+    needs: [check-commits, cleanup-old-nightly]
+    if: needs.check-commits.outputs.has_new_commits == 'true' || github.event.inputs.force_build == 'true'
+    uses: ./.github/workflows/build.yml
+    with:
+      build_type: "Nightly"
+      is_signing: false
+      release_version: ${{ needs.check-commits.outputs.nightly_version }}
+    secrets: inherit
+
+  release-nightly:
+    name: Publish Nightly
+    needs: [check-commits, build-nightly]
+    if: needs.build-nightly.result == 'success' && needs.build-nightly.outputs.package_count > 0
+    uses: ./.github/workflows/release.yml
+    with:
+      run_id: ${{ needs.build-nightly.outputs.run_id }}
+      build_type: "Nightly"
+      release_version: ${{ needs.check-commits.outputs.nightly_version }}
+    secrets: inherit

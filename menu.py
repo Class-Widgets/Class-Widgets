@@ -4196,17 +4196,17 @@ class SettingsMenu(FluentWindow):
         build_type = config_center.read_conf("Version", "build_type")
         build_time = config_center.read_conf("Version", "build_time")
 
-        logger.debug(f"服务端版本: {Version(new_version)}，本地版本: {Version(local_version)}")
-        if Version(new_version) <= Version(local_version):
-            self.version_number_label.setText(self.tr('版本号：{local_version}\n已是最新版本！').format(local_version=local_version))
-            self.build_commit_label.setText(f'{build_commit if build_commit != "__BUILD_COMMIT__" else "Debug"}({build_branch if build_branch != "__BUILD_BRANCH__" else "Debug"})')
-            self.build_uuid_label.setText(f'{build_runid if build_runid != "__BUILD_RUNID__" else "Debug"} - {build_type if build_type != "__BUILD_TYPE__" else "Debug"}')
-            self.build_date_label.setText(f'{build_time if build_time != "__BUILD_TIME__" else "Debug"}')
+        self.build_commit_label.setText(f'{build_commit if build_commit != "__BUILD_COMMIT__" else "Debug"}({build_branch if build_branch != "__BUILD_BRANCH__" else "Debug"})')
+        self.build_uuid_label.setText(f'{build_runid if build_runid != "__BUILD_RUNID__" else "Debug"} - {build_type if build_type != "__BUILD_TYPE__" else "Debug"}')
+        self.build_date_label.setText(f'{build_time if build_time != "__BUILD_TIME__" else "Debug"}')
+        if local_version != "__BUILD_VERSION__":
+            logger.debug(f"服务端版本: {Version(new_version)}，本地版本: {Version(local_version)}")
+            if Version(new_version) <= Version(local_version):
+                self.version_number_label.setText(self.tr('版本号：{local_version}\n已是最新版本！').format(local_version=local_version))
+            else:
+                self.version_number_label.setText(self.tr('版本号：{local_version}\n可更新版本: {new_version}').format(local_version=local_version,new_version=new_version))
         else:
-            self.version_number_label.setText(self.tr('版本号：{local_version}\n可更新版本: {new_version}').format(local_version=local_version,new_version=new_version))
-            self.build_commit_label.setText(f'{build_commit if build_commit != "__BUILD_COMMIT__" else "Debug"}({build_branch if build_branch != "__BUILD_BRANCH__" else "Debug"})')
-            self.build_uuid_label.setText(f'{build_runid if build_runid != "__BUILD_RUNID__" else "Debug"} - {build_type if build_type != "__BUILD_TYPE__" else "Debug"}')
-            self.build_date_label.setText(f'{build_time if build_time != "__BUILD_TIME__" else "Debug"}')
+            self.version_number_label.setText(self.tr('版本号：Debug\n调试版本！'))
 
             if utils.tray_icon:
                 utils.tray_icon.push_update_notification(self.tr("新版本速递：{new_version}").format(new_version=new_version))
