@@ -3931,7 +3931,7 @@ class SettingsMenu(FluentWindow):
     def te_copy_odd_timeline(self):
         te_select_timeline = self.findChild(ComboBox, 'select_timeline')  # 选择时间线
         timeline_index = str(te_select_timeline.currentIndex()) if te_select_timeline.currentIndex() != 0 else 'default'
-        timeline_dict['even'][timeline_index] = deepcopy(timeline_dict['odd'][timeline_index]) 
+        timeline_dict['even'][timeline_index] = deepcopy(timeline_dict['odd'][timeline_index])
         self.te_upload_list()
 
     def te_edit_part_time(self):
