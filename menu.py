@@ -396,7 +396,7 @@ def load_schedule_dict(schedule, week_type, part, part_name):
         count = []  # 初始化计数器
         for i in range(len(part)):
             count.append(0)
-        if str(week) in loaded_data['timeline'] and loaded_data['timeline'][str(week)]:
+        if str(week) in loaded_data['timeline_even' if week_type else 'timeline'] and loaded_data['timeline_even' if week_type else 'timeline'][str(week)]:
             timeline = get_timeline()['even' if week_type else 'odd'][str(week)]
         else:
             timeline = get_timeline()['even' if week_type else 'odd']['default']
@@ -4833,9 +4833,11 @@ class SettingsMenu(FluentWindow):
         global current_week
         try:
             if se_week_type_combo.currentIndex() == 1:
+                current_week = se_week_combo.currentIndex()
                 if len(schedule_dict[str(current_week)]) == len(schedule_even_dict[str(current_week)]):
                     se_copy_schedule_button.show()
-                current_week = se_week_combo.currentIndex()
+                else:
+                    se_copy_schedule_button.hide()
                 se_schedule_list.clear()
                 se_schedule_list.addItems(schedule_even_dict[str(current_week)])
             else:
