@@ -52,7 +52,6 @@ class Splash:
         self.statusLabel = self.splash_window.findChild(BodyLabel, 'statusLabel')
         self.statusBar = self.splash_window.findChild(ProgressBar, 'statusBar')
         print(self.statusLabel.styleSheet())
-        self.splash_window.setWindowModality(Qt.ApplicationModal)
         self.splash_window.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint |
                     Qt.WindowType.WindowDoesNotAcceptFocus | Qt.BypassWindowManagerHint | Qt.Tool)
         self.splash_window.show()
