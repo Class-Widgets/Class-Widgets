@@ -95,11 +95,12 @@ jobs:
       - name: Check Skip CI
         id: check-skip-ci
         shell: bash
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
         run: |
           skip_ci=false
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            pr_title="${{ github.event.pull_request.title }}"
-            if [[ "$pr_title" =~ [Ss][Kk][Ii][Pp][[:space:]][Cc][Ii] ]]; then
+            if [[ "$PR_TITLE" =~ [Ss][Kk][Ii][Pp][[:space:]][Cc][Ii] ]]; then
               skip_ci=true
             fi
             if [[ "${{ github.event.action }}" == "synchronize" && "$skip_ci" == "false" ]]; then

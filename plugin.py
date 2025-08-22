@@ -29,7 +29,7 @@ class PluginLoader:  # 插件加载器
                         plugin_config['enabled_plugins'].append(plugin_name)
                 plugin_config['temp_disabled_plugins'] = []
                 conf.save_plugin_config(plugin_config)
-        
+
         for folder in Path(conf.PLUGINS_DIR).iterdir():
             if folder.is_dir() and (folder / 'plugin.json').exists():
                 self.plugins_name.append(folder.name)  # 检测所有插件

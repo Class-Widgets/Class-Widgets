@@ -364,7 +364,7 @@ def get_widget_config() -> List[str]:
                 json.dump(data, file, indent=4)
         return data['widgets']
     except Exception as e:
-        logger.error(f'ReadWidgetConfigFAILD: {e}')
+        logger.error(f'ReadWidgetConfigFAILED: {e}')
         return default_widgets
 
 

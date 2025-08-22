@@ -3,7 +3,7 @@
 </div>
 
 > [!Warning]
-Class Widgets *1* は現在、完全にコミュニティ開発者によって開発されています。Class Widgets のメインリポジトリ（本リポジトリ）で提起された課題や貢献は、主に以下の4名のメンバーによって受理・レビューされます：
+> Class Widgets *1* は現在、完全にコミュニティ開発者によって開発されています。Class Widgets のメインリポジトリ（本リポジトリ）で提起された課題や貢献は、主に以下の4名のメンバーによって受理・レビューされます：
 >
 > [![](https://images.weserv.nl/?url=github.com/pizeroLOL.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/pizeroLOL) [![](https://images.weserv.nl/?url=github.com/IsHPDuwu.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/IsHPDuwu) [![](https://images.weserv.nl/?url=github.com/baiyao105.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/baiyao105) [![](https://images.weserv.nl/?url=github.com/Artist-MOBAI.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/Artist-MOBAI)
 >
@@ -39,7 +39,7 @@ Class Widgets *1* は現在、完全にコミュニティ開発者によって�
 
 </div>
 
----
+______________________________________________________________________
 
 ## 特徴
 
@@ -66,7 +66,7 @@ Class Widgets *1* は現在、完全にコミュニティ開発者によって�
 ![scrshot_0](../../img/screenshot_1.png)
 
 ## インストールと使い方
->
+
 > [!TIP]
 > [Class Widgets 公式ドキュメント](https://www.yuque.com/rinlit/class-widgets_help/gs3gsbms1iivgibm)でチュートリアルをご覧いただけます。
 

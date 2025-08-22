@@ -79,7 +79,7 @@ jobs:
 
   build-nightly:
     name: Build Nightly-Builds
-    needs: [check-commits, cleanup-old-nightly]
+    needs: [check-commits]
     if: needs.check-commits.outputs.has_new_commits == 'true' || github.event.inputs.force_build == 'true'
     uses: ./.github/workflows/build.yml
     with:

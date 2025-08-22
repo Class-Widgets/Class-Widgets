@@ -1,154 +1,154 @@
-[project]
-name = "class_widgets"
-version = "0.1.0"
-description = ""
-readme = "README.md"
-requires-python = ">=3.8"
-dependencies = [
-    "annotated-types==0.7.0",
-    "certifi==2025.8.3",
-    "charset-normalizer==3.4.2",
-    "colorama==0.4.6",
-    "configparser~=7.1.0",
-    "darkdetect==0.8.0",
-    "edge-tts~=7.0.0",
-    "idna==3.10",
-    "loguru~=0.7.2",
-    "markdown~=3.7",
-    "ntplib~=0.4.0",
-    "packaging~=25.0",
-    "psutil~=7.0.0",
-    "pycses",
-    "pydantic==2.10.6",
-    "pydantic-core==2.27.2",
-    "pygame~=2.6.1",
-    "pygetwindow~=0.0.9",
-    "pyqt-fluent-widgets~=1.8.1",
-    "pyqt5~=5.15.11",
-    "pyqt5-frameless-window~=0.7.3",
-    "pyqt5-sip==12.15.0",
-    "pyqt5-stubs==5.15.6.0",
-    "python-dateutil~=2.9.0",
-    "pyttsx3~=2.99",
-    "pytz~=2025.2",
-    "pywin32==311 ; sys_platform == 'win32'",
-    "requests==2.32.4",
-    "typing-extensions==4.13.2",
-    "urllib3==2.2.3",
-    "win32-setctime~=1.2.0",
-    "pyqt5-qt5==5.15.2 ; sys_platform == 'win32'",
-    "pyqtwebengine==5.15.2 ; sys_platform == 'win32'",
-    "pyqt5-qt5",
-    "pyqtwebengine",
-]
-
 [dependency-groups]
 dev = [
-    "mypy>=1.14.1",
-    "pre-commit>=3.5.0",
-    "pylint>=3.2.7",
-    "pyright>=1.1.403",
-    "ruff>=0.12.8",
+  "mypy>=1.14.1",
+  "pre-commit>=3.5.0",
+  "pylint>=3.2.7",
+  "pyright>=1.1.403",
+  "ruff>=0.12.8"
 ]
 package = ["pyinstaller>=6.15.0"]
 
-[tool.uv.sources]
-pycses = { git = "https://github.com/SmartTeachCN/pycses.git" }
+[project]
+dependencies = [
+  "annotated-types==0.7.0",
+  "certifi==2025.8.3",
+  "charset-normalizer==3.4.2",
+  "colorama==0.4.6",
+  "configparser~=7.1.0",
+  "darkdetect==0.8.0",
+  "edge-tts~=7.0.0",
+  "idna==3.10",
+  "loguru~=0.7.2",
+  "markdown~=3.7",
+  "ntplib~=0.4.0",
+  "packaging~=25.0",
+  "psutil~=7.0.0",
+  "pycses",
+  "pydantic-core==2.27.2",
+  "pydantic==2.10.6",
+  "pygame~=2.6.1",
+  "pygetwindow~=0.0.9",
+  "pyqt-fluent-widgets~=1.8.1",
+  "pyqt5-frameless-window~=0.7.3",
+  "pyqt5-qt5",
+  "pyqt5-qt5==5.15.2 ; sys_platform == 'win32'",
+  "pyqt5-sip==12.15.0",
+  "pyqt5-stubs==5.15.6.0",
+  "pyqt5~=5.15.11",
+  "pyqtwebengine",
+  "pyqtwebengine==5.15.2 ; sys_platform == 'win32'",
+  "python-dateutil~=2.9.0",
+  "pyttsx3~=2.99",
+  "pytz~=2025.2",
+  "pywin32==311 ; sys_platform == 'win32'",
+  "requests==2.32.4",
+  "typing-extensions==4.13.2",
+  "urllib3==2.2.3",
+  "win32-setctime~=1.2.0"
+]
+description = ""
+name = "class_widgets"
+readme = "README.md"
+requires-python = ">=3.8"
+version = "0.1.0"
+
+[tool.pyright]
+"autoImportCompletions" = true
+"exclude" = [
+  "**/.venv",
+  "**/__pycache__",
+  "**/node_modules",
+  "**/venv",
+  "build",
+  "dist"
+]
+"include" = ["**/*.py"]
+"pythonPlatform" = "All"
+"pythonVersion" = "3.8"
+"reportArgumentType" = "warning"
+"reportAssertAlwaysTrue" = "information"
+"reportAttributeAccess" = "information"
+"reportAttributeAccessIssue" = "information"
+"reportConstantRedefinition" = "warning"
+"reportDuplicateImport" = "warning"
+"reportGeneralTypeIssues" = "warning"
+"reportImplicitStringConcatenation" = "information"
+"reportImportCycles" = "warning"
+"reportIncompatibleMethodOverride" = "warning"
+"reportIncompatibleVariableOverride" = "warning"
+"reportMissingImports" = "warning"
+"reportMissingParameterType" = "information"
+"reportMissingReturnType" = "information"
+"reportMissingTypeStubs" = "information"
+"reportOptionalCall" = "information"
+"reportOptionalContextManager" = "information"
+"reportOptionalIterable" = "information"
+"reportOptionalMemberAccess" = "information"
+"reportOptionalOperand" = "information"
+"reportOptionalSubscript" = "information"
+"reportOverlappingOverload" = "warning"
+"reportPrivateUsage" = "information"
+"reportSelfClsParameterName" = "information"
+"reportUnnecessaryCast" = "information"
+"reportUnnecessaryIsInstance" = "information"
+"reportUntypedBaseClass" = "information"
+"reportUntypedClassDecorator" = "information"
+"reportUntypedFunctionDecorator" = "information"
+"reportUntypedNamedTuple" = "information"
+"reportUnusedClass" = "information"
+"reportUnusedFunction" = "information"
+"reportUnusedImport" = "information"
+"reportUnusedVariable" = "information"
+"strictDictionaryInference" = false
+"strictListInference" = false
+"strictSetInference" = false
+"typeCheckingMode" = "basic"
+"useLibraryCodeForTypes" = true
+
+[[tool.pyright.executionEnvironments]]
+"extraPaths" = [".", "./config", "./ui", "./view"]
+"pythonPlatform" = "All"
+"pythonVersion" = "3.8"
+"root" = "."
 
 [tool.ruff]
 line-length = 120
 target-version = "py38"
 
 [tool.ruff.lint]
-select = [
-    "E",   # pycodestyle errors
-    "W",   # pycodestyle warnings
-    "F",   # pyflakes
-    "I",   # isort
-    "N",   # pep8-naming
-    "UP",  # pyupgrade
-    "B",   # flake8-bugbear
-    "C4",  # flake8-comprehensions
-    "SIM", # flake8-simplify
-    "PIE", # flake8-pie
-    "RET", # flake8-return
-    "ARG", # flake8-unused-arguments
-    "PTH", # flake8-use-pathlib
-    "ERA", # eradicate
-    "PL",  # pylint
-    "RUF", # ruff-specific rules
-]
 ignore = [
-    "E501",    # line too long
-    "E203",    # whitespace before ':'
-    "F841",    # local variable assigned but never used
-    "PLR0913", # too many arguments
-    "PLR0912", # too many branches
-    "PLR0915", # too many statements
-    "PLR2004", # magic value used in comparison
-    "ARG002",  # unused method argument
-    "PTH123",  # pathlib instead of os.path.join
+  "ARG002", # unused method argument
+  "E203", # whitespace before ':'
+  "E501", # line too long
+  "F841", # local variable assigned but never used
+  "PLR0912", # too many branches
+  "PLR0913", # too many arguments
+  "PLR0915", # too many statements
+  "PLR2004", # magic value used in comparison
+  "PTH123" # pathlib instead of os.path.join
+]
+select = [
+  "ARG", # flake8-unused-arguments
+  "B", # flake8-bugbear
+  "C4", # flake8-comprehensions
+  "E", # pycodestyle errors
+  "ERA", # eradicate
+  "F", # pyflakes
+  "I", # isort
+  "N", # pep8-naming
+  "PIE", # flake8-pie
+  "PL", # pylint
+  "PTH", # flake8-use-pathlib
+  "RET", # flake8-return
+  "RUF", # ruff-specific rules
+  "SIM", # flake8-simplify
+  "UP", # pyupgrade
+  "W" # pycodestyle warnings
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["F401"]
 "**/migrations/*" = ["E501"]
+"__init__.py" = ["F401"]
 
-[tool.pyright]
-"include" = ["**/*.py"]
-"exclude" = [
-    "**/__pycache__",
-    "**/node_modules",
-    "**/.venv",
-    "**/venv",
-    "build",
-    "dist",
-]
-"reportMissingImports" = "warning"
-"reportMissingTypeStubs" = "information"
-"reportImportCycles" = "warning"
-"reportUnusedImport" = "information"
-"reportUnusedClass" = "information"
-"reportUnusedFunction" = "information"
-"reportUnusedVariable" = "information"
-"reportAttributeAccess" = "information"
-"reportDuplicateImport" = "warning"
-"reportOptionalSubscript" = "information"
-"reportOptionalMemberAccess" = "information"
-"reportOptionalCall" = "information"
-"reportOptionalIterable" = "information"
-"reportOptionalContextManager" = "information"
-"reportOptionalOperand" = "information"
-"reportGeneralTypeIssues" = "warning"
-"reportUntypedFunctionDecorator" = "information"
-"reportUntypedClassDecorator" = "information"
-"reportUntypedBaseClass" = "information"
-"reportUntypedNamedTuple" = "information"
-"reportPrivateUsage" = "information"
-"reportConstantRedefinition" = "warning"
-"reportIncompatibleMethodOverride" = "warning"
-"reportIncompatibleVariableOverride" = "warning"
-"reportOverlappingOverload" = "warning"
-"reportMissingParameterType" = "information"
-"reportMissingReturnType" = "information"
-"reportUnnecessaryIsInstance" = "information"
-"reportUnnecessaryCast" = "information"
-"reportAssertAlwaysTrue" = "information"
-"reportSelfClsParameterName" = "information"
-"reportImplicitStringConcatenation" = "information"
-"reportAttributeAccessIssue" = "information"
-"reportArgumentType" = "warning"
-"pythonVersion" = "3.8"
-"pythonPlatform" = "All"
-"typeCheckingMode" = "basic"
-"useLibraryCodeForTypes" = true
-"autoImportCompletions" = true
-"strictListInference" = false
-"strictDictionaryInference" = false
-"strictSetInference" = false
-
-[[tool.pyright.executionEnvironments]]
-"root" = "."
-"pythonVersion" = "3.8"
-"pythonPlatform" = "All"
-"extraPaths" = [".", "./config", "./ui", "./view"]
+[tool.uv.sources]
+pycses = {git = "https://github.com/SmartTeachCN/pycses.git"}

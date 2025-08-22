@@ -54,7 +54,7 @@ class I18nManager:
         self.config_file_path = base_directory / 'config' / 'completed_i18n.json'
         self.load_completed_i18n_config()
         self.scan_available_languages()
-        
+
     def scan_available_languages(self):
         try:
             completed_main = self.completed_i18n_config.get('completed_languages', {}).get('main', [])
@@ -92,7 +92,7 @@ class I18nManager:
         except Exception as e:
             logger.error(f"加载完整翻译配置时出错: {e}")
             self.completed_i18n_config = {
-                "last_updated": "", 
+                "last_updated": "",
                 "completed_languages": {"main": [], "themes": {}}
             }
 
@@ -125,7 +125,7 @@ class I18nManager:
             'ja_JP': QLocale(QLocale.Japanese, QLocale.Japan),
         }
         return locale_list.get(lang_code, QLocale(QLocale.English, QLocale.UnitedStates))
-        
+
     def get_available_languages_view(self):
         """获取可用界面语言列表仅(完整翻译的语言)"""
         completed_main = set(self.completed_i18n_config.get('completed_languages', {}).get('main', []))
@@ -139,7 +139,7 @@ class I18nManager:
         filtered_keys = available_keys & completed_languages
 
         return {key: self.available_languages_view[key] for key in filtered_keys if key in self.available_languages_view}
-        
+
     def get_current_language_view_name(self):
         """获取当前界面语言名称"""
         return self._get_language_display_name(self.current_language_view)
@@ -147,7 +147,7 @@ class I18nManager:
     def get_current_language_widgets_name(self):
         """获取当前组件语言名称"""
         return self._get_language_display_name(self.current_language_widgets)
-        
+
     def load_language_view(self, lang_code):
         """加载界面语言文件"""
         current_lang = self.current_language_view
@@ -185,7 +185,7 @@ class I18nManager:
                 logger.warning(f"无法加载组件语言: {lang_code} ({self.available_languages_widgets.get(lang_code, lang_code)})")
                 self.load_language_view(current_lang)
                 return False
-            
+
             translator_qfw = FluentTranslator(self.get_available_languages_QLocale(lang_code))
             if translator_qfw:
                 self.translators.append(translator_qfw)
@@ -198,7 +198,7 @@ class I18nManager:
 
             if not utils.main_mgr is None:
                 utils.main_mgr.clear_widgets()
-            
+
             return True
 
         except Exception as e:
@@ -218,12 +218,12 @@ class I18nManager:
                     logger.warning(f"无法加载文件: {qm_path}")
             else:
                 logger.warning(f"文件不存在: {qm_path}")
-                
+
         except Exception as e:
             logger.error(f"加载文件 {qm_path} 时出错: {e}")
-            
+
         return None
-        
+
     def clear_translators(self):
         """清除翻译器"""
         app = QApplication.instance()
@@ -231,7 +231,7 @@ class I18nManager:
             for translator in self.translators:
                 app.removeTranslator(translator)
         self.translators.clear()
-           
+
     def init_from_config(self):
         """初始化设置"""
         try:

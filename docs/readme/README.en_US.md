@@ -39,7 +39,7 @@
 
 </div>
 
----
+______________________________________________________________________
 
 ## Features
 
@@ -66,7 +66,7 @@
 ![scrshot_0](../../img/screenshot_1.png)
 
 ## Installation & Usage
->
+
 > [!TIP]
 > Tutorials available at [Class Widgets Official Documentation](https://www.yuque.com/rinlit/class-widgets_help/gs3gsbms1iivgibm).
 
@@ -147,7 +147,7 @@ We currently have [Discussions](https://github.com/orgs/Class-Widgets/discussion
 
 ## Star History
 
- <picture>
+<picture>
    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Class-Widgets/Class-Widgets&type=Date&theme=dark" />
    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Class-Widgets/Class-Widgets&type=Date" />
    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Class-Widgets/Class-Widgets&type=Date" />
