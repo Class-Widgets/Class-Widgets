@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>781</width>
+    <width>843</width>
     <height>658</height>
    </rect>
   </property>
@@ -288,11 +288,30 @@ FluentLabelBase{color:#7d000000}</string>
         <layout class="QHBoxLayout" name="horizontalLayout_8">
          <item>
           <widget class="SubtitleLabel" name="SubtitleLabel">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string>时间线</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="PushButton" name="copy_timeline">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>复制单周时间线</string>
            </property>
           </widget>
          </item>

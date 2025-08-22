@@ -3905,6 +3905,11 @@ class SettingsMenu(FluentWindow):
         te_select_timeline.setToolTip(self.tr('选择一周内的某一天的时间线'))
         te_select_timeline.currentIndexChanged.connect(self.te_upload_list)
 
+        te_copy_timeline = self.findChild(PushButton, 'copy_timeline')  # 复制时间线
+        te_copy_timeline.setToolTip(self.tr('复制单周时间线'))
+        te_copy_timeline.clicked.connect(self.te_copy_odd_timeline)
+        te_copy_timeline.hide()
+
         te_timeline_list = self.findChild(ListWidget, 'timeline_list')  # 所选时间线列表
         te_timeline_list.addItems(timeline_dict['odd']['default'])
         te_timeline_list.itemChanged.connect(self.te_upload_item)
@@ -3922,6 +3927,12 @@ class SettingsMenu(FluentWindow):
         QScroller.grabGesture(part_list.viewport(), QScroller.LeftMouseButtonGesture)  # 触摸屏适配
         self.te_detect_item()
         self.te_update_parts_name()
+
+    def te_copy_odd_timeline(self):
+        te_select_timeline = self.findChild(ComboBox, 'select_timeline')  # 选择时间线
+        timeline_index = str(te_select_timeline.currentIndex()) if te_select_timeline.currentIndex() != 0 else 'default'
+        timeline_dict['even'][timeline_index] = deepcopy(timeline_dict['odd'][timeline_index]) 
+        self.te_upload_list()
 
     def te_edit_part_time(self):
         """编辑选中节点的开始时间"""
@@ -4800,6 +4811,11 @@ class SettingsMenu(FluentWindow):
         te_select_week_type = self.findChild(ComboBox, 'select_week_type')
         te_timeline_list = self.findChild(ListWidget, 'timeline_list')
         te_select_timeline = self.findChild(ComboBox, 'select_timeline')
+        te_copy_timeline = self.findChild(PushButton, 'copy_timeline')
+        if te_select_week_type.currentIndex():
+            te_copy_timeline.show()
+        else:
+            te_copy_timeline.hide()
         try:
             if te_select_timeline.currentIndex() == 0:
                 te_timeline_list.clear()
