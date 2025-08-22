@@ -29,6 +29,10 @@ from qfluentwidgets import Theme, setTheme, setThemeColor, SystemTrayMenu, Actio
 from PyQt5.QtGui import QCloseEvent, QShowEvent, QHideEvent, QMouseEvent, QFocusEvent
 from PyQt5.QtCore import QCoreApplication
 
+import splash
+splash_window = splash.Splash()
+splash_window.run()
+
 from i18n_manager import global_i18n_manager, app
 import conf
 import list_
@@ -1356,7 +1360,6 @@ class FloatingWidget(QWidget):  # 浮窗
         return None
 
     def init_ui(self):
-        setTheme_()
         theme_info = conf.load_theme_config(str('default' if theme is None else theme))
         theme_path = theme_info.path
         theme_config = theme_info.config
@@ -3320,6 +3323,7 @@ def init() -> None:
 
     theme = load_theme_config(config_center.read_conf('General', 'theme')).path.name # 主题
     logger.info(f'应用主题：{theme}')
+    setTheme_()
 
     mgr = WidgetsManager()
     utils.main_mgr = mgr
@@ -3401,7 +3405,7 @@ if __name__ == '__main__':
     logger.info(
         f"是否允许多开实例：{config_center.read_conf('Other', 'multiple_programs')}")
     try:
-        dark_mode_watcher = DarkModeWatcher(parent=app)
+        dark_mode_watcher = DarkModeWatcher()
         dark_mode_watcher.darkModeChanged.connect(handle_dark_mode_change) # 连接信号
         # 初始主题设置依赖于 darkModeChanged 信号
     except Exception as e:
@@ -3480,6 +3484,8 @@ if __name__ == '__main__':
     # w.exec()
     if config_center.read_conf('Version', 'auto_check_update', '1') == '1':
         check_update()
+
+    splash_window.close()
 
     status = app.exec()
 
