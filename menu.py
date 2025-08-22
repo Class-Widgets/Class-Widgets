@@ -324,7 +324,7 @@ loaded_data = schedule_center.schedule_data
 schedule_dict = {}  # 对应时间线的课程表
 schedule_even_dict = {}  # 对应时间线的课程表（双周）
 
-timeline_dict = {}  # 时间
+timeline_dict = {'odd' : {}, 'even': {}}  # 时间
 
 countdown_dict = {}
 
