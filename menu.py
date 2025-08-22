@@ -386,7 +386,7 @@ def get_theme_name():
     return load_theme_config(config_center.read_conf('General', 'theme')).path.name
 
 
-def load_schedule_dict(schedule, part, part_name):
+def load_schedule_dict(schedule, week_type, part, part_name):
     """
     加载课表字典
     """
@@ -397,9 +397,9 @@ def load_schedule_dict(schedule, part, part_name):
         for i in range(len(part)):
             count.append(0)
         if str(week) in loaded_data['timeline'] and loaded_data['timeline'][str(week)]:
-            timeline = get_timeline()['even' if conf.get_week_type() else 'odd'][str(week)]
+            timeline = get_timeline()['even' if week_type else 'odd'][str(week)]
         else:
-            timeline = get_timeline()['even' if conf.get_week_type() else 'odd']['default']
+            timeline = get_timeline()['even' if week_type else 'odd']['default']
 
         for isbreak, item_name, item_index, item_time in timeline:
             if not isbreak:
@@ -443,8 +443,8 @@ def se_load_item():
     schedule = loaded_data.get('schedule')
     schedule_even = loaded_data.get('schedule_even')
 
-    schedule_dict = load_schedule_dict(schedule, part, part_name)
-    schedule_even_dict = load_schedule_dict(schedule_even, part, part_name)
+    schedule_dict = load_schedule_dict(schedule, 0, part, part_name)
+    schedule_even_dict = load_schedule_dict(schedule_even, 1, part, part_name)
 
 
 def cd_load_item():
@@ -4833,7 +4833,8 @@ class SettingsMenu(FluentWindow):
         global current_week
         try:
             if se_week_type_combo.currentIndex() == 1:
-                se_copy_schedule_button.show()
+                if len(schedule_dict[str(current_week)]) == len(schedule_even_dict[str(current_week)]):
+                    se_copy_schedule_button.show()
                 current_week = se_week_combo.currentIndex()
                 se_schedule_list.clear()
                 se_schedule_list.addItems(schedule_even_dict[str(current_week)])
