@@ -33,6 +33,8 @@ import splash
 splash_window = splash.Splash()
 splash_window.run()
 
+splash_window.update_status((0, QCoreApplication.translate('main', '加载模块...')))
+
 from i18n_manager import global_i18n_manager, app
 import conf
 import list_
@@ -3376,6 +3378,7 @@ def setup_signal_handlers_optimized(app: QApplication) -> None:
         signal.signal(signal.SIGHUP, signal_handler)  # 终端挂起
 
 if __name__ == '__main__':
+    splash_window.update_status((10, QCoreApplication.translate('main', '检查多开...')))
     utils.guard = utils.SingleInstanceGuard("ClassWidgets.lock")
     if config_center.read_conf('Other', 'multiple_programs') != '1':
         if not utils.guard.try_acquire():
@@ -3404,6 +3407,9 @@ if __name__ == '__main__':
 
     logger.info(
         f"是否允许多开实例：{config_center.read_conf('Other', 'multiple_programs')}")
+
+    splash_window.update_status((20, QCoreApplication.translate('main', '初始化颜色监视器...')))
+
     try:
         dark_mode_watcher = DarkModeWatcher()
         dark_mode_watcher.darkModeChanged.connect(handle_dark_mode_change) # 连接信号
@@ -3411,6 +3417,8 @@ if __name__ == '__main__':
     except Exception as e:
         logger.error(f"初始化颜色模式监测器时出错: {e}")
         dark_mode_watcher = None
+
+    splash_window.update_status((30, QCoreApplication.translate('main', '检查缩放...')))
 
     if scale_factor > 1.8 or scale_factor < 1.0:
         logger.warning("当前缩放系数可能导致显示异常，建议使缩放系数在 100% 到 180% 之间")
@@ -3421,6 +3429,8 @@ if __name__ == '__main__':
         msg_box.buttonLayout.insertStretch(0, 1)
         msg_box.setFixedWidth(550)
         msg_box.exec()
+
+    splash_window.update_status((40, QCoreApplication.translate('main', '获取系统版本...')))
 
     # 优化操作系统和版本输出
     system = platform.system()
@@ -3439,10 +3449,14 @@ if __name__ == '__main__':
 
     # list_pyttsx3_voices()
 
+    splash_window.update_status((50, QCoreApplication.translate('main', '初始化窗口管理器...')))
+
     mgr = WidgetsManager()
     app.aboutToQuit.connect(mgr.cleanup_resources)
     setup_signal_handlers_optimized(app)
     utils.main_mgr = mgr
+
+    splash_window.update_status((55, QCoreApplication.translate('main', '检查初次启动...')))
 
     if config_center.read_conf('Other', 'initialstartup') == '1':  # 首次启动
         try:
@@ -3452,16 +3466,25 @@ if __name__ == '__main__':
             config_center.write_conf('Other', 'initialstartup', '')
         except Exception as e:
             logger.error(f'添加快捷方式失败：{e}')
+    
+    splash_window.update_status((60, QCoreApplication.translate('main', '初始化插件管理器...')))
 
     p_mgr = PluginManager()
     p_loader.set_manager(p_mgr)
     p_loader.load_plugins()
 
+    splash_window.update_status((91, QCoreApplication.translate('main', '加载窗口...')))
+
     init()
+
+    splash_window.update_status((95, QCoreApplication.translate('main', '加载课程...')))
+
     get_start_time()
     get_current_lessons()
     get_current_lesson_name()
     get_next_lessons()
+
+    splash_window.update_status((98, QCoreApplication.translate('main', '加载隐藏状态...')))
 
     hide_mode = config_center.read_conf('General', 'hide')
     should_hide = False
@@ -3479,6 +3502,8 @@ if __name__ == '__main__':
         setThemeColor(f"#{config_center.read_conf('Color', 'attend_class')}")
     else:
         setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}")
+
+    splash_window.update_status((100, QCoreApplication.translate('main', '检查更新...')))
 
     # w = ErrorDialog()
     # w.exec()
