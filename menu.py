@@ -5169,11 +5169,11 @@ class SettingsMenu(FluentWindow):
                                         except Exception as e:
                                             logger.warning(f'删除时段时发生错误：{e}')
 
-                        for item in delete_part_list:  # 删除时间线
-                            timeline_dict[week_type][day].remove(item)
-                        if day != 'default':  # 删除课表
-                            for item in delete_schedule_list:
-                                schedule_dict[day].remove(item)
+                    for item in delete_part_list:  # 删除时间线
+                        timeline_dict[week_type][day].remove(item)
+                    if day != 'default':  # 删除课表
+                        for item in delete_schedule_list:
+                            schedule_dict[day].remove(item)
 
             for day in range(7):  # 删除默认课程表
                 delete_schedule_list = []
