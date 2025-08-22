@@ -311,7 +311,7 @@ FluentLabelBase{color:#7d000000}</string>
             </sizepolicy>
            </property>
            <property name="text">
-            <string>复制单周时间线</string>
+            <string>复制时间线</string>
            </property>
           </widget>
          </item>

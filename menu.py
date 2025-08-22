@@ -3906,9 +3906,8 @@ class SettingsMenu(FluentWindow):
         te_select_timeline.currentIndexChanged.connect(self.te_upload_list)
 
         te_copy_timeline = self.findChild(PushButton, 'copy_timeline')  # 复制时间线
-        te_copy_timeline.setToolTip(self.tr('复制单周时间线'))
-        te_copy_timeline.clicked.connect(self.te_copy_odd_timeline)
-        te_copy_timeline.hide()
+        te_copy_timeline.setToolTip(self.tr('复制时间线'))
+        te_copy_timeline.clicked.connect(self.te_copy_timeline_from)
 
         te_timeline_list = self.findChild(ListWidget, 'timeline_list')  # 所选时间线列表
         te_timeline_list.addItems(timeline_dict['odd']['default'])
@@ -3928,11 +3927,51 @@ class SettingsMenu(FluentWindow):
         self.te_detect_item()
         self.te_update_parts_name()
 
-    def te_copy_odd_timeline(self):
+    def te_copy_timeline_from(self):
+        class ask_which(FlyoutViewBase):
+            def __init__(self, parent=None, now = (-1, -1)):
+                super().__init__(parent)
+                self.now = now
+                self.parent_obj = parent
+                self.vBoxLayout = QHBoxLayout(self)
+                self.vBoxLayout.setSpacing(8)
+                self.vBoxLayout.setContentsMargins(16, 12, 16, 12)
+                self.week_type_combo = ComboBox()
+                self.week_type_combo.addItems(list_.week_type)
+                self.week_type_combo.currentIndexChanged.connect(self._on_day_change)
+                self.week_combo = ComboBox()
+                self.week_combo.addItem(self.tr('默认'))
+                self.week_combo.addItems(list_.week)
+                self.week_combo.currentIndexChanged.connect(self._on_day_change)
+                self.confirm_button = PrimaryPushButton(self.tr('复制'))
+                self.confirm_button.setFixedHeight(32)
+                self.confirm_button.setFixedWidth(100)
+                self.confirm_button.clicked.connect(self._on_confirm)
+                self.vBoxLayout.addWidget(BodyLabel(self.tr('从')))
+                self.vBoxLayout.addWidget(self.week_type_combo)
+                self.vBoxLayout.addWidget(self.week_combo)
+                self.vBoxLayout.addWidget(BodyLabel(self.tr('复制时间线')))
+                self.vBoxLayout.addWidget(self.confirm_button)
+
+                self._on_day_change()
+
+            def _on_day_change(self):
+                if (self.week_type_combo.currentIndex(), self.week_combo.currentIndex()) == self.now:
+                    self.confirm_button.setEnabled(False)
+                else:
+                    self.confirm_button.setEnabled(True)
+
+            def _on_confirm(self):
+                global timeline_dict
+                timeline_dict['even' if self.now[0] else 'odd']['default' if self.now[1] == 0 else str(self.now[1] - 1)] = deepcopy(timeline_dict['even' if self.week_type_combo.currentIndex() else 'odd']['default' if (index := self.week_combo.currentIndex()) == 0 else str(index - 1)])
+                self.parent_obj.te_upload_list()
+                self.close()
+
+        te_copy_timeline = self.findChild(PushButton, 'copy_timeline')
+        te_select_week_type = self.findChild(ComboBox, 'select_week_type')  # 选择周类型
         te_select_timeline = self.findChild(ComboBox, 'select_timeline')  # 选择时间线
-        timeline_index = str(te_select_timeline.currentIndex()) if te_select_timeline.currentIndex() != 0 else 'default'
-        timeline_dict['even'][timeline_index] = deepcopy(timeline_dict['odd'][timeline_index])
-        self.te_upload_list()
+
+        Flyout.make(ask_which(self, (te_select_week_type.currentIndex(), te_select_timeline.currentIndex())), te_copy_timeline, self, aniType=FlyoutAnimationType.PULL_UP)
 
     def te_edit_part_time(self):
         """编辑选中节点的开始时间"""
@@ -4812,10 +4851,6 @@ class SettingsMenu(FluentWindow):
         te_timeline_list = self.findChild(ListWidget, 'timeline_list')
         te_select_timeline = self.findChild(ComboBox, 'select_timeline')
         te_copy_timeline = self.findChild(PushButton, 'copy_timeline')
-        if te_select_week_type.currentIndex():
-            te_copy_timeline.show()
-        else:
-            te_copy_timeline.hide()
         try:
             if te_select_timeline.currentIndex() == 0:
                 te_timeline_list.clear()
