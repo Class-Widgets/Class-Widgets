@@ -446,7 +446,8 @@ def check_version(version: Dict[str, Any]) -> bool:  # 检查更新
         )
         return False
 
-    channel = int(config_center.read_conf("Version", "version_channel"))
+
+    channel = int('1' if (channel := config_center.read_conf("Version", "version_channel")) not in ['0', '1'] else channel)
     server_version = version['version_release' if channel == 0 else 'version_beta']
     local_version = config_center.read_conf("Version", "version")
     if local_version != "__BUILD_VERSION__":

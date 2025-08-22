@@ -9,6 +9,10 @@ permissions:
   contents: read
   pull-requests: write
 
+concurrency:
+  group: verify-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   branch-check:
     name: Validate PR branch
