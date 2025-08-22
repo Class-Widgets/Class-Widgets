@@ -251,7 +251,7 @@ def get_start_time() -> None:
     # 对timeline排序后添加到timeline_data
     # timeline_data = sorted(timeline, key=sort_timeline_key)
     timeline_data = timeline.copy()  # 直接复制，避免修改原数据
-    
+
 
 
 def get_part() -> Optional[Tuple[dt.datetime, int]]:
