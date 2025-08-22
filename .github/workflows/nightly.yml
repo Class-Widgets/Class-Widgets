@@ -2,7 +2,7 @@ name: Nightly-Builds
 
 on:
   schedule:
-    - cron: "0 0 * * *" # UTC+8 00:00
+    - cron: "55 15 * * *" # UTC+8 23:55
   workflow_dispatch:
     inputs:
       force_build:
