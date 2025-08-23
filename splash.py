@@ -44,17 +44,14 @@ dark_mode_watcher = DarkModeWatcherThread(200, app)
 class Splash:
     def __init__(self):
         super().__init__()
-        setTheme(Theme.DARK)
         self.init()
         self.apply_theme_stylesheet()
 
     def init(self):
         self.splash_window : QWidget = uic.loadUi(base_directory / 'view/splash.ui')
-        self.splash_window.setWindowFlags(Qt.FramelessWindowHint)
-        self.statusLabel = self.splash_window.findChild(BodyLabel, 'statusLabel')
+        self.statusLabel = self.splash_window.findChild(QLabel, 'statusLabel')
         self.statusBar = self.splash_window.findChild(ProgressBar, 'statusBar')
         self.appInitials = self.splash_window.findChild(QLabel, 'appInitials')
-        print(self.statusLabel.styleSheet())
         self.splash_window.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint |
                     Qt.BypassWindowManagerHint | Qt.Tool)
         self.splash_window.show()
@@ -67,47 +64,17 @@ class Splash:
         if theme() == Theme.DARK:
             # 暗色主题样式
             dark_stylesheet = """
-            QWidget#SplashWelcomePage {
-                background: #1f1f1f;
-                background-image: url("./img/splash_right.svg");
-                background-repeat: no-repeat;
-                background-position: center right;
-            }
-            #leftPanel {
-                background: qlineargradient(x1:0, y1:0, x2:0.7, y2:1,
-                                            stop:0 #1f2630, stop:0.5 #1c2230, stop:1 #161a24);
-                border: none;
-            }
-            #sectionTitle {
-                color: #e6e6e6;
-                font-weight: 600;
-            }
-            #card {
-                background: rgba(255,255,255,0.04);
-                border: 1px solid rgba(255,255,255,0.06);
-                border-radius: 10px;
-            }
+            QWidget{ background:#2c2c2c; }
+            #logoBox{ background:#202020; border:1px solid #0a0a0a; border-radius:12px; }
+            #logo{ background:transparent; }
             """
             self.splash_window.setStyleSheet(dark_stylesheet)
         else:
             # 亮色主题样式
             light_stylesheet = """
-            QWidget#SplashWelcomePage {
-                background: #1f1f1f;
-                background-image: url("./img/splash_right.svg");
-                background-repeat: no-repeat;
-                background-position: center right;
-            }
-            #leftPanel {
-                background: qlineargradient(x1:0, y1:0, x2:0.7, y2:1,
-                                            stop:0 #f0f0f0, stop:0.5 #e8e8e8, stop:1 #e0e0e0);
-                border: none;
-            }
-            #card {
-                background: rgba(0,0,0,0.04);
-                border: 1px solid rgba(0,0,0,0.06);
-                border-radius: 10px;
-            }
+            QWidget{ background:#ffffff; }
+            #logoBox{ background:#f7f7f9; border:1px solid #e9e9ec; border-radius:12px; }
+            #logo{ background:transparent; }
             """
             self.splash_window.setStyleSheet(light_stylesheet)
 
