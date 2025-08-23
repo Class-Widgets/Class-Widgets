@@ -56,7 +56,7 @@ class Splash:
         self.appInitials = self.splash_window.findChild(QLabel, 'appInitials')
         print(self.statusLabel.styleSheet())
         self.splash_window.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint |
-                    Qt.WindowType.WindowDoesNotAcceptFocus | Qt.BypassWindowManagerHint | Qt.Tool)
+                    Qt.BypassWindowManagerHint | Qt.Tool)
         self.splash_window.show()
 
     def update_status(self, status: Tuple[int, str]):
@@ -130,7 +130,7 @@ class Splash:
         logger.info("Splash 接收到错误")
         self.appInitials.setPixmap(QPixmap(f'{base_directory}/img/logo/favicon-error.ico'))
         self.splash_window.setWindowFlags(Qt.WindowType.FramelessWindowHint |
-                    Qt.WindowType.WindowDoesNotAcceptFocus | Qt.BypassWindowManagerHint | Qt.Tool)
+                    Qt.BypassWindowManagerHint | Qt.Tool)
         self.splash_window.show()
 
 if __name__ == '__main__':

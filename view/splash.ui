@@ -35,20 +35,6 @@ QWidget#SplashWelcomePage {
     background: var(--backgroundColorGradient);
     border: none;
 }
-
-#appInitials {
-    color: var(--primaryTextColor);
-}
-#appName, #versionLabel, #statusLabel, #tipLabel {
-    color: var(--primaryTextColor);
-}
-#versionLabel, #statusLabel, #tipLabel {
-    color: var(--secondaryTextColor);
-}
-#sectionTitle {
-    color: var(--primaryTextColor);
-    font-weight: 600;
-}
 #card {
     background: var(--cardBackgroundColor);
     border: 1px solid var(--cardBorderColor);
@@ -202,25 +188,44 @@ QWidget#SplashWelcomePage {
        </widget>
       </item>
       <item>
-       <widget class="HyperlinkLabel" name="copyright">
-        <property name="styleSheet">
-         <string notr="true">HyperlinkLabel {
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="HyperlinkLabel" name="copyright">
+          <property name="styleSheet">
+           <string notr="true">HyperlinkLabel {
     color: #e6e6e6;
     border: none;
     background-color: transparent;
-    text-align: right;
     padding: 0;
     margin: 0;
 }
 </string>
-        </property>
-        <property name="text">
-         <string>© 2025 RinLit</string>
-        </property>
-        <property name="underlineVisible">
-         <bool>false</bool>
-        </property>
-       </widget>
+          </property>
+          <property name="text">
+           <string>© 2025 RinLit</string>
+          </property>
+          <property name="underlineVisible">
+           <bool>false</bool>
+          </property>
+          <property name="underline" stdset="0">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <spacer name="leftVSpacer">
