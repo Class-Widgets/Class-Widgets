@@ -23,7 +23,7 @@ jobs:
     name: Check Commits
     runs-on: ubuntu-latest
     outputs:
-      has_new_commits: ${{ steps.check-commits.outputs.has_new_commits }}
+      has-new-commits: ${{ steps.check-commits.outputs.has-new-commits }}
       nightly_version: ${{ steps.generate-version.outputs.nightly_version }}
     steps:
       - name: Checkout repository
@@ -49,7 +49,7 @@ jobs:
     name: Clear Old Nightly-Builds
     runs-on: ubuntu-latest
     needs: [check-commits]
-    if: needs.check-commits.outputs.has_new_commits == 'true' || github.event.inputs.force_build == 'true'
+    if: needs.check-commits.outputs.has-new-commits == 'true' || github.event.inputs.force_build == 'true'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -80,7 +80,7 @@ jobs:
   build-nightly:
     name: Build Nightly-Builds
     needs: [check-commits]
-    if: needs.check-commits.outputs.has_new_commits == 'true' || github.event.inputs.force_build == 'true'
+    if: needs.check-commits.outputs.has-new-commits == 'true' || github.event.inputs.force_build == 'true'
     uses: ./.github/workflows/build.yml
     with:
       build_type: "Nightly"

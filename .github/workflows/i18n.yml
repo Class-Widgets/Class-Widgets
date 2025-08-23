@@ -201,7 +201,7 @@ jobs:
             * 由 GitHub Actions 自动生成
 
             Co-authored-by: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
-          commit_options: "--signoff"
+          commit_options: "--no-verify --signoff"
           file_pattern: "i18n/*.ts ui/*/i18n/*.ts"
           commit_user_name: "ChimeYao-bot"
           commit_user_email: "ChimeYao@outlook.jp"
@@ -286,7 +286,6 @@ jobs:
         with:
           commit_message: |
             chore(i18n): 编译翻译文件(.qm) (Auto-Commit)
-            chore(i18n): 更新翻译可用性 (Auto-Commit)
 
             - 初始触发者: ${{ github.actor }}
             - 触发事件: ${{ github.event_name }}
@@ -295,8 +294,8 @@ jobs:
             * 由 GitHub Actions 自动生成
 
             Co-authored-by: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
-          commit_options: "--signoff"
-          file_pattern: "i18n/*.qm ui/*/i18n/*.qm config/completed_i18n.json"
+          commit_options: "--no-verify --signoff"
+          file_pattern: "i18n/*.qm ui/*/i18n/*.qm"
           commit_user_name: "ChimeYao-bot"
           commit_user_email: "ChimeYao@outlook.jp"
           commit_author: "ChimeYao-bot <ChimeYao@outlook.jp>"
