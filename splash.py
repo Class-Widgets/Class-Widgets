@@ -52,6 +52,7 @@ class Splash:
         self.statusLabel = self.splash_window.findChild(QLabel, 'statusLabel')
         self.statusBar = self.splash_window.findChild(ProgressBar, 'statusBar')
         self.appInitials = self.splash_window.findChild(QLabel, 'appInitials')
+        self.splash_window.setAttribute(Qt.WA_TranslucentBackground)
         self.splash_window.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint |
                     Qt.BypassWindowManagerHint | Qt.Tool)
         self.splash_window.show()
