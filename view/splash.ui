@@ -27,7 +27,7 @@
 /* 使用QFluentWidgets主题变量 */
 QWidget#SplashWelcomePage {
     background: var(--backgroundColor);
-    background-image: url("./img/splash_right.svg");
+    background-image: url(&quot;./img/splash_right.svg&quot;);
     background-repeat: no-repeat;
     background-position: center right;
 }
@@ -144,18 +144,18 @@ QWidget#SplashWelcomePage {
          <property name="bottomMargin">
           <number>0</number>
          </property>
-         <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+         <item>
           <widget class="QLabel" name="appInitials">
            <property name="minimumSize">
             <size>
-             <width>120</width>
-             <height>120</height>
+             <width>128</width>
+             <height>128</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>120</width>
-             <height>120</height>
+             <width>128</width>
+             <height>128</height>
             </size>
            </property>
            <property name="font">
@@ -168,7 +168,7 @@ QWidget#SplashWelcomePage {
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap>../img/Logo.png</pixmap>
+            <pixmap>../img/logo/favicon.ico</pixmap>
            </property>
            <property name="scaledContents">
             <bool>true</bool>

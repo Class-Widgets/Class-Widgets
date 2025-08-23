@@ -619,6 +619,10 @@ class ErrorDialog(Dialog):  # 重大错误提示框
         if error_details.endswith('KeyboardInterrupt') or error_details.endswith('KeyboardInterrupt\n'):
             stop()
 
+        global splash_window
+
+        splash_window.error()
+
         super().__init__(
             QCoreApplication.translate('ErrorDialog', 'Class Widgets 崩溃报告'),
             QCoreApplication.translate('ErrorDialog', '抱歉！Class Widgets 发生了严重的错误从而无法正常运行。您可以保存下方的错误信息并向他人求助。'

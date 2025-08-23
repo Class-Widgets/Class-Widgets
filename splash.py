@@ -1,10 +1,12 @@
 from typing import Any, List, Optional, Tuple
-from PyQt5.QtCore import QThread, pyqtSignal, QObject, QTimer
+from PyQt5.QtCore import QThread, pyqtSignal, QObject
+from PyQt5.QtGui import QPixmap
 from PyQt5 import uic
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QLabel
 from qfluentwidgets import BodyLabel, ProgressBar, theme, Theme, setTheme
 import time
+from loguru import logger
 
 from i18n_manager import app
 from conf import base_directory
@@ -51,6 +53,7 @@ class Splash:
         self.splash_window.setWindowFlags(Qt.FramelessWindowHint)
         self.statusLabel = self.splash_window.findChild(BodyLabel, 'statusLabel')
         self.statusBar = self.splash_window.findChild(ProgressBar, 'statusBar')
+        self.appInitials = self.splash_window.findChild(QLabel, 'appInitials')
         print(self.statusLabel.styleSheet())
         self.splash_window.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint |
                     Qt.WindowType.WindowDoesNotAcceptFocus | Qt.BypassWindowManagerHint | Qt.Tool)
@@ -62,7 +65,6 @@ class Splash:
 
     def apply_theme_stylesheet(self):
         if theme() == Theme.DARK:
-            print("dark")
             # 暗色主题样式
             dark_stylesheet = """
             QWidget#SplashWelcomePage {
@@ -88,7 +90,6 @@ class Splash:
             """
             self.splash_window.setStyleSheet(dark_stylesheet)
         else:
-            print("light")
             # 亮色主题样式
             light_stylesheet = """
             QWidget#SplashWelcomePage {
@@ -111,17 +112,26 @@ class Splash:
             self.splash_window.setStyleSheet(light_stylesheet)
 
     def run(self):
+        logger.info("Splash 启动")
         dark_mode_watcher.start()
         self.dark_mode_watcher_connection = dark_mode_watcher.darkModeChanged.connect(lambda: self.apply_theme_stylesheet())
         self.update_status((0, app.translate('main', 'Class Widgets 启动中...')))
         app.processEvents()
 
     def close(self):
+        logger.info("Splash 关闭")
         dark_mode_watcher.darkModeChanged.disconnect(self.dark_mode_watcher_connection)
         dark_mode_watcher.stop()
         self.splash_window.close()
         self.splash_window.deleteLater()
         self.splash_window = None
+
+    def error(self):
+        logger.info("Splash 接收到错误")
+        self.appInitials.setPixmap(QPixmap(f'{base_directory}/img/logo/favicon-error.ico'))
+        self.splash_window.setWindowFlags(Qt.WindowType.FramelessWindowHint |
+                    Qt.WindowType.WindowDoesNotAcceptFocus | Qt.BypassWindowManagerHint | Qt.Tool)
+        self.splash_window.show()
 
 if __name__ == '__main__':
     splash = Splash()
