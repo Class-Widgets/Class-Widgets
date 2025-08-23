@@ -3387,6 +3387,7 @@ if __name__ == '__main__':
     if config_center.read_conf('Other', 'multiple_programs') != '1':
         if not utils.guard.try_acquire():
             if (info:=utils.guard.get_lock_info()):
+                splash_window.error()
                 logger.debug(f'不允许多开实例，{info}')
                 from qfluentwidgets import Dialog
                 app = QApplication.instance() or QApplication(sys.argv)
@@ -3425,6 +3426,7 @@ if __name__ == '__main__':
     splash_window.update_status((30, QCoreApplication.translate('main', '检查缩放...')))
 
     if scale_factor > 1.8 or scale_factor < 1.0:
+        splash_window.error()
         logger.warning("当前缩放系数可能导致显示异常，建议使缩放系数在 100% 到 180% 之间")
         msg_box = Dialog(QCoreApplication.translate('main', '缩放系数过大'),
                          QCoreApplication.translate('main', "当前缩放系数为 {scale_factor}%，可能导致显示异常。\n建议将缩放系数设置为 100% 到 180% 之间。").format(scale_factor=scale_factor*100))
@@ -3433,6 +3435,7 @@ if __name__ == '__main__':
         msg_box.buttonLayout.insertStretch(0, 1)
         msg_box.setFixedWidth(550)
         msg_box.exec()
+        splash_window.unerror()
 
     splash_window.update_status((40, QCoreApplication.translate('main', '获取系统版本...')))
 

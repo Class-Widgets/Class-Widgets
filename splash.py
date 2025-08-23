@@ -133,6 +133,13 @@ class Splash:
                     Qt.BypassWindowManagerHint | Qt.Tool)
         self.splash_window.show()
 
+    def unerror(self):
+        logger.info("Splash 恢复正常")
+        self.appInitials.setPixmap(QPixmap(f'{base_directory}/img/logo/favicon.ico'))
+        self.splash_window.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint |
+                    Qt.BypassWindowManagerHint | Qt.Tool)
+        self.splash_window.show()
+
 if __name__ == '__main__':
     splash = Splash()
     splash.run()
