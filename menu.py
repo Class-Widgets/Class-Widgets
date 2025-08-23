@@ -2913,7 +2913,7 @@ class SettingsMenu(FluentWindow):
 
         self.version_channel = self.findChild(ComboBox, 'version_channel')
         self.version_channel.addItems(list_.version_channel)
-        self.version_channel.setCurrentIndex(int(config_center.read_conf("Version", "version_channel")))
+        self.version_channel.setCurrentIndex(int('1' if (channel := config_center.read_conf("Version", "version_channel")) not in ['0', '1'] else channel))
         self.version_channel.currentIndexChanged.connect(
             lambda: config_center.write_conf("Version", "version_channel", self.version_channel.currentIndex())
         )  # 版本更新通道
@@ -4187,7 +4187,7 @@ class SettingsMenu(FluentWindow):
                 )
             return False
 
-        channel = int(config_center.read_conf("Version", "version_channel"))
+        channel = int('1' if (channel := config_center.read_conf("Version", "version_channel")) not in ['0', '1'] else channel)
         new_version = version['version_release' if channel == 0 else 'version_beta']
         local_version = config_center.read_conf("Version", "version") or "0.0.0"
         build_commit = config_center.read_conf("Version", "build_commit")
