@@ -387,7 +387,7 @@ class ScheduleCenter:
                             # 如果转换失败，返回原始字符串
                             return item_name
                     return item_name
-                
+
                 new_timeline = []
 
                 # 对timeline排序后添加到timeline_data
@@ -401,14 +401,14 @@ class ScheduleCenter:
                 require_save = True
             elif not isinstance(value, list):
                 raise ValueError(f"课程表时间线格式错误: {key}: {value}")
-            
+
         if 'timeline_even' not in self.schedule_data:
             self.schedule_data['timeline_even'] = {"default": [], "0": [], "1": [], "2": [], "3": [], "4": [], "5": [], "6": []}
             require_save = True
         if self.schedule_data.get('url', None) is None:
             self.schedule_data['url'] = 'local'
             require_save = True
-        
+
         require_save and self.save_data(self.schedule_data, config_center.schedule_name)
 
     def update_url(self, url: str) -> None:
