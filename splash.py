@@ -9,7 +9,7 @@ import time
 from loguru import logger
 
 from i18n_manager import app
-from conf import base_directory
+from basic_dirs import CW_HOME
 
 class DarkModeWatcherThread(QThread):
     darkModeChanged = pyqtSignal(bool)  # 发出暗黑模式变化信号
@@ -48,7 +48,7 @@ class Splash:
         self.apply_theme_stylesheet()
 
     def init(self):
-        self.splash_window : QWidget = uic.loadUi(base_directory / 'view/splash.ui')
+        self.splash_window : QWidget = uic.loadUi(CW_HOME / 'view/splash.ui')
         self.statusLabel = self.splash_window.findChild(QLabel, 'statusLabel')
         self.statusBar = self.splash_window.findChild(ProgressBar, 'statusBar')
         self.appInitials = self.splash_window.findChild(QLabel, 'appInitials')
@@ -96,14 +96,14 @@ class Splash:
 
     def error(self):
         logger.info("Splash 接收到错误")
-        self.appInitials.setPixmap(QPixmap(f'{base_directory}/img/logo/favicon-error.ico'))
+        self.appInitials.setPixmap(QPixmap(f'{CW_HOME}/img/logo/favicon-error.ico'))
         self.splash_window.setWindowFlags(Qt.WindowType.FramelessWindowHint |
                     Qt.BypassWindowManagerHint | Qt.Tool)
         self.splash_window.show()
 
     def unerror(self):
         logger.info("Splash 恢复正常")
-        self.appInitials.setPixmap(QPixmap(f'{base_directory}/img/logo/favicon.ico'))
+        self.appInitials.setPixmap(QPixmap(f'{CW_HOME}/img/logo/favicon.ico'))
         self.splash_window.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint |
                     Qt.BypassWindowManagerHint | Qt.Tool)
         self.splash_window.show()
