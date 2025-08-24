@@ -40,6 +40,13 @@ jobs:
       should_update_all: ${{ steps.detect.outputs.should_update_all }}
       should_compile: ${{ steps.detect.outputs.should_compile }}
     steps:
+      - name: Check Repository
+        run: |
+          if [ "${{ github.repository }}" != "Class-Widgets/Class-Widgets" ]; then
+            echo "[DEBUG] 工作流不在主仓库"
+            exit 1
+          fi
+
       - name: Checkout
         uses: actions/checkout@v5
         with:
@@ -179,6 +186,7 @@ jobs:
 
       - name: Import GPG key
         id: import-gpg
+        continue-on-error: true
         uses: crazy-max/ghaction-import-gpg@v6
         with:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -200,7 +208,7 @@ jobs:
             * 由 GitHub Actions 自动生成
 
             Co-authored-by: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
-          commit_options: "--signoff"
+          commit_options: "--no-verify --signoff"
           file_pattern: "i18n/*.ts ui/*/i18n/*.ts"
           commit_user_name: "ChimeYao-bot"
           commit_user_email: "ChimeYao@outlook.jp"
@@ -270,119 +278,6 @@ jobs:
             fi
           done
 
-      - name: Check translation completeness and update config
-        shell: bash
-        run: |
-          mkdir -p config
-          existing_config=""
-          if [ -f "data/completed_i18n.json" ]; then
-            existing_config=$(cat data/completed_i18n.json)
-          else
-            echo "[DEBUG] 配置文件不存在"
-          fi
-          completed_main_langs="[]"
-          if [ -d "i18n" ]; then
-            echo "[DEBUG] 检查Main翻译文件..."
-            completed_main_langs="["
-            first_main=true
-            for ts_file in i18n/*.ts; do
-              if [ -f "$ts_file" ]; then
-                lang_code=$(basename "$ts_file" .ts)
-                if ! grep -q 'type="unfinished"' "$ts_file"; then
-                  echo "[DEBUG] main翻译 $lang_code 完整"
-                  if [ "$first_main" = true ]; then
-                    completed_main_langs="${completed_main_langs}\"$lang_code\""
-                    first_main=false
-                  else
-                    completed_main_langs="${completed_main_langs},\"$lang_code\""
-                  fi
-                else
-                  echo "[DEBUG] main翻译 $lang_code 不完整"
-                fi
-              fi
-            done
-            completed_main_langs="${completed_main_langs}]"
-          fi
-
-          completed_themes="{}"
-          if [ -d "ui" ]; then
-            echo "[DEBUG] 检查Theme翻译文件..."
-            completed_themes="{"
-            first_theme=true
-            for theme_dir in ui/*/; do
-              if [ -d "$theme_dir" ]; then
-                theme_name=$(basename "$theme_dir")
-                i18n_dir="${theme_dir}i18n"
-                theme_langs="[]"
-                if [ -d "$i18n_dir" ]; then
-                  echo "[DEBUG] 处理主题: $theme_name"
-                  theme_langs="["
-                  first_lang=true
-                  for ts_file in "$i18n_dir"/*.ts; do
-                    if [ -f "$ts_file" ]; then
-                      lang_code=$(basename "$ts_file" .ts)
-                      if ! grep -q 'type="unfinished"' "$ts_file"; then
-                        echo "[DEBUG] 主题 $theme_name 翻译 $lang_code 完整"
-                        if [ "$first_lang" = true ]; then
-                          theme_langs="${theme_langs}\"$lang_code\""
-                          first_lang=false
-                        else
-                          theme_langs="${theme_langs},\"$lang_code\""
-                        fi
-                      else
-                        echo "[DEBUG] 主题 $theme_name 翻译 $lang_code 不完整"
-                      fi
-                    fi
-                  done
-                  theme_langs="${theme_langs}]"
-                else
-                  echo "[DEBUG] 主题 $theme_name 没有翻译文件"
-                fi
-                if [ "$first_theme" = true ]; then
-                  completed_themes="${completed_themes}\"$theme_name\":$theme_langs"
-                  first_theme=false
-                else
-                  completed_themes="${completed_themes},\"$theme_name\":$theme_langs"
-                fi
-              fi
-            done
-            completed_themes="${completed_themes}}"
-          fi
-          new_translation_data="{\"main\":$completed_main_langs,\"themes\":$completed_themes}"
-          existing_translation_data=""
-          if [ -n "$existing_config" ]; then
-            existing_translation_data=$(echo "$existing_config" | python3 -c "import sys, json; data=json.load(sys.stdin); print(json.dumps(data.get('completed_languages', {}), separators=(',', ':'), sort_keys=True))" 2>/dev/null || echo "")
-          fi
-          new_translation_data_normalized=$(echo "$new_translation_data" | python3 -c "import sys, json; data=json.loads(sys.stdin.read()); print(json.dumps(data, separators=(',', ':'), sort_keys=True))" 2>/dev/null || echo "$new_translation_data")
-          echo "[DEBUG] 现有翻译数据: $existing_translation_data"
-          echo "[DEBUG] 新翻译数据: $new_translation_data_normalized"
-
-          if [ "$existing_translation_data" = "$new_translation_data_normalized" ] && [ -n "$existing_translation_data" ]; then
-            echo "[DEBUG] 翻译状态未发生变化，跳过文件更新"
-            echo "::group::翻译配置(未变更)"
-            echo "[DEBUG] 翻译配置无变化"
-            if [ -f "data/completed_i18n.json" ]; then
-              cat data/completed_i18n.json
-            fi
-            echo "::endgroup::"
-          else
-            echo "[DEBUG] 翻译状态发生变化，更新配置文件"
-            current_time=$(date -u +"%Y-%m-%dT%H:%M:%S.%3NZ")
-            cat > data/completed_i18n.json << EOF
-          {
-            "last_updated": "$current_time",
-            "completed_languages": {
-              "main": $completed_main_langs,
-              "themes": $completed_themes
-            }
-          }
-          EOF
-            echo "::group::翻译配置(已更新)"
-            echo "[DEBUG] 已更新翻译配置: data/completed_i18n.json"
-            cat data/completed_i18n.json
-            echo "::endgroup::"
-          fi
-
       - name: Import GPG key
         id: import-gpg-compile
         uses: crazy-max/ghaction-import-gpg@v6
@@ -398,7 +293,6 @@ jobs:
         with:
           commit_message: |
             chore(i18n): 编译翻译文件(.qm) (Auto-Commit)
-            chore(i18n): 更新翻译可用性 (Auto-Commit)
 
             - 初始触发者: ${{ github.actor }}
             - 触发事件: ${{ github.event_name }}
@@ -407,8 +301,8 @@ jobs:
             * 由 GitHub Actions 自动生成
 
             Co-authored-by: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
-          commit_options: "--signoff"
-          file_pattern: "i18n/*.qm ui/*/i18n/*.qm data/completed_i18n.json"
+          commit_options: "--no-verify --signoff"
+          file_pattern: "i18n/*.qm ui/*/i18n/*.qm"
           commit_user_name: "ChimeYao-bot"
           commit_user_email: "ChimeYao@outlook.jp"
           commit_author: "ChimeYao-bot <ChimeYao@outlook.jp>"

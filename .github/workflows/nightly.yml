@@ -23,9 +23,16 @@ jobs:
     name: Check Commits
     runs-on: ubuntu-latest
     outputs:
-      has_new_commits: ${{ steps.check-commits.outputs.has_new_commits }}
+      has-new-commits: ${{ steps.check-commits.outputs.has-new-commits }}
       nightly_version: ${{ steps.generate-version.outputs.nightly_version }}
     steps:
+      - name: Check Repository
+        run: |
+          if [ "${{ github.repository }}" != "Class-Widgets/Class-Widgets" ]; then
+            echo "[DEBUG] 工作流不在主仓库"
+            exit 1
+          fi
+
       - name: Checkout repository
         uses: actions/checkout@v5
         with:
@@ -49,7 +56,7 @@ jobs:
     name: Clear Old Nightly-Builds
     runs-on: ubuntu-latest
     needs: [check-commits]
-    if: needs.check-commits.outputs.has_new_commits == 'true' || github.event.inputs.force_build == 'true'
+    if: needs.check-commits.outputs.has-new-commits == 'true' || github.event.inputs.force_build == 'true'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -60,7 +67,7 @@ jobs:
           CURRENT_VERSION: ${{ needs.check-commits.outputs.nightly_version }}
         run: |
           echo "当前要发布的版本: $CURRENT_VERSION"
-          nightly_releases=$(gh release list --limit 4 | grep "nightly-" | awk '{print $1}' || true)
+          nightly_releases=$(gh release list --limit 4 | grep -- "-nightly" | awk '{print $1}' || true)
           if [ -z "$nightly_releases" ]; then
             echo "[DEBUG] 未找到旧的 nightly 版本"
             exit 0
@@ -80,7 +87,7 @@ jobs:
   build-nightly:
     name: Build Nightly-Builds
     needs: [check-commits]
-    if: needs.check-commits.outputs.has_new_commits == 'true' || github.event.inputs.force_build == 'true'
+    if: needs.check-commits.outputs.has-new-commits == 'true' || github.event.inputs.force_build == 'true'
     uses: ./.github/workflows/build.yml
     with:
       build_type: "Nightly"

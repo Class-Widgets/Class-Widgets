@@ -1,7 +1,12 @@
 {
   "last_updated": "2025-08-14T06:21:48.568Z",
   "completed_languages": {
-    "main": [],
-    "themes": {"default":["en_US","ja_JP","zh_CN","zh_HK"],"hoshino":["zh_CN"],"minimize":[],"shiroko":["zh_CN"]}
+    "main": ["en_US", "ja_JP", "zh_CN", "zh_HK"],
+    "themes": {
+      "default": ["en_US", "ja_JP", "zh_CN", "zh_HK"],
+      "hoshino": ["zh_CN"],
+      "minimize": [],
+      "shiroko": ["zh_CN"]
+    }
   }
 }

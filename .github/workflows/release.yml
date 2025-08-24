@@ -23,6 +23,13 @@ jobs:
   generate-changelog-and-release:
     runs-on: ubuntu-latest
     steps:
+      - name: Check Repository
+        run: |
+          if [ "${{ github.repository }}" != "Class-Widgets/Class-Widgets" ]; then
+            echo "[DEBUG] 工作流不在主仓库"
+            exit 1
+          fi
+
       - name: Check out repository
         uses: actions/checkout@v5
         with:

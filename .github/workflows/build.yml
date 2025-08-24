@@ -130,21 +130,22 @@ jobs:
           build_commit="${GITHUB_SHA:0:7}"
           build_branch="${GITHUB_REF_NAME}"
           build_runid="${GITHUB_RUN_ID}"
-          if [[ "${GITHUB_EVENT_NAME}" == "push" && "${GITHUB_REF}" =~ ^refs/tags/v ]]; then
+          if [[ -n "${{ inputs.build_type }}" ]]; then
+            build_type="${{ inputs.build_type }}"
+            echo "[DEBUG] 使用 inputs.build_type: $build_type"
+          elif [[ -n "${{ github.event.inputs.build_type }}" ]]; then
+            build_type="${{ github.event.inputs.build_type }}"
+            echo "[DEBUG] 使用 event.inputs.build_type: $build_type"
+          elif [[ "${GITHUB_EVENT_NAME}" == "push" && "${GITHUB_REF}" =~ ^refs/tags/v ]]; then
             build_type="Release"
-            echo "[DEBUG] Release (push,tag)"
-          elif [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
-            build_type="${{ github.event.inputs.build_type || inputs.build_type }}"
-            echo "[DEBUG] (workflow_dispatch or workflow_call)"
-          elif [[ "${GITHUB_EVENT_NAME}" == "workflow_call" ]]; then
-            build_type="${{ inputs.build_type || 'Debug' }}"
-            echo "[DEBUG] (workflow_call)"
+            echo "[DEBUG] Release 标签推送: $build_type"
           elif [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
             build_branch="$PR_BRANCH"
             build_type="Debug (PR-#${PR_NUMBER})"
+            echo "[DEBUG] PR 构建: $build_type"
           else
-            echo "[DEBUG] (other)"
             build_type="Debug"
+            echo "[DEBUG] 默认构建类型: $build_type"
           fi
           release_version="${{ inputs.release_version }}"
 

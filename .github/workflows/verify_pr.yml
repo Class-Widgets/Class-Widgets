@@ -85,6 +85,12 @@ jobs:
         with:
           labels: invalid
 
+      - name: Remove label
+        if: steps.semantic-check.outcome == 'success' && steps.branch.outputs.head_ref_branch != 'main'
+        uses: actions-ecosystem/action-remove-labels@v1
+        with:
+          labels: invalid
+
       - name: Fail job if checks failed
         if: steps.branch.outputs.head_ref_branch == 'main' || steps.semantic-check.outcome == 'failure'
         env:
