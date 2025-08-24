@@ -1,24 +1,26 @@
 import datetime as dt
 import inspect
-import ntplib
 import os
 import signal
 import sys
 import threading
 import time
+from abc import ABC, abstractmethod
+from typing import Any, Callable, Dict, Optional, Tuple, Type, Union
 
 import darkdetect
+import ntplib
 import psutil
 import pytz
 from loguru import logger
-from abc import ABC, abstractmethod
-from typing import Callable, Dict, Any, Optional, Type, Union, Tuple
 from PyQt5.QtCore import QDir, QLockFile, QObject, QTimer, pyqtSignal
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QSystemTrayIcon
 
-from file import base_directory, config_center
+from basic_dirs import CW_HOME
+from file import config_center
 
+LOGO_PATH = CW_HOME / "img" / "logo"
 
 _stop_in_progress = False
 update_timer: Optional['UnionUpdateTimer'] = None
@@ -105,8 +107,8 @@ def stop(status: int = 0) -> None:
             update_timer = None
         except Exception as e:
             logger.warning(f"停止全局更新定时器时出错: {e}")
-    import gc
     import asyncio
+    import gc
     gc.collect()
     try:
         asyncio.set_event_loop(None)
@@ -173,7 +175,7 @@ class TrayIcon(QSystemTrayIcon):
     """托盘图标"""
     def __init__(self, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
-        self.setIcon(QIcon(f"{base_directory}/img/logo/favicon.png"))
+        self.setIcon(QIcon(str(LOGO_PATH / "favicon.png")))
 
     def update_tooltip(self) -> None:
         """更新托盘文字"""
@@ -192,20 +194,20 @@ class TrayIcon(QSystemTrayIcon):
             logger.debug(f'托盘文字更新: "Class Widgets - 未加载课表"')
 
     def push_update_notification(self, text: str = '') -> None:
-        self.setIcon(QIcon(f"{base_directory}/img/logo/favicon-update.png"))  # tray
+        self.setIcon(QIcon(str(LOGO_PATH / "favicon-update.png")))  # tray
         self.showMessage(
             "发现 Class Widgets 新版本！",
             text,
-            QIcon(f"{base_directory}/img/logo/favicon-update.png"),
+            QIcon(str(LOGO_PATH / "favicon-update.png")),
             5000
         )
 
     def push_error_notification(self, title: str = '检查更新失败！', text: str = '') -> None:
-        self.setIcon(QIcon(f"{base_directory}/img/logo/favicon-update.png"))  # tray
+        self.setIcon(QIcon(str(LOGO_PATH / "favicon-update.png")))  # tray
         self.showMessage(
             title,
             text,
-            QIcon(f"{base_directory}/img/logo/favicon-error.ico"),
+            QIcon(str(LOGO_PATH / "favicon-error.ico")),
             5000
         )
 

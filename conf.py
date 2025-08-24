@@ -6,29 +6,24 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
-from utils import TimeManagerFactory
-import time
 from dateutil import parser
 from loguru import logger
-
 from PyQt5.QtCore import QCoreApplication
 
 import list_
-from basic_dirs import CW_HOME, THEME_DIRS
+from basic_dirs import CONFIG_HOME, CW_HOME, PLUGIN_HOME, THEME_DIRS
 from data_model import ThemeConfig, ThemeInfo
-from file import base_directory, config_center
+from file import config_center
+from utils import TimeManagerFactory
 
 if os.name == 'nt':
     from win32com.client import Dispatch
 
-base_directory = Path(base_directory)
 conf = config.ConfigParser()
 name = 'Class Widgets'
 
-PLUGINS_DIR = Path(base_directory) / 'plugins'
-
 # app 图标
-app_icon = base_directory / 'img' / (
+app_icon = CW_HOME / 'img' / (
     'favicon.ico' if os.name == 'nt' else
     'favicon.icns' if os.name == 'darwin' else
     'favicon.png'
@@ -69,9 +64,9 @@ def load_theme_config(theme: str) -> ThemeInfo:
 
 def load_plugin_config() -> Dict[str, List[str]]:
     try:
-        plugin_config_path = base_directory / 'config' / 'plugin.json'
+        plugin_config_path = CONFIG_HOME / 'plugin.json'
         if plugin_config_path.exists():
-            with open(plugin_config_path, 'r', encoding='utf-8') as file:
+            with open(plugin_config_path, encoding='utf-8') as file:
                 data : Dict[str, List[str]] = json.load(file)
         else:
             with open(plugin_config_path, 'w', encoding='utf-8') as file:
@@ -87,7 +82,7 @@ def save_plugin_config(data: Dict[str, Any]) -> bool:
     data_dict = load_plugin_config()
     data_dict.update(data)
     try:
-        with open(base_directory / 'config' / 'plugin.json', 'w', encoding='utf-8') as file:
+        with open(CONFIG_HOME / 'plugin.json', 'w', encoding='utf-8') as file:
             json.dump(data_dict, file, ensure_ascii=False, indent=4)
         return True
     except Exception as e:
@@ -95,10 +90,10 @@ def save_plugin_config(data: Dict[str, Any]) -> bool:
         return False
 
 
-def save_installed_plugin(data: List[Any]) -> bool:
-    data = {"plugins": data}
+def save_installed_plugin(raw_data: List[Any]) -> bool:
+    data = {"plugins": raw_data}
     try:
-        with open(base_directory / 'plugins' / 'plugins_from_pp.json', 'w', encoding='utf-8') as file:
+        with open(PLUGIN_HOME / 'plugins_from_pp.json', 'w', encoding='utf-8') as file:
             json.dump(data, file, ensure_ascii=False, indent=4)
         return True
     except Exception as e:
@@ -167,7 +162,7 @@ def add_shortcut(file: str = '', icon: str = '') -> None:
         logger.error(f"创建桌面快捷方式时出错: {e}")
 
 
-def add_to_startup(file_path: str = f'{base_directory}/ClassWidgets.exe', icon_path: str = '') -> None:  # 注册到开机启动
+def add_to_startup(file_path: str = str(CW_HOME / "ClassWidgets.exe"), icon_path: str = '') -> None:  # 注册到开机启动
     if os.name != 'nt':
         return
     file_path = Path(file_path) if file_path else Path(__file__).resolve()
@@ -272,16 +267,17 @@ def get_is_widget_in(widget: str = 'example.ui') -> bool:
 def save_widget_conf_to_json(new_data: Dict[str, Any]) -> bool:
     # 初始化 data_dict 为一个空字典
     data_dict = {}
-    if os.path.exists(base_directory / 'config' / 'widget.json'):
+    widget_json_path = CONFIG_HOME / 'widget.json'
+    if widget_json_path.exists():
         try:
-            with open(base_directory / 'config' / 'widget.json', 'r', encoding='utf-8') as file:
+            with open(widget_json_path, encoding='utf-8') as file:
                 data_dict = json.load(file)
         except Exception as e:
             print(f"读取现有数据时出错: {e}")
             return False
     data_dict.update(new_data)
     try:
-        with open(base_directory / 'config' / 'widget.json', 'w', encoding='utf-8') as file:
+        with open(widget_json_path, 'w', encoding='utf-8') as file:
             json.dump(data_dict, file, ensure_ascii=False, indent=4)
         return True
     except Exception as e:
@@ -291,10 +287,10 @@ def save_widget_conf_to_json(new_data: Dict[str, Any]) -> bool:
 
 def load_plugins() -> Dict[str, Dict[str, str]]:  # 加载插件配置文件
     plugin_dict = {}
-    for folder in Path(PLUGINS_DIR).iterdir():
+    for folder in PLUGIN_HOME.iterdir():
         if folder.is_dir() and (folder / 'plugin.json').exists():
             try:
-                with open(f'{base_directory}/plugins/{folder.name}/plugin.json', 'r', encoding='utf-8') as file:
+                with open(PLUGIN_HOME / folder.name / "plugin.json", encoding='utf-8') as file:
                     data = json.load(file)
             except Exception as e:
                 logger.error(f"加载插件配置文件数据时出错，将跳过: {e}")  # 跳过奇怪的文件夹

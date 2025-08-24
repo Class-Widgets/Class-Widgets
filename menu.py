@@ -10,62 +10,120 @@ import zipfile
 from copy import deepcopy
 from pathlib import Path
 from shutil import rmtree
-import re
-import zipfile
-import shutil
-
-from PyQt5 import uic, QtCore
-from PyQt5.QtCore import Qt, QTime, QUrl, QDate, pyqtSignal, QSize, QThread, QTranslator, QObject, QTimer, QLocale
-from PyQt5.QtGui import QIcon, QDesktopServices, QColor
-# from PyQt5.QtPrintSupport import QPrinter
-from PyQt5.QtCore import Qt, pyqtSignal, QRectF
-from PyQt5.QtGui import QPainter
-from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidgetItem, QLabel, QHBoxLayout, QSizePolicy, \
-    QSpacerItem, QFileDialog, QVBoxLayout, QScroller, QWidget, QFrame, QListWidgetItem, QWidget, QStyle
-from packaging.version import Version
 from typing import Tuple, Union
 
 from loguru import logger
 from packaging.version import Version
-from PyQt5 import uic, QtCore
-from PyQt5.QtCore import QObject, QThread, QTimer, QTranslator, QUrl, QDate, QLocale, QTime, Qt, pyqtSignal, QSize
+from PyQt5 import QtCore, uic
+from PyQt5.QtCore import (
+    QDate,
+    QLocale,
+    QObject,
+    QSize,
+    Qt,
+    QThread,
+    QTime,
+    QTimer,
+    QTranslator,
+    QUrl,
+    pyqtSignal,
+)
 from PyQt5.QtGui import QColor, QDesktopServices, QIcon, QPainter, QPixmap
 from PyQt5.QtSvg import QSvgRenderer
 from PyQt5.QtWidgets import (
-    QApplication, QFileDialog, QFrame, QHeaderView, QHBoxLayout, QLabel, QListWidgetItem, QScroller,
-    QSpacerItem, QTableWidgetItem, QVBoxLayout, QWidget, QSizePolicy
+    QApplication,
+    QFileDialog,
+    QFrame,
+    QHBoxLayout,
+    QHeaderView,
+    QLabel,
+    QListWidgetItem,
+    QScroller,
+    QSizePolicy,
+    QSpacerItem,
+    QTableWidgetItem,
+    QVBoxLayout,
+    QWidget,
 )
 from qfluentwidgets import (
-    Action, BodyLabel, CalendarPicker, CaptionLabel, CardWidget, ColorDialog, ComboBox, Dialog,
-    DisplayLabel, DropDownToolButton, EditableComboBox, FluentIcon as fIcon,
-    FluentTranslator, FluentWindow, Flyout, FlyoutAnimationType, FlyoutView, FlyoutViewBase,
-    HyperlinkLabel, ImageLabel, InfoBar, InfoBarIcon, InfoBarPosition, isDarkTheme, LineEdit, FlowLayout,
-    ListWidget, MessageBox, MessageBoxBase, NavigationItemPosition, PlainTextEdit, PrimaryDropDownPushButton,
-    PrimaryPushButton, PushButton, RadioButton, RoundMenu, SearchLineEdit, Slider, SmoothScrollArea, SpinBox,
-    StrongBodyLabel, SubtitleLabel, SwitchButton, setTheme, TableWidget, Theme, TimeEdit, ToolButton,
-    ToolTipFilter, ToolTipPosition, TransparentDropDownToolButton, TransparentToolButton
+    Action,
+    BodyLabel,
+    CalendarPicker,
+    CaptionLabel,
+    CardWidget,
+    ColorDialog,
+    ComboBox,
+    Dialog,
+    DisplayLabel,
+    DropDownToolButton,
+    EditableComboBox,
+    FlowLayout,
+    FluentTranslator,
+    FluentWindow,
+    Flyout,
+    FlyoutAnimationType,
+    FlyoutView,
+    FlyoutViewBase,
+    HyperlinkLabel,
+    ImageLabel,
+    InfoBar,
+    InfoBarIcon,
+    InfoBarPosition,
+    LineEdit,
+    ListWidget,
+    MessageBox,
+    MessageBoxBase,
+    NavigationItemPosition,
+    PlainTextEdit,
+    PrimaryDropDownPushButton,
+    PrimaryPushButton,
+    PushButton,
+    RadioButton,
+    RoundMenu,
+    SearchLineEdit,
+    Slider,
+    SmoothScrollArea,
+    SpinBox,
+    StrongBodyLabel,
+    SubtitleLabel,
+    SwitchButton,
+    TableWidget,
+    Theme,
+    TimeEdit,
+    ToolButton,
+    ToolTipFilter,
+    ToolTipPosition,
+    TransparentDropDownToolButton,
+    TransparentToolButton,
+    isDarkTheme,
+    setTheme,
 )
+from qfluentwidgets import FluentIcon as fIcon
 from qfluentwidgets.common import themeColor
 from qfluentwidgets.components.widgets import ListItemDelegate
 
 import conf
 import file
-import list_ as list_
+import i18n_manager
+import list_
 import tip_toast
 import utils
 import weather as wd
-from basic_dirs import THEME_HOME
-from conf import base_directory, load_theme_config
+from basic_dirs import CONFIG_HOME, CW_HOME, PLUGIN_HOME, SCHEDULE_DIR, THEME_HOME
+from conf import load_theme_config
 from cses_mgr import CSES_Converter
-from generate_speech import (
-    get_voice_name_by_id_sync, get_tts_service, get_tts_service, generate_speech_sync,
-    get_available_engines, get_supported_languages, TTSEngine
-)
 from file import config_center, schedule_center
+from generate_speech import (
+    TTSEngine,
+    generate_speech_sync,
+    get_available_engines,
+    get_supported_languages,
+    get_tts_service,
+    get_voice_name_by_id_sync,
+)
 from network_thread import VersionThread, proxies, scheduleThread
 from plugin import p_loader
 from plugin_plaza import PluginPlaza
-import i18n_manager
 from utils import TimeManagerFactory
 
 
@@ -77,7 +135,7 @@ class I18nManager:
         self.available_languages_widgets = {}
         self.current_language_view = 'zh_CN'
         self.completed_i18n_config = {}
-        self.config_file_path = Path(conf.base_directory) / 'config' / 'completed_i18n.json'
+        self.config_file_path = CW_HOME / "data" / "completed_i18n.json"
         self.load_completed_i18n_config()
         self.scan_available_languages()
 
@@ -190,7 +248,7 @@ class I18nManager:
             self.clear_translators()
 
             main_translator = self._load_translation_file(
-                Path(conf.base_directory) / 'i18n' / f'{lang_code}.qm'
+                CW_HOME / 'i18n' / f'{lang_code}.qm'
             )
             if main_translator:
                 self.translators.append(main_translator)
@@ -806,7 +864,7 @@ class PluginCard(CardWidget):  # 插件卡片
         menu_actions = [
             Action(
                 fIcon.FOLDER, QCoreApplication.translate('menu','打开“{title}”插件文件夹').format(title=title),
-                triggered=lambda: open_dir(os.path.join(base_directory, conf.PLUGINS_DIR, self.plugin_dir))
+                triggered=lambda: open_dir(str(PLUGIN_HOME / self.plugin_dir))
             )
         ]
         if self.url:
@@ -926,7 +984,7 @@ class PluginCard(CardWidget):  # 插件卡片
             success = p_loader.delete_plugin(self.plugin_dir)
             if success:
                 try:
-                    with open(f'{base_directory}/plugins/plugins_from_pp.json', 'r', encoding='utf-8') as f:
+                    with open(PLUGIN_HOME / "plugins_from_pp.json", 'r', encoding='utf-8') as f:
                         installed_data = json.load(f)
                     installed_plugins = installed_data.get('plugins', [])
                     if self.plugin_dir in installed_plugins:
@@ -1131,29 +1189,29 @@ class SettingsMenu(FluentWindow):
         self.current_loaded_engine = config_center.read_conf('TTS', 'engine') # 加载的TTS引擎
 
         # 创建子页面
-        self.spInterface = uic.loadUi(f'{base_directory}/view/menu/preview.ui')  # 预览
+        self.spInterface = uic.loadUi(str(CW_HOME / 'view/menu/preview.ui'))  # 预览
         self.spInterface.setObjectName("spInterface")
-        self.teInterface = uic.loadUi(f'{base_directory}/view/menu/timeline_edit.ui')  # 时间线编辑
+        self.teInterface = uic.loadUi(str(CW_HOME / 'view/menu/timeline_edit.ui'))  # 时间线编辑
         self.teInterface.setObjectName("teInterface")
-        self.seInterface = uic.loadUi(f'{base_directory}/view/menu/schedule_edit.ui')  # 课程表编辑
+        self.seInterface = uic.loadUi(str(CW_HOME / 'view/menu/schedule_edit.ui'))  # 课程表编辑
         self.seInterface.setObjectName("seInterface")
-        self.cdInterface = uic.loadUi(f'{base_directory}/view/menu/countdown_custom_edit.ui')  # 倒计日编辑
+        self.cdInterface = uic.loadUi(str(CW_HOME / 'view/menu/countdown_custom_edit.ui'))  # 倒计日编辑
         self.cdInterface.setObjectName("cdInterface")
-        self.adInterface = uic.loadUi(f'{base_directory}/view/menu/advance.ui')  # 高级选项
+        self.adInterface = uic.loadUi(str(CW_HOME / 'view/menu/advance.ui'))  # 高级选项
         self.adInterface.setObjectName("adInterface")
-        self.ifInterface = uic.loadUi(f'{base_directory}/view/menu/about.ui')  # 关于
+        self.ifInterface = uic.loadUi(str(CW_HOME / 'view/menu/about.ui'))  # 关于
         self.ifInterface.setObjectName("ifInterface")
-        self.ctInterface = uic.loadUi(f'{base_directory}/view/menu/custom.ui')  # 自定义
+        self.ctInterface = uic.loadUi(str(CW_HOME / 'view/menu/custom.ui'))  # 自定义
         self.ctInterface.setObjectName("ctInterface")
-        self.cfInterface = uic.loadUi(f'{base_directory}/view/menu/configs.ui')  # 配置文件
+        self.cfInterface = uic.loadUi(str(CW_HOME / 'view/menu/configs.ui'))  # 配置文件
         self.cfInterface.setObjectName("cfInterface")
-        self.sdInterface = uic.loadUi(f'{base_directory}/view/menu/sound.ui')  # 通知
+        self.sdInterface = uic.loadUi(str(CW_HOME / 'view/menu/sound.ui'))  # 通知
         self.sdInterface.setObjectName("sdInterface")
-        self.hdInterface = uic.loadUi(f'{base_directory}/view/menu/help.ui')  # 帮助
+        self.hdInterface = uic.loadUi(str(CW_HOME / 'view/menu/help.ui'))  # 帮助
         self.hdInterface.setObjectName("hdInterface")
-        self.plInterface = uic.loadUi(f'{base_directory}/view/menu/plugin_mgr.ui')  # 插件
+        self.plInterface = uic.loadUi(str(CW_HOME / 'view/menu/plugin_mgr.ui'))  # 插件
         self.plInterface.setObjectName("plInterface")
-        self.wtInterface = uic.loadUi(f'{base_directory}/view/menu/weather.ui')  # 天气
+        self.wtInterface = uic.loadUi(str(CW_HOME / 'view/menu/weather.ui'))  # 天气
         self.wtInterface.setObjectName("wtInterface")
         self.version_number_label = self.ifInterface.findChild(QLabel, 'version_number_label')
         self.build_commit_label = self.ifInterface.findChild(QLabel, 'build_commit_label')
@@ -1236,7 +1294,7 @@ class SettingsMenu(FluentWindow):
         # 设置自动化延迟
 
         open_plugin_folder = self.findChild(PushButton, 'open_plugin_folder')
-        open_plugin_folder.clicked.connect(lambda: open_dir(os.path.join(base_directory, conf.PLUGINS_DIR)))  # 打开插件目录
+        open_plugin_folder.clicked.connect(lambda: open_dir(str(PLUGIN_HOME)))  # 打开插件目录
 
         # 安全插件加载开关
         switch_safe_plugin = self.findChild(SwitchButton, 'switch_safe_plugin')
@@ -1486,21 +1544,22 @@ class SettingsMenu(FluentWindow):
         except Exception as e:
             logger.error(f"更新基本天气信息失败: {e}")
 
-    def _update_weather_icon(self, icon_data):
+    def _update_weather_icon(self, icon_data: str):
         """更新天气图标"""
+        icon_dir = CW_HOME / 'img' / 'weather'
         try:
-            icon_path = os.path.join(base_directory, 'img', 'weather', f'{icon_data}')
-            if os.path.exists(icon_path):
-                self._render_svg_icon(icon_path)
+            icon_path = icon_dir / str(icon_data)
+            if icon_path.exists():
+                self._render_svg_icon(str(icon_path))
             else:
                 # 未知图标
-                default_icon = os.path.join(base_directory, 'img', 'weather', '99.svg')
-                if os.path.exists(default_icon):
-                    self._render_svg_icon(default_icon)
+                default_icon = icon_dir / '99.svg'
+                if default_icon.exists():
+                    self._render_svg_icon(str(default_icon))
         except Exception as e:
             logger.error(f"更新天气图标失败: {e}")
 
-    def _render_svg_icon(self, svg_path):
+    def _render_svg_icon(self, svg_path: str):
         """渲染SVG"""
         try:
             renderer = QSvgRenderer(svg_path)
@@ -1535,9 +1594,10 @@ class SettingsMenu(FluentWindow):
         except Exception as e:
             logger.error(f"SVG图标渲染失败: {e}")
             try:
-                default_icon = os.path.join(base_directory, 'img', 'weather', '99.svg')
-                if os.path.exists(default_icon) and svg_path != default_icon:
-                    self._render_svg_icon(default_icon)
+                default_icon = CW_HOME / 'img' / 'weather' / '99.svg'
+                default_icon_str = str(default_icon)
+                if default_icon.exists() and svg_path != default_icon_str:
+                    self._render_svg_icon(default_icon_str)
             except:
                 pass
 
@@ -1834,11 +1894,11 @@ class SettingsMenu(FluentWindow):
         if container_widget:
             container_widget.setUpdatesEnabled(False)
 
-        for plugin in plugin_dict:
-            if (Path(conf.PLUGINS_DIR) / plugin / 'icon.png').exists():  # 若插件目录存在icon.png
-                icon_path = f'{base_directory}/plugins/{plugin}/icon.png'
-            else:
-                icon_path = f'{base_directory}/img/settings/plugin-icon.png'
+        default_icon_path = CW_HOME / "img" / "settings" / "plugin-icon.png"
+        for plugin in plugin_dict:  # noqa: PLC0206
+            current_icon_path = PLUGIN_HOME / plugin / 'icon.png'
+            # 若插件目录存在icon.png
+            icon_path = str(current_icon_path if current_icon_path.exists() else default_icon_path)
             card = PluginCard(
                 icon=icon_path,
                 title=plugin_dict[plugin]['name'],
@@ -1960,15 +2020,16 @@ class SettingsMenu(FluentWindow):
             logger.error(f"插件导入失败 - 未知错误: {file_path}, 错误类型: {type(e).__name__}, 错误详情: {str(e)}")
             self._show_error_dialog(self.tr('导入插件时发生错误：{e}').format(e=f"{e}"))
 
-    def _import_from_plugin_json(self, json_file_path):
+    def _import_from_plugin_json(self, raw_json_file_path: str):
         try:
-            with open(json_file_path, 'r', encoding='utf-8') as f:
-                plugin_info = json.load(f.read())
+            with open(raw_json_file_path, encoding='utf-8') as f:
+                plugin_info = json.load(f)
             plugin_name = plugin_info.get('name', self.tr('未知插件'))
-            source_dir = os.path.dirname(json_file_path)
-            plugin_dir_name = os.path.basename(source_dir)
-            target_dir = os.path.join(base_directory, conf.PLUGINS_DIR, plugin_dir_name)
-            if os.path.exists(target_dir):
+            json_file_path = Path(raw_json_file_path)
+            source_dir = json_file_path.parent
+            plugin_dir_name = json_file_path.name
+            target_dir = PLUGIN_HOME / plugin_dir_name
+            if target_dir.exists():
                 reply = MessageBox(
                     self.tr('插件已存在'),
                     self.tr('插件 "{plugin_name}" 已存在，是否覆盖？').format(plugin_name=plugin_name),
@@ -1989,13 +2050,13 @@ class SettingsMenu(FluentWindow):
             w.exec_()
 
         except json.JSONDecodeError as e:
-            logger.error(f"插件导入失败 - JSON配置文件格式错误: {json_file_path}, 错误详情: {str(e)}")
+            logger.error(f"插件导入失败 - JSON配置文件格式错误: {raw_json_file_path}, 错误详情: {str(e)}")
             self._show_error_dialog(self.tr('插件配置文件格式错误'))
         except Exception as e:
-            logger.error(f"插件导入失败 - 文件夹复制错误: {json_file_path}, 错误详情: {str(e)}")
+            logger.error(f"插件导入失败 - 文件夹复制错误: {raw_json_file_path}, 错误详情: {str(e)}")
             self._show_error_dialog(self.tr('复制插件文件夹时发生错误：{e}').format(e=f"{e}"))
 
-    def _import_from_zip(self, zip_file_path):
+    def _import_from_zip(self, zip_file_path: str):
         try:
             with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
                 if 'plugin.json' not in zip_ref.namelist():
@@ -2004,8 +2065,8 @@ class SettingsMenu(FluentWindow):
                 with zip_ref.open('plugin.json') as f:
                     plugin_info = json.loads(f.read().decode('utf-8'))
                 plugin_name = plugin_info.get('name', self.tr('未知插件'))
-                plugin_dir_name = os.path.splitext(os.path.basename(zip_file_path))[0]
-                target_dir = os.path.join(base_directory, conf.PLUGINS_DIR, plugin_dir_name)
+                plugin_dir_name = Path(zip_file_path).suffix
+                target_dir = PLUGIN_HOME / plugin_dir_name
                 if os.path.exists(target_dir):
                     reply = MessageBox(
                         self.tr('插件已存在'),
@@ -2150,7 +2211,7 @@ class SettingsMenu(FluentWindow):
             super().__init__(parent)
             self.parent_menu = parent # 保存父菜单的引用
             self.temp_widget = QWidget()
-            ui_path = f'{base_directory}/view/menu/tts_settings.ui'
+            ui_path = CW_HOME / 'view/menu/tts_settings.ui'
             uic.loadUi(ui_path, self.temp_widget)
             self.viewLayout.addWidget(self.temp_widget)
 
@@ -2657,7 +2718,7 @@ class SettingsMenu(FluentWindow):
             parent_widget = self.TTSSettingsDialog if isinstance(self.TTSSettingsDialog, QWidget) else self
             MessageBox(self.tr("TTS语音加载失败"), self.tr("加载TTS语音时发生错误:\n{error_message}").format(error_message=error_message), parent_widget)
 
-    class cfFileItem(QWidget, uic.loadUiType(f'{base_directory}/view/menu/file_item.ui')[0]):
+    class cfFileItem(QWidget, uic.loadUiType(str(CW_HOME / 'view' / 'menu' / 'file_item.ui'))[0]):
         def __init__(self, file_name='', file_path='local', id=None, parent=None):
             super().__init__()
             self.setupUi(self)
@@ -4211,13 +4272,13 @@ class SettingsMenu(FluentWindow):
             if utils.tray_icon:
                 utils.tray_icon.push_update_notification(self.tr("新版本速递：{new_version}").format(new_version=new_version))
 
-    def cf_import_schedule_cses(self, file_path):  # 导入课程表（CSES）
+    def cf_import_schedule_cses(self, file_path: str):  # 导入课程表（CSES）
+        # TODO: 切换到 pathlib.Path
         if file_path:
             file_name = file_path.split("/")[-1]
-            save_path = base_directory / "config" / "schedule" / \
-                f"{file_name.replace('.yaml', '.json')}"
+            save_path = SCHEDULE_DIR / file_name.replace('.yaml', '.json')
 
-            if os.path.exists(save_path):
+            if save_path.exists():
                 overwrite = MessageBox(self.tr('文件已存在'), self.tr('文件 {file_name} 已存在，是否覆盖？').format(file_name=file_name), self)
                 overwrite.yesButton.setText(self.tr('覆盖'))
                 if not overwrite.exec():
@@ -4251,7 +4312,7 @@ class SettingsMenu(FluentWindow):
         if file_path:
             exporter = CSES_Converter(file_path)
             exporter.load_generator()
-            if exporter.convert_to_cses(cw_path=f'{base_directory}/config/schedule/{file_name}'):
+            if exporter.convert_to_cses(cw_path=str(SCHEDULE_DIR / file_name)):
                 self.show_tip_flyout(self.tr('您已成功导出课程表配置文件'),
                                    self.tr('文件将导出于{file_path}').format(file_path=file_path), self.cfInterface, InfoBarIcon.SUCCESS, FlyoutAnimationType.PULL_UP)
             else:
@@ -4262,12 +4323,13 @@ class SettingsMenu(FluentWindow):
     def cf_import_schedule(self):  # 导入课程表
         file_path, _ = QFileDialog.getOpenFileName(self, self.tr("选择文件"), "", self.tr("支持的文件类型 (*.json *.yaml *.yml);;Json 配置文件 (*.json);;CSES 通用课程表交换文件 (*.yaml) (*.yaml *.yml)"))
         if file_path:
-            if file_path.endswith('.yaml') or file_path.endswith('.yml'):
-                return self.cf_import_schedule_cses(file_path)
+            if file_path.endswith(('.yaml', '.yaml')):
+                self.cf_import_schedule_cses(file_path)
+                return
             file_name = file_path.split("/")[-1]
 
-            save_path = base_directory / "config" / "schedule" / file_name
-            if os.path.exists(save_path):
+            save_path = SCHEDULE_DIR / file_name
+            if save_path.exists():
                 overwrite = MessageBox(self.tr('文件已存在'), self.tr('文件 {file_name} 已存在，是否覆盖？').format(file_name=file_name), self)
                 overwrite.yesButton.setText(self.tr('覆盖'))
                 if not overwrite.exec():
@@ -4557,7 +4619,7 @@ class SettingsMenu(FluentWindow):
             super().__init__(parent)
             self.parent_menu = parent # 保存父菜单的引用
             self.temp_widget = QWidget()
-            ui_path = f'{base_directory}/view/menu/schedule_db_edit.ui'
+            ui_path = str(CW_HOME / 'view' / 'menu' / 'schedule_db_edit.ui')
             uic.loadUi(ui_path, self.temp_widget)
             self.viewLayout.addWidget(self.temp_widget)
 
@@ -4650,7 +4712,7 @@ class SettingsMenu(FluentWindow):
         def save_item(self):
             db = self.db_dict
 
-            list_.save_data_to_json({"db":db}, base_directory / 'config' / "schedule_db.json")
+            list_.save_data_to_json({"db":db}, str(CONFIG_HOME / "schedule_db.json"))
 
             Flyout.create(
                 icon=InfoBarIcon.SUCCESS,
@@ -5377,7 +5439,7 @@ class SettingsMenu(FluentWindow):
         self.resize(width, height)
 
         self.setWindowTitle(self.tr('Class Widgets - 设置'))
-        self.setWindowIcon(QIcon(f'{base_directory}/img/logo/favicon-settings.ico'))
+        self.setWindowIcon(QIcon(str(CW_HOME / 'img' / 'logo' / 'favicon-settings.ico')))
 
         self.init_font()  # 设置字体
 

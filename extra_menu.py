@@ -13,7 +13,7 @@ from qfluentwidgets import FluentWindow, FluentIcon as fIcon, ComboBox, \
 
 import conf
 import file
-from conf import base_directory
+from conf import CW_HOME
 import list_
 from file import config_center, schedule_center
 from menu import SettingsMenu
@@ -50,7 +50,7 @@ class ExtraMenu(FluentWindow):
         super().__init__()
         self.menu = None
         self.main_window = None
-        self.interface = uic.loadUi(f'{base_directory}/view/extra_menu.ui')
+        self.interface = uic.loadUi(f'{CW_HOME}/view/extra_menu.ui')
         self.initUI()
         self.init_interface()
 
@@ -96,8 +96,8 @@ class ExtraMenu(FluentWindow):
             temp_week = self.findChild(ComboBox, 'select_temp_week')
             temp_schedule_set = self.findChild(ComboBox, 'select_temp_schedule')
             if config_center.read_conf('Temp', 'temp_schedule') == '':
-                copy(f'{base_directory}/config/schedule/{config_center.schedule_name}',
-                     f'{base_directory}/config/schedule/backup.json')
+                copy(f'{CW_HOME}/config/schedule/{config_center.schedule_name}',
+                     f'{CW_HOME}/config/schedule/backup.json')
                 logger.success(f'原课表配置已备份：{config_center.schedule_name} --> backup.json')
                 config_center.write_conf('Temp', 'temp_schedule', config_center.schedule_name)
             current_full_schedule_data = schedule_center.schedule_data
@@ -205,7 +205,7 @@ class ExtraMenu(FluentWindow):
         self.resize(width, height)
 
         self.setWindowTitle('Class Widgets - 更多功能')
-        self.setWindowIcon(QIcon(f'{base_directory}/img/logo/favicon-exmenu.ico'))
+        self.setWindowIcon(QIcon(str(CW_HOME / 'img/logo/favicon-exmenu.ico')))
 
         self.addSubInterface(self.interface, fIcon.INFO, '更多设置')
 

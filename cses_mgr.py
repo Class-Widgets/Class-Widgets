@@ -4,14 +4,15 @@ what is CSES: https://github.com/CSES-org/CSES
 """
 import json
 import typing
-from typing import Union, Optional, Dict, Any, List
-import cses
 from datetime import datetime, timedelta
+from typing import Any, Dict, List, Optional, Union
+
+import cses
 from loguru import logger
 
-import list_ as list_
-import conf
-from file import base_directory, config_center
+import list_
+from basic_dirs import CW_HOME
+from file import config_center
 
 CSES_WEEKS_TEXTS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 CSES_WEEKS = [1, 2, 3, 4, 5, 6, 7]
@@ -51,11 +52,12 @@ class CSES_Converter:
         """
         将CSES文件转换为Class Widgets格式
         """
+        default_schedule = CW_HOME / "data" / "default_schedule.json"
         try:
-            with open(f'{base_directory}/config/default.json', 'r', encoding='utf-8') as file:  # 加载默认配置
+            with open(default_schedule, encoding='utf-8') as file:  # 加载默认配置
                 cw_format = json.load(file)
         except FileNotFoundError:
-            logger.error(f'File {base_directory}/config/default.json not found')
+            logger.error(f'File {default_schedule} not found')
             return False
 
         if not self.parser:
@@ -206,11 +208,12 @@ class CSES_Converter:
         转换/CONVERT
         """
         # 科目
+        subject_json = CW_HOME / "data" / "subject.json"
         try:
-            with open(f'{base_directory}/config/data/subject.json', 'r', encoding='utf-8') as data:
+            with open(subject_json, encoding='utf-8') as data:
                 cw_subjects = json.load(data)
         except FileNotFoundError:
-            logger.error(f'File {base_directory}/config/data/subject.json not found')
+            logger.error(f'File {subject_json} not found')
             return False
 
         for subject_ in cw_subjects['subject_list']:

@@ -15,6 +15,8 @@ import pyttsx3
 from loguru import logger
 from PyQt5.QtCore import QObject, pyqtSignal, QCoreApplication
 
+from basic_dirs import CACHE_HOME
+
 
 _tts_playing = False
 _tts_lock = threading.RLock()
@@ -490,7 +492,7 @@ class TTSManager:
         """获取单例实例"""
         with cls._lock:
             if cls._instance is None:
-                cls._instance = cls(cache_dir or './cache/tts')
+                cls._instance = cls(cache_dir or str(CACHE_HOME / "tts"))
             return cls._instance
 
     def __init__(self, cache_dir: str):

@@ -1,14 +1,15 @@
 import os
-import time
 import pathlib
-from typing import Optional, Dict, Tuple
+import time
 from threading import Lock
+from typing import Dict, Optional, Tuple
 
 import pygame
 import pygame.mixer
-from PyQt5.QtCore import QThread, pyqtSignal
 from loguru import logger
+from PyQt5.QtCore import QThread, pyqtSignal
 
+from basic_dirs import CW_HOME
 import conf
 from file import config_center
 
@@ -68,9 +69,8 @@ class AudioManager:
                     return False
 
     def _validate_audio_file(self, file_path: str) -> Tuple[bool, str]:
-        relative_path = os.path.relpath(file_path, conf.base_directory)
         if not os.path.exists(file_path):
-            return False, f"音频文件不存在: {relative_path}"
+            return False, f"音频文件不存在: {file_path}"
         file_size = os.path.getsize(file_path)
         if file_size == 0:
             start_time = time.time()
@@ -80,13 +80,13 @@ class AudioManager:
                     break
                 time.sleep(0.1)
             else:
-                return False, f"音频文件写入超时或为空: {relative_path}"
+                return False, f"音频文件写入超时或为空: {file_path}"
         if file_size < 10:
             return False, (
                 f"音频文件可能无效或不完整，"
-                f"大小仅为 {file_size} 字节: {relative_path}"
+                f"大小仅为 {file_size} 字节: {file_path}"
             )
-        return True, relative_path
+        return True, file_path
 
     def _get_or_load_sound(self, file_path: str) -> Optional[pygame.mixer.Sound]:
         """加载内存音频"""
@@ -94,7 +94,7 @@ class AudioManager:
         if not is_cache_file:
             with self.cache_lock:
                 if file_path in self.sound_cache:
-                    relative_path = os.path.relpath(file_path, conf.base_directory)
+                    relative_path = str(pathlib.Path(file_path).relative_to(CW_HOME))
                     logger.debug(f'使用缓存音频: {relative_path}')
                     return self.sound_cache[file_path]
         try:
@@ -104,7 +104,7 @@ class AudioManager:
                     self.sound_cache[file_path] = sound
             return sound
         except pygame.error as e:
-            relative_path = os.path.relpath(file_path, conf.base_directory)
+            relative_path = str(pathlib.Path(file_path).relative_to(CW_HOME))
             logger.error(
                 f"加载音频文件失败: {relative_path} | 错误: {e}"
             )

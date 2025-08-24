@@ -6,6 +6,7 @@ from typing import Dict, List, Optional, Any
 
 from loguru import logger
 
+from basic_dirs import CONFIG_HOME
 import conf
 
 class PluginLoader:  # 插件加载器
@@ -30,13 +31,13 @@ class PluginLoader:  # 插件加载器
                 plugin_config['temp_disabled_plugins'] = []
                 conf.save_plugin_config(plugin_config)
 
-        for folder in Path(conf.PLUGINS_DIR).iterdir():
+        for folder in conf.PLUGIN_HOME.iterdir():
             if folder.is_dir() and (folder / 'plugin.json').exists():
                 self.plugins_name.append(folder.name)  # 检测所有插件
 
                 if folder.name not in conf.load_plugin_config()['enabled_plugins']:
                     continue
-                relative_path = conf.PLUGINS_DIR.name
+                relative_path = conf.PLUGIN_HOME.name
                 module_name = f"{relative_path}.{folder.name}"
                 try:
                     module = importlib.import_module(module_name)
@@ -44,7 +45,7 @@ class PluginLoader:  # 插件加载器
                     if hasattr(module, 'Settings'):  # 设置页
                         plugin_class = getattr(module, "Settings")  # 获取 Plugin 类
                         # 实例化插件
-                        self.plugins_settings[folder.name] = plugin_class(f'{conf.PLUGINS_DIR}/{folder.name}')
+                        self.plugins_settings[folder.name] = plugin_class(str(conf.PLUGIN_HOME / folder.name))
 
                     if self.manager and hasattr(module, 'Plugin'):  # 插件入口
                         plugin_class = getattr(module, "Plugin")  # 获取 Plugin 类
@@ -98,16 +99,16 @@ class PluginLoader:  # 插件加载器
                     plugin.update(self.manager.get_app_contexts())
 
     def delete_plugin(self, plugin_name: str) -> bool:
-        plugin_dir = Path(conf.PLUGINS_DIR) / plugin_name
+        plugin_dir = conf.PLUGIN_HOME / plugin_name
         if not plugin_dir.is_dir():
             logger.warning(f"插件目录 {plugin_dir} 不存在，无法删除。")
             return False
         widgets_to_remove = []
         if widgets_to_remove:
             try:
-                widget_config_path = Path(conf.base_directory) / 'config' / 'widget.json'
+                widget_config_path = CONFIG_HOME / 'widget.json'
                 if widget_config_path.exists():
-                    with open(widget_config_path, 'r', encoding='utf-8') as f:
+                    with open(widget_config_path, encoding='utf-8') as f:
                         widget_config = json.load(f)
 
                     original_widgets = widget_config.get('widgets', [])

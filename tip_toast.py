@@ -1,21 +1,21 @@
 import os
 import sys
 from collections import defaultdict
-from typing import Optional, List, Tuple, Dict, Any
+from typing import Any, Dict, List, Optional, Tuple
 
-from PyQt5 import uic
-from PyQt5.QtCore import Qt, QPropertyAnimation, QRect, QEasingCurve, QTimer, QPoint, pyqtProperty, QThread
-from PyQt5.QtGui import QColor, QPainter, QBrush, QPixmap
-from PyQt5.QtWidgets import QWidget, QApplication, QLabel, QFrame, QGraphicsBlurEffect
 from loguru import logger
+from PyQt5 import uic
+from PyQt5.QtCore import QEasingCurve, QPoint, QPropertyAnimation, QRect, Qt, QThread, QTimer, pyqtProperty
+from PyQt5.QtGui import QBrush, QColor, QPainter, QPixmap
+from PyQt5.QtWidgets import QApplication, QFrame, QGraphicsBlurEffect, QLabel, QWidget
 from qfluentwidgets import setThemeColor
 
 import conf
 import list_
-from file import base_directory, config_center
-from play_audio import PlayAudio
+from basic_dirs import CW_HOME
+from file import config_center
 from generate_speech import get_tts_service
-
+from play_audio import PlayAudio
 
 prepare_class = config_center.read_conf('Audio', 'prepare_class')
 attend_class = config_center.read_conf('Audio', 'attend_class')
@@ -42,7 +42,7 @@ class tip_toast(QWidget):
         if tts_service is None:
             tts_service = get_tts_service()
 
-        uic.loadUi(f"{base_directory}/view/widget-toast-bar.ui", self)
+        uic.loadUi(str(CW_HOME / "view" / "widget-toast-bar.ui"), self)
 
         try:
             dpr = self.screen().devicePixelRatio() if self.screen() else QApplication.primaryScreen().devicePixelRatio()
@@ -288,7 +288,7 @@ class tip_toast(QWidget):
 
     def playsound(self, filename: str) -> None:
         try:
-            file_path = os.path.join(base_directory, 'audio', filename)
+            file_path = CW_HOME / "audio" / filename
             if self.audio_thread and self.audio_thread.isRunning():
                 self.audio_thread.quit()
                 self.audio_thread.wait()

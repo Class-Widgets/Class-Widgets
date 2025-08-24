@@ -1,20 +1,22 @@
+import datetime
+import json
 import os
 import re
-import json
-import time
 import sqlite3
-import datetime
+import time
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from functools import wraps
 from typing import Any, Dict, List, Optional, Tuple, Type, Union
-from PyQt5.QtCore import QCoreApplication
 
 import requests
 from loguru import logger
-from PyQt5.QtCore import QThread, pyqtSignal, QEventLoop
+from PyQt5.QtCore import QCoreApplication, QEventLoop, QThread, pyqtSignal
 
-from file import config_center, base_directory
+from basic_dirs import CW_HOME
+from file import config_center
+
+ICON_DIR = CW_HOME / "img" / "weather"
 
 
 class WeatherFetchThread(QThread):
@@ -255,8 +257,8 @@ class WeatherManager:
     def _load_api_config(self) -> Dict[str, Any]:
         """加载天气api"""
         try:
-            api_config_path = os.path.join(base_directory, 'config', 'data', 'weather_api.json')
-            with open(api_config_path, 'r', encoding='utf-8') as f:
+            api_config_path = CW_HOME / "data" / "weather_api.json"
+            with open(api_config_path, encoding='utf-8') as f:
                 return json.load(f)
         except Exception as e:
             logger.error(f'加载天气api配置失败: {e}')
@@ -2455,7 +2457,7 @@ class WeatherDatabase:
         current_api = self.weather_manager.get_current_api()
         api_params = self.weather_manager.api_config.get('weather_api_parameters', {})
         db_name = api_params.get(current_api, {}).get('database', 'xiaomi_weather.db')
-        self.db_path = os.path.join(base_directory, 'config', 'data', db_name)
+        self.db_path = str(CW_HOME / "data" / str(db_name))
         return self.db_path
 
     def search_city_by_name(self, search_term: str) -> List[str]:
@@ -2617,7 +2619,7 @@ class WeatherDataProcessor:
             return self._status_cache[api_name]
 
         try:
-            with open(os.path.join(base_directory, 'config', 'data', f'{api_name}_status.json'), 'r', encoding='utf-8') as f:
+            with open(CW_HOME / "data" /  f"{api_name}_status.json", encoding='utf-8') as f:
                 status_data = json.load(f)
                 self._status_cache[api_name] = status_data
                 return status_data
@@ -2668,19 +2670,19 @@ class WeatherDataProcessor:
 
     def _get_default_weather_icon(self) -> str:
         """获取默认图标"""
-        return os.path.join(base_directory, 'img', 'weather', '99.svg')
+        return str(ICON_DIR / "99.svg")
 
     def _build_weather_icon_path(self, weather_code: str) -> str:
         """构建图标路径"""
         if self._is_night_weather_type(weather_code) and self._is_night_time():
-            return os.path.join(base_directory, 'img', 'weather', f'{weather_code}d.svg')
+            return str(ICON_DIR / f'{weather_code}d.svg')
 
-        icon_path = os.path.join(base_directory, 'img', 'weather', f'{weather_code}.svg')
-        if not os.path.exists(icon_path):
+        icon_path = ICON_DIR / f'{weather_code}.svg'
+        if not icon_path.exists():
             logger.warning(f'天气图标文件不存在: {icon_path}')
             return self._get_default_weather_icon()
 
-        return icon_path
+        return str(icon_path)
 
     def _is_night_weather_type(self, weather_code: str) -> bool:
         """夜间天气类型判断"""
@@ -2723,7 +2725,7 @@ class WeatherDataProcessor:
         """获取天气预警图标路径"""
         provider = self.weather_manager.get_current_provider()
         if not provider or not provider.supports_alerts():
-            return os.path.join(base_directory, 'img', 'weather', 'alerts', 'blue.png')
+            return str(ICON_DIR / 'alerts' / 'blue.png')
 
         alerts_config = provider.config.get('alerts', {})
         alerts_types = alerts_config.get('types', {})
@@ -2739,7 +2741,7 @@ class WeatherDataProcessor:
             icon_name = alerts_types.get(color_mapping[alert_type])
         if not icon_name:
             icon_name = 'blue.png'
-        return os.path.join(base_directory, 'img', 'weather', 'alerts', icon_name)
+        return str(ICON_DIR / 'alerts' / icon_name)
 
     def is_alert_supported(self) -> bool:
         """检查当前api是否支持天气预警"""
@@ -3405,11 +3407,11 @@ def get_alert_icon_by_severity(severity: Union[str, int]) -> str:
         }
         severity_str = str(severity).lower() if severity else '2'
         color = severity_color_map.get(severity_str, 'yellow')
-        icon_path = os.path.join(base_directory, 'img', 'weather', 'alerts', f'{color}.png')
-        return icon_path if os.path.exists(icon_path) else os.path.join(base_directory, 'img', 'weather', 'alerts', 'blue.png')
+        icon_path = ICON_DIR / 'alerts' / f'{color}.png'
+        return str(icon_path) if icon_path.exists() else str(ICON_DIR / 'alerts' / 'blue.png')
     except Exception as e:
         logger.error(f"获取预警图标失败: {e}")
-        return os.path.join(base_directory, 'img', 'weather', 'alerts', 'blue.png')
+        return str(ICON_DIR / 'alerts' / 'blue.png')
 
 
 def simplify_alert_text(text: str) -> str:
