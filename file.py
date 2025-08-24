@@ -360,14 +360,56 @@ class ScheduleCenter:
         """
         更新课程表
         """
+        require_save = False
         self.schedule_data = load_from_json(self.config_center.read_conf('General', 'schedule'))
         if 'timeline' not in self.schedule_data:
-            self.schedule_data['timeline'] = []
+            self.schedule_data['timeline'] = {"default": [], "0": [], "1": [], "2": [], "3": [], "4": [], "5": [], "6": []}
+            require_save = True
+        for key, value in self.schedule_data['timeline'].items():
+            if isinstance(value, dict):
+                timeline = value
+                def sort_timeline_key(item):
+                    item_name = item[0]
+                    prefix = item_name[0]
+                    if len(item_name) > 1:
+                        try:
+                            # 提取节点序数
+                            part_num = int(item_name[1])
+                            # 提取课程序数
+                            class_num = 0
+                            if len(item_name) > 2:
+                                class_num = int(item_name[2:])
+                            if prefix == 'a':
+                                return part_num, class_num, 0
+                            else:
+                                return part_num, class_num, 1
+                        except ValueError:
+                            # 如果转换失败，返回原始字符串
+                            return item_name
+                    return item_name
+                
+                new_timeline = []
+
+                # 对timeline排序后添加到timeline_data
+                sorted_timeline = sorted(timeline.items(), key=sort_timeline_key)
+                for item_name, item_time in sorted_timeline:
+                    try:
+                        new_timeline.append([int(item_name[0]=='f'), item_name[1], int(item_name[2:]), item_time])
+                    except Exception as e:
+                        logger.error(f'加载课程表文件[课程数据]出错：{e}')
+                self.schedule_data['timeline'][key] = new_timeline.copy()
+                require_save = True
+            elif not isinstance(value, list):
+                raise ValueError(f"课程表时间线格式错误: {key}: {value}")
+            
         if 'timeline_even' not in self.schedule_data:
-            self.schedule_data['timeline_even'] = []
+            self.schedule_data['timeline_even'] = {"default": [], "0": [], "1": [], "2": [], "3": [], "4": [], "5": [], "6": []}
+            require_save = True
         if self.schedule_data.get('url', None) is None:
             self.schedule_data['url'] = 'local'
-            self.save_data(self.schedule_data, config_center.schedule_name)
+            require_save = True
+        
+        require_save and self.save_data(self.schedule_data, config_center.schedule_name)
 
     def update_url(self, url: str) -> None:
         """
