@@ -169,6 +169,18 @@
       }
     }
   },
-  "weather_api_list": ["xiaomi_weather", "qweather", "amap_weather", "qq_weather", "open_meteo"],
-  "weather_api_list_zhCN": ["小米天气", "和风天气 (需 API Key)", "高德天气 (需 API Key)", "腾讯天气 (需 API Key)", "Open-Meteo"]
+  "weather_api_list": [
+    "xiaomi_weather",
+    "qweather",
+    "amap_weather",
+    "qq_weather",
+    "open_meteo"
+  ],
+  "weather_api_list_zhCN": [
+    "小米天气",
+    "和风天气 (需 API Key)",
+    "高德天气 (需 API Key)",
+    "腾讯天气 (需 API Key)",
+    "Open-Meteo"
+  ]
 }

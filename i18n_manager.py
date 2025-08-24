@@ -1,20 +1,19 @@
-from qfluentwidgets import FluentTranslator
-from PyQt5.QtCore import QLocale, QTranslator, Qt
-from PyQt5.QtWidgets import QApplication
-
-import os
-from pathlib import Path
-from loguru import logger
-import sys
 import json
+import os
+import sys
 from datetime import datetime
+from pathlib import Path
+
+from loguru import logger
+from PyQt5.QtCore import QLocale, Qt, QTranslator
+from PyQt5.QtWidgets import QApplication
+from qfluentwidgets import FluentTranslator
 
 import utils
-from file import config_center
 from basic_dirs import CW_HOME, THEME_DIRS
 from data_model import ThemeConfig, ThemeInfo
+from file import config_center
 
-base_directory = Path(os.path.dirname(os.path.abspath(__file__)))
 
 def __load_json(path: Path) -> ThemeConfig:
     with open(path, 'r', encoding='utf-8') as file:
@@ -51,7 +50,7 @@ class I18nManager:
         self.available_languages_widgets = {}
         self.current_language_view = 'zh_CN'
         self.completed_i18n_config = {}
-        self.config_file_path = base_directory / 'config' / 'completed_i18n.json'
+        self.config_file_path = CW_HOME / "data" / "completed_i18n.json"
         self.load_completed_i18n_config()
         self.scan_available_languages()
 
@@ -159,7 +158,7 @@ class I18nManager:
             self.clear_translators()
 
             main_translator = self._load_translation_file(
-                Path(base_directory) / 'i18n' / f'{lang_code}.qm'
+                CW_HOME / 'i18n' / f'{lang_code}.qm'
             )
             if main_translator:
                 self.translators.append(main_translator)
