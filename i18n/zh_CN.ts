@@ -1851,12 +1851,7 @@
     <name>PluginPlaza</name>
     <message>
         <source>{month}月{day}日 {weekday}</source>
-        <translation type="vanished">{month} 月 {day} 日 {weekday}</translation>
-    </message>
-    <message>
-        <location filename="../plugin_plaza.py" line="627"/>
-        <source>{month}{day}日 {weekday}</source>
-        <translation type="unfinished"></translation>
+        <translation>{month} {day} 日 {weekday}</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="749"/>

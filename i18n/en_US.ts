@@ -1944,12 +1944,7 @@ But make sure that the plugins you have downloaded in Plugin Plaza are secure pl
     <name>PluginPlaza</name>
     <message>
         <source>{month}月{day}日 {weekday}</source>
-        <translation type="vanished">{month} {day} {weekday}</translation>
-    </message>
-    <message>
-        <location filename="../plugin_plaza.py" line="627"/>
-        <source>{month}{day}日 {weekday}</source>
-        <translation type="unfinished"></translation>
+        <translation>{month} {day} {weekday}</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="749"/>

@@ -1822,11 +1822,6 @@ Siz sistem bexatliridin ta yana köp avaaz qoshaliysiz (*≧▽≦)</translation
 <context>
     <name>PluginPlaza</name>
     <message>
-        <location filename="../plugin_plaza.py" line="627"/>
-        <source>{month}{day}日 {weekday}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../plugin_plaza.py" line="749"/>
         <source>错误原因：{error_info}</source>
         <translation type="unfinished"></translation>
