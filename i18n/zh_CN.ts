@@ -3066,7 +3066,7 @@
     <message>
         <location filename="../menu.py" line="5356"/>
         <source>未添加-{data}</source>
-        <translation>未添加 - {data}</translation>
+        <translation>未添加-{data}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="5464"/>
