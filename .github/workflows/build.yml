@@ -353,6 +353,7 @@ jobs:
             --contents-directory . \
             --add-data config:config \
             --add-data audio:audio \
+            --add-data data:data \
             --add-data img:img \
             --add-data ui:ui \
             --add-data font:font \
@@ -378,6 +379,7 @@ jobs:
             -n "Class Widgets" \
             --contents-directory . \
             --add-data "config:config" \
+            --add-data data:data \
             --add-data "audio:audio" \
             --add-data "img:img" \
             --add-data "ui:ui" \
@@ -406,6 +408,7 @@ jobs:
             -n ClassWidgets \
             --contents-directory . \
             --add-data config:config \
+            --add-data data:data \
             --add-data audio:audio \
             --add-data img:img \
             --add-data ui:ui \
