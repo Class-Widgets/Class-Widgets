@@ -1577,7 +1577,7 @@
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="314"></location>
         <source>复制时间线</source>
-        <translation type="unfinished"></translation>
+        <translation>复制时间线</translation>
     </message>
     <message>
         <location filename="../view/menu/timeline_edit.ui" line="380"></location>
@@ -2400,27 +2400,27 @@
     <message>
         <location filename="../menu.py" line="1504"></location>
         <source>{city_name} · 当前天气</source>
-        <translation type="unfinished"></translation>
+        <translation>{city_name} · 当前天气</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1506"></location>
         <source>当前天气</source>
-        <translation type="unfinished"></translation>
+        <translation>当前天气</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1534"></location>
         <source>最后更新于 {display_datetime}</source>
-        <translation type="unfinished"></translation>
+        <translation>最后更新于 {display_datetime}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1548"></location>
         <source>体感温度: {feels_like_data}</source>
-        <translation type="unfinished"></translation>
+        <translation>体感温度: {feels_like_data}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1550"></location>
         <source>体感温度: --°</source>
-        <translation type="unfinished"></translation>
+        <translation>体感温度: --°</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3874"></location>
@@ -2470,7 +2470,7 @@
     <message>
         <location filename="../menu.py" line="3974"></location>
         <source>选择单双周</source>
-        <translation type="unfinished"></translation>
+        <translation>选择单双周</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3978"></location>
@@ -2485,7 +2485,7 @@
     <message>
         <location filename="../menu.py" line="3984"></location>
         <source>复制时间线</source>
-        <translation type="unfinished"></translation>
+        <translation>复制时间线</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3993"></location>
@@ -2838,7 +2838,8 @@
         <location filename="../menu.py" line="4361"></location>
         <source>版本号：Debug
 调试版本！</source>
-        <translation type="unfinished"></translation>
+        <translation>版本号：Debug
+调试版本！</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4364"></location>
@@ -3164,12 +3165,12 @@
     <message>
         <location filename="../view/splash.ui" line="21"></location>
         <source>Splash</source>
-        <translation type="unfinished"></translation>
+        <translation>Splash</translation>
     </message>
     <message>
         <location filename="../view/splash.ui" line="297"></location>
         <source>正在启动...</source>
-        <translation type="unfinished"></translation>
+        <translation>正在启动...</translation>
     </message>
 </context>
 <context>
@@ -3177,57 +3178,57 @@
     <message>
         <location filename="../view/splash1.ui" line="20"></location>
         <source>Welcome</source>
-        <translation type="unfinished"></translation>
+        <translation>Welcome</translation>
     </message>
     <message>
         <location filename="../view/splash1.ui" line="176"></location>
         <source>Class Widgets</source>
-        <translation type="unfinished">Class Widgets</translation>
+        <translation>Class Widgets</translation>
     </message>
     <message>
         <location filename="../view/splash1.ui" line="186"></location>
         <source>v1.2.0.0 LTS</source>
-        <translation type="unfinished"></translation>
+        <translation>v1.2.0.0 LTS</translation>
     </message>
     <message>
         <location filename="../view/splash1.ui" line="218"></location>
         <source>© 2025 RinLit</source>
-        <translation type="unfinished"></translation>
+        <translation>© 2025 RinLit</translation>
     </message>
     <message>
         <location filename="../view/splash1.ui" line="252"></location>
         <source>Initializing modules…</source>
-        <translation type="unfinished"></translation>
+        <translation>Initializing modules…</translation>
     </message>
     <message>
         <location filename="../view/splash1.ui" line="268"></location>
         <source>Release notes</source>
-        <translation type="unfinished"></translation>
+        <translation>Release notes</translation>
     </message>
     <message>
         <location filename="../view/splash1.ui" line="272"></location>
         <source>https://github.com/Class-Widgets/Class-Widgets/releases</source>
-        <translation type="unfinished"></translation>
+        <translation>https://github.com/Class-Widgets/Class-Widgets/releases</translation>
     </message>
     <message>
         <location filename="../view/splash1.ui" line="584"></location>
         <source>Documentation</source>
-        <translation type="unfinished"></translation>
+        <translation>Documentation</translation>
     </message>
     <message>
         <location filename="../view/splash1.ui" line="588"></location>
         <source>https://www.yuque.com/rinlit/class-widgets_help/gs3gsbms1iivgibm</source>
-        <translation type="unfinished"></translation>
+        <translation>https://www.yuque.com/rinlit/class-widgets_help/gs3gsbms1iivgibm</translation>
     </message>
     <message>
         <location filename="../view/splash1.ui" line="596"></location>
         <source>Community</source>
-        <translation type="unfinished"></translation>
+        <translation>Community</translation>
     </message>
     <message>
         <location filename="../view/splash1.ui" line="600"></location>
         <source>https://github.com/Class-Widgets/Class-Widgets</source>
-        <translation type="unfinished"></translation>
+        <translation>https://github.com/Class-Widgets/Class-Widgets</translation>
     </message>
 </context>
 <context>
@@ -3585,22 +3586,22 @@
     <message>
         <location filename="../menu.py" line="4043"></location>
         <source>默认</source>
-        <translation type="unfinished">默认</translation>
+        <translation>默认</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4046"></location>
         <source>复制</source>
-        <translation type="unfinished"></translation>
+        <translation>复制</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4050"></location>
         <source>从</source>
-        <translation type="unfinished"></translation>
+        <translation>从</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4053"></location>
         <source>复制时间线</source>
-        <translation type="unfinished"></translation>
+        <translation>复制时间线</translation>
     </message>
 </context>
 <context>
@@ -3919,7 +3920,7 @@
     <message>
         <location filename="../list_.py" line="26"></location>
         <source>快照版 (Nightly)</source>
-        <translation type="unfinished"></translation>
+        <translation>快照版 (Nightly)</translation>
     </message>
     <message>
         <source>测试版 (Beta)</source>
@@ -4198,7 +4199,7 @@
     <message>
         <location filename="../main.py" line="85"></location>
         <source>加载模块...</source>
-        <translation type="unfinished"></translation>
+        <translation>加载模块...</translation>
     </message>
     <message>
         <location filename="../main.py" line="585"></location>
@@ -4276,7 +4277,7 @@
     <message>
         <location filename="../main.py" line="3449"></location>
         <source>检查多开...</source>
-        <translation type="unfinished"></translation>
+        <translation>检查多开...</translation>
     </message>
     <message>
         <location filename="../main.py" line="3464"></location>
@@ -4293,12 +4294,12 @@
     <message>
         <location filename="../main.py" line="3485"></location>
         <source>初始化颜色监视器...</source>
-        <translation type="unfinished"></translation>
+        <translation>初始化颜色监视器...</translation>
     </message>
     <message>
         <location filename="../main.py" line="3495"></location>
         <source>检查缩放...</source>
-        <translation type="unfinished"></translation>
+        <translation>检查缩放...</translation>
     </message>
     <message>
         <location filename="../main.py" line="3500"></location>
@@ -4315,42 +4316,42 @@
     <message>
         <location filename="../main.py" line="3509"></location>
         <source>获取系统版本...</source>
-        <translation type="unfinished"></translation>
+        <translation>获取系统版本...</translation>
     </message>
     <message>
         <location filename="../main.py" line="3528"></location>
         <source>初始化窗口管理器...</source>
-        <translation type="unfinished"></translation>
+        <translation>初始化窗口管理器...</translation>
     </message>
     <message>
         <location filename="../main.py" line="3535"></location>
         <source>检查初次启动...</source>
-        <translation type="unfinished"></translation>
+        <translation>检查初次启动...</translation>
     </message>
     <message>
         <location filename="../main.py" line="3548"></location>
         <source>初始化插件管理器...</source>
-        <translation type="unfinished"></translation>
+        <translation>初始化插件管理器...</translation>
     </message>
     <message>
         <location filename="../main.py" line="3554"></location>
         <source>加载窗口...</source>
-        <translation type="unfinished"></translation>
+        <translation>加载窗口...</translation>
     </message>
     <message>
         <location filename="../main.py" line="3558"></location>
         <source>加载课程...</source>
-        <translation type="unfinished"></translation>
+        <translation>加载课程...</translation>
     </message>
     <message>
         <location filename="../main.py" line="3565"></location>
         <source>加载隐藏状态...</source>
-        <translation type="unfinished"></translation>
+        <translation>加载隐藏状态...</translation>
     </message>
     <message>
         <location filename="../main.py" line="3584"></location>
         <source>检查更新...</source>
-        <translation type="unfinished"></translation>
+        <translation>检查更新...</translation>
     </message>
     <message>
         <location filename="../main.py" line="3468"></location>
@@ -4361,7 +4362,7 @@
     <message>
         <location filename="../splash.py" line="86"></location>
         <source>Class Widgets 启动中...</source>
-        <translation type="unfinished"></translation>
+        <translation>Class Widgets 启动中...</translation>
     </message>
 </context>
 <context>
