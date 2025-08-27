@@ -128,7 +128,7 @@ TimelineUnit = Tuple[TimelineUnitType, str, int, int]
 """时间线单元
 
 0. 类型
-1. 所属 part
+1. 所属 part 在 Schedule.part 中的键
 2. 课程索引，释义如下
    - 课间：0
    - 课程：1
