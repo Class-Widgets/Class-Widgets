@@ -354,7 +354,7 @@ jobs:
           if [[ "${{ runner.os }}" == "Windows" ]]; then
             curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
           fi
-          uv run pyinstaller main.py \
+          uv run --no-dev pyinstaller main.py \
             -w \
             -i ./img/favicon.ico \
             -n "ClassWidgets" \
@@ -379,7 +379,7 @@ jobs:
         if: startsWith(matrix.os, 'macos')
         shell: bash
         run: |
-          uv run pyinstaller main.py \
+          uv run --no-dev pyinstaller main.py \
             -w \
             -i ./img/favicon.icns \
             -n "Class Widgets" \
@@ -406,7 +406,7 @@ jobs:
         if: matrix.platform == 'linux-x64'
         shell: bash
         run: |
-          uv run pyinstaller main.py \
+          uv run --no-dev pyinstaller main.py \
             -w \
             -i ./img/favicon.png \
             -n "ClassWidgets" \
