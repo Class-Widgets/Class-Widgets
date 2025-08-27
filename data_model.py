@@ -149,10 +149,10 @@ class Schedule(BaseModel):
     part_name: Dict[str, str]
     """课表部分名称"""
 
-    timeline: Dict[WeekdaysWithDefault, TimelineUnit]
+    timeline: Dict[WeekdaysWithDefault, List[TimelineUnit]]
     """单周时间线"""
 
-    timeline_even: Dict[WeekdaysWithDefault, TimelineUnit]
+    timeline_even: Dict[WeekdaysWithDefault, List[TimelineUnit]]
     """双周时间线"""
 
     schedule: Dict[Weekdays, List[str]]
