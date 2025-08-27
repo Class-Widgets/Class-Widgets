@@ -341,7 +341,7 @@ jobs:
       - name: Convert .ui files
         shell: bash
         run: |
-          uv run python Scripts/ui_converter.py
+          uv run --no-dev python Scripts/ui_converter.py
           find ui -name "*.ui" -delete
           find view -name "*.ui" -delete
           find i18n -name "*.ts" -delete
