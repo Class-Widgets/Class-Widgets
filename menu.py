@@ -3934,6 +3934,7 @@ class SettingsMenu(FluentWindow):
 
         te_name_edit = self.findChild(EditableComboBox, 'name_part_combo')  # 名称
         te_name_edit.addItems(list_.time)
+        te_name_edit.textChanged.connect(self.te_check_parts_name)
 
         te_edit_part_button = self.findChild(ToolButton, 'edit_part_button')  # 编辑节点开始时间
         te_edit_part_button.setIcon(fIcon.EDIT)
@@ -4000,6 +4001,30 @@ class SettingsMenu(FluentWindow):
         QScroller.grabGesture(part_list.viewport(), QScroller.LeftMouseButtonGesture)  # 触摸屏适配
         self.te_detect_item()
         self.te_update_parts_name()
+        self.te_check_parts_name()
+
+    def te_check_parts_name(self):
+        te_add_part_button = self.findChild(ToolButton, 'add_part_button')  # 添加节点
+        te_edit_part_button = self.findChild(ToolButton, 'edit_part_button')  # 编辑节点开始时间
+        te_name_edit = self.findChild(EditableComboBox, 'name_part_combo')  # 名称
+        part_list = self.findChild(ListWidget, 'part_list')
+        name = te_name_edit.currentText().strip()
+        if not name:
+            te_add_part_button.setEnabled(False)
+            te_edit_part_button.setEnabled(False)
+            return
+        for index in range(part_list.count()):
+            item = part_list.item(index)
+            item_text = item.text()
+            item_info = item_text.split(' - ')
+            if len(item_info) >= 3:
+                part_name = item_info[0]
+                if part_name == name:
+                    te_add_part_button.setEnabled(False)
+                    te_edit_part_button.setEnabled(False)
+                    return
+        te_add_part_button.setEnabled(True)
+        te_edit_part_button.setEnabled(True)
 
     def te_copy_timeline_from(self):
         class ask_which(FlyoutViewBase):
