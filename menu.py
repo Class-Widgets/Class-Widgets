@@ -4008,6 +4008,7 @@ class SettingsMenu(FluentWindow):
         te_edit_part_button = self.findChild(ToolButton, 'edit_part_button')  # 编辑节点开始时间
         te_name_edit = self.findChild(EditableComboBox, 'name_part_combo')  # 名称
         part_list = self.findChild(ListWidget, 'part_list')
+        current_item = part_list.currentItem()
         name = te_name_edit.currentText().strip()
         if not name:
             te_add_part_button.setEnabled(False)
@@ -4021,7 +4022,7 @@ class SettingsMenu(FluentWindow):
                 part_name = item_info[0]
                 if part_name == name:
                     te_add_part_button.setEnabled(False)
-                    te_edit_part_button.setEnabled(False)
+                    te_edit_part_button.setEnabled(current_item == item)
                     return
         te_add_part_button.setEnabled(True)
         te_edit_part_button.setEnabled(True)
