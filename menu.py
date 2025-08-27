@@ -11,7 +11,7 @@ from copy import deepcopy
 from pathlib import Path
 from shutil import rmtree
 
-from PyQt5 import uic, QtCore
+from ui_loader import loadUi, load_ui_type
 from PyQt5.QtCore import Qt, QTime, QUrl, QDate, pyqtSignal, QSize, QThread, QTranslator, QObject, QTimer, QLocale
 from PyQt5.QtGui import QIcon, QDesktopServices, QColor
 # from PyQt5.QtPrintSupport import QPrinter
@@ -24,7 +24,7 @@ from typing import Tuple, Union, Dict, List, Optional
 
 from loguru import logger
 from packaging.version import Version
-from PyQt5 import QtCore, uic
+from PyQt5 import QtCore
 from PyQt5.QtCore import (
     QDate,
     QLocale,
@@ -1199,29 +1199,29 @@ class SettingsMenu(FluentWindow):
         self.current_loaded_engine = config_center.read_conf('TTS', 'engine') # 加载的TTS引擎
 
         # 创建子页面
-        self.spInterface = uic.loadUi(str(CW_HOME / 'view/menu/preview.ui'))  # 预览
+        self.spInterface = loadUi(str(CW_HOME / 'view/menu/preview.ui'))  # 预览
         self.spInterface.setObjectName("spInterface")
-        self.teInterface = uic.loadUi(str(CW_HOME / 'view/menu/timeline_edit.ui'))  # 时间线编辑
+        self.teInterface = loadUi(str(CW_HOME / 'view/menu/timeline_edit.ui'))  # 时间线编辑
         self.teInterface.setObjectName("teInterface")
-        self.seInterface = uic.loadUi(str(CW_HOME / 'view/menu/schedule_edit.ui'))  # 课程表编辑
+        self.seInterface = loadUi(str(CW_HOME / 'view/menu/schedule_edit.ui'))  # 课程表编辑
         self.seInterface.setObjectName("seInterface")
-        self.cdInterface = uic.loadUi(str(CW_HOME / 'view/menu/countdown_custom_edit.ui'))  # 倒计日编辑
+        self.cdInterface = loadUi(str(CW_HOME / 'view/menu/countdown_custom_edit.ui'))  # 倒计日编辑
         self.cdInterface.setObjectName("cdInterface")
-        self.adInterface = uic.loadUi(str(CW_HOME / 'view/menu/advance.ui'))  # 高级选项
+        self.adInterface = loadUi(str(CW_HOME / 'view/menu/advance.ui'))  # 高级选项
         self.adInterface.setObjectName("adInterface")
-        self.ifInterface = uic.loadUi(str(CW_HOME / 'view/menu/about.ui'))  # 关于
+        self.ifInterface = loadUi(str(CW_HOME / 'view/menu/about.ui'))  # 关于
         self.ifInterface.setObjectName("ifInterface")
-        self.ctInterface = uic.loadUi(str(CW_HOME / 'view/menu/custom.ui'))  # 自定义
+        self.ctInterface = loadUi(str(CW_HOME / 'view/menu/custom.ui'))  # 自定义
         self.ctInterface.setObjectName("ctInterface")
-        self.cfInterface = uic.loadUi(str(CW_HOME / 'view/menu/configs.ui'))  # 配置文件
+        self.cfInterface = loadUi(str(CW_HOME / 'view/menu/configs.ui'))  # 配置文件
         self.cfInterface.setObjectName("cfInterface")
-        self.sdInterface = uic.loadUi(str(CW_HOME / 'view/menu/sound.ui'))  # 通知
+        self.sdInterface = loadUi(str(CW_HOME / 'view/menu/sound.ui'))  # 通知
         self.sdInterface.setObjectName("sdInterface")
-        self.hdInterface = uic.loadUi(str(CW_HOME / 'view/menu/help.ui'))  # 帮助
+        self.hdInterface = loadUi(str(CW_HOME / 'view/menu/help.ui'))  # 帮助
         self.hdInterface.setObjectName("hdInterface")
-        self.plInterface = uic.loadUi(str(CW_HOME / 'view/menu/plugin_mgr.ui'))  # 插件
+        self.plInterface = loadUi(str(CW_HOME / 'view/menu/plugin_mgr.ui'))  # 插件
         self.plInterface.setObjectName("plInterface")
-        self.wtInterface = uic.loadUi(str(CW_HOME / 'view/menu/weather.ui'))  # 天气
+        self.wtInterface = loadUi(str(CW_HOME / 'view/menu/weather.ui'))  # 天气
         self.wtInterface.setObjectName("wtInterface")
         self.version_number_label = self.ifInterface.findChild(QLabel, 'version_number_label')
         self.build_commit_label = self.ifInterface.findChild(QLabel, 'build_commit_label')
@@ -1723,7 +1723,7 @@ class SettingsMenu(FluentWindow):
         """创建单个预警卡片"""
         try:
             ui_file_path = os.path.join(os.path.dirname(__file__), 'view', 'menu', 'weather_alert_card.ui')
-            card_widget = uic.loadUi(ui_file_path)
+            card_widget = loadUi(ui_file_path)
             alert_icon = card_widget.findChild(QLabel, 'alert_icon')  # 预警强度图片
             alerts_label = card_widget.findChild(StrongBodyLabel, 'alerts_label')  # 预警类型
             if alert_icon:
@@ -1769,7 +1769,7 @@ class SettingsMenu(FluentWindow):
         """预警详情msg_box"""
         try:
             ui_file_path = os.path.join(os.path.dirname(__file__), 'view', 'menu', 'weather_alert_msgbox.ui')
-            detail_widget = uic.loadUi(ui_file_path)
+            detail_widget = loadUi(ui_file_path)
             msgbox = MessageBoxBase(self)
             msgbox.viewLayout.addWidget(detail_widget)
             msgbox.viewLayout.setContentsMargins(0, 0, 0, 0)
@@ -2222,7 +2222,7 @@ class SettingsMenu(FluentWindow):
             self.parent_menu = parent # 保存父菜单的引用
             self.temp_widget = QWidget()
             ui_path = CW_HOME / 'view/menu/tts_settings.ui'
-            uic.loadUi(ui_path, self.temp_widget)
+            loadUi(ui_path, self.temp_widget)
             self.viewLayout.addWidget(self.temp_widget)
 
             self.viewLayout.setContentsMargins(0, 0, 0, 0)
@@ -2728,7 +2728,7 @@ class SettingsMenu(FluentWindow):
             parent_widget = self.TTSSettingsDialog if isinstance(self.TTSSettingsDialog, QWidget) else self
             MessageBox(self.tr("TTS语音加载失败"), self.tr("加载TTS语音时发生错误:\n{error_message}").format(error_message=error_message), parent_widget)
 
-    class cfFileItem(QWidget, uic.loadUiType(str(CW_HOME / 'view' / 'menu' / 'file_item.ui'))[0]):
+    class cfFileItem(QWidget, load_ui_type(str(CW_HOME / 'view' / 'menu' / 'file_item.ui'))[0]):
         def __init__(self, file_name='', file_path='local', id=None, parent=None):
             super().__init__()
             self.setupUi(self)
@@ -4685,7 +4685,7 @@ class SettingsMenu(FluentWindow):
             self.parent_menu = parent # 保存父菜单的引用
             self.temp_widget = QWidget()
             ui_path = str(CW_HOME / 'view' / 'menu' / 'schedule_db_edit.ui')
-            uic.loadUi(ui_path, self.temp_widget)
+            loadUi(ui_path, self.temp_widget)
             self.viewLayout.addWidget(self.temp_widget)
 
             self.viewLayout.setContentsMargins(0, 0, 0, 0)

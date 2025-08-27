@@ -4,7 +4,7 @@ from collections import defaultdict
 from typing import Any, Dict, List, Optional, Tuple
 
 from loguru import logger
-from PyQt5 import uic
+from ui_loader import loadUi
 from PyQt5.QtCore import QEasingCurve, QPoint, QPropertyAnimation, QRect, Qt, QThread, QTimer, pyqtProperty
 from PyQt5.QtGui import QBrush, QColor, QPainter, QPixmap
 from PyQt5.QtWidgets import QApplication, QFrame, QGraphicsBlurEffect, QLabel, QWidget
@@ -42,7 +42,7 @@ class tip_toast(QWidget):
         if tts_service is None:
             tts_service = get_tts_service()
 
-        uic.loadUi(str(CW_HOME / "view" / "widget-toast-bar.ui"), self)
+        loadUi(str(CW_HOME / "view" / "widget-toast-bar.ui"), self)
 
         try:
             dpr = self.screen().devicePixelRatio() if self.screen() else QApplication.primaryScreen().devicePixelRatio()

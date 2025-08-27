@@ -1,7 +1,7 @@
 from typing import Any, List, Optional, Tuple
 from PyQt5.QtCore import QThread, pyqtSignal, QObject
 from PyQt5.QtGui import QPixmap
-from PyQt5 import uic
+from ui_loader import loadUi
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QLabel
 from qfluentwidgets import BodyLabel, ProgressBar, theme, Theme, setTheme
@@ -48,7 +48,7 @@ class Splash:
         self.apply_theme_stylesheet()
 
     def init(self):
-        self.splash_window : QWidget = uic.loadUi(CW_HOME / 'view/splash.ui')
+        self.splash_window : QWidget = loadUi(CW_HOME / 'view/splash.ui')
         self.statusLabel = self.splash_window.findChild(QLabel, 'statusLabel')
         self.statusBar = self.splash_window.findChild(ProgressBar, 'statusBar')
         self.appInitials = self.splash_window.findChild(QLabel, 'appInitials')

@@ -5,7 +5,7 @@ from random import shuffle
 from typing import Any, Dict, List, Optional
 
 from loguru import logger
-from PyQt5 import uic
+from ui_loader import loadUi
 from PyQt5.QtCore import QCoreApplication, QSize, QStringListModel, Qt, QThread, QTimer, QUrl, pyqtSignal
 from PyQt5.QtGui import QDesktopServices, QIcon, QPixmap
 from PyQt5.QtWidgets import (
@@ -372,7 +372,7 @@ class PluginDetailPage(MessageBoxBase):  # 插件详情页面
     def init_ui(self) -> None:
         # 加载ui文件
         self.temp_widget = QWidget()
-        uic.loadUi(str(CW_HOME / 'view' / 'pp' / 'plugin_detail.ui'), self.temp_widget)
+        loadUi(str(CW_HOME / 'view' / 'pp' / 'plugin_detail.ui'), self.temp_widget)
         self.viewLayout.addWidget(self.temp_widget)
         self.viewLayout.setContentsMargins(0, 0, 0, 0)
         # 隐藏原有按钮
@@ -512,13 +512,13 @@ class PluginPlaza(MSFluentWindow):
         except Exception as e:
             logger.error(f"读取已安装的插件失败: {e}")
         try:
-            self.homeInterface = uic.loadUi(str(CW_HOME / 'view' / 'pp' / 'home.ui'))  # 首页
+            self.homeInterface = loadUi(str(CW_HOME / 'view' / 'pp' / 'home.ui'))  # 首页
             self.homeInterface.setObjectName("homeInterface")
-            self.latestsInterface = uic.loadUi(str(CW_HOME / 'view' / 'pp' / 'latests.ui'))  # 最新更新
+            self.latestsInterface = loadUi(str(CW_HOME / 'view' / 'pp' / 'latests.ui'))  # 最新更新
             self.latestsInterface.setObjectName("latestInterface")
-            self.settingsInterface = uic.loadUi(str(CW_HOME / 'view' / 'pp' / 'settings.ui'))  # 设置
+            self.settingsInterface = loadUi(str(CW_HOME / 'view' / 'pp' / 'settings.ui'))  # 设置
             self.settingsInterface.setObjectName("settingsInterface")
-            self.searchInterface = uic.loadUi(str(CW_HOME / 'view' / 'pp' / 'search.ui'))  # 搜索
+            self.searchInterface = loadUi(str(CW_HOME / 'view' / 'pp' / 'search.ui'))  # 搜索
             self.searchInterface.setObjectName("searchInterface")
 
             load_local_plugins_version()  # 加载本地插件版本

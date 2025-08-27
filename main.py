@@ -16,7 +16,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 import psutil
 from loguru import logger
 from packaging.version import Version
-from PyQt5 import uic
+from ui_loader import loadUi
 from PyQt5.QtCore import (
     QCoreApplication,
     QEasingCurve,
@@ -1211,9 +1211,9 @@ class openProgressDialog(QWidget):
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
         if isDarkTheme():
-            uic.loadUi(str(CW_HOME / 'ui/default/dark/toast-open_dialog.ui'), self)
+            loadUi(str(CW_HOME / 'ui/default/dark/toast-open_dialog.ui'), self)
         else:
-            uic.loadUi(str(CW_HOME / 'ui/default/toast-open_dialog.ui'), self)
+            loadUi(str(CW_HOME / 'ui/default/toast-open_dialog.ui'), self)
 
         backgnd = self.findChild(QFrame, 'backgnd')
         shadow_effect = QGraphicsDropShadowEffect(self)
@@ -1436,14 +1436,14 @@ class FloatingWidget(QWidget):  # 浮窗
         theme_config = theme_info.config
         if (theme_path / 'widget-floating.ui').exists():
             if isDarkTheme() and theme_config.support_dark_mode:
-                uic.loadUi(theme_path / 'dark/widget-floating.ui', self)
+                loadUi(theme_path / 'dark/widget-floating.ui', self)
             else:
-                uic.loadUi(theme_path / 'widget-floating.ui', self)
+                loadUi(theme_path / 'widget-floating.ui', self)
         else:
             if isDarkTheme() and theme_config.support_dark_mode:
-                uic.loadUi(str(CW_HOME / 'ui/default/dark/widget-floating.ui'), self)
+                loadUi(str(CW_HOME / 'ui/default/dark/widget-floating.ui'), self)
             else:
-                uic.loadUi(str(CW_HOME / 'ui/default/widget-floating.ui'), self)
+                loadUi(str(CW_HOME / 'ui/default/widget-floating.ui'), self)
 
         # 设置窗口无边框和透明背景
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
@@ -1956,14 +1956,14 @@ class DesktopWidget(QWidget):  # 主要小组件
         theme_path = theme_info.path
         if (theme_path / path).exists():
             if theme_config.support_dark_mode and isDarkTheme():
-                uic.loadUi(theme_path / 'dark' / path, self)
+                loadUi(theme_path / 'dark' / path, self)
             else:
-                uic.loadUi(theme_path / path, self)
+                loadUi(theme_path / path, self)
         else:
             if theme_config.support_dark_mode and isDarkTheme():
-                uic.loadUi(theme_path / 'dark/widget-base.ui', self)
+                loadUi(theme_path / 'dark/widget-base.ui', self)
             else:
-                uic.loadUi(theme_path / 'widget-base.ui', self)
+                loadUi(theme_path / 'widget-base.ui', self)
 
         # 设置窗口无边框和透明背景
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
