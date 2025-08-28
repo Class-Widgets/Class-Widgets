@@ -2,6 +2,7 @@ import datetime as dt
 import inspect
 import os
 import re
+import regex
 import signal
 import sys
 import threading
@@ -430,8 +431,8 @@ class UnionUpdateTimer(QObject):
 
 
 # 匹配中文字符(预编译)
-_CHINESE_CHAR_PATTERN = re.compile(
-    r"[\u4e00-\u9fff\u3400-\u4dbf\u20000-\u2a6df\u2a700-\u2b73f\u2b740-\u2b81f\u2b820-\u2ceaf\u2ceb0-\u2ebef]"
+_CHINESE_CHAR_PATTERN = regex.compile(
+    r"[\u4e00-\u9fff\u3400-\u4dbf\U00020000-\U0002A6DF\U0002A700-\U0002B73F\U0002B740-\U0002B81F\U0002B820-\U0002CEAF\U0002CEB0-\U0002EBEF]"
 )
 
 

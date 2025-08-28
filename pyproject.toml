@@ -11,7 +11,7 @@ package = ["pyinstaller>=6.15.0"]
 
 [project]
 dependencies = [
-  "annotated-types==0.7.0",
+  "regex==2025.7.34","annotated-types==0.7.0",
   "certifi==2025.8.3",
   "charset-normalizer==3.4.2",
   "colorama==0.4.6",
