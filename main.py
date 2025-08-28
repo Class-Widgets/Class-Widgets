@@ -395,17 +395,27 @@ def get_current_lessons() -> None:  # 获取当前课程
                     if schedule[str(current_week)][class_count] != QCoreApplication.translate(
                         'main', '未添加'
                     ):
-                        current_lessons[(isbreak, item_name, item_index)] = schedule[str(current_week)][class_count]
+                        current_lessons[(isbreak, item_name, item_index)] = schedule[
+                            str(current_week)
+                        ][class_count]
                     else:
-                        current_lessons[(isbreak, item_name, item_index)] = QCoreApplication.translate('main', '暂无课程')
+                        current_lessons[(isbreak, item_name, item_index)] = (
+                            QCoreApplication.translate('main', '暂无课程')
+                        )
                 except IndexError:
-                    current_lessons[(isbreak, item_name, item_index)] = QCoreApplication.translate('main', '暂无课程')
+                    current_lessons[(isbreak, item_name, item_index)] = QCoreApplication.translate(
+                        'main', '暂无课程'
+                    )
                 except Exception as e:
-                    current_lessons[(isbreak, item_name, item_index)] = QCoreApplication.translate('main', '暂无课程')
+                    current_lessons[(isbreak, item_name, item_index)] = QCoreApplication.translate(
+                        'main', '暂无课程'
+                    )
                     logger.debug(f'加载课程表文件出错：{e}')
                 class_count += 1
             else:
-                current_lessons[(isbreak, item_name, item_index)] = QCoreApplication.translate('main', '暂无课程')
+                current_lessons[(isbreak, item_name, item_index)] = QCoreApplication.translate(
+                    'main', '暂无课程'
+                )
                 class_count += 1
 
 
