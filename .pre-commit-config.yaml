@@ -12,33 +12,41 @@ repos:
       - id: check-merge-conflict
       - id: check-case-conflict
       # - id: check-added-large-files
-      #   args: ['--maxkb=1000']
+      #   args: ["--maxkb=1000"]
       # - id: mixed-line-ending # EOL
-      #   args: ['--fix=lf']
-
-  # - repo: https://github.com/astral-sh/ruff-pre-commit
-  #   rev: v0.12.10
-  #   hooks:
-  #     - id: ruff-check
-  #       args: ["--fix", "--exit-non-zero-on-fix"]
+      #   args: ["--fix=lf"]
 
   # - repo: https://github.com/rhysd/actionlint
   #   rev: v1.7.7
   #   hooks:
   #     - id: actionlint
 
-  - repo: https://github.com/crate-ci/typos
-    rev: v1
-    hooks:
-      - id: typos
-        args: ["--format", "brief"]
-        exclude: '\.ts$'
+  # - repo: https://github.com/crate-ci/typos
+  #   rev: v1.35.5
+  #   hooks:
+  #     - id: typos
+  #       args: ["--format", "brief"]
+  #       exclude: '\.ts$'
 
   # 格式化
   # - repo: https://github.com/executablebooks/mdformat
   #   rev: 0.7.22
   #   hooks:
   #     - id: mdformat
+
+  - repo: https://github.com/psf/black
+    rev: 25.1.0
+    hooks:
+      - id: black
+        args:
+          - --line-length=100
+          - --skip-string-normalization
+
+  # - repo: https://github.com/astral-sh/ruff-pre-commit
+  #   rev: v0.12.10
+  #   hooks:
+  #     - id: ruff-check
+  #       args: ["--fix", "--line-length=100"]
 
   - repo: https://github.com/adrienverge/yamllint
     rev: v1.37.1

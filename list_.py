@@ -12,16 +12,66 @@ from basic_dirs import CONFIG_HOME, CW_HOME, SCHEDULE_DIR, THEME_DIRS
 from data_model import ThemeConfig, ThemeInfo
 from file import config_center, save_data_to_json
 
-week = [QCoreApplication.translate("list_", '周一'), QCoreApplication.translate("list_", '周二'), QCoreApplication.translate("list_", '周三'), QCoreApplication.translate("list_", '周四'), QCoreApplication.translate("list_", '周五'), QCoreApplication.translate("list_", '周六'), QCoreApplication.translate("list_", '周日')]
-month = [QCoreApplication.translate("list_", '一月'), QCoreApplication.translate("list_", '二月'), QCoreApplication.translate("list_", '三月'), QCoreApplication.translate("list_", '四月'), QCoreApplication.translate("list_", '五月'), QCoreApplication.translate("list_", '六月'), QCoreApplication.translate("list_", '七月'), QCoreApplication.translate("list_", '八月'), QCoreApplication.translate("list_", '九月'), QCoreApplication.translate("list_", '十月'), QCoreApplication.translate("list_", '十一月'), QCoreApplication.translate("list_", '十二月')]
-week_type = [QCoreApplication.translate("list_", '单周'), QCoreApplication.translate("list_", '双周')]
-part_type = [QCoreApplication.translate("list_", '节点'), QCoreApplication.translate("list_", '休息段')]
-window_status = [QCoreApplication.translate("list_", '无'), QCoreApplication.translate("list_", '置于顶部'), QCoreApplication.translate("list_", '置于底部'), QCoreApplication.translate("list_", '置于次级底部')]
-color_mode = [QCoreApplication.translate("list_", '浅色'), QCoreApplication.translate("list_", '深色'), QCoreApplication.translate("list_", '跟随系统')]
-hide_mode = [QCoreApplication.translate("list_", '无'), QCoreApplication.translate("list_", '上课时自动隐藏'), QCoreApplication.translate("list_", '窗口最大化时隐藏'), QCoreApplication.translate("list_", '灵活隐藏')]
-non_nt_hide_mode = [QCoreApplication.translate("list_", '无'), QCoreApplication.translate("list_", '上课时自动隐藏')]
-temperature_units = [QCoreApplication.translate("list_", '摄氏度 (°C)'), QCoreApplication.translate("list_", '华氏度 (°F)')]
-version_channel = [QCoreApplication.translate("list_", '正式版 (Release)'), QCoreApplication.translate("list_", '快照版 (Nightly)')]
+week = [
+    QCoreApplication.translate("list_", '周一'),
+    QCoreApplication.translate("list_", '周二'),
+    QCoreApplication.translate("list_", '周三'),
+    QCoreApplication.translate("list_", '周四'),
+    QCoreApplication.translate("list_", '周五'),
+    QCoreApplication.translate("list_", '周六'),
+    QCoreApplication.translate("list_", '周日'),
+]
+month = [
+    QCoreApplication.translate("list_", '一月'),
+    QCoreApplication.translate("list_", '二月'),
+    QCoreApplication.translate("list_", '三月'),
+    QCoreApplication.translate("list_", '四月'),
+    QCoreApplication.translate("list_", '五月'),
+    QCoreApplication.translate("list_", '六月'),
+    QCoreApplication.translate("list_", '七月'),
+    QCoreApplication.translate("list_", '八月'),
+    QCoreApplication.translate("list_", '九月'),
+    QCoreApplication.translate("list_", '十月'),
+    QCoreApplication.translate("list_", '十一月'),
+    QCoreApplication.translate("list_", '十二月'),
+]
+week_type = [
+    QCoreApplication.translate("list_", '单周'),
+    QCoreApplication.translate("list_", '双周'),
+]
+part_type = [
+    QCoreApplication.translate("list_", '节点'),
+    QCoreApplication.translate("list_", '休息段'),
+]
+window_status = [
+    QCoreApplication.translate("list_", '无'),
+    QCoreApplication.translate("list_", '置于顶部'),
+    QCoreApplication.translate("list_", '置于底部'),
+    QCoreApplication.translate("list_", '置于次级底部'),
+]
+color_mode = [
+    QCoreApplication.translate("list_", '浅色'),
+    QCoreApplication.translate("list_", '深色'),
+    QCoreApplication.translate("list_", '跟随系统'),
+]
+hide_mode = [
+    QCoreApplication.translate("list_", '无'),
+    QCoreApplication.translate("list_", '上课时自动隐藏'),
+    QCoreApplication.translate("list_", '窗口最大化时隐藏'),
+    QCoreApplication.translate("list_", '灵活隐藏'),
+]
+non_nt_hide_mode = [
+    QCoreApplication.translate("list_", '无'),
+    QCoreApplication.translate("list_", '上课时自动隐藏'),
+]
+temperature_units = [
+    QCoreApplication.translate("list_", '摄氏度 (°C)'),
+    QCoreApplication.translate("list_", '华氏度 (°F)'),
+]
+version_channel = [
+    QCoreApplication.translate("list_", '正式版 (Release)'),
+    QCoreApplication.translate("list_", '快照版 (Nightly)'),
+]
 
 theme_folder = []
 theme_names = []
@@ -52,8 +102,15 @@ subject = {
 
 schedule_dir = CONFIG_HOME / 'schedule'
 
-class_activity = [QCoreApplication.translate("list_", '课程'), QCoreApplication.translate("list_", '课间')]
-time = [QCoreApplication.translate("list_", '上午'), QCoreApplication.translate("list_", '下午'), QCoreApplication.translate("list_", '晚修')]
+class_activity = [
+    QCoreApplication.translate("list_", '课程'),
+    QCoreApplication.translate("list_", '课间'),
+]
+time = [
+    QCoreApplication.translate("list_", '上午'),
+    QCoreApplication.translate("list_", '下午'),
+    QCoreApplication.translate("list_", '晚修'),
+]
 class_kind = [
     QCoreApplication.translate("list_", '自定义'),
     QCoreApplication.translate("list_", '语文'),
@@ -73,14 +130,14 @@ class_kind = [
     QCoreApplication.translate("list_", '美术'),
     QCoreApplication.translate("list_", '音乐'),
     QCoreApplication.translate("list_", '心理'),
-    QCoreApplication.translate("list_", '信息技术')
+    QCoreApplication.translate("list_", '信息技术'),
 ]
 
 default_widgets = [
     'widget-time.ui',
     'widget-countdown.ui',
     'widget-current-activity.ui',
-    'widget-next-activity.ui'
+    'widget-next-activity.ui',
 ]
 
 widget_width = {  # 默认宽度
@@ -89,7 +146,7 @@ widget_width = {  # 默认宽度
     'widget-current-activity.ui': 360,
     'widget-next-activity.ui': 290,
     'widget-countdown-day.ui': 200,
-    'widget-weather.ui': 200
+    'widget-weather.ui': 200,
 }
 
 widget_conf = {
@@ -98,7 +155,7 @@ widget_conf = {
     QCoreApplication.translate("list_", '当前活动'): 'widget-current-activity.ui',
     QCoreApplication.translate("list_", '更多活动'): 'widget-next-activity.ui',
     QCoreApplication.translate("list_", '倒计日'): 'widget-countdown-day.ui',
-    QCoreApplication.translate("list_", '天气'): 'widget-weather.ui'
+    QCoreApplication.translate("list_", '天气'): 'widget-weather.ui',
 }
 
 widget_name = {
@@ -107,7 +164,7 @@ widget_name = {
     'widget-current-activity.ui': QCoreApplication.translate("list_", '当前活动'),
     'widget-next-activity.ui': QCoreApplication.translate("list_", '更多活动'),
     'widget-countdown-day.ui': QCoreApplication.translate("list_", '倒计日'),
-    'widget-weather.ui': QCoreApplication.translate("list_", '天气')
+    'widget-weather.ui': QCoreApplication.translate("list_", '天气'),
 }
 
 native_widget_name = [widget_name[i] for i in widget_name]
@@ -121,16 +178,14 @@ except:
     logger.warning("读取数据库列表失败，重置为空。")
     schedule_dbs = {}
 
+
 def validate_theme(folder: Path) -> Optional[ThemeInfo]:
     file_path = folder / 'theme.json'
     if not file_path.exists():
         return None
     try:
         with file_path.open('r', encoding='utf-8') as f:
-            return ThemeInfo(
-                path=folder,
-                config=ThemeConfig.model_validate_json(f.read())
-            )
+            return ThemeInfo(path=folder, config=ThemeConfig.model_validate_json(f.read()))
     except Exception as e:
         logger.error(f'验证主题配置文件发生错误：{e}')
         return None
@@ -159,8 +214,8 @@ try:  # 加载课程/主题配置文件
         for dir in root_dir.iterdir()
         if (info := validate_theme(dir)) is not None
     )
-    theme_folder = list(folder.path.name for folder in __theme.values())
-    theme_names = list(folder.config.name for folder in __theme.values())
+    theme_folder = [folder.path.name for folder in __theme.values()]
+    theme_names = [folder.config.name for folder in __theme.values()]
 except Exception as e:
     logger.error(f'加载课程/主题配置文件发生错误，使用默认配置：{e}')
     config_center.write_conf('General', 'theme', 'default')
@@ -188,23 +243,24 @@ except Exception as e:
         QCoreApplication.translate("list_", '暂无课程'): 'break',
     }
     # 简称
-    subject_abbreviation = {
-        QCoreApplication.translate("list_", '历史'): '史'
-    }
+    subject_abbreviation = {QCoreApplication.translate("list_", '历史'): '史'}
 
-countdown_modes = [QCoreApplication.translate("list_", '轮播'), QCoreApplication.translate("list_", '多小组件')]
+countdown_modes = [
+    QCoreApplication.translate("list_", '轮播'),
+    QCoreApplication.translate("list_", '多小组件'),
+]
 
 
 def get_widget_list() -> List[str]:
     rl = []
-    for item, value in widget_conf.items():
+    for item, _value in widget_conf.items():
         rl.append(item)
     return rl
 
 
 def get_widget_names() -> List[str]:
     rl = []
-    for item, value in widget_name.items():
+    for _item, value in widget_name.items():
         rl.append(value)
     return rl
 
@@ -228,8 +284,7 @@ def get_theme_ui_path(name: str) -> str:
 def get_subject_abbreviation(key: str) -> str:
     if key in subject_abbreviation:
         return subject_abbreviation[key]
-    else:
-        return key[:1]
+    return key[:1]
 
 
 # 学科图标
@@ -243,8 +298,7 @@ def get_subject_icon(key: str) -> str:
 def subject_color(key: str) -> str:
     if key in subject:
         return f'{subject[key]}'
-    else:
-        return '(75, 170, 255'
+    return '(75, 170, 255'
 
 
 def get_schedule_config() -> List[str]:
@@ -273,7 +327,7 @@ def create_new_profile(filename: str) -> None:
 
 def import_schedule(filepath: str, filename: str) -> bool:  # 导入课表
     try:
-        with open(filepath, 'r', encoding='utf-8') as file:
+        with open(filepath, encoding='utf-8') as file:
             check_data = json.load(file)
     except Exception as e:
         logger.error(f"加载数据时出错: {e}")
@@ -298,16 +352,13 @@ def import_schedule(filepath: str, filename: str) -> bool:  # 导入课表
 
 def convert_schedule(check_data: Dict[str, Any]) -> Dict[str, Any]:  # 转换课表
     # 校验课程表
-    if check_data is None:
-        logger.warning('此文件为空')
-        raise ValueError('此文件为空')
-    elif not check_data.get('timeline') and not check_data.get('schedule'):
+    if not check_data.get('timeline') and not check_data.get('schedule'):
         logger.warning('此文件不是课程表文件')
         raise ValueError('此文件不是课程表文件')
     # 转换为标准格式
     if not check_data.get('schedule_even'):
         logger.warning('此课程表格式不支持单双周')
-        check_data['schedule_even'] = {str(i): [] for i in range(0, 6)}
+        check_data['schedule_even'] = {str(i): [] for i in range(6)}
 
     part_data = check_data.get('part')
     if part_data and len(part_data.get('0', [])) == 2:
@@ -319,7 +370,8 @@ def convert_schedule(check_data: Dict[str, Any]) -> Dict[str, Any]:  # 转换课
         logger.warning('此课程表格式不支持节点')
         try:
             check_data['part'] = {  # 转换旧版本时间线为新版
-                "0": check_data['timeline']['start_time_m']['part'], "1": check_data['timeline']['start_time_a']['part']
+                "0": check_data['timeline']['start_time_m']['part'],
+                "1": check_data['timeline']['start_time_a']['part'],
             }
             check_data['part_name'] = {"0": "上午", "1": "下午"}
             del check_data['timeline']['start_time_m']
@@ -327,15 +379,12 @@ def convert_schedule(check_data: Dict[str, Any]) -> Dict[str, Any]:  # 转换课
             old_timeline = deepcopy(check_data['timeline'])
             # 转换为标准格式
             check_data['timeline']['default'] = {}
-            for i in range(0, 6):
+            for i in range(6):
                 check_data['timeline'][i] = {}
 
             for item_name, _ in old_timeline.items():
-                if item_name[1] == 'a':
-                    ma_to_num = 1
-                else:
-                    ma_to_num = 0
-                new_name = item_name[0]+str(ma_to_num)+item_name[2]
+                ma_to_num = 1 if item_name[1] == 'a' else 0
+                new_name = item_name[0] + str(ma_to_num) + item_name[2]
                 check_data['timeline']['default'][new_name] = check_data['timeline'][item_name]
                 del check_data['timeline'][item_name]
         except Exception as e:
@@ -361,9 +410,14 @@ def get_widget_config() -> List[str]:
                 data = json.load(file)
         else:
             with open(widget_config_path, 'w', encoding='utf-8') as file:
-                data = {'widgets': [
-                    'widget-weather.ui', 'widget-countdown.ui', 'widget-current-activity.ui', 'widget-next-activity.ui'
-                ]}
+                data = {
+                    'widgets': [
+                        'widget-weather.ui',
+                        'widget-countdown.ui',
+                        'widget-current-activity.ui',
+                        'widget-next-activity.ui',
+                    ]
+                }
                 json.dump(data, file, indent=4)
         return data['widgets']
     except Exception as e:

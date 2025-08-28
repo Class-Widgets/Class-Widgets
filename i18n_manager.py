@@ -1,7 +1,6 @@
 import json
 import os
 import sys
-from datetime import datetime
 from pathlib import Path
 
 from loguru import logger
@@ -16,8 +15,9 @@ from file import config_center
 
 
 def __load_json(path: Path) -> ThemeConfig:
-    with open(path, 'r', encoding='utf-8') as file:
+    with open(path, encoding='utf-8') as file:
         return ThemeConfig.model_validate_json(file.read())
+
 
 def load_theme_config(theme: str) -> ThemeInfo:
     default_path = CW_HOME / 'ui' / 'default' / 'theme.json'
@@ -28,22 +28,17 @@ def load_theme_config(theme: str) -> ThemeInfo:
                 for theme_dir in THEME_DIRS
                 if (dir := (theme_dir / theme / 'theme.json')).exists()
             ),
-            default_path
+            default_path,
         )
-        return ThemeInfo(
-            path=config_path.parent,
-            config=__load_json(config_path)
-        )
+        return ThemeInfo(path=config_path.parent, config=__load_json(config_path))
     except Exception as e:
-        logger.error(f"加载主题数据时出错: {repr(e)}，返回默认主题")
-        return ThemeInfo(
-            path=default_path.parent,
-            config=__load_json(default_path)
-        )
+        logger.error(f"加载主题数据时出错: {e!r}，返回默认主题")
+        return ThemeInfo(path=default_path.parent, config=__load_json(default_path))
 
 
 class I18nManager:
     """i18n"""
+
     def __init__(self):
         self.translators = []
         self.available_languages_view = {}
@@ -56,8 +51,12 @@ class I18nManager:
 
     def scan_available_languages(self):
         try:
-            completed_main = self.completed_i18n_config.get('completed_languages', {}).get('main', [])
-            completed_themes = self.completed_i18n_config.get('completed_languages', {}).get('themes', {})
+            completed_main = self.completed_i18n_config.get('completed_languages', {}).get(
+                'main', []
+            )
+            completed_themes = self.completed_i18n_config.get('completed_languages', {}).get(
+                'themes', {}
+            )
             for lang_code in completed_main:
                 if display_name := self._get_language_display_name(lang_code):
                     self.available_languages_view[lang_code] = display_name
@@ -79,20 +78,20 @@ class I18nManager:
         """加载完整翻译配置文件"""
         try:
             if self.config_file_path.exists():
-                with open(self.config_file_path, 'r', encoding='utf-8') as f:
+                with open(self.config_file_path, encoding='utf-8') as f:
                     self.completed_i18n_config = json.load(f)
                 # logger.debug(f"已加载完整翻译配置: {self.config_file_path}")
             else:
                 logger.warning(f"完整翻译配置文件不存在: {self.config_file_path}")
                 self.completed_i18n_config = {
                     "last_updated": "",
-                    "completed_languages": {"main": [], "themes": {}}
+                    "completed_languages": {"main": [], "themes": {}},
                 }
         except Exception as e:
             logger.error(f"加载完整翻译配置时出错: {e}")
             self.completed_i18n_config = {
                 "last_updated": "",
-                "completed_languages": {"main": [], "themes": {}}
+                "completed_languages": {"main": [], "themes": {}},
             }
 
     def _get_language_display_name(self, lang_code):
@@ -112,9 +111,9 @@ class I18nManager:
             'it_IT': 'Italiano',
             'ar_SA': 'العربية',
             'bo': 'བོད་ཡིག',  # 藏语
-            'ug': 'ئۇيغۇرچە'   # 维吾尔语
+            'ug': 'ئۇيغۇرچە',  # 维吾尔语
         }
-        return language_names.get(lang_code, None)
+        return language_names.get(lang_code)
 
     def get_available_languages_QLocale(self, lang_code):
         locale_list = {
@@ -127,17 +126,29 @@ class I18nManager:
 
     def get_available_languages_view(self):
         """获取可用界面语言列表仅(完整翻译的语言)"""
-        completed_main = set(self.completed_i18n_config.get('completed_languages', {}).get('main', []))
+        completed_main = set(
+            self.completed_i18n_config.get('completed_languages', {}).get('main', [])
+        )
         current_theme = config_center.read_conf('General', 'theme', 'default')
-        completed_theme = set(self.completed_i18n_config.get('completed_languages', {}).get('themes', {}).get(current_theme, []))
+        completed_theme = set(
+            self.completed_i18n_config.get('completed_languages', {})
+            .get('themes', {})
+            .get(current_theme, [])
+        )
         completed_languages = completed_main & completed_theme
         if not completed_languages:
             completed_languages = {'zh_CN'}
             logger.warning("没有找到完整翻译的语言")
-        available_keys = set(self.available_languages_view.keys()) & set(self.available_languages_widgets.keys())
+        available_keys = set(self.available_languages_view.keys()) & set(
+            self.available_languages_widgets.keys()
+        )
         filtered_keys = available_keys & completed_languages
 
-        return {key: self.available_languages_view[key] for key in filtered_keys if key in self.available_languages_view}
+        return {
+            key: self.available_languages_view[key]
+            for key in filtered_keys
+            if key in self.available_languages_view
+        }
 
     def get_current_language_view_name(self):
         """获取当前界面语言名称"""
@@ -152,22 +163,25 @@ class I18nManager:
         current_lang = self.current_language_view
         try:
             from pathlib import Path
+
             app = QApplication.instance()
             if not app:
                 return False
             self.clear_translators()
 
-            main_translator = self._load_translation_file(
-                CW_HOME / 'i18n' / f'{lang_code}.qm'
-            )
+            main_translator = self._load_translation_file(CW_HOME / 'i18n' / f'{lang_code}.qm')
             if main_translator:
                 self.translators.append(main_translator)
                 app.installTranslator(main_translator)
                 self.current_language_view = lang_code
                 # config_center.write_conf('General', 'language_view', lang_code)
-                logger.success(f"成功加载界面语言: {lang_code} ({self.available_languages_view.get(lang_code, lang_code)})")
+                logger.success(
+                    f"成功加载界面语言: {lang_code} ({self.available_languages_view.get(lang_code, lang_code)})"
+                )
             else:
-                logger.warning(f"无法加载界面语言: {lang_code} ({self.available_languages_view.get(lang_code, lang_code)})")
+                logger.warning(
+                    f"无法加载界面语言: {lang_code} ({self.available_languages_view.get(lang_code, lang_code)})"
+                )
                 self.load_language_view(current_lang)
                 return False
 
@@ -179,9 +193,13 @@ class I18nManager:
                 self.translators.append(theme_translator)
                 app.installTranslator(theme_translator)
                 self.current_language_widgets = lang_code
-                logger.success(f"成功加载组件语言: {lang_code} ({self.available_languages_widgets.get(lang_code, lang_code)})")
+                logger.success(
+                    f"成功加载组件语言: {lang_code} ({self.available_languages_widgets.get(lang_code, lang_code)})"
+                )
             else:
-                logger.warning(f"无法加载组件语言: {lang_code} ({self.available_languages_widgets.get(lang_code, lang_code)})")
+                logger.warning(
+                    f"无法加载组件语言: {lang_code} ({self.available_languages_widgets.get(lang_code, lang_code)})"
+                )
                 self.load_language_view(current_lang)
                 return False
 
@@ -191,11 +209,13 @@ class I18nManager:
                 app.installTranslator(translator_qfw)
                 logger.success(f"成功加载 FluentWidgets 语言: {lang_code}")
 
-            import list_
             import importlib
+
+            import list_
+
             importlib.reload(list_)
 
-            if not utils.main_mgr is None:
+            if utils.main_mgr is not None:
                 utils.main_mgr.clear_widgets()
 
             return True
@@ -211,10 +231,9 @@ class I18nManager:
             if qm_path.exists():
                 translator = QTranslator()
                 if translator.load(str(qm_path)):
-                    #logger.debug(f"成功加载文件: {qm_path}")
+                    # logger.debug(f"成功加载文件: {qm_path}")
                     return translator
-                else:
-                    logger.warning(f"无法加载文件: {qm_path}")
+                logger.warning(f"无法加载文件: {qm_path}")
             else:
                 logger.warning(f"文件不存在: {qm_path}")
 
@@ -247,9 +266,9 @@ class I18nManager:
             logger.error(f"从配置初始化语言时出错: {e}")
             self.load_language_view('zh_CN')
 
+
 # 适配高DPI缩放
-QApplication.setHighDpiScaleFactorRoundingPolicy(
-    Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
 QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
 

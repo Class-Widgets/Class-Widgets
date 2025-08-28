@@ -10,17 +10,7 @@ import zipfile
 from copy import deepcopy
 from pathlib import Path
 from shutil import rmtree
-
-from ui_loader import loadUi, load_ui_type
-from PyQt5.QtCore import Qt, QTime, QUrl, QDate, pyqtSignal, QSize, QThread, QTranslator, QObject, QTimer, QLocale
-from PyQt5.QtGui import QIcon, QDesktopServices, QColor
-# from PyQt5.QtPrintSupport import QPrinter
-from PyQt5.QtCore import Qt, pyqtSignal, QRectF
-from PyQt5.QtGui import QPainter
-from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidgetItem, QLabel, QHBoxLayout, QSizePolicy, \
-    QSpacerItem, QFileDialog, QVBoxLayout, QScroller, QWidget, QFrame, QListWidgetItem, QWidget, QStyle
-from packaging.version import Version
-from typing import Tuple, Union, Dict, List, Optional
+from typing import Dict, List, Optional, Tuple, Union
 
 from loguru import logger
 from packaging.version import Version
@@ -38,6 +28,8 @@ from PyQt5.QtCore import (
     QUrl,
     pyqtSignal,
 )
+
+# from PyQt5.QtPrintSupport import QPrinter
 from PyQt5.QtGui import QColor, QDesktopServices, QIcon, QPainter, QPixmap
 from PyQt5.QtSvg import QSvgRenderer
 from PyQt5.QtWidgets import (
@@ -134,11 +126,13 @@ from generate_speech import (
 from network_thread import VersionThread, proxies, scheduleThread
 from plugin import p_loader
 from plugin_plaza import PluginPlaza
+from ui_loader import loadUi, load_ui_type
 from utils import TimeManagerFactory
 
 
 class I18nManager:
     """i18n"""
+
     def __init__(self):
         self.translators = []
         self.available_languages_view = {}
@@ -153,39 +147,37 @@ class I18nManager:
         """加载完整翻译配置文件"""
         try:
             if self.config_file_path.exists():
-                with open(self.config_file_path, 'r', encoding='utf-8') as f:
+                with open(self.config_file_path, encoding='utf-8') as f:
                     self.completed_i18n_config = json.load(f)
                 logger.info(f"已加载翻译完整性配置: {self.config_file_path}")
             else:
                 self.completed_i18n_config = {
                     "last_updated": "",
-                    "completed_languages": {
-                        "main": ["zh_CN"],
-                        "themes": {}
-                    }
+                    "completed_languages": {"main": ["zh_CN"], "themes": {}},
                 }
-                logger.warning(f"翻译完整性配置文件不存在")
+                logger.warning("翻译完整性配置文件不存在")
         except Exception as e:
             logger.error(f"加载翻译完整性配置时出错: {e}")
             self.completed_i18n_config = {
                 "last_updated": "",
-                "completed_languages": {
-                    "main": ["zh_CN"],
-                    "themes": {}
-                }
+                "completed_languages": {"main": ["zh_CN"], "themes": {}},
             }
 
     def scan_available_languages(self):
         try:
-            completed_main_langs = self.completed_i18n_config.get("completed_languages", {}).get("main", [])
+            completed_main_langs = self.completed_i18n_config.get("completed_languages", {}).get(
+                "main", []
+            )
             for lang_code in completed_main_langs:
                 if name := self._get_language_display_name(lang_code):
                     self.available_languages_view[lang_code] = name
                 else:
                     logger.warning(f"{lang_code} 未在语言映射中找到显示名称")
-            completed_themes = self.completed_i18n_config.get("completed_languages", {}).get("themes", {})
+            completed_themes = self.completed_i18n_config.get("completed_languages", {}).get(
+                "themes", {}
+            )
             all_theme_langs = set()
-            for theme_name, lang_list in completed_themes.items():
+            for _theme_name, lang_list in completed_themes.items():
                 all_theme_langs.update(lang_list)
             for lang_code in all_theme_langs:
                 if name := self._get_language_display_name(lang_code):
@@ -222,9 +214,9 @@ class I18nManager:
             'ru_RU': 'Русский',
             'pt_BR': 'Português (Brasil)',
             'it_IT': 'Italiano',
-            'ar_SA': 'العربية'
+            'ar_SA': 'العربية',
         }
-        return language_names.get(lang_code, None)
+        return language_names.get(lang_code)
 
     def get_available_languages_QLocale(self, lang_code):
         locale_list = {
@@ -237,7 +229,9 @@ class I18nManager:
 
     def get_available_languages_view(self):
         """获取可用界面语言列表"""
-        keys = set(self.available_languages_view.keys()) & set(self.available_languages_widgets.keys())
+        keys = set(self.available_languages_view.keys()) & set(
+            self.available_languages_widgets.keys()
+        )
         return {key: self.available_languages_view[key] for key in keys}
 
     def get_current_language_view_name(self):
@@ -257,17 +251,19 @@ class I18nManager:
                 return False
             self.clear_translators()
 
-            main_translator = self._load_translation_file(
-                CW_HOME / 'i18n' / f'{lang_code}.qm'
-            )
+            main_translator = self._load_translation_file(CW_HOME / 'i18n' / f'{lang_code}.qm')
             if main_translator:
                 self.translators.append(main_translator)
                 app.installTranslator(main_translator)
                 self.current_language_view = lang_code
                 # config_center.write_conf('General', 'language_view', lang_code)
-                logger.success(f"成功加载界面语言: {lang_code} ({self.available_languages_view.get(lang_code, lang_code)})")
+                logger.success(
+                    f"成功加载界面语言: {lang_code} ({self.available_languages_view.get(lang_code, lang_code)})"
+                )
             else:
-                logger.warning(f"无法加载界面语言: {lang_code} ({self.available_languages_view.get(lang_code, lang_code)})")
+                logger.warning(
+                    f"无法加载界面语言: {lang_code} ({self.available_languages_view.get(lang_code, lang_code)})"
+                )
                 self.load_language_view(current_lang)
                 return False
 
@@ -279,9 +275,13 @@ class I18nManager:
                 self.translators.append(theme_translator)
                 app.installTranslator(theme_translator)
                 self.current_language_widgets = lang_code
-                logger.success(f"成功加载组件语言: {lang_code} ({self.available_languages_widgets.get(lang_code, lang_code)})")
+                logger.success(
+                    f"成功加载组件语言: {lang_code} ({self.available_languages_widgets.get(lang_code, lang_code)})"
+                )
             else:
-                logger.warning(f"无法加载组件语言: {lang_code} ({self.available_languages_widgets.get(lang_code, lang_code)})")
+                logger.warning(
+                    f"无法加载组件语言: {lang_code} ({self.available_languages_widgets.get(lang_code, lang_code)})"
+                )
                 self.load_language_view(current_lang)
                 return False
 
@@ -292,9 +292,10 @@ class I18nManager:
                 logger.success(f"成功加载 FluentWidgets 语言: {lang_code}")
 
             import importlib
+
             importlib.reload(list_)
 
-            if not utils.main_mgr is None:
+            if utils.main_mgr is not None:
                 utils.main_mgr.clear_widgets()
 
             return True
@@ -316,10 +317,9 @@ class I18nManager:
             if qm_path.exists():
                 translator = QTranslator()
                 if translator.load(str(qm_path)):
-                    #logger.debug(f"成功加载文件: {qm_path}")
+                    # logger.debug(f"成功加载文件: {qm_path}")
                     return translator
-                else:
-                    logger.warning(f"无法加载文件: {qm_path}")
+                logger.warning(f"无法加载文件: {qm_path}")
             else:
                 logger.warning(f"文件不存在: {qm_path}")
 
@@ -334,15 +334,15 @@ class I18nManager:
 
             result = subprocess.run(
                 ['lrelease', str(ts_path), '-qm', str(qm_path)],
+                check=False,
                 capture_output=True,
-                text=True
+                text=True,
             )
 
             if result.returncode == 0:
                 logger.info(f"成功编译翻译文件: {ts_path} -> {qm_path}")
                 return True
-            else:
-                logger.warning(f"编译翻译文件失败: {result.stderr}")
+            logger.warning(f"编译翻译文件失败: {result.stderr}")
 
         except FileNotFoundError:
             logger.warning("未找到lrelease工具，无法编译翻译文件")
@@ -375,6 +375,9 @@ class I18nManager:
             self.load_language_view('zh_CN')
 
 
+import builtins
+import contextlib
+
 from PyQt5.QtCore import QCoreApplication
 
 global_i18n_manager = None
@@ -395,7 +398,7 @@ loaded_data = schedule_center.schedule_data
 schedule_dict = {}  # 对应时间线的课程表
 schedule_even_dict = {}  # 对应时间线的课程表（双周）
 
-timeline_dict = {'odd' : {}, 'even': {}}  # 时间
+timeline_dict = {'odd': {}, 'even': {}}  # 时间
 
 countdown_dict = {}
 
@@ -416,10 +419,9 @@ def cleanup_plaza():
     global plugin_plaza
     logger.info('关闭“插件广场”')
     del plugin_plaza
-    plugin_plaza = None
 
 
-def get_timeline()-> Dict[str, Dict[str, List[Tuple[int, str, int, int]]]]:
+def get_timeline() -> Dict[str, Dict[str, List[Tuple[int, str, int, int]]]]:
     global loaded_data
     loaded_data = schedule_center.schedule_data
     return {'odd': loaded_data['timeline'], 'even': loaded_data['timeline_even']}
@@ -429,12 +431,16 @@ def open_dir(path: str):
     if sys.platform.startswith('win32'):
         os.startfile(path)
     elif sys.platform.startswith('linux'):
-        subprocess.run(['xdg-open', path])
+        subprocess.run(['xdg-open', path], check=False)
     else:
         msg_box = Dialog(
-            QCoreApplication.translate('menu','无法打开文件夹'), QCoreApplication.translate('menu','Class Widgets 在您的系统下不支持自动打开文件夹，请手动打开以下地址：\n{path}').format(path=path)
+            QCoreApplication.translate('menu', '无法打开文件夹'),
+            QCoreApplication.translate(
+                'menu',
+                'Class Widgets 在您的系统下不支持自动打开文件夹，请手动打开以下地址：\n{path}',
+            ).format(path=path),
         )
-        msg_box.yesButton.setText(QCoreApplication.translate('menu','好'))
+        msg_box.yesButton.setText(QCoreApplication.translate('menu', '好'))
         msg_box.cancelButton.hide()
         msg_box.buttonLayout.insertStretch(0, 1)
         msg_box.setFixedWidth(550)
@@ -465,26 +471,26 @@ def load_schedule_dict(schedule, week_type, part, part_name):
     for week, item in schedule.items():
         all_class = []
         count = []  # 初始化计数器
-        for i in range(len(part)):
+        for _i in range(len(part)):
             count.append(0)
-        if str(week) in loaded_data['timeline_even' if week_type else 'timeline'] and loaded_data['timeline_even' if week_type else 'timeline'][str(week)]:
+        if (
+            str(week) in loaded_data['timeline_even' if week_type else 'timeline']
+            and loaded_data['timeline_even' if week_type else 'timeline'][str(week)]
+        ):
             timeline = get_timeline()['even' if week_type else 'odd'][str(week)]
         else:
             timeline = get_timeline()['even' if week_type else 'odd']['default']
 
-        for isbreak, item_name, item_index, item_time in timeline:
+        for isbreak, item_name, item_index, _item_time in timeline:
             if not isbreak:
                 try:
-                    if item_name == '0':
-                        count_num = 0
-                    else:
-                        count_num = sum(count[:int(item_name)])
+                    count_num = 0 if item_name == '0' else sum(count[: int(item_name)])
 
                     prefix = item[item_index - 1 + count_num]
                     period = part_name[str(item_name)]
                     all_class.append(f'{prefix}-{period}')
                 except IndexError or ValueError:  # 未设置值
-                    prefix = QCoreApplication.translate('menu','未添加')
+                    prefix = QCoreApplication.translate('menu', '未添加')
                     period = part_name[str(item_name)]
                     all_class.append(f'{prefix}-{period}')
                 count[int(item_name)] += 1
@@ -523,9 +529,13 @@ def cd_load_item():
     text = config_center.read_conf('Date', 'cd_text_custom').split(',')
     date = config_center.read_conf('Date', 'countdown_date').split(',')
     if len(text) != len(date):
-        countdown_dict = {"Err": f"len(cd_text_custom) (={len(text)}) != len(countdown_date) (={len(date)})"}
+        countdown_dict = {
+            "Err": f"len(cd_text_custom) (={len(text)}) != len(countdown_date) (={len(date)})"
+        }
         raise Exception(
-            f"len(cd_text_custom) (={len(text)}) != len(countdown_date) (={len(date)})"f"len(cd_text_custom) (={len(text)}) != len(countdown_date) (={len(date)}) \n 请检查 config.ini [Date] 项！！")
+            f"len(cd_text_custom) (={len(text)}) != len(countdown_date) (={len(date)})"
+            f"len(cd_text_custom) (={len(text)}) != len(countdown_date) (={len(date)}) \n 请检查 config.ini [Date] 项！！"
+        )
     countdown_dict = dict(zip(date, text))
 
 
@@ -538,11 +548,11 @@ class selectCity(MessageBoxBase):  # 选择城市
 
         if method == 'location_key':
             self.search_edit = SearchLineEdit()
-            title_label.setText(QCoreApplication.translate('menu','搜索城市'))
-            subtitle_label.setText(QCoreApplication.translate('menu','请输入当地城市名进行搜索'))
-            self.yesButton.setText(QCoreApplication.translate('menu','选择此城市'))
-            self.cancelButton.setText(QCoreApplication.translate('menu','取消'))
-            self.search_edit.setPlaceholderText(QCoreApplication.translate('menu','输入城市名'))
+            title_label.setText(QCoreApplication.translate('menu', '搜索城市'))
+            subtitle_label.setText(QCoreApplication.translate('menu', '请输入当地城市名进行搜索'))
+            self.yesButton.setText(QCoreApplication.translate('menu', '选择此城市'))
+            self.cancelButton.setText(QCoreApplication.translate('menu', '取消'))
+            self.search_edit.setPlaceholderText(QCoreApplication.translate('menu', '输入城市名'))
             self.search_edit.setClearButtonEnabled(True)
             self.search_edit.textChanged.connect(self.search_city)
             self.city_list = ListWidget()
@@ -555,21 +565,27 @@ class selectCity(MessageBoxBase):  # 选择城市
             self.widget.setMinimumWidth(500)
             self.widget.setMinimumHeight(600)
         else:
-            title_label.setText(QCoreApplication.translate('menu','手动输入经纬度'))
-            subtitle_label.setText(QCoreApplication.translate('menu','请输入当地的经度和纬度'))
-            self.yesButton.setText(QCoreApplication.translate('menu','确定'))
-            self.cancelButton.setText(QCoreApplication.translate('menu','取消'))
+            title_label.setText(QCoreApplication.translate('menu', '手动输入经纬度'))
+            subtitle_label.setText(QCoreApplication.translate('menu', '请输入当地的经度和纬度'))
+            self.yesButton.setText(QCoreApplication.translate('menu', '确定'))
+            self.cancelButton.setText(QCoreApplication.translate('menu', '取消'))
 
-            longitude_label = QLabel(QCoreApplication.translate('menu','经度'))
-            latitude_label = QLabel(QCoreApplication.translate('menu','纬度'))
+            longitude_label = QLabel(QCoreApplication.translate('menu', '经度'))
+            latitude_label = QLabel(QCoreApplication.translate('menu', '纬度'))
             self.longitude_edit = LineEdit()
             self.latitude_edit = LineEdit()
-            self.longitude_edit.setPlaceholderText(QCoreApplication.translate('menu','经度，例如 116.40'))
-            self.latitude_edit.setPlaceholderText(QCoreApplication.translate('menu','纬度，例如 39.90'))
+            self.longitude_edit.setPlaceholderText(
+                QCoreApplication.translate('menu', '经度，例如 116.40')
+            )
+            self.latitude_edit.setPlaceholderText(
+                QCoreApplication.translate('menu', '纬度，例如 39.90')
+            )
             self._populate_coordinates_from_config()
 
             # 新增按钮
-            self.btn_internet = PushButton(QCoreApplication.translate('menu', '通过互联网获取经纬度'))
+            self.btn_internet = PushButton(
+                QCoreApplication.translate('menu', '通过互联网获取经纬度')
+            )
             self.btn_internet.clicked.connect(self.get_coordinates_from_internet)
             # if platform.system() in ['Windows', 'Darwin']:
             #     btn_sysapi = PushButton(QCoreApplication.translate('menu', '通过系统获取经纬度'))
@@ -605,7 +621,8 @@ class selectCity(MessageBoxBase):  # 选择城市
         if self.method != 'location_key':
             raise ValueError("Method must be 'location_key' for city search.")
         selected_city = self.city_list.findItems(
-            wd.search_by_num(str(config_center.read_conf('Weather', 'city'))), QtCore.Qt.MatchFlag.MatchExactly
+            wd.search_by_num(str(config_center.read_conf('Weather', 'city'))),
+            QtCore.Qt.MatchFlag.MatchExactly,
         )
         if selected_city:  # 若找到该城市
             item = selected_city[0]
@@ -647,7 +664,9 @@ class selectCity(MessageBoxBase):  # 选择城市
             except ValueError:
                 raise ValueError(self.tr("经度和纬度必须是数字。"))
             if not (-180 <= lon <= 180 and -90 <= lat <= 90):
-                raise ValueError(self.tr("经度必须在 -180 到 180 之间，纬度必须在 -90 到 90 之间。"))
+                raise ValueError(
+                    self.tr("经度必须在 -180 到 180 之间，纬度必须在 -90 到 90 之间。")
+                )
             self.yesButton.setEnabled(True)
             self.error_text.hide()
         except Exception as e:
@@ -675,6 +694,7 @@ class selectCity(MessageBoxBase):  # 选择城市
 
         def get_coordinates(self) -> Tuple[float, float]:
             import requests
+
             try:
                 req = requests.get(self.download_url, proxies=proxies)
                 if req.status_code == 200:
@@ -682,12 +702,10 @@ class selectCity(MessageBoxBase):  # 选择城市
                     if data['status'] == 'success':
                         logger.info(f"获取坐标成功：{data['lat']}, {data['lon']}")
                         return (data['lat'], data['lon'])
-                    else:
-                        logger.error(f"获取坐标失败：{data['message']}")
-                        raise ValueError(f"获取坐标失败：{data['message']}")
-                else:
-                    logger.error(f"获取坐标失败：{req.status_code}")
-                    raise ValueError(f"获取坐标失败：{req.status_code}")
+                    logger.error(f"获取坐标失败：{data['message']}")
+                    raise ValueError(f"获取坐标失败：{data['message']}")
+                logger.error(f"获取坐标失败：{req.status_code}")
+                raise ValueError(f"获取坐标失败：{req.status_code}")
             except Exception as e:
                 logger.error(f"获取坐标失败：{e}")
                 raise ValueError(f"获取坐标失败：{e}")
@@ -740,7 +758,6 @@ class selectCity(MessageBoxBase):  # 选择城市
     #                 loop.close()
     #         elif platform.system() == 'Darwin':
     #             self.get_location_macos()
-
 
     #     async def get_location_windows(self):
     #         if platform.system() != 'Windows':
@@ -803,12 +820,16 @@ class licenseDialog(MessageBoxBase):  # 显示软件许可协议
         subtitle_label = BodyLabel()
         self.license_text = PlainTextEdit()
 
-        title_label.setText(QCoreApplication.translate('menu','软件许可协议'))
-        subtitle_label.setText(QCoreApplication.translate('menu','此项目 (Class Widgets) 基于 GPL-3.0 许可证授权发布，详情请参阅：'))
-        self.yesButton.setText(QCoreApplication.translate('menu','好'))  # 按钮组件汉化
+        title_label.setText(QCoreApplication.translate('menu', '软件许可协议'))
+        subtitle_label.setText(
+            QCoreApplication.translate(
+                'menu', '此项目 (Class Widgets) 基于 GPL-3.0 许可证授权发布，详情请参阅：'
+            )
+        )
+        self.yesButton.setText(QCoreApplication.translate('menu', '好'))  # 按钮组件汉化
         self.cancelButton.hide()
         self.buttonLayout.insertStretch(0, 1)
-        self.license_text.setPlainText(open('LICENSE', 'r', encoding='utf-8').read())
+        self.license_text.setPlainText(open('LICENSE', encoding='utf-8').read())
         self.license_text.setReadOnly(True)
 
         # 将组件添加到布局中
@@ -845,8 +866,16 @@ class PluginSettingsDialog(MessageBoxBase):  # 插件设置对话框
 
 class PluginCard(CardWidget):  # 插件卡片
     def __init__(
-            self, icon, title='Unknown', content='Unknown', version='1.0.0', plugin_dir='', author=None, parent=None,
-            enable_settings=None, url=''
+        self,
+        icon,
+        title='Unknown',
+        content='Unknown',
+        version='1.0.0',
+        plugin_dir='',
+        author=None,
+        parent=None,
+        enable_settings=None,
+        url='',
     ):
         super().__init__(parent)
         icon_radius = 5
@@ -873,21 +902,24 @@ class PluginCard(CardWidget):  # 插件卡片
 
         menu_actions = [
             Action(
-                fIcon.FOLDER, QCoreApplication.translate('menu','打开“{title}”插件文件夹').format(title=title),
-                triggered=lambda: open_dir(str(PLUGIN_HOME / self.plugin_dir))
+                fIcon.FOLDER,
+                QCoreApplication.translate('menu', '打开“{title}”插件文件夹').format(title=title),
+                triggered=lambda: open_dir(str(PLUGIN_HOME / self.plugin_dir)),
             )
         ]
         if self.url:
             menu_actions.append(
                 Action(
-                    fIcon.LINK, QCoreApplication.translate('menu','访问“{title}”插件页面').format(title=title),
-                    triggered=lambda: QDesktopServices.openUrl(QUrl(self.url))
+                    fIcon.LINK,
+                    QCoreApplication.translate('menu', '访问“{title}”插件页面').format(title=title),
+                    triggered=lambda: QDesktopServices.openUrl(QUrl(self.url)),
                 )
             )
         menu_actions.append(
             Action(
-                fIcon.DELETE, QCoreApplication.translate('menu','卸载“{title}”插件').format(title=title),
-                triggered=self.remove_plugin
+                fIcon.DELETE,
+                QCoreApplication.translate('menu', '卸载“{title}”插件').format(title=title),
+                triggered=self.remove_plugin,
             )
         )
         self.moreMenu.addActions(menu_actions)
@@ -899,13 +931,19 @@ class PluginCard(CardWidget):  # 插件卡片
             self.enableButton.setChecked(True)
             if enable_settings and plugin_dir in p_loader.plugins_settings:
                 self.moreMenu.addSeparator()
-                self.moreMenu.addAction(Action(fIcon.SETTING, f'"{title}"插件设置', triggered=self.show_settings))
+                self.moreMenu.addAction(
+                    Action(fIcon.SETTING, f'"{title}"插件设置', triggered=self.show_settings)
+                )
                 self.settingsBtn.show()
         if is_temp_disabled:
             self.enableButton.setEnabled(False)
             self.enableButton.setChecked(False)
-            self.enableButton.setToolTip(QCoreApplication.translate('menu','此插件被临时禁用,重启后将尝试重新加载'))
-            self.titleLabel.setText(QCoreApplication.translate('menu','{title} (已临时禁用)').format(title=title))
+            self.enableButton.setToolTip(
+                QCoreApplication.translate('menu', '此插件被临时禁用,重启后将尝试重新加载')
+            )
+            self.titleLabel.setText(
+                QCoreApplication.translate('menu', '{title} (已临时禁用)').format(title=title)
+            )
             self.titleLabel.setStyleSheet('color: #999999;')
 
         self.setFixedHeight(73)
@@ -918,8 +956,8 @@ class PluginCard(CardWidget):  # 插件卡片
         self.versionLabel.setTextColor("#999999", "#999999")
         self.authorLabel.setTextColor("#606060", "#d2d2d2")
         self.enableButton.checkedChanged.connect(self.set_enable)
-        self.enableButton.setOffText(QCoreApplication.translate('menu','禁用'))
-        self.enableButton.setOnText(QCoreApplication.translate('menu','启用'))
+        self.enableButton.setOffText(QCoreApplication.translate('menu', '禁用'))
+        self.enableButton.setOnText(QCoreApplication.translate('menu', '启用'))
         self.moreButton.setMenu(self.moreMenu)
         self.settingsBtn.setIcon(fIcon.SETTING)
         self.settingsBtn.clicked.connect(self.show_settings)
@@ -964,9 +1002,16 @@ class PluginCard(CardWidget):  # 插件卡片
             w.exec()
 
     def remove_plugin(self):
-        alert = MessageBox(QCoreApplication.translate('menu', "您确定要删除插件“{title}”吗？").format(title=self.title), QCoreApplication.translate('menu',"删除此插件后，将无法恢复。"), self.parent)
+        alert = MessageBox(
+            QCoreApplication.translate('menu', "您确定要删除插件“{title}”吗？").format(
+                title=self.title
+            ),
+            QCoreApplication.translate('menu', "删除此插件后，将无法恢复。"),
+            self.parent,
+        )
         alert.yesButton.setText(self.tr('永久删除'))
-        alert.yesButton.setStyleSheet("""
+        alert.yesButton.setStyleSheet(
+            """
                 PushButton{
                     border-radius: 5px;
                     padding: 5px 12px 6px 12px;
@@ -988,13 +1033,14 @@ class PluginCard(CardWidget):  # 插件卡片
                     background-color: #DB5359;
                     border: 1px solid #DB5359;
                 }
-            """)
-        alert.cancelButton.setText(QCoreApplication.translate('menu','我再想想……'))
+            """
+        )
+        alert.cancelButton.setText(QCoreApplication.translate('menu', '我再想想……'))
         if alert.exec():
             success = p_loader.delete_plugin(self.plugin_dir)
             if success:
                 try:
-                    with open(PLUGIN_HOME / "plugins_from_pp.json", 'r', encoding='utf-8') as f:
+                    with open(PLUGIN_HOME / "plugins_from_pp.json", encoding='utf-8') as f:
                         installed_data = json.load(f)
                     installed_plugins = installed_data.get('plugins', [])
                     if self.plugin_dir in installed_plugins:
@@ -1004,32 +1050,43 @@ class PluginCard(CardWidget):  # 插件卡片
                     logger.error(f"更新已安装插件列表失败: {e}")
 
                 InfoBar.success(
-                    title=QCoreApplication.translate('menu','卸载成功'),
-                    content=QCoreApplication.translate('menu','插件 “{title}” 已卸载。请重启 Class Widgets 以完全移除。').format(title=self.title),
+                    title=QCoreApplication.translate('menu', '卸载成功'),
+                    content=QCoreApplication.translate(
+                        'menu', '插件 “{title}” 已卸载。请重启 Class Widgets 以完全移除。'
+                    ).format(title=self.title),
                     orient=Qt.Horizontal,
                     isClosable=True,
                     position=InfoBarPosition.BOTTOM_RIGHT,
                     duration=5000,
-                    parent=self.window()
+                    parent=self.window(),
                 )
                 self.deleteLater()  # 删除卡片
             else:
                 InfoBar.error(
-                    title=QCoreApplication.translate('menu','卸载失败'),
-                    content=QCoreApplication.translate('menu','卸载插件 “{title}” 时出错，请查看日志获取详细信息。').format(title=self.title),
+                    title=QCoreApplication.translate('menu', '卸载失败'),
+                    content=QCoreApplication.translate(
+                        'menu', '卸载插件 “{title}” 时出错，请查看日志获取详细信息。'
+                    ).format(title=self.title),
                     orient=Qt.Horizontal,
                     isClosable=True,
                     position=InfoBarPosition.BOTTOM_RIGHT,
                     duration=5000,
-                    parent=self.window()
+                    parent=self.window(),
                 )
 
 
 class TextFieldMessageBox(MessageBoxBase):
-    """ Custom message box """
+    """Custom message box"""
 
     def __init__(
-            self, parent=None, title='标题', text='请输入内容', default_text='', enable_check = False, check_func = None):
+        self,
+        parent=None,
+        title='标题',
+        text='请输入内容',
+        default_text='',
+        enable_check=False,
+        check_func=None,
+    ):
         super().__init__(parent)
         self.fail_color = (QColor('#c42b1c'), QColor('#ff99a4'))
         self.success_color = (QColor('#0f7b0f'), QColor('#6ccb5f'))
@@ -1071,7 +1128,7 @@ class TextFieldMessageBox(MessageBoxBase):
         if f'{self.textField.text()}.json' in self.check_list:
             self.tipsLabel.setText(self.tr('不可以和之前的课程名重复哦 o(TヘTo)'))
             return
-        if not (self.check_func is None):
+        if self.check_func is not None:
             is_valid, message = self.check_func(self.textField.text())
             if not is_valid:
                 self.tipsLabel.setText(message)
@@ -1080,6 +1137,7 @@ class TextFieldMessageBox(MessageBoxBase):
         self.yesButton.setEnabled(True)
         self.tipsLabel.setTextColor(self.success_color[0], self.success_color[1])
         self.tipsLabel.setText(self.tr('很好！就这样！ヾ(≧▽≦*)o'))
+
 
 class TTSVoiceLoaderThread(QThread):
     voicesLoaded = pyqtSignal(list)
@@ -1119,13 +1177,15 @@ class TTSVoiceLoaderThread(QThread):
                 # 转换格式
                 voice_list = []
                 for voice in voices:
-                    voice_list.append({
-                        'id': voice.id,
-                        'name': voice.name,
-                        'language': voice.language,
-                        'gender': voice.gender,
-                        'engine': voice.engine.value
-                    })
+                    voice_list.append(
+                        {
+                            'id': voice.id,
+                            'name': voice.name,
+                            'language': voice.language,
+                            'gender': voice.gender,
+                            'engine': voice.engine.value,
+                        }
+                    )
                 self.voicesLoaded.emit(voice_list)
 
             except Exception as e:
@@ -1165,7 +1225,7 @@ class TTSPreviewThread(QThread):
                 engine=self.engine,
                 voice_id=self.voice,
                 auto_fallback=False,
-                timeout=10.0
+                timeout=10.0,
             )
             if self.isInterruptionRequested():
                 logger.info("TTS预览线程收到中断请求，正在退出...")
@@ -1182,7 +1242,7 @@ class TTSPreviewThread(QThread):
             play_audio(audio_file, tts_delete_after=True)
             self.previewFinished.emit(True)
         except Exception as e:
-            logger.error(f"TTS预览生成失败: {str(e)}")
+            logger.error(f"TTS预览生成失败: {e!s}")
             self.previewError.emit(str(e))
 
 
@@ -1195,8 +1255,8 @@ class SettingsMenu(FluentWindow):
         self.tts_voice_loader_thread = None
         self.button_clear_log = None
         self.version_thread = None
-        self.engine_selector = None # TTS引擎选择器
-        self.current_loaded_engine = config_center.read_conf('TTS', 'engine') # 加载的TTS引擎
+        self.engine_selector = None  # TTS引擎选择器
+        self.current_loaded_engine = config_center.read_conf('TTS', 'engine')  # 加载的TTS引擎
 
         # 创建子页面
         self.spInterface = loadUi(str(CW_HOME / 'view/menu/preview.ui'))  # 预览
@@ -1205,7 +1265,9 @@ class SettingsMenu(FluentWindow):
         self.teInterface.setObjectName("teInterface")
         self.seInterface = loadUi(str(CW_HOME / 'view/menu/schedule_edit.ui'))  # 课程表编辑
         self.seInterface.setObjectName("seInterface")
-        self.cdInterface = loadUi(str(CW_HOME / 'view/menu/countdown_custom_edit.ui'))  # 倒计日编辑
+        self.cdInterface = loadUi(
+            str(CW_HOME / 'view/menu/countdown_custom_edit.ui')
+        )  # 倒计日编辑
         self.cdInterface.setObjectName("cdInterface")
         self.adInterface = loadUi(str(CW_HOME / 'view/menu/advance.ui'))  # 高级选项
         self.adInterface.setObjectName("adInterface")
@@ -1232,19 +1294,25 @@ class SettingsMenu(FluentWindow):
         global global_i18n_manager
         if global_i18n_manager:
             self.i18n_manager = global_i18n_manager
-            logger.debug(f"复用i18n旧例,界面语言: {self.i18n_manager.get_current_language_view_name()}, 组件语言: {self.i18n_manager.get_current_language_widgets_name()}")
+            logger.debug(
+                f"复用i18n旧例,界面语言: {self.i18n_manager.get_current_language_view_name()}, 组件语言: {self.i18n_manager.get_current_language_widgets_name()}"
+            )
         else:
             self.i18n_manager = i18n_manager.I18nManager()
             self.i18n_manager.init_from_config()
-            logger.debug(f"创建新i18n管理,界面语言: {self.i18n_manager.get_current_language_view_name()}, 组件语言: {self.i18n_manager.get_current_language_widgets_name()}")
+            logger.debug(
+                f"创建新i18n管理,界面语言: {self.i18n_manager.get_current_language_view_name()}, 组件语言: {self.i18n_manager.get_current_language_widgets_name()}"
+            )
 
         self.init_nav()
         self.init_window()
 
     def init_font(self):  # 设置字体
-        self.setStyleSheet("""QLabel {
+        self.setStyleSheet(
+            """QLabel {
                     font-family: 'Microsoft YaHei';
-                }""")
+                }"""
+        )
 
     def load_all_item(self):
         self.setup_timeline_edit()
@@ -1267,7 +1335,7 @@ class SettingsMenu(FluentWindow):
 
         global plugin_dict, enabled_plugins
         enabled_plugins = conf.load_plugin_config()  # 加载启用的插件
-        plugin_dict = (conf.load_plugins())  # 加载插件信息
+        plugin_dict = conf.load_plugins()  # 加载插件信息
 
         self.plugin_search = self.findChild(SearchLineEdit, 'plugin_search')
         self.filter_combo = self.findChild(ComboBox, 'filter_combo')
@@ -1282,7 +1350,7 @@ class SettingsMenu(FluentWindow):
             self.tr('已启用'),
             self.tr('已禁用'),
             self.tr('有设置项'),
-            self.tr('无设置项')
+            self.tr('无设置项'),
         ]
         self.filter_combo.addItems(self.filter_combo_items)
         self.refresh_btn.setIcon(fIcon.SYNC)
@@ -1300,7 +1368,8 @@ class SettingsMenu(FluentWindow):
         auto_delay = self.findChild(SpinBox, 'auto_delay')
         auto_delay.setValue(int(config_center.read_conf('Plugin', 'auto_delay')))
         auto_delay.valueChanged.connect(
-            lambda: config_center.write_conf('Plugin', 'auto_delay', str(auto_delay.value())))
+            lambda: config_center.write_conf('Plugin', 'auto_delay', str(auto_delay.value()))
+        )
         # 设置自动化延迟
 
         open_plugin_folder = self.findChild(PushButton, 'open_plugin_folder')
@@ -1322,25 +1391,57 @@ class SettingsMenu(FluentWindow):
     def setup_weather_interface(self) -> None:
         """初始化天气ui"""
         try:
-            self.city_location_label = self.wtInterface.findChild(SubtitleLabel, 'teto_x')  # 城市位置标签
-            self.weather_update_time = self.wtInterface.findChild(CaptionLabel, 'weather_re_time')  # 更新时间
-            self.current_temperature = self.wtInterface.findChild(DisplayLabel, 'current_temperature_4')  # 当前温度
-            self.weather_description = self.wtInterface.findChild(SubtitleLabel, 'SubtitleLabel_3')  # 天气描述
-            self.feels_like_temperature = self.wtInterface.findChild(CaptionLabel, 'current_feels_like_2')  # 体感温度
+            self.city_location_label = self.wtInterface.findChild(
+                SubtitleLabel, 'teto_x'
+            )  # 城市位置标签
+            self.weather_update_time = self.wtInterface.findChild(
+                CaptionLabel, 'weather_re_time'
+            )  # 更新时间
+            self.current_temperature = self.wtInterface.findChild(
+                DisplayLabel, 'current_temperature_4'
+            )  # 当前温度
+            self.weather_description = self.wtInterface.findChild(
+                SubtitleLabel, 'SubtitleLabel_3'
+            )  # 天气描述
+            self.feels_like_temperature = self.wtInterface.findChild(
+                CaptionLabel, 'current_feels_like_2'
+            )  # 体感温度
             self.weather_icon_label = self.wtInterface.findChild(QLabel, 'label_2')  # 天气图标
-            self.wind_speed_value = self.wtInterface.findChild(StrongBodyLabel, 'wind_value')  # 风速值
-            self.humidity_percentage_value = self.wtInterface.findChild(StrongBodyLabel, 'humidity_value')  # 湿度值
-            self.visibility_distance_value = self.wtInterface.findChild(StrongBodyLabel, 'visibility_value')  # 能见度值
-            self.pressure_hpa_value = self.wtInterface.findChild(StrongBodyLabel, 'pressure_value_2')  # 气压值
-            self.refresh_button = self.wtInterface.findChild(ToolButton, 'ToolButton') # 刷新按钮
-            select_weather_api = self.wtInterface.findChild(ComboBox, 'select_weather_api') # 天气api选择器
-            api_key_edit = self.wtInterface.findChild(LineEdit, 'api_key_edit') # api_key输入框
-            self.api_key_card = self.wtInterface.findChild(QWidget, 'CardWidget_5') # api_key卡片容器
-            self.alerts_title_label = self.wtInterface.findChild(SubtitleLabel, 'alerts_title_label')  # 预警标题
-            self.weather_alerts_section = self.wtInterface.findChild(QVBoxLayout, 'weather_alerts_section')  # 预警区域
-            alerts_container_widget = self.wtInterface.findChild(QWidget, 'alerts_container_widget')  # 预警容器widget
-            self.weather_temperat_unit = self.wtInterface.findChild(ComboBox, 'weather_temperat_unit')  # 温度单位选择器
-            self.weather_refresh_picker = self.wtInterface.findChild(SpinBox, 'weather_refresh_picker')  # 刷新时间选择器
+            self.wind_speed_value = self.wtInterface.findChild(
+                StrongBodyLabel, 'wind_value'
+            )  # 风速值
+            self.humidity_percentage_value = self.wtInterface.findChild(
+                StrongBodyLabel, 'humidity_value'
+            )  # 湿度值
+            self.visibility_distance_value = self.wtInterface.findChild(
+                StrongBodyLabel, 'visibility_value'
+            )  # 能见度值
+            self.pressure_hpa_value = self.wtInterface.findChild(
+                StrongBodyLabel, 'pressure_value_2'
+            )  # 气压值
+            self.refresh_button = self.wtInterface.findChild(ToolButton, 'ToolButton')  # 刷新按钮
+            select_weather_api = self.wtInterface.findChild(
+                ComboBox, 'select_weather_api'
+            )  # 天气api选择器
+            api_key_edit = self.wtInterface.findChild(LineEdit, 'api_key_edit')  # api_key输入框
+            self.api_key_card = self.wtInterface.findChild(
+                QWidget, 'CardWidget_5'
+            )  # api_key卡片容器
+            self.alerts_title_label = self.wtInterface.findChild(
+                SubtitleLabel, 'alerts_title_label'
+            )  # 预警标题
+            self.weather_alerts_section = self.wtInterface.findChild(
+                QVBoxLayout, 'weather_alerts_section'
+            )  # 预警区域
+            alerts_container_widget = self.wtInterface.findChild(
+                QWidget, 'alerts_container_widget'
+            )  # 预警容器widget
+            self.weather_temperat_unit = self.wtInterface.findChild(
+                ComboBox, 'weather_temperat_unit'
+            )  # 温度单位选择器
+            self.weather_refresh_picker = self.wtInterface.findChild(
+                SpinBox, 'weather_refresh_picker'
+            )  # 刷新时间选择器
             alert_exclude = self.wtInterface.findChild(LineEdit, 'alert_exclude')
 
             if self.refresh_button:
@@ -1359,7 +1460,9 @@ class SettingsMenu(FluentWindow):
                     self.weather_temperat_unit.setCurrentIndex(1)  # 华氏度
                 else:
                     self.weather_temperat_unit.setCurrentIndex(0)  # 摄氏度
-                self.weather_temperat_unit.currentIndexChanged.connect(self._on_temperature_unit_changed)
+                self.weather_temperat_unit.currentIndexChanged.connect(
+                    self._on_temperature_unit_changed
+                )
             if alerts_container_widget:
                 self.alerts_container_layout = FlowLayout(alerts_container_widget, needAni=True)
                 self.alerts_container_layout.setContentsMargins(10, 10, 10, 10)
@@ -1371,19 +1474,35 @@ class SettingsMenu(FluentWindow):
             self.alert_cards: list[QWidget] = []  # 预警卡片列表
             if select_weather_api:
                 select_weather_api.addItems(wd.weather_manager.api_config['weather_api_list_zhCN'])
-                select_weather_api.setCurrentIndex(wd.weather_manager.api_config['weather_api_list'].index(
-                    config_center.read_conf('Weather', 'api')
-                ))
+                if (
+                    isinstance(wd.weather_manager.api_config, dict)
+                    and 'weather_api_list' in wd.weather_manager.api_config
+                    and isinstance(wd.weather_manager.api_config['weather_api_list'], list)
+                ):
+                    try:
+                        select_weather_api.setCurrentIndex(
+                            wd.weather_manager.api_config['weather_api_list'].index(
+                                config_center.read_conf('Weather', 'api')
+                            )
+                        )
+                    except ValueError:
+                        select_weather_api.setCurrentIndex(0)
+                else:  # api_config 结构不正确
+                    select_weather_api.setCurrentIndex(0)
                 select_weather_api.currentIndexChanged.connect(
                     lambda: self._on_weather_api_changed(select_weather_api)
                 )
             if api_key_edit:
                 api_key_edit.setText(config_center.read_conf('Weather', 'api_key', ''))
-                api_key_edit.textChanged.connect(lambda: config_center.write_conf('Weather', 'api_key', api_key_edit.text()))
+                api_key_edit.textChanged.connect(
+                    lambda: config_center.write_conf('Weather', 'api_key', api_key_edit.text())
+                )
             if alert_exclude:
                 alert_exclude.setText(config_center.read_conf('Weather', 'alert_exclude', ''))
                 alert_exclude.setPlaceholderText(self.tr('大风 雷电 地质...'))
-            alert_exclude.textChanged.connect(lambda: config_center.write_conf('Weather', 'alert_exclude', alert_exclude.text()))
+            alert_exclude.textChanged.connect(
+                lambda: config_center.write_conf('Weather', 'alert_exclude', alert_exclude.text())
+            )
 
             # 初始化天气管理器
             self.weather_manager = wd.WeatherManager()
@@ -1421,7 +1540,9 @@ class SettingsMenu(FluentWindow):
             self.weather_fetch_thread = wd.WeatherFetchThread(self.weather_manager)
             self.weather_fetch_thread.weather_data_ready.connect(self._on_weather_data_ready)
             self.weather_fetch_thread.weather_error.connect(self._on_weather_error)
-            self.weather_fetch_thread.finished.connect(lambda: setattr(self, '_is_refreshing', False))
+            self.weather_fetch_thread.finished.connect(
+                lambda: setattr(self, '_is_refreshing', False)
+            )
             self.weather_fetch_thread.start()
             if hasattr(self, 'main_window') and self.main_window:
                 self.main_window.get_weather_data()
@@ -1501,7 +1622,9 @@ class SettingsMenu(FluentWindow):
                         city_name = ''
             if self.city_location_label:
                 if city_name:
-                    self.city_location_label.setText(self.tr("{city_name} · 当前天气").format(city_name=city_name))
+                    self.city_location_label.setText(
+                        self.tr("{city_name} · 当前天气").format(city_name=city_name)
+                    )
                 else:
                     self.city_location_label.setText(self.tr("当前天气"))
             update_time_str = wd.get_weather_data('updateTime', weather_data)
@@ -1531,7 +1654,11 @@ class SettingsMenu(FluentWindow):
                 display_datetime = datetime.datetime.now().strftime("%m/%d/%Y %H:%M")
 
             if self.weather_update_time:
-                self.weather_update_time.setText(self.tr("最后更新于 {display_datetime}").format(display_datetime=display_datetime))
+                self.weather_update_time.setText(
+                    self.tr("最后更新于 {display_datetime}").format(
+                        display_datetime=display_datetime
+                    )
+                )
 
             temp_data = wd.get_weather_data('temp', weather_data)
             if self.current_temperature and temp_data and temp_data.lower() != 'none':
@@ -1544,8 +1671,14 @@ class SettingsMenu(FluentWindow):
                 if self.weather_description and description:
                     self.weather_description.setText(description)
             feels_like_data = wd.get_weather_data('feels_like', weather_data)
-            if self.feels_like_temperature and feels_like_data and feels_like_data.lower() != 'none':
-                self.feels_like_temperature.setText(self.tr("体感温度: {feels_like_data}").format(feels_like_data=feels_like_data))
+            if (
+                self.feels_like_temperature
+                and feels_like_data
+                and feels_like_data.lower() != 'none'
+            ):
+                self.feels_like_temperature.setText(
+                    self.tr("体感温度: {feels_like_data}").format(feels_like_data=feels_like_data)
+                )
             elif self.feels_like_temperature:
                 self.feels_like_temperature.setText(self.tr("体感温度: --°"))
             if self.weather_icon_label and icon_code:
@@ -1650,8 +1783,8 @@ class SettingsMenu(FluentWindow):
             # air_quality_params = ['co', 'no2', 'o3', 'pm10', 'pm25', 'so2']
             # for param in air_quality_params:
             #     value = wd.get_weather_data(param, weather_data)
-                # if value and value.lower() != 'none':
-                #     logger.info(f"{param.upper()}: {value}")
+            # if value and value.lower() != 'none':
+            #     logger.info(f"{param.upper()}: {value}")
         except Exception as e:
             logger.error(f"更新天气详细信息失败: {e}")
 
@@ -1722,7 +1855,9 @@ class SettingsMenu(FluentWindow):
     def _create_alert_card(self, alert_data: dict) -> None:
         """创建单个预警卡片"""
         try:
-            ui_file_path = os.path.join(os.path.dirname(__file__), 'view', 'menu', 'weather_alert_card.ui')
+            ui_file_path = os.path.join(
+                os.path.dirname(__file__), 'view', 'menu', 'weather_alert_card.ui'
+            )
             card_widget = loadUi(ui_file_path)
             alert_icon = card_widget.findChild(QLabel, 'alert_icon')  # 预警强度图片
             alerts_label = card_widget.findChild(StrongBodyLabel, 'alerts_label')  # 预警类型
@@ -1731,7 +1866,9 @@ class SettingsMenu(FluentWindow):
                 if icon_path and os.path.exists(icon_path):
                     pixmap = QPixmap(icon_path)
                     if not pixmap.isNull():
-                        scaled_pixmap = pixmap.scaled(75, 75, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+                        scaled_pixmap = pixmap.scaled(
+                            75, 75, Qt.KeepAspectRatio, Qt.SmoothTransformation
+                        )
                         alert_icon.setPixmap(scaled_pixmap)
             if alerts_label:
                 alert_text = wd.simplify_alert_text(alert_data.get('type', self.tr('未知')))
@@ -1749,17 +1886,24 @@ class SettingsMenu(FluentWindow):
                 font = alerts_label.font()
                 font.setPointSize(font_size)
                 alerts_label.setFont(font)
-            card_widget.mousePressEvent = lambda event, data=alert_data: self._show_alert_detail(data)
+            card_widget.mousePressEvent = lambda event, data=alert_data: self._show_alert_detail(
+                data
+            )
             card_widget.setCursor(Qt.PointingHandCursor)  # 悬停光标
             # logger.debug(f"alerts_container_layout: hasattr={hasattr(self, 'alerts_container_layout')}, value={getattr(self, 'alerts_container_layout', None)}")
-            if hasattr(self, 'alerts_container_layout') and self.alerts_container_layout is not None:
+            if (
+                hasattr(self, 'alerts_container_layout')
+                and self.alerts_container_layout is not None
+            ):
                 # logger.debug(f"正在添加卡片: {alert_data.get('type', '未知预警')}")
                 self.alerts_container_layout.addWidget(card_widget)
                 self.alert_cards.append(card_widget)
                 card_widget.show()
                 self.alerts_container_layout.update()
             else:
-                logger.error(f"布局不存在或为空: hasattr={hasattr(self, 'alerts_container_layout')}, value={getattr(self, 'alerts_container_layout', None)}")
+                logger.error(
+                    f"布局不存在或为空: hasattr={hasattr(self, 'alerts_container_layout')}, value={getattr(self, 'alerts_container_layout', None)}"
+                )
         except Exception as e:
             logger.error(f"创建预警卡片失败: {e}")
             # import traceback
@@ -1768,7 +1912,9 @@ class SettingsMenu(FluentWindow):
     def _show_alert_detail(self, alert_data: dict) -> None:
         """预警详情msg_box"""
         try:
-            ui_file_path = os.path.join(os.path.dirname(__file__), 'view', 'menu', 'weather_alert_msgbox.ui')
+            ui_file_path = os.path.join(
+                os.path.dirname(__file__), 'view', 'menu', 'weather_alert_msgbox.ui'
+            )
             detail_widget = loadUi(ui_file_path)
             msgbox = MessageBoxBase(self)
             msgbox.viewLayout.addWidget(detail_widget)
@@ -1779,7 +1925,9 @@ class SettingsMenu(FluentWindow):
                 if icon_path and os.path.exists(icon_path):
                     pixmap = QPixmap(icon_path)
                     if not pixmap.isNull():
-                        scaled_pixmap = pixmap.scaled(32, 32, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+                        scaled_pixmap = pixmap.scaled(
+                            32, 32, Qt.KeepAspectRatio, Qt.SmoothTransformation
+                        )
                         alert_icon.setPixmap(scaled_pixmap)
             alert_title = detail_widget.findChild(QLabel, 'alertTitle')
             if alert_title:
@@ -1791,7 +1939,11 @@ class SettingsMenu(FluentWindow):
                 alert_title.setText(display_text)
             publish_time = detail_widget.findChild(QLabel, 'publishTime')
             if publish_time:
-                time_str = (alert_data.get('start_time') or alert_data.get('pub_time') or self.tr('未知时间'))
+                time_str = (
+                    alert_data.get('start_time')
+                    or alert_data.get('pub_time')
+                    or self.tr('未知时间')
+                )
                 if time_str and time_str != '未知时间':
                     try:
                         if 'T' in time_str:
@@ -1807,9 +1959,11 @@ class SettingsMenu(FluentWindow):
             msgbox.yesButton.setText(self.tr('确定'))
             msgbox.cancelButton.setText(self.tr('不再显示该类型预警'))
             msgbox.cancelButton.show()
+
             def on_hide_alert():
                 self._add_to_alert_exclude(alert_data)
                 msgbox.reject()
+
             msgbox.cancelButton.clicked.disconnect()
             msgbox.cancelButton.clicked.connect(on_hide_alert)
             msgbox.setWindowTitle(self.tr('天气预警详情'))
@@ -1830,10 +1984,7 @@ class SettingsMenu(FluentWindow):
                 severity_text = wd.get_severity_text(alert_data.get('severity', 'unknown'))
                 alert_title = f"{alert_text}{severity_text}预警"
             current_exclude = config_center.read_conf('Weather', 'alert_exclude', '')
-            if current_exclude:
-                new_exclude = f"{current_exclude} {alert_title}"
-            else:
-                new_exclude = alert_title
+            new_exclude = f"{current_exclude} {alert_title}" if current_exclude else alert_title
 
             config_center.write_conf('Weather', 'alert_exclude', new_exclude)
             self._refresh_alert_exclude_ui()
@@ -1864,7 +2015,7 @@ class SettingsMenu(FluentWindow):
                 else:
                     error_text = str(error_info.get('message', '获取天气数据失败'))
             else:
-                error_text = "获取天气数据失败" # 不存在但向后保底
+                error_text = "获取天气数据失败"  # 不存在但向后保底
             if hasattr(self, 'current_temperature') and self.current_temperature:
                 self.current_temperature.setText("-- °C")
             if hasattr(self, 'weather_description') and self.weather_description:
@@ -1878,7 +2029,9 @@ class SettingsMenu(FluentWindow):
     def _on_weather_api_changed(self, select_weather_api):
         """API切换处理"""
         try:
-            new_api = wd.weather_manager.api_config['weather_api_list'][select_weather_api.currentIndex()]
+            new_api = wd.weather_manager.api_config['weather_api_list'][
+                select_weather_api.currentIndex()
+            ]
             config_center.write_conf('Weather', 'api', new_api)
             config_center.write_conf('Weather', 'city', '0')
             self._hide_weather_alerts_section()
@@ -1889,7 +2042,7 @@ class SettingsMenu(FluentWindow):
                 content=self.tr('建议重新选择城市以获取准确的天气数据'),
                 target=select_weather_api,
                 parent=self.wtInterface,
-                isClosable=True
+                isClosable=True,
             )
             if hasattr(wd, 'on_weather_api_changed'):
                 wd.on_weather_api_changed(new_api)
@@ -1918,7 +2071,7 @@ class SettingsMenu(FluentWindow):
                 content=plugin_dict[plugin]['description'],
                 enable_settings=plugin_dict[plugin]['settings'],
                 url=plugin_dict[plugin].get('url', ''),
-                parent=self
+                parent=self,
             )
             self.all_plugin_cards.append(card)
             self.plugin_card_layout.addWidget(card)
@@ -1947,7 +2100,11 @@ class SettingsMenu(FluentWindow):
         """更新计数显示"""
         total_count = len(plugin_dict)
         enabled_count = len([p for p in plugin_dict if plugin_dict[p]['name'] in enabled_plugins])
-        self.plugin_count_label.setText(self.tr('已安装 {total_count} 个插件，已启用 {enabled_count} 个').format(total_count=total_count,enabled_count=enabled_count))
+        self.plugin_count_label.setText(
+            self.tr('已安装 {total_count} 个插件，已启用 {enabled_count} 个').format(
+                total_count=total_count, enabled_count=enabled_count
+            )
+        )
 
     def filter_plugins(self):
         """根据搜索条件和过滤器过滤插件"""
@@ -1970,18 +2127,21 @@ class SettingsMenu(FluentWindow):
                 plugin_name = card.title.lower()
                 plugin_author = card.authorLabel.text().lower() if card.authorLabel.text() else ''
                 plugin_desc = card.contentLabel.text().lower()
-                if not (search_text in plugin_name or search_text in plugin_author or search_text in plugin_desc):
+                if not (
+                    search_text in plugin_name
+                    or search_text in plugin_author
+                    or search_text in plugin_desc
+                ):
                     should_show = False
             if should_show and filter_type != '全部插件':
                 is_enabled = card.plugin_dir in enabled_plugins.get('enabled_plugins', [])
                 has_settings = bool(card.enable_settings)
-                if filter_type == self.filter_combo_items[1] and not is_enabled:
-                    should_show = False
-                elif filter_type == self.filter_combo_items[2] and is_enabled:
-                    should_show = False
-                elif filter_type == self.filter_combo_items[3] and not has_settings:
-                    should_show = False
-                elif filter_type == self.filter_combo_items[4] and has_settings:
+                if (
+                    (filter_type == self.filter_combo_items[1] and not is_enabled)
+                    or (filter_type == self.filter_combo_items[2] and is_enabled)
+                    or (filter_type == self.filter_combo_items[3] and not has_settings)
+                    or (filter_type == self.filter_combo_items[4] and has_settings)
+                ):
                     should_show = False
             card.setVisible(should_show)
             if should_show:
@@ -2007,16 +2167,13 @@ class SettingsMenu(FluentWindow):
             isClosable=True,
             position=InfoBarPosition.BOTTOM_RIGHT,
             duration=3000,
-            parent=self.window()
+            parent=self.window(),
         )
 
     def import_plugin_from_file(self):
         """从文件导入插件"""
         file_path, _ = QFileDialog.getOpenFileName(
-            self,
-            '选择插件文件',
-            '',
-            'ZIP文件 (*.zip);;JSON配置文件 (*.json);;所有文件 (*)'
+            self, '选择插件文件', '', 'ZIP文件 (*.zip);;JSON配置文件 (*.json);;所有文件 (*)'
         )
         if not file_path:
             return
@@ -2027,7 +2184,9 @@ class SettingsMenu(FluentWindow):
                 self._import_from_zip(file_path)
 
         except Exception as e:
-            logger.error(f"插件导入失败 - 未知错误: {file_path}, 错误类型: {type(e).__name__}, 错误详情: {str(e)}")
+            logger.error(
+                f"插件导入失败 - 未知错误: {file_path}, 错误类型: {type(e).__name__}, 错误详情: {e!s}"
+            )
             self._show_error_dialog(self.tr('导入插件时发生错误：{e}').format(e=f"{e}"))
 
     def _import_from_plugin_json(self, raw_json_file_path: str):
@@ -2042,8 +2201,10 @@ class SettingsMenu(FluentWindow):
             if target_dir.exists():
                 reply = MessageBox(
                     self.tr('插件已存在'),
-                    self.tr('插件 "{plugin_name}" 已存在，是否覆盖？').format(plugin_name=plugin_name),
-                    self
+                    self.tr('插件 "{plugin_name}" 已存在，是否覆盖？').format(
+                        plugin_name=plugin_name
+                    ),
+                    self,
                 ).exec_()
                 if reply != MessageBox.Yes:
                     return
@@ -2052,18 +2213,22 @@ class SettingsMenu(FluentWindow):
             self.refresh_plugin_list()
             w = MessageBox(
                 self.tr('导入成功'),
-                self.tr('插件 "{plugin_name}" 导入成功！\n重启应用后生效。').format(plugin_name=plugin_name),
-                self
+                self.tr('插件 "{plugin_name}" 导入成功！\n重启应用后生效。').format(
+                    plugin_name=plugin_name
+                ),
+                self,
             )
             w.yesButton.setText(self.tr('好'))
             w.cancelButton.hide()
             w.exec_()
 
         except json.JSONDecodeError as e:
-            logger.error(f"插件导入失败 - JSON配置文件格式错误: {raw_json_file_path}, 错误详情: {str(e)}")
+            logger.error(
+                f"插件导入失败 - JSON配置文件格式错误: {raw_json_file_path}, 错误详情: {e!s}"
+            )
             self._show_error_dialog(self.tr('插件配置文件格式错误'))
         except Exception as e:
-            logger.error(f"插件导入失败 - 文件夹复制错误: {raw_json_file_path}, 错误详情: {str(e)}")
+            logger.error(f"插件导入失败 - 文件夹复制错误: {raw_json_file_path}, 错误详情: {e!s}")
             self._show_error_dialog(self.tr('复制插件文件夹时发生错误：{e}').format(e=f"{e}"))
 
     def _import_from_zip(self, zip_file_path: str):
@@ -2080,8 +2245,10 @@ class SettingsMenu(FluentWindow):
                 if os.path.exists(target_dir):
                     reply = MessageBox(
                         self.tr('插件已存在'),
-                        self.tr('插件 "{plugin_name}" 已存在，是否覆盖？').format(plugin_name=plugin_name),
-                        self
+                        self.tr('插件 "{plugin_name}" 已存在，是否覆盖？').format(
+                            plugin_name=plugin_name
+                        ),
+                        self,
                     ).exec_()
                     if reply != MessageBox.Yes:
                         return
@@ -2090,24 +2257,27 @@ class SettingsMenu(FluentWindow):
                 self.refresh_plugin_list()
                 w = MessageBox(
                     self.tr('导入成功'),
-                    self.tr('插件 "{plugin_name}" 导入成功！\n重启应用后生效。').format(plugin_name=plugin_name),
-                    self
+                    self.tr('插件 "{plugin_name}" 导入成功！\n重启应用后生效。').format(
+                        plugin_name=plugin_name
+                    ),
+                    self,
                 )
                 w.yesButton.setText(self.tr('好'))
                 w.cancelButton.hide()
                 w.exec_()
 
         except zipfile.BadZipFile as e:
-            logger.error(f"插件导入失败 - 无效的ZIP文件: {zip_file_path}, 错误详情: {str(e)}")
+            logger.error(f"插件导入失败 - 无效的ZIP文件: {zip_file_path}, 错误详情: {e!s}")
             self._show_error_dialog(self.tr('无效的ZIP文件'))
         except json.JSONDecodeError as e:
-            logger.error(f"插件导入失败 - JSON配置文件格式错误: {zip_file_path}, 错误详情: {str(e)}")
+            logger.error(f"插件导入失败 - JSON配置文件格式错误: {zip_file_path}, 错误详情: {e!s}")
             self._show_error_dialog(self.tr('插件配置文件格式错误'))
 
     def _show_error_dialog(self, message):
         w = MessageBox(self.tr('错误'), message, self)
         w.yesButton.setText(self.tr('好'))
-        w.yesButton.setStyleSheet("""
+        w.yesButton.setStyleSheet(
+            """
             PushButton{
                 border-radius: 5px;
                 padding: 5px 12px 6px 12px;
@@ -2129,18 +2299,19 @@ class SettingsMenu(FluentWindow):
                 background-color: #DB5359;
                 border: 1px solid #DB5359;
             }
-        """)
+        """
+        )
         w.cancelButton.hide()
         w.exec_()
 
     def setup_help_interface(self):
         open_by_browser = self.findChild(PushButton, 'open_by_browser')
         open_by_browser.setIcon(fIcon.LINK)
-        open_by_browser.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(
-            self.tr(
-            'https://classwidgets.rinlit.cn/docs-user/'
+        open_by_browser.clicked.connect(
+            lambda: QDesktopServices.openUrl(
+                QUrl(self.tr('https://classwidgets.rinlit.cn/docs-user/'))
             )
-        )))
+        )
 
     def setup_sound_interface(self):
         sd_scroll = self.findChild(SmoothScrollArea, 'sd_scroll')  # 触摸屏适配
@@ -2148,27 +2319,37 @@ class SettingsMenu(FluentWindow):
 
         switch_enable_toast = self.findChild(SwitchButton, 'switch_enable_attend')
         switch_enable_toast.setChecked(int(config_center.read_conf('Toast', 'attend_class')))
-        switch_enable_toast.checkedChanged.connect(lambda checked: switch_checked('Toast', 'attend_class', checked))
+        switch_enable_toast.checkedChanged.connect(
+            lambda checked: switch_checked('Toast', 'attend_class', checked)
+        )
         # 上课提醒开关
 
         switch_enable_finish = self.findChild(SwitchButton, 'switch_enable_finish')
         switch_enable_finish.setChecked(int(config_center.read_conf('Toast', 'finish_class')))
-        switch_enable_finish.checkedChanged.connect(lambda checked: switch_checked('Toast', 'finish_class', checked))
+        switch_enable_finish.checkedChanged.connect(
+            lambda checked: switch_checked('Toast', 'finish_class', checked)
+        )
         # 下课提醒开关
 
         switch_enable_finish = self.findChild(SwitchButton, 'switch_enable_schoolout')
         switch_enable_finish.setChecked(int(config_center.read_conf('Toast', 'after_school')))
-        switch_enable_finish.checkedChanged.connect(lambda checked: switch_checked('Toast', 'after_school', checked))
+        switch_enable_finish.checkedChanged.connect(
+            lambda checked: switch_checked('Toast', 'after_school', checked)
+        )
         # 放学提醒开关
 
         switch_enable_prepare = self.findChild(SwitchButton, 'switch_enable_prepare')
         switch_enable_prepare.setChecked(int(config_center.read_conf('Toast', 'prepare_class')))
-        switch_enable_prepare.checkedChanged.connect(lambda checked: switch_checked('Toast', 'prepare_class', checked))
+        switch_enable_prepare.checkedChanged.connect(
+            lambda checked: switch_checked('Toast', 'prepare_class', checked)
+        )
         # 预备铃开关
 
         switch_enable_pin_toast = self.findChild(SwitchButton, 'switch_enable_pin_toast')
         switch_enable_pin_toast.setChecked(int(config_center.read_conf('Toast', 'pin_on_top')))
-        switch_enable_pin_toast.checkedChanged.connect(lambda checked: switch_checked('Toast', 'pin_on_top', checked))
+        switch_enable_pin_toast.checkedChanged.connect(
+            lambda checked: switch_checked('Toast', 'pin_on_top', checked)
+        )
         # 置顶开关
 
         slider_volume = self.findChild(Slider, 'slider_volume')
@@ -2178,22 +2359,48 @@ class SettingsMenu(FluentWindow):
         preview_toast_button = self.findChild(PrimaryDropDownPushButton, 'preview')
 
         pre_toast_menu = RoundMenu(parent=preview_toast_button)
-        pre_toast_menu.addActions([
-            Action(fIcon.EDUCATION, self.tr('上课提醒'),
-                   triggered=lambda: tip_toast.push_notification(1, lesson_name=self.tr('信息技术'))),
-            Action(fIcon.CAFE, self.tr('下课提醒'),
-                   triggered=lambda: tip_toast.push_notification(0, lesson_name=self.tr('信息技术'))),
-            Action(fIcon.BOOK_SHELF, self.tr('预备提醒'),
-                   triggered=lambda: tip_toast.push_notification(3, lesson_name=self.tr('信息技术'))),
-            Action(fIcon.CODE, self.tr('其他提醒'),
-                   triggered=lambda: tip_toast.push_notification(4, title=self.tr('通知'), subtitle=self.tr('测试通知示例'),
-                                                                 content=self.tr('这是一条测试通知ヾ(≧▽≦*)o')))
-        ])
+        pre_toast_menu.addActions(
+            [
+                Action(
+                    fIcon.EDUCATION,
+                    self.tr('上课提醒'),
+                    triggered=lambda: tip_toast.push_notification(
+                        1, lesson_name=self.tr('信息技术')
+                    ),
+                ),
+                Action(
+                    fIcon.CAFE,
+                    self.tr('下课提醒'),
+                    triggered=lambda: tip_toast.push_notification(
+                        0, lesson_name=self.tr('信息技术')
+                    ),
+                ),
+                Action(
+                    fIcon.BOOK_SHELF,
+                    self.tr('预备提醒'),
+                    triggered=lambda: tip_toast.push_notification(
+                        3, lesson_name=self.tr('信息技术')
+                    ),
+                ),
+                Action(
+                    fIcon.CODE,
+                    self.tr('其他提醒'),
+                    triggered=lambda: tip_toast.push_notification(
+                        4,
+                        title=self.tr('通知'),
+                        subtitle=self.tr('测试通知示例'),
+                        content=self.tr('这是一条测试通知ヾ(≧▽≦*)o'),
+                    ),
+                ),
+            ]
+        )
         preview_toast_button.setMenu(pre_toast_menu)  # 预览通知栏
 
         switch_wave_effect = self.findChild(SwitchButton, 'switch_enable_wave')
         switch_wave_effect.setChecked(int(config_center.read_conf('Toast', 'wave')))
-        switch_wave_effect.checkedChanged.connect(lambda checked: switch_checked('Toast', 'wave', checked))  # 波纹开关
+        switch_wave_effect.checkedChanged.connect(
+            lambda checked: switch_checked('Toast', 'wave', checked)
+        )  # 波纹开关
 
         spin_prepare_time = self.findChild(SpinBox, 'spin_prepare_class')
         spin_prepare_time.setValue(int(config_center.read_conf('Toast', 'prepare_minutes')))
@@ -2203,7 +2410,7 @@ class SettingsMenu(FluentWindow):
         tts_settings = self.findChild(PushButton, 'TTS_PushButton')
         tts_settings.clicked.connect(self.open_tts_settings)
         self.available_voices = None
-        self.current_loaded_engine = config_center.read_conf('TTS', 'engine') # 加载的TTS引擎
+        self.current_loaded_engine = config_center.read_conf('TTS', 'engine')  # 加载的TTS引擎
 
         self.voice_selector = None
         self.switch_enable_TTS = None
@@ -2211,15 +2418,19 @@ class SettingsMenu(FluentWindow):
 
     def available_voices_cnt(self, voices):
         self.available_voices = voices
-        if hasattr(self, 'voice_selector') and self.voice_selector and hasattr(self, 'update_tts_voices'):
+        if (
+            hasattr(self, 'voice_selector')
+            and self.voice_selector
+            and hasattr(self, 'update_tts_voices')
+        ):
             self.update_tts_voices(self.available_voices)
-        self.switch_enable_TTS.setEnabled(True if voices else False)
-        self.voice_selector.setEnabled(True if voices else False)
+        self.switch_enable_TTS.setEnabled(bool(voices))
+        self.voice_selector.setEnabled(bool(voices))
 
-    class TTSSettings(MessageBoxBase): # TTS设置页
+    class TTSSettings(MessageBoxBase):  # TTS设置页
         def __init__(self, parent=None):
             super().__init__(parent)
-            self.parent_menu = parent # 保存父菜单的引用
+            self.parent_menu = parent  # 保存父菜单的引用
             self.temp_widget = QWidget()
             ui_path = CW_HOME / 'view/menu/tts_settings.ui'
             loadUi(ui_path, self.temp_widget)
@@ -2227,7 +2438,7 @@ class SettingsMenu(FluentWindow):
 
             self.viewLayout.setContentsMargins(0, 0, 0, 0)
             self.cancelButton.hide()
-            self.widget.setMinimumWidth(parent.width()//3*2)
+            self.widget.setMinimumWidth(parent.width() // 3 * 2)
             self.widget.setMinimumHeight(parent.height())
             switch_enable_TTS = self.widget.findChild(SwitchButton, 'switch_enable_tts')
             slider_speed_tts = self.widget.findChild(Slider, 'slider_tts_speed')
@@ -2260,21 +2471,33 @@ class SettingsMenu(FluentWindow):
             parent.voice_language_selector = self.widget.findChild(ComboBox, 'voice_language')
             if parent.voice_language_selector:
                 parent.setup_voice_language_selector()
-                parent.voice_language_selector.currentTextChanged.connect(parent.on_voice_language_changed)
+                parent.voice_language_selector.currentTextChanged.connect(
+                    parent.on_voice_language_changed
+                )
 
             self.tts_vocab_button = self.widget.findChild(PushButton, 'tts_vocab_button')
+
             def show_vocab_note():
-                w = MessageBox(self.tr('小语法?'),
-                               self.tr('可以使用以下占位符来动态插入信息：\n'\
-                               '- `{lesson_name}`: 开始&结束&下节的课程名(例如：信息技术)\n'\
-                               '- `{minutes}`: 分钟数 (例如：5) *其他\n'\
-                               '- `{title}`: 通知标题 (例如：重要通知) *其他\n'\
-                               '- `{content}`: 通知内容 (例如：这是一条测试通知) *其他\n'), self)
+                w = MessageBox(
+                    self.tr('小语法?'),
+                    self.tr(
+                        '可以使用以下占位符来动态插入信息：\n'
+                        '- `{lesson_name}`: 开始&结束&下节的课程名(例如：信息技术)\n'
+                        '- `{minutes}`: 分钟数 (例如：5) *其他\n'
+                        '- `{title}`: 通知标题 (例如：重要通知) *其他\n'
+                        '- `{content}`: 通知内容 (例如：这是一条测试通知) *其他\n'
+                    ),
+                    self,
+                )
                 w.cancelButton.hide()
                 w.exec()
+
             self.tts_vocab_button.clicked.connect(show_vocab_note)
 
-            if parent.available_voices is not None and parent.current_loaded_engine == parent.engine_selector.currentData():
+            if (
+                parent.available_voices is not None
+                and parent.current_loaded_engine == parent.engine_selector.currentData()
+            ):
                 parent.update_tts_voices(parent.available_voices)
             else:
                 # 启动由 open_tts_settings 处理
@@ -2284,54 +2507,88 @@ class SettingsMenu(FluentWindow):
 
             text_attend_class = self.widget.findChild(LineEdit, 'text_attend_class')
             text_attend_class.setText(config_center.read_conf('TTS', 'attend_class'))
-            text_attend_class.textChanged.connect(lambda: config_center.write_conf('TTS', 'attend_class', text_attend_class.text()))
+            text_attend_class.textChanged.connect(
+                lambda: config_center.write_conf('TTS', 'attend_class', text_attend_class.text())
+            )
 
             text_prepare_class = self.widget.findChild(LineEdit, 'text_prepare_class')
             text_prepare_class.setText(config_center.read_conf('TTS', 'prepare_class'))
-            text_prepare_class.textChanged.connect(lambda: config_center.write_conf('TTS', 'prepare_class', text_prepare_class.text()))
+            text_prepare_class.textChanged.connect(
+                lambda: config_center.write_conf('TTS', 'prepare_class', text_prepare_class.text())
+            )
 
             text_finish_class = self.widget.findChild(LineEdit, 'text_finish_class')
             text_finish_class.setText(config_center.read_conf('TTS', 'finish_class'))
-            text_finish_class.textChanged.connect(lambda: config_center.write_conf('TTS', 'finish_class', text_finish_class.text()))
+            text_finish_class.textChanged.connect(
+                lambda: config_center.write_conf('TTS', 'finish_class', text_finish_class.text())
+            )
 
             text_after_school = self.widget.findChild(LineEdit, 'text_after_school')
             text_after_school.setText(config_center.read_conf('TTS', 'after_school'))
-            text_after_school.textChanged.connect(lambda: config_center.write_conf('TTS', 'after_school', text_after_school.text()))
+            text_after_school.textChanged.connect(
+                lambda: config_center.write_conf('TTS', 'after_school', text_after_school.text())
+            )
 
             text_notification = self.widget.findChild(LineEdit, 'text_notification')
             text_notification.setText(config_center.read_conf('TTS', 'otherwise'))
-            text_notification.textChanged.connect(lambda: config_center.write_conf('TTS', 'otherwise', text_notification.text()))
+            text_notification.textChanged.connect(
+                lambda: config_center.write_conf('TTS', 'otherwise', text_notification.text())
+            )
 
             # 预览
             preview_tts_button = self.widget.findChild(PrimaryDropDownPushButton, 'preview')
             preview_tts_menu = RoundMenu(parent=preview_tts_button)
-            preview_tts_menu.addActions([
-                Action(fIcon.EDUCATION, self.tr('上课提醒'), triggered=lambda: self.play_tts_preview('attend_class')),
-                Action(fIcon.CAFE, self.tr('下课提醒'), triggered=lambda: self.play_tts_preview('finish_class')),
-                Action(fIcon.BOOK_SHELF, self.tr('预备提醒'), triggered=lambda: self.play_tts_preview('prepare_class')),
-                Action(fIcon.EMBED, self.tr('放学提醒'), triggered=lambda: self.play_tts_preview('after_school')),
-                Action(fIcon.CODE, self.tr('其他提醒'), triggered=lambda: self.play_tts_preview('otherwise'))
-            ])
+            preview_tts_menu.addActions(
+                [
+                    Action(
+                        fIcon.EDUCATION,
+                        self.tr('上课提醒'),
+                        triggered=lambda: self.play_tts_preview('attend_class'),
+                    ),
+                    Action(
+                        fIcon.CAFE,
+                        self.tr('下课提醒'),
+                        triggered=lambda: self.play_tts_preview('finish_class'),
+                    ),
+                    Action(
+                        fIcon.BOOK_SHELF,
+                        self.tr('预备提醒'),
+                        triggered=lambda: self.play_tts_preview('prepare_class'),
+                    ),
+                    Action(
+                        fIcon.EMBED,
+                        self.tr('放学提醒'),
+                        triggered=lambda: self.play_tts_preview('after_school'),
+                    ),
+                    Action(
+                        fIcon.CODE,
+                        self.tr('其他提醒'),
+                        triggered=lambda: self.play_tts_preview('otherwise'),
+                    ),
+                ]
+            )
             preview_tts_button.setMenu(preview_tts_menu)
 
         def play_tts_preview(self, text_type):
             text_template = config_center.read_conf('TTS', text_type)
             from collections import defaultdict
-            format_values = defaultdict(str, {
-                'lesson_name': self.tr('信息技术'),
-                'minutes': '5',
-                'title': self.tr('通知'),
-                'content': self.tr('这是一条测试通知ヾ(≧▽≦*)o')
-            })
-            if text_type == 'attend_class':
-                text_to_speak = text_template.format_map(format_values)
-            elif text_type == 'finish_class':
-                text_to_speak = text_template.format_map(format_values)
-            elif text_type == 'prepare_class':
-                text_to_speak = text_template.format_map(format_values)
-            elif text_type == 'after_school':
-                text_to_speak = text_template.format_map(format_values)
-            elif text_type == 'otherwise':
+
+            format_values = defaultdict(
+                str,
+                {
+                    'lesson_name': self.tr('信息技术'),
+                    'minutes': '5',
+                    'title': self.tr('通知'),
+                    'content': self.tr('这是一条测试通知ヾ(≧▽≦*)o'),
+                },
+            )
+            if text_type in {
+                'attend_class',
+                'finish_class',
+                'prepare_class',
+                'after_school',
+                'otherwise',
+            }:
                 text_to_speak = text_template.format_map(format_values)
             else:
                 text_to_speak = text_template.format_map(format_values)
@@ -2341,42 +2598,47 @@ class SettingsMenu(FluentWindow):
             try:
                 current_engine = self.parent_menu.engine_selector.currentData()
                 current_voice = None
-                if self.parent_menu.voice_selector and self.parent_menu.voice_selector.currentData():
+                if (
+                    self.parent_menu.voice_selector
+                    and self.parent_menu.voice_selector.currentData()
+                ):
                     current_voice = self.parent_menu.voice_selector.currentData()
 
-                if hasattr(self, 'tts_preview_thread') and self.tts_preview_thread and self.tts_preview_thread.isRunning():
+                if (
+                    hasattr(self, 'tts_preview_thread')
+                    and self.tts_preview_thread
+                    and self.tts_preview_thread.isRunning()
+                ):
                     self.tts_preview_thread.requestInterruption()
                     self.tts_preview_thread.quit()
                     if not self.tts_preview_thread.wait(1000):
                         logger.warning("旧TTS预览线程未能在超时时间内退出，将在后台继续运行")
                 self.tts_preview_thread = TTSPreviewThread(
-                    text=text_to_speak,
-                    engine=current_engine,
-                    voice=current_voice,
-                    parent=self
+                    text=text_to_speak, engine=current_engine, voice=current_voice, parent=self
                 )
 
                 self.tts_preview_thread.previewError.connect(self.handle_tts_preview_error)
                 self.tts_preview_thread.start()
 
             except Exception as e:
-                logger.error(f"启动TTS预览线程失败: {str(e)}")
+                logger.error(f"启动TTS预览线程失败: {e!s}")
                 from qfluentwidgets import MessageBox
+
                 MessageBox(
-                    self.tr("TTS预览失败"),
-                    self.tr("启动TTS预览时出错: {e}").format(e=f"{e}"),
-                    self
+                    self.tr("TTS预览失败"), self.tr("启动TTS预览时出错: {e}").format(e=f"{e}"), self
                 ).exec()
 
         def handle_tts_preview_error(self, error_message):
             logger.error(f"TTS生成预览失败: {error_message}")
             from qfluentwidgets import MessageBox
+
             MessageBox(
                 self.tr("TTS生成失败"),
-                self.tr("生成或播放语音时出错: {error_message}").format(error_message=error_message),
-                self
+                self.tr("生成或播放语音时出错: {error_message}").format(
+                    error_message=error_message
+                ),
+                self,
             ).exec()
-
 
     def open_tts_settings(self):
         if not hasattr(self, 'TTSSettingsDialog') or not self.TTSSettingsDialog:
@@ -2384,7 +2646,11 @@ class SettingsMenu(FluentWindow):
         current_selected_engine_in_selector = self.engine_selector.currentData()
         tts_enabled = config_center.read_conf('TTS', 'enable') == '1'
 
-        tts_dialog_widget = self.TTSSettingsDialog.widget if hasattr(self, 'TTSSettingsDialog') and self.TTSSettingsDialog else None
+        tts_dialog_widget = (
+            self.TTSSettingsDialog.widget
+            if hasattr(self, 'TTSSettingsDialog') and self.TTSSettingsDialog
+            else None
+        )
         if tts_dialog_widget:
             preview_tts_button = tts_dialog_widget.findChild(PrimaryDropDownPushButton, 'preview')
             if preview_tts_button:
@@ -2404,7 +2670,9 @@ class SettingsMenu(FluentWindow):
         self.toggle_tts_settings(tts_enabled)
         self.TTSSettingsDialog.show()
         self.TTSSettingsDialog.exec()
-        logger.debug(f"加载引擎: {self.current_loaded_engine},{current_selected_engine_in_selector}(选择器)")
+        logger.debug(
+            f"加载引擎: {self.current_loaded_engine},{current_selected_engine_in_selector}(选择器)"
+        )
         if tts_enabled:
             self.load_tts_voices_for_engine(current_selected_engine_in_selector)
         else:
@@ -2418,7 +2686,7 @@ class SettingsMenu(FluentWindow):
         if selected_engine_key and selected_engine_key != self.current_loaded_engine:
             logger.debug(f"TTS引擎被更改,尝试更新列表: {selected_engine_key}")
             config_center.write_conf('TTS', 'engine', selected_engine_key)
-            self.current_loaded_engine = selected_engine_key # 更新当前加载的引擎
+            self.current_loaded_engine = selected_engine_key  # 更新当前加载的引擎
             current_language = None
             if hasattr(self, 'voice_language_selector') and self.voice_language_selector:
                 current_language = self.voice_language_selector.currentData()
@@ -2441,7 +2709,7 @@ class SettingsMenu(FluentWindow):
         if hasattr(self, 'voice_language_selector') and self.voice_language_selector:
             self.voice_language_selector.setEnabled(False)
         if hasattr(self, 'TTSSettingsDialog') and self.TTSSettingsDialog.isVisible():
-            self.switch_enable_TTS.setEnabled(False) # 临时禁用TTS开关
+            self.switch_enable_TTS.setEnabled(False)  # 临时禁用TTS开关
             tts_dialog_widget = self.TTSSettingsDialog.widget
             preview_tts_button = tts_dialog_widget.findChild(PrimaryDropDownPushButton, 'preview')
             if preview_tts_button:
@@ -2456,9 +2724,20 @@ class SettingsMenu(FluentWindow):
 
         self.current_loaded_engine = engine_key
         self.available_voices = None
-        self.tts_voice_loader_thread = TTSVoiceLoaderThread(engine_filter=engine_key, language_filter=language_filter)
-        self.tts_voice_loader_thread.voicesLoaded.connect(lambda voices: self.available_voices_cnt(voices) or self.switch_enable_TTS.setEnabled(True) or self._enable_language_selector() or self._enable_preview_button())
-        self.tts_voice_loader_thread.errorOccurred.connect(lambda error: self.handle_tts_load_error(error) or self.switch_enable_TTS.setEnabled(True) or self._enable_language_selector())
+        self.tts_voice_loader_thread = TTSVoiceLoaderThread(
+            engine_filter=engine_key, language_filter=language_filter
+        )
+        self.tts_voice_loader_thread.voicesLoaded.connect(
+            lambda voices: self.available_voices_cnt(voices)
+            or self.switch_enable_TTS.setEnabled(True)
+            or self._enable_language_selector()
+            or self._enable_preview_button()
+        )
+        self.tts_voice_loader_thread.errorOccurred.connect(
+            lambda error: self.handle_tts_load_error(error)
+            or self.switch_enable_TTS.setEnabled(True)
+            or self._enable_language_selector()
+        )
         self.tts_voice_loader_thread.start()
 
     def populate_tts_engines(self):
@@ -2476,7 +2755,9 @@ class SettingsMenu(FluentWindow):
                 if self.engine_selector.count() > 0:
                     self.engine_selector.setCurrentIndex(0)
                     config_center.write_conf('TTS', 'engine', self.engine_selector.currentData())
-                    logger.warning(f"当前系统不支持pyttsx3，已自动切换到引擎: {self.engine_selector.currentData()}")
+                    logger.warning(
+                        f"当前系统不支持pyttsx3，已自动切换到引擎: {self.engine_selector.currentData()}"
+                    )
                 else:
                     logger.error("没有可用的TTS引擎!")
             else:
@@ -2496,22 +2777,36 @@ class SettingsMenu(FluentWindow):
         title = self.tr("引擎小提示")
         message = ""
         if current_engine_key == "edge":
-            message = (self.tr("Edge TTS 需要联网才能正常发声哦~\n"
-                       "请确保网络连接,不然会说不出话来(>﹏<)\n"
-                       "* 可能会有一定的延迟,耐心等待一下~"))
-            w = MessageBox(title, message, self.TTSSettingsDialog if hasattr(self, 'TTSSettingsDialog') and self.TTSSettingsDialog else self.parent_menu)
+            message = self.tr(
+                "Edge TTS 需要联网才能正常发声哦~\n"
+                "请确保网络连接,不然会说不出话来(>﹏<)\n"
+                "* 可能会有一定的延迟,耐心等待一下~"
+            )
+            w = MessageBox(
+                title,
+                message,
+                (
+                    self.TTSSettingsDialog
+                    if hasattr(self, 'TTSSettingsDialog') and self.TTSSettingsDialog
+                    else self.parent_menu
+                ),
+            )
             w.yesButton.setText(self.tr('知道啦~'))
             w.cancelButton.hide()
             w.show()
         elif current_engine_key == "pyttsx3" and platform.system() == "Windows":
+
             class CustomMessageBox(MessageBoxBase):
                 def __init__(self, parent=None):
                     super().__init__(parent)
                     self.titleLabel = StrongBodyLabel(title, self)
                     self.contentLabel = BodyLabel(
-                        self.tr("系统 TTS（pyttsx3）用的是系统自带的语音服务噢~\n"
-                        "您可以在系统设置里添加更多语音(*≧▽≦)"),
-                        self)
+                        self.tr(
+                            "系统 TTS（pyttsx3）用的是系统自带的语音服务噢~\n"
+                            "您可以在系统设置里添加更多语音(*≧▽≦)"
+                        ),
+                        self,
+                    )
                     self.hyperlinkLabel = HyperlinkLabel(self.tr("打开Windows语音设置"), self)
                     self.hyperlinkLabel.clicked.connect(self._open_settings)
                     self.viewLayout.addWidget(self.titleLabel)
@@ -2519,22 +2814,41 @@ class SettingsMenu(FluentWindow):
                     self.viewLayout.addWidget(self.hyperlinkLabel)
                     self.yesButton.setText(self.tr('知道啦~'))
                     self.cancelButton.hide()
+
                 def _open_settings(self):
-                    QDesktopServices.openUrl(QUrl("file:///C:/Windows/System32/Speech/SpeechUX/sapi.cpl"))
-            w = CustomMessageBox(self.TTSSettingsDialog if hasattr(self, 'TTSSettingsDialog') and self.TTSSettingsDialog else self.parent_menu)
+                    QDesktopServices.openUrl(
+                        QUrl("file:///C:/Windows/System32/Speech/SpeechUX/sapi.cpl")
+                    )
+
+            w = CustomMessageBox(
+                self.TTSSettingsDialog
+                if hasattr(self, 'TTSSettingsDialog') and self.TTSSettingsDialog
+                else self.parent_menu
+            )
             w.exec()
         else:
             message = self.tr("这个语音引擎还没有提示信息呢~(・ω<)")
-            w = MessageBox(title, message, self.TTSSettingsDialog if hasattr(self, 'TTSSettingsDialog') and self.TTSSettingsDialog else self.parent_menu)
+            w = MessageBox(
+                title,
+                message,
+                (
+                    self.TTSSettingsDialog
+                    if hasattr(self, 'TTSSettingsDialog') and self.TTSSettingsDialog
+                    else self.parent_menu
+                ),
+            )
             w.yesButton.setText(self.tr('知道啦~'))
             w.cancelButton.hide()
             w.show()
 
-
     def toggle_tts_settings(self, checked):
         switch_checked('TTS', 'enable', checked)
 
-        tts_dialog_widget = self.TTSSettingsDialog.widget if hasattr(self, 'TTSSettingsDialog') and self.TTSSettingsDialog else None
+        tts_dialog_widget = (
+            self.TTSSettingsDialog.widget
+            if hasattr(self, 'TTSSettingsDialog') and self.TTSSettingsDialog
+            else None
+        )
         if not tts_dialog_widget:
             return
         card_tts_speed = tts_dialog_widget.findChild(CardWidget, 'CardWidget_7')
@@ -2546,7 +2860,11 @@ class SettingsMenu(FluentWindow):
 
         if checked:
             self.engine_selector.setEnabled(True)
-            if self.voice_selector.itemText(0) in [self.tr("未启用"),self.tr("加载失败"),self.tr( "无可用语音")] or self.voice_selector.count() == 0:
+            if (
+                self.voice_selector.itemText(0)
+                in [self.tr("未启用"), self.tr("加载失败"), self.tr("无可用语音")]
+                or self.voice_selector.count() == 0
+            ):
                 self.voice_selector.clear()
                 self.voice_selector.addItem(self.tr("加载中..."), userData=None)
             self.voice_selector.setEnabled(False)
@@ -2605,11 +2923,12 @@ class SettingsMenu(FluentWindow):
             logger.warning("未找到可用的TTS语音引擎或语音包")
             if voice_selector.count() == 0 or voice_selector.itemText(0) == self.tr("加载中..."):
                 voice_selector.clear()
-                voice_selector.addItem(self.tr("无可用语音") , userData=None)
+                voice_selector.addItem(self.tr("无可用语音"), userData=None)
                 voice_selector.setEnabled(False)
             switch_enable_TTS.setEnabled(True)
             card_tts_speed = self.findChild(CardWidget, 'CardWidget_7')
-            if card_tts_speed: card_tts_speed.setVisible(False)
+            if card_tts_speed:
+                card_tts_speed.setVisible(False)
             return  # 没有可用语音时直接返回，不需要重新连接信号
 
         for voice in available_voices:
@@ -2626,21 +2945,20 @@ class SettingsMenu(FluentWindow):
             if index_to_select != -1:
                 voice_selector.setCurrentIndex(index_to_select)
                 config_center.write_conf('TTS', 'voice_id', current_voice_id)
+            elif available_voices:
+                voice_selector.setCurrentIndex(0)
+                first_voice_id = available_voices[0]['id']
+                config_center.write_conf('TTS', 'voice_id', first_voice_id)
             else:
-                if available_voices:
-                    voice_selector.setCurrentIndex(0)
-                    first_voice_id = available_voices[0]['id']
-                    config_center.write_conf('TTS', 'voice_id', first_voice_id)
-                else:
-                    voice_selector.setEnabled(False)
-                    switch_enable_TTS.setEnabled(False)
-        elif available_voices: # 默认选择
+                voice_selector.setEnabled(False)
+                switch_enable_TTS.setEnabled(False)
+        elif available_voices:  # 默认选择
             voice_selector.setCurrentIndex(0)
             first_voice_id = available_voices[0]['id']
             config_center.write_conf('TTS', 'voice_id', first_voice_id)
-        else: # 理论不会到这里
-             voice_selector.setEnabled(False)
-             switch_enable_TTS.setEnabled(False)
+        else:  # 理论不会到这里
+            voice_selector.setEnabled(False)
+            switch_enable_TTS.setEnabled(False)
 
         voice_selector.setEnabled(True)
         try:
@@ -2685,7 +3003,11 @@ class SettingsMenu(FluentWindow):
 
     def _enable_preview_button(self):
         """启用预览按钮"""
-        if hasattr(self, 'TTSSettingsDialog') and self.TTSSettingsDialog and self.TTSSettingsDialog.isVisible():
+        if (
+            hasattr(self, 'TTSSettingsDialog')
+            and self.TTSSettingsDialog
+            and self.TTSSettingsDialog.isVisible()
+        ):
             tts_dialog_widget = self.TTSSettingsDialog.widget
             preview_tts_button = tts_dialog_widget.findChild(PrimaryDropDownPushButton, 'preview')
             if preview_tts_button and config_center.read_conf('TTS', 'enable') == '1':
@@ -2700,7 +3022,11 @@ class SettingsMenu(FluentWindow):
             return
 
         selected_language = self.voice_language_selector.currentData()
-        current_engine = self.engine_selector.currentData() if hasattr(self, 'engine_selector') and self.engine_selector else None
+        current_engine = (
+            self.engine_selector.currentData()
+            if hasattr(self, 'engine_selector') and self.engine_selector
+            else None
+        )
 
         # 保存语言配置
         config_center.write_conf('TTS', 'language', selected_language or '')
@@ -2719,14 +3045,21 @@ class SettingsMenu(FluentWindow):
             return
 
         voice_selector = self.voice_selector
-        switch_enable_TTS = self.switch_enable_TTS
         voice_selector.clear()
         voice_selector.addItem(self.tr("加载失败"), userData=None)
         voice_selector.setEnabled(False)
         logger.error(f"处理TTS语音加载错误: {error_message}")
         if self.TTSSettingsDialog and not self.TTSSettingsDialog.isHidden():
-            parent_widget = self.TTSSettingsDialog if isinstance(self.TTSSettingsDialog, QWidget) else self
-            MessageBox(self.tr("TTS语音加载失败"), self.tr("加载TTS语音时发生错误:\n{error_message}").format(error_message=error_message), parent_widget)
+            parent_widget = (
+                self.TTSSettingsDialog if isinstance(self.TTSSettingsDialog, QWidget) else self
+            )
+            MessageBox(
+                self.tr("TTS语音加载失败"),
+                self.tr("加载TTS语音时发生错误:\n{error_message}").format(
+                    error_message=error_message
+                ),
+                parent_widget,
+            )
 
     class cfFileItem(QWidget, load_ui_type(str(CW_HOME / 'view' / 'menu' / 'file_item.ui'))[0]):
         def __init__(self, file_name='', file_path='local', id=None, parent=None):
@@ -2747,8 +3080,16 @@ class SettingsMenu(FluentWindow):
             self.settings = self.findChild(DropDownToolButton, 'file_item_settings')
 
             self.context_menu = RoundMenu(parent=self)
-            self.context_menu.addAction(Action(fIcon.SAVE, '导出', triggered=lambda: parent.cf_export_schedule(file_name)))
-            self.context_menu.addAction(Action(fIcon.SAVE, '导出为 CSES', triggered=lambda: parent.cf_export_schedule_cses(file_name)))
+            self.context_menu.addAction(
+                Action(fIcon.SAVE, '导出', triggered=lambda: parent.cf_export_schedule(file_name))
+            )
+            self.context_menu.addAction(
+                Action(
+                    fIcon.SAVE,
+                    '导出为 CSES',
+                    triggered=lambda: parent.cf_export_schedule_cses(file_name),
+                )
+            )
             self.settings.setMenu(self.context_menu)
             self.id = id
 
@@ -2839,7 +3180,9 @@ class SettingsMenu(FluentWindow):
                 def _drawBackground(self, painter, option, index):
                     pass
 
-            def __init__(self, *args, min_item_width=200, max_item_width=400, item_height=75, **kwargs):
+            def __init__(
+                self, *args, min_item_width=200, max_item_width=400, item_height=75, **kwargs
+            ):
                 super().__init__(*args, **kwargs)
                 self.min_item_width = min_item_width
                 self.max_item_width = max_item_width
@@ -2924,8 +3267,10 @@ class SettingsMenu(FluentWindow):
         print(list_.theme_folder, list_.theme_names, get_theme_name())
         select_theme_combo.setCurrentIndex(list_.theme_folder.index(get_theme_name()))
         select_theme_combo.currentIndexChanged.connect(
-            lambda: config_center.write_conf('General', 'theme',
-                                             list_.get_theme_ui_path(select_theme_combo.currentText())))
+            lambda: config_center.write_conf(
+                'General', 'theme', list_.get_theme_ui_path(select_theme_combo.currentText())
+            )
+        )
 
         color_mode_combo = self.findChild(ComboBox, 'combo_color_mode')  # 颜色模式选择
         color_mode_combo.addItems(list_.color_mode)
@@ -2953,18 +3298,29 @@ class SettingsMenu(FluentWindow):
 
         blur_countdown = self.findChild(SwitchButton, 'switch_blur_countdown')
         blur_countdown.setChecked(int(config_center.read_conf('General', 'blur_countdown')))
-        blur_countdown.checkedChanged.connect(lambda checked: switch_checked('General', 'blur_countdown', checked))
+        blur_countdown.checkedChanged.connect(
+            lambda checked: switch_checked('General', 'blur_countdown', checked)
+        )
         # 模糊倒计时
         switch_blur_floating = self.findChild(SwitchButton, 'switch_blur_countdown_2')
-        switch_blur_floating.setChecked(int(config_center.read_conf('General', 'blur_floating_countdown')))
+        switch_blur_floating.setChecked(
+            int(config_center.read_conf('General', 'blur_floating_countdown'))
+        )
         switch_blur_floating.checkedChanged.connect(
-            lambda checked: config_center.write_conf('General', 'blur_floating_countdown', int(checked))
+            lambda checked: config_center.write_conf(
+                'General', 'blur_floating_countdown', int(checked)
+            )
         )
 
-        switch_enable_display_full_next_lessons = self.findChild(SwitchButton, 'switch_enable_display_full_next_lessons')
-        switch_enable_display_full_next_lessons.setChecked(int(config_center.read_conf('General', 'enable_display_full_next_lessons')))
+        switch_enable_display_full_next_lessons = self.findChild(
+            SwitchButton, 'switch_enable_display_full_next_lessons'
+        )
+        switch_enable_display_full_next_lessons.setChecked(
+            int(config_center.read_conf('General', 'enable_display_full_next_lessons'))
+        )
         switch_enable_display_full_next_lessons.checkedChanged.connect(
-            lambda checked: switch_checked('General', 'enable_display_full_next_lessons', checked))
+            lambda checked: switch_checked('General', 'enable_display_full_next_lessons', checked)
+        )
 
     def setup_about_interface(self):
         ab_scroll = self.findChild(SmoothScrollArea, 'ab_scroll')  # 触摸屏适配
@@ -2977,36 +3333,61 @@ class SettingsMenu(FluentWindow):
         check_update_btn.clicked.connect(self.check_update)
 
         self.auto_check_update = self.ifInterface.findChild(SwitchButton, 'auto_check_update')
-        self.auto_check_update.setChecked(int(config_center.read_conf("Version", "auto_check_update", "1")))
+        self.auto_check_update.setChecked(
+            int(config_center.read_conf("Version", "auto_check_update", "1"))
+        )
         self.auto_check_update.checkedChanged.connect(
             lambda checked: switch_checked("Version", "auto_check_update", checked)
         )  # 自动检查更新
 
         self.version_channel = self.findChild(ComboBox, 'version_channel')
         self.version_channel.addItems(list_.version_channel)
-        self.version_channel.setCurrentIndex(int('1' if (channel := config_center.read_conf("Version", "version_channel")) not in ['0', '1'] else channel))
+        self.version_channel.setCurrentIndex(
+            int(
+                '1'
+                if (channel := config_center.read_conf("Version", "version_channel"))
+                not in ['0', '1']
+                else channel
+            )
+        )
         self.version_channel.currentIndexChanged.connect(
-            lambda: config_center.write_conf("Version", "version_channel", self.version_channel.currentIndex())
+            lambda: config_center.write_conf(
+                "Version", "version_channel", self.version_channel.currentIndex()
+            )
         )  # 版本更新通道
 
         github_page = self.findChild(PushButton, "button_github")
-        github_page.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(
-            self.tr('https://github.com/RinLit-233-shiroko/Class-Widgets'))))
+        github_page.clicked.connect(
+            lambda: QDesktopServices.openUrl(
+                QUrl(self.tr('https://github.com/RinLit-233-shiroko/Class-Widgets'))
+            )
+        )
 
         bilibili_page = self.findChild(PushButton, 'button_bilibili')
-        bilibili_page.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(
-            self.tr('https://space.bilibili.com/569522843'))))
+        bilibili_page.clicked.connect(
+            lambda: QDesktopServices.openUrl(QUrl(self.tr('https://space.bilibili.com/569522843')))
+        )
 
         weblate_page = self.findChild(PushButton, 'button_weblate')
-        weblate_page.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(
-            'https://hosted.weblate.org/engage/class-widgets-1')))
+        weblate_page.clicked.connect(
+            lambda: QDesktopServices.openUrl(
+                QUrl('https://hosted.weblate.org/engage/class-widgets-1')
+            )
+        )
 
         license_button = self.findChild(PushButton, 'button_show_license')
         license_button.clicked.connect(self.show_license)
 
         thanks_button = self.findChild(PushButton, 'button_thanks')
-        thanks_button.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(
-            self.tr('https://github.com/RinLit-233-shiroko/Class-Widgets?tab=readme-ov-file#致谢'))))
+        thanks_button.clicked.connect(
+            lambda: QDesktopServices.openUrl(
+                QUrl(
+                    self.tr(
+                        'https://github.com/RinLit-233-shiroko/Class-Widgets?tab=readme-ov-file#致谢'
+                    )
+                )
+            )
+        )
 
         self.check_update()
 
@@ -3022,13 +3403,14 @@ class SettingsMenu(FluentWindow):
 
         window_status_combo = self.adInterface.findChild(ComboBox, 'window_status_combo')
         window_status_combo.addItems(list_.window_status)
-        window_status_combo.setCurrentIndex(int(config_center.read_conf('General', 'pin_on_top', '0')))
-        if os.name != 'nt':
-            if window_status_combo.count() > 3:
-                window_status_combo.setItemEnabled(3, False)
-                original_text = window_status_combo.itemText(3)
-                if ' (仅Windows)' not in original_text:
-                    window_status_combo.setItemText(3, original_text + self.tr(' (仅Windows)'))
+        window_status_combo.setCurrentIndex(
+            int(config_center.read_conf('General', 'pin_on_top', '0'))
+        )
+        if os.name != 'nt' and window_status_combo.count() > 3:
+            window_status_combo.setItemEnabled(3, False)
+            original_text = window_status_combo.itemText(3)
+            if ' (仅Windows)' not in original_text:
+                window_status_combo.setItemText(3, original_text + self.tr(' (仅Windows)'))
 
         def on_window_status_changed():
             """刷新窗口状态"""
@@ -3037,12 +3419,10 @@ class SettingsMenu(FluentWindow):
                 flyout = Flyout.create(
                     icon=fIcon.INFO,
                     title=self.tr('提示'),
-                    content=self.tr(
-                        '窗口会置于次底部, 但仍然比普通置顶要高一点点~'
-                        ),
+                    content=self.tr('窗口会置于次底部, 但仍然比普通置顶要高一点点~'),
                     target=window_status_combo,
                     parent=self,
-                    isClosable=True
+                    isClosable=True,
                 )
                 flyout.setFocusPolicy(Qt.FocusPolicy.NoFocus)
                 flyout.show()
@@ -3053,7 +3433,7 @@ class SettingsMenu(FluentWindow):
                     content=self.tr('当前平台可能不完全支持该功能~'),
                     target=window_status_combo,
                     parent=self,
-                    isClosable=True
+                    isClosable=True,
                 )
                 flyout.setFocusPolicy(Qt.FocusPolicy.NoFocus)
                 flyout.show()
@@ -3065,7 +3445,9 @@ class SettingsMenu(FluentWindow):
 
         switch_startup = self.adInterface.findChild(SwitchButton, 'switch_startup')
         switch_startup.setChecked(int(config_center.read_conf('General', 'auto_startup')))
-        switch_startup.checkedChanged.connect(lambda checked: switch_checked('General', 'auto_startup', checked))
+        switch_startup.checkedChanged.connect(
+            lambda checked: switch_checked('General', 'auto_startup', checked)
+        )
         # 开机自启
         if os.name != 'nt':
             switch_startup.setEnabled(False)
@@ -3079,31 +3461,39 @@ class SettingsMenu(FluentWindow):
 
         hide_method_default = self.adInterface.findChild(RadioButton, 'hide_method_default')
         hide_method_default.setChecked(config_center.read_conf('General', 'hide_method') == '0')
-        hide_method_default.toggled.connect(lambda: config_center.write_conf('General', 'hide_method', '0'))
+        hide_method_default.toggled.connect(
+            lambda: config_center.write_conf('General', 'hide_method', '0')
+        )
         if os.name != 'nt':
             hide_method_default.setEnabled(False)
         # 默认隐藏
 
         hide_method_all = self.adInterface.findChild(RadioButton, 'hide_method_all')
         hide_method_all.setChecked(config_center.read_conf('General', 'hide_method') == '1')
-        hide_method_all.toggled.connect(lambda: config_center.write_conf('General', 'hide_method', '1'))
+        hide_method_all.toggled.connect(
+            lambda: config_center.write_conf('General', 'hide_method', '1')
+        )
         # 单击全部隐藏
 
         hide_method_floating = self.adInterface.findChild(RadioButton, 'hide_method_floating')
         hide_method_floating.setChecked(config_center.read_conf('General', 'hide_method') == '2')
-        hide_method_floating.toggled.connect(lambda: config_center.write_conf('General', 'hide_method', '2'))
+        hide_method_floating.toggled.connect(
+            lambda: config_center.write_conf('General', 'hide_method', '2')
+        )
         # 最小化为浮窗
 
         switch_enable_exclude = self.adInterface.findChild(SwitchButton, 'switch_exclude_startup')
         switch_enable_exclude.setChecked(int(config_center.read_conf('General', 'excluded_lesson')))
         switch_enable_exclude.checkedChanged.connect(
-            lambda checked: switch_checked('General', 'excluded_lesson', checked))
+            lambda checked: switch_checked('General', 'excluded_lesson', checked)
+        )
         # 允许排除课程
 
         exclude_lesson = self.adInterface.findChild(LineEdit, 'excluded_lessons')
         exclude_lesson.setText(config_center.read_conf('General', 'excluded_lessons'))
         exclude_lesson.textChanged.connect(
-            lambda: config_center.write_conf('General', 'excluded_lessons', exclude_lesson.text()))
+            lambda: config_center.write_conf('General', 'excluded_lessons', exclude_lesson.text())
+        )
         # 排除课程
 
         switch_enable_click = self.adInterface.findChild(SwitchButton, 'switch_enable_click')
@@ -3114,28 +3504,31 @@ class SettingsMenu(FluentWindow):
             flyout = Flyout.create(
                 icon=fIcon.INFO,
                 title=self.tr('提示'),
-                content = self.tr(
-                    "窗口实体状态\n"
-                    "会认真挡住前面的点击哦~\n\n"
-                    "*请重启应用以完全生效"
-                ) if checked else self.tr(
-                    "鼠标穿透启用\n"
-                    "窗口不挡你啦,可以点穿它~\n\n"
-                    "*请重启应用以完全生效"
+                content=(
+                    self.tr("窗口实体状态\n" "会认真挡住前面的点击哦~\n\n" "*请重启应用以完全生效")
+                    if checked
+                    else self.tr(
+                        "鼠标穿透启用\n" "窗口不挡你啦,可以点穿它~\n\n" "*请重启应用以完全生效"
+                    )
                 ),
                 target=switch_enable_click,
                 parent=self,
-                isClosable=True
+                isClosable=True,
             )
             flyout.setFocusPolicy(Qt.FocusPolicy.NoFocus)
             flyout.show()
             if hasattr(utils, 'main_mgr') and utils.main_mgr is not None:
                 utils.main_mgr.reapply_window_states()
+
         switch_enable_click.checkedChanged.connect(on_enable_click_changed)
         # 允许点击/鼠标穿透
 
-        switch_enable_alt_schedule = self.adInterface.findChild(SwitchButton, 'switch_enable_alt_schedule')
-        switch_enable_alt_schedule.setChecked(int(config_center.read_conf('General', 'enable_alt_schedule')))
+        switch_enable_alt_schedule = self.adInterface.findChild(
+            SwitchButton, 'switch_enable_alt_schedule'
+        )
+        switch_enable_alt_schedule.setChecked(
+            int(config_center.read_conf('General', 'enable_alt_schedule'))
+        )
         switch_enable_alt_schedule.checkedChanged.connect(
             lambda checked: switch_checked('General', 'enable_alt_schedule', checked)
         )  # 安全模式
@@ -3147,8 +3540,12 @@ class SettingsMenu(FluentWindow):
         )
         # 安全模式开关
 
-        switch_enable_multiple_programs = self.adInterface.findChild(SwitchButton, 'switch_multiple_programs')
-        switch_enable_multiple_programs.setChecked(int(config_center.read_conf('Other', 'multiple_programs')))
+        switch_enable_multiple_programs = self.adInterface.findChild(
+            SwitchButton, 'switch_multiple_programs'
+        )
+        switch_enable_multiple_programs.setChecked(
+            int(config_center.read_conf('Other', 'multiple_programs'))
+        )
         switch_enable_multiple_programs.checkedChanged.connect(
             lambda checked: switch_checked('Other', 'multiple_programs', checked)
         )  # 多开程序
@@ -3164,9 +3561,14 @@ class SettingsMenu(FluentWindow):
 
         set_start_date = self.adInterface.findChild(CalendarPicker, 'set_start_date')  # 日期
         if config_center.read_conf('Date', 'start_date') != '':
-            set_start_date.setDate(QDate.fromString(config_center.read_conf('Date', 'start_date'), 'yyyy-M-d'))
+            set_start_date.setDate(
+                QDate.fromString(config_center.read_conf('Date', 'start_date'), 'yyyy-M-d')
+            )
         set_start_date.dateChanged.connect(
-            lambda: config_center.write_conf('Date', 'start_date', set_start_date.date.toString('yyyy-M-d')))  # 开学日期
+            lambda: config_center.write_conf(
+                'Date', 'start_date', set_start_date.date.toString('yyyy-M-d')
+            )
+        )  # 开学日期
 
         offset_spin = self.adInterface.findChild(SpinBox, 'offset_spin')
         offset_spin.setValue(int(config_center.read_conf('Time', 'time_offset')))
@@ -3175,21 +3577,34 @@ class SettingsMenu(FluentWindow):
         )  # 保存时差偏移
 
         text_scale_factor = self.adInterface.findChild(LineEdit, 'text_scale_factor')
-        text_scale_factor.setText(str(float(config_center.read_conf('General', 'scale')) * 100) + '%')  # 初始化缩放系数显示
+        text_scale_factor.setText(
+            str(float(config_center.read_conf('General', 'scale')) * 100) + '%'
+        )  # 初始化缩放系数显示
 
         slider_scale_factor = self.adInterface.findChild(Slider, 'slider_scale_factor')
         slider_scale_factor.setValue(int(float(config_center.read_conf('General', 'scale')) * 100))
         slider_scale_factor.valueChanged.connect(
-            lambda: (config_center.write_conf('General', 'scale', str(slider_scale_factor.value() / 100)),
-                     text_scale_factor.setText(str(slider_scale_factor.value()) + '%'))
+            lambda: (
+                config_center.write_conf(
+                    'General', 'scale', str(slider_scale_factor.value() / 100)
+                ),
+                text_scale_factor.setText(str(slider_scale_factor.value()) + '%'),
+            )
         )  # 保存缩放系数
 
         what_is_hide_mode_3 = self.adInterface.findChild(HyperlinkLabel, 'what_is_hide_mode_3')
 
         def what_is_hide_mode_3_clicked():
-            w = MessageBox(self.tr('灵活模式'), self.tr('灵活模式为上课时自动隐藏，可手动改变隐藏状态，当前课程状态（上课/课间）改变后会清除手动隐藏状态，重新转为自动隐藏。'), self)
+            w = MessageBox(
+                self.tr('灵活模式'),
+                self.tr(
+                    '灵活模式为上课时自动隐藏，可手动改变隐藏状态，当前课程状态（上课/课间）改变后会清除手动隐藏状态，重新转为自动隐藏。'
+                ),
+                self,
+            )
             w.cancelButton.hide()
             w.exec()
+
         what_is_hide_mode_3.clicked.connect(what_is_hide_mode_3_clicked)
 
         language_combo_view = self.adInterface.findChild(ComboBox, 'language_combo_view')
@@ -3212,7 +3627,6 @@ class SettingsMenu(FluentWindow):
                     break
             language_combo_view.currentIndexChanged.connect(self.on_language_view_changed)
 
-
         # 时间获得方法配置
         conf_time_get = self.adInterface.findChild(ComboBox, 'conf_time_get')
         conf_time_get.addItems([self.tr('系统时间'), self.tr('NTP时间')])
@@ -3232,7 +3646,9 @@ class SettingsMenu(FluentWindow):
         ntp_refresh_button = self.adInterface.findChild(ToolButton, 'ntp_refresh_button')
         ntp_refresh_button.setIcon(fIcon.SYNC)
         ntp_refresh_button.setToolTip(self.tr('立即同步NTP时间'))
-        ntp_refresh_button.installEventFilter(ToolTipFilter(ntp_refresh_button, showDelay=300, position=ToolTipPosition.TOP))
+        ntp_refresh_button.installEventFilter(
+            ToolTipFilter(ntp_refresh_button, showDelay=300, position=ToolTipPosition.TOP)
+        )
         ntp_refresh_button.clicked.connect(self.on_ntp_refresh_clicked)
         ntp_refresh_picker = self.adInterface.findChild(SpinBox, 'ntp_refresh_picker')
         auto_refresh_minutes = int(config_center.read_conf('Time', 'ntp_auto_refresh'))
@@ -3252,7 +3668,7 @@ class SettingsMenu(FluentWindow):
             (self.tr('(UTC+9)  东京时间'), 'Asia/Tokyo'),
             (self.tr('(UTC+10)  悉尼时间'), 'Australia/Sydney'),
             (self.tr('(UTC-8)  洛杉矶时间'), 'America/Los_Angeles'),
-            (self.tr('(UTC-5)  纽约时间'), 'America/New_York')
+            (self.tr('(UTC-5)  纽约时间'), 'America/New_York'),
         ]
         for display_name, timezone_value in timezone_options:
             ntp_sync_timezone.addItem(display_name)
@@ -3268,7 +3684,9 @@ class SettingsMenu(FluentWindow):
             ntp_sync_timezone.setCurrentIndex(0)
             config_center.write_conf('Time', 'timezone', 'local')
         ntp_sync_timezone.currentIndexChanged.connect(self.on_ntp_timezone_changed)
-        switch_enable_ntp_auto_sync = self.adInterface.findChild(SwitchButton, 'switch_enable_ntp_auto_sync')
+        switch_enable_ntp_auto_sync = self.adInterface.findChild(
+            SwitchButton, 'switch_enable_ntp_auto_sync'
+        )
         auto_sync_enabled = int(config_center.read_conf('Time', 'switch_enable_ntp_auto_sync', '1'))
         switch_enable_ntp_auto_sync.setChecked(bool(auto_sync_enabled))
         switch_enable_ntp_auto_sync.checkedChanged.connect(self.on_ntp_auto_sync_switch_changed)
@@ -3295,9 +3713,13 @@ class SettingsMenu(FluentWindow):
                 current_manager = utils.time_manager
                 self._remove_ntp_auto_sync_callback()
                 if is_ntp:
-                    self.show_info_toast(self.tr('时间设置'), self.tr('已切换到NTP时间,正在同步时间~'))
+                    self.show_info_toast(
+                        self.tr('时间设置'), self.tr('已切换到NTP时间,正在同步时间~')
+                    )
                     self._start_async_ntp_sync(current_manager)
-                    auto_sync_enabled = int(config_center.read_conf('Time', 'switch_enable_ntp_auto_sync', '1'))
+                    auto_sync_enabled = int(
+                        config_center.read_conf('Time', 'switch_enable_ntp_auto_sync', '1')
+                    )
                     if auto_sync_enabled:
                         self._add_ntp_auto_sync_callback()
                 else:
@@ -3331,7 +3753,9 @@ class SettingsMenu(FluentWindow):
         """修改ntp自动刷新时间"""
         config_center.write_conf('Time', 'ntp_auto_refresh', str(value))
         try:
-            if config_center.read_conf('Time', 'type') == 'ntp' and int(config_center.read_conf('Time', 'switch_enable_ntp_auto_sync', '1')):
+            if config_center.read_conf('Time', 'type') == 'ntp' and int(
+                config_center.read_conf('Time', 'switch_enable_ntp_auto_sync', '1')
+            ):
                 self._remove_ntp_auto_sync_callback()
                 self._add_ntp_auto_sync_callback()
         except Exception as e:
@@ -3344,7 +3768,9 @@ class SettingsMenu(FluentWindow):
             if config_center.read_conf('Time', 'type') == 'ntp':
                 if checked:
                     self._add_ntp_auto_sync_callback()
-                    self.show_success_toast(self.tr('NTP设置'), self.tr('已开启NTP自动同步ヾ(≧▽≦*)o'))
+                    self.show_success_toast(
+                        self.tr('NTP设置'), self.tr('已开启NTP自动同步ヾ(≧▽≦*)o')
+                    )
                 else:
                     self._remove_ntp_auto_sync_callback()
                     self.show_info_toast(self.tr('NTP设置'), self.tr('已关闭NTP自动同步(≧﹏ ≦)'))
@@ -3360,14 +3786,24 @@ class SettingsMenu(FluentWindow):
             config_center.write_conf('Time', 'timezone', selected_timezone)
             if config_center.read_conf('Time', 'type') == 'ntp':
                 try:
-                    self.show_info_toast(self.tr('时区设置'), self.tr('时区已更新为 {ntp_sync_timezone}，正在重新同步时间~').format(ntp_sync_timezone=ntp_sync_timezone.currentText()))
+                    self.show_info_toast(
+                        self.tr('时区设置'),
+                        self.tr('时区已更新为 {ntp_sync_timezone}，正在重新同步时间~').format(
+                            ntp_sync_timezone=ntp_sync_timezone.currentText()
+                        ),
+                    )
                     TimeManagerFactory.reset_instance()
                     QTimer.singleShot(100, self.update_ntp_status_display)
                     self._start_async_ntp_sync(utils.time_manager)
                 except Exception as e:
                     logger.error(f"应用新时区失败: {e}")
             else:
-                self.show_success_toast(self.tr('时区设置'), self.tr('时区已更新为 {ntp_sync_timezone}').format(ntp_sync_timezone=ntp_sync_timezone.currentText()))
+                self.show_success_toast(
+                    self.tr('时区设置'),
+                    self.tr('时区已更新为 {ntp_sync_timezone}').format(
+                        ntp_sync_timezone=ntp_sync_timezone.currentText()
+                    ),
+                )
         except Exception as e:
             logger.error(f"时区设置失败: {e}")
             self.show_error_toast(self.tr('时区设置'), self.tr('时区设置失败'))
@@ -3376,6 +3812,7 @@ class SettingsMenu(FluentWindow):
         """添加NTP自动同步回调"""
         try:
             from utils import update_timer
+
             def ntp_auto_sync_callback():
                 """NTP自动同步回调函数"""
                 try:
@@ -3386,12 +3823,11 @@ class SettingsMenu(FluentWindow):
                         return
                     success = current_manager.sync_with_ntp()
                     if success:
-                        try:
+                        with contextlib.suppress(Exception):
                             self.update_ntp_status_display()
-                        except Exception:
-                            pass
                 except Exception as e:
                     logger.error(f"NTP自动同步异常: {e}")
+
             self._ntp_auto_sync_callback = ntp_auto_sync_callback
             ntp_auto_refresh_minutes = int(config_center.read_conf('Time', 'ntp_auto_refresh'))
             ntp_auto_refresh_seconds = ntp_auto_refresh_minutes * 60
@@ -3404,6 +3840,7 @@ class SettingsMenu(FluentWindow):
         """移除NTP自动同步回调"""
         try:
             from utils import update_timer
+
             if hasattr(self, '_ntp_auto_sync_callback'):
                 update_timer.remove_callback(self._ntp_auto_sync_callback)
                 delattr(self, '_ntp_auto_sync_callback')
@@ -3418,7 +3855,9 @@ class SettingsMenu(FluentWindow):
             self._ntp_flyout_timer.stop()
         self._ntp_flyout_timer = QTimer()
         self._ntp_flyout_timer.setSingleShot(True)
-        self._ntp_flyout_timer.timeout.connect(lambda: self._process_ntp_url_change(url, ntp_server_url_widget))
+        self._ntp_flyout_timer.timeout.connect(
+            lambda: self._process_ntp_url_change(url, ntp_server_url_widget)
+        )
         self._ntp_flyout_timer.start(1500)  # 1.5秒延迟
 
     def _process_ntp_url_change(self, url: str, ntp_server_url_widget):
@@ -3428,7 +3867,7 @@ class SettingsMenu(FluentWindow):
                 ntp_server_url_widget,
                 'warning',
                 self.tr("NTP服务器URL不能为空 o(〃＾▽＾〃)o\n请输入有效的NTP服务器地址"),
-                ""
+                "",
             )
             return
         # 验证url的正则
@@ -3438,27 +3877,25 @@ class SettingsMenu(FluentWindow):
         # time.nist.gov:123, 192.168.1.1:123
         pattern = re.compile(
             r'^('
-                # 域名筛选
-                r'([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+'
-                r'[a-zA-Z]{2,}' # 顶级域名(至少2个字母)
+            # 域名筛选
+            r'([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+'
+            r'[a-zA-Z]{2,}'  # 顶级域名(至少2个字母)
             r'|'
-                # IP(v4)检查
-                r'(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.' # 每个字节（0-255）4个字节使用'.'分隔
-                r'(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.'
-                r'(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.'
-                r'(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)'
+            # IP(v4)检查
+            r'(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.'  # 每个字节（0-255）4个字节使用'.'分隔
+            r'(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.'
+            r'(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.'
+            r'(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)'
             r')'
             # 端口
-            r'(?::(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]?\d{1,4}))?' # 端口号部分 (1-65535 的端口)
+            r'(?::(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]?\d{1,4}))?'  # 端口号部分 (1-65535 的端口)
             r'$',
-            re.IGNORECASE
+            re.IGNORECASE,
         )
         if pattern.match(url):
             config_center.write_conf('Time', 'ntp_server', url)
             self._show_ntp_flyout(
-                ntp_server_url_widget,
-                'success',
-                self.tr("NTP服务器已更新: {url}").format(url=url)
+                ntp_server_url_widget, 'success', self.tr("NTP服务器已更新: {url}").format(url=url)
             )
             # logger.debug(f"NTP服务器URL已更新: {url}")
         else:
@@ -3466,21 +3903,25 @@ class SettingsMenu(FluentWindow):
             self._show_ntp_flyout(
                 ntp_server_url_widget,
                 'warning',
-                self.tr("URL格式可能不正确: {url}\n请检查是否为有效的域名或IP地址（︶^︶）").format(url=url),
-                url
+                self.tr("URL格式可能不正确: {url}\n请检查是否为有效的域名或IP地址（︶^︶）").format(
+                    url=url
+                ),
+                url,
             )
             logger.warning(f"NTP服务器URL格式可能不正确: {url}")
 
-    def _show_ntp_flyout(self, target_widget, flyout_type: str, message: str, invalid_url: str = None):
+    def _show_ntp_flyout(
+        self, target_widget, flyout_type: str, message: str, invalid_url: Optional[str] = None
+    ):
         if hasattr(self, '_current_ntp_flyout') and self._current_ntp_flyout:
-            try:
+            with contextlib.suppress(builtins.BaseException):
                 self._current_ntp_flyout.close()
-            except:
-                pass
             self._current_ntp_flyout = None
 
         class NTPServerFlyoutView(FlyoutViewBase):
-            def __init__(self, flyout_type: str, message: str, invalid_url: str = None, parent=None):
+            def __init__(
+                self, flyout_type: str, message: str, invalid_url: Optional[str] = None, parent=None
+            ):
                 super().__init__(parent)
                 self.flyout_type = flyout_type
                 self.invalid_url = invalid_url
@@ -3528,7 +3969,9 @@ class SettingsMenu(FluentWindow):
                         btn.setFixedHeight(28)
                         btn.setMaximumWidth(150)
                         btn.setFocusPolicy(Qt.NoFocus)
-                        btn.clicked.connect(lambda checked, s=suggestion: self._apply_suggestion_and_close(s))
+                        btn.clicked.connect(
+                            lambda checked, s=suggestion: self._apply_suggestion_and_close(s)
+                        )
                         button_layout.addWidget(btn)
                     button_layout.addStretch()
                     self.vBoxLayout.addLayout(button_layout)
@@ -3543,17 +3986,21 @@ class SettingsMenu(FluentWindow):
                 confirm_label = CaptionLabel(self.tr("执意保存当前输入的内容?"))
                 confirm_label.setObjectName("confirmLabel")
                 if isDarkTheme():
-                    confirm_label.setStyleSheet("""
+                    confirm_label.setStyleSheet(
+                        """
                         QLabel#confirmLabel {
                             color: rgba(255, 255, 255, 0.8);
                         }
-                    """)
+                    """
+                    )
                 else:
-                    confirm_label.setStyleSheet("""
+                    confirm_label.setStyleSheet(
+                        """
                         QLabel#confirmLabel {
                             color: rgba(0, 0, 0, 0.8);
                         }
-                    """)
+                    """
+                    )
                 self.vBoxLayout.addWidget(confirm_label)
                 button_layout = QHBoxLayout()
                 button_layout.setSpacing(8)
@@ -3567,9 +4014,17 @@ class SettingsMenu(FluentWindow):
 
             def _get_url_suggestions(self, invalid_url: str) -> list:
                 suggestions = []
-                common_servers = ['ntp.tencent.com', 'ntp.aliyun.com', 'pool.ntp.org', \
-                    'ntp.ntsc.ac.cn', 'cn.ntp.org.cn','time.cloudflare.com' , 'time1.google.com', \
-                        'time.windows.com', 'ntp1.nim.ac.cn']
+                common_servers = [
+                    'ntp.tencent.com',
+                    'ntp.aliyun.com',
+                    'pool.ntp.org',
+                    'ntp.ntsc.ac.cn',
+                    'cn.ntp.org.cn',
+                    'time.cloudflare.com',
+                    'time1.google.com',
+                    'time.windows.com',
+                    'ntp1.nim.ac.cn',
+                ]
                 if not invalid_url or invalid_url.strip() == "":
                     return common_servers[:3]
                 url = invalid_url.strip()
@@ -3580,11 +4035,13 @@ class SettingsMenu(FluentWindow):
                 )
                 if re.search(r'[`~!@#$%^&*()+=\[\]{}|\\:;"<>?/]', url):
                     pass
-                elif valid_domain_pattern.match(url):
-                    if not re.search(r'\.\.|\.\-|\-\.|^\.|\.$', url):
-                        tld = url.split('.')[-1]
-                        if len(tld) >= 2 and tld.isalpha():
-                            suggestions.append(url)
+                elif valid_domain_pattern.match(url) and not re.search(
+                    r'\.\.|\.\-|\-\.|^\.|\.$', url
+                ):
+                    tld = url.split('.')[-1]
+                    if len(tld) >= 2 and tld.isalpha():
+                        suggestions.append(url)
+
                 # 好一个智能匹配(闲)
                 def calculate_similarity(server: str, user_input: str) -> float:
                     """计算url和输入的相似度"""
@@ -3607,6 +4064,7 @@ class SettingsMenu(FluentWindow):
                                 elif server_part.startswith(user_part):
                                     match_score += len(user_part) / len(server_part) * 25
                     return match_score
+
                 server_scores = []
                 for server in common_servers:
                     score = calculate_similarity(server, url)
@@ -3623,22 +4081,26 @@ class SettingsMenu(FluentWindow):
             def _apply_suggestion_and_close(self, suggestion: str):
                 try:
                     if self.parent_menu and hasattr(self.parent_menu, 'adInterface'):
-                        ntp_url_widget = self.parent_menu.adInterface.findChild(LineEdit, 'ntp_server_url')
+                        ntp_url_widget = self.parent_menu.adInterface.findChild(
+                            LineEdit, 'ntp_server_url'
+                        )
                         if ntp_url_widget:
                             if hasattr(self.parent_menu, '_ntp_flyout_timer'):
                                 self.parent_menu._ntp_flyout_timer.stop()
-                            try:
+                            with contextlib.suppress(TypeError):
                                 ntp_url_widget.textChanged.disconnect()
-                            except TypeError:
-                                pass
                             ntp_url_widget.setText(suggestion)
                             self._close_flyout()
-                            ntp_url_widget.textChanged.connect(self.parent_menu.on_ntp_server_url_changed)
+                            ntp_url_widget.textChanged.connect(
+                                self.parent_menu.on_ntp_server_url_changed
+                            )
                             config_center.write_conf('Time', 'ntp_server', suggestion)
                             self.parent_menu._show_ntp_flyout(
                                 ntp_url_widget,
                                 'success',
-                                self.tr("NTP服务器已更新: {suggestion}").format(suggestion=suggestion)
+                                self.tr("NTP服务器已更新: {suggestion}").format(
+                                    suggestion=suggestion
+                                ),
                             )
                             if hasattr(self.parent_menu, 'update_ntp_status_display'):
                                 self.parent_menu.update_ntp_status_display()
@@ -3648,17 +4110,16 @@ class SettingsMenu(FluentWindow):
             def _save_and_close(self):
                 try:
                     if self.parent_menu:
-                        current_url = ""
                         if hasattr(self.parent_menu, 'adInterface'):
-                            ntp_url_widget = self.parent_menu.adInterface.findChild(LineEdit, 'ntp_server_url')
-                            if ntp_url_widget:
-                                current_url = ntp_url_widget.text()
+                            ntp_url_widget = self.parent_menu.adInterface.findChild(
+                                LineEdit, 'ntp_server_url'
+                            )
                         self._close_flyout()
                         if hasattr(self.parent_menu, '_show_ntp_flyout'):
                             self.parent_menu._show_ntp_flyout(
                                 ntp_url_widget if ntp_url_widget else None,
                                 'success',
-                                self.tr('设置已保存ヾ(≧▽≦*)o')
+                                self.tr('设置已保存ヾ(≧▽≦*)o'),
                             )
                 except Exception as e:
                     logger.error(f"保存操作失败: {e}")
@@ -3675,31 +4136,32 @@ class SettingsMenu(FluentWindow):
                         flyout_widget.close()
                 except Exception as e:
                     logger.error(f"关闭flyout失败: {e}")
+
         try:
             flyout_view = NTPServerFlyoutView(flyout_type, message, invalid_url, self)
             flyout = Flyout.make(
-                flyout_view,
-                target_widget,
-                self,
-                aniType=FlyoutAnimationType.PULL_UP
+                flyout_view, target_widget, self, aniType=FlyoutAnimationType.PULL_UP
             )
             flyout.setWindowFlags(flyout.windowFlags() | Qt.Tool)
             flyout.setFocusPolicy(Qt.NoFocus)
+
             def custom_show_event(event):
                 QWidget.showEvent(flyout, event)
+
             flyout.showEvent = custom_show_event
             flyout.show()
             self._current_ntp_flyout = flyout
             if flyout_type == 'success':
                 import weakref
+
                 flyout_ref = weakref.ref(flyout)
+
                 def safe_close():
                     flyout_obj = flyout_ref()
                     if flyout_obj and not flyout_obj.isHidden():
-                        try:
+                        with contextlib.suppress(RuntimeError):
                             flyout_obj.close()
-                        except RuntimeError:
-                            pass
+
                 QTimer.singleShot(2000, safe_close)
             return flyout
         except Exception as e:
@@ -3709,7 +4171,6 @@ class SettingsMenu(FluentWindow):
             elif flyout_type == 'warning':
                 self.show_warning_toast(self.tr('NTP设置'), message)
             return None
-
 
     def update_ntp_status_display(self):
         """更新NTP状态显示"""
@@ -3722,7 +4183,9 @@ class SettingsMenu(FluentWindow):
                 last_sync = current_manager.get_last_ntp_sync()
                 if last_sync:
                     sync_time_str = last_sync.strftime(self.tr('%Y年%m月%d日 - %H:%M:%S'))
-                    caption_label.setText(self.tr('上次NTP校准: {sync_time_str}').format(sync_time_str=sync_time_str))
+                    caption_label.setText(
+                        self.tr('上次NTP校准: {sync_time_str}').format(sync_time_str=sync_time_str)
+                    )
                 else:
                     caption_label.setText(self.tr('NTP时间: 尚未进行校准'))
             else:
@@ -3748,7 +4211,9 @@ class SettingsMenu(FluentWindow):
             if hasattr(self, 'ntp_thread') and self.ntp_thread:
                 try:
                     if self.ntp_thread.isRunning():
-                        self.show_warning_toast(self.tr('NTP同步'), self.tr('同步正在进行中,请稍候~'))
+                        self.show_warning_toast(
+                            self.tr('NTP同步'), self.tr('同步正在进行中,请稍候~')
+                        )
                         return
                 except RuntimeError:
                     self.ntp_thread = None
@@ -3780,7 +4245,9 @@ class SettingsMenu(FluentWindow):
                 if hasattr(self, 'parent') and self.parent and hasattr(self.parent, 'update_data'):
                     QTimer.singleShot(100, self.parent.update_data)
             else:
-                self.show_warning_toast(self.tr('NTP同步'), self.tr('NTP时间同步失败,请检查网络连接和url地址!'))
+                self.show_warning_toast(
+                    self.tr('NTP同步'), self.tr('NTP时间同步失败,请检查网络连接和url地址!')
+                )
         except Exception as e:
             logger.error(f"NTP同步完成回调失败: {e}")
         finally:
@@ -3791,11 +4258,10 @@ class SettingsMenu(FluentWindow):
         try:
             if hasattr(self, 'ntp_thread') and self.ntp_thread:
                 try:
-                    if self.ntp_thread.isRunning():
-                        if not self.ntp_thread.wait(3000):
-                            logger.warning("NTP线程未能在3秒内正常结束，强制终止")
-                            self.ntp_thread.terminate()
-                            self.ntp_thread.wait(1000)
+                    if self.ntp_thread.isRunning() and not self.ntp_thread.wait(3000):
+                        logger.warning("NTP线程未能在3秒内正常结束，强制终止")
+                        self.ntp_thread.terminate()
+                        self.ntp_thread.wait(1000)
                 except RuntimeError:
                     logger.warning("已删除的QThread对象")
                 try:
@@ -3810,6 +4276,7 @@ class SettingsMenu(FluentWindow):
                 self.ntp_worker = None
         except Exception as e:
             logger.error(f"清理NTP线程资源时出错: {e}")
+
     # 神经病犯了
     def show_info_toast(self, title: str, message: str):
         try:
@@ -3820,7 +4287,7 @@ class SettingsMenu(FluentWindow):
                 isClosable=True,
                 position=InfoBarPosition.TOP,
                 duration=3000,
-                parent=self
+                parent=self,
             )
         except Exception as e:
             logger.error(f"显示信息提示失败: {e}")
@@ -3834,7 +4301,7 @@ class SettingsMenu(FluentWindow):
                 isClosable=True,
                 position=InfoBarPosition.TOP,
                 duration=3000,
-                parent=self
+                parent=self,
             )
         except Exception as e:
             logger.error(f"显示成功提示失败: {e}")
@@ -3848,7 +4315,7 @@ class SettingsMenu(FluentWindow):
                 isClosable=True,
                 position=InfoBarPosition.TOP,
                 duration=5000,
-                parent=self
+                parent=self,
             )
         except Exception as e:
             logger.error(f"显示错误提示失败: {e}")
@@ -3862,7 +4329,7 @@ class SettingsMenu(FluentWindow):
                 isClosable=True,
                 position=InfoBarPosition.TOP,
                 duration=5000,
-                parent=self
+                parent=self,
             )
         except Exception as e:
             logger.error(f"显示错误提示失败: {e}")
@@ -3872,13 +4339,17 @@ class SettingsMenu(FluentWindow):
         se_set_button = self.findChild(ToolButton, 'set_button')
         se_set_button.setIcon(fIcon.EDIT)
         se_set_button.setToolTip(self.tr('编辑课程'))
-        se_set_button.installEventFilter(ToolTipFilter(se_set_button, showDelay=300, position=ToolTipPosition.TOP))
+        se_set_button.installEventFilter(
+            ToolTipFilter(se_set_button, showDelay=300, position=ToolTipPosition.TOP)
+        )
         se_set_button.clicked.connect(self.se_edit_item)
 
         se_clear_button = self.findChild(ToolButton, 'clear_button')
         se_clear_button.setIcon(fIcon.DELETE)
         se_clear_button.setToolTip(self.tr('清空课程'))
-        se_clear_button.installEventFilter(ToolTipFilter(se_clear_button, showDelay=300, position=ToolTipPosition.TOP))
+        se_clear_button.installEventFilter(
+            ToolTipFilter(se_clear_button, showDelay=300, position=ToolTipPosition.TOP)
+        )
         se_clear_button.clicked.connect(self.se_delete_item)
 
         se_class_kind_combo = self.findChild(ComboBox, 'class_combo')  # 课程类型
@@ -3891,7 +4362,9 @@ class SettingsMenu(FluentWindow):
         se_schedule_list = self.findChild(ListWidget, 'schedule_list')
         se_schedule_list.addItems(schedule_dict[str(current_week)])
         se_schedule_list.itemChanged.connect(self.se_upload_item)
-        QScroller.grabGesture(se_schedule_list.viewport(), QScroller.LeftMouseButtonGesture)  # 触摸屏适配
+        QScroller.grabGesture(
+            se_schedule_list.viewport(), QScroller.LeftMouseButtonGesture
+        )  # 触摸屏适配
 
         se_save_button = self.findChild(PrimaryPushButton, 'save_schedule')
         se_save_button.clicked.connect(self.se_save_item)
@@ -3917,7 +4390,9 @@ class SettingsMenu(FluentWindow):
         te_add_button = self.findChild(ToolButton, 'add_button')  # 添加
         te_add_button.setIcon(fIcon.ADD)
         te_add_button.setToolTip(self.tr('添加时间线'))  # 增加提示
-        te_add_button.installEventFilter(ToolTipFilter(te_add_button, showDelay=300, position=ToolTipPosition.TOP))
+        te_add_button.installEventFilter(
+            ToolTipFilter(te_add_button, showDelay=300, position=ToolTipPosition.TOP)
+        )
         te_add_button.clicked.connect(self.te_add_item)
         te_add_button.clicked.connect(self.te_upload_item)
 
@@ -3925,7 +4400,8 @@ class SettingsMenu(FluentWindow):
         te_add_part_button.setIcon(fIcon.ADD)
         te_add_part_button.setToolTip(self.tr('添加节点'))
         te_add_part_button.installEventFilter(
-            ToolTipFilter(te_add_part_button, showDelay=300, position=ToolTipPosition.TOP))
+            ToolTipFilter(te_add_part_button, showDelay=300, position=ToolTipPosition.TOP)
+        )
         te_add_part_button.clicked.connect(self.te_add_part)
 
         te_part_type_combo = self.findChild(ComboBox, 'part_type')  # 节次类型
@@ -3934,32 +4410,38 @@ class SettingsMenu(FluentWindow):
 
         te_name_edit = self.findChild(EditableComboBox, 'name_part_combo')  # 名称
         te_name_edit.addItems(list_.time)
+        te_name_edit.textChanged.connect(self.te_check_parts_name)
 
         te_edit_part_button = self.findChild(ToolButton, 'edit_part_button')  # 编辑节点开始时间
         te_edit_part_button.setIcon(fIcon.EDIT)
         te_edit_part_button.setToolTip(self.tr('编辑节点开始时间'))
         te_edit_part_button.installEventFilter(
-            ToolTipFilter(te_edit_part_button, showDelay=300, position=ToolTipPosition.TOP))
+            ToolTipFilter(te_edit_part_button, showDelay=300, position=ToolTipPosition.TOP)
+        )
         te_edit_part_button.clicked.connect(self.te_edit_part_time)
 
         te_delete_part_button = self.findChild(ToolButton, 'delete_part_button')  # 删除节点
         te_delete_part_button.setIcon(fIcon.DELETE)
         te_delete_part_button.setToolTip(self.tr('删除节点'))
         te_delete_part_button.installEventFilter(
-            ToolTipFilter(te_delete_part_button, showDelay=300, position=ToolTipPosition.TOP))
+            ToolTipFilter(te_delete_part_button, showDelay=300, position=ToolTipPosition.TOP)
+        )
         te_delete_part_button.clicked.connect(self.te_delete_part)
 
         te_edit_button = self.findChild(ToolButton, 'edit_button')  # 编辑
         te_edit_button.setIcon(fIcon.EDIT)
         te_edit_button.setToolTip(self.tr('编辑时间线'))
-        te_edit_button.installEventFilter(ToolTipFilter(te_edit_button, showDelay=300, position=ToolTipPosition.TOP))
+        te_edit_button.installEventFilter(
+            ToolTipFilter(te_edit_button, showDelay=300, position=ToolTipPosition.TOP)
+        )
         te_edit_button.clicked.connect(self.te_edit_item)
 
         te_delete_button = self.findChild(ToolButton, 'delete_button')  # 删除
         te_delete_button.setIcon(fIcon.DELETE)
         te_delete_button.setToolTip(self.tr('删除时间线'))
         te_delete_button.installEventFilter(
-            ToolTipFilter(te_delete_button, showDelay=300, position=ToolTipPosition.TOP))
+            ToolTipFilter(te_delete_button, showDelay=300, position=ToolTipPosition.TOP)
+        )
         te_delete_button.clicked.connect(self.te_delete_item)
         te_delete_button.clicked.connect(self.te_upload_item)
 
@@ -3989,21 +4471,50 @@ class SettingsMenu(FluentWindow):
 
         te_part_time = self.teInterface.findChild(TimeEdit, 'part_time')  # 节次时间
         te_part_time.timeChanged.connect(
-            lambda: self.show_tip_flyout(self.tr('重要提示'), self.tr('请使用 24 小时制'), te_part_time)
+            lambda: self.show_tip_flyout(
+                self.tr('重要提示'), self.tr('请使用 24 小时制'), te_part_time
+            )
         )
 
         te_save_button = self.findChild(PrimaryPushButton, 'save')  # 保存
         te_save_button.clicked.connect(self.te_save_item)
 
         part_list = self.findChild(ListWidget, 'part_list')
-        QScroller.grabGesture(te_timeline_list.viewport(), QScroller.LeftMouseButtonGesture)  # 触摸屏适配
+        QScroller.grabGesture(
+            te_timeline_list.viewport(), QScroller.LeftMouseButtonGesture
+        )  # 触摸屏适配
         QScroller.grabGesture(part_list.viewport(), QScroller.LeftMouseButtonGesture)  # 触摸屏适配
         self.te_detect_item()
         self.te_update_parts_name()
+        self.te_check_parts_name()
+
+    def te_check_parts_name(self):
+        te_add_part_button = self.findChild(ToolButton, 'add_part_button')  # 添加节点
+        te_edit_part_button = self.findChild(ToolButton, 'edit_part_button')  # 编辑节点开始时间
+        te_name_edit = self.findChild(EditableComboBox, 'name_part_combo')  # 名称
+        part_list = self.findChild(ListWidget, 'part_list')
+        current_item = part_list.currentItem()
+        name = te_name_edit.currentText().strip()
+        if not name:
+            te_add_part_button.setEnabled(False)
+            te_edit_part_button.setEnabled(False)
+            return
+        for index in range(part_list.count()):
+            item = part_list.item(index)
+            item_text = item.text()
+            item_info = item_text.split(' - ')
+            if len(item_info) >= 3:
+                part_name = item_info[0]
+                if part_name == name:
+                    te_add_part_button.setEnabled(False)
+                    te_edit_part_button.setEnabled(current_item == item)
+                    return
+        te_add_part_button.setEnabled(True)
+        te_edit_part_button.setEnabled(True)
 
     def te_copy_timeline_from(self):
         class ask_which(FlyoutViewBase):
-            def __init__(self, parent=None, now = (-1, -1)):
+            def __init__(self, parent=None, now=(-1, -1)):
                 super().__init__(parent)
                 self.now = now
                 self.parent_obj = parent
@@ -4030,14 +4541,27 @@ class SettingsMenu(FluentWindow):
                 self._on_day_change()
 
             def _on_day_change(self):
-                if (self.week_type_combo.currentIndex(), self.week_combo.currentIndex()) == self.now:
+                if (
+                    self.week_type_combo.currentIndex(),
+                    self.week_combo.currentIndex(),
+                ) == self.now:
                     self.confirm_button.setEnabled(False)
                 else:
                     self.confirm_button.setEnabled(True)
 
             def _on_confirm(self):
                 global timeline_dict
-                timeline_dict['even' if self.now[0] else 'odd']['default' if self.now[1] == 0 else str(self.now[1] - 1)] = deepcopy(timeline_dict['even' if self.week_type_combo.currentIndex() else 'odd']['default' if (index := self.week_combo.currentIndex()) == 0 else str(index - 1)])
+                timeline_dict['even' if self.now[0] else 'odd'][
+                    'default' if self.now[1] == 0 else str(self.now[1] - 1)
+                ] = deepcopy(
+                    timeline_dict['even' if self.week_type_combo.currentIndex() else 'odd'][
+                        (
+                            'default'
+                            if (index := self.week_combo.currentIndex()) == 0
+                            else str(index - 1)
+                        )
+                    ]
+                )
                 self.parent_obj.te_upload_list()
                 self.close()
 
@@ -4045,7 +4569,14 @@ class SettingsMenu(FluentWindow):
         te_select_week_type = self.findChild(ComboBox, 'select_week_type')  # 选择周类型
         te_select_timeline = self.findChild(ComboBox, 'select_timeline')  # 选择时间线
 
-        Flyout.make(ask_which(self, (te_select_week_type.currentIndex(), te_select_timeline.currentIndex())), te_copy_timeline, self, aniType=FlyoutAnimationType.PULL_UP)
+        Flyout.make(
+            ask_which(
+                self, (te_select_week_type.currentIndex(), te_select_timeline.currentIndex())
+            ),
+            te_copy_timeline,
+            self,
+            aniType=FlyoutAnimationType.PULL_UP,
+        )
 
     def te_edit_part_time(self):
         """编辑选中节点的开始时间"""
@@ -4060,7 +4591,7 @@ class SettingsMenu(FluentWindow):
                 target=self.findChild(ToolButton, 'edit_part_button'),
                 parent=self,
                 isClosable=True,
-                aniType=FlyoutAnimationType.PULL_UP
+                aniType=FlyoutAnimationType.PULL_UP,
             )
             return
         selected_item = selected_items[0]
@@ -4077,11 +4608,13 @@ class SettingsMenu(FluentWindow):
             Flyout.create(
                 icon=InfoBarIcon.SUCCESS,
                 title=self.tr('节点时间已更新 ヾ(≧▽≦*)o'),
-                content=self.tr('节点 "{part_name}" 的开始时间已更新为 {new_time}').format(part_name=part_name, new_time=new_time),
+                content=self.tr('节点 "{part_name}" 的开始时间已更新为 {new_time}').format(
+                    part_name=part_name, new_time=new_time
+                ),
                 target=self.findChild(ToolButton, 'edit_part_button'),
                 parent=self,
                 isClosable=True,
-                aniType=FlyoutAnimationType.PULL_UP
+                aniType=FlyoutAnimationType.PULL_UP,
             )
         else:
             Flyout.create(
@@ -4091,15 +4624,19 @@ class SettingsMenu(FluentWindow):
                 target=self.findChild(ToolButton, 'edit_part_button'),
                 parent=self,
                 isClosable=True,
-                aniType=FlyoutAnimationType.PULL_UP
+                aniType=FlyoutAnimationType.PULL_UP,
             )
 
     def setup_schedule_preview(self):
         subtitle = self.findChild(SubtitleLabel, 'subtitle_file')
-        subtitle.setText(self.tr('预览 - {schedule_name}').format(schedule_name=config_center.schedule_name[:-5]))
+        subtitle.setText(
+            self.tr('预览 - {schedule_name}').format(schedule_name=config_center.schedule_name[:-5])
+        )
 
         schedule_view = self.findChild(TableWidget, 'schedule_view')
-        schedule_view.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)  # 使列表自动等宽
+        schedule_view.horizontalHeader().setSectionResizeMode(
+            QHeaderView.ResizeMode.Stretch
+        )  # 使列表自动等宽
 
         sp_week_type_combo = self.findChild(ComboBox, 'pre_week_type_combo')
         sp_week_type_combo.addItems(list_.week_type)
@@ -4111,7 +4648,9 @@ class SettingsMenu(FluentWindow):
         schedule_view.setBorderVisible(True)
         schedule_view.verticalHeader().hide()
         schedule_view.setBorderRadius(8)
-        QScroller.grabGesture(schedule_view.viewport(), QScroller.LeftMouseButtonGesture)  # 触摸屏适配
+        QScroller.grabGesture(
+            schedule_view.viewport(), QScroller.LeftMouseButtonGesture
+        )  # 触摸屏适配
         self.sp_fill_grid_row()
 
     def save_volume(self):
@@ -4127,7 +4666,7 @@ class SettingsMenu(FluentWindow):
             choice_dialog = MessageBox(
                 title=self.tr('选择位置输入方式'),
                 content=self.tr('和风天气支持城市ID和经纬度两种方式，请选择您偏好的输入方式：'),
-                parent=self
+                parent=self,
             )
             choice_dialog.yesButton.setText(self.tr('城市搜索'))
             choice_dialog.cancelButton.setText(self.tr('经纬度输入'))
@@ -4142,7 +4681,9 @@ class SettingsMenu(FluentWindow):
             if search_city_dialog.method == 'location_key':
                 selected_city = search_city_dialog.city_list.selectedItems()
                 if selected_city:
-                    config_center.write_conf('Weather', 'city', wd.search_code_by_name((selected_city[0].text(),'')))
+                    config_center.write_conf(
+                        'Weather', 'city', wd.search_code_by_name((selected_city[0].text(), ''))
+                    )
                     city_changed = True
             else:  # coordinates
                 lon = search_city_dialog.longitude_edit.text()
@@ -4159,10 +4700,12 @@ class SettingsMenu(FluentWindow):
                             target=search_city_dialog,
                             parent=self,
                             isClosable=True,
-                            aniType=FlyoutAnimationType.PULL_UP
+                            aniType=FlyoutAnimationType.PULL_UP,
                         )
             if city_changed:
-                if hasattr(self.weather_manager, 'get_weather_reminders') and hasattr(self.weather_manager.get_weather_reminders, 'clear_cache'):
+                if hasattr(self.weather_manager, 'get_weather_reminders') and hasattr(
+                    self.weather_manager.get_weather_reminders, 'clear_cache'
+                ):
                     self.weather_manager.get_weather_reminders.clear_cache()
                 self._hide_weather_alerts_section()
                 self._on_refresh_clicked()
@@ -4178,7 +4721,7 @@ class SettingsMenu(FluentWindow):
     def clear_log(self):  # 清空日志
         def get_directory_size(path):  # 计算目录大小
             total_size = 0
-            for dir_path, dir_names, filenames in os.walk(path):
+            for dir_path, _dir_names, filenames in os.walk(path):
                 for file_name in filenames:
                     file_path = os.path.join(dir_path, file_name)
                     total_size += os.path.getsize(file_path)
@@ -4198,7 +4741,7 @@ class SettingsMenu(FluentWindow):
                     target=self.button_clear_log,
                     parent=self,
                     isClosable=True,
-                    aniType=FlyoutAnimationType.PULL_UP
+                    aniType=FlyoutAnimationType.PULL_UP,
                 )
             else:
                 Flyout.create(
@@ -4208,7 +4751,7 @@ class SettingsMenu(FluentWindow):
                     target=self.button_clear_log,
                     parent=self,
                     isClosable=True,
-                    aniType=FlyoutAnimationType.PULL_UP
+                    aniType=FlyoutAnimationType.PULL_UP,
                 )
         except OSError:  # 遇到程序正在使用的log，忽略
             Flyout.create(
@@ -4218,7 +4761,7 @@ class SettingsMenu(FluentWindow):
                 target=self.button_clear_log,
                 parent=self,
                 isClosable=True,
-                aniType=FlyoutAnimationType.PULL_UP
+                aniType=FlyoutAnimationType.PULL_UP,
             )
         except Exception as e:
             Flyout.create(
@@ -4228,7 +4771,7 @@ class SettingsMenu(FluentWindow):
                 target=self.button_clear_log,
                 parent=self,
                 isClosable=True,
-                aniType=FlyoutAnimationType.PULL_UP
+                aniType=FlyoutAnimationType.PULL_UP,
             )
 
     def ct_change_color_mode(self):
@@ -4246,7 +4789,11 @@ class SettingsMenu(FluentWindow):
     def ct_add_widget(self):
         widgets_list = self.findChild(ListWidget, 'widgets_list')
         widgets_combo = self.findChild(ComboBox, 'widgets_combo')
-        if (not widgets_list.findItems(widgets_combo.currentText(), QtCore.Qt.MatchFlag.MatchExactly)) or widgets_combo.currentText() in list_.native_widget_name:
+        if (
+            not widgets_list.findItems(
+                widgets_combo.currentText(), QtCore.Qt.MatchFlag.MatchExactly
+            )
+        ) or widgets_combo.currentText() in list_.native_widget_name:
             widgets_list.addItem(widgets_combo.currentText())
         self.ct_update_preview()
 
@@ -4264,38 +4811,53 @@ class SettingsMenu(FluentWindow):
     def ct_set_ac_color(self):
         current_color = QColor(f'#{config_center.read_conf("Color", "attend_class")}')
         w = ColorDialog(current_color, self.tr("更改上课时主题色"), self, enableAlpha=False)
-        w.colorChanged.connect(lambda color: config_center.write_conf('Color', 'attend_class', color.name()[1:]))
+        w.colorChanged.connect(
+            lambda color: config_center.write_conf('Color', 'attend_class', color.name()[1:])
+        )
         w.exec()
 
     def ct_set_fc_color(self):
         current_color = QColor(f'#{config_center.read_conf("Color", "finish_class")}')
         w = ColorDialog(current_color, self.tr("更改课间时主题色"), self, enableAlpha=False)
-        w.colorChanged.connect(lambda color: config_center.write_conf('Color', 'finish_class', color.name()[1:]))
+        w.colorChanged.connect(
+            lambda color: config_center.write_conf('Color', 'finish_class', color.name()[1:])
+        )
         w.exec()
 
     def ct_set_floating_time_color(self):
         current_color = QColor(f'#{config_center.read_conf("Color", "floating_time")}')
         w = ColorDialog(current_color, self.tr("更改浮窗时间颜色"), self, enableAlpha=False)
-        w.colorChanged.connect(lambda color: config_center.write_conf('Color', 'floating_time', color.name()[1:]))
+        w.colorChanged.connect(
+            lambda color: config_center.write_conf('Color', 'floating_time', color.name()[1:])
+        )
         w.exec()
         self.ct_update_preview()
 
     def cf_export_schedule(self, file_name):  # 导出课程表
-        file_path, _ = QFileDialog.getSaveFileName(self, self.tr("保存文件"), file_name,
-                                                   self.tr("Json 配置文件 (*.json)"))
+        file_path, _ = QFileDialog.getSaveFileName(
+            self, self.tr("保存文件"), file_name, self.tr("Json 配置文件 (*.json)")
+        )
         if file_path:
             if list_.export_schedule(file_path, file_name):
-                self.show_tip_flyout(self.tr('您已成功导出课程表配置文件'),
-                                   self.tr('文件将导出于{file_path}').format(file_path=file_path), self.cfInterface, InfoBarIcon.SUCCESS, FlyoutAnimationType.PULL_UP)
+                self.show_tip_flyout(
+                    self.tr('您已成功导出课程表配置文件'),
+                    self.tr('文件将导出于{file_path}').format(file_path=file_path),
+                    self.cfInterface,
+                    InfoBarIcon.SUCCESS,
+                    FlyoutAnimationType.PULL_UP,
+                )
             else:
                 print('导出失败！')
-                alert = MessageBox('导出失败！',
-                                   '课程表文件导出失败，\n'
-                                   '可能为文件损坏，请将此情况反馈给开发者。', self)
+                alert = MessageBox(
+                    '导出失败！',
+                    '课程表文件导出失败，\n' '可能为文件损坏，请将此情况反馈给开发者。',
+                    self,
+                )
                 alert.cancelButton.hide()
                 alert.buttonLayout.insertStretch(0, 1)
                 if alert.exec():
                     return 0
+        return None
 
     def check_update(self):
         self.version_thread = VersionThread()
@@ -4309,11 +4871,15 @@ class SettingsMenu(FluentWindow):
             if utils.tray_icon:
                 utils.tray_icon.push_error_notification(
                     self.tr("检查更新失败！"),
-                    self.tr("检查更新失败！\n{data}").format(data=version['error'])
+                    self.tr("检查更新失败！\n{data}").format(data=version['error']),
                 )
             return False
 
-        channel = int('1' if (channel := config_center.read_conf("Version", "version_channel")) not in ['0', '1'] else channel)
+        channel = int(
+            '1'
+            if (channel := config_center.read_conf("Version", "version_channel")) not in ['0', '1']
+            else channel
+        )
         new_version = version['version_release' if channel == 0 else 'version_beta']
         local_version = config_center.read_conf("Version", "version") or "0.0.0"
         build_commit = config_center.read_conf("Version", "build_commit")
@@ -4322,20 +4888,37 @@ class SettingsMenu(FluentWindow):
         build_type = config_center.read_conf("Version", "build_type")
         build_time = config_center.read_conf("Version", "build_time")
 
-        self.build_commit_label.setText(f'{build_commit if build_commit != "__BUILD_COMMIT__" else "Debug"}({build_branch if build_branch != "__BUILD_BRANCH__" else "Debug"})')
-        self.build_uuid_label.setText(f'{build_runid if build_runid != "__BUILD_RUNID__" else "Debug"} - {build_type if build_type != "__BUILD_TYPE__" else "Debug"}')
-        self.build_date_label.setText(f'{build_time if build_time != "__BUILD_TIME__" else "Debug"}')
+        self.build_commit_label.setText(
+            f'{build_commit if build_commit != "__BUILD_COMMIT__" else "Debug"}({build_branch if build_branch != "__BUILD_BRANCH__" else "Debug"})'
+        )
+        self.build_uuid_label.setText(
+            f'{build_runid if build_runid != "__BUILD_RUNID__" else "Debug"} - {build_type if build_type != "__BUILD_TYPE__" else "Debug"}'
+        )
+        self.build_date_label.setText(
+            f'{build_time if build_time != "__BUILD_TIME__" else "Debug"}'
+        )
         if local_version != "__BUILD_VERSION__":
             logger.debug(f"服务端版本: {Version(new_version)}，本地版本: {Version(local_version)}")
             if Version(new_version) <= Version(local_version):
-                self.version_number_label.setText(self.tr('版本号：{local_version}\n已是最新版本！').format(local_version=local_version))
+                self.version_number_label.setText(
+                    self.tr('版本号：{local_version}\n已是最新版本！').format(
+                        local_version=local_version
+                    )
+                )
             else:
-                self.version_number_label.setText(self.tr('版本号：{local_version}\n可更新版本: {new_version}').format(local_version=local_version,new_version=new_version))
+                self.version_number_label.setText(
+                    self.tr('版本号：{local_version}\n可更新版本: {new_version}').format(
+                        local_version=local_version, new_version=new_version
+                    )
+                )
         else:
             self.version_number_label.setText(self.tr('版本号：Debug\n调试版本！'))
 
             if utils.tray_icon:
-                utils.tray_icon.push_update_notification(self.tr("新版本速递：{new_version}").format(new_version=new_version))
+                utils.tray_icon.push_update_notification(
+                    self.tr("新版本速递：{new_version}").format(new_version=new_version)
+                )
+        return None
 
     def cf_import_schedule_cses(self, file_path: str):  # 导入课程表（CSES）
         # TODO: 切换到 pathlib.Path
@@ -4344,7 +4927,11 @@ class SettingsMenu(FluentWindow):
             save_path = SCHEDULE_DIR / file_name.replace('.yaml', '.json')
 
             if save_path.exists():
-                overwrite = MessageBox(self.tr('文件已存在'), self.tr('文件 {file_name} 已存在，是否覆盖？').format(file_name=file_name), self)
+                overwrite = MessageBox(
+                    self.tr('文件已存在'),
+                    self.tr('文件 {file_name} 已存在，是否覆盖？').format(file_name=file_name),
+                    self,
+                )
                 overwrite.yesButton.setText(self.tr('覆盖'))
                 if not overwrite.exec():
                     return
@@ -4353,40 +4940,78 @@ class SettingsMenu(FluentWindow):
             importer.load_parser()
             cw_data = importer.convert_to_cw()
             if not cw_data:
-                self.show_tip_flyout(self.tr('转换失败！'),
-                                   self.tr('课程表文件转换失败！\n'
-                                   '可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。\n'
-                                   '详情请查看Log日志，日志位于./log/下。'), self.import_from_file, InfoBarIcon.ERROR, FlyoutAnimationType.PULL_UP)
+                self.show_tip_flyout(
+                    self.tr('转换失败！'),
+                    self.tr(
+                        '课程表文件转换失败！\n'
+                        '可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。\n'
+                        '详情请查看Log日志，日志位于./log/下。'
+                    ),
+                    self.import_from_file,
+                    InfoBarIcon.ERROR,
+                    FlyoutAnimationType.PULL_UP,
+                )
             try:
                 with open(save_path, 'w', encoding='utf-8') as f:
                     json.dump(cw_data, f, ensure_ascii=False, indent=4)
                     self.cf_reload_table()
-                    self.show_tip_flyout(self.tr('导入成功！'),
-                                   self.tr('课程表文件导入成功！\n'
-                                   '请手动切换您的配置文件。'), self.import_from_file, InfoBarIcon.SUCCESS, FlyoutAnimationType.PULL_UP)
+                    self.show_tip_flyout(
+                        self.tr('导入成功！'),
+                        self.tr('课程表文件导入成功！\n' '请手动切换您的配置文件。'),
+                        self.import_from_file,
+                        InfoBarIcon.SUCCESS,
+                        FlyoutAnimationType.PULL_UP,
+                    )
             except Exception as e:
                 logger.error(f'导入课程表时发生错误：{e}')
-                self.show_tip_flyout(self.tr('导入失败！'),
-                                   self.tr('课程表文件导入失败！\n'
-                                   '可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。\n'
-                                   '详情请查看Log日志，日志位于./log/下。'), self.import_from_file, InfoBarIcon.ERROR, FlyoutAnimationType.PULL_UP)
+                self.show_tip_flyout(
+                    self.tr('导入失败！'),
+                    self.tr(
+                        '课程表文件导入失败！\n'
+                        '可能为格式错误或文件损坏，请检查此文件是否为正确的 CSES 课程表文件。\n'
+                        '详情请查看Log日志，日志位于./log/下。'
+                    ),
+                    self.import_from_file,
+                    InfoBarIcon.ERROR,
+                    FlyoutAnimationType.PULL_UP,
+                )
 
     def cf_export_schedule_cses(self, file_name):  # 导出课程表（CSES）
         file_path, _ = QFileDialog.getSaveFileName(
-            self, "保存文件", file_name.replace('.json', '.yaml'), "CSES 通用课程表交换文件 (*.yaml)")
+            self,
+            "保存文件",
+            file_name.replace('.json', '.yaml'),
+            "CSES 通用课程表交换文件 (*.yaml)",
+        )
         if file_path:
             exporter = CSES_Converter(file_path)
             exporter.load_generator()
             if exporter.convert_to_cses(cw_path=str(SCHEDULE_DIR / file_name)):
-                self.show_tip_flyout(self.tr('您已成功导出课程表配置文件'),
-                                   self.tr('文件将导出于{file_path}').format(file_path=file_path), self.cfInterface, InfoBarIcon.SUCCESS, FlyoutAnimationType.PULL_UP)
+                self.show_tip_flyout(
+                    self.tr('您已成功导出课程表配置文件'),
+                    self.tr('文件将导出于{file_path}').format(file_path=file_path),
+                    self.cfInterface,
+                    InfoBarIcon.SUCCESS,
+                    FlyoutAnimationType.PULL_UP,
+                )
             else:
-                self.show_tip_flyout(self.tr('导出失败！'),
-                                   self.tr('课程表文件导出失败，\n'
-                                   '可能为文件损坏，请将此情况反馈给开发者。'), self, InfoBarIcon.ERROR, FlyoutAnimationType.PULL_UP)
+                self.show_tip_flyout(
+                    self.tr('导出失败！'),
+                    self.tr('课程表文件导出失败，\n' '可能为文件损坏，请将此情况反馈给开发者。'),
+                    self,
+                    InfoBarIcon.ERROR,
+                    FlyoutAnimationType.PULL_UP,
+                )
 
     def cf_import_schedule(self):  # 导入课程表
-        file_path, _ = QFileDialog.getOpenFileName(self, self.tr("选择文件"), "", self.tr("支持的文件类型 (*.json *.yaml *.yml);;Json 配置文件 (*.json);;CSES 通用课程表交换文件 (*.yaml) (*.yaml *.yml)"))
+        file_path, _ = QFileDialog.getOpenFileName(
+            self,
+            self.tr("选择文件"),
+            "",
+            self.tr(
+                "支持的文件类型 (*.json *.yaml *.yml);;Json 配置文件 (*.json);;CSES 通用课程表交换文件 (*.yaml) (*.yaml *.yml)"
+            ),
+        )
         if file_path:
             if file_path.endswith(('.yaml', '.yaml')):
                 self.cf_import_schedule_cses(file_path)
@@ -4395,21 +5020,35 @@ class SettingsMenu(FluentWindow):
 
             save_path = SCHEDULE_DIR / file_name
             if save_path.exists():
-                overwrite = MessageBox(self.tr('文件已存在'), self.tr('文件 {file_name} 已存在，是否覆盖？').format(file_name=file_name), self)
+                overwrite = MessageBox(
+                    self.tr('文件已存在'),
+                    self.tr('文件 {file_name} 已存在，是否覆盖？').format(file_name=file_name),
+                    self,
+                )
                 overwrite.yesButton.setText(self.tr('覆盖'))
                 if not overwrite.exec():
                     return
 
             if list_.import_schedule(file_path, file_name):
                 self.cf_reload_table()
-                self.show_tip_flyout(self.tr('您已成功导入课程表配置文件'),
-                                   self.tr('请在“高级选项”中手动切换您的配置文件。'), self.import_from_file, InfoBarIcon.SUCCESS, FlyoutAnimationType.PULL_UP)
+                self.show_tip_flyout(
+                    self.tr('您已成功导入课程表配置文件'),
+                    self.tr('请在“高级选项”中手动切换您的配置文件。'),
+                    self.import_from_file,
+                    InfoBarIcon.SUCCESS,
+                    FlyoutAnimationType.PULL_UP,
+                )
             else:
-                self.show_tip_flyout(self.tr('导入失败！'),
-                                   '课程表文件导入失败！\n'
-                                   '可能为格式错误或文件损坏，请检查此文件是否为 Class Widgets 课程表文件。\n'
-                                   '详情请查看Log日志，日志位于./log/下。\n'
-                                   '注意: 尚不支持 json 格式的 CSES 课表导入', self.import_from_file, InfoBarIcon.ERROR, FlyoutAnimationType.PULL_UP)
+                self.show_tip_flyout(
+                    self.tr('导入失败！'),
+                    '课程表文件导入失败！\n'
+                    '可能为格式错误或文件损坏，请检查此文件是否为 Class Widgets 课程表文件。\n'
+                    '详情请查看Log日志，日志位于./log/下。\n'
+                    '注意: 尚不支持 json 格式的 CSES 课表导入',
+                    self.import_from_file,
+                    InfoBarIcon.ERROR,
+                    FlyoutAnimationType.PULL_UP,
+                )
 
     def ct_save_widget_config(self):
         widgets_list = self.findChild(ListWidget, 'widgets_list')
@@ -4425,7 +5064,7 @@ class SettingsMenu(FluentWindow):
                 target=self.findChild(PrimaryPushButton, 'save_config'),
                 parent=self,
                 isClosable=True,
-                aniType=FlyoutAnimationType.PULL_UP
+                aniType=FlyoutAnimationType.PULL_UP,
             )
 
     def ct_update_preview(self):
@@ -4441,7 +5080,9 @@ class SettingsMenu(FluentWindow):
                         widget.deleteLater()
                     widgets_preview.removeItem(item)
 
-            left_spacer = QSpacerItem(20, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+            left_spacer = QSpacerItem(
+                20, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum
+            )
             widgets_preview.addItem(left_spacer)
 
             theme_folder = config_center.read_conf("General", "theme")
@@ -4449,43 +5090,42 @@ class SettingsMenu(FluentWindow):
             theme_config = theme_info.config
             theme_path = theme_info.path
             for i in range(len(widget_config)):
-                widget_name: str = widget_config[i] # type: ignore
+                widget_name: str = widget_config[i]  # type: ignore
                 preview_path = theme_path / f'preview/{widget_name[:-3]}.png'
                 if isDarkTheme() and theme_config.support_dark_mode:
                     if (theme_path / 'dark' / preview_path).exists():
                         path = theme_path / 'dark' / preview_path
                     else:
                         path = theme_path / 'dark/preview/widget-custom.png'
+                elif (theme_path / preview_path).exists():
+                    path = theme_path / preview_path
                 else:
-                    if (theme_path / preview_path).exists():
-                        path = theme_path / preview_path
-                    else:
-                        path = theme_path / 'preview/widget-custom.png'
+                    path = theme_path / 'preview/widget-custom.png'
 
                 label = ImageLabel()
                 label.setImage(str(path))
                 widgets_preview.addWidget(label)
                 widget_config[i] = label
-            right_spacer = QSpacerItem(20, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+            right_spacer = QSpacerItem(
+                20, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum
+            )
             widgets_preview.addItem(right_spacer)
         except Exception as e:
             logger.error(f'更新预览界面时发生错误：{e}')
 
     def cf_reload_table(self):
-        try:
+        with contextlib.suppress(builtins.BaseException):
             self.table.currentRowChanged.disconnect()
-        except:
-            pass
 
         self.table.clear()
 
         config_list = list_.get_schedule_config()
         self.cf_file_list = []
         for i, cfg in enumerate(config_list):
-            url = file.load_from_json(cfg).get('url','local')
+            url = file.load_from_json(cfg).get('url', 'local')
             self.cf_file_list.append(self.cf_add_item(cfg, url, i))
 
-        cur = config_list.index(config_center.read_conf('General','schedule'))
+        cur = config_list.index(config_center.read_conf('General', 'schedule'))
         self.table.setCurrentRow(cur)
 
         self.table.currentRowChanged.connect(self.cf_change_file)
@@ -4493,6 +5133,7 @@ class SettingsMenu(FluentWindow):
 
     def cf_new_config(self):
         try:
+
             def is_valid_filename(file_name):
                 # 检查是否为空
                 if not file_name.strip():
@@ -4508,8 +5149,30 @@ class SettingsMenu(FluentWindow):
                     return False, self.tr("文件名过长")
 
                 # 检查保留名称
-                reserved_names = {"CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
-                                "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"}
+                reserved_names = {
+                    "CON",
+                    "PRN",
+                    "AUX",
+                    "NUL",
+                    "COM1",
+                    "COM2",
+                    "COM3",
+                    "COM4",
+                    "COM5",
+                    "COM6",
+                    "COM7",
+                    "COM8",
+                    "COM9",
+                    "LPT1",
+                    "LPT2",
+                    "LPT3",
+                    "LPT4",
+                    "LPT5",
+                    "LPT6",
+                    "LPT7",
+                    "LPT8",
+                    "LPT9",
+                }
                 if file_name.upper() in reserved_names:
                     return False, self.tr("文件名是保留名称")
 
@@ -4520,9 +5183,13 @@ class SettingsMenu(FluentWindow):
                 return True, self.tr("文件名合法")
 
             n2_dialog = TextFieldMessageBox(
-                        self, self.tr('请输入新课表名称'),
-                        self.tr('请命名您的课程表计划：'), self.tr('新课表 - 1'), list_.get_schedule_config(), is_valid_filename
-                    )
+                self,
+                self.tr('请输入新课表名称'),
+                self.tr('请命名您的课程表计划：'),
+                self.tr('新课表 - 1'),
+                list_.get_schedule_config(),
+                is_valid_filename,
+            )
             if not n2_dialog.exec():
                 return
 
@@ -4545,7 +5212,7 @@ class SettingsMenu(FluentWindow):
             self.cf_file_list.clear()
 
             for id in range(len(config_list)):
-                self.cf_file_list.append(self.cf_add_item(config_list[id],'local',id))
+                self.cf_file_list.append(self.cf_add_item(config_list[id], 'local', id))
 
             self.table.setCurrentRow(list_.get_schedule_config().index(f'{new_name}.json'))
             self.table.currentRowChanged.connect(self.cf_change_file)
@@ -4560,15 +5227,19 @@ class SettingsMenu(FluentWindow):
                 config_center.write_conf('General', 'schedule', new_name)
                 utils.tray_icon.update_tooltip()
             else:
-                logger.error(f'切换课程文件时列表选择异常：{self.cf_file_list[self.table.currentIndex().row()].file_name.text()}')
+                logger.error(
+                    f'切换课程文件时列表选择异常：{self.cf_file_list[self.table.currentIndex().row()].file_name.text()}'
+                )
                 Flyout.create(
                     icon=InfoBarIcon.ERROR,
                     title=self.tr('错误！'),
-                    content=self.tr("列表选项异常！{data}").format(data=self.cf_file_list[self.table.currentIndex().row()].file_name.text()),
+                    content=self.tr("列表选项异常！{data}").format(
+                        data=self.cf_file_list[self.table.currentIndex().row()].file_name.text()
+                    ),
                     target=self.table,
                     parent=self,
                     isClosable=True,
-                    aniType=FlyoutAnimationType.DROP_DOWN
+                    aniType=FlyoutAnimationType.DROP_DOWN,
                 )
                 return
             global loaded_data
@@ -4588,35 +5259,54 @@ class SettingsMenu(FluentWindow):
     def cf_get_schedule(self):
         url = schedule_center.schedule_data.get('url', 'local')
         if url == 'local':
-            self.show_tip_flyout(self.tr('获取配置文件失败'),
-                                   self.tr('当前课表为本地课表，无法获取配置文件。请上传课表后再尝试获取配置文件。'),
-                                   self.config_download, InfoBarIcon.ERROR, FlyoutAnimationType.PULL_UP)
+            self.show_tip_flyout(
+                self.tr('获取配置文件失败'),
+                self.tr('当前课表为本地课表，无法获取配置文件。请上传课表后再尝试获取配置文件。'),
+                self.config_download,
+                InfoBarIcon.ERROR,
+                FlyoutAnimationType.PULL_UP,
+            )
             return
         self.schedule_get_thread = scheduleThread(url)
         self.schedule_get_thread.update_signal.connect(self.cf_receive_schedule)
         self.schedule_get_thread.start()
 
     def cf_receive_schedule(self, data):
-        if not (data.get('error', None) is None):
-            self.show_tip_flyout(self.tr('获取配置文件失败'),
-                                   data['error'], self.config_download, InfoBarIcon.ERROR, FlyoutAnimationType.PULL_UP)
+        if data.get('error', None) is not None:
+            self.show_tip_flyout(
+                self.tr('获取配置文件失败'),
+                data['error'],
+                self.config_download,
+                InfoBarIcon.ERROR,
+                FlyoutAnimationType.PULL_UP,
+            )
             return
         try:
             schedule_center.save_data(data, config_center.schedule_name)
         except ValueError as e:
             logger.error(f'更新配置文件 {config_center.schedule_name} 时发生错误：{e}')
-            self.show_tip_flyout(self.tr('更新配置文件失败'),
-                                   f"{e}", self.config_download, InfoBarIcon.ERROR, FlyoutAnimationType.PULL_UP)
+            self.show_tip_flyout(
+                self.tr('更新配置文件失败'),
+                f"{e}",
+                self.config_download,
+                InfoBarIcon.ERROR,
+                FlyoutAnimationType.PULL_UP,
+            )
             return
         schedule_center.update_schedule()
 
     def cf_load_schedule_from_db(self):
         try:
-            self.config_url:LineEdit = self.cfInterface.findChild(LineEdit, 'config_url')
+            self.config_url: LineEdit = self.cfInterface.findChild(LineEdit, 'config_url')
             url = self.config_url.text()
             if url == '':
-                self.show_tip_flyout(self.tr('请输入配置文件链接'),
-                                   self.tr('请输入配置文件链接'), self.config_url, InfoBarIcon.WARNING, FlyoutAnimationType.DROP_DOWN)
+                self.show_tip_flyout(
+                    self.tr('请输入配置文件链接'),
+                    self.tr('请输入配置文件链接'),
+                    self.config_url,
+                    InfoBarIcon.WARNING,
+                    FlyoutAnimationType.DROP_DOWN,
+                )
                 return
             self.schedule_load_thread = scheduleThread(url)
             self.schedule_load_thread.update_signal.connect(self.cf_receive_schedule_from_db)
@@ -4627,9 +5317,14 @@ class SettingsMenu(FluentWindow):
             logger.error(f'获取配置文件 {url} 时发生错误：{e}')
 
     def cf_receive_schedule_from_db(self, data):
-        if not (data.get('error', None) is None):
-            self.show_tip_flyout(self.tr('获取配置文件失败'),
-                                   data['error'], self.config_download, InfoBarIcon.ERROR, FlyoutAnimationType.PULL_UP)
+        if data.get('error', None) is not None:
+            self.show_tip_flyout(
+                self.tr('获取配置文件失败'),
+                data['error'],
+                self.config_download,
+                InfoBarIcon.ERROR,
+                FlyoutAnimationType.PULL_UP,
+            )
             self.config_url.setEnabled(True)
             return
         self.cf_new_config()
@@ -4640,8 +5335,13 @@ class SettingsMenu(FluentWindow):
             schedule_center.save_data(data, config_center.schedule_name)
         except ValueError as e:
             logger.error(f'保存配置文件 {url} 时发生错误：{e}')
-            self.show_tip_flyout(self.tr('保存配置文件失败，将自动保存为空课表'),
-                                   f"{e}", self.config_download, InfoBarIcon.ERROR, FlyoutAnimationType.PULL_UP)
+            self.show_tip_flyout(
+                self.tr('保存配置文件失败，将自动保存为空课表'),
+                f"{e}",
+                self.config_download,
+                InfoBarIcon.ERROR,
+                FlyoutAnimationType.PULL_UP,
+            )
             self.config_url.setEnabled(True)
             return
         self.config_url.setEnabled(True)
@@ -4650,10 +5350,15 @@ class SettingsMenu(FluentWindow):
     def cf_post_schedule(self):
         url = self.cf_file_list[self.table.currentIndex().row()].url
         try:
-            if url == '' or url == 'local':
+            if url in {'', 'local'}:
                 n2_dialog = TextFieldMessageBox(
-                        self, self.tr('请输入课表链接'),
-                        self.tr('当前可缩写数据库：\n{dbs}\n你可以使用缩写来代替完整的数据库链接').format(dbs='\n'.join([f"{k} - {v}" for k, v in list_.schedule_dbs.items()])), '')
+                    self,
+                    self.tr('请输入课表链接'),
+                    self.tr(
+                        '当前可缩写数据库：\n{dbs}\n你可以使用缩写来代替完整的数据库链接'
+                    ).format(dbs='\n'.join([f"{k} - {v}" for k, v in list_.schedule_dbs.items()])),
+                    '',
+                )
                 if not n2_dialog.exec():
                     return
                 url = n2_dialog.textField.text()
@@ -4666,23 +5371,36 @@ class SettingsMenu(FluentWindow):
                 self.cf_file_list[self.table.currentIndex().row()].set_file_path(url)
                 schedule_center.update_url(url)
 
-            self.schedule_post_thread = scheduleThread(url, 'POST', data=schedule_center.schedule_data)
+            self.schedule_post_thread = scheduleThread(
+                url, 'POST', data=schedule_center.schedule_data
+            )
             self.schedule_post_thread.update_signal.connect(self.cf_receive_schedule_from_post)
             self.schedule_post_thread.start()
 
         except Exception as e:
             logger.error(f'上传配置文件 {url} 时发生错误：{e}')
-            self.show_tip_flyout(self.tr('上传配置文件失败'),
-                                   f"{e}", self.config_upload, InfoBarIcon.ERROR, FlyoutAnimationType.PULL_UP)
+            self.show_tip_flyout(
+                self.tr('上传配置文件失败'),
+                f"{e}",
+                self.config_upload,
+                InfoBarIcon.ERROR,
+                FlyoutAnimationType.PULL_UP,
+            )
 
     def cf_receive_schedule_from_post(self, data):
         if data.get('error', None):
-            self.show_tip_flyout(self.tr('上传配置文件失败'),
-                                   data['error'], self.config_upload, InfoBarIcon.ERROR, FlyoutAnimationType.PULL_UP)
+            self.show_tip_flyout(
+                self.tr('上传配置文件失败'),
+                data['error'],
+                self.config_upload,
+                InfoBarIcon.ERROR,
+                FlyoutAnimationType.PULL_UP,
+            )
+
     class cfDbEdit(MessageBoxBase):
         def __init__(self, parent=None):
             super().__init__(parent)
-            self.parent_menu = parent # 保存父菜单的引用
+            self.parent_menu = parent  # 保存父菜单的引用
             self.temp_widget = QWidget()
             ui_path = str(CW_HOME / 'view' / 'menu' / 'schedule_db_edit.ui')
             loadUi(ui_path, self.temp_widget)
@@ -4690,7 +5408,7 @@ class SettingsMenu(FluentWindow):
 
             self.viewLayout.setContentsMargins(0, 0, 0, 0)
             self.cancelButton.hide()
-            self.widget.setMinimumWidth(parent.width()//3*2)
+            self.widget.setMinimumWidth(parent.width() // 3 * 2)
             self.widget.setMinimumHeight(parent.height())
 
             self.add_button = self.widget.findChild(ToolButton, 'add_button')
@@ -4714,8 +5432,8 @@ class SettingsMenu(FluentWindow):
             self.save_button = self.widget.findChild(PrimaryPushButton, 'save')
             self.save_button.clicked.connect(self.save_item)
 
-            self.db_list = [(x.replace('@',''), list_.schedule_dbs[x]) for x in list_.schedule_dbs]
-            self.db_dict:dict = list_.schedule_dbs
+            self.db_list = [(x.replace('@', ''), list_.schedule_dbs[x]) for x in list_.schedule_dbs]
+            self.db_dict: dict = list_.schedule_dbs
             self.init_table()
 
         def init_table(self):
@@ -4732,19 +5450,22 @@ class SettingsMenu(FluentWindow):
                         Flyout.create(
                             icon=InfoBarIcon.ERROR,
                             title=self.tr('错误！'),
-                            content=self.tr("数据库缩写 {db_short} 已存在，请更换缩写。").format(db_short=self.db_short.text()),
+                            content=self.tr("数据库缩写 {db_short} 已存在，请更换缩写。").format(
+                                db_short=self.db_short.text()
+                            ),
                             target=self.add_button,
                             parent=self,
                             isClosable=True,
-                            aniType=FlyoutAnimationType.PULL_UP
+                            aniType=FlyoutAnimationType.PULL_UP,
                         )
                         return
                 del self.db_dict[f"@{self.db_list[self.table.row(selected_item)][0]}"]
-                self.db_list[self.table.row(selected_item)] = (self.db_short.text(), self.db_url.text())
-                self.db_dict[f"@{self.db_short.text()}"] = self.db_url.text()
-                selected_item.setText(
-                    f"{self.db_short.text()} - {self.db_url.text()}"
+                self.db_list[self.table.row(selected_item)] = (
+                    self.db_short.text(),
+                    self.db_url.text(),
                 )
+                self.db_dict[f"@{self.db_short.text()}"] = self.db_url.text()
+                selected_item.setText(f"{self.db_short.text()} - {self.db_url.text()}")
 
         def delete_item(self):
             selected_items = self.table.selectedItems()
@@ -4761,23 +5482,23 @@ class SettingsMenu(FluentWindow):
                 Flyout.create(
                     icon=InfoBarIcon.ERROR,
                     title=self.tr('错误！'),
-                    content=self.tr("数据库缩写 {db_short} 已存在，请更换缩写。").format(db_short=self.db_short.text()),
+                    content=self.tr("数据库缩写 {db_short} 已存在，请更换缩写。").format(
+                        db_short=self.db_short.text()
+                    ),
                     target=self.add_button,
                     parent=self,
                     isClosable=True,
-                    aniType=FlyoutAnimationType.PULL_UP
+                    aniType=FlyoutAnimationType.PULL_UP,
                 )
                 return
-            self.table.addItem(
-                f"{self.db_short.text()} - {self.db_url.text()}"
-            )
+            self.table.addItem(f"{self.db_short.text()} - {self.db_url.text()}")
             self.db_list.append((self.db_short.text(), self.db_url.text()))
             self.db_dict[f"@{self.db_short.text()}"] = self.db_url.text()
 
         def save_item(self):
             db = self.db_dict
 
-            list_.save_data_to_json({"db":db}, str(CONFIG_HOME / "schedule_db.json"))
+            list_.save_data_to_json({"db": db}, str(CONFIG_HOME / "schedule_db.json"))
 
             Flyout.create(
                 icon=InfoBarIcon.SUCCESS,
@@ -4786,7 +5507,7 @@ class SettingsMenu(FluentWindow):
                 target=self.save_button,
                 parent=self,
                 isClosable=True,
-                aniType=FlyoutAnimationType.PULL_UP
+                aniType=FlyoutAnimationType.PULL_UP,
             )
 
     def cf_open_db_edit(self):
@@ -4845,12 +5566,18 @@ class SettingsMenu(FluentWindow):
         else:
             schedule_dict_sp = schedule_dict
             week_type = 'odd'
-        is_adjusted = any(adjusted_classes.get(f'{week_type}_{i}', False) for i in range(len(schedule_dict_sp)))
+        is_adjusted = any(
+            adjusted_classes.get(f'{week_type}_{i}', False) for i in range(len(schedule_dict_sp))
+        )
         schedule_name = config_center.schedule_name[:-5]
         if is_adjusted:
-            subtitle.setText(self.tr('预览  -  [调休] {schedule_name}').format(schedule_name=schedule_name))
+            subtitle.setText(
+                self.tr('预览  -  [调休] {schedule_name}').format(schedule_name=schedule_name)
+            )
         else:
-            subtitle.setText(self.tr('预览  -  {schedule_name}').format(schedule_name=schedule_name))
+            subtitle.setText(
+                self.tr('预览  -  {schedule_name}').format(schedule_name=schedule_name)
+            )
         schedule_view = self.findChild(TableWidget, 'schedule_view')
         schedule_view.clear()
         schedule_view.setRowCount(sp_get_class_num())
@@ -4900,14 +5627,11 @@ class SettingsMenu(FluentWindow):
         for week_type, timeline_data in timeline.items():  # 加载时间线
             for week, data in timeline_data.items():  # 加载节点
                 all_line = []
-                for isbreak, item_name, item_index, item_time in data:  # 加载时间线
+                for isbreak, item_name, _item_index, item_time in data:  # 加载时间线
                     prefix = ''
                     item_time = self.tr('{data}分钟').format(data=item_time)
                     # 判断前缀和时段
-                    if not isbreak:
-                        prefix = self.tr('课程')
-                    else:
-                        prefix = self.tr('课间')
+                    prefix = self.tr('课程') if not isbreak else self.tr('课间')
                     period = part_name[item_name]
 
                     # 还原 item_text
@@ -4926,19 +5650,33 @@ class SettingsMenu(FluentWindow):
         te_select_week_type = self.findChild(ComboBox, 'select_week_type')
         te_timeline_list = self.findChild(ListWidget, 'timeline_list')
         te_select_timeline = self.findChild(ComboBox, 'select_timeline')
-        te_copy_timeline = self.findChild(PushButton, 'copy_timeline')
         try:
             if te_select_timeline.currentIndex() == 0:
                 te_timeline_list.clear()
-                te_timeline_list.addItems(timeline_dict['even' if te_select_week_type.currentIndex() else 'odd']['default'])
+                te_timeline_list.addItems(
+                    timeline_dict['even' if te_select_week_type.currentIndex() else 'odd'][
+                        'default'
+                    ]
+                )
             else:
                 te_timeline_list.clear()
-                te_timeline_list.addItems(timeline_dict['even' if te_select_week_type.currentIndex() else 'odd'][str(te_select_timeline.currentIndex() - 1)])
+                te_timeline_list.addItems(
+                    timeline_dict['even' if te_select_week_type.currentIndex() else 'odd'][
+                        str(te_select_timeline.currentIndex() - 1)
+                    ]
+                )
             self.te_detect_item()
         except Exception as e:
             logger.error(f'加载时间线时发生错误：{e}')
 
-    def show_tip_flyout(self, title, content, target, status=InfoBarIcon.WARNING, aniType=FlyoutAnimationType.PULL_UP):
+    def show_tip_flyout(
+        self,
+        title,
+        content,
+        target,
+        status=InfoBarIcon.WARNING,
+        aniType=FlyoutAnimationType.PULL_UP,
+    ):
         Flyout.create(
             icon=status,
             title=title,
@@ -4961,7 +5699,9 @@ class SettingsMenu(FluentWindow):
         try:
             if se_week_type_combo.currentIndex() == 1:
                 current_week = se_week_combo.currentIndex()
-                if len(schedule_dict[str(current_week)]) == len(schedule_even_dict[str(current_week)]):
+                if len(schedule_dict[str(current_week)]) == len(
+                    schedule_even_dict[str(current_week)]
+                ):
                     se_copy_schedule_button.show()
                 else:
                     se_copy_schedule_button.hide()
@@ -5013,11 +5753,13 @@ class SettingsMenu(FluentWindow):
             Flyout.create(
                 icon=InfoBarIcon.SUCCESS,
                 title=self.tr('保存成功'),
-                content=self.tr("已保存至 ./config/schedule/{schedule_name}").format(schedule_name=config_center.schedule_name),
+                content=self.tr("已保存至 ./config/schedule/{schedule_name}").format(
+                    schedule_name=config_center.schedule_name
+                ),
                 target=self.findChild(PrimaryPushButton, 'save_schedule'),
                 parent=self,
                 isClosable=True,
-                aniType=FlyoutAnimationType.PULL_UP
+                aniType=FlyoutAnimationType.PULL_UP,
             )
             self.sp_fill_grid_row()
         except Exception as e:
@@ -5033,25 +5775,34 @@ class SettingsMenu(FluentWindow):
             item_text = te_timeline_list.item(i).text()
             cache_list.append(item_text)
         if te_select_timeline.currentIndex() == 0:
-            timeline_dict['even' if te_select_week_type.currentIndex() else 'odd']['default'] = cache_list
+            timeline_dict['even' if te_select_week_type.currentIndex() else 'odd'][
+                'default'
+            ] = cache_list
         else:
-            timeline_dict['even' if te_select_week_type.currentIndex() else 'odd'][str(te_select_timeline.currentIndex() - 1)] = cache_list
+            timeline_dict['even' if te_select_week_type.currentIndex() else 'odd'][
+                str(te_select_timeline.currentIndex() - 1)
+            ] = cache_list
 
     # 保存时间线
     def te_save_item(self):
         te_part_list = self.findChild(ListWidget, 'part_list')
-        te_select_week_type = self.findChild(ComboBox, 'select_week_type')
-        data_dict = {"part": {}, "part_name": {}, 'timeline': {'default': [], **{str(w): [] for w in range(7)}}, 'timeline_even': {'default': [], **{str(w): [] for w in range(7)}}}
+        data_dict = {
+            "part": {},
+            "part_name": {},
+            'timeline': {'default': [], **{str(w): [] for w in range(7)}},
+            'timeline_even': {'default': [], **{str(w): [] for w in range(7)}},
+        }
         data_timeline_dict = deepcopy(timeline_dict)
         # 逐条把列表里的信息整理保存
         for i in range(te_part_list.count()):
             item_text = te_part_list.item(i).text()
             item_info = item_text.split(' - ')
             time_tostring = item_info[1].split(':')
-            if len(item_info) == 3:
-                part_type = ['part', 'break'][item_info[2] == self.tr('休息段')]
-            else:
-                part_type = 'part'
+            part_type = (
+                ['part', 'break'][item_info[2] == self.tr('休息段')]
+                if len(item_info) == 3
+                else 'part'
+            )
             data_dict['part'][str(i)] = [int(time_tostring[0]), int(time_tostring[1]), part_type]
             data_dict['part_name'][str(i)] = item_info[0]
 
@@ -5065,10 +5816,10 @@ class SettingsMenu(FluentWindow):
                     lesson_num = 0
                     for i in range(len(data_timeline_dict[week_type][week])):
                         item_text = data_timeline_dict[week_type][week][i]
-                        item_info:List[str] = item_text.split(' - ')
+                        item_info: List[str] = item_text.split(' - ')
                         # item_name = ''
                         isbreak, item_name, item_index, item_time = 0, '', 0, 0
-                        if item_info[0] == self.tr('课程'): # 'Course - 40 minutes - a.m.'
+                        if item_info[0] == self.tr('课程'):  # 'Course - 40 minutes - a.m.'
                             isbreak = 0
                             lesson_num += 1
                         if item_info[0] == self.tr('课间'):
@@ -5086,7 +5837,9 @@ class SettingsMenu(FluentWindow):
 
                         item_index = lesson_num - sum(counter[:counter_key])
                         item_time = item_info[1].replace(self.tr('分钟'), '').strip()  # 获取时间
-                        data_dict[f"timeline{'_even' if week_type == 'even' else ''}"][str(week)].append([isbreak, item_name, item_index, int(item_time)])
+                        data_dict[f"timeline{'_even' if week_type == 'even' else ''}"][
+                            str(week)
+                        ].append([isbreak, item_name, item_index, int(item_time)])
 
             schedule_center.save_data(data_dict, config_center.schedule_name)
             self.te_detect_item()
@@ -5098,22 +5851,26 @@ class SettingsMenu(FluentWindow):
             Flyout.create(
                 icon=InfoBarIcon.SUCCESS,
                 title=self.tr('保存成功'),
-                content=self.tr("已保存至 ./config/schedule/{schedule_name}").format(schedule_name=config_center.schedule_name),
+                content=self.tr("已保存至 ./config/schedule/{schedule_name}").format(
+                    schedule_name=config_center.schedule_name
+                ),
                 target=self.findChild(PrimaryPushButton, 'save'),
                 parent=self,
                 isClosable=True,
-                aniType=FlyoutAnimationType.PULL_UP
+                aniType=FlyoutAnimationType.PULL_UP,
             )
         except Exception as e:
             logger.error(f'保存时间线时发生错误: {e}')
             Flyout.create(
                 icon=InfoBarIcon.ERROR,
                 title=self.tr('保存失败!'),
-                content=self.tr("{e}\n保存失败，请将 ./log/ 中的日志提交给开发者以反馈问题。").format(e=f"{e}"),
+                content=self.tr(
+                    "{e}\n保存失败，请将 ./log/ 中的日志提交给开发者以反馈问题。"
+                ).format(e=f"{e}"),
                 target=self.findChild(PrimaryPushButton, 'save'),
                 parent=self,
                 isClosable=True,
-                aniType=FlyoutAnimationType.PULL_UP
+                aniType=FlyoutAnimationType.PULL_UP,
             )
 
     def te_sync_time(self):
@@ -5151,12 +5908,15 @@ class SettingsMenu(FluentWindow):
                 target=self.findChild(ToolButton, 'add_button'),
                 parent=self,
                 isClosable=True,
-                aniType=FlyoutAnimationType.PULL_UP
+                aniType=FlyoutAnimationType.PULL_UP,
             )
             return  # 时间段不能为空
         te_timeline_list.addItem(
             self.tr('{class_activity} - {spin_time}分钟 - {time_period}').format(
-                class_activity=class_activity.currentText(), spin_time=spin_time.value(), time_period=time_period.currentText())
+                class_activity=class_activity.currentText(),
+                spin_time=spin_time.value(),
+                time_period=time_period.currentText(),
+            )
         )
         self.te_detect_item()
 
@@ -5172,9 +5932,14 @@ class SettingsMenu(FluentWindow):
         self.te_update_parts_name()
 
     def te_delete_part(self):
-        alert = MessageBox(self.tr("您确定要删除这个时段吗？"), self.tr("删除该节点后，将一并删除该节点下所有课程安排，且无法恢复。"), self)
+        alert = MessageBox(
+            self.tr("您确定要删除这个时段吗？"),
+            self.tr("删除该节点后，将一并删除该节点下所有课程安排，且无法恢复。"),
+            self,
+        )
         alert.yesButton.setText(self.tr('删除'))
-        alert.yesButton.setStyleSheet("""
+        alert.yesButton.setStyleSheet(
+            """
         PushButton{
             border-radius: 5px;
             padding: 5px 12px 6px 12px;
@@ -5196,7 +5961,8 @@ class SettingsMenu(FluentWindow):
             background-color: #DB5359;
             border: 1px solid #DB5359;
         }
-    """)
+    """
+        )
         alert.cancelButton.setText(self.tr('取消'))
         if alert.exec():
             global timeline_dict, schedule_dict
@@ -5210,7 +5976,7 @@ class SettingsMenu(FluentWindow):
                 te_part_list.takeItem(te_part_list.row(item))
 
             for week_type in ['odd', 'even']:
-            # 修复了删除时段没能同步删除时间线的Bug #123
+                # 修复了删除时段没能同步删除时间线的Bug #123
                 for day in timeline_dict[week_type]:  # 删除时间线
                     count = 0
                     break_count = 0
@@ -5229,19 +5995,29 @@ class SettingsMenu(FluentWindow):
                             delete_part_list.append(act)
                             if item_info[0] != self.tr('课间'):
                                 if day != 'default':
-                                    delete_schedule_list.append(schedule_dict[day][count - break_count - 1])
-                                    delete_schedule_even_list.append(schedule_even_dict[day][count - break_count - 1])
+                                    delete_schedule_list.append(
+                                        schedule_dict[day][count - break_count - 1]
+                                    )
+                                    delete_schedule_even_list.append(
+                                        schedule_even_dict[day][count - break_count - 1]
+                                    )
                                 else:
                                     for j in range(7):
                                         try:
                                             for item in schedule_dict[str(j)]:
                                                 if item.split('-')[1] == deleted_part_name:
                                                     delete_schedule_list.append(
-                                                        schedule_dict[str(j)][count - break_count - 1])
+                                                        schedule_dict[str(j)][
+                                                            count - break_count - 1
+                                                        ]
+                                                    )
                                             for item in schedule_even_dict[str(j)]:
                                                 if item.split('-')[1] == deleted_part_name:
                                                     delete_schedule_even_list.append(
-                                                        schedule_dict[str(j)][count - break_count - 1])
+                                                        schedule_dict[str(j)][
+                                                            count - break_count - 1
+                                                        ]
+                                                    )
                                         except Exception as e:
                                             logger.warning(f'删除时段时发生错误：{e}')
 
@@ -5305,15 +6081,10 @@ class SettingsMenu(FluentWindow):
             selected_item = selected_items[0]
             name_list = selected_item.text().split('-')
             if se_class_combo.currentIndex() != 0:
-                selected_item.setText(
-                    f'{se_class_combo.currentText()}-{name_list[1]}'
-                )
-            else:
-                if se_custom_class_text.text() != '':
-                    selected_item.setText(
-                        f'{se_custom_class_text.text()}-{name_list[1]}'
-                    )
-                    se_class_combo.addItem(se_custom_class_text.text())
+                selected_item.setText(f'{se_class_combo.currentText()}-{name_list[1]}')
+            elif se_custom_class_text.text() != '':
+                selected_item.setText(f'{se_custom_class_text.text()}-{name_list[1]}')
+                se_class_combo.addItem(se_custom_class_text.text())
 
     def se_quick_set_schedule(self):  # 快速设置课表
         se_schedule_list = self.findChild(ListWidget, 'schedule_list')
@@ -5327,9 +6098,7 @@ class SettingsMenu(FluentWindow):
             selected_row = se_schedule_list.currentRow()
             selected_item = se_schedule_list.item(selected_row)
             name_list = selected_item.text().split('-')
-            selected_item.setText(
-                f'{selected_subject}-{name_list[1]}'
-            )
+            selected_item.setText(f'{selected_subject}-{name_list[1]}')
 
             if se_schedule_list.count() > selected_row + 1:  # 选择下一行
                 se_schedule_list.setCurrentRow(selected_row + 1)
@@ -5352,9 +6121,7 @@ class SettingsMenu(FluentWindow):
         if selected_items:
             selected_item = selected_items[0]
             name_list = selected_item.text().split('-')
-            selected_item.setText(
-                self.tr('未添加-{data}').format(data=name_list[1])
-            )
+            selected_item.setText(self.tr('未添加-{data}').format(data=name_list[1]))
 
     def cd_edit_item(self):
         cd_countdown_list = self.findChild(ListWidget, 'countdown_list')
@@ -5400,7 +6167,7 @@ class SettingsMenu(FluentWindow):
             target=self.findChild(PrimaryPushButton, 'save_countdown'),
             parent=self,
             isClosable=True,
-            aniType=FlyoutAnimationType.PULL_UP
+            aniType=FlyoutAnimationType.PULL_UP,
         )
 
         config_center.write_conf('Date', 'countdown_date', ','.join(countdown_date))
@@ -5412,19 +6179,25 @@ class SettingsMenu(FluentWindow):
         cd_set_button = self.findChild(ToolButton, 'set_button_cd')
         cd_set_button.setIcon(fIcon.EDIT)
         cd_set_button.setToolTip('编辑倒计日')
-        cd_set_button.installEventFilter(ToolTipFilter(cd_set_button, showDelay=300, position=ToolTipPosition.TOP))
+        cd_set_button.installEventFilter(
+            ToolTipFilter(cd_set_button, showDelay=300, position=ToolTipPosition.TOP)
+        )
         cd_set_button.clicked.connect(self.cd_edit_item)
 
         cd_clear_button = self.findChild(ToolButton, 'clear_button_cd')
         cd_clear_button.setIcon(fIcon.DELETE)
         cd_clear_button.setToolTip('删除倒计日')
-        cd_clear_button.installEventFilter(ToolTipFilter(cd_clear_button, showDelay=300, position=ToolTipPosition.TOP))
+        cd_clear_button.installEventFilter(
+            ToolTipFilter(cd_clear_button, showDelay=300, position=ToolTipPosition.TOP)
+        )
         cd_clear_button.clicked.connect(self.cd_delete_item)
 
         cd_add_button = self.findChild(ToolButton, 'add_button_cd')
         cd_add_button.setIcon(fIcon.ADD)
         cd_add_button.setToolTip('添加倒计日')
-        cd_add_button.installEventFilter(ToolTipFilter(cd_add_button, showDelay=300, position=ToolTipPosition.TOP))
+        cd_add_button.installEventFilter(
+            ToolTipFilter(cd_add_button, showDelay=300, position=ToolTipPosition.TOP)
+        )
         cd_add_button.clicked.connect(self.cd_add_item)
 
         cd_schedule_list = self.findChild(ListWidget, 'countdown_list')
@@ -5437,12 +6210,16 @@ class SettingsMenu(FluentWindow):
         cd_mode.addItems(list_.countdown_modes)
         cd_mode.setCurrentIndex(int(config_center.read_conf('Date', 'countdown_custom_mode')))
         cd_mode.currentIndexChanged.connect(
-            lambda: config_center.write_conf('Date', 'countdown_custom_mode', str(cd_mode.currentIndex())))
+            lambda: config_center.write_conf(
+                'Date', 'countdown_custom_mode', str(cd_mode.currentIndex())
+            )
+        )
 
         cd_upd_cd = self.findChild(SpinBox, 'countdown_upd_cd')
         cd_upd_cd.setValue(int(config_center.read_conf('Date', 'countdown_upd_cd')))
         cd_upd_cd.valueChanged.connect(
-            lambda: config_center.write_conf('Date', 'countdown_upd_cd', str(cd_upd_cd.value())))
+            lambda: config_center.write_conf('Date', 'countdown_upd_cd', str(cd_upd_cd.value()))
+        )
 
     def m_start_time_changed(self):
         global morning_st
@@ -5468,20 +6245,30 @@ class SettingsMenu(FluentWindow):
         self.addSubInterface(self.cfInterface, fIcon.FOLDER, self.tr('配置文件'))
         self.navigationInterface.addSeparator()
         self.addSubInterface(self.hdInterface, fIcon.QUESTION, self.tr('帮助'))
-        self.addSubInterface(self.plInterface, fIcon.APPLICATION, self.tr('插件'), NavigationItemPosition.BOTTOM)
+        self.addSubInterface(
+            self.plInterface, fIcon.APPLICATION, self.tr('插件'), NavigationItemPosition.BOTTOM
+        )
         self.navigationInterface.addSeparator(NavigationItemPosition.BOTTOM)
-        self.addSubInterface(self.wtInterface, fIcon.CLOUD, self.tr('天气'), NavigationItemPosition.BOTTOM)
-        self.addSubInterface(self.ctInterface, fIcon.BRUSH, self.tr('自定义'), NavigationItemPosition.BOTTOM)
-        self.addSubInterface(self.sdInterface, fIcon.RINGER, self.tr('提醒'), NavigationItemPosition.BOTTOM)
-        self.addSubInterface(self.adInterface, fIcon.SETTING, self.tr('高级选项'), NavigationItemPosition.BOTTOM)
-        self.addSubInterface(self.ifInterface, fIcon.INFO, self.tr('关于本产品'), NavigationItemPosition.BOTTOM)
+        self.addSubInterface(
+            self.wtInterface, fIcon.CLOUD, self.tr('天气'), NavigationItemPosition.BOTTOM
+        )
+        self.addSubInterface(
+            self.ctInterface, fIcon.BRUSH, self.tr('自定义'), NavigationItemPosition.BOTTOM
+        )
+        self.addSubInterface(
+            self.sdInterface, fIcon.RINGER, self.tr('提醒'), NavigationItemPosition.BOTTOM
+        )
+        self.addSubInterface(
+            self.adInterface, fIcon.SETTING, self.tr('高级选项'), NavigationItemPosition.BOTTOM
+        )
+        self.addSubInterface(
+            self.ifInterface, fIcon.INFO, self.tr('关于本产品'), NavigationItemPosition.BOTTOM
+        )
         try:
             self.navigationInterface.currentItemChanged.connect(self._on_page_changed)
         except AttributeError:
-            try:
+            with contextlib.suppress(AttributeError):
                 self.stackedWidget.currentChanged.connect(self._on_page_changed)
-            except AttributeError:
-                pass
 
     def init_window(self):
         self.stackedWidget.setCurrentIndex(0)  # 设置初始页面
@@ -5543,13 +6330,19 @@ class SettingsMenu(FluentWindow):
             logger.error(f"清理TTS语音加载线程失败: {e}")
 
         try:
-            if hasattr(self, 'TTSSettingsDialog') and self.TTSSettingsDialog:
-                if hasattr(self.TTSSettingsDialog, 'tts_preview_thread') and self.TTSSettingsDialog.tts_preview_thread:
-                    if self.TTSSettingsDialog.tts_preview_thread.isRunning():
-                        self.TTSSettingsDialog.tts_preview_thread.requestInterruption()
-                        self.TTSSettingsDialog.tts_preview_thread.quit()
-                        if not self.TTSSettingsDialog.tts_preview_thread.wait(1000):
-                            logger.warning("TTS预览线程未能在超时时间内退出")
+            if (
+                hasattr(self, 'TTSSettingsDialog')
+                and self.TTSSettingsDialog
+                and (
+                    hasattr(self.TTSSettingsDialog, 'tts_preview_thread')
+                    and self.TTSSettingsDialog.tts_preview_thread
+                )
+                and self.TTSSettingsDialog.tts_preview_thread.isRunning()
+            ):
+                self.TTSSettingsDialog.tts_preview_thread.requestInterruption()
+                self.TTSSettingsDialog.tts_preview_thread.quit()
+                if not self.TTSSettingsDialog.tts_preview_thread.wait(1000):
+                    logger.warning("TTS预览线程未能在超时时间内退出")
         except Exception as e:
             logger.error(f"清理TTS预览线程失败: {e}")
 
@@ -5570,21 +6363,35 @@ class SettingsMenu(FluentWindow):
             if language_combo_view:
                 selected_lang_name = language_combo_view.currentText()
                 selected_lang_code = self.language_map_view.get(selected_lang_name)
-                if selected_lang_code and selected_lang_code != self.i18n_manager.current_language_view:
-                    success = self.i18n_manager.load_language_view(selected_lang_code if selected_lang_code != 'system' else QLocale.system().name())
+                if (
+                    selected_lang_code
+                    and selected_lang_code != self.i18n_manager.current_language_view
+                ):
+                    success = self.i18n_manager.load_language_view(
+                        selected_lang_code
+                        if selected_lang_code != 'system'
+                        else QLocale.system().name()
+                    )
                     if success:
                         config_center.write_conf('General', 'language_view', selected_lang_code)
-                        title =self.tr('界面语言切换成功 ♪(´▽｀)')
-                        content = self.tr('界面语言已切换为 {selected_lang_name}\n' \
-                                '新语言将在重启程序后完全生效').format(selected_lang_name=selected_lang_name)
-                        flyout = Flyout.create(title=title,
-                                               content=content,
-                                               target=language_combo_view,
-                                               parent=self.window(),
-                                               isClosable=True,
-                                               aniType=FlyoutAnimationType.FADE_IN)
+                        title = self.tr('界面语言切换成功 ♪(´▽｀)')
+                        content = self.tr(
+                            '界面语言已切换为 {selected_lang_name}\n' '新语言将在重启程序后完全生效'
+                        ).format(selected_lang_name=selected_lang_name)
+                        flyout = Flyout.create(
+                            title=title,
+                            content=content,
+                            target=language_combo_view,
+                            parent=self.window(),
+                            isClosable=True,
+                            aniType=FlyoutAnimationType.FADE_IN,
+                        )
                         if flyout:
-                            if hasattr(flyout, 'widget') and flyout.widget() and isinstance(flyout.widget(), FlyoutView):
+                            if (
+                                hasattr(flyout, 'widget')
+                                and flyout.widget()
+                                and isinstance(flyout.widget(), FlyoutView)
+                            ):
                                 view = flyout.widget()
                                 content_label = view.findChild(QLabel)
                                 if content_label:
@@ -5593,13 +6400,16 @@ class SettingsMenu(FluentWindow):
                     else:
                         current_lang = self.i18n_manager.current_language_view
                         for i in range(language_combo_view.count()):
-                            if self.language_map_view.get(language_combo_view.itemText(i)) == current_lang:
+                            if (
+                                self.language_map_view.get(language_combo_view.itemText(i))
+                                == current_lang
+                            ):
                                 language_combo_view.setCurrentIndex(i)
                                 break
                         msg_box = MessageBox(
                             self.tr('界面语言切换失败 (＃°Д°)'),
                             self.tr('无法加载选定的界面语言包，请检查翻译文件是否存在'),
-                            self
+                            self,
                         )
                         msg_box.yesButton.setText(self.tr('确定'))
                         msg_box.cancelButton.hide()
@@ -5609,7 +6419,7 @@ class SettingsMenu(FluentWindow):
             msg_box = MessageBox(
                 self.tr('界面语言切换出错 (＃°Д°)'),
                 self.tr('切换界面语言时发生错误: {e}').format(e=f"{e}"),
-                self
+                self,
             )
             msg_box.yesButton.setText(self.tr('确定'))
 
@@ -5618,12 +6428,14 @@ class SettingsMenu(FluentWindow):
 
     def on_language_widgets_changed(self):
         """组件语言切换"""
-        ...
+        ...  # noqa
 
 
 class NTPSyncWorker(QObject):
     """NTP异步同步工作线程"""
+
     sync_finished = pyqtSignal(bool)
+
     def __init__(self, time_manager):
         super().__init__()
         self.time_manager = time_manager
@@ -5637,21 +6449,22 @@ class NTPSyncWorker(QObject):
             logger.error(f"异步NTP同步失败: {e}")
             self.sync_finished.emit(False)
 
+
 def sp_get_class_num():  # 获取当前周课程数（未完成）
     highest_count = 0
-    for timeline_ in get_timeline()['even' if conf.get_week_type() else 'odd'].keys():
+    for timeline_ in get_timeline()['even' if conf.get_week_type() else 'odd']:
         timeline = get_timeline()['even' if conf.get_week_type() else 'odd'][timeline_]
         count = 0
-        for isbreak, item_name, item_index, item_time in timeline:
+        for isbreak, _item_name, _item_index, _item_time in timeline:
             if not isbreak:
                 count += 1
-        if count > highest_count:
-            highest_count = count
+        highest_count = max(highest_count, count)
     return highest_count
 
 
 if __name__ == '__main__':
     from i18n_manager import app
+
     settings = SettingsMenu()
     settings.show()
     # settings.setMicaEffectEnabled(True)

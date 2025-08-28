@@ -25,6 +25,7 @@ LOGO_PATH = CW_HOME / "img" / "logo"
 _stop_in_progress = False
 update_timer: Optional['UnionUpdateTimer'] = None
 
+
 def _reset_signal_handlers() -> None:
     """重置信号处理器为默认状态"""
     try:
@@ -32,6 +33,7 @@ def _reset_signal_handlers() -> None:
         signal.signal(signal.SIGINT, signal.SIG_DFL)
     except (AttributeError, ValueError):
         pass
+
 
 def _terminate_child_processes() -> None:
     """终止所有子进程"""
@@ -66,6 +68,7 @@ def _terminate_child_processes() -> None:
     except Exception as e:
         logger.error(f"终止子进程时出现意外错误: {e}")
 
+
 def restart() -> None:
     """重启程序"""
     logger.debug('重启程序')
@@ -79,6 +82,7 @@ def restart() -> None:
     guard.release()
 
     os.execl(sys.executable, sys.executable, *sys.argv)
+
 
 def stop(status: int = 0) -> None:
     """
@@ -95,6 +99,7 @@ def stop(status: int = 0) -> None:
 
     try:
         from generate_speech import get_tts_service
+
         tts_service = get_tts_service()
         if hasattr(tts_service, '_manager') and tts_service._manager:
             tts_service._manager.stop()
@@ -109,6 +114,7 @@ def stop(status: int = 0) -> None:
             logger.warning(f"停止全局更新定时器时出错: {e}")
     import asyncio
     import gc
+
     gc.collect()
     try:
         asyncio.set_event_loop(None)
@@ -126,7 +132,10 @@ def stop(status: int = 0) -> None:
     if not app:
         os._exit(status)
 
-def calculate_size(p_w: float = 0.6, p_h: float = 0.7) -> Tuple[Tuple[int,int], Tuple[int,int]]:  # 计算尺寸
+
+def calculate_size(
+    p_w: float = 0.6, p_h: float = 0.7
+) -> Tuple[Tuple[int, int], Tuple[int, int]]:  # 计算尺寸
     """计算尺寸"""
     screen_geometry = QApplication.primaryScreen().geometry()
     screen_width = screen_geometry.width()
@@ -142,7 +151,9 @@ class DarkModeWatcher(QObject):
     """
     颜色(暗黑)模式监听器
     """
+
     darkModeChanged = pyqtSignal(bool)  # 发出暗黑模式变化信号
+
     def __init__(self, interval: int = 500, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
         self._isDarkMode: bool = bool(darkdetect.isDark())  # 初始状态
@@ -173,6 +184,7 @@ class DarkModeWatcher(QObject):
 
 class TrayIcon(QSystemTrayIcon):
     """托盘图标"""
+
     def __init__(self, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
         self.setIcon(QIcon(str(LOGO_PATH / "favicon.png")))
@@ -191,25 +203,17 @@ class TrayIcon(QSystemTrayIcon):
                 logger.error(f"更新托盘提示时发生错误: {e}")
         else:
             self.setToolTip("Class Widgets - 未加载课表")
-            logger.debug(f'托盘文字更新: "Class Widgets - 未加载课表"')
+            logger.debug('托盘文字更新: "Class Widgets - 未加载课表"')
 
     def push_update_notification(self, text: str = '') -> None:
         self.setIcon(QIcon(str(LOGO_PATH / "favicon-update.png")))  # tray
         self.showMessage(
-            "发现 Class Widgets 新版本！",
-            text,
-            QIcon(str(LOGO_PATH / "favicon-update.png")),
-            5000
+            "发现 Class Widgets 新版本！", text, QIcon(str(LOGO_PATH / "favicon-update.png")), 5000
         )
 
     def push_error_notification(self, title: str = '检查更新失败！', text: str = '') -> None:
         self.setIcon(QIcon(str(LOGO_PATH / "favicon-update.png")))  # tray
-        self.showMessage(
-            title,
-            text,
-            QIcon(str(LOGO_PATH / "favicon-error.ico")),
-            5000
-        )
+        self.showMessage(title, text, QIcon(str(LOGO_PATH / "favicon-error.ico")), 5000)
 
 
 class UnionUpdateTimer(QObject):
@@ -221,7 +225,9 @@ class UnionUpdateTimer(QObject):
         super().__init__(parent)
         self.timer: QTimer = QTimer(self)
         self.timer.timeout.connect(self._on_timeout)
-        self.callback_info: Dict[Callable[[], Any], Dict[str, Union[float, dt.datetime]]] = {}  # 回调函数信息: {callback: {'interval': float, 'last_run': datetime, 'next_run': datetime}}
+        self.callback_info: Dict[Callable[[], Any], Dict[str, Union[float, dt.datetime]]] = (
+            {}
+        )  # 回调函数信息: {callback: {'interval': float, 'last_run': datetime, 'next_run': datetime}}
         self._is_running: bool = False
         self._base_interval: float = max(0.05, base_interval)  # 基础间隔,最小50ms
         self._lock: threading.Lock = threading.Lock()
@@ -300,7 +306,7 @@ class UnionUpdateTimer(QObject):
                 self.callback_info[callback] = {
                     'interval': interval,
                     'last_run': current_time,
-                    'next_run': current_time + dt.timedelta(seconds=interval)
+                    'next_run': current_time + dt.timedelta(seconds=interval),
                 }
                 should_start = not self._is_running
             else:
@@ -309,12 +315,14 @@ class UnionUpdateTimer(QObject):
 
         if should_start:
             self.start()
-        #logger.debug(f"添加回调函数 {callback},间隔: {interval}s")
+        # logger.debug(f"添加回调函数 {callback},间隔: {interval}s")
 
     def remove_callback(self, callback: Callable[[], Any]) -> None:
         """移除回调函数"""
         with self._lock:
-            removed: Optional[Dict[str, Union[float, dt.datetime]]] = self.callback_info.pop(callback, None)
+            removed: Optional[Dict[str, Union[float, dt.datetime]]] = self.callback_info.pop(
+                callback, None
+            )
             if removed:
                 pass
                 # logger.debug(f"移除回调函数(间隔:{removed['interval']}s)")
@@ -331,7 +339,7 @@ class UnionUpdateTimer(QObject):
         """启动定时器"""
         with self._lock:
             if not self._is_running and self.callback_info:
-                logger.debug(f"启动 UnionUpdateTimer...")
+                logger.debug("启动 UnionUpdateTimer...")
                 self._is_running = True
                 self._schedule_next()
             elif not self.callback_info:
@@ -347,14 +355,17 @@ class UnionUpdateTimer(QObject):
     def set_callback_interval(self, callback: Callable[[], Any], interval: float) -> bool:
         """设置特定回调函数的间隔(s)"""
         interval = max(0.1, interval)
-        current_time: dt.datetime = TimeManagerFactory.get_instance().get_current_time()  # 使用真实时间
+        current_time: dt.datetime = (
+            TimeManagerFactory.get_instance().get_current_time()
+        )  # 使用真实时间
         with self._lock:
             if callback in self.callback_info:
                 self.callback_info[callback]['interval'] = interval
-                self.callback_info[callback]['next_run'] = current_time + dt.timedelta(seconds=interval)
+                self.callback_info[callback]['next_run'] = current_time + dt.timedelta(
+                    seconds=interval
+                )
                 return True
-            else:
-                return False
+            return False
 
     def get_callback_interval(self, callback: Callable[[], Any]) -> Optional[float]:
         """获取特定回调函数的间隔"""
@@ -395,13 +406,18 @@ class UnionUpdateTimer(QObject):
                     'interval': data['interval'],
                     'last_run': data['last_run'],
                     'next_run': data['next_run'],
-                    'time_until_next': (data['next_run'] - current_time).total_seconds() if isinstance(data['next_run'], dt.datetime) else 0.0
+                    'time_until_next': (
+                        (data['next_run'] - current_time).total_seconds()
+                        if isinstance(data['next_run'], dt.datetime)
+                        else 0.0
+                    ),
                 }
             return info
 
     def is_running(self) -> bool:
         """检查定时器是否正在运行"""
         return self._is_running
+
 
 def get_str_length(text: str) -> int:
     """
@@ -417,11 +433,12 @@ def get_str_length(text: str) -> int:
     for char in text:
         # 使用 ord() 获取字符的 Unicode 码点
         # 如果大于 0x4e00 (中文范围开始) 就是汉字,计为2
-        if ord(char) > 0x4e00:
+        if ord(char) > 0x4E00:
             length += 2
         else:
             length += 1
     return length
+
 
 def slice_str_by_length(text: str, max_length: int) -> str:
     """
@@ -444,7 +461,7 @@ def slice_str_by_length(text: str, max_length: int) -> str:
     result = []
 
     for char in text:
-        char_length = 2 if ord(char) > 0x4e00 else 1
+        char_length = 2 if ord(char) > 0x4E00 else 1
         if current_length + char_length > max_length:
             break
         result.append(char)
@@ -452,43 +469,45 @@ def slice_str_by_length(text: str, max_length: int) -> str:
 
     return ''.join(result)
 
+
 class TimeManagerInterface(ABC):
     """时间管理器接口"""
 
     @abstractmethod
     def get_real_time(self) -> dt.datetime:
         """获取真实当前时间（无偏移）"""
-        pass
+        pass  # noqa
 
     @abstractmethod
     def get_current_time(self) -> dt.datetime:
         """获取程序内时间 (偏移后)"""
-        pass
+        pass  # noqa
 
     @abstractmethod
     def get_current_time_without_ms(self) -> dt.datetime:
         """获取程序内时间 (偏移后，舍去毫秒)"""
-        pass
+        pass  # noqa
 
     @abstractmethod
     def get_current_time_str(self, format_str: str = '%H:%M:%S') -> str:
         """获取格式化时间字符串"""
-        pass
+        pass  # noqa
 
     @abstractmethod
     def get_today(self) -> dt.date:
         """获取今天日期 (偏移后)"""
-        pass
+        pass  # noqa
 
     @abstractmethod
     def get_current_weekday(self) -> int:
         """获取当前星期几 (0=周一, 6=周日)"""
-        pass
+        pass  # noqa
 
     @abstractmethod
     def sync_with_ntp(self) -> bool:
         """同步NTP时间"""
-        pass
+        pass  # noqa
+
 
 class LocalTimeManager(TimeManagerInterface):
     """本地时间管理器"""
@@ -530,8 +549,10 @@ class LocalTimeManager(TimeManagerInterface):
         logger.warning("本地时间管理器不支持NTP同步")
         return False
 
+
 class NTPTimeManager(TimeManagerInterface):
     """NTP时间管理器"""
+
     _config_center: Any
     _ntp_reference_time: Optional[float]
     _ntp_reference_timestamp: Optional[float]
@@ -599,7 +620,9 @@ class NTPTimeManager(TimeManagerInterface):
             with self._lock:
                 self._ntp_reference_time = ntp_time_local
                 self._ntp_reference_timestamp = time.time()
-            logger.debug(f"NTP同步成功: 服务器={ntp_server},时间={ntp_time_local}({timezone_setting}),延迟={response.delay:.3f}秒")
+            logger.debug(
+                f"NTP同步成功: 服务器={ntp_server},时间={ntp_time_local}({timezone_setting}),延迟={response.delay:.3f}秒"
+            )
             return True
         except Exception as e:
             logger.error(f"NTP同步失败: {e}")
@@ -663,7 +686,7 @@ class NTPTimeManager(TimeManagerInterface):
         """进行NTP同步"""
         current_time = time.time()
         if current_time - self._last_sync_time < self._sync_debounce_interval:
-            #logger.debug(f"NTP同步防抖({current_time - self._last_sync_time:.1f}秒),延迟执行同步")
+            # logger.debug(f"NTP同步防抖({current_time - self._last_sync_time:.1f}秒),延迟执行同步")
             if self._pending_sync_timer:
                 self._pending_sync_timer.cancel()
             remaining_time = self._sync_debounce_interval - (current_time - self._last_sync_time)
@@ -701,11 +724,13 @@ class NTPTimeManager(TimeManagerInterface):
             self._pending_sync_timer.cancel()
             self._pending_sync_timer = None
 
+
 class TimeManagerFactory:
     """时间管理器工厂"""
+
     _managers: Dict[str, Type[TimeManagerInterface]] = {
         'local': LocalTimeManager,
-        'ntp': NTPTimeManager
+        'ntp': NTPTimeManager,
     }
     _instance: Optional[TimeManagerInterface] = None
     _instance_lock = threading.Lock()
@@ -743,8 +768,7 @@ class TimeManagerFactory:
 
     @classmethod
     def reset_instance(cls, config_provider=None) -> TimeManagerInterface:
-        """重置实例(配置变更时使用)
-        """
+        """重置实例(配置变更时使用)"""
         with cls._instance_lock:
             if cls._instance and hasattr(cls._instance, 'shutdown'):
                 try:
@@ -757,7 +781,9 @@ class TimeManagerFactory:
 
             return cls._instance
 
+
 main_mgr = None
+
 
 class SingleInstanceGuard:
     def __init__(self, lock_name="ClassWidgets.lock"):
@@ -776,15 +802,11 @@ class SingleInstanceGuard:
     def get_lock_info(self):
         ok, pid, hostname, appname = self.lock_file.getLockInfo()
         if ok:
-            return {
-                "pid": pid,
-                "hostname": hostname,
-                "appname": appname
-            }
+            return {"pid": pid, "hostname": hostname, "appname": appname}
         return None
 
 
 tray_icon = None
 update_timer = UnionUpdateTimer()
 time_manager = TimeManagerFactory.get_instance()
-guard:Optional[SingleInstanceGuard] = None
+guard: Optional[SingleInstanceGuard] = None

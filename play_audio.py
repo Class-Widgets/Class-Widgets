@@ -10,12 +10,12 @@ from loguru import logger
 from PyQt5.QtCore import QThread, pyqtSignal
 
 from basic_dirs import CW_HOME
-import conf
 from file import config_center
 
 
 class AudioManager:
     """音频管理"""
+
     _instance = None
     _lock = Lock()
 
@@ -56,9 +56,7 @@ class AudioManager:
                 return True
             except pygame.error:
                 try:
-                    pygame.mixer.init(
-                        frequency=22050, size=-16, channels=1, buffer=1024
-                    )
+                    pygame.mixer.init(frequency=22050, size=-16, channels=1, buffer=1024)
                     self.mixer_initialized = True
                     logger.info("Pygame mixer 兼容模式初始化成功")
                     return True
@@ -82,10 +80,7 @@ class AudioManager:
             else:
                 return False, f"音频文件写入超时或为空: {file_path}"
         if file_size < 10:
-            return False, (
-                f"音频文件可能无效或不完整，"
-                f"大小仅为 {file_size} 字节: {file_path}"
-            )
+            return False, (f"音频文件可能无效或不完整，" f"大小仅为 {file_size} 字节: {file_path}")
         return True, file_path
 
     def _get_or_load_sound(self, file_path: str) -> Optional[pygame.mixer.Sound]:
@@ -105,9 +100,7 @@ class AudioManager:
             return sound
         except pygame.error as e:
             relative_path = str(pathlib.Path(file_path).relative_to(CW_HOME))
-            logger.error(
-                f"加载音频文件失败: {relative_path} | 错误: {e}"
-            )
+            logger.error(f"加载音频文件失败: {relative_path} | 错误: {e}")
             return None
 
     def _get_volume(self, volume: Optional[float]) -> float:
@@ -116,10 +109,9 @@ class AudioManager:
             return max(0.0, min(1.0, volume))
         return int(config_center.read_conf('Audio', 'volume')) / 100
 
-    def play_audio(self,
-                   file_path: str,
-                   volume: Optional[float] = None,
-                   blocking: bool = True) -> bool:
+    def play_audio(
+        self, file_path: str, volume: Optional[float] = None, blocking: bool = True
+    ) -> bool:
         """播放音频文件
 
         Args:
@@ -154,9 +146,7 @@ class AudioManager:
             logger.debug(f'成功播放音频: {relative_path} (是否阻塞: {blocking})')
             return True
         except (pygame.error, OSError) as e:
-            logger.error(
-                f'音频播放失败: {relative_path} | 错误: {e}'
-            )
+            logger.error(f'音频播放失败: {relative_path} | 错误: {e}')
             return False
 
     def is_playing(self) -> bool:
@@ -178,18 +168,23 @@ class AudioManager:
             self.sound_cache.clear()
             logger.debug("音频缓存已清空")
 
+
 audio_manager = AudioManager()
+
 
 class PlayAudio(QThread):
     """音频播放线程"""
+
     play_back_signal = pyqtSignal(bool)
     play_finished_signal = pyqtSignal(str, bool)  # (文件路径, 是否成功)
 
-    def __init__(self,
-                 file_path: str,
-                 volume: Optional[float] = None,
-                 cleanup_callback=None,
-                 blocking: bool = True):
+    def __init__(
+        self,
+        file_path: str,
+        volume: Optional[float] = None,
+        cleanup_callback=None,
+        blocking: bool = True,
+    ):
         super().__init__()
         self.file_path = file_path
         self.volume = volume
@@ -208,6 +203,7 @@ class PlayAudio(QThread):
         self.play_back_signal.emit(success)
         self.play_finished_signal.emit(self.file_path, success)
 
+
 def _tts_cleanup_callback(file_path: str, success: bool) -> None:
     """TTS清理回调
 
@@ -217,14 +213,14 @@ def _tts_cleanup_callback(file_path: str, success: bool) -> None:
     """
     try:
         from generate_speech import on_audio_played
+
         on_audio_played(file_path)
     except ImportError:
         logger.warning("无法导入on_audio_played")
 
+
 def play_audio(
-    file_path: str,
-    tts_delete_after: bool = False,
-    volume: Optional[float] = None
+    file_path: str, tts_delete_after: bool = False, volume: Optional[float] = None
 ) -> bool:
     """播放音频文件"""
     success = audio_manager.play_audio(file_path, volume, blocking=True)
@@ -233,10 +229,9 @@ def play_audio(
 
     return success
 
+
 def play_audio_async(
-    file_path: str,
-    volume: Optional[float] = None,
-    cleanup_callback=None
+    file_path: str, volume: Optional[float] = None, cleanup_callback=None
 ) -> PlayAudio:
     """异步播放音频文件
 
@@ -252,6 +247,7 @@ def play_audio_async(
     thread.start()
     return thread
 
+
 def is_playing() -> bool:
     """检查音频播放
 
@@ -260,13 +256,16 @@ def is_playing() -> bool:
     """
     return audio_manager.is_playing()
 
+
 def stop_audio() -> None:
     """停止播放的音频"""
     audio_manager.stop_all()
 
+
 def clear_audio_cache() -> None:
     """清空音频缓存"""
     audio_manager.clear_cache()
+
 
 def reset_mixer() -> None:
     """重置mixer状态"""

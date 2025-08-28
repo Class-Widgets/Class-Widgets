@@ -1,18 +1,20 @@
-from typing import Any, List, Optional, Tuple
-from PyQt5.QtCore import QThread, pyqtSignal, QObject
-from PyQt5.QtGui import QPixmap
-from ui_loader import loadUi
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QLabel
-from qfluentwidgets import BodyLabel, ProgressBar, theme, Theme, setTheme
 import time
-from loguru import logger
+from typing import Optional, Tuple
 
-from i18n_manager import app
+from loguru import logger
+from PyQt5.QtCore import QObject, Qt, QThread, pyqtSignal
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QLabel, QWidget
+from qfluentwidgets import ProgressBar, Theme, theme
+
 from basic_dirs import CW_HOME
+from ui_loader import loadUi
+from i18n_manager import app
+
 
 class DarkModeWatcherThread(QThread):
     darkModeChanged = pyqtSignal(bool)  # 发出暗黑模式变化信号
+
     def __init__(self, interval: int = 500, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
         self.interval = interval / 1000
@@ -40,7 +42,10 @@ class DarkModeWatcherThread(QThread):
         """停止监听"""
         self._running = False
 
+
 dark_mode_watcher = DarkModeWatcherThread(200, app)
+
+
 class Splash:
     def __init__(self):
         super().__init__()
@@ -48,13 +53,17 @@ class Splash:
         self.apply_theme_stylesheet()
 
     def init(self):
-        self.splash_window : QWidget = loadUi(CW_HOME / 'view/splash.ui')
+        self.splash_window: QWidget = loadUi(CW_HOME / 'view/splash.ui')
         self.statusLabel = self.splash_window.findChild(QLabel, 'statusLabel')
         self.statusBar = self.splash_window.findChild(ProgressBar, 'statusBar')
         self.appInitials = self.splash_window.findChild(QLabel, 'appInitials')
         self.splash_window.setAttribute(Qt.WA_TranslucentBackground)
-        self.splash_window.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint |
-                    Qt.BypassWindowManagerHint | Qt.Tool)
+        self.splash_window.setWindowFlags(
+            Qt.WindowType.FramelessWindowHint
+            | Qt.WindowType.WindowStaysOnTopHint
+            | Qt.BypassWindowManagerHint
+            | Qt.Tool
+        )
         self.splash_window.show()
 
     def update_status(self, status: Tuple[int, str]):
@@ -82,7 +91,9 @@ class Splash:
     def run(self):
         logger.info("Splash 启动")
         dark_mode_watcher.start()
-        self.dark_mode_watcher_connection = dark_mode_watcher.darkModeChanged.connect(lambda: self.apply_theme_stylesheet())
+        self.dark_mode_watcher_connection = dark_mode_watcher.darkModeChanged.connect(
+            lambda: self.apply_theme_stylesheet()
+        )
         self.update_status((0, app.translate('main', 'Class Widgets 启动中...')))
         app.processEvents()
 
@@ -97,16 +108,22 @@ class Splash:
     def error(self):
         logger.info("Splash 接收到错误")
         self.appInitials.setPixmap(QPixmap(f'{CW_HOME}/img/logo/favicon-error.ico'))
-        self.splash_window.setWindowFlags(Qt.WindowType.FramelessWindowHint |
-                    Qt.BypassWindowManagerHint | Qt.Tool)
+        self.splash_window.setWindowFlags(
+            Qt.WindowType.FramelessWindowHint | Qt.BypassWindowManagerHint | Qt.Tool
+        )
         self.splash_window.show()
 
     def unerror(self):
         logger.info("Splash 恢复正常")
         self.appInitials.setPixmap(QPixmap(f'{CW_HOME}/img/logo/favicon.ico'))
-        self.splash_window.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint |
-                    Qt.BypassWindowManagerHint | Qt.Tool)
+        self.splash_window.setWindowFlags(
+            Qt.WindowType.FramelessWindowHint
+            | Qt.WindowType.WindowStaysOnTopHint
+            | Qt.BypassWindowManagerHint
+            | Qt.Tool
+        )
         self.splash_window.show()
+
 
 if __name__ == '__main__':
     splash = Splash()

@@ -2,6 +2,7 @@
 CSES Format Support
 what is CSES: https://github.com/CSES-org/CSES
 """
+
 import json
 import typing
 from datetime import datetime, timedelta
@@ -21,10 +22,11 @@ CSES_WEEKS = [1, 2, 3, 4, 5, 6, 7]
 def _get_time(time: typing.Union[str, int]) -> datetime:
     if isinstance(time, str):
         return datetime.strptime(str(time), '%H:%M:%S')
-    elif isinstance(time, int):
-        return datetime.strptime(f'{int(time / 60 / 60)}:{int(time / 60 % 60)}:{time % 60}','%H:%M:%S')
-    else:
-        raise ValueError(f'需要 int 或 HH:MM:SS 类型，得到 {type(time)}，值为 {time}')
+    if isinstance(time, int):
+        return datetime.strptime(
+            f'{int(time / 60 / 60)}:{int(time / 60 % 60)}:{time % 60}', '%H:%M:%S'
+        )
+    raise ValueError(f'需要 int 或 HH:MM:SS 类型，得到 {type(time)}，值为 {time}')
 
 
 class CSES_Converter:
@@ -46,7 +48,9 @@ class CSES_Converter:
         return self.parser
 
     def load_generator(self) -> None:
-        self.generator = cses.CSESGenerator(version=int(config_center.read_conf('Version', 'cses_version')))
+        self.generator = cses.CSESGenerator(
+            version=int(config_center.read_conf('Version', 'cses_version'))
+        )
 
     def convert_to_cw(self) -> Union[Dict, bool]:
         """
@@ -106,22 +110,34 @@ class CSES_Converter:
                 if weeks in ['odd', 'all']:
                     if not time_diff:  # 如果连堂或第一节课
                         # cw_format['timeline'][week][f'a{part_count - 1}{class_count}'] = duration
-                        cw_format['timeline'][week].append([0, f"{part_count-1}", class_count, duration])
+                        cw_format['timeline'][week].append(
+                            [0, f"{part_count-1}", class_count, duration]
+                        )
                     else:
                         # cw_format['timeline'][week][f'f{part_count - 1}{class_count - 1}'] = time_diff
                         # cw_format['timeline'][week][f'a{part_count - 1}{class_count}'] = duration
-                        cw_format['timeline'][week].append([1, f"{part_count-1}", class_count - 1, time_diff])
-                        cw_format['timeline'][week].append([0, f"{part_count-1}", class_count, duration])
+                        cw_format['timeline'][week].append(
+                            [1, f"{part_count-1}", class_count - 1, time_diff]
+                        )
+                        cw_format['timeline'][week].append(
+                            [0, f"{part_count-1}", class_count, duration]
+                        )
 
                 if weeks in ['even', 'all']:
                     if not time_diff:  # 如果连堂或第一节课
                         # cw_format['timeline'][week][f'a{part_count - 1}{class_count}'] = duration
-                        cw_format['timeline_even'][week].append([0, f"{part_count-1}", class_count, duration])
+                        cw_format['timeline_even'][week].append(
+                            [0, f"{part_count-1}", class_count, duration]
+                        )
                     else:
                         # cw_format['timeline'][week][f'f{part_count - 1}{class_count - 1}'] = time_diff
                         # cw_format['timeline'][week][f'a{part_count - 1}{class_count}'] = duration
-                        cw_format['timeline_even'][week].append([1, f"{part_count-1}", class_count - 1, time_diff])
-                        cw_format['timeline_even'][week].append([0, f"{part_count-1}", class_count, duration])
+                        cw_format['timeline_even'][week].append(
+                            [1, f"{part_count-1}", class_count - 1, time_diff]
+                        )
+                        cw_format['timeline_even'][week].append(
+                            [0, f"{part_count-1}", class_count, duration]
+                        )
 
                 last_end_time = end_time
 
@@ -139,13 +155,16 @@ class CSES_Converter:
         print(cw_format)
         return cw_format
 
-    def convert_to_cses(self, cw_data: Optional[Dict[str, Any]] = None, cw_path: str = './') -> bool:
+    def convert_to_cses(
+        self, cw_data: Optional[Dict[str, Any]] = None, cw_path: str = './'
+    ) -> bool:
         """
         将Class Widgets格式转换为CSES文件，需提供保存路径和Class Widgets数据/路径
         Args:
             cw_data: Class Widgets格式数据 (Optional)
             cw_path: Class Widgets文件路径(Optional)
         """
+
         def convert(schedules: Dict[str, List[str]], type_: str = 'odd') -> None:
             class_counter_dict = {}  # 记录一个节点当天的课程数
             for part in parts:  # 节点循环
@@ -208,10 +227,15 @@ class CSES_Converter:
                         name=f'{name}_{CSES_WEEKS_TEXTS[int(day)]}',
                         enable_day=CSES_WEEKS[int(day)],
                         weeks=type_,
-                        classes=[timelines_part[str(day)][i] for i in range(len(timelines_part[str(day)]))]
+                        classes=[
+                            timelines_part[str(day)][i]
+                            for i in range(len(timelines_part[str(day)]))
+                        ],
                     )
 
-        def check_subjects(schedule: Dict[str, List[str]]) -> List[str]:  # 检查课表是否有未正式设定的科目
+        def check_subjects(
+            schedule: Dict[str, List[str]],
+        ) -> List[str]:  # 检查课表是否有未正式设定的科目
             unset_subjects = []
             for _, classes in schedule.items():
                 for class_ in classes:
@@ -235,8 +259,10 @@ class CSES_Converter:
 
         for subject_ in cw_subjects['subject_list']:
             self.generator.add_subject(
-                name=subject_, simplified_name=list_.get_subject_abbreviation(subject_),
-                teacher=None, room=None
+                name=subject_,
+                simplified_name=list_.get_subject_abbreviation(subject_),
+                teacher=None,
+                room=None,
             )
 
         # 课表
@@ -245,7 +271,7 @@ class CSES_Converter:
 
         if cw_path != './' and cw_data is None:  # 加载Class Widgets数据
             try:
-                with open(cw_path, 'r', encoding='utf-8') as data:
+                with open(cw_path, encoding='utf-8') as data:
                     cw_data = json.load(data)
             except FileNotFoundError:
                 logger.error(f'File {cw_path} not found')
@@ -267,8 +293,10 @@ class CSES_Converter:
 
         for subject_ in list(us_union):
             self.generator.add_subject(
-                name=subject_, simplified_name=list_.get_subject_abbreviation(subject_),
-                teacher=None, room=None
+                name=subject_,
+                simplified_name=list_.get_subject_abbreviation(subject_),
+                teacher=None,
+                room=None,
             )
 
         try:

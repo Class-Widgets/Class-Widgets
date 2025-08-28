@@ -11,6 +11,11 @@
     <height>374</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <strikeout>false</strikeout>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>WeatherAlertMsgbox</string>
   </property>
@@ -80,7 +85,7 @@
           </size>
          </property>
          <property name="text">
-          <string />
+          <string/>
          </property>
          <property name="pixmap">
           <pixmap>../../img/weather/alerts/red.png</pixmap>
@@ -91,7 +96,10 @@
          <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
-        <property name="wordWrap"><bool>true</bool></property></widget>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QLabel" name="alertTitle">
@@ -108,7 +116,10 @@
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
-        <property name="wordWrap"><bool>true</bool></property></widget>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
        <item>
         <spacer name="horizontalSpacer">
@@ -143,7 +154,10 @@
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-        <property name="wordWrap"><bool>true</bool></property></widget>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
        <item>
         <spacer name="horizontalSpacer_2">
@@ -168,8 +182,7 @@
        <property name="styleSheet">
         <string notr="true">QScrollArea {
     background: transparent;
-    border: 1px solid #E0E0E0;
-    border-radius: 8px;
+    border: none;
 }
 
 QScrollArea QWidget {
@@ -209,8 +222,8 @@ QScrollBar::sub-line:vertical {
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>540</width>
-          <height>250</height>
+          <width>542</width>
+          <height>252</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="contentLayout">
@@ -234,14 +247,17 @@ QScrollBar::sub-line:vertical {
            <property name="font">
             <font>
              <family>Microsoft YaHei UI</family>
-             <pointsize>14</pointsize>
+             <pointsize>16</pointsize>
             </font>
+           </property>
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
            </property>
            <property name="text">
             <string>NAN</string>
            </property>
            <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+            <set>Qt::AlignHCenter|Qt::AlignTop</set>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
@@ -272,6 +288,6 @@ QScrollBar::sub-line:vertical {
    </item>
   </layout>
  </widget>
- <resources />
- <connections />
+ <resources/>
+ <connections/>
 </ui>

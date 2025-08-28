@@ -2,23 +2,32 @@ import sys
 from shutil import copy
 from typing import List
 
-from ui_loader import loadUi
-from PyQt5.QtCore import Qt
+from loguru import logger
+from PyQt5 import uic
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QScroller
-from loguru import logger
-from qfluentwidgets import FluentWindow, FluentIcon as fIcon, ComboBox, \
-    PrimaryPushButton, Flyout, FlyoutAnimationType, InfoBarIcon, ListWidget, LineEdit, ToolButton, HyperlinkButton, \
-    SmoothScrollArea
+from qfluentwidgets import (
+    ComboBox,
+    FluentWindow,
+    Flyout,
+    FlyoutAnimationType,
+    HyperlinkButton,
+    InfoBarIcon,
+    LineEdit,
+    ListWidget,
+    PrimaryPushButton,
+    SmoothScrollArea,
+    ToolButton,
+)
+from qfluentwidgets import FluentIcon as fIcon
 
 import conf
 import file
-from conf import CW_HOME
 import list_
+from conf import CW_HOME
 from file import config_center, schedule_center
 from menu import SettingsMenu
 from utils import TimeManagerFactory
-from loguru import logger
 
 settings = None
 
@@ -27,22 +36,30 @@ temp_schedule = {'schedule': {}, 'schedule_even': {}}
 
 
 def open_settings(main_window=None) -> None:
+    """打开设置窗口"""
     global settings
-    if settings is None or not settings.isVisible():
+    try:
+        if settings is None or not hasattr(settings, 'isVisible') or not settings.isVisible():
+            settings = SettingsMenu(main_window=main_window)
+            settings.closed.connect(cleanup_settings)
+            settings.show()
+            logger.info('打开“设置”')
+        else:
+            settings.raise_()
+            settings.activateWindow()
+    except (NameError, AttributeError):
         settings = SettingsMenu(main_window=main_window)
         settings.closed.connect(cleanup_settings)
         settings.show()
-        logger.info('打开“设置”')
-    else:
-        settings.raise_()
-        settings.activateWindow()
+        logger.info('打开“设置” (重新初始化)')
 
 
 def cleanup_settings() -> None:
     global settings
     logger.info('关闭“设置”')
-    del settings
-    settings = None
+    if 'settings' in globals() and settings is not None:
+        settings.close()
+        settings = None
 
 
 class ExtraMenu(FluentWindow):
@@ -65,7 +82,7 @@ class ExtraMenu(FluentWindow):
         select_temp_schedule = self.findChild(ComboBox, 'select_temp_schedule')  # 选择替换课表
         select_temp_schedule.addItems(list_.week_type)
         select_temp_schedule.setCurrentIndex(conf.get_week_type())
-        select_temp_schedule.currentIndexChanged.connect(self.refresh_schedule_list) # 日期选择变化
+        select_temp_schedule.currentIndexChanged.connect(self.refresh_schedule_list)  # 日期选择变化
 
         tmp_schedule_list = self.findChild(ListWidget, 'schedule_list')  # 换课列表
         tmp_schedule_list.addItems(self.load_schedule())
@@ -88,16 +105,17 @@ class ExtraMenu(FluentWindow):
     def load_schedule() -> List[str]:
         if conf.get_week_type():
             return schedule_center.schedule_data['schedule_even'][str(current_week)]
-        else:
-            return schedule_center.schedule_data['schedule'][str(current_week)]
+        return schedule_center.schedule_data['schedule'][str(current_week)]
 
     def save_temp_conf(self) -> None:
         try:
             temp_week = self.findChild(ComboBox, 'select_temp_week')
             temp_schedule_set = self.findChild(ComboBox, 'select_temp_schedule')
             if config_center.read_conf('Temp', 'temp_schedule') == '':
-                copy(f'{CW_HOME}/config/schedule/{config_center.schedule_name}',
-                     f'{CW_HOME}/config/schedule/backup.json')
+                copy(
+                    f'{CW_HOME}/config/schedule/{config_center.schedule_name}',
+                    f'{CW_HOME}/config/schedule/backup.json',
+                )
                 logger.success(f'原课表配置已备份：{config_center.schedule_name} --> backup.json')
                 config_center.write_conf('Temp', 'temp_schedule', config_center.schedule_name)
             current_full_schedule_data = schedule_center.schedule_data
@@ -106,16 +124,27 @@ class ExtraMenu(FluentWindow):
 
             if is_even_week:
                 if adjusted_week in temp_schedule.get('schedule_even', {}):
-                    current_full_schedule_data['schedule_even'] = current_full_schedule_data.get('schedule_even', {})
-                    current_full_schedule_data['schedule_even'][adjusted_week] = temp_schedule['schedule_even'][adjusted_week]
-                    current_full_schedule_data['adjusted_classes'] = current_full_schedule_data.get('adjusted_classes', {})
+                    current_full_schedule_data['schedule_even'] = current_full_schedule_data.get(
+                        'schedule_even', {}
+                    )
+                    current_full_schedule_data['schedule_even'][adjusted_week] = temp_schedule[
+                        'schedule_even'
+                    ][adjusted_week]
+                    current_full_schedule_data['adjusted_classes'] = current_full_schedule_data.get(
+                        'adjusted_classes', {}
+                    )
                     current_full_schedule_data['adjusted_classes'][f'even_{adjusted_week}'] = True
-            else:
-                if adjusted_week in temp_schedule.get('schedule', {}):
-                    current_full_schedule_data['schedule'] = current_full_schedule_data.get('schedule', {})
-                    current_full_schedule_data['schedule'][adjusted_week] = temp_schedule['schedule'][adjusted_week]
-                    current_full_schedule_data['adjusted_classes'] = current_full_schedule_data.get('adjusted_classes', {})
-                    current_full_schedule_data['adjusted_classes'][f'odd_{adjusted_week}'] = True
+            elif adjusted_week in temp_schedule.get('schedule', {}):
+                current_full_schedule_data['schedule'] = current_full_schedule_data.get(
+                    'schedule', {}
+                )
+                current_full_schedule_data['schedule'][adjusted_week] = temp_schedule['schedule'][
+                    adjusted_week
+                ]
+                current_full_schedule_data['adjusted_classes'] = current_full_schedule_data.get(
+                    'adjusted_classes', {}
+                )
+                current_full_schedule_data['adjusted_classes'][f'odd_{adjusted_week}'] = True
 
             file.save_data_to_json(current_full_schedule_data, config_center.schedule_name)
             schedule_center.update_schedule()
@@ -125,11 +154,11 @@ class ExtraMenu(FluentWindow):
             Flyout.create(
                 icon=InfoBarIcon.SUCCESS,
                 title='保存成功',
-                content=f"已保存至 ./config.ini \n重启后恢复。",
+                content="已保存至 ./config.ini \n重启后恢复。",
                 target=self.findChild(PrimaryPushButton, 'save_temp_conf'),
                 parent=self,
                 isClosable=True,
-                aniType=FlyoutAnimationType.PULL_UP
+                aniType=FlyoutAnimationType.PULL_UP,
             )
         except Exception as e:
             logger.error(f'保存临时课表时发生错误: {e}')
@@ -140,7 +169,7 @@ class ExtraMenu(FluentWindow):
                 target=self.findChild(PrimaryPushButton, 'save_temp_conf'),
                 parent=self,
                 isClosable=True,
-                aniType=FlyoutAnimationType.PULL_UP
+                aniType=FlyoutAnimationType.PULL_UP,
             )
 
     def refresh_schedule_list(self) -> None:
@@ -160,11 +189,14 @@ class ExtraMenu(FluentWindow):
                 tmp_schedule_list.addItems(
                     schedule_center.schedule_data['schedule'][str(current_week)]
                 )
+        elif current_schedule:
+            tmp_schedule_list.addItems(
+                file.load_from_json('backup.json')['schedule_even'][str(current_week)]
+            )
         else:
-            if current_schedule:
-                tmp_schedule_list.addItems(file.load_from_json('backup.json')['schedule_even'][str(current_week)])
-            else:
-                tmp_schedule_list.addItems(file.load_from_json('backup.json')['schedule'][str(current_week)])
+            tmp_schedule_list.addItems(
+                file.load_from_json('backup.json')['schedule'][str(current_week)]
+            )
 
     def upload_item(self) -> None:
         global temp_schedule
@@ -188,9 +220,8 @@ class ExtraMenu(FluentWindow):
             selected_item = selected_items[0]
             if class_combo.currentIndex() != 0:
                 selected_item.setText(class_combo.currentText())
-            else:
-                if custom_class.text() != '':
-                    selected_item.setText(custom_class.text())
+            elif custom_class.text() != '':
+                selected_item.setText(custom_class.text())
 
     def initUI(self) -> None:
         # 修复设置窗口在各个屏幕分辨率DPI下的窗口大小
@@ -216,6 +247,7 @@ class ExtraMenu(FluentWindow):
 
 if __name__ == '__main__':
     from i18n_manager import app
+
     ex = ExtraMenu()
     ex.show()
     sys.exit(app.exec())
