@@ -1265,9 +1265,7 @@ class SettingsMenu(FluentWindow):
         self.teInterface.setObjectName("teInterface")
         self.seInterface = loadUi(str(CW_HOME / 'view/menu/schedule_edit.ui'))  # 课程表编辑
         self.seInterface.setObjectName("seInterface")
-        self.cdInterface = loadUi(
-            str(CW_HOME / 'view/menu/countdown_custom_edit.ui')
-        )  # 倒计日编辑
+        self.cdInterface = loadUi(str(CW_HOME / 'view/menu/countdown_custom_edit.ui'))  # 倒计日编辑
         self.cdInterface.setObjectName("cdInterface")
         self.adInterface = loadUi(str(CW_HOME / 'view/menu/advance.ui'))  # 高级选项
         self.adInterface.setObjectName("adInterface")

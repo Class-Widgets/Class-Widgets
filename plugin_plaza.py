@@ -565,13 +565,9 @@ class PluginPlaza(MSFluentWindow):
         try:
             self.homeInterface = loadUi(str(CW_HOME / 'view' / 'pp' / 'home.ui'))  # 首页
             self.homeInterface.setObjectName("homeInterface")
-            self.latestsInterface = loadUi(
-                str(CW_HOME / 'view' / 'pp' / 'latests.ui')
-            )  # 最新更新
+            self.latestsInterface = loadUi(str(CW_HOME / 'view' / 'pp' / 'latests.ui'))  # 最新更新
             self.latestsInterface.setObjectName("latestInterface")
-            self.settingsInterface = loadUi(
-                str(CW_HOME / 'view' / 'pp' / 'settings.ui')
-            )  # 设置
+            self.settingsInterface = loadUi(str(CW_HOME / 'view' / 'pp' / 'settings.ui'))  # 设置
             self.settingsInterface.setObjectName("settingsInterface")
             self.searchInterface = loadUi(str(CW_HOME / 'view' / 'pp' / 'search.ui'))  # 搜索
             self.searchInterface.setObjectName("searchInterface")

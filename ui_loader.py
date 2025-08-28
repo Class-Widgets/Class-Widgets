@@ -97,9 +97,7 @@ class UILoader:
             return False
 
     @staticmethod
-    def loadUi(
-        ui_path: Union[str, Path], widget: Optional[QWidget] = None
-    ) -> Optional[QWidget]:
+    def loadUi(ui_path: Union[str, Path], widget: Optional[QWidget] = None) -> Optional[QWidget]:
         """
         加载ui文件方法,直接替代uic.loadUi
 
@@ -136,9 +134,7 @@ class UILoader:
             raise RuntimeError(f"无法加载ui文件: {ui_path}") from e
 
 
-def loadUi(
-    ui_path: Union[str, Path], widget: Optional[QWidget] = None
-) -> Optional[QWidget]:
+def loadUi(ui_path: Union[str, Path], widget: Optional[QWidget] = None) -> Optional[QWidget]:
     """
     直接替换uic.loadUi
 

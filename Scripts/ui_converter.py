@@ -25,9 +25,18 @@ class UIConverter:
     def convert_ui_to_py(self, ui_file: Path, output_file: Path) -> bool:
         try:
             output_file.parent.mkdir(parents=True, exist_ok=True)
-            cmd = [sys.executable, "-m", "PyQt5.uic.pyuic", str(ui_file), "-o", str(output_file),]
+            cmd = [
+                sys.executable,
+                "-m",
+                "PyQt5.uic.pyuic",
+                str(ui_file),
+                "-o",
+                str(output_file),
+            ]
             subprocess.run(cmd, capture_output=True, text=True, check=True)
-            logger.success(f"转换成功: {ui_file.relative_to(CW_HOME)} -> {output_file.relative_to(CW_HOME)}")
+            logger.success(
+                f"转换成功: {ui_file.relative_to(CW_HOME)} -> {output_file.relative_to(CW_HOME)}"
+            )
             self.converted_files.append((ui_file, output_file))
             return True
         except subprocess.CalledProcessError as e:
