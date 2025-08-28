@@ -338,6 +338,15 @@ jobs:
           fi
           echo "BUILD_TYPE=$build_type" >> $GITHUB_ENV
 
+      - name: Convert .ui files
+        shell: bash
+        run: |
+          uv run --no-dev python Scripts/ui_converter.py
+          find ui -name "*.ui" -delete
+          find view -name "*.ui" -delete
+          find i18n -name "*.ts" -delete
+          find ui -name "*.ts" -delete
+
       - name: Build Windows (pyinstaller)
         if: startsWith(matrix.os, 'windows')
         shell: bash
@@ -345,8 +354,7 @@ jobs:
           if [[ "${{ runner.os }}" == "Windows" ]]; then
             curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
           fi
-          find ui -name "*.ts" -delete
-          uv run pyinstaller main.py \
+          uv run --no-dev pyinstaller main.py \
             -w \
             -i ./img/favicon.ico \
             -n "ClassWidgets" \
@@ -371,8 +379,7 @@ jobs:
         if: startsWith(matrix.os, 'macos')
         shell: bash
         run: |
-          find ui -name "*.ts" -delete
-          uv run pyinstaller main.py \
+          uv run --no-dev pyinstaller main.py \
             -w \
             -i ./img/favicon.icns \
             -n "Class Widgets" \
@@ -399,8 +406,7 @@ jobs:
         if: matrix.platform == 'linux-x64'
         shell: bash
         run: |
-          find ui -name "*.ts" -delete
-          uv run pyinstaller main.py \
+          uv run --no-dev pyinstaller main.py \
             -w \
             -i ./img/favicon.png \
             -n "ClassWidgets" \

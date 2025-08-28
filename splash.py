@@ -2,13 +2,13 @@ import time
 from typing import Optional, Tuple
 
 from loguru import logger
-from PyQt5 import uic
 from PyQt5.QtCore import QObject, Qt, QThread, pyqtSignal
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QLabel, QWidget
 from qfluentwidgets import ProgressBar, Theme, theme
 
 from basic_dirs import CW_HOME
+from ui_loader import loadUi
 from i18n_manager import app
 
 
@@ -53,7 +53,7 @@ class Splash:
         self.apply_theme_stylesheet()
 
     def init(self):
-        self.splash_window: QWidget = uic.loadUi(CW_HOME / 'view/splash.ui')
+        self.splash_window: QWidget = loadUi(CW_HOME / 'view/splash.ui')
         self.statusLabel = self.splash_window.findChild(QLabel, 'statusLabel')
         self.statusBar = self.splash_window.findChild(ProgressBar, 'statusBar')
         self.appInitials = self.splash_window.findChild(QLabel, 'appInitials')

@@ -3,7 +3,6 @@ from collections import defaultdict
 from typing import Any, Dict, List, Optional, Tuple
 
 from loguru import logger
-from PyQt5 import uic
 from PyQt5.QtCore import (
     QEasingCurve,
     QPoint,
@@ -21,6 +20,7 @@ from qfluentwidgets import setThemeColor
 import conf
 import list_
 from basic_dirs import CW_HOME
+from ui_loader import loadUi
 from file import config_center
 from generate_speech import get_tts_service
 from play_audio import PlayAudio
@@ -68,7 +68,7 @@ class tip_toast(QWidget):
         if tts_service is None:
             tts_service = get_tts_service()
 
-        uic.loadUi(str(CW_HOME / "view" / "widget-toast-bar.ui"), self)
+        loadUi(str(CW_HOME / "view" / "widget-toast-bar.ui"), self)
 
         try:
             dpr = (

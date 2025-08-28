@@ -67,7 +67,7 @@ class ExtraMenu(FluentWindow):
         super().__init__()
         self.menu = None
         self.main_window = None
-        self.interface = uic.loadUi(f'{CW_HOME}/view/extra_menu.ui')
+        self.interface = loadUi(f'{CW_HOME}/view/extra_menu.ui')
         self.initUI()
         self.init_interface()
 
