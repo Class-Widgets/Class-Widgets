@@ -315,8 +315,8 @@ def get_start_time() -> None:
         return item[1], item[2], item[0]
 
     # 对timeline排序后添加到timeline_data
-    # timeline_data = sorted(timeline, key=sort_timeline_key)
-    timeline_data = timeline.copy()  # 直接复制，避免修改原数据
+    timeline_data = sorted(timeline, key=sort_timeline_key)
+    # timeline_data = timeline.copy()  # 直接复制，避免修改原数据
 
 
 def get_part() -> Optional[Tuple[dt.datetime, int]]:
@@ -388,24 +388,24 @@ def get_current_lessons() -> None:  # 获取当前课程
     else:
         schedule = loaded_data.get('schedule')
     class_count = 0
-    for isbreak, item_name, _item_index, _item_time in timeline:
+    for isbreak, item_name, item_index, _item_time in timeline:
         if not isbreak:
             if schedule[str(current_week)]:
                 try:
                     if schedule[str(current_week)][class_count] != QCoreApplication.translate(
                         'main', '未添加'
                     ):
-                        current_lessons[item_name] = schedule[str(current_week)][class_count]
+                        current_lessons[(isbreak, item_name, item_index)] = schedule[str(current_week)][class_count]
                     else:
-                        current_lessons[item_name] = QCoreApplication.translate('main', '暂无课程')
+                        current_lessons[(isbreak, item_name, item_index)] = QCoreApplication.translate('main', '暂无课程')
                 except IndexError:
-                    current_lessons[item_name] = QCoreApplication.translate('main', '暂无课程')
+                    current_lessons[(isbreak, item_name, item_index)] = QCoreApplication.translate('main', '暂无课程')
                 except Exception as e:
-                    current_lessons[item_name] = QCoreApplication.translate('main', '暂无课程')
+                    current_lessons[(isbreak, item_name, item_index)] = QCoreApplication.translate('main', '暂无课程')
                     logger.debug(f'加载课程表文件出错：{e}')
                 class_count += 1
             else:
-                current_lessons[item_name] = QCoreApplication.translate('main', '暂无课程')
+                current_lessons[(isbreak, item_name, item_index)] = QCoreApplication.translate('main', '暂无课程')
                 class_count += 1
 
 
@@ -505,10 +505,10 @@ def get_countdown(toast: bool = False) -> Optional[List[Union[str, int]]]:  # �
                     next_lesson_name = None
                     next_lesson_key = None
                     if timeline_data:
-                        for isbreak, item_name, _item_index, item_time in timeline_data:
+                        for isbreak, item_name, item_index, item_time in timeline_data:
                             # if key.startswith(f'a{str(part)}'):
                             if not isbreak and item_name == str(part):
-                                next_lesson_key = part
+                                next_lesson_key = (isbreak, item_name, item_index)
                                 break
                     if next_lesson_key and next_lesson_key in current_lessons:
                         lesson_name = current_lessons[next_lesson_key]
@@ -564,13 +564,13 @@ def get_next_lessons() -> None:
             ) - dt.timedelta(minutes=60)
 
         if before_class():
-            for isbreak, item_name, _item_index, item_time in timeline_data:
+            for isbreak, item_name, item_index, item_time in timeline_data:
                 # if item_name.startswith(f'a{str(part)}') or item_name.startswith(f'f{str(part)}'):
                 if item_name == str(part):
                     add_time = int(item_time)
                     # if c_time > current_dt and item_name.startswith('a'):
                     if c_time > current_dt and not isbreak:
-                        next_lessons.append(current_lessons[item_name])
+                        next_lessons.append(current_lessons[(isbreak, item_name, item_index)])
                     c_time += dt.timedelta(minutes=add_time)
 
 
@@ -604,7 +604,7 @@ def get_current_lesson_name() -> None:
                 current_lesson_name = loaded_data['part_name'][str(part)]
                 current_state = 2
 
-            for isbreak, item_name, _item_index, item_time in timeline_data:
+            for isbreak, item_name, item_index, item_time in timeline_data:
                 # if item_name.startswith(f'a{str(part)}') or item_name.startswith(f'f{str(part)}'):
                 if item_name == str(part):
                     add_time = int(item_time)
@@ -612,7 +612,7 @@ def get_current_lesson_name() -> None:
                     if c_time > current_dt:
                         # if item_name.startswith('a'):
                         if not isbreak:
-                            current_lesson_name = current_lessons[item_name]
+                            current_lesson_name = current_lessons[(isbreak, item_name, item_index)]
                             current_state = 1
                         else:
                             current_lesson_name = QCoreApplication.translate('main', '课间')
