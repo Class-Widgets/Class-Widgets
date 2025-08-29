@@ -473,8 +473,10 @@ def check_version(version: Dict[str, Any]) -> bool:  # 检查更新
     server_version = version['version_release' if channel == 0 else 'version_beta']
     local_version = config_center.read_conf("Version", "version")
     if local_version != "__BUILD_VERSION__":
-        logger.debug(f"服务端版本: {Version(server_version)}，本地版本: {Version(local_version)}")
-        if Version(server_version) > Version(local_version):
+        logger.debug(f"服务端版本: {server_version}，本地版本: {local_version}")
+        if Version(server_version.replace('-nightly', '')) > Version(
+            local_version.replace('-nightly', '')
+        ):
             utils.tray_icon.push_update_notification(
                 f"新版本速递：{server_version}\n请在“设置”中了解更多。"
             )
