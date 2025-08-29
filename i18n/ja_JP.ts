@@ -4312,87 +4312,87 @@
 コンポーネントを非表示にしてもよろしいですか？</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3618"/>
+        <location filename="../main.py" line="3624"/>
         <source>检查多开...</source>
         <translation>多重起動をチェックしています…</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3633"/>
+        <location filename="../main.py" line="3639"/>
         <source>Class Widgets 正在运行</source>
         <translation>Class Widgets が実行中です</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3638"/>
+        <location filename="../main.py" line="3644"/>
         <source>Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。
 (若您需要打开多个实例，请在“设置”-&gt;“高级选项”中启用“允许程序多开”)</source>
         <translation>Class Widgets が実行中です！複数のインスタンスを開かないでください。予期しない問題が発生する可能性があります。
 （複数のインスタンスを開く必要がある場合は、「設定」→「高度なオプション」で「プログラムの多重起動を許可」を有効にしてください）</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3658"/>
+        <location filename="../main.py" line="3664"/>
         <source>初始化颜色监视器...</source>
         <translation>配色モードの監視を初期化しています…</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3668"/>
+        <location filename="../main.py" line="3674"/>
         <source>检查缩放...</source>
         <translation>拡大率をチェックしています…</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3674"/>
+        <location filename="../main.py" line="3680"/>
         <source>缩放系数过大</source>
         <translation>拡大率が大きすぎます</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3678"/>
+        <location filename="../main.py" line="3684"/>
         <source>当前缩放系数为 {scale_factor}%，可能导致显示异常。
 建议将缩放系数设置为 100% 到 180% 之间。</source>
         <translation>現在の拡大率は {scale_factor}% です。表示に問題が発生する可能性があります。
 拡大率を100%から180%の間に設定することをお勧めします。</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3687"/>
+        <location filename="../main.py" line="3693"/>
         <source>获取系统版本...</source>
         <translation>システムバージョンを取得しています…</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3706"/>
+        <location filename="../main.py" line="3712"/>
         <source>初始化窗口管理器...</source>
         <translation>ウィンドウマネージャーを初期化しています…</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3713"/>
+        <location filename="../main.py" line="3719"/>
         <source>检查初次启动...</source>
         <translation>初回起動をチェックしています…</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3725"/>
+        <location filename="../main.py" line="3731"/>
         <source>初始化插件管理器...</source>
         <translation>プラグインマネージャーを初期化しています…</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3731"/>
+        <location filename="../main.py" line="3737"/>
         <source>加载窗口...</source>
         <translation>ウィンドウを読み込んでいます…</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3735"/>
+        <location filename="../main.py" line="3741"/>
         <source>加载课程...</source>
         <translation>コースを読み込んでいます…</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3742"/>
+        <location filename="../main.py" line="3748"/>
         <source>加载隐藏状态...</source>
         <translation>非表示状態を読み込んでいます…</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3761"/>
+        <location filename="../main.py" line="3767"/>
         <source>检查更新...</source>
         <translation>更新を確認しています…</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3640"/>
-        <location filename="../main.py" line="3680"/>
+        <location filename="../main.py" line="3646"/>
+        <location filename="../main.py" line="3686"/>
         <source>好</source>
         <translation>はい</translation>
     </message>
