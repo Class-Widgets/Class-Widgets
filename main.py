@@ -3365,7 +3365,7 @@ class DesktopWidget(QWidget):  # 主要小组件
 
     def animate_hide(self, full: bool = False) -> None:  # 隐藏窗口
         global theme
-        
+
         self.animation = QPropertyAnimation(self, b"geometry")
         self.animation.setDuration(625)  # 持续时间
         height = self.height()
@@ -3378,7 +3378,9 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.animation.setEndValue(QRect(self.x(), -height, self.width(), self.height()))
         elif os.name == 'nt':
             '''半隐藏 windows'''
-            self.animation.setEndValue(QRect(self.x(), -height + theme_info.config.delta, self.width(), self.height()))
+            self.animation.setEndValue(
+                QRect(self.x(), -height + theme_info.config.delta, self.width(), self.height())
+            )
         else:
             '''其他系统'''
             self.animation.setEndValue(QRect(self.x(), 0, self.width(), self.height()))
