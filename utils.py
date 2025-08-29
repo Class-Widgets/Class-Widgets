@@ -233,7 +233,7 @@ class UnionUpdateTimer(QObject):
         self.callback_info = {}  # {callback: interval}
         self._is_running: bool = False
         self._base_interval: float = max(0.05, base_interval)  # 基础间隔,最小50ms
-        self._lock: threading.Lock = threading.Lock()
+        self._lock: threading.Lock = threading.RLock()
 
     def _on_timeout(self) -> None:
         app = QApplication.instance()
