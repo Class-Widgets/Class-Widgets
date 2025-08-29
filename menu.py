@@ -4885,7 +4885,9 @@ class SettingsMenu(FluentWindow):
         )
         if local_version != "__BUILD_VERSION__":
             logger.debug(f"服务端版本: {new_version}，本地版本: {local_version}")
-            if Version(new_version.replace('-nightly', '')) <= Version(local_version.replace('-nightly', '')):
+            if Version(new_version.replace('-nightly', '')) <= Version(
+                local_version.replace('-nightly', '')
+            ):
                 self.version_number_label.setText(
                     self.tr('版本号：{local_version}\n已是最新版本！').format(
                         local_version=local_version
