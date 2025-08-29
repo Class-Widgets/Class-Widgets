@@ -5,7 +5,7 @@
     "themes": {
       "default": ["en_US", "ja_JP", "zh_CN", "zh_HK"],
       "hoshino": ["zh_CN"],
-      "minimize": [],
+      "minimize": ["zh_CN"],
       "shiroko": ["zh_CN"]
     }
   }

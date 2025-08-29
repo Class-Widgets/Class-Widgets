@@ -6,6 +6,7 @@
   "spacing": -9,
   "height": 110,
   "shadow": true,
+  "delta": 35,
   "widget_width": {
     "widget-time.ui": 180,
     "widget-countdown.ui": 170,

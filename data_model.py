@@ -17,6 +17,7 @@ class ThemeConfig(BaseModel):
     spacing: int
     shadow: bool
     height: int
+    delta: int
     widget_width: Dict[str, int]
 
 
