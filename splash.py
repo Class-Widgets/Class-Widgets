@@ -67,10 +67,14 @@ class Splash:
         self.splash_window.show()
 
     def update_status(self, status: Tuple[int, str]):
+        if self.splash_window is None:
+            return
         self.statusBar.setValue(status[0])
         self.statusLabel.setText(status[1])
 
     def apply_theme_stylesheet(self):
+        if self.splash_window is None:
+            return
         if theme() == Theme.DARK:
             # 暗色主题样式
             dark_stylesheet = """
@@ -106,6 +110,8 @@ class Splash:
         self.splash_window = None
 
     def error(self):
+        if self.splash_window is None:
+            return
         logger.info("Splash 接收到错误")
         self.appInitials.setPixmap(QPixmap(f'{CW_HOME}/img/logo/favicon-error.ico'))
         self.splash_window.setWindowFlags(
@@ -114,6 +120,8 @@ class Splash:
         self.splash_window.show()
 
     def unerror(self):
+        if self.splash_window is None:
+            return
         logger.info("Splash 恢复正常")
         self.appInitials.setPixmap(QPixmap(f'{CW_HOME}/img/logo/favicon.ico'))
         self.splash_window.setWindowFlags(
