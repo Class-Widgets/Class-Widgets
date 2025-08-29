@@ -149,7 +149,7 @@ was_floating_mode = False  # 浮窗状态
 
 if config_center.read_conf('Other', 'do_not_log') != '1':
     logger.add(
-        str(LOG_HOME) + "/ClassWidgets_main_{{time}}.log",
+        str(LOG_HOME) + "/ClassWidgets_main_{time}.log",
         rotation="1 MB",
         encoding="utf-8",
         retention="1 minute",
