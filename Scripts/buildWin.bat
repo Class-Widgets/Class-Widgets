@@ -14,7 +14,7 @@ python -m nuitka main.py ^
 -o"ClassWidgets" ^
 --windows-icon-from-ico=img/favicon.icns ^
 --product-name="Class Widgets" ^
---product-version="1.2.0.0" ^
+--product-version="1.2.0.1" ^
 --file-description="全新桌面课表" ^
 --include-data-dir=img=img ^
 --include-data-dir=ui=ui ^
