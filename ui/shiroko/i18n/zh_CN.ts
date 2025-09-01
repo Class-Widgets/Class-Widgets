@@ -4,24 +4,38 @@
 <context>
     <name>Theme</name>
     <message>
+        <location filename="../widget-floating.ui" line="20"/>
+        <location filename="../dark/widget-floating.ui" line="20"/>
+        <location filename="../dark/toast-open_dialog.ui" line="20"/>
+        <location filename="../toast-open_dialog.ui" line="20"/>
         <source>Form</source>
-        <translation type="vanished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
+        <location filename="../dark/toast-open_dialog.ui" line="105"/>
+        <location filename="../toast-open_dialog.ui" line="105"/>
         <source>%p</source>
-        <translation type="vanished">%p</translation>
+        <translation>%p</translation>
     </message>
     <message>
+        <location filename="../dark/toast-open_dialog.ui" line="142"/>
+        <location filename="../toast-open_dialog.ui" line="142"/>
         <source>即将打开</source>
-        <translation type="vanished">即将打开</translation>
+        <translation>即将打开</translation>
     </message>
     <message>
+        <location filename="../widget-floating.ui" line="146"/>
+        <location filename="../dark/widget-floating.ui" line="153"/>
+        <location filename="../dark/toast-open_dialog.ui" line="171"/>
+        <location filename="../toast-open_dialog.ui" line="171"/>
         <source>测试</source>
-        <translation type="vanished">测试</translation>
+        <translation>测试</translation>
     </message>
     <message>
+        <location filename="../dark/toast-open_dialog.ui" line="210"/>
+        <location filename="../toast-open_dialog.ui" line="210"/>
         <source>取消</source>
-        <translation type="vanished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../widget-base.ui" line="26"/>
@@ -92,12 +106,16 @@
         <translation>  正在加载</translation>
     </message>
     <message>
+        <location filename="../widget-floating.ui" line="165"/>
+        <location filename="../dark/widget-floating.ui" line="178"/>
         <source>&lt;0分钟</source>
-        <translation type="vanished">&lt; - 分钟</translation>
+        <translation>&lt; - 分钟</translation>
     </message>
     <message>
+        <location filename="../widget-floating.ui" line="206"/>
+        <location filename="../dark/widget-floating.ui" line="219"/>
         <source>%p%</source>
-        <translation type="vanished">%p%</translation>
+        <translation>%p%</translation>
     </message>
     <message>
         <location filename="../widget-next-activity.ui" line="26"/>
@@ -125,13 +143,13 @@
     </message>
     <message>
         <location filename="../dark/widget-time.ui" line="50"/>
-        <location filename="../widget-time.ui" line="50"/>
+        <location filename="../widget-time.ui" line="49"/>
         <source>2025 年  13 月</source>
         <translation>-- 年  -- 月</translation>
     </message>
     <message>
         <location filename="../dark/widget-time.ui" line="82"/>
-        <location filename="../widget-time.ui" line="82"/>
+        <location filename="../widget-time.ui" line="80"/>
         <source>32 日 周二</source>
         <translation>-- 日  周 -</translation>
     </message>
