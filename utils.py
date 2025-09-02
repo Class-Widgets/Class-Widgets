@@ -1,11 +1,13 @@
 import datetime as dt
 import inspect
 import os
+import re
 import signal
 import sys
 import threading
 import time
 from abc import ABC, abstractmethod
+from heapq import heapify, heappop, heappush
 from typing import Any, Callable, Dict, Optional, Tuple, Type, Union
 
 import darkdetect
@@ -225,50 +227,54 @@ class UnionUpdateTimer(QObject):
         super().__init__(parent)
         self.timer: QTimer = QTimer(self)
         self.timer.timeout.connect(self._on_timeout)
-        self.callback_info: Dict[Callable[[], Any], Dict[str, Union[float, dt.datetime]]] = (
-            {}
-        )  # 回调函数信息: {callback: {'interval': float, 'last_run': datetime, 'next_run': datetime}}
+        # 使用最小堆存储任务信息
+        self.task_heap = []  # [(next_run, id(callback), callback, interval), ...]
+        heapify(self.task_heap)
+        self.callback_info = {}  # {callback: interval}
         self._is_running: bool = False
         self._base_interval: float = max(0.05, base_interval)  # 基础间隔,最小50ms
-        self._lock: threading.Lock = threading.Lock()
+        self._lock: threading.Lock = threading.RLock()
 
-    def _on_timeout(self) -> None:  # 超时
+    def _on_timeout(self) -> None:
         app = QApplication.instance()
         if not app or app.closingDown():
             self._safe_stop_timer()
             return
 
         current_time = TimeManagerFactory.get_instance().get_current_time()
-        callbacks_to_run = []
+        invalid_callbacks = []
+
         with self._lock:
-            if not self.callback_info:
+            if not self.task_heap:
                 self._is_running = False
                 self._safe_stop_timer()
                 return
-            for callback, info in list(self.callback_info.items()):
-                time_rollback = current_time < info['last_run']
-                if current_time >= info['next_run'] or time_rollback:
-                    callbacks_to_run.append(callback)
-                    info['last_run'] = current_time
-                    info['next_run'] = current_time + dt.timedelta(seconds=info['interval'])
-        invalid_callbacks = []
-        for callback in callbacks_to_run:
-            try:
-                with self._lock:
-                    if callback not in self.callback_info:
-                        continue
-                callback()
-            except RuntimeError as e:
-                logger.error(f"回调调用错误 (可能对象已删除): {e}")
-                invalid_callbacks.append(callback)
-            except TypeError as e:
-                logger.error(f"回调函数类型错误: {e}")
-                invalid_callbacks.append(callback)
-            except Exception as e:
-                logger.error(f"执行回调时发生未知错误: {e}")
-                # 其他异常可能是临时错误,不移除
-        if invalid_callbacks:
-            with self._lock:
+            # 处理所有到期的任务
+            while self.task_heap and (self.task_heap[0][0] <= current_time):
+                next_run, _, callback, interval = heappop(self.task_heap)
+
+                if callback not in self.callback_info:
+                    continue
+
+                try:
+                    callback()
+                    # 重新计算下次执行时间并加入堆
+                    next_time = current_time + dt.timedelta(seconds=interval)
+                    heappush(self.task_heap, (next_time, id(callback), callback, interval))
+                except RuntimeError as e:
+                    logger.error(f"回调调用错误 (可能对象已删除): {e}")
+                    invalid_callbacks.append(callback)
+                except TypeError as e:
+                    logger.error(f"回调函数类型错误: {e}")
+                    invalid_callbacks.append(callback)
+                except Exception as e:
+                    logger.error(f"执行回调时发生未知错误: {e}")
+                    # 其他异常可能是临时错误，仍然重新加入堆
+                    next_time = current_time + dt.timedelta(seconds=interval)
+                    heappush(self.task_heap, (next_time, id(callback), callback, interval))
+
+            # 移除无效的回调
+            if invalid_callbacks:
                 for callback in invalid_callbacks:
                     self.callback_info.pop(callback, None)
 
@@ -301,48 +307,53 @@ class UnionUpdateTimer(QObject):
             raise TypeError("回调必须是可调用对象")
         interval = max(0.1, interval)
         current_time: dt.datetime = TimeManagerFactory.get_instance().get_current_time()
+        next_run = current_time + dt.timedelta(seconds=interval)
         with self._lock:
             if callback not in self.callback_info:
-                self.callback_info[callback] = {
-                    'interval': interval,
-                    'last_run': current_time,
-                    'next_run': current_time + dt.timedelta(seconds=interval),
-                }
+                self.callback_info[callback] = interval
+                heappush(self.task_heap, (next_run, id(callback), callback, interval))
                 should_start = not self._is_running
             else:
-                self.callback_info[callback]['interval'] = interval
+                # 更新间隔
+                self.callback_info[callback] = interval
+                self.task_heap = [
+                    (t, cb_id, cb, i) for t, cb_id, cb, i in self.task_heap if cb != callback
+                ]
+                heapify(self.task_heap)
+                heappush(self.task_heap, (next_run, id(callback), callback, interval))
                 should_start = False
 
         if should_start:
             self.start()
-        # logger.debug(f"添加回调函数 {callback},间隔: {interval}s")
 
     def remove_callback(self, callback: Callable[[], Any]) -> None:
         """移除回调函数"""
         with self._lock:
-            removed: Optional[Dict[str, Union[float, dt.datetime]]] = self.callback_info.pop(
-                callback, None
-            )
-            if removed:
-                pass
-                # logger.debug(f"移除回调函数(间隔:{removed['interval']}s)")
+            if callback in self.callback_info:
+                self.task_heap = [
+                    (t, cb_id, cb, i) for t, cb_id, cb, i in self.task_heap if cb != callback
+                ]
+                heapify(self.task_heap)
+                if not self.task_heap:
+                    self._is_running = False
+                    self._safe_stop_timer()
 
     def remove_all_callbacks(self) -> None:
         """移除所有回调函数"""
-        # 意义不明
         with self._lock:
-            # count: int = len(self.callback_info)
-            self.callback_info = {}
-        # logger.debug(f"移除所有回调函数,共 {count} 个")
+            self.callback_info.clear()
+            self.task_heap.clear()
+            self._is_running = False
+            self._safe_stop_timer()
 
     def start(self) -> None:
         """启动定时器"""
         with self._lock:
-            if not self._is_running and self.callback_info:
+            if not self._is_running and self.task_heap:
                 logger.debug("启动 UnionUpdateTimer...")
                 self._is_running = True
                 self._schedule_next()
-            elif not self.callback_info:
+            elif not self.task_heap:
                 logger.warning("没有回调函数")
 
     def stop(self) -> None:
@@ -355,26 +366,24 @@ class UnionUpdateTimer(QObject):
     def set_callback_interval(self, callback: Callable[[], Any], interval: float) -> bool:
         """设置特定回调函数的间隔(s)"""
         interval = max(0.1, interval)
-        current_time: dt.datetime = (
-            TimeManagerFactory.get_instance().get_current_time()
-        )  # 使用真实时间
+        current_time = TimeManagerFactory.get_instance().get_current_time()
+        next_run = current_time + dt.timedelta(seconds=interval)
         with self._lock:
             if callback in self.callback_info:
-                self.callback_info[callback]['interval'] = interval
-                self.callback_info[callback]['next_run'] = current_time + dt.timedelta(
-                    seconds=interval
-                )
+                # 更新间隔重新加入堆
+                self.callback_info[callback] = interval
+                self.task_heap = [
+                    (t, cb_id, cb, i) for t, cb_id, cb, i in self.task_heap if cb != callback
+                ]
+                heapify(self.task_heap)
+                heappush(self.task_heap, (next_run, id(callback), callback, interval))
                 return True
             return False
 
     def get_callback_interval(self, callback: Callable[[], Any]) -> Optional[float]:
         """获取特定回调函数的间隔"""
-        # 意义不明x2
         with self._lock:
-            if callback in self.callback_info:
-                interval = self.callback_info[callback]['interval']
-                return float(interval) if isinstance(interval, (int, float)) else None
-            return None
+            return self.callback_info.get(callback)
 
     def set_base_interval(self, interval: float) -> None:
         """设置基础检查时间(s)"""
@@ -419,6 +428,12 @@ class UnionUpdateTimer(QObject):
         return self._is_running
 
 
+# 匹配中文字符(预编译)
+_CHINESE_CHAR_PATTERN = re.compile(
+    r"[\u4e00-\u9fff\u3400-\u4dbf\u20000-\u2a6df\u2a700-\u2b73f\u2b740-\u2b81f\u2b820-\u2ceaf\u2ceb0-\u2ebef]"
+)
+
+
 def get_str_length(text: str) -> int:
     """
     计算字符串长度,汉字计为2,英文和数字计为1
@@ -429,15 +444,9 @@ def get_str_length(text: str) -> int:
     Returns:
         int: 字符串长度
     """
-    length = 0
-    for char in text:
-        # 使用 ord() 获取字符的 Unicode 码点
-        # 如果大于 0x4e00 (中文范围开始) 就是汉字,计为2
-        if ord(char) > 0x4E00:
-            length += 2
-        else:
-            length += 1
-    return length
+    chinese_count = len(_CHINESE_CHAR_PATTERN.findall(text))
+    # 总长度 = 非中文字符数 + 中文字符数 * 2
+    return len(text) - chinese_count + chinese_count * 2
 
 
 def slice_str_by_length(text: str, max_length: int) -> str:
@@ -457,15 +466,31 @@ def slice_str_by_length(text: str, max_length: int) -> str:
     if get_str_length(text) <= max_length:
         return text
 
-    current_length = 0
+    chars = _CHINESE_CHAR_PATTERN.split(text)
+    chinese_chars = _CHINESE_CHAR_PATTERN.findall(text)
     result = []
-
-    for char in text:
-        char_length = 2 if ord(char) > 0x4E00 else 1
-        if current_length + char_length > max_length:
+    current_length = 0
+    char_index = 0
+    chinese_index = 0
+    # 交替处理非中文和中文字符
+    while char_index < len(chars):
+        # 添加非中文部分
+        part = chars[char_index]
+        if current_length + len(part) > max_length:
+            # 若超出长度限制,只取部分
+            space_left = max_length - current_length
+            result.append(part[:space_left])
             break
-        result.append(char)
-        current_length += char_length
+        result.append(part)
+        current_length += len(part)
+        # 添加中文部分
+        if chinese_index < len(chinese_chars):
+            if current_length + 2 > max_length:
+                break
+            result.append(chinese_chars[chinese_index])
+            current_length += 2
+            chinese_index += 1
+        char_index += 1
 
     return ''.join(result)
 

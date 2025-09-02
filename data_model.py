@@ -17,6 +17,7 @@ class ThemeConfig(BaseModel):
     spacing: int
     shadow: bool
     height: int
+    delta: int
     widget_width: Dict[str, int]
 
 
@@ -151,7 +152,7 @@ class Schedule(BaseModel):
     url: str = "local"
     """课表的同步 url"""
 
-    part: Dict[str, List[PartUnit]]
+    part: Dict[str, PartUnit]
     """课表部分"""
 
     part_name: Dict[str, str]

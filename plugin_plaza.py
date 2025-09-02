@@ -918,10 +918,6 @@ class PluginPlaza(MSFluentWindow):
         self.thread_manager.add_thread(self.get_tags_list_thread)
         self.get_tags_list_thread.start()
 
-    def closeEvent(self, event) -> None:
-        self.thread_manager.stop_all_threads()
-        super().closeEvent(event)
-
     def switch_banners(self):  # 切换Banner
         if self.banner_view.currentIndex() == len(self.img_list) - 1:
             self.banner_view.scrollToIndex(0)
@@ -973,6 +969,8 @@ class PluginPlaza(MSFluentWindow):
 
     def closeEvent(self, event):
         self.closed.emit()
+        self.thread_manager.stop_all_threads()
+        super().closeEvent(event)
         event.accept()
 
 

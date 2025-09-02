@@ -9,7 +9,6 @@ import sys
 import zipfile
 from copy import deepcopy
 from pathlib import Path
-from shutil import rmtree
 from typing import Dict, List, Optional, Tuple, Union
 
 from loguru import logger
@@ -105,16 +104,14 @@ from qfluentwidgets.common import themeColor
 from qfluentwidgets.components.widgets import ListItemDelegate
 
 import conf
-import file
 import i18n_manager
 import list_
 import tip_toast
 import utils
 import weather as wd
 from basic_dirs import CONFIG_HOME, CW_HOME, PLUGIN_HOME, SCHEDULE_DIR, THEME_HOME
-from conf import load_theme_config
 from cses_mgr import CSES_Converter
-from file import config_center, schedule_center
+from file import config_center, load_from_json, schedule_center
 from generate_speech import (
     TTSEngine,
     generate_speech_sync,
@@ -127,7 +124,6 @@ from network_thread import VersionThread, proxies, scheduleThread
 from plugin import p_loader
 from plugin_plaza import PluginPlaza
 from ui_loader import loadUi, load_ui_type
-from utils import TimeManagerFactory
 
 
 class I18nManager:
@@ -267,7 +263,7 @@ class I18nManager:
                 self.load_language_view(current_lang)
                 return False
 
-            current_theme = load_theme_config(config_center.read_conf('General', 'theme'))
+            current_theme = conf.load_theme_config(config_center.read_conf('General', 'theme'))
             theme_translator = self._load_translation_file(
                 Path(current_theme.path / 'i18n' / f'{lang_code}.qm')
             )
@@ -382,7 +378,7 @@ from PyQt5.QtCore import QCoreApplication
 
 global_i18n_manager = None
 
-today = TimeManagerFactory.get_instance().get_today()
+today = utils.TimeManagerFactory.get_instance().get_today()
 plugin_plaza = None
 
 plugin_dict = {}  # 插件字典
@@ -418,7 +414,6 @@ def open_plaza():
 def cleanup_plaza():
     global plugin_plaza
     logger.info('关闭“插件广场”')
-    del plugin_plaza
 
 
 def get_timeline() -> Dict[str, Dict[str, List[Tuple[int, str, int, int]]]]:
@@ -460,7 +455,7 @@ def switch_checked(section, key, checked):
 
 
 def get_theme_name():
-    return load_theme_config(config_center.read_conf('General', 'theme')).path.name
+    return conf.load_theme_config(config_center.read_conf('General', 'theme')).path.name
 
 
 def load_schedule_dict(schedule, week_type, part, part_name):
@@ -829,7 +824,8 @@ class licenseDialog(MessageBoxBase):  # 显示软件许可协议
         self.yesButton.setText(QCoreApplication.translate('menu', '好'))  # 按钮组件汉化
         self.cancelButton.hide()
         self.buttonLayout.insertStretch(0, 1)
-        self.license_text.setPlainText(open('LICENSE', encoding='utf-8').read())
+        with open('LICENSE', encoding='utf-8') as f:
+            self.license_text.setPlainText(f.read())
         self.license_text.setReadOnly(True)
 
         # 将组件添加到布局中
@@ -2947,16 +2943,10 @@ class SettingsMenu(FluentWindow):
                 voice_selector.setCurrentIndex(0)
                 first_voice_id = available_voices[0]['id']
                 config_center.write_conf('TTS', 'voice_id', first_voice_id)
-            else:
-                voice_selector.setEnabled(False)
-                switch_enable_TTS.setEnabled(False)
         elif available_voices:  # 默认选择
             voice_selector.setCurrentIndex(0)
             first_voice_id = available_voices[0]['id']
             config_center.write_conf('TTS', 'voice_id', first_voice_id)
-        else:  # 理论不会到这里
-            voice_selector.setEnabled(False)
-            switch_enable_TTS.setEnabled(False)
 
         voice_selector.setEnabled(True)
         try:
@@ -3700,7 +3690,7 @@ class SettingsMenu(FluentWindow):
         is_ntp = conf_time_get.currentIndex() == 1
         config_center.write_conf('Time', 'type', 'ntp' if is_ntp else 'local')
         try:
-            new_manager = TimeManagerFactory.reset_instance()
+            new_manager = utils.TimeManagerFactory.reset_instance()
             utils.time_manager = new_manager
             try:
                 if hasattr(self, 'parent') and self.parent and hasattr(self.parent, 'update_data'):
@@ -3790,7 +3780,7 @@ class SettingsMenu(FluentWindow):
                             ntp_sync_timezone=ntp_sync_timezone.currentText()
                         ),
                     )
-                    TimeManagerFactory.reset_instance()
+                    utils.TimeManagerFactory.reset_instance()
                     QTimer.singleShot(100, self.update_ntp_status_display)
                     self._start_async_ntp_sync(utils.time_manager)
                 except Exception as e:
@@ -3809,7 +3799,6 @@ class SettingsMenu(FluentWindow):
     def _add_ntp_auto_sync_callback(self):
         """添加NTP自动同步回调"""
         try:
-            from utils import update_timer
 
             def ntp_auto_sync_callback():
                 """NTP自动同步回调函数"""
@@ -3829,7 +3818,7 @@ class SettingsMenu(FluentWindow):
             self._ntp_auto_sync_callback = ntp_auto_sync_callback
             ntp_auto_refresh_minutes = int(config_center.read_conf('Time', 'ntp_auto_refresh'))
             ntp_auto_refresh_seconds = ntp_auto_refresh_minutes * 60
-            update_timer.add_callback(ntp_auto_sync_callback, ntp_auto_refresh_seconds)
+            utils.update_timer.add_callback(ntp_auto_sync_callback, ntp_auto_refresh_seconds)
 
         except Exception as e:
             logger.error(f"添加NTP自动同步回调失败: {e}")
@@ -3837,10 +3826,8 @@ class SettingsMenu(FluentWindow):
     def _remove_ntp_auto_sync_callback(self):
         """移除NTP自动同步回调"""
         try:
-            from utils import update_timer
-
             if hasattr(self, '_ntp_auto_sync_callback'):
-                update_timer.remove_callback(self._ntp_auto_sync_callback)
+                utils.update_timer.remove_callback(self._ntp_auto_sync_callback)
                 delattr(self, '_ntp_auto_sync_callback')
         except Exception as e:
             logger.error(f"移除NTP自动同步回调失败: {e}")
@@ -4731,7 +4718,7 @@ class SettingsMenu(FluentWindow):
 
         try:
             if os.path.exists('log'):
-                rmtree('log')
+                shutil.rmtree('log')
                 Flyout.create(
                     icon=InfoBarIcon.SUCCESS,
                     title=self.tr('已清除日志'),
@@ -4896,8 +4883,10 @@ class SettingsMenu(FluentWindow):
             f'{build_time if build_time != "__BUILD_TIME__" else "Debug"}'
         )
         if local_version != "__BUILD_VERSION__":
-            logger.debug(f"服务端版本: {Version(new_version)}，本地版本: {Version(local_version)}")
-            if Version(new_version) <= Version(local_version):
+            logger.debug(f"服务端版本: {new_version}，本地版本: {local_version}")
+            if Version(new_version.replace('-nightly', '')) <= Version(
+                local_version.replace('-nightly', '')
+            ):
                 self.version_number_label.setText(
                     self.tr('版本号：{local_version}\n已是最新版本！').format(
                         local_version=local_version
@@ -5084,7 +5073,7 @@ class SettingsMenu(FluentWindow):
             widgets_preview.addItem(left_spacer)
 
             theme_folder = config_center.read_conf("General", "theme")
-            theme_info = load_theme_config(str(theme_folder))
+            theme_info = conf.load_theme_config(str(theme_folder))
             theme_config = theme_info.config
             theme_path = theme_info.path
             for i in range(len(widget_config)):
@@ -5120,7 +5109,7 @@ class SettingsMenu(FluentWindow):
         config_list = list_.get_schedule_config()
         self.cf_file_list = []
         for i, cfg in enumerate(config_list):
-            url = file.load_from_json(cfg).get('url', 'local')
+            url = load_from_json(cfg).get('url', 'local')
             self.cf_file_list.append(self.cf_add_item(cfg, url, i))
 
         cur = config_list.index(config_center.read_conf('General', 'schedule'))

@@ -67,10 +67,14 @@ class Splash:
         self.splash_window.show()
 
     def update_status(self, status: Tuple[int, str]):
+        if self.splash_window is None:
+            return
         self.statusBar.setValue(status[0])
         self.statusLabel.setText(status[1])
 
     def apply_theme_stylesheet(self):
+        if self.splash_window is None:
+            return
         if theme() == Theme.DARK:
             # 暗色主题样式
             dark_stylesheet = """
@@ -92,7 +96,7 @@ class Splash:
         logger.info("Splash 启动")
         dark_mode_watcher.start()
         self.dark_mode_watcher_connection = dark_mode_watcher.darkModeChanged.connect(
-            lambda: self.apply_theme_stylesheet()
+            self.apply_theme_stylesheet
         )
         self.update_status((0, app.translate('main', 'Class Widgets 启动中...')))
         app.processEvents()
@@ -106,6 +110,8 @@ class Splash:
         self.splash_window = None
 
     def error(self):
+        if self.splash_window is None:
+            return
         logger.info("Splash 接收到错误")
         self.appInitials.setPixmap(QPixmap(f'{CW_HOME}/img/logo/favicon-error.ico'))
         self.splash_window.setWindowFlags(
@@ -114,6 +120,8 @@ class Splash:
         self.splash_window.show()
 
     def unerror(self):
+        if self.splash_window is None:
+            return
         logger.info("Splash 恢复正常")
         self.appInitials.setPixmap(QPixmap(f'{CW_HOME}/img/logo/favicon.ico'))
         self.splash_window.setWindowFlags(
