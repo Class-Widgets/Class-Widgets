@@ -31,8 +31,7 @@
 
 ![Banner](../../img/Banner.png)
 
-[![QQ Group](https://img.shields.io/badge/QQ%20%E7%BE%A41-169200380-blue.svg?logo=qq&color=blue&style=for-the-badge)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380)
-[![QQ Group](https://img.shields.io/badge/QQ%20%E7%BE%A42-698599898-blue.svg?logo=qq&color=blue&style=for-the-badge)](https://qm.qq.com/cgi-bin/qm/qr?k=3-1TBqjCldwth3o7-1yKCk3BKf4Itx3l&jump_from=webapi&authKey=uM+79Af69GR/pbu7GQpE18/mtBUl2bEQCFsPHcAJUUlG+NFFq78MBGTK3IkZKYRL)
+[![QQ Group](https://img.shields.io/badge/QQ%20%E7%BE%A41-1060640788-blue.svg?logo=qq&color=blue&style=for-the-badge)](https://qm.qq.com/cgi-bin/qm/qr?k=BXGtB7cDFM9CdfIcf9dfmxIWYh9noL6k&jump_from=webapi&authKey=wqfE+jZfLoO52DdVo2KBkVCrzgsxJX78cxx4vaRIHrOKo7tPp9VGsRTx4/kPUZuw)
 [![DC](https://img.shields.io/discord/1332636953719476284?style=for-the-badge&logo=discord&logoColor=ffffff&label=discord%20Server&labelColor=5865f2)](https://discord.gg/EFF4PpqpqZ)
 
 #### [もっと詳しく >](https://www.bilibili.com/video/BV1xwW9eyEGu/)
