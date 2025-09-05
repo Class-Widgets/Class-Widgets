@@ -31,7 +31,7 @@
 
 ![Banner](../../img/Banner.png)
 
-[![QG Group](https://img.shields.io/badge/QQ%20%E7%BE%A41-1060640788-blue.svg?logo=qq&color=blue&style=for-the-badge)](https://qm.qq.com/q/L8soc6zUII)
+[![QQ Group](https://img.shields.io/badge/QQ%20%E7%BE%A41-1060640788-blue.svg?logo=qq&color=blue&style=for-the-badge)](https://qm.qq.com/cgi-bin/qm/qr?k=BXGtB7cDFM9CdfIcf9dfmxIWYh9noL6k&jump_from=webapi&authKey=wqfE+jZfLoO52DdVo2KBkVCrzgsxJX78cxx4vaRIHrOKo7tPp9VGsRTx4/kPUZuw)
 [![DC](https://img.shields.io/discord/1332636953719476284?style=for-the-badge&logo=discord&logoColor=ffffff&label=Discord%20Server&labelColor=5865f2)](https://discord.gg/EFF4PpqpqZ)
 
 #### [Learn more >](https://www.bilibili.com/video/BV1xwW9eyEGu/)
