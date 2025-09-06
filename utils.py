@@ -877,6 +877,9 @@ class PreviousWindowFocusManager(QObject):
         logger.debug(f"[FocusManager] 尝试恢复焦点到窗口句柄: {self._last_hwnd}")
         if self._last_hwnd and win32gui.IsWindow(self._last_hwnd):
             try:
+                current_hwnd = win32gui.GetForegroundWindow()
+                if current_hwnd not in self.ignore_hwnds:
+                    return
                 win32gui.SetForegroundWindow(self._last_hwnd)
             except Exception as e:
                 print(f"[FocusManager] 恢复焦点失败: {e}")
