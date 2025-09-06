@@ -853,7 +853,7 @@ class PreviousWindowFocusManager(QObject):
         self.removeIgnore.connect(self.ignore_hwnds.discard)
         self._timer = QTimer(self)
         self._timer.timeout.connect(self.store)
-        self._timer.setInterval(100)
+        self._timer.setInterval(200)
         self._timer.start()
 
     def store(self):
