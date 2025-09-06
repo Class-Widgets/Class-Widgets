@@ -3355,10 +3355,7 @@ class DesktopWidget(QWidget):  # 主要小组件
                 if mgr.state:
                     fw.show()
                     QTimer.singleShot(
-                        0,
-                        lambda w=fw: focus_manager.ignore.emit(
-                            ctypes.c_void_p(int(w.winId())).value
-                        ),
+                        0, lambda w=fw: focus_manager.ignore.emit(ctypes.c_void_p(int(w.winId())).value)
                     )
                     mgr.full_hide_windows()
                 else:
