@@ -1075,10 +1075,7 @@ class WidgetsManager:
             # print(int(widget.winId()))
             # print(ctypes.c_void_p(int(widget.winId())).value)
             QTimer.singleShot(
-                0,
-                lambda w=widget: focus_manager.ignore.emit(
-                    ctypes.c_void_p(int(w.winId())).value
-                )
+                0, lambda w=widget: focus_manager.ignore.emit(ctypes.c_void_p(int(w.winId())).value)
             )
             logger.info(f'显示小组件：{widget.path, widget.windowTitle()}')
 
@@ -1188,10 +1185,7 @@ class WidgetsManager:
                 self.full_hide_windows()
                 fw.show()
                 QTimer.singleShot(
-                    0,
-                    lambda w=fw: focus_manager.ignore.emit(
-                        ctypes.c_void_p(int(w.winId())).value
-                    )
+                    0, lambda w=fw: focus_manager.ignore.emit(ctypes.c_void_p(int(w.winId())).value)
                 )
         else:
             self.hide_windows()
@@ -3364,7 +3358,7 @@ class DesktopWidget(QWidget):  # 主要小组件
                         0,
                         lambda w=fw: focus_manager.ignore.emit(
                             ctypes.c_void_p(int(w.winId())).value
-                        )
+                        ),
                     )
                     mgr.full_hide_windows()
                 else:
@@ -3372,10 +3366,7 @@ class DesktopWidget(QWidget):  # 主要小组件
         elif mgr.state:
             fw.show()
             QTimer.singleShot(
-                0,
-                lambda w=fw: focus_manager.ignore.emit(
-                    ctypes.c_void_p(int(w.winId())).value
-                )
+                0, lambda w=fw: focus_manager.ignore.emit(ctypes.c_void_p(int(w.winId())).value)
             )
             mgr.full_hide_windows()
         else:
@@ -3497,7 +3488,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             event.ignore()
         if focus_manager:
             focus_manager.restoreRequested.emit()
-    
+
     def stop(self):
         if mgr:
             mgr.cleanup_resources()
@@ -3621,10 +3612,7 @@ def init() -> None:
     if not first_start and was_floating_mode and fw:
         fw.show()
         QTimer.singleShot(
-            0,
-            lambda w=fw: focus_manager.ignore.emit(
-                ctypes.c_void_p(int(w.winId())).value
-            )
+            0, lambda w=fw: focus_manager.ignore.emit(ctypes.c_void_p(int(w.winId())).value)
         )
         mgr.full_hide_windows()
 
@@ -3750,7 +3738,9 @@ if __name__ == '__main__':
     logger.info(f"操作系统：{system}，版本：{osRelease}/{osVersion}")
 
     if system == 'Windows':
-        splash_window.update_status((45, QCoreApplication.translate('main', '初始化窗口焦点监视器...')))
+        splash_window.update_status(
+            (45, QCoreApplication.translate('main', '初始化窗口焦点监视器...'))
+        )
         focus_manager = utils.PreviousWindowFocusManager()
 
     # list_pyttsx3_voices()

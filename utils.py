@@ -834,6 +834,7 @@ class SingleInstanceGuard:
             return {"pid": pid, "hostname": hostname, "appname": appname}
         return None
 
+
 class PreviousWindowFocusManager(QObject):
 
     restoreRequested = pyqtSignal()  # 请求恢复焦点信号
