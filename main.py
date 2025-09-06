@@ -1778,6 +1778,9 @@ class FloatingWidget(QWidget):  # 浮窗
 
         self.animation_rect.finished.connect(cleanup)
 
+        if focus_manager:
+            QTimer.singleShot(500, focus_manager.removeIgnore.emit(ctypes.c_void_p(int(self.winId())).value))
+
     def hideEvent(self, event: QHideEvent) -> None:
         event.accept()
         logger.info('隐藏浮窗')
@@ -2309,6 +2312,9 @@ class DesktopWidget(QWidget):  # 主要小组件
             shadow_effect.setColor(QColor(0, 0, 0, 75))
 
             self.backgnd.setGraphicsEffect(shadow_effect)
+        
+        if focus_manager:
+            QTimer.singleShot(500, focus_manager.removeIgnore.emit(ctypes.c_void_p(int(self.winId())).value))
 
     def init_font(self):
         font_path = str(CW_HOME / 'font/HarmonyOS_Sans_SC_Bold.ttf')

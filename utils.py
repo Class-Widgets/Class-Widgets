@@ -839,6 +839,7 @@ class PreviousWindowFocusManager(QObject):
 
     restoreRequested = pyqtSignal()  # 请求恢复焦点信号
     ignore = pyqtSignal(int)  # 忽略特定窗口句柄信号
+    removeIgnore = pyqtSignal(int)  # 移除忽略窗口句柄信号
 
     def __init__(self, parent: Optional[QObject] = None) -> None:
         if os.name != 'nt':
@@ -848,16 +849,12 @@ class PreviousWindowFocusManager(QObject):
         # 忽略的句柄
         self.ignore_hwnds = {0}
         self.restoreRequested.connect(self.restore)
-        self.ignore.connect(self._set_ignore_hwnd)
+        self.ignore.connect(self.ignore_hwnds.add)
+        self.removeIgnore.connect(self.ignore_hwnds.discard)
         self._timer = QTimer(self)
         self._timer.timeout.connect(self.store)
         self._timer.setInterval(100)
         self._timer.start()
-
-    def _set_ignore_hwnd(self, hwnd: int) -> None:
-        """设置忽略的窗口句柄"""
-        logger.debug(f"[FocusManager] 设置忽略窗口句柄: {hwnd}")
-        self.ignore_hwnds.add(hwnd)
 
     def store(self):
         """记录当前前台窗口句柄"""
