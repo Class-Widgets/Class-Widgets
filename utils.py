@@ -841,6 +841,8 @@ class PreviousWindowFocusManager(QObject):
     ignore = pyqtSignal(int)  # 忽略特定窗口句柄信号
 
     def __init__(self, parent: Optional[QObject] = None) -> None:
+        if os.name != 'nt':
+            raise EnvironmentError("PreviousWindowFocusManager 仅支持 Windows 系统")
         super().__init__(parent)
         self._last_hwnd = None
         # 忽略的句柄
