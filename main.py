@@ -1076,7 +1076,10 @@ class WidgetsManager:
             # print(ctypes.c_void_p(int(widget.winId())).value)
             if focus_manager:
                 QTimer.singleShot(
-                    0, lambda w=widget: focus_manager.ignore.emit(ctypes.c_void_p(int(w.winId())).value)
+                    0,
+                    lambda w=widget: focus_manager.ignore.emit(
+                        ctypes.c_void_p(int(w.winId())).value
+                    ),
                 )
             logger.info(f'显示小组件：{widget.path, widget.windowTitle()}')
 
@@ -1187,7 +1190,10 @@ class WidgetsManager:
                 fw.show()
                 if focus_manager:
                     QTimer.singleShot(
-                        0, lambda w=fw: focus_manager.ignore.emit(ctypes.c_void_p(int(w.winId())).value)
+                        0,
+                        lambda w=fw: focus_manager.ignore.emit(
+                            ctypes.c_void_p(int(w.winId())).value
+                        ),
                     )
         else:
             self.hide_windows()
@@ -1779,7 +1785,9 @@ class FloatingWidget(QWidget):  # 浮窗
         self.animation_rect.finished.connect(cleanup)
 
         if focus_manager:
-            QTimer.singleShot(500, focus_manager.removeIgnore.emit(ctypes.c_void_p(int(self.winId())).value))
+            QTimer.singleShot(
+                500, focus_manager.removeIgnore.emit(ctypes.c_void_p(int(self.winId())).value)
+            )
 
     def hideEvent(self, event: QHideEvent) -> None:
         event.accept()
@@ -2312,9 +2320,11 @@ class DesktopWidget(QWidget):  # 主要小组件
             shadow_effect.setColor(QColor(0, 0, 0, 75))
 
             self.backgnd.setGraphicsEffect(shadow_effect)
-        
+
         if focus_manager:
-            QTimer.singleShot(500, focus_manager.removeIgnore.emit(ctypes.c_void_p(int(self.winId())).value))
+            QTimer.singleShot(
+                500, focus_manager.removeIgnore.emit(ctypes.c_void_p(int(self.winId())).value)
+            )
 
     def init_font(self):
         font_path = str(CW_HOME / 'font/HarmonyOS_Sans_SC_Bold.ttf')
