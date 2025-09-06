@@ -6,9 +6,13 @@ import signal
 import sys
 import threading
 import time
+import ctypes
 from abc import ABC, abstractmethod
 from heapq import heapify, heappop, heappush
 from typing import Any, Callable, Dict, Optional, Tuple, Type, Union
+
+if os.name == 'nt':
+    import win32gui
 
 import darkdetect
 import ntplib
@@ -829,6 +833,57 @@ class SingleInstanceGuard:
         if ok:
             return {"pid": pid, "hostname": hostname, "appname": appname}
         return None
+
+class PreviousWindowFocusManager(QObject):
+
+    restoreRequested = pyqtSignal()  # 请求恢复焦点信号
+    ignore = pyqtSignal(int)  # 忽略特定窗口句柄信号
+
+    def __init__(self, parent: Optional[QObject] = None) -> None:
+        super().__init__(parent)
+        self._last_hwnd = None
+        # 忽略的句柄
+        self.ignore_hwnds = {0}
+        self.restoreRequested.connect(self.restore)
+        self.ignore.connect(self._set_ignore_hwnd)
+        self._timer = QTimer(self)
+        self._timer.timeout.connect(self.store)
+        self._timer.setInterval(100)
+        self._timer.start()
+
+    def _set_ignore_hwnd(self, hwnd: int) -> None:
+        """设置忽略的窗口句柄"""
+        logger.debug(f"[FocusManager] 设置忽略窗口句柄: {hwnd}")
+        self.ignore_hwnds.add(hwnd)
+
+    def store(self):
+        """记录当前前台窗口句柄"""
+        hwnd = win32gui.GetForegroundWindow()
+        if hwnd in self.ignore_hwnds:
+            return
+        self._last_hwnd = hwnd
+        # logger.debug(f"[FocusManager] 记录前台窗口句柄: {self._last_hwnd}")
+
+    def restore(self, delay_ms=0):
+        """
+        恢复焦点到上一个窗口
+        delay_ms: 延迟执行毫秒数（有些系统需要延迟才能成功）
+        """
+        # logger.debug(f"[FocusManager] 请求恢复焦点,延迟 {delay_ms} ms")
+        QTimer.singleShot(delay_ms, self._do_restore)
+
+    def _do_restore(self):
+        logger.debug(f"[FocusManager] 尝试恢复焦点到窗口句柄: {self._last_hwnd}")
+        if self._last_hwnd and win32gui.IsWindow(self._last_hwnd):
+            try:
+                win32gui.SetForegroundWindow(self._last_hwnd)
+            except Exception as e:
+                print(f"[FocusManager] 恢复焦点失败: {e}")
+
+    def stop(self):
+        """停止焦点管理器"""
+        self._timer.stop()
+        self._last_hwnd = None
 
 
 tray_icon = None
