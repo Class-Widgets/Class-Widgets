@@ -3,7 +3,7 @@
 </div>
 
 > [!WARNING]
-> Class Widgets *1* 目前完全由社区开发者进行开发，而您在 Class Widgets 主仓库（即本仓库）提出的议题和提交的贡献将主要由以下四位成员接收和审查：
+> Class Widgets _1_ 目前完全由社区开发者进行开发，而您在 Class Widgets 主仓库（即本仓库）提出的议题和提交的贡献将主要由以下四位成员接收和审查：
 >
 > [![](https://images.weserv.nl/?url=github.com/pizeroLOL.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/pizeroLOL) [![](https://images.weserv.nl/?url=github.com/IsHPDuwu.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/IsHPDuwu) [![](https://images.weserv.nl/?url=github.com/baiyao105.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/baiyao105) [![](https://images.weserv.nl/?url=github.com/Artist-MOBAI.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/Artist-MOBAI)
 >

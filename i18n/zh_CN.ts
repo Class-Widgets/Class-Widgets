@@ -1397,7 +1397,7 @@
         <translation>当插件执行自动化操作时，需等待的时间（单位：秒）</translation>
     </message>
     <message>
-        <location filename="../view/menu/preview.ui" line="50"/>
+        <location filename="../view/menu/preview.ui" line="53"/>
         <location filename="../view/menu/sound.ui" line="742"/>
         <source>预览</source>
         <translation>预览</translation>

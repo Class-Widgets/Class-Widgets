@@ -1490,7 +1490,7 @@ Use spaces to separate multiple strings</translation>
         <translation>The time to wait when the plugin performs an automated operation (seconds)</translation>
     </message>
     <message>
-        <location filename="../view/menu/preview.ui" line="50"/>
+        <location filename="../view/menu/preview.ui" line="53"/>
         <location filename="../view/menu/sound.ui" line="742"/>
         <source>预览</source>
         <translation>Preview</translation>

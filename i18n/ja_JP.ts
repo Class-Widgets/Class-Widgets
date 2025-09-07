@@ -1414,7 +1414,7 @@
         <translation>プラグインの自動操作実行時に待つ時間（単位：秒）</translation>
     </message>
     <message>
-        <location filename="../view/menu/preview.ui" line="50"/>
+        <location filename="../view/menu/preview.ui" line="53"/>
         <location filename="../view/menu/sound.ui" line="742"/>
         <source>预览</source>
         <translation>プレビュー</translation>

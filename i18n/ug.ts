@@ -1371,7 +1371,7 @@ Siz sistem bexatliridin ta yana köp avaaz qoshaliysiz (*≧▽≦)</translation
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/menu/preview.ui" line="50"/>
+        <location filename="../view/menu/preview.ui" line="53"/>
         <location filename="../view/menu/sound.ui" line="742"/>
         <source>预览</source>
         <translation type="unfinished"></translation>

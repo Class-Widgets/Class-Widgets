@@ -1484,7 +1484,7 @@
         <translation>當插件執行自動化操作時，需要等待的時間（單位：秒）</translation>
     </message>
     <message>
-        <location filename="../view/menu/preview.ui" line="50"/>
+        <location filename="../view/menu/preview.ui" line="53"/>
         <location filename="../view/menu/sound.ui" line="742"/>
         <source>预览</source>
         <translation>預覽</translation>
