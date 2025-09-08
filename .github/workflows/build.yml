@@ -346,7 +346,7 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.arch }}-python${{ env.PYTHON_VERSION }}
 
       - name: Setup Python
-        uses: actions/setup-python@v5.6.0
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           architecture: ${{ matrix.arch }}

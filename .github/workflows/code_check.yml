@@ -146,7 +146,7 @@ jobs:
           config-file: ${{ steps.codeql-config.outputs.config_file }}
 
       - name: Setup Python for CodeQL
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         if: steps.codeql-config.outputs.scan_mode != 'skip'
         with:
           python-version: ${{ env.PYTHON_VERSION }}
@@ -204,7 +204,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
