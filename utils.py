@@ -685,7 +685,7 @@ class NTPTimeManager(TimeManagerInterface):
     def get_current_time(self) -> dt.datetime:
         """获取程序时间（含偏移）"""
         time_offset = float(self._config_center.read_conf('Time', 'time_offset', 0))
-        return self.get_real_time() + dt.timedelta(seconds=time_offset)
+        return self.get_real_time() - dt.timedelta(seconds=time_offset)
 
     def get_current_time_without_ms(self) -> dt.datetime:
         """获取程序时间（含偏移，舍去毫秒）"""
