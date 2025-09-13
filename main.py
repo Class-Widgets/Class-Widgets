@@ -1925,7 +1925,6 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.w = list_.widget_width[self.path]
         self.h = theme_config.height
 
-        init_config()
         self.init_ui(path)
         self.init_font()
 
@@ -3638,7 +3637,6 @@ def init_config() -> None:  # 重设配置文件
     if config_center.read_conf('Temp', 'temp_schedule') != '':  # 修复换课重置
         copy(SCHEDULE_DIR / "backup.json", SCHEDULE_DIR / str(config_center.schedule_name))
         config_center.write_conf('Temp', 'temp_schedule', '')
-        schedule_center.update_schedule()
 
 
 def init() -> None:
@@ -3855,6 +3853,20 @@ if __name__ == '__main__':
     p_mgr = PluginManager()
     p_loader.set_manager(p_mgr)
     p_loader.load_plugins()
+
+    splash_window.update_status((70, QCoreApplication.translate('main', '检查临时课表...')))
+
+    if conf.is_temp_week:
+        splash_window.error()
+        w = Dialog(
+            QCoreApplication.translate('main', "存在临时课表"),
+            QCoreApplication.translate('main', "当前存在临时课表，是否沿用"),
+        )
+        w.buttonLayout.insertStretch(0, 1)
+        w.setFixedWidth(550)
+        if not w.exec():
+            init_config()
+        splash_window.unerror()
 
     splash_window.update_status((91, QCoreApplication.translate('main', '加载窗口...')))
 
