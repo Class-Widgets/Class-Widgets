@@ -67,17 +67,32 @@
       </spacer>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_34">
+      <layout class="QHBoxLayout" name="horizontalLayout">
        <property name="spacing">
         <number>0</number>
        </property>
-       <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
-        <widget class="QLabel" name="alert_icon">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetDefaultConstraint</enum>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="IconWidget" name="alert_icon">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-           <horstretch>10</horstretch>
-           <verstretch>10</verstretch>
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>75</width>
+           <height>75</height>
+          </size>
          </property>
          <property name="maximumSize">
           <size>
@@ -87,32 +102,15 @@
          </property>
          <property name="font">
           <font>
-           <family>Microsoft YaHei UI</family>
-           <pointsize>13</pointsize>
-           <bold>true</bold>
+           <strikeout>false</strikeout>
           </font>
          </property>
-         <property name="styleSheet">
-          <string notr="true">color: rgba(120, 120, 120, 180);
-font-weight: bold;</string>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
          </property>
-         <property name="text">
-          <string />
-         </property>
-         <property name="textFormat">
-          <enum>Qt::PlainText</enum>
-         </property>
-         <property name="pixmap">
-          <pixmap>../../img/weather/alerts/blue.png</pixmap>
-         </property>
-         <property name="scaledContents">
-          <bool>true</bool>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="wordWrap">
-          <bool>false</bool>
+         <property name="icon">
+          <iconset>
+           <normaloff>../../img/weather/alerts/blue.png</normaloff>../../img/weather/alerts/blue.png</iconset>
          </property>
         </widget>
        </item>
@@ -155,7 +153,7 @@ font-weight: bold;</string>
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true" />
+        <string notr="true"/>
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -189,7 +187,10 @@ font-weight: bold;</string>
          <property name="text">
           <string>-- 预警</string>
          </property>
-        <property name="wordWrap"><bool>true</bool></property></widget>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -198,6 +199,11 @@ font-weight: bold;</string>
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>IconWidget</class>
+   <extends>QWidget</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
   <customwidget>
    <class>CardWidget</class>
    <extends>QFrame</extends>
@@ -227,6 +233,6 @@ font-weight: bold;</string>
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
- <resources />
- <connections />
+ <resources/>
+ <connections/>
 </ui>

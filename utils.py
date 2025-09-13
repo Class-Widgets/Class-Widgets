@@ -53,7 +53,7 @@ def _terminate_child_processes() -> None:
                 logger.debug(f"子进程 {child.pid}: {e}")
             except Exception as e:
                 logger.warning(f"终止子进程 {child.pid} 时出错: {e}")
-        gone, alive = psutil.wait_procs(children, timeout=1.5)
+        _gone, alive = psutil.wait_procs(children, timeout=1.5)
         if alive:
             logger.warning(f"{len(alive)} 个子进程未在规定时间内终止,将强制终止...")
             for p in alive:
@@ -251,7 +251,7 @@ class UnionUpdateTimer(QObject):
                 return
             # 处理所有到期的任务
             while self.task_heap and (self.task_heap[0][0] <= current_time):
-                next_run, _, callback, interval = heappop(self.task_heap)
+                _next_run, _, callback, interval = heappop(self.task_heap)
 
                 if callback not in self.callback_info:
                     continue

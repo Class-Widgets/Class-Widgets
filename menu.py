@@ -27,10 +27,7 @@ from PyQt5.QtCore import (
     QUrl,
     pyqtSignal,
 )
-
-# from PyQt5.QtPrintSupport import QPrinter
-from PyQt5.QtGui import QColor, QDesktopServices, QIcon, QPainter, QPixmap
-from PyQt5.QtSvg import QSvgRenderer
+from PyQt5.QtGui import QColor, QDesktopServices, QIcon, QPainter
 from PyQt5.QtWidgets import (
     QApplication,
     QFileDialog,
@@ -66,6 +63,7 @@ from qfluentwidgets import (
     FlyoutView,
     FlyoutViewBase,
     HyperlinkLabel,
+    IconWidget,
     ImageLabel,
     InfoBar,
     InfoBarIcon,
@@ -1401,7 +1399,7 @@ class SettingsMenu(FluentWindow):
             self.feels_like_temperature = self.wtInterface.findChild(
                 CaptionLabel, 'current_feels_like_2'
             )  # 体感温度
-            self.weather_icon_label = self.wtInterface.findChild(QLabel, 'label_2')  # 天气图标
+            self.weather_icon_label = self.wtInterface.findChild(IconWidget, 'label_2')  # 天气图标
             self.wind_speed_value = self.wtInterface.findChild(
                 StrongBodyLabel, 'wind_value'
             )  # 风速值
@@ -1687,57 +1685,12 @@ class SettingsMenu(FluentWindow):
         icon_dir = CW_HOME / 'img' / 'weather'
         try:
             icon_path = icon_dir / str(icon_data)
-            if icon_path.exists():
-                self._render_svg_icon(str(icon_path))
-            else:
-                # 未知图标
-                default_icon = icon_dir / '99.svg'
-                if default_icon.exists():
-                    self._render_svg_icon(str(default_icon))
+            if not icon_path.exists():
+                icon_path = icon_dir / '99.svg'  # 默认图标
+            if hasattr(self, 'weather_icon_label') and self.weather_icon_label:
+                self.weather_icon_label.setIcon(QIcon(str(icon_path)))
         except Exception as e:
             logger.error(f"更新天气图标失败: {e}")
-
-    def _render_svg_icon(self, svg_path: str):
-        """渲染SVG"""
-        try:
-            renderer = QSvgRenderer(svg_path)
-            if not renderer.isValid():
-                raise ValueError(f"无效的SVG文件: {svg_path}")
-            svg_size = renderer.defaultSize()
-            if svg_size.isEmpty():
-                svg_size = QSize(100, 100)  # 默认尺寸
-            target_size = 100
-            aspect_ratio = svg_size.width() / svg_size.height()
-            if aspect_ratio > 1:
-                final_width = target_size
-                final_height = int(target_size / aspect_ratio)
-            else:
-                final_height = target_size
-                final_width = int(target_size * aspect_ratio)
-            final_size = QSize(final_width, final_height)
-            high_res_size = final_size * 2
-            pixmap = QPixmap(high_res_size)
-            pixmap.fill(Qt.transparent)
-            painter = QPainter(pixmap)
-            painter.setRenderHint(QPainter.Antialiasing, True)
-            painter.setRenderHint(QPainter.SmoothPixmapTransform, True)
-            painter.setRenderHint(QPainter.TextAntialiasing, True)
-            renderer.render(painter)
-            painter.end()
-            scaled_pixmap = pixmap.scaled(final_size, Qt.KeepAspectRatio, Qt.SmoothTransformation)
-            if hasattr(self, 'weather_icon_label') and self.weather_icon_label:
-                self.weather_icon_label.setPixmap(scaled_pixmap)
-                self.weather_icon_label.setScaledContents(False)
-                self.weather_icon_label.setAlignment(Qt.AlignCenter)
-        except Exception as e:
-            logger.error(f"SVG图标渲染失败: {e}")
-            try:
-                default_icon = CW_HOME / 'img' / 'weather' / '99.svg'
-                default_icon_str = str(default_icon)
-                if default_icon.exists() and svg_path != default_icon_str:
-                    self._render_svg_icon(default_icon_str)
-            except:
-                pass
 
     def _update_weather_details(self, weather_data):
         """其他天气信息"""
@@ -1854,17 +1807,12 @@ class SettingsMenu(FluentWindow):
                 os.path.dirname(__file__), 'view', 'menu', 'weather_alert_card.ui'
             )
             card_widget = uic.loadUi(ui_file_path)
-            alert_icon = card_widget.findChild(QLabel, 'alert_icon')  # 预警强度图片
+            alert_icon = card_widget.findChild(IconWidget, 'alert_icon')  # 预警强度图片
             alerts_label = card_widget.findChild(StrongBodyLabel, 'alerts_label')  # 预警类型
             if alert_icon:
                 icon_path = wd.get_alert_icon_by_severity(alert_data.get('severity', 'unknown'))
                 if icon_path and os.path.exists(icon_path):
-                    pixmap = QPixmap(icon_path)
-                    if not pixmap.isNull():
-                        scaled_pixmap = pixmap.scaled(
-                            75, 75, Qt.KeepAspectRatio, Qt.SmoothTransformation
-                        )
-                        alert_icon.setPixmap(scaled_pixmap)
+                    alert_icon.setIcon(QIcon(icon_path))
             if alerts_label:
                 alert_text = wd.simplify_alert_text(alert_data.get('type', self.tr('未知')))
                 full_text = alert_text + self.tr('预警')
@@ -1914,16 +1862,11 @@ class SettingsMenu(FluentWindow):
             msgbox = MessageBoxBase(self)
             msgbox.viewLayout.addWidget(detail_widget)
             msgbox.viewLayout.setContentsMargins(0, 0, 0, 0)
-            alert_icon = detail_widget.findChild(QLabel, 'alertIcon')
+            alert_icon = detail_widget.findChild(IconWidget, 'alertIcon')
             if alert_icon:
                 icon_path = wd.get_alert_icon_by_severity(alert_data.get('severity', 'unknown'))
                 if icon_path and os.path.exists(icon_path):
-                    pixmap = QPixmap(icon_path)
-                    if not pixmap.isNull():
-                        scaled_pixmap = pixmap.scaled(
-                            32, 32, Qt.KeepAspectRatio, Qt.SmoothTransformation
-                        )
-                        alert_icon.setPixmap(scaled_pixmap)
+                    alert_icon.setIcon(QIcon(icon_path))
             alert_title = detail_widget.findChild(QLabel, 'alertTitle')
             if alert_title:
                 display_text = alert_data.get('display_text', '')
