@@ -38,7 +38,6 @@
     <font>
      <family>Microsoft YaHei UI</family>
      <pointsize>13</pointsize>
-     <weight>75</weight>
      <bold>true</bold>
     </font>
    </property>
@@ -86,21 +85,22 @@ border-image: url();
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
-     <widget class="QLabel" name="weather_icon">
+     <widget class="IconWidget" name="weather_icon">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="text">
-       <string/>
+      <property name="minimumSize">
+       <size>
+        <width>25</width>
+        <height>25</height>
+       </size>
       </property>
-      <property name="pixmap">
-       <pixmap>../../img/weather/0.svg</pixmap>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
+      <property name="icon">
+       <iconset>
+        <normaloff>../../img/weather/0.svg</normaloff>../../img/weather/0.svg</iconset>
       </property>
      </widget>
     </item>
@@ -116,7 +116,6 @@ border-image: url();
        <font>
         <family>Microsoft YaHei UI</family>
         <pointsize>19</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -142,6 +141,13 @@ font-weight: bold</string>
   <zorder>current_city</zorder>
   <zorder>horizontalLayoutWidget</zorder>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>IconWidget</class>
+   <extends>QWidget</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -114,14 +114,14 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widget-weather.ui" line="50"/>
-        <location filename="../dark/widget-weather.ui" line="50"/>
+        <location filename="../widget-weather.ui" line="49"/>
+        <location filename="../dark/widget-weather.ui" line="49"/>
         <source>当前城市</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widget-weather.ui" line="129"/>
-        <location filename="../dark/widget-weather.ui" line="129"/>
+        <location filename="../widget-weather.ui" line="128"/>
+        <location filename="../dark/widget-weather.ui" line="128"/>
         <source>114℉</source>
         <translation type="unfinished"></translation>
     </message>

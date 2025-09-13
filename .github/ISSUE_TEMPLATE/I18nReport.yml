@@ -22,7 +22,6 @@ body:
         2. 我已在 [Issues](https://github.com/Class-Widgets/Class-Widgets/issues?q=label:i18n) 中检索，确认这一类似的建议 / 问题 **未被提交过**。
         > 2. Searched [Issues](https://github.com/Class-Widgets/Class-Widgets/issues?q=label:i18n) to ensure this hasn't been suggested/reported before.
 
-
   - type: checkboxes
     id: checklist
     attributes:
