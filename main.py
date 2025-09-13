@@ -37,11 +37,8 @@ from PyQt5.QtGui import (
     QHideEvent,
     QIcon,
     QMouseEvent,
-    QPainter,
-    QPixmap,
     QShowEvent,
 )
-from PyQt5.QtSvg import QSvgRenderer
 from PyQt5.QtWidgets import (
     QApplication,
     QFrame,
@@ -1946,7 +1943,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             content_layout = self.findChild(QHBoxLayout, 'horizontalLayout_2')
             content_layout.setSpacing(1)
             self.temperature = self.findChild(QLabel, 'temperature')
-            self.weather_icon = self.findChild(QLabel, 'weather_icon')
+            self.weather_icon = self.findChild(IconWidget, 'weather_icon')
             self.alert_icon = IconWidget(self)
             self.alert_icon.setFixedSize(22, 22)
             self.alert_icon.hide()
@@ -2426,29 +2423,17 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.current_subject.setText(f'  {current_lesson_name}')
 
             if current_state != 2:  # 非休息段
-                render = QSvgRenderer(list_.get_subject_icon(current_lesson_name))
+                icon_path = list_.get_subject_icon(current_lesson_name)
                 self.blur_effect_label.setStyleSheet(
                     f'background-color: rgba{list_.subject_color(current_lesson_name)}, 200);'
                 )
             else:  # 休息段
-                render = QSvgRenderer(list_.get_subject_icon('课间'))
+                icon_path = list_.get_subject_icon('课间')
                 self.blur_effect_label.setStyleSheet(
                     f'background-color: rgba{list_.subject_color("课间")}, 200);'
                 )
-            pixmap = QPixmap(render.defaultSize())
-            pixmap.fill(Qt.GlobalColor.transparent)
 
-            painter = QPainter(pixmap)
-            render.render(painter)
-            theme_config = conf.load_theme_config(str('default' if theme is None else theme)).config
-            if (isDarkTheme() and theme_config.support_dark_mode) or (
-                isDarkTheme() and theme_config.default_theme == 'dark'
-            ):  # 在暗色模式显示亮色图标
-                painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_SourceIn)
-                painter.fillRect(pixmap.rect(), QColor("#FFFFFF"))
-            painter.end()
-
-            self.current_subject.setIcon(QIcon(pixmap))
+            self.current_subject.setIcon(QIcon(icon_path))
             self.blur_effect.setBlurRadius(25)  # 模糊半径
             self.blur_effect_label.setGraphicsEffect(self.blur_effect)
 
@@ -3183,9 +3168,8 @@ class DesktopWidget(QWidget):  # 主要小组件
                 temperature = '--°'
             current_city = self.findChild(QLabel, 'current_city')
             try:
-                self.weather_icon.setPixmap(
-                    QPixmap(db.get_weather_icon_by_code(db.get_weather_data('icon', weather_data)))
-                )
+                path = db.get_weather_icon_by_code(db.get_weather_data('icon', weather_data))
+                self.weather_icon.setIcon(QIcon(path))
                 self.alert_icon.hide()
                 if settings and hasattr(settings, '_on_weather_data_ready'):
                     settings._on_weather_data_ready(original_weather_data)
@@ -3216,7 +3200,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             logger.error(f'获取天气数据出错：{weather_data}')
             try:
                 if hasattr(self, 'weather_icon'):
-                    self.weather_icon.setPixmap(QPixmap(CW_HOME / 'img/weather/99.svg'))
+                    self.weather_icon.setIcon(QIcon(CW_HOME / 'img/weather/99.svg'))
                     self.alert_icon.hide()
                     self.weather_alert_text.hide()
                     self.temperature.setText('--°')

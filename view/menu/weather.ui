@@ -59,8 +59,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>679</width>
-        <height>1173</height>
+        <width>752</width>
+        <height>1070</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -243,9 +243,9 @@
               <number>4</number>
              </property>
              <item>
-              <widget class="QLabel" name="label_2">
+              <widget class="IconWidget" name="label_2">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
@@ -256,17 +256,15 @@
                  <height>100</height>
                 </size>
                </property>
-               <property name="text">
-                <string/>
+               <property name="maximumSize">
+                <size>
+                 <width>100</width>
+                 <height>100</height>
+                </size>
                </property>
-               <property name="pixmap">
-                <pixmap>../../img/weather/0.svg</pixmap>
-               </property>
-               <property name="scaledContents">
-                <bool>true</bool>
-               </property>
-               <property name="wordWrap">
-                <bool>false</bool>
+               <property name="icon">
+                <iconset>
+                 <normaloff>../../img/weather/0.svg</normaloff>../../img/weather/0.svg</iconset>
                </property>
               </widget>
              </item>
@@ -1589,6 +1587,11 @@ font-weight: bold;</string>
   <customwidget>
    <class>ToolButton</class>
    <extends>QToolButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>IconWidget</class>
+   <extends>QWidget</extends>
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
