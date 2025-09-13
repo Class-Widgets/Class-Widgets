@@ -10,13 +10,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widget-base.ui" line="90"/>
+        <location filename="../widget-base.ui" line="89"/>
         <location filename="../dark/widget-base.ui" line="91"/>
         <source>Title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widget-base.ui" line="127"/>
+        <location filename="../widget-base.ui" line="125"/>
         <location filename="../dark/widget-base.ui" line="128"/>
         <source>Content</source>
         <translation type="unfinished"></translation>
