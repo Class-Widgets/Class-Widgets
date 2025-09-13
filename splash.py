@@ -10,6 +10,7 @@ from qfluentwidgets import ProgressBar, Theme, theme
 
 from basic_dirs import CW_HOME
 from i18n_manager import app
+from file import config_center
 
 
 class DarkModeWatcherThread(QThread):
@@ -50,6 +51,7 @@ class Splash:
     def __init__(self):
         super().__init__()
         self.init()
+        self.update_version(config_center.read_conf("Version", "version"))
         self.apply_theme_stylesheet()
 
     def init(self):
@@ -57,6 +59,7 @@ class Splash:
         self.statusLabel = self.splash_window.findChild(QLabel, 'statusLabel')
         self.statusBar = self.splash_window.findChild(ProgressBar, 'statusBar')
         self.appInitials = self.splash_window.findChild(QLabel, 'appInitials')
+        self.versionLabel = self.splash_window.findChild(QLabel, 'versionLabel')
         self.splash_window.setAttribute(Qt.WA_TranslucentBackground)
         self.splash_window.setWindowFlags(
             Qt.WindowType.FramelessWindowHint
@@ -71,6 +74,11 @@ class Splash:
             return
         self.statusBar.setValue(status[0])
         self.statusLabel.setText(status[1])
+
+    def update_version(self, version: str):
+        if self.splash_window is None:
+            return
+        self.versionLabel.setText(version)
 
     def apply_theme_stylesheet(self):
         if self.splash_window is None:
