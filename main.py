@@ -227,7 +227,7 @@ def setTheme_() -> None:  # 设置主题
         if platform.system() == 'Linux':
             return
         if dark_mode_watcher:
-            is_dark = dark_mode_watcher.isDark()
+            is_dark = dark_mode_watcher.is_dark()
             if is_dark is not None:
                 logger.info(f"当前颜色模式: {'深色' if is_dark else '浅色'}")
                 setTheme(Theme.DARK if is_dark else Theme.LIGHT)
@@ -1793,7 +1793,7 @@ class FloatingWidget(QWidget):  # 浮窗
         if focus_manager:
             QTimer.singleShot(
                 500,
-                lambda: (focus_manager.removeIgnore.emit(ctypes.c_void_p(int(self.winId())).value)),
+                lambda: (focus_manager.remove_ignore.emit(ctypes.c_void_p(int(self.winId())).value)),
             )
 
     def hideEvent(self, event: QHideEvent) -> None:
@@ -1856,7 +1856,7 @@ class FloatingWidget(QWidget):  # 浮窗
                 mgr.show_windows()
                 self.close()
         if focus_manager:
-            focus_manager.restoreRequested.emit()
+            focus_manager.restore_requested.emit()
 
     def focusInEvent(self, event: QFocusEvent) -> None:
         self.focusing = True
@@ -2331,7 +2331,7 @@ class DesktopWidget(QWidget):  # 主要小组件
         if focus_manager:
             QTimer.singleShot(
                 500,
-                lambda: (focus_manager.removeIgnore.emit(ctypes.c_void_p(int(self.winId())).value)),
+                lambda: (focus_manager.remove_ignore.emit(ctypes.c_void_p(int(self.winId())).value)),
             )
 
     def init_font(self):
@@ -2418,7 +2418,7 @@ class DesktopWidget(QWidget):  # 主要小组件
         if event.button() == Qt.MouseButton.RightButton:
             self.open_extra_menu()
         if focus_manager:
-            focus_manager.restoreRequested.emit()
+            focus_manager.restore_requested.emit()
 
     def update_data(self, path: str = '') -> None:
         global current_time, current_week, start_y, today
@@ -3536,7 +3536,7 @@ class DesktopWidget(QWidget):  # 主要小组件
         else:
             event.ignore()
         if focus_manager:
-            focus_manager.restoreRequested.emit()
+            focus_manager.restore_requested.emit()
 
     def stop(self):
         if mgr:
@@ -3749,8 +3749,8 @@ if __name__ == '__main__':
 
     try:
         dark_mode_watcher = DarkModeWatcher()
-        dark_mode_watcher.darkModeChanged.connect(handle_dark_mode_change)  # 连接信号
-        # 初始主题设置依赖于 darkModeChanged 信号
+        dark_mode_watcher.dark_mode_changed.connect(handle_dark_mode_change)  # 连接信号
+        # 初始主题设置依赖于 dark_mode_changed 信号
     except Exception as e:
         logger.error(f"初始化颜色模式监测器时出错: {e}")
         dark_mode_watcher = None

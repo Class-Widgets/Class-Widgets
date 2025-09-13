@@ -131,7 +131,8 @@ ignore = [
   "PLR0913", # too many arguments
   "PLR0915", # too many statements
   "PLR2004", # magic value used in comparison
-  "PTH123" # pathlib instead of os.path.join
+  "PTH123", # pathlib instead of os.path.join
+  "ERA001"
 ]
 select = [
   "ARG", # flake8-unused-arguments

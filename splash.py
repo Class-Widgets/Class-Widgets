@@ -14,7 +14,7 @@ from i18n_manager import app
 
 
 class DarkModeWatcherThread(QThread):
-    darkModeChanged = pyqtSignal(bool)  # 发出暗黑模式变化信号
+    dark_mode_changed = pyqtSignal(bool)  # 发出暗黑模式变化信号
 
     def __init__(self, interval: int = 500, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
@@ -22,13 +22,13 @@ class DarkModeWatcherThread(QThread):
         self._isDarkMode: bool = bool(theme() == Theme.DARK)  # 初始状态
         self._running = True
 
-    def _checkTheme(self) -> None:
-        currentMode: bool = bool(theme() == Theme.DARK)
-        if currentMode != self._isDarkMode:
-            self._isDarkMode = currentMode
-            self.darkModeChanged.emit(currentMode)  # 发出变化信号
+    def _check_theme(self) -> None:
+        current_mode: bool = bool(theme() == Theme.DARK)
+        if current_mode != self._isDarkMode:
+            self._isDarkMode = current_mode
+            self.dark_mode_changed.emit(current_mode)  # 发出变化信号
 
-    def isDark(self) -> bool:
+    def is_dark(self) -> bool:
         """返回当前是否暗黑模式"""
         return self._isDarkMode
 
@@ -37,7 +37,7 @@ class DarkModeWatcherThread(QThread):
         while self._running:
             if self.interval is not None:
                 time.sleep(self.interval)
-            self._checkTheme()  # 检查主题变化
+            self._check_theme()  # 检查主题变化
 
     def stop(self):
         """停止监听"""
@@ -103,7 +103,7 @@ class Splash:
     def run(self):
         logger.info("Splash 启动")
         dark_mode_watcher.start()
-        self.dark_mode_watcher_connection = dark_mode_watcher.darkModeChanged.connect(
+        self.dark_mode_watcher_connection = dark_mode_watcher.dark_mode_changed.connect(
             self.apply_theme_stylesheet
         )
         self.update_status((0, app.translate('main', 'Class Widgets 启动中...')))
@@ -111,7 +111,7 @@ class Splash:
 
     def close(self):
         logger.info("Splash 关闭")
-        dark_mode_watcher.darkModeChanged.disconnect(self.dark_mode_watcher_connection)
+        dark_mode_watcher.dark_mode_changed.disconnect(self.dark_mode_watcher_connection)
         dark_mode_watcher.stop()
         self.splash_window.close()
         self.splash_window.deleteLater()

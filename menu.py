@@ -3090,9 +3090,9 @@ class SettingsMenu(FluentWindow):
                     painter.setClipping(True)
                     painter.setClipRect(option.rect)
 
-                    isDark = isDarkTheme()
-                    alpha = 15 if isDark else 9
-                    c = 255 if isDark else 0
+                    is_dark = isDarkTheme()
+                    alpha = 15 if is_dark else 9
+                    c = 255 if is_dark else 0
                     painter.setBrush(QColor(c, c, c, alpha))
                     margin = 8
                     bg_rect = option.rect.adjusted(0, margin, 0, -margin)

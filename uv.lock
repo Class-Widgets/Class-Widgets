@@ -647,6 +647,7 @@ dependencies = [
     { name = "colorama" },
     { name = "configparser" },
     { name = "darkdetect" },
+    { name = "distro", marker = "sys_platform == 'linux'" },
     { name = "edge-tts" },
     { name = "idna" },
     { name = "loguru" },
@@ -704,6 +705,7 @@ requires-dist = [
     { name = "colorama", specifier = "==0.4.6" },
     { name = "configparser", specifier = "~=7.1.0" },
     { name = "darkdetect", specifier = "==0.8.0" },
+    { name = "distro", marker = "sys_platform == 'linux'", specifier = "~=1.8.0" },
     { name = "edge-tts", specifier = "~=7.0.0" },
     { name = "idna", specifier = "==3.10" },
     { name = "loguru", specifier = "~=0.7.2" },
@@ -836,6 +838,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/96/8e/709914eb2b5749865801041647dc7f4e6d00b549cfe88b65ca192995f07c/distlib-0.4.0.tar.gz", hash = "sha256:feec40075be03a04501a973d81f633735b4b69f98b05450592310c0f401a4e0d", size = 614605, upload-time = "2025-07-17T16:52:00.465Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/33/6b/e0547afaf41bf2c42e52430072fa5658766e3d65bd4b03a563d1b6336f57/distlib-0.4.0-py2.py3-none-any.whl", hash = "sha256:9659f7d87e46584a30b5780e43ac7a2143098441670ff0a49d5f9034c54a6c16", size = 469047, upload-time = "2025-07-17T16:51:58.613Z" },
+]
+
+[[package]]
+name = "distro"
+version = "1.8.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/4b/89/eaa3a3587ebf8bed93e45aa79be8c2af77d50790d15b53f6dfc85b57f398/distro-1.8.0.tar.gz", hash = "sha256:02e111d1dc6a50abb8eed6bf31c3e48ed8b0830d1ea2a1b78c61765c2513fdd8", size = 59428, upload-time = "2022-10-10T15:30:33.395Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f4/2c/c90a3adaf0ddb70afe193f5ebfb539612af57cffe677c3126be533df3098/distro-1.8.0-py3-none-any.whl", hash = "sha256:99522ca3e365cac527b44bde033f64c6945d90eb9f769703caaec52b09bbd3ff", size = 20315, upload-time = "2022-10-10T15:30:26.903Z" },
 ]
 
 [[package]]
