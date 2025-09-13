@@ -1,144 +1,144 @@
 {
-    "weatherinfo": [
-        {
-            "code": 0,
-            "wea": "Clear",
-            "original_code": 0
-        },
-        {
-            "code": 1,
-            "wea": "Mostly Clear",
-            "original_code": 1
-        },
-        {
-            "code": 2,
-            "wea": "Partly Cloudy",
-            "original_code": 1
-        },
-        {
-            "code": 3,
-            "wea": "Overcast",
-            "original_code": 2
-        },
-        {
-            "code": 45,
-            "wea": "Fog",
-            "original_code": 18
-        },
-        {
-            "code": 48,
-            "wea": "Rime Fog",
-            "original_code": 18
-        },
-        {
-            "code": 51,
-            "wea": "Drizzle L",
-            "original_code": 7
-        },
-        {
-            "code": 53,
-            "wea": "Drizzle M",
-            "original_code": 7
-        },
-        {
-            "code": 55,
-            "wea": "Drizzle H",
-            "original_code": 7
-        },
-        {
-            "code": 56,
-            "wea": "Frz Drizzle L",
-            "original_code": 19
-        },
-        {
-            "code": 57,
-            "wea": "Frz Drizzle H",
-            "original_code": 19
-        },
-        {
-            "code": 61,
-            "wea": "Rain L",
-            "original_code": 7
-        },
-        {
-            "code": 63,
-            "wea": "Rain M",
-            "original_code": 8
-        },
-        {
-            "code": 65,
-            "wea": "Rain H",
-            "original_code": 9
-        },
-        {
-            "code": 66,
-            "wea": "Frz Rain L",
-            "original_code": 19
-        },
-        {
-            "code": 67,
-            "wea": "Frz Rain H",
-            "original_code": 19
-        },
-        {
-            "code": 71,
-            "wea": "Snow L",
-            "original_code": 14
-        },
-        {
-            "code": 73,
-            "wea": "Snow M",
-            "original_code": 15
-        },
-        {
-            "code": 75,
-            "wea": "Snow H",
-            "original_code": 16
-        },
-        {
-            "code": 77,
-            "wea": "Snow Grains",
-            "original_code": 16
-        },
-        {
-            "code": 80,
-            "wea": "Rain Shwr L",
-            "original_code": 9
-        },
-        {
-            "code": 81,
-            "wea": "Rain Shwr M",
-            "original_code": 10
-        },
-        {
-            "code": 82,
-            "wea": "Rain Shwr V",
-            "original_code": 11
-        },
-        {
-            "code": 85,
-            "wea": "Snow Shwr L",
-            "original_code": 15
-        },
-        {
-            "code": 86,
-            "wea": "Snow Shwr H",
-            "original_code": 17
-        },
-        {
-            "code": 95,
-            "wea": "Thunder",
-            "original_code": 4
-        },
-        {
-            "code": 96,
-            "wea": "Th+hail L",
-            "original_code": 5
-        },
-        {
-            "code": 99,
-            "wea": "Th+hail H",
-            "original_code": 5
-        }
-    ]
+  "weatherinfo": [
+    {
+      "code": 0,
+      "wea": "Clear",
+      "original_code": 0
+    },
+    {
+      "code": 1,
+      "wea": "Mostly Clear",
+      "original_code": 1
+    },
+    {
+      "code": 2,
+      "wea": "Partly Cloudy",
+      "original_code": 1
+    },
+    {
+      "code": 3,
+      "wea": "Overcast",
+      "original_code": 2
+    },
+    {
+      "code": 45,
+      "wea": "Fog",
+      "original_code": 18
+    },
+    {
+      "code": 48,
+      "wea": "Rime Fog",
+      "original_code": 18
+    },
+    {
+      "code": 51,
+      "wea": "Drizzle L",
+      "original_code": 7
+    },
+    {
+      "code": 53,
+      "wea": "Drizzle M",
+      "original_code": 7
+    },
+    {
+      "code": 55,
+      "wea": "Drizzle H",
+      "original_code": 7
+    },
+    {
+      "code": 56,
+      "wea": "Frz Drizzle L",
+      "original_code": 19
+    },
+    {
+      "code": 57,
+      "wea": "Frz Drizzle H",
+      "original_code": 19
+    },
+    {
+      "code": 61,
+      "wea": "Rain L",
+      "original_code": 7
+    },
+    {
+      "code": 63,
+      "wea": "Rain M",
+      "original_code": 8
+    },
+    {
+      "code": 65,
+      "wea": "Rain H",
+      "original_code": 9
+    },
+    {
+      "code": 66,
+      "wea": "Frz Rain L",
+      "original_code": 19
+    },
+    {
+      "code": 67,
+      "wea": "Frz Rain H",
+      "original_code": 19
+    },
+    {
+      "code": 71,
+      "wea": "Snow L",
+      "original_code": 14
+    },
+    {
+      "code": 73,
+      "wea": "Snow M",
+      "original_code": 15
+    },
+    {
+      "code": 75,
+      "wea": "Snow H",
+      "original_code": 16
+    },
+    {
+      "code": 77,
+      "wea": "Snow Grains",
+      "original_code": 16
+    },
+    {
+      "code": 80,
+      "wea": "Rain Shwr L",
+      "original_code": 9
+    },
+    {
+      "code": 81,
+      "wea": "Rain Shwr M",
+      "original_code": 10
+    },
+    {
+      "code": 82,
+      "wea": "Rain Shwr V",
+      "original_code": 11
+    },
+    {
+      "code": 85,
+      "wea": "Snow Shwr L",
+      "original_code": 15
+    },
+    {
+      "code": 86,
+      "wea": "Snow Shwr H",
+      "original_code": 17
+    },
+    {
+      "code": 95,
+      "wea": "Thunder",
+      "original_code": 4
+    },
+    {
+      "code": 96,
+      "wea": "Th+hail L",
+      "original_code": 5
+    },
+    {
+      "code": 99,
+      "wea": "Th+hail H",
+      "original_code": 5
+    }
+  ]
 }

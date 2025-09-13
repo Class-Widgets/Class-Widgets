@@ -142,14 +142,14 @@
         <translation>天氣</translation>
     </message>
     <message>
-        <location filename="../widget-weather.ui" line="50"/>
-        <location filename="../dark/widget-weather.ui" line="50"/>
+        <location filename="../widget-weather.ui" line="49"/>
+        <location filename="../dark/widget-weather.ui" line="49"/>
         <source>当前城市</source>
         <translation>當前城市</translation>
     </message>
     <message>
-        <location filename="../widget-weather.ui" line="128"/>
-        <location filename="../dark/widget-weather.ui" line="128"/>
+        <location filename="../widget-weather.ui" line="127"/>
+        <location filename="../dark/widget-weather.ui" line="127"/>
         <source>114℉</source>
         <translation>114℉</translation>
     </message>

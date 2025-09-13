@@ -24,6 +24,36 @@ on:
         required: false
         default: false
         type: boolean
+      win32_x64:
+        description: "win32-x64"
+        required: false
+        type: boolean
+        default: true
+      win32_x86:
+        description: "win32-x86"
+        required: false
+        type: boolean
+        default: true
+      # win32_arm64:
+      #   description: "win32-arm64"
+      #   required: false
+      #   type: boolean
+      #   default: false
+      # macos_x64:
+      #   description: "macos-x64"
+      #   required: false
+      #   type: boolean
+      #   default: true
+      macos_arm64:
+        description: "macos-arm64"
+        required: false
+        type: boolean
+        default: true
+      linux_x64:
+        description: "linux-x64"
+        required: false
+        type: boolean
+        default: true
   workflow_call:
     inputs:
       build_type:
@@ -40,6 +70,36 @@ on:
         required: false
         default: false
         type: boolean
+      win32_x64:
+        description: "win32-x64"
+        required: false
+        type: boolean
+        default: true
+      win32_x86:
+        description: "win32-x86"
+        required: false
+        type: boolean
+        default: true
+      # win32_arm64:
+      #   description: "win32-arm64"
+      #   required: false
+      #   type: boolean
+      #   default: false
+      # macos_x64:
+      #   description: "macos-x64"
+      #   required: false
+      #   type: boolean
+      #   default: true
+      macos_arm64:
+        description: "macos-arm64"
+        required: false
+        type: boolean
+        default: true
+      linux_x64:
+        description: "linux-x64"
+        required: false
+        type: boolean
+        default: true
     outputs:
       run_id:
         description: "构建运行ID"
@@ -75,7 +135,6 @@ permissions:
 
 jobs:
   prepare:
-    # 拆的稀碎,也许还行(x
     name: Update Info
     runs-on: ubuntu-latest
     outputs:
@@ -86,6 +145,10 @@ jobs:
       build_runid: ${{ steps.build-info.outputs.build_runid }}
       release_version: ${{ steps.build-info.outputs.release_version }}
       skip_ci: ${{ steps.check-skip-ci.outputs.skip_ci }}
+      platforms: ${{ steps.build-info.outputs.platforms }}
+      platforms_array: ${{ steps.build-info.outputs.platforms_array }}
+      matrix: ${{ steps.build-info.outputs.matrix }}
+      is_signing: ${{ steps.build-info.outputs.is_signing }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -96,9 +159,11 @@ jobs:
         id: check-skip-ci
         shell: bash
         env:
-          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_TITLE: ${{ github.event.pull_request.title || '' }}
         run: |
           skip_ci=false
+          commit_sha=""
+          commit_message=""
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
             if [[ "$PR_TITLE" =~ [Ss][Kk][Ii][Pp][[:space:]][Cc][Ii] ]]; then
               skip_ci=true
@@ -113,7 +178,7 @@ jobs:
           fi
           echo "skip_ci=$skip_ci" >> $GITHUB_OUTPUT
           echo "::group::Commit Message"
-          echo "[DEBUG] commit-message: "$commit_message" ; sha: $commit_sha ; skip-ci: $skip_ci"
+          echo "[DEBUG] commit-message: \"$commit_message\" ; sha: $commit_sha ; skip-ci: $skip_ci"
           echo "::endgroup::"
           echo "是否跳过 CI: $skip_ci" >> $GITHUB_STEP_SUMMARY
 
@@ -130,6 +195,7 @@ jobs:
           build_commit="${GITHUB_SHA:0:7}"
           build_branch="${GITHUB_REF_NAME}"
           build_runid="${GITHUB_RUN_ID}"
+          # determine build_type
           if [[ -n "${{ inputs.build_type }}" ]]; then
             build_type="${{ inputs.build_type }}"
             echo "[DEBUG] 使用 inputs.build_type: $build_type"
@@ -147,14 +213,83 @@ jobs:
             build_type="Debug"
             echo "[DEBUG] 默认构建类型: $build_type"
           fi
-          release_version="${{ inputs.release_version }}"
-
+          # release version (if provided via workflow_dispatch/workflow_call)
+          release_version="${{ inputs.release_version || github.event.inputs.release_version || '' }}"
+          # is_signing flag (normalize various sources)
+          is_signing="${{ inputs.is_signing || github.event.inputs.is_signing || false }}"
+          # 构建平台数组
+          declare -A ALL_PLATFORMS=(
+            ["win32-x64"]="${{ inputs.win32_x64 || github.event.inputs.win32_x64 || '' }}"
+            ["win32-x86"]="${{ inputs.win32_x86 || github.event.inputs.win32_x86 || '' }}"
+            ["macos-arm64"]="${{ inputs.macos_arm64 || github.event.inputs.macos_arm64 || '' }}"
+            ["linux-x64"]="${{ inputs.linux_x64 || github.event.inputs.linux_x64 || '' }}"
+          )
+          declare -a SELECTED_PLATFORMS=()
+          if [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
+            echo "[DEBUG] PR 事件平台: win32-x64, linux-x64, macos-arm64"
+            SELECTED_PLATFORMS+=("win32-x64" "linux-x64" "macos-arm64")
+          elif [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
+            echo "[DEBUG] push 事件平台: all"
+            SELECTED_PLATFORMS+=("win32-x64" "win32-x86" "linux-x64" "macos-arm64")
+          fi
+          for platform in "${!ALL_PLATFORMS[@]}"; do
+            input_val="${ALL_PLATFORMS[$platform]}"
+            if [[ "$input_val" == "true" || ( -z "$input_val" && "$GITHUB_EVENT_NAME" != "pull_request" ) ]]; then
+              SELECTED_PLATFORMS+=("$platform")
+            fi
+          done
+          # 去重
+          declare -A UNIQUE_PLATFORMS
+          platforms=""
+          for platform in "${SELECTED_PLATFORMS[@]}"; do
+            if [[ -z "${UNIQUE_PLATFORMS[$platform]}" ]]; then
+              UNIQUE_PLATFORMS[$platform]=1
+              platforms="${platforms}${platform},"
+            fi
+          done
+          platforms=${platforms%,}
+          echo "[DEBUG] 最终平台列表: $platforms"
+          # emit outputs
           echo "release_version=$release_version" >> $GITHUB_OUTPUT
+          echo "is_signing=$is_signing" >> $GITHUB_OUTPUT
           echo "build_type=$build_type" >> $GITHUB_OUTPUT
           echo "build_time=$build_time" >> $GITHUB_OUTPUT
           echo "build_commit=$build_commit" >> $GITHUB_OUTPUT
           echo "build_branch=$build_branch" >> $GITHUB_OUTPUT
           echo "build_runid=$build_runid" >> $GITHUB_OUTPUT
+          echo "platforms=$platforms" >> $GITHUB_OUTPUT
+          # 平台数组矩阵
+           declare -A PLATFORM_MAPPING=(
+             ["win32-x64"]="{\"os\":\"windows-latest\",\"arch\":\"x64\",\"platform\":\"windows-x64\",\"platform_id\":\"win32-x64\"}"
+             ["win32-x86"]="{\"os\":\"windows-latest\",\"arch\":\"x86\",\"platform\":\"windows-x86\",\"platform_id\":\"win32-x86\"}"
+             ["macos-arm64"]="{\"os\":\"macos-latest\",\"arch\":\"arm64\",\"platform\":\"macos-arm64\",\"platform_id\":\"macos-arm64\"}"
+             ["linux-x64"]="{\"os\":\"ubuntu-latest\",\"arch\":\"x64\",\"platform\":\"linux-x64\",\"platform_id\":\"linux-x64\"}"
+           )
+           platforms_array="[]"
+           if [[ -n "$platforms" ]]; then
+             IFS=',' read -ra PLATFORM_LIST <<< "$platforms"
+             platforms_array="["
+             for platform in "${PLATFORM_LIST[@]}"; do
+               platforms_array="$platforms_array\"$platform\","
+             done
+             platforms_array=${platforms_array%,}
+             platforms_array="$platforms_array]"
+           fi
+           echo "platforms_array=$platforms_array" >> $GITHUB_OUTPUT
+           # 矩阵json
+           matrix_json="{\"include\":[]}"
+           if [[ -n "$platforms" ]]; then
+             matrix_json="{\"include\":["
+             for platform in "${PLATFORM_LIST[@]}"; do
+               if [[ -n "${PLATFORM_MAPPING[$platform]}" ]]; then
+                 matrix_json="$matrix_json${PLATFORM_MAPPING[$platform]},"
+               fi
+             done
+            matrix_json=${matrix_json%,}
+            matrix_json="$matrix_json]}";
+          fi
+          echo "matrix=$matrix_json" >> $GITHUB_OUTPUT
+
           {
             echo "## 📋 构建信息"
             echo "| 项目 | 值 |"
@@ -164,6 +299,8 @@ jobs:
             echo "| 🌿 分支 | $build_branch |"
             echo "| 🆔 运行 ID | $build_runid |"
             echo "| 🧪 构建类型 | $build_type |"
+            echo "| 🖥️ 构建平台 | $platforms |"
+            echo "| 🔐 是否签名 | $is_signing |"
           } >> $GITHUB_STEP_SUMMARY
 
   build:
@@ -172,23 +309,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: true
-      matrix:
-        include:
-          - os: windows-latest
-            arch: x64
-            platform: windows-x64
-          - os: windows-latest
-            arch: x86
-            platform: windows-x86
-          - os: macos-15
-            arch: x64
-            platform: macos-x64
-          - os: macos-15
-            arch: arm64
-            platform: macos-arm64
-          - os: ubuntu-latest
-            arch: x64
-            platform: linux-x64
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
     env:
       PYTHON_VERSION: ${{ startsWith(matrix.os, 'windows') && '3.8' || '3.11' }}
       BUILD_TYPE: ${{ needs.prepare.outputs.build_type }}
@@ -196,7 +317,7 @@ jobs:
       BUILD_COMMIT: ${{ needs.prepare.outputs.build_commit }}
       BUILD_BRANCH: ${{ needs.prepare.outputs.build_branch }}
       BUILD_RUNID: ${{ needs.prepare.outputs.build_runid }}
-
+      RELEASE_VERSION: ${{ needs.prepare.outputs.release_version }}
     steps:
       - name: Install dependencies (Linux)
         if: matrix.platform == 'linux-x64'
@@ -213,7 +334,7 @@ jobs:
         run: |
           if ! brew list gettext &>/dev/null; then
             brew install gettext
-            brew link --overwrite --force gettext
+            brew link --overwrite --force gettext || true
           fi
 
       - name: Cache Python (Windows)
@@ -225,7 +346,7 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.arch }}-python${{ env.PYTHON_VERSION }}
 
       - name: Setup Python
-        uses: actions/setup-python@v5.6.0
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           architecture: ${{ matrix.arch }}
@@ -287,8 +408,8 @@ jobs:
           config_text="${config_text//__BUILD_BRANCH__/$BUILD_BRANCH}"
           config_text="${config_text//__BUILD_RUNID__/$BUILD_RUNID}"
           config_text="${config_text//__BUILD_TYPE__/$BUILD_TYPE}"
-          if [[ "$BUILD_TYPE" == "Release" ]] || [[ "$BUILD_TYPE" == "Nightly" ]]; then
-            VERSION="${{ inputs.release_version }}"
+          if [[ "$BUILD_TYPE" == "Release" || "$BUILD_TYPE" == "Nightly" ]]; then
+            VERSION="${RELEASE_VERSION}"
             config_text="${config_text//__BUILD_VERSION__/$VERSION}"
           fi
           if [[ "$BUILD_TYPE" == "Release" ]]; then
@@ -325,28 +446,20 @@ jobs:
         env:
           PR_NUMBER: ${{ github.event.pull_request.number || 0 }}
         run: |
-          if [[ "${GITHUB_EVENT_NAME}" == "push" && "${GITHUB_REF}" =~ ^refs/tags/v ]]; then
-            build_type="Release"
-          elif [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
-            build_type="${{ github.event.inputs.build_type }}"
-          elif [[ "${GITHUB_EVENT_NAME}" == "workflow_call" ]]; then
-            build_type="${{ github.event.inputs.build_type || 'Debug' }}"
-          elif [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
-            build_type="Debug (PR-#${PR_NUMBER})"
-          else
-            build_type="Debug"
-          fi
-          echo "BUILD_TYPE=$build_type" >> $GITHUB_ENV
+          echo "BUILD_TYPE=$BUILD_TYPE" >> $GITHUB_ENV
+
+      - name: Cleanup .ts
+        shell: bash
+        run: |
+          find ui -name "*.ts" -delete || true
+          find view -name "*.ts" -delete || true
 
       - name: Build Windows (pyinstaller)
         if: startsWith(matrix.os, 'windows')
         shell: bash
         run: |
-          if [[ "${{ runner.os }}" == "Windows" ]]; then
-            curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
-          fi
-          find ui -name "*.ts" -delete
-          uv run pyinstaller main.py \
+          curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
+          uv run --no-dev pyinstaller main.py \
             -w \
             -i ./img/favicon.ico \
             -n "ClassWidgets" \
@@ -371,8 +484,8 @@ jobs:
         if: startsWith(matrix.os, 'macos')
         shell: bash
         run: |
-          find ui -name "*.ts" -delete
-          uv run pyinstaller main.py \
+          export MACOSX_DEPLOYMENT_TARGET=11.0
+          uv run --no-dev pyinstaller main.py \
             -w \
             -i ./img/favicon.icns \
             -n "Class Widgets" \
@@ -399,8 +512,7 @@ jobs:
         if: matrix.platform == 'linux-x64'
         shell: bash
         run: |
-          find ui -name "*.ts" -delete
-          uv run pyinstaller main.py \
+          uv run --no-dev pyinstaller main.py \
             -w \
             -i ./img/favicon.png \
             -n "ClassWidgets" \
@@ -430,7 +542,7 @@ jobs:
 
   sign:
     needs: [prepare, build]
-    if: needs.build.result == 'success' && needs.prepare.outputs.skip_ci != 'true' && (github.event.inputs.is_signing == 'true')
+    if: needs.prepare.outputs.is_signing == 'true' && needs.build.result == 'success' && needs.prepare.outputs.skip_ci != 'true'
     runs-on: windows-latest
     strategy:
       matrix:
@@ -448,11 +560,11 @@ jobs:
         run: |
           $zipFile = Get-ChildItem -Path ./artifacts -Filter "*.zip" | Select-Object -First 1
           if ($zipFile) {
-            Expand-Archive -Path $zipFile.FullName -DestinationPath ./extracted
+            Expand-Archive -Path $zipFile.FullName -DestinationPath ./extracted -Force
             $exeFile = Get-ChildItem -Path ./extracted -Filter "ClassWidgets.exe" -Recurse | Select-Object -First 1
             if ($exeFile) {
-              New-Item -ItemType Directory -Path "./exe-only" -Force
-              Copy-Item $exeFile.FullName -Destination "./exe-only/ClassWidgets.exe"
+              New-Item -ItemType Directory -Path "./exe-only" -Force | Out-Null
+              Copy-Item $exeFile.FullName -Destination "./exe-only/ClassWidgets.exe" -Force
             } else {
               Write-Error "ClassWidgets.exe not found in extracted files"
               exit 1
@@ -489,12 +601,13 @@ jobs:
             if ($targetExe) {
               Copy-Item $signedExe.FullName -Destination $targetExe.FullName -Force
             } else {
+              Write-Error "目标 exe 未找到"
               exit 1
             }
-            curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
-            New-Item -ItemType Directory -Path "signed-packages" -Force
-            ./zip.exe -r -q "signed-packages/ClassWidgets-Windows-${{ matrix.arch }}.zip" extracted/*
+            New-Item -ItemType Directory -Path "signed-packages" -Force | Out-Null
+            Compress-Archive -Path (Join-Path (Get-Location) "extracted\*") -DestinationPath "signed-packages/ClassWidgets-Windows-${{ matrix.arch }}.zip" -Force
           } else {
+            Write-Error "签名输出中未找到签名的 exe"
             exit 1
           }
 
@@ -515,9 +628,6 @@ jobs:
     env:
       BUILD_TYPE: ${{ needs.prepare.outputs.build_type }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-
       - name: Download all build artifacts
         uses: actions/download-artifact@v5
         with:
@@ -529,7 +639,7 @@ jobs:
         run: |
           mkdir -p final-packages || { rm -rf final-packages; mkdir final-packages; }
           package_count=0
-          platforms=("windows-x64" "windows-x86" "macos-x64" "macos-arm64" "linux-x64")
+          platforms=("windows-x64" "windows-x86" "macos-arm64" "linux-x64")
           declare -A artifact_cache
           for artifact_dir in ./all-artifacts/*/; do
             if [[ -d "$artifact_dir" ]]; then
@@ -540,7 +650,6 @@ jobs:
               fi
             fi
           done
-          # love comes from gpt
           process_file() {
             local zip_file=$1
             local platform=$2
@@ -586,7 +695,7 @@ jobs:
           if [[ $package_count -eq 0 ]]; then
             echo "[DEBUG] 没有找到任何包文件"
           fi
-          ls -la final-packages/
+          ls -la final-packages/ || true
 
       - name: Calculate package properties
         shell: bash
@@ -600,16 +709,19 @@ jobs:
             echo "| 文件名 | 大小(MB) | 大小(字节) | MD5 |"
             echo "|--------|----------|------------|-----|"
           } >> $GITHUB_STEP_SUMMARY
-
-          for zip_file in final-packages/*.zip; do
-            if [[ -f "$zip_file" ]]; then
+          shopt -s nullglob
+          files=(final-packages/*.zip)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "未找到任何最终包文件" >> $GITHUB_STEP_SUMMARY
+          else
+            for zip_file in "${files[@]}"; do
               filename=$(basename "$zip_file")
               file_size=$(stat -c%s "$zip_file" 2>/dev/null || wc -c < "$zip_file" 2>/dev/null || echo "未知")
               file_md5=$(md5sum "$zip_file" 2>/dev/null | cut -d' ' -f1 || echo "未知")
               file_size_mb=$(awk "BEGIN {printf \"%.2f\", $file_size / 1024 / 1024}" 2>/dev/null || echo "未知")
               echo "| $filename | $file_size_mb | $file_size | $file_md5 |" >> $GITHUB_STEP_SUMMARY
-            fi
-          done
+            done
+          fi
 
       - name: Upload final packages
         uses: actions/upload-artifact@v4.6.2
@@ -618,7 +730,7 @@ jobs:
           path: final-packages
 
       - name: Generate package provenance
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@v3
         with:
           subject-path: "final-packages/*.zip"
 
