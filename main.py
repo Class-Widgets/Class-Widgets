@@ -1793,7 +1793,9 @@ class FloatingWidget(QWidget):  # 浮窗
         if focus_manager:
             QTimer.singleShot(
                 500,
-                lambda: (focus_manager.remove_ignore.emit(ctypes.c_void_p(int(self.winId())).value)),
+                lambda: (
+                    focus_manager.remove_ignore.emit(ctypes.c_void_p(int(self.winId())).value)
+                ),
             )
 
     def hideEvent(self, event: QHideEvent) -> None:
@@ -2331,7 +2333,9 @@ class DesktopWidget(QWidget):  # 主要小组件
         if focus_manager:
             QTimer.singleShot(
                 500,
-                lambda: (focus_manager.remove_ignore.emit(ctypes.c_void_p(int(self.winId())).value)),
+                lambda: (
+                    focus_manager.remove_ignore.emit(ctypes.c_void_p(int(self.winId())).value)
+                ),
             )
 
     def init_font(self):

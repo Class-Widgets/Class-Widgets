@@ -126,13 +126,13 @@ ignore = [
   "ARG002", # unused method argument
   "E203", # whitespace before ':'
   "E501", # line too long
+  "ERA001",
   "F841", # local variable assigned but never used
   "PLR0912", # too many branches
   "PLR0913", # too many arguments
   "PLR0915", # too many statements
   "PLR2004", # magic value used in comparison
-  "PTH123", # pathlib instead of os.path.join
-  "ERA001"
+  "PTH123" # pathlib instead of os.path.join
 ]
 select = [
   "ARG", # flake8-unused-arguments
