@@ -17,6 +17,7 @@ dependencies = [
   "colorama==0.4.6",
   "configparser~=7.1.0",
   "darkdetect==0.8.0",
+  "distro~=1.8.0 ; sys_platform == 'linux'",
   "edge-tts~=7.0.0",
   "idna==3.10",
   "loguru~=0.7.2",
@@ -130,7 +131,8 @@ ignore = [
   "PLR0913", # too many arguments
   "PLR0915", # too many statements
   "PLR2004", # magic value used in comparison
-  "PTH123" # pathlib instead of os.path.join
+  "PTH123", # pathlib instead of os.path.join
+  "ERA001"
 ]
 select = [
   "ARG", # flake8-unused-arguments
