@@ -4985,7 +4985,7 @@ It is recommended to set the scaling factor to a value between 100% and 180%.</t
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../splash.py" line="101"/>
+        <location filename="../splash.py" line="109"/>
         <source>Class Widgets 启动中...</source>
         <translation>Launching Class Widgets...</translation>
     </message>

@@ -4233,7 +4233,7 @@ Siz sistem bexatliridin ta yana köp avaaz qoshaliysiz (*≧▽≦)</translation
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../splash.py" line="101"/>
+        <location filename="../splash.py" line="109"/>
         <source>Class Widgets 启动中...</source>
         <translation type="unfinished"></translation>
     </message>
