@@ -81,6 +81,7 @@ class CSES_Converter:
 
             last_end_time = None
             class_count = 0
+            part_index = '0'
 
             for class_ in classes:  # 时间线
                 week = str(CSES_WEEKS.index(enable_day))  # 星期
@@ -94,8 +95,11 @@ class CSES_Converter:
                     if time not in part_list:  # 跳过重复的(已创建的)节点
                         cw_format['part'][str(part_count)] = time
                         cw_format['part_name'][str(part_count)] = f'Part {part_count}'
+                        part_index = str(part_count)
                         part_count += 1
                         part_list.append(time)
+                    else:
+                        part_index = str(part_list.index(time))
 
                 # 时间线
                 start_time = _get_time(class_['start_time'])
@@ -110,33 +114,29 @@ class CSES_Converter:
                 if weeks in ['odd', 'all']:
                     if not time_diff:  # 如果连堂或第一节课
                         # cw_format['timeline'][week][f'a{part_count - 1}{class_count}'] = duration
-                        cw_format['timeline'][week].append(
-                            [0, f"{part_count-1}", class_count, duration]
-                        )
+                        cw_format['timeline'][week].append([0, part_index, class_count, duration])
                     else:
                         # cw_format['timeline'][week][f'f{part_count - 1}{class_count - 1}'] = time_diff
                         # cw_format['timeline'][week][f'a{part_count - 1}{class_count}'] = duration
                         cw_format['timeline'][week].append(
-                            [1, f"{part_count-1}", class_count - 1, time_diff]
+                            [1, part_index, class_count - 1, time_diff]
                         )
-                        cw_format['timeline'][week].append(
-                            [0, f"{part_count-1}", class_count, duration]
-                        )
+                        cw_format['timeline'][week].append([0, part_index, class_count, duration])
 
                 if weeks in ['even', 'all']:
                     if not time_diff:  # 如果连堂或第一节课
                         # cw_format['timeline'][week][f'a{part_count - 1}{class_count}'] = duration
                         cw_format['timeline_even'][week].append(
-                            [0, f"{part_count-1}", class_count, duration]
+                            [0, part_index, class_count, duration]
                         )
                     else:
                         # cw_format['timeline'][week][f'f{part_count - 1}{class_count - 1}'] = time_diff
                         # cw_format['timeline'][week][f'a{part_count - 1}{class_count}'] = duration
                         cw_format['timeline_even'][week].append(
-                            [1, f"{part_count-1}", class_count - 1, time_diff]
+                            [1, part_index, class_count - 1, time_diff]
                         )
                         cw_format['timeline_even'][week].append(
-                            [0, f"{part_count-1}", class_count, duration]
+                            [0, part_index, class_count, duration]
                         )
 
                 last_end_time = end_time
