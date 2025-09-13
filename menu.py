@@ -5999,7 +5999,11 @@ class SettingsMenu(FluentWindow):
         if selected_items:
             selected_item = selected_items[0]  # 取第一个选中的项目
             selected_item.setText(
-                f'{class_activity.currentText()} - {spin_time.value()}分钟 - {time_period.currentText()}'
+                self.tr('{class_activity} - {spin_time}分钟 - {time_period}').format(
+                    class_activity=class_activity.currentText(),
+                    spin_time=spin_time.value(),
+                    time_period=time_period.currentText(),
+                )
             )
 
     def se_edit_item(self):
