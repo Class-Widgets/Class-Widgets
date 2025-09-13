@@ -3737,8 +3737,8 @@ if __name__ == '__main__':
     if conf.is_temp_week:
         splash_window.error()
         w = Dialog(
-            QCoreApplication.translate('main', "检测到临时课表"),
-            QCoreApplication.translate('main', "检测到有临时课表，是否沿用"),
+            QCoreApplication.translate('main', "存在临时课表"),
+            QCoreApplication.translate('main', "当前存在临时课表，是否沿用"),
         )
         w.buttonLayout.insertStretch(0, 1)
         w.setFixedWidth(550)
