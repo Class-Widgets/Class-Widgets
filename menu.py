@@ -6002,10 +6002,9 @@ class SettingsMenu(FluentWindow):
                 self.tr('{class_activity} - {spin_time}分钟 - {time_period}').format(
                     class_activity=class_activity.currentText(),
                     spin_time=spin_time.value(),
-                    time_period=time_period.currentText(),  
+                    time_period=time_period.currentText(),
                 )
             )
-            
 
     def se_edit_item(self):
         se_schedule_list = self.findChild(ListWidget, 'schedule_list')
