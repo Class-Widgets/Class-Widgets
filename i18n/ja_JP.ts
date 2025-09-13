@@ -2764,19 +2764,19 @@
         <translation>このノードを削除すると、ノードに含まれるすべての授業スケジュールも一緒に削除され、復元できません。</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6097"/>
+        <location filename="../menu.py" line="6101"/>
         <source>已保存至 ./config.ini</source>
         <translation>./config.ini に保存されました</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6311"/>
+        <location filename="../menu.py" line="6315"/>
         <source>界面语言已切换为 {selected_lang_name}
 新语言将在重启程序后完全生效</source>
         <translation>インターフェース言語が {selected_lang_name} に切り替えられました
 新しい言語はプログラム再起動後に完全に反映されます</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6349"/>
+        <location filename="../menu.py" line="6353"/>
         <source>界面语言切换时出错: {e}</source>
         <translation>インターフェース言語の切り替え中にエラーが発生しました: {e}</translation>
     </message>
@@ -2904,7 +2904,7 @@
         <location filename="../menu.py" line="4993"/>
         <location filename="../menu.py" line="5686"/>
         <location filename="../menu.py" line="5784"/>
-        <location filename="../menu.py" line="6096"/>
+        <location filename="../menu.py" line="6100"/>
         <source>保存成功</source>
         <translation>保存に成功しました</translation>
     </message>
@@ -3067,6 +3067,7 @@
     </message>
     <message>
         <location filename="../menu.py" line="5846"/>
+        <location filename="../menu.py" line="6002"/>
         <source>{class_activity} - {spin_time}分钟 - {time_period}</source>
         <translation>{class_activity} - {spin_time}分 - {time_period}</translation>
     </message>
@@ -3089,104 +3090,104 @@
         <translation>ｷｬﾝｾﾙ</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6055"/>
+        <location filename="../menu.py" line="6059"/>
         <source>未添加-{data}</source>
         <translation>未追加-{data}</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6172"/>
+        <location filename="../menu.py" line="6176"/>
         <source>课表预览</source>
         <translation>時間割プレビュー</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6173"/>
+        <location filename="../menu.py" line="6177"/>
         <source>时间线编辑</source>
         <translation>タイムライン編集</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6174"/>
+        <location filename="../menu.py" line="6178"/>
         <source>课程表编辑</source>
         <translation>コース編集</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6175"/>
+        <location filename="../menu.py" line="6179"/>
         <source>倒计日编辑</source>
         <translation>カウントダウン日編集</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6176"/>
+        <location filename="../menu.py" line="6180"/>
         <source>配置文件</source>
         <translation>設定ファイル</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6178"/>
+        <location filename="../menu.py" line="6182"/>
         <source>帮助</source>
         <translation>ヘルプ</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6180"/>
+        <location filename="../menu.py" line="6184"/>
         <source>插件</source>
         <translation>プラグイン</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6184"/>
+        <location filename="../menu.py" line="6188"/>
         <source>天气</source>
         <translation>天気</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6187"/>
+        <location filename="../menu.py" line="6191"/>
         <source>自定义</source>
         <translation>カスタム</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6190"/>
+        <location filename="../menu.py" line="6194"/>
         <source>提醒</source>
         <translation>リマインダー</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6193"/>
+        <location filename="../menu.py" line="6197"/>
         <source>高级选项</source>
         <translation>詳細オプション</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6196"/>
+        <location filename="../menu.py" line="6200"/>
         <source>关于本产品</source>
         <translation>この製品について</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6226"/>
+        <location filename="../menu.py" line="6230"/>
         <source>Class Widgets - 设置</source>
         <translation>Class Widgets - 設定</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6309"/>
+        <location filename="../menu.py" line="6313"/>
         <source>界面语言切换成功 ♪(´▽｀)</source>
         <translation>インターフェース言語の切り替えが完了しました ♪(´▽｀)</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6341"/>
+        <location filename="../menu.py" line="6345"/>
         <source>界面语言切换失败 (＃°Д°)</source>
         <translation>インターフェース言語の切り替えに失敗しました (＃°Д°)</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6342"/>
+        <location filename="../menu.py" line="6346"/>
         <source>无法加载选定的界面语言包，请检查翻译文件是否存在</source>
         <translation>選択されたインターフェース言語パックを読み込めません。翻訳ファイルが存在するかご確認ください</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1897"/>
-        <location filename="../menu.py" line="6345"/>
-        <location filename="../menu.py" line="6355"/>
+        <location filename="../menu.py" line="6349"/>
+        <location filename="../menu.py" line="6359"/>
         <source>确定</source>
         <translation>はい</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6351"/>
+        <location filename="../menu.py" line="6355"/>
         <source>界面语言切换出错 (＃°Д°)</source>
         <translation>インターフェース言語の切り替えでエラーが発生しました (＃°Д°)</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6352"/>
+        <location filename="../menu.py" line="6356"/>
         <source>切换界面语言时发生错误: {e}</source>
         <translation>インターフェース言語の切り替え時にエラーが発生しました: {e}</translation>
     </message>

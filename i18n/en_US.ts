@@ -2969,24 +2969,24 @@ Save failed. Please submit the logs in ./log/ to the developer to report the iss
         <translation>Deleting this node will also delete all associated course schedules under it, and this action cannot be undone.</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6097"/>
+        <location filename="../menu.py" line="6101"/>
         <source>已保存至 ./config.ini</source>
         <translation>Saved to ./config.ini</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6184"/>
+        <location filename="../menu.py" line="6188"/>
         <source>天气</source>
         <translation>Weather</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6311"/>
+        <location filename="../menu.py" line="6315"/>
         <source>界面语言已切换为 {selected_lang_name}
 新语言将在重启程序后完全生效</source>
         <translation>Interface language has been switched to {selected_lang_name}.
 The new language will take full effect after restarting the program</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6349"/>
+        <location filename="../menu.py" line="6353"/>
         <source>界面语言切换时出错: {e}</source>
         <translation>Error switching interface language: {e}</translation>
     </message>
@@ -3186,7 +3186,7 @@ For details, see Log, located under./log/.</translation>
         <location filename="../menu.py" line="4993"/>
         <location filename="../menu.py" line="5686"/>
         <location filename="../menu.py" line="5784"/>
-        <location filename="../menu.py" line="6096"/>
+        <location filename="../menu.py" line="6100"/>
         <source>保存成功</source>
         <translation>Saved</translation>
     </message>
@@ -3289,6 +3289,7 @@ Save failed. Please submit the logs from ./log/ to the developer for troubleshoo
     </message>
     <message>
         <location filename="../menu.py" line="5846"/>
+        <location filename="../menu.py" line="6002"/>
         <source>{class_activity} - {spin_time}分钟 - {time_period}</source>
         <translation>{class_activity} - {spin_time} minute(s) - {time_period}</translation>
     </message>
@@ -3322,7 +3323,7 @@ Deleting this node will also remove all associated course schedules. This action
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6055"/>
+        <location filename="../menu.py" line="6059"/>
         <source>未添加-{data}</source>
         <translation>Not added - {data}</translation>
     </message>
@@ -3333,67 +3334,67 @@ Deleting this node will also remove all associated course schedules. This action
 Saved to ./config.ini</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6172"/>
+        <location filename="../menu.py" line="6176"/>
         <source>课表预览</source>
         <translation>Schedule Preview</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6173"/>
+        <location filename="../menu.py" line="6177"/>
         <source>时间线编辑</source>
         <translation>Editing the Timeline</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6174"/>
+        <location filename="../menu.py" line="6178"/>
         <source>课程表编辑</source>
         <translation>Editing the Course Schedule</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6175"/>
+        <location filename="../menu.py" line="6179"/>
         <source>倒计日编辑</source>
         <translation>Editing the Countdown</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6176"/>
+        <location filename="../menu.py" line="6180"/>
         <source>配置文件</source>
         <translation>Configuration File</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6178"/>
+        <location filename="../menu.py" line="6182"/>
         <source>帮助</source>
         <translation>Help</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6180"/>
+        <location filename="../menu.py" line="6184"/>
         <source>插件</source>
         <translation>Plugin</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6187"/>
+        <location filename="../menu.py" line="6191"/>
         <source>自定义</source>
         <translation>Custom</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6190"/>
+        <location filename="../menu.py" line="6194"/>
         <source>提醒</source>
         <translation>Notification</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6193"/>
+        <location filename="../menu.py" line="6197"/>
         <source>高级选项</source>
         <translation>Advanced Options</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6196"/>
+        <location filename="../menu.py" line="6200"/>
         <source>关于本产品</source>
         <translation>About This Product</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6226"/>
+        <location filename="../menu.py" line="6230"/>
         <source>Class Widgets - 设置</source>
         <translation>Class Widgets - Settings</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6309"/>
+        <location filename="../menu.py" line="6313"/>
         <source>界面语言切换成功 ♪(´▽｀)</source>
         <translation>Interface language switched successfully ♪(´▽｀)</translation>
     </message>
@@ -3406,19 +3407,19 @@ The interface language has been switched to {selected_lang_name}.
 The new language will take full effect after restarting the application.</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6341"/>
+        <location filename="../menu.py" line="6345"/>
         <source>界面语言切换失败 (＃°Д°)</source>
         <translation>Interface language switch failed (＃°Д°)</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6342"/>
+        <location filename="../menu.py" line="6346"/>
         <source>无法加载选定的界面语言包，请检查翻译文件是否存在</source>
         <translation>Failed to load the selected interface language pack. Please check if the translation file exists</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1897"/>
-        <location filename="../menu.py" line="6345"/>
-        <location filename="../menu.py" line="6355"/>
+        <location filename="../menu.py" line="6349"/>
+        <location filename="../menu.py" line="6359"/>
         <source>确定</source>
         <translation>OK</translation>
     </message>
@@ -3429,12 +3430,12 @@ The new language will take full effect after restarting the application.</transl
 Error occurred while switching interface language: {e}</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6351"/>
+        <location filename="../menu.py" line="6355"/>
         <source>界面语言切换出错 (＃°Д°)</source>
         <translation>Interface language switch error (＃°Д°)</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6352"/>
+        <location filename="../menu.py" line="6356"/>
         <source>切换界面语言时发生错误: {e}</source>
         <translation>An error occurred while switching the interface language: {e}</translation>
     </message>
