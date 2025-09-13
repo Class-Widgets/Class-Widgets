@@ -1,3 +1,4 @@
+import contextlib
 import ctypes
 import datetime as dt
 import json
@@ -80,10 +81,7 @@ import splash
 
 splash_window = splash.Splash()
 splash_window.run()
-
 splash_window.update_status((0, QCoreApplication.translate('main', '加载模块...')))
-
-import contextlib
 
 import conf
 import list_
@@ -91,7 +89,7 @@ import menu
 import tip_toast
 import utils
 import weather as db
-from basic_dirs import CONFIG_HOME, CW_HOME, LOG_HOME, SCHEDULE_DIR
+from basic_dirs import CONFIG_HOME, CW_HOME, SCHEDULE_DIR
 from conf import load_theme_config
 from extra_menu import ExtraMenu, open_settings, settings
 from file import config_center, schedule_center
@@ -149,39 +147,42 @@ was_floating_mode = False  # 浮窗状态
 
 focus_manager = None
 
-if config_center.read_conf('Other', 'do_not_log') != '1':
-    logger.add(
-        str(LOG_HOME) + "/ClassWidgets_main_{time}.log",
-        rotation="1 MB",
-        encoding="utf-8",
-        retention="1 minute",
-    )
-    logger.info('未禁用日志输出')
-else:
-    logger.info('已禁用日志输出功能，若需保存日志，请在“设置”->“高级选项”中关闭禁用日志功能')
 
-
-def global_exceptHook(exc_type: type, exc_value: Exception, exc_tb: Any) -> None:  # 全局异常捕获
-    if config_center.read_conf('Other', 'safe_mode') == '1':  # 安全模式
+@logger.catch
+def global_exceptHook(exc_type: type, exc_value: Exception, exc_tb: any) -> None:
+    if config_center.read_conf('Other', 'safe_mode') == '1':
         return
-
-    error_details = ''.join(traceback.format_exception(exc_type, exc_value, exc_tb))  # 异常详情
-    if error_details in ignore_errors:  # 忽略重复错误
+    error_details = ''.join(traceback.format_exception(exc_type, exc_value, exc_tb))
+    if error_details in ignore_errors:
         return
-
     global last_error_time, error_dialog, error_cooldown
-
     current_time = dt.datetime.now()
-    if current_time - last_error_time > error_cooldown:  # 冷却时间
+    if current_time - last_error_time > error_cooldown:
         last_error_time = current_time
-        logger.error(f"全局异常捕获：{exc_type} {exc_value} {exc_tb}")
-        logger.error(f"详细堆栈信息：\n{error_details}")
+        # 获取异常抛出位置
+        tb_last = exc_tb
+        while tb_last.tb_next:  # 找到最后一帧
+            tb_last = tb_last.tb_next
+        frame = tb_last.tb_frame
+        file_name = os.path.basename(frame.f_code.co_filename)
+        line_no = tb_last.tb_lineno
+        func_name = frame.f_code.co_name
+        process = psutil.Process()
+        memory_info = process.memory_info()
+        thread_count = process.num_threads()
+        log_msg = f"""发生全局异常:
+├─异常类型: {exc_type.__name__} {exc_type}
+├─异常信息: {exc_value}
+├─发生位置: {file_name}:{line_no} in {func_name}
+├─运行状态: 内存使用 {memory_info.rss / 1024 / 1024:.1f}MB 线程数: {thread_count}
+└─详细堆栈信息:"""
+        tip_msg = f"""运行状态: 内存使用 {memory_info.rss / 1024 / 1024:.1f}MB 线程数: {thread_count}
+└─异常类型: {exc_type.__name__} {exc_type}"""
+        logger.opt(exception=(exc_type, exc_value, exc_tb), depth=0).error(log_msg)
+        logger.complete()
         if not error_dialog:
-            w = ErrorDialog(error_details)
+            w = ErrorDialog(f'{tip_msg}\n{error_details}')
             w.exec()
-    else:
-        # 忽略冷却时间
-        pass
 
 
 sys.excepthook = global_exceptHook  # 设置全局异常捕获
@@ -785,13 +786,18 @@ class ErrorDialog(Dialog):  # 重大错误提示框
         self.titleLabel.setStyleSheet(
             "font-family: Microsoft YaHei UI; font-size: 25px; font-weight: 500;"
         )
-        self.error_log.setReadOnly(True)
+        self.error_log.setReadOnly(True)  # 只读模式
         self.error_log.setPlainText(error_details)
-        self.error_log.setFixedHeight(200)
+        self.error_log.setMinimumHeight(200)
+        self.error_log.setTextInteractionFlags(
+            Qt.TextSelectableByMouse | Qt.TextSelectableByKeyboard  # 允许鼠标和键盘选择文本
+        )
         self.restart_btn.setFixedWidth(150)
         self.yesButton.hide()
         self.cancelButton.hide()  # 隐藏取消按钮
         self.title_layout.setSpacing(12)
+        self.resize(650, 450)
+        QApplication.processEvents()
 
         # 按钮事件
         self.report_problem.clicked.connect(
@@ -3668,12 +3674,16 @@ def init() -> None:
         version = "DEBUG"
     build_uuid = config_center.read_conf("Version", "build_runid") or "(Debug)"
     build_type = config_center.read_conf("Version", "build_type")
+    logger.debug('Class Widgets 版本信息:')
     if "__BUILD_RUNID__" in build_uuid or "__BUILD_TYPE__" in build_type:
-        logger.success(f'Class Widgets 初始化完成。版本: {version} - (Debug)')
+        logger.debug(f'├── 版本号: {version}')
+        logger.debug('├── 构建ID: Debug')
+        logger.debug('└── 构建类型: Debug')
     else:
-        logger.success(
-            f'Class Widgets 初始化完成。版本: {version} Build UUID: {build_uuid}({build_type})'
-        )
+        logger.debug(f'├── 版本号: {version}')
+        logger.debug(f'├── 构建ID: {build_uuid}')
+        logger.debug(f'└── 构建类型: {build_type}')
+    logger.success('Class Widgets 初始化完成!')
     p_loader.run_plugins()  # 运行插件
 
     first_start = False
@@ -3733,7 +3743,7 @@ if __name__ == '__main__':
     )
     menu.global_i18n_manager = global_i18n_manager
 
-    logger.info(f"是否允许多开实例：{config_center.read_conf('Other', 'multiple_programs')}")
+    logger.debug(f"是否允许多开实例：{config_center.read_conf('Other', 'multiple_programs')}")
 
     splash_window.update_status((20, QCoreApplication.translate('main', '初始化颜色监视器...')))
 
@@ -3766,20 +3776,48 @@ if __name__ == '__main__':
 
     splash_window.update_status((40, QCoreApplication.translate('main', '获取系统版本...')))
 
-    # 优化操作系统和版本输出
     system = platform.system()
-    if system == 'Darwin':
-        system = 'macOS'
-    osRelease = platform.release()
-    if system == 'Windows':
-        osRelease = 'Windows ' + osRelease
-    if system == 'macOS':
-        osRelease = 'Darwin Kernel Version ' + osRelease
-    osVersion = platform.version()
-    if system == 'macOS':
-        osVersion = 'macOS ' + platform.mac_ver()[0]
+    arch = platform.machine()
+    python_version = platform.python_version()
+    os_release = platform.release()
+    os_version = platform.version()
 
-    logger.info(f"操作系统：{system}，版本：{osRelease}/{osVersion}")
+    if system == 'Windows':
+        os_release = f"Windows {os_release}"
+        try:
+            import winreg
+
+            with winreg.OpenKey(
+                winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion"
+            ) as key:
+                build_number = winreg.QueryValueEx(key, "CurrentBuildNumber")[0]
+                display_version = winreg.QueryValueEx(key, "DisplayVersion")[0]
+                os_version = f"Build {build_number} ({display_version}) ({os_version})"
+        except Exception:
+            pass
+    elif system == 'Darwin':
+        system = 'macOS'
+        os_release = f"Darwin Kernel Version {os_release}"
+        os_version = f"macOS {platform.mac_ver()[0]}"
+    elif system == 'Linux':
+        try:
+            import distro
+
+            name, version, _ = distro.linux_distribution(full_distribution_name=True)
+            os_version = f"{name} {version}"
+        except ImportError:
+            pass
+    logger.debug("系统环境信息:")
+    logger.debug(f"├─操作系统: {system} {arch}")
+    logger.debug(f"├─系统版本: {os_release}")
+    logger.debug(f"├─详细版本: {os_version}")
+    logger.debug(f"└─Python版本: {python_version} ({platform.python_implementation()})")
+
+    if system == 'Windows':
+        splash_window.update_status(
+            (45, QCoreApplication.translate('main', '初始化窗口焦点监视器...'))
+        )
+        focus_manager = utils.PreviousWindowFocusManager()
 
     if system == 'Windows':
         splash_window.update_status(

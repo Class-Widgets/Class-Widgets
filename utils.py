@@ -1,3 +1,4 @@
+import atexit
 import datetime as dt
 import inspect
 import os
@@ -6,7 +7,6 @@ import signal
 import sys
 import threading
 import time
-import ctypes
 from abc import ABC, abstractmethod
 from heapq import heapify, heappop, heappush
 from typing import Any, Callable, Dict, Optional, Tuple, Type, Union
@@ -19,12 +19,67 @@ import ntplib
 import psutil
 import pytz
 from loguru import logger
-from PyQt5.QtCore import QDir, QLockFile, QObject, QTimer, pyqtSignal
+from PyQt5.QtCore import (
+    QDir,
+    QLockFile,
+    QObject,
+    QTimer,
+    QtMsgType,
+    pyqtSignal,
+    qInstallMessageHandler,
+)
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QSystemTrayIcon
 
-from basic_dirs import CW_HOME
+from basic_dirs import CW_HOME, LOG_HOME
 from file import config_center
+
+
+class StreamToLogger:
+    """重定向 print() 到 loguru"""
+
+    def write(self, message):
+        msg = message.strip()
+        if msg:
+            logger.opt(depth=1).info(msg)
+
+    def flush(self):
+        pass
+
+
+def qt_message_handler(mode, context, message):
+    """Qt 消息转发到 loguru"""
+    msg = message.strip()
+    if not msg:
+        return
+    if mode == QtMsgType.QtCriticalMsg:
+        logger.error(msg)
+        logger.complete()
+    elif mode == QtMsgType.QtFatalMsg:
+        logger.critical(msg)
+        logger.complete()
+    else:
+        logger.complete()
+
+
+if config_center.read_conf("Other", "do_not_log") == "0":
+    log_file = LOG_HOME / "ClassWidgets_main_{time}.log"
+    logger.add(
+        log_file,
+        rotation="1 MB",
+        retention="1 minute",
+        encoding="utf-8",
+        enqueue=True,
+        backtrace=True,
+        diagnose=True,
+    )
+    sys.stdout = StreamToLogger()
+    sys.stderr = StreamToLogger()
+    qInstallMessageHandler(qt_message_handler)
+    atexit.register(logger.complete)
+    logger.debug("未禁用日志输出")
+else:
+    logger.info("已禁用日志输出功能，若需保存日志，请在“设置”->“高级选项”中关闭禁用日志功能")
 
 LOGO_PATH = CW_HOME / "img" / "logo"
 
@@ -843,7 +898,7 @@ class PreviousWindowFocusManager(QObject):
 
     def __init__(self, parent: Optional[QObject] = None) -> None:
         if os.name != 'nt':
-            raise EnvironmentError("PreviousWindowFocusManager 仅支持 Windows 系统")
+            raise OSError("PreviousWindowFocusManager 仅支持 Windows 系统")
         super().__init__(parent)
         self._last_hwnd = None
         # 忽略的句柄

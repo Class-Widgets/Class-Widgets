@@ -9,8 +9,8 @@ from PyQt5.QtWidgets import QLabel, QWidget
 from qfluentwidgets import ProgressBar, Theme, theme
 
 from basic_dirs import CW_HOME
-from i18n_manager import app
 from file import config_center
+from i18n_manager import app
 
 
 class DarkModeWatcherThread(QThread):

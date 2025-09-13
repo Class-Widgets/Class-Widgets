@@ -17,6 +17,7 @@ dependencies = [
   "colorama==0.4.6",
   "configparser~=7.1.0",
   "darkdetect==0.8.0",
+  "distro~=1.8.0 ; sys_platform == 'linux'",
   "edge-tts~=7.0.0",
   "idna==3.10",
   "loguru~=0.7.2",

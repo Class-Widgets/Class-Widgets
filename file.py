@@ -498,7 +498,7 @@ def load_from_json(filename: str) -> Dict[str, Any]:
     except FileNotFoundError:
         logger.error(f"文件未找到: {filename}")
         return {}
-    except json.JSONDecodeError as e:
+    except json.JSONDecodeError:
         logger.error(f"JSON 解码错误: {filename}")
         return {}
     except Exception as e:
