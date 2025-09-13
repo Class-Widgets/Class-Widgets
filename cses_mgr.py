@@ -87,7 +87,7 @@ class CSES_Converter:
                 week = str(CSES_WEEKS.index(enable_day))  # 星期
                 subject = class_['subject']  # 课程名
                 time_diff = None
-                
+
                 # 节点
                 if class_ == classes[0]:
                     raw_time = _get_time(class_['start_time'])
@@ -114,18 +114,14 @@ class CSES_Converter:
                 if weeks in ['odd', 'all']:
                     if not time_diff:  # 如果连堂或第一节课
                         # cw_format['timeline'][week][f'a{part_count - 1}{class_count}'] = duration
-                        cw_format['timeline'][week].append(
-                            [0, part_index, class_count, duration]
-                        )
+                        cw_format['timeline'][week].append([0, part_index, class_count, duration])
                     else:
                         # cw_format['timeline'][week][f'f{part_count - 1}{class_count - 1}'] = time_diff
                         # cw_format['timeline'][week][f'a{part_count - 1}{class_count}'] = duration
                         cw_format['timeline'][week].append(
                             [1, part_index, class_count - 1, time_diff]
                         )
-                        cw_format['timeline'][week].append(
-                            [0, part_index, class_count, duration]
-                        )
+                        cw_format['timeline'][week].append([0, part_index, class_count, duration])
 
                 if weeks in ['even', 'all']:
                     if not time_diff:  # 如果连堂或第一节课
