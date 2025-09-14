@@ -3755,7 +3755,7 @@ if __name__ == '__main__':
 
     splash_window.update_status((70, QCoreApplication.translate('main', '检查临时课表...')))
 
-    if conf.is_temp_week:
+    if conf.is_temp_week():
         splash_window.error()
         w = Dialog(
             QCoreApplication.translate('main', "存在临时课表"),
@@ -3766,6 +3766,8 @@ if __name__ == '__main__':
         if not w.exec():
             init_config()
         splash_window.unerror()
+
+    schedule_center.update_schedule()
 
     splash_window.update_status((91, QCoreApplication.translate('main', '加载窗口...')))
 
