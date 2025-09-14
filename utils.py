@@ -1,4 +1,7 @@
+import asyncio
+import atexit
 import datetime as dt
+import gc
 import inspect
 import os
 import re
@@ -8,19 +11,78 @@ import threading
 import time
 from abc import ABC, abstractmethod
 from heapq import heapify, heappop, heappush
-from typing import Any, Callable, Dict, Optional, Tuple, Type, Union
+from typing import Any, Callable, ClassVar, Dict, Optional, Tuple, Type, Union
+
+if os.name == 'nt':
+    import win32gui
 
 import darkdetect
 import ntplib
 import psutil
 import pytz
 from loguru import logger
-from PyQt5.QtCore import QDir, QLockFile, QObject, QTimer, pyqtSignal
+from PyQt5.QtCore import (
+    QDir,
+    QLockFile,
+    QObject,
+    QTimer,
+    QtMsgType,
+    pyqtSignal,
+    qInstallMessageHandler,
+)
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QSystemTrayIcon
 
-from basic_dirs import CW_HOME
+from basic_dirs import CW_HOME, LOG_HOME
 from file import config_center
+from generate_speech import get_tts_service
+
+
+class StreamToLogger:
+    """重定向 print() 到 loguru"""
+
+    def write(self, message):
+        msg = message.strip()
+        if msg:
+            logger.opt(depth=1).info(msg)
+
+    def flush(self):
+        pass
+
+
+def qt_message_handler(mode, context, message):
+    """Qt 消息转发到 loguru"""
+    msg = message.strip()
+    if not msg:
+        return
+    if mode == QtMsgType.QtCriticalMsg:
+        logger.error(msg)
+        logger.complete()
+    elif mode == QtMsgType.QtFatalMsg:
+        logger.critical(msg)
+        logger.complete()
+    else:
+        logger.complete()
+
+
+if config_center.read_conf("Other", "do_not_log") == "0":
+    log_file = LOG_HOME / "ClassWidgets_main_{time}.log"
+    logger.add(
+        log_file,
+        rotation="1 MB",
+        retention="1 minute",
+        encoding="utf-8",
+        enqueue=True,
+        backtrace=True,
+        diagnose=True,
+    )
+    sys.stdout = StreamToLogger()
+    sys.stderr = StreamToLogger()
+    qInstallMessageHandler(qt_message_handler)
+    atexit.register(logger.complete)
+    logger.debug("未禁用日志输出")
+else:
+    logger.info("已禁用日志输出功能, 若需保存日志, 请在“设置”->“高级选项”中关闭禁用日志功能")
 
 LOGO_PATH = CW_HOME / "img" / "logo"
 
@@ -100,8 +162,6 @@ def stop(status: int = 0) -> None:
     logger.debug('退出程序...')
 
     try:
-        from generate_speech import get_tts_service
-
         tts_service = get_tts_service()
         if hasattr(tts_service, '_manager') and tts_service._manager:
             tts_service._manager.stop()
@@ -114,9 +174,6 @@ def stop(status: int = 0) -> None:
             update_timer = None
         except Exception as e:
             logger.warning(f"停止全局更新定时器时出错: {e}")
-    import asyncio
-    import gc
-
     gc.collect()
     try:
         asyncio.set_event_loop(None)
@@ -154,22 +211,22 @@ class DarkModeWatcher(QObject):
     颜色(暗黑)模式监听器
     """
 
-    darkModeChanged = pyqtSignal(bool)  # 发出暗黑模式变化信号
+    dark_mode_changed = pyqtSignal(bool)  # 发出暗黑模式变化信号
 
     def __init__(self, interval: int = 500, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
         self._isDarkMode: bool = bool(darkdetect.isDark())  # 初始状态
         self._timer = QTimer(self)
-        self._timer.timeout.connect(self._checkTheme)
-        self._timer.start(interval)  # 轮询间隔（毫秒）
+        self._timer.timeout.connect(self._check_theme)
+        self._timer.start(interval)  # 轮询间隔(毫秒)
 
-    def _checkTheme(self) -> None:
-        currentMode: bool = bool(darkdetect.isDark())
-        if currentMode != self._isDarkMode:
-            self._isDarkMode = currentMode
-            self.darkModeChanged.emit(currentMode)  # 发出变化信号
+    def _check_theme(self) -> None:
+        current_mode: bool = bool(darkdetect.isDark())
+        if current_mode != self._isDarkMode:
+            self._isDarkMode = current_mode
+            self.dark_mode_changed.emit(current_mode)  # 发出变化信号
 
-    def isDark(self) -> bool:
+    def is_dark(self) -> bool:
         """返回当前是否暗黑模式"""
         return self._isDarkMode
 
@@ -210,10 +267,10 @@ class TrayIcon(QSystemTrayIcon):
     def push_update_notification(self, text: str = '') -> None:
         self.setIcon(QIcon(str(LOGO_PATH / "favicon-update.png")))  # tray
         self.showMessage(
-            "发现 Class Widgets 新版本！", text, QIcon(str(LOGO_PATH / "favicon-update.png")), 5000
+            "发现 Class Widgets 新版本!", text, QIcon(str(LOGO_PATH / "favicon-update.png")), 5000
         )
 
-    def push_error_notification(self, title: str = '检查更新失败！', text: str = '') -> None:
+    def push_error_notification(self, title: str = '检查更新失败!', text: str = '') -> None:
         self.setIcon(QIcon(str(LOGO_PATH / "favicon-update.png")))  # tray
         self.showMessage(title, text, QIcon(str(LOGO_PATH / "favicon-error.ico")), 5000)
 
@@ -269,7 +326,7 @@ class UnionUpdateTimer(QObject):
                     invalid_callbacks.append(callback)
                 except Exception as e:
                     logger.error(f"执行回调时发生未知错误: {e}")
-                    # 其他异常可能是临时错误，仍然重新加入堆
+                    # 其他异常可能是临时错误, 仍然重新加入堆
                     next_time = current_time + dt.timedelta(seconds=interval)
                     heappush(self.task_heap, (next_time, id(callback), callback, interval))
 
@@ -500,7 +557,7 @@ class TimeManagerInterface(ABC):
 
     @abstractmethod
     def get_real_time(self) -> dt.datetime:
-        """获取真实当前时间（无偏移）"""
+        """获取真实当前时间(无偏移)"""
         pass  # noqa
 
     @abstractmethod
@@ -510,7 +567,7 @@ class TimeManagerInterface(ABC):
 
     @abstractmethod
     def get_current_time_without_ms(self) -> dt.datetime:
-        """获取程序内时间 (偏移后，舍去毫秒)"""
+        """获取程序内时间 (偏移后, 舍去毫秒)"""
         pass  # noqa
 
     @abstractmethod
@@ -545,12 +602,12 @@ class LocalTimeManager(TimeManagerInterface):
         return dt.datetime.now()
 
     def get_current_time(self) -> dt.datetime:
-        """获取程序时间（含偏移）"""
+        """获取程序时间(含偏移)"""
         time_offset = float(self._config_center.read_conf('Time', 'time_offset', 0))
         return self.get_real_time() - dt.timedelta(seconds=time_offset)
 
     def get_current_time_without_ms(self) -> dt.datetime:
-        """获取程序时间（含偏移，舍去毫秒）"""
+        """获取程序时间(含偏移, 舍去毫秒)"""
         return self.get_current_time().replace(microsecond=0)
 
     def get_current_time_str(self, format_str: str = '%H:%M:%S') -> str:
@@ -562,7 +619,7 @@ class LocalTimeManager(TimeManagerInterface):
         return self.get_current_time().date()
 
     def get_current_weekday(self) -> int:
-        """获取当前星期几（0=周一, 6=周日）"""
+        """获取当前星期几(0=周一, 6=周日)"""
         return self.get_current_time().weekday()
 
     def get_time_offset(self) -> int:
@@ -683,12 +740,12 @@ class NTPTimeManager(TimeManagerInterface):
             return self._ntp_reference_time + dt.timedelta(seconds=elapsed_seconds)
 
     def get_current_time(self) -> dt.datetime:
-        """获取程序时间（含偏移）"""
+        """获取程序时间(含偏移)"""
         time_offset = float(self._config_center.read_conf('Time', 'time_offset', 0))
         return self.get_real_time() - dt.timedelta(seconds=time_offset)
 
     def get_current_time_without_ms(self) -> dt.datetime:
-        """获取程序时间（含偏移，舍去毫秒）"""
+        """获取程序时间(含偏移, 舍去毫秒)"""
         return self.get_current_time().replace(microsecond=0)
 
     def get_current_time_str(self, format_str: str = '%H:%M:%S') -> str:
@@ -700,7 +757,7 @@ class NTPTimeManager(TimeManagerInterface):
         return self.get_current_time().date()
 
     def get_current_weekday(self) -> int:
-        """获取当前星期几（0=周一, 6=周日）"""
+        """获取当前星期几(0=周一, 6=周日)"""
         return self.get_current_time().weekday()
 
     def get_time_offset(self) -> int:
@@ -753,7 +810,7 @@ class NTPTimeManager(TimeManagerInterface):
 class TimeManagerFactory:
     """时间管理器工厂"""
 
-    _managers: Dict[str, Type[TimeManagerInterface]] = {
+    _managers: ClassVar[Dict[str, Type[TimeManagerInterface]]] = {
         'local': LocalTimeManager,
         'ntp': NTPTimeManager,
     }
@@ -765,7 +822,7 @@ class TimeManagerFactory:
         """创建时间管理器
 
         Args:
-            config_provider: 配置提供者，默认使用全局config_center
+            config_provider: 配置提供者, 默认使用全局config_center
         """
         conf = config_provider or config_center
         try:
@@ -784,7 +841,7 @@ class TimeManagerFactory:
         """获取管理器实例
 
         Args:
-            config_provider: 配置提供者，默认使用全局config_center
+            config_provider: 配置提供者,默认使用全局config_center
         """
         with cls._instance_lock:
             if cls._instance is None:
@@ -801,7 +858,7 @@ class TimeManagerFactory:
                 except Exception as e:
                     logger.warning(f"关闭旧时间管理器实例失败: {e}")
             cls._instance = cls.create_manager(config_provider)
-            # Note：不再修改其他模块的引用
+            # Note: 不再修改其他模块的引用
             globals()['time_manager'] = cls._instance
 
             return cls._instance
@@ -829,6 +886,62 @@ class SingleInstanceGuard:
         if ok:
             return {"pid": pid, "hostname": hostname, "appname": appname}
         return None
+
+
+class PreviousWindowFocusManager(QObject):
+
+    restore_requested = pyqtSignal()  # 请求恢复焦点信号
+    ignore = pyqtSignal(int)  # 忽略特定窗口句柄信号
+    remove_ignore = pyqtSignal(int)  # 移除忽略窗口句柄信号
+
+    def __init__(self, parent: Optional[QObject] = None) -> None:
+        if os.name != 'nt':
+            raise OSError("仅支持 Windows")
+        super().__init__(parent)
+        self._last_hwnd = None
+        self.ignore_hwnds = {0}  # 忽略的句柄
+        if parent:
+            # 添加父窗口句柄到忽略列表
+            self.ignore_hwnds.add(parent.winId().__int__())
+        self.restore_requested.connect(self.restore)
+        self.ignore.connect(self.ignore_hwnds.add)
+        self.remove_ignore.connect(self.ignore_hwnds.discard)
+        self._timer = QTimer(self)
+        self._timer.timeout.connect(self.store)
+        self._timer.setInterval(200)
+        self._timer.start()
+
+    def store(self):
+        """记录当前前台窗口句柄"""
+        hwnd = win32gui.GetForegroundWindow()
+        if hwnd in self.ignore_hwnds:
+            return
+        self._last_hwnd = hwnd
+        # logger.debug(f"记录前台窗口句柄: {self._last_hwnd}")
+
+    def restore(self, delay_ms=0):
+        """
+        恢复焦点到上一个窗口
+        delay_ms: 延迟执行毫秒数 (部分系统需要延迟才能成功)
+        """
+        # logger.debug(f"请求恢复焦点,延迟 {delay_ms} ms")
+        QTimer.singleShot(delay_ms, self._do_restore)
+
+    def _do_restore(self):
+        # logger.debug(f"尝试恢复焦点到窗口句柄: {self._last_hwnd}")
+        if self._last_hwnd and win32gui.IsWindow(self._last_hwnd):
+            try:
+                current_hwnd = win32gui.GetForegroundWindow()
+                if current_hwnd not in self.ignore_hwnds:
+                    return
+                win32gui.SetForegroundWindow(self._last_hwnd)
+            except Exception as e:
+                logger.warning(f"恢复焦点失败: {e}")
+
+    def stop(self):
+        """停止焦点管理器"""
+        self._timer.stop()
+        self._last_hwnd = None
 
 
 tray_icon = None

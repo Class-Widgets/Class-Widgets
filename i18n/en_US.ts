@@ -37,49 +37,49 @@ You can add more voice in system settings (*≧▽≦)</translation>
 <context>
     <name>DesktopWidget</name>
     <message>
-        <location filename="../main.py" line="1915"/>
-        <location filename="../main.py" line="2417"/>
+        <location filename="../main.py" line="1949"/>
+        <location filename="../main.py" line="2463"/>
         <source>{year} 年 {month}</source>
         <translation>{month} {year}</translation>
     </message>
     <message>
-        <location filename="../main.py" line="1921"/>
-        <location filename="../main.py" line="2422"/>
+        <location filename="../main.py" line="1955"/>
+        <location filename="../main.py" line="2468"/>
         <source>{day}日  {week}</source>
         <translation>{day}  {week}</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2335"/>
+        <location filename="../main.py" line="2377"/>
         <source>完全隐藏/显示小组件</source>
         <translation>Completely hide or show widgets</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2340"/>
+        <location filename="../main.py" line="2382"/>
         <source>最小化为浮窗</source>
         <translation>Minimize to floating windows</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2348"/>
+        <location filename="../main.py" line="2390"/>
         <source>插件广场</source>
         <translation>Plugin Plaza</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2349"/>
+        <location filename="../main.py" line="2391"/>
         <source>额外选项</source>
         <translation>Additional Options</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2350"/>
+        <location filename="../main.py" line="2392"/>
         <source>设置</source>
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2354"/>
+        <location filename="../main.py" line="2396"/>
         <source>重新启动</source>
         <translation>Restart</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2355"/>
+        <location filename="../main.py" line="2397"/>
         <source>退出</source>
         <translation>Exit</translation>
     </message>
@@ -88,7 +88,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
         <translation type="vanished">{data}</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3257"/>
+        <location filename="../main.py" line="3303"/>
         <source>未知</source>
         <translation>Unknown</translation>
     </message>
@@ -97,17 +97,17 @@ You can add more voice in system settings (*≧▽≦)</translation>
         <translation type="vanished">{month} {year}</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2484"/>
+        <location filename="../main.py" line="2530"/>
         <source>&lt; - 分钟</source>
         <translation>&lt; - min</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2487"/>
+        <location filename="../main.py" line="2533"/>
         <source>&lt;&#x2005;{minutes}&#x2005;分钟</source>
         <translation>&lt;&#x2005;{minutes}&#x2005;min</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2499"/>
+        <location filename="../main.py" line="2545"/>
         <source>距离 {cd_text} 还有</source>
         <translation>Till {cd_text}</translation>
     </message>
@@ -120,7 +120,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
         <translation type="vanished">{data} alert</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3255"/>
+        <location filename="../main.py" line="3301"/>
         <source>{city} · 未知</source>
         <translation>{city} · Unknown</translation>
     </message>
@@ -171,52 +171,52 @@ You can add more voice in system settings (*≧▽≦)</translation>
 <context>
     <name>ErrorDialog</name>
     <message>
-        <location filename="../main.py" line="753"/>
+        <location filename="../main.py" line="756"/>
         <source>Class Widgets 崩溃报告</source>
         <translation>Class Widgets crash report</translation>
     </message>
     <message>
-        <location filename="../main.py" line="758"/>
+        <location filename="../main.py" line="761"/>
         <source>抱歉！Class Widgets 发生了严重的错误从而无法正常运行。您可以保存下方的错误信息并向他人求助。若您认为这是程序的Bug，请点击“报告此问题”或联系开发者。</source>
         <translation>Sorry! Class Widgets has encountered a critical error and cannot run. You can save the error details below and seek help. If this appears to be a bug, please click &apos;Report&apos; or contact the developer.</translation>
     </message>
     <message>
-        <location filename="../main.py" line="773"/>
+        <location filename="../main.py" line="776"/>
         <source>报告此问题</source>
         <translation>Report</translation>
     </message>
     <message>
-        <location filename="../main.py" line="774"/>
+        <location filename="../main.py" line="777"/>
         <source>复制日志</source>
         <translation>Copy Log</translation>
     </message>
     <message>
-        <location filename="../main.py" line="775"/>
+        <location filename="../main.py" line="778"/>
         <source>忽略错误</source>
         <translation>Ignore the Error</translation>
     </message>
     <message>
-        <location filename="../main.py" line="777"/>
+        <location filename="../main.py" line="780"/>
         <source>在下次启动之前，忽略此错误</source>
         <translation>Ignore this error until the next launch</translation>
     </message>
     <message>
-        <location filename="../main.py" line="778"/>
+        <location filename="../main.py" line="781"/>
         <source>重新启动</source>
         <translation>Restart</translation>
     </message>
     <message>
-        <location filename="../main.py" line="782"/>
+        <location filename="../main.py" line="785"/>
         <source>出错啦！ヽ(*。&gt;Д&lt;)o゜</source>
         <translation>Oops! Something goes wrong ! ヽ(*。&gt;Д&lt;)o゜</translation>
     </message>
     <message>
-        <location filename="../main.py" line="823"/>
+        <location filename="../main.py" line="831"/>
         <source>复制成功！ヾ(^▽^*)))</source>
         <translation>Copied! ヾ(^▽^*)))</translation>
     </message>
     <message>
-        <location filename="../main.py" line="824"/>
+        <location filename="../main.py" line="832"/>
         <source>日志已成功复制到剪贴板。</source>
         <translation>Successfully copied log to clipboard.</translation>
     </message>
@@ -224,12 +224,12 @@ You can add more voice in system settings (*≧▽≦)</translation>
 <context>
     <name>FloatingWidget</name>
     <message>
-        <location filename="../main.py" line="1627"/>
+        <location filename="../main.py" line="1651"/>
         <source>&lt; - 分钟</source>
         <translation>&lt; - min</translation>
     </message>
     <message>
-        <location filename="../main.py" line="1631"/>
+        <location filename="../main.py" line="1655"/>
         <source>&lt;&#x2005;{minutes}&#x2005;分钟</source>
         <translation>&lt;&#x2005;{minutes}&#x2005;min</translation>
     </message>
@@ -2969,24 +2969,24 @@ Save failed. Please submit the logs in ./log/ to the developer to report the iss
         <translation>Deleting this node will also delete all associated course schedules under it, and this action cannot be undone.</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6097"/>
+        <location filename="../menu.py" line="6101"/>
         <source>已保存至 ./config.ini</source>
         <translation>Saved to ./config.ini</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6184"/>
+        <location filename="../menu.py" line="6188"/>
         <source>天气</source>
         <translation>Weather</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6311"/>
+        <location filename="../menu.py" line="6315"/>
         <source>界面语言已切换为 {selected_lang_name}
 新语言将在重启程序后完全生效</source>
         <translation>Interface language has been switched to {selected_lang_name}.
 The new language will take full effect after restarting the program</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6349"/>
+        <location filename="../menu.py" line="6353"/>
         <source>界面语言切换时出错: {e}</source>
         <translation>Error switching interface language: {e}</translation>
     </message>
@@ -3186,7 +3186,7 @@ For details, see Log, located under./log/.</translation>
         <location filename="../menu.py" line="4993"/>
         <location filename="../menu.py" line="5686"/>
         <location filename="../menu.py" line="5784"/>
-        <location filename="../menu.py" line="6096"/>
+        <location filename="../menu.py" line="6100"/>
         <source>保存成功</source>
         <translation>Saved</translation>
     </message>
@@ -3289,6 +3289,7 @@ Save failed. Please submit the logs from ./log/ to the developer for troubleshoo
     </message>
     <message>
         <location filename="../menu.py" line="5846"/>
+        <location filename="../menu.py" line="6002"/>
         <source>{class_activity} - {spin_time}分钟 - {time_period}</source>
         <translation>{class_activity} - {spin_time} minute(s) - {time_period}</translation>
     </message>
@@ -3322,7 +3323,7 @@ Deleting this node will also remove all associated course schedules. This action
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6055"/>
+        <location filename="../menu.py" line="6059"/>
         <source>未添加-{data}</source>
         <translation>Not added - {data}</translation>
     </message>
@@ -3333,67 +3334,67 @@ Deleting this node will also remove all associated course schedules. This action
 Saved to ./config.ini</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6172"/>
+        <location filename="../menu.py" line="6176"/>
         <source>课表预览</source>
         <translation>Schedule Preview</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6173"/>
+        <location filename="../menu.py" line="6177"/>
         <source>时间线编辑</source>
         <translation>Editing the Timeline</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6174"/>
+        <location filename="../menu.py" line="6178"/>
         <source>课程表编辑</source>
         <translation>Editing the Course Schedule</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6175"/>
+        <location filename="../menu.py" line="6179"/>
         <source>倒计日编辑</source>
         <translation>Editing the Countdown</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6176"/>
+        <location filename="../menu.py" line="6180"/>
         <source>配置文件</source>
         <translation>Configuration File</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6178"/>
+        <location filename="../menu.py" line="6182"/>
         <source>帮助</source>
         <translation>Help</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6180"/>
+        <location filename="../menu.py" line="6184"/>
         <source>插件</source>
         <translation>Plugin</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6187"/>
+        <location filename="../menu.py" line="6191"/>
         <source>自定义</source>
         <translation>Custom</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6190"/>
+        <location filename="../menu.py" line="6194"/>
         <source>提醒</source>
         <translation>Notification</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6193"/>
+        <location filename="../menu.py" line="6197"/>
         <source>高级选项</source>
         <translation>Advanced Options</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6196"/>
+        <location filename="../menu.py" line="6200"/>
         <source>关于本产品</source>
         <translation>About This Product</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6226"/>
+        <location filename="../menu.py" line="6230"/>
         <source>Class Widgets - 设置</source>
         <translation>Class Widgets - Settings</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6309"/>
+        <location filename="../menu.py" line="6313"/>
         <source>界面语言切换成功 ♪(´▽｀)</source>
         <translation>Interface language switched successfully ♪(´▽｀)</translation>
     </message>
@@ -3406,19 +3407,19 @@ The interface language has been switched to {selected_lang_name}.
 The new language will take full effect after restarting the application.</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6341"/>
+        <location filename="../menu.py" line="6345"/>
         <source>界面语言切换失败 (＃°Д°)</source>
         <translation>Interface language switch failed (＃°Д°)</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6342"/>
+        <location filename="../menu.py" line="6346"/>
         <source>无法加载选定的界面语言包，请检查翻译文件是否存在</source>
         <translation>Failed to load the selected interface language pack. Please check if the translation file exists</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1897"/>
-        <location filename="../menu.py" line="6345"/>
-        <location filename="../menu.py" line="6355"/>
+        <location filename="../menu.py" line="6349"/>
+        <location filename="../menu.py" line="6359"/>
         <source>确定</source>
         <translation>OK</translation>
     </message>
@@ -3429,12 +3430,12 @@ The new language will take full effect after restarting the application.</transl
 Error occurred while switching interface language: {e}</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6351"/>
+        <location filename="../menu.py" line="6355"/>
         <source>界面语言切换出错 (＃°Д°)</source>
         <translation>Interface language switch error (＃°Д°)</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6352"/>
+        <location filename="../menu.py" line="6356"/>
         <source>切换界面语言时发生错误: {e}</source>
         <translation>An error occurred while switching the interface language: {e}</translation>
     </message>
@@ -3878,7 +3879,7 @@ These placeholders apply only to the “Other Notifications”:
 <context>
     <name>WidgetsManager</name>
     <message>
-        <location filename="../main.py" line="1197"/>
+        <location filename="../main.py" line="1221"/>
         <source>未知组件</source>
         <translation>Unknown components</translation>
     </message>
@@ -4775,44 +4776,44 @@ Error message: {e}</translation>
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.py" line="135"/>
+        <location filename="../main.py" line="133"/>
         <source>未设置</source>
         <translation>Not Set</translation>
     </message>
     <message>
-        <location filename="../main.py" line="399"/>
+        <location filename="../main.py" line="402"/>
         <source>未添加</source>
         <translation>Not added</translation>
     </message>
     <message>
-        <location filename="../main.py" line="405"/>
-        <location filename="../main.py" line="410"/>
-        <location filename="../main.py" line="414"/>
-        <location filename="../main.py" line="420"/>
-        <location filename="../main.py" line="527"/>
-        <location filename="../main.py" line="592"/>
-        <location filename="../main.py" line="608"/>
+        <location filename="../main.py" line="408"/>
+        <location filename="../main.py" line="413"/>
+        <location filename="../main.py" line="417"/>
+        <location filename="../main.py" line="423"/>
+        <location filename="../main.py" line="530"/>
+        <location filename="../main.py" line="595"/>
+        <location filename="../main.py" line="611"/>
         <source>暂无课程</source>
         <translation>Not Set</translation>
     </message>
     <message>
-        <location filename="../main.py" line="498"/>
+        <location filename="../main.py" line="501"/>
         <source>当前活动结束还有</source>
         <translation>Till Current Activity Ends</translation>
     </message>
     <message>
-        <location filename="../main.py" line="500"/>
+        <location filename="../main.py" line="503"/>
         <source>课间时长还有</source>
         <translation>Next Course</translation>
     </message>
     <message>
-        <location filename="../main.py" line="546"/>
+        <location filename="../main.py" line="549"/>
         <source>距离上课还有</source>
         <translation>Untill Next Course</translation>
     </message>
     <message>
-        <location filename="../main.py" line="510"/>
-        <location filename="../main.py" line="551"/>
+        <location filename="../main.py" line="513"/>
+        <location filename="../main.py" line="554"/>
         <source>目前课程已结束</source>
         <translation>Courses Cleared</translation>
     </message>
@@ -4822,50 +4823,50 @@ Error message: {e}</translation>
         <translation>Loading modules...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="630"/>
+        <location filename="../main.py" line="633"/>
         <source>课间</source>
         <translation>Break Time</translation>
     </message>
     <message>
-        <location filename="../main.py" line="933"/>
+        <location filename="../main.py" line="941"/>
         <source>示例课程</source>
         <translation>Example Course</translation>
     </message>
     <message>
-        <location filename="../main.py" line="934"/>
+        <location filename="../main.py" line="942"/>
         <source>通知示例</source>
         <translation>Example Notification</translation>
     </message>
     <message>
-        <location filename="../main.py" line="935"/>
+        <location filename="../main.py" line="943"/>
         <source>副标题</source>
         <translation>Subtitle</translation>
     </message>
     <message>
-        <location filename="../main.py" line="936"/>
+        <location filename="../main.py" line="944"/>
         <source>这是一条通知示例</source>
         <translation>This is a example notification</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3307"/>
-        <location filename="../main.py" line="3341"/>
+        <location filename="../main.py" line="3353"/>
+        <location filename="../main.py" line="3387"/>
         <source>上课时自动隐藏</source>
         <translation>Auto hide when having classes</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3309"/>
-        <location filename="../main.py" line="3343"/>
+        <location filename="../main.py" line="3355"/>
+        <location filename="../main.py" line="3389"/>
         <source>窗口最大化时隐藏</source>
         <translation>Auto Hide when maximizing the window</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3311"/>
-        <location filename="../main.py" line="3345"/>
+        <location filename="../main.py" line="3357"/>
+        <location filename="../main.py" line="3391"/>
         <source>暂时无法变更“状态”</source>
         <translation>Unable to change &apos;status&apos; temporarily</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3317"/>
+        <location filename="../main.py" line="3363"/>
         <source>您正在使用 {hide_mode_text} 模式，无法变更隐藏状态
 若变更状态，将修改隐藏模式“灵活隐藏” (您稍后可以在“设置”中更改此选项)
 您确定要隐藏组件吗?</source>
@@ -4874,19 +4875,19 @@ If changing hiding status, we will change hiding mode to &quot;Flexible hiding&q
 Do you want to hide the widget?</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3320"/>
-        <location filename="../main.py" line="3354"/>
+        <location filename="../main.py" line="3366"/>
+        <location filename="../main.py" line="3400"/>
         <source>确定</source>
         <translation>Confirm</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3322"/>
-        <location filename="../main.py" line="3356"/>
+        <location filename="../main.py" line="3368"/>
+        <location filename="../main.py" line="3402"/>
         <source>取消</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3351"/>
+        <location filename="../main.py" line="3397"/>
         <source>您正在使用 {hide_mode_text} 模式，无法变更隐藏状态
 若变更状态，将修改隐藏模式“灵活隐藏” (您可以在“设置”中更改此选项)
 您确定要隐藏组件吗?</source>
@@ -4895,92 +4896,98 @@ If changing hiding status, we will change hiding mode to &quot;Flexible hiding&q
 Do you want to hide the widget?</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3645"/>
+        <location filename="../main.py" line="3712"/>
         <source>检查多开...</source>
         <translation>Checking for multiple instances...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3660"/>
+        <location filename="../main.py" line="3727"/>
         <source>Class Widgets 正在运行</source>
         <translation>Class Widgets is running now</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3665"/>
+        <location filename="../main.py" line="3732"/>
         <source>Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。
 (若您需要打开多个实例，请在“设置”-&gt;“高级选项”中启用“允许程序多开”)</source>
         <translation>Class Widgets is running now! Do not start multiple instance,or it will cause unknown problems.
 (If you need to start multiple instance,Please enable&quot;Allow multiple instances&quot; In &quot;Settings&quot; -&gt; &quot;Advanced Options&quot;)</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3685"/>
+        <location filename="../main.py" line="3752"/>
         <source>初始化颜色监视器...</source>
         <translation>Initializing color mode watcher...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3695"/>
+        <location filename="../main.py" line="3762"/>
         <source>检查缩放...</source>
         <translation>Checking scaling...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3701"/>
+        <location filename="../main.py" line="3768"/>
         <source>缩放系数过大</source>
         <translation>The scaling factor is too large</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3705"/>
+        <location filename="../main.py" line="3772"/>
         <source>当前缩放系数为 {scale_factor}%，可能导致显示异常。
 建议将缩放系数设置为 100% 到 180% 之间。</source>
         <translation>Current scaling factor is {scale_factor}% now, and it may cause display problems.
 It is recommended to set the scaling factor to a value between 100% and 180%.</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3714"/>
+        <location filename="../main.py" line="3781"/>
         <source>获取系统版本...</source>
         <translation>Retrieving system version...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3733"/>
+        <location filename="../main.py" line="3822"/>
+        <location filename="../main.py" line="3828"/>
+        <source>初始化窗口焦点监视器...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.py" line="3834"/>
         <source>初始化窗口管理器...</source>
         <translation>Initializing window manager...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3740"/>
+        <location filename="../main.py" line="3841"/>
         <source>检查初次启动...</source>
         <translation>Checking first-time launch...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3752"/>
+        <location filename="../main.py" line="3853"/>
         <source>初始化插件管理器...</source>
         <translation>Initializing plugin manager...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3758"/>
+        <location filename="../main.py" line="3859"/>
         <source>加载窗口...</source>
         <translation>Loading window...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3762"/>
+        <location filename="../main.py" line="3863"/>
         <source>加载课程...</source>
         <translation>Loading course...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3769"/>
+        <location filename="../main.py" line="3870"/>
         <source>加载隐藏状态...</source>
         <translation>Loading hidden state...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3788"/>
+        <location filename="../main.py" line="3889"/>
         <source>检查更新...</source>
         <translation>Checking for updates...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3667"/>
-        <location filename="../main.py" line="3707"/>
+        <location filename="../main.py" line="3734"/>
+        <location filename="../main.py" line="3774"/>
         <source>好</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../splash.py" line="101"/>
+        <location filename="../splash.py" line="109"/>
         <source>Class Widgets 启动中...</source>
         <translation>Launching Class Widgets...</translation>
     </message>
