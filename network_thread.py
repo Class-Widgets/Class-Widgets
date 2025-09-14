@@ -519,7 +519,7 @@ class scheduleThread(QThread):  # 获取课表
             logger.debug(f"课表 {self.url} 请求响应: {response.status_code}")
             if response.status_code == 200:
                 data = response.json()
-                if('data' in data):
+                if 'data' in data:
                     return json.loads(data.get('data'))
                 return data
             logger.error(
@@ -539,7 +539,7 @@ class scheduleThread(QThread):  # 获取课表
             logger.debug(f"课表 {self.url} 请求响应: {response.status_code}")
             if response.status_code == 200:
                 data = response.json()
-                if('data' in data):
+                if 'data' in data:
                     return json.loads(data.get('data'))
                 return data
             logger.error(
