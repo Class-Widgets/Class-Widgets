@@ -519,7 +519,9 @@ class scheduleThread(QThread):  # 获取课表
             logger.debug(f"课表 {self.url} 请求响应: {response.status_code}")
             if response.status_code == 200:
                 data = response.json()
-                return json.loads(data.get('data', "{'error': f\"没有 data 项\"}"))
+                if('data' in data):
+                    return json.loads(data.get('data'))
+                return data
             logger.error(
                 f"无法获取课表 {self.url} 错误代码：{response.status_code}，响应内容: {response.text}"
             )
@@ -537,7 +539,9 @@ class scheduleThread(QThread):  # 获取课表
             logger.debug(f"课表 {self.url} 请求响应: {response.status_code}")
             if response.status_code == 200:
                 data = response.json()
-                return json.loads(data.get('data', "{'error': f\"没有 data 项\"}"))
+                if('data' in data):
+                    return json.loads(data.get('data'))
+                return data
             logger.error(
                 f"无法上传课表 {self.url} 错误代码：{response.status_code}，响应内容: {response.text}"
             )
