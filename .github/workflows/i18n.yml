@@ -123,13 +123,11 @@ jobs:
           git fetch origin
           git rebase origin/${{ github.ref_name }}
 
-      - name: Set up Python
-        uses: actions/setup-python@v6
+      - name: Set up Python & uv
+        uses: astral-sh/setup-uv@v6
         with:
           python-version: "3.11"
-
-      - name: Set up uv
-        uses: astral-sh/setup-uv@v6
+          activate-environment: true
 
       - name: Install PySide6 tools
         run: uv pip install --system PySide6
@@ -234,13 +232,11 @@ jobs:
           git fetch origin
           git rebase origin/${{ github.ref_name }}
 
-      - name: Set up Python
-        uses: actions/setup-python@v6
+      - name: Set up Python & uv
+        uses: astral-sh/setup-uv@v6
         with:
           python-version: "3.11"
-
-      - name: Set up uv
-        uses: astral-sh/setup-uv@v6
+          activate-environment: true
 
       - name: Install PySide6 tools
         run: uv pip install --system PySide6

@@ -1,3 +1,4 @@
+<!--
 > [!IMPORTANT]
 > 请确保您的 PR 满足以下要求, 谢谢！
 >
@@ -8,3 +9,4 @@
 > - **详细要求参考:** [贡献代码](https://github.com/Class-Widgets/Class-Widgets/blob/main/.github/CONTRIBUTING.md#%E8%B4%A1%E7%8C%AE%E4%BB%A3%E7%A0%81)
 >
 > 最后, 请将此模板文本替换为更改描述和必要时的其他上下文信息
+-->

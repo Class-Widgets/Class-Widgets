@@ -337,19 +337,21 @@ jobs:
             brew link --overwrite --force gettext || true
           fi
 
-      - name: Cache Python (Windows)
-        if: runner.os == 'Windows'
+      - name: Cache Python
         uses: actions/cache@v4
         with:
           path: |
-            C:\hostedtoolcache\windows\Python\${{ env.PYTHON_VERSION }}*
+            ~\AppData\Roaming\uv\python
+            ~.local/share/uv/python
           key: ${{ runner.os }}-${{ matrix.arch }}-python${{ env.PYTHON_VERSION }}
 
-      - name: Setup Python
-        uses: actions/setup-python@v6
+      - name: Setup Python & uv
+        uses: astral-sh/setup-uv@v6
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-          architecture: ${{ matrix.arch }}
+          activate-environment: true
+          enable-cache: true
+          prune-cache: false
 
       - name: Python Syntax Check
         id: syntax_check
@@ -362,14 +364,14 @@ jobs:
           error_count=0
           error_report="## 🔍 Python 语法检查  \n\n"
           error_report+="**检查时间**: $(date '+%Y-%m-%d %H:%M:%S')  \n"
-          error_report+="**Python版本**: $(python --version)  \n"
+          error_report+="**Python版本**: $(uvx python --version)  \n"
           error_report+="**操作系统**: ${{ matrix.os }} - ${{ matrix.arch }}  \n"
           error_report+="**检查文件数**: $total_files  \n\n"
           error_report+="---  \n\n"
           for file in $python_files; do
             echo "检查文件: $file"
-            if ! python -m py_compile "$file" 2>/dev/null; then
-              error_output=$(python -m py_compile "$file" 2>&1 || true)
+            if ! uvx python -m py_compile "$file" 2>/dev/null; then
+              error_output=$(uvx python -m py_compile "$file" 2>&1 || true)
               echo "::group::Commit Message"
               echo "[DEBUG] ❌ 语法错误: $file"
               echo "[DEBUG] 错误详情: $error_output"
@@ -419,9 +421,6 @@ jobs:
           fi
           printf "%s" "$config_text" > "$config_path"
 
-      - name: Setup uv
-        uses: astral-sh/setup-uv@v6
-
       - name: Cache Python dependencies
         uses: actions/cache@v4
         with:
@@ -436,6 +435,13 @@ jobs:
       - name: Install dependencies
         run: |
           uv sync --group package --no-dev
+          uv python upgrade ${{ env.PYTHON_VERSION }} || true
+          uv python update-shell || true
+          echo "::group::Python-Version"
+          echo "uvx-python: $(uvx python --version) | system-python: $(python --version)" || true
+          echo "已安装的Python包:"
+          uv python list --only-installed || true
+          echo "::endgroup::"
 
       - name: Prepare output directory
         run: |
@@ -472,7 +478,10 @@ jobs:
             --add-data "view:view" \
             --add-data "i18n/*.qm:i18n" \
             --add-data "LICENSE:." \
-            --hidden-import darkdetect
+            --hidden-import darkdetect \
+            --strip \
+            --optimize 2
+
           if [[ "$BUILD_TYPE" == "Release" ]]; then
             zip_name="ClassWidgets-Windows-${{ matrix.arch }}"
           else
@@ -498,7 +507,9 @@ jobs:
             --add-data "view:view" \
             --add-data "i18n/*.qm:i18n" \
             --add-data "LICENSE:." \
-            --hidden-import darkdetect
+            --hidden-import darkdetect \
+            --strip \
+            --optimize 2
 
           cp -R dist/"Class Widgets.app" .
           if [[ "$BUILD_TYPE" == "Release" ]]; then
@@ -525,7 +536,9 @@ jobs:
             --add-data "view:view" \
             --add-data "i18n/*.qm:i18n" \
             --add-data "LICENSE:." \
-            --hidden-import darkdetect
+            --hidden-import darkdetect \
+            --strip \
+            --optimize 2
 
           if [[ "$BUILD_TYPE" == "Release" ]]; then
             zip_name="ClassWidgets-Linux-x64"
@@ -535,7 +548,7 @@ jobs:
           cd dist && mv ClassWidgets "${zip_name}" && zip -r -q "../packages/${zip_name}.zip" "${zip_name}"/* && cd ..
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.platform }}-build
           path: ./packages
@@ -576,7 +589,7 @@ jobs:
 
       - name: Upload exe for signing
         id: upload-for-signing
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v4
         with:
           name: windows-${{ matrix.arch }}-exe-unsigned
           path: ./exe-only
@@ -612,7 +625,7 @@ jobs:
           }
 
       - name: Upload signed application
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v4
         with:
           name: windows-${{ matrix.arch }}-signed
           path: ./signed-packages
@@ -724,7 +737,7 @@ jobs:
           fi
 
       - name: Upload final packages
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v4
         with:
           name: ClassWidgets-Packages
           path: final-packages
