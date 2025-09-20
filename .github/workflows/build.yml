@@ -337,14 +337,6 @@ jobs:
             brew link --overwrite --force gettext || true
           fi
 
-      - name: Cache Python
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~\AppData\Roaming\uv\python
-            ~.local/share/uv/python
-          key: ${{ runner.os }}-${{ matrix.arch }}-python${{ env.PYTHON_VERSION }}
-
       - name: Setup Python & uv
         uses: astral-sh/setup-uv@v6
         with:
@@ -352,6 +344,14 @@ jobs:
           activate-environment: true
           enable-cache: true
           prune-cache: false
+
+      - name: Cache Python
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~\AppData\Roaming\uv\python
+            ~.local/share/uv/python
+          key: ${{ runner.os }}-${{ matrix.arch }}-python${{ env.PYTHON_VERSION }}
 
       - name: Python Syntax Check
         id: syntax_check
@@ -421,6 +421,20 @@ jobs:
           fi
           printf "%s" "$config_text" > "$config_path"
 
+      - name: Update Python
+        shell: bash
+        continue-on-error: true
+        run: |
+          uv python upgrade ${{ env.PYTHON_VERSION }}
+          uv python update-shell
+          echo "$HOME/.local/bin:$PATH" >> $GITHUB_PATH || true
+          export PATH="$HOME/.local/bin:$PATH" || true
+          echo "::group::Python-Version"
+          echo "[DEBUG] uvx-python: $(uvx python --version) | system-python: $(python --version)" || true
+          echo "[DEBUG] 已安装的Python:"
+          uv python list --only-installed || true
+          echo "::endgroup::"
+
       - name: Cache Python dependencies
         uses: actions/cache@v4
         with:
@@ -435,13 +449,6 @@ jobs:
       - name: Install dependencies
         run: |
           uv sync --group package --no-dev
-          uv python upgrade ${{ env.PYTHON_VERSION }} || true
-          uv python update-shell || true
-          echo "::group::Python-Version"
-          echo "uvx-python: $(uvx python --version) | system-python: $(python --version)" || true
-          echo "已安装的Python包:"
-          uv python list --only-installed || true
-          echo "::endgroup::"
 
       - name: Prepare output directory
         run: |
