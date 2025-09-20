@@ -128,9 +128,11 @@ jobs:
         with:
           python-version: "3.11"
           activate-environment: true
+          enable-cache: true
+          prune-cache: false
 
       - name: Install PySide6 tools
-        run: uv pip install --system PySide6
+        run: uv pip install PySide6
 
       - name: Update main .ts files
         if: needs.detect-changes.outputs.has_py_changes == 'true' || needs.detect-changes.outputs.should_update_all == 'true'
@@ -237,9 +239,11 @@ jobs:
         with:
           python-version: "3.11"
           activate-environment: true
+          enable-cache: true
+          prune-cache: false
 
       - name: Install PySide6 tools
-        run: uv pip install --system PySide6
+        run: uv pip install PySide6
 
       - name: Compile main .ts files
         shell: bash
