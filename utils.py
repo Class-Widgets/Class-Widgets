@@ -447,7 +447,7 @@ class UnionUpdateTimer(QObject):
             nonlocal callback_exception
             try:
                 callback()
-                if cb_id in self._callback_error_count:
+                if cb_id in list(self._callback_error_count):
                     with QMutexLocker(self._mutex):
                         self._reset_error_count(cb_id)
             except RuntimeError as e:
