@@ -3836,8 +3836,8 @@ if __name__ == '__main__':
 
     if config_center.read_conf('Other', 'initialstartup') == '1':  # 首次启动
         try:
-            conf.add_shortcut('ClassWidgets.exe', str(CW_HOME / 'img/favicon.ico'))
-            conf.add_shortcut_to_startmenu(
+            utils.add_shortcut('ClassWidgets.exe', str(CW_HOME / 'img/favicon.ico'))
+            utils.add_shortcut_to_startmenu(
                 str(CW_HOME / 'ClassWidgets.exe'), str(CW_HOME / 'img/favicon.ico')
             )
             config_center.write_conf('Other', 'initialstartup', '')

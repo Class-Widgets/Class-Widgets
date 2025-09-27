@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*"
+           Name="Class Widgets 1"
+           Language="1033"
+           Version="1.0.0.0"
+           Manufacturer="Class Widgets"
+           UpgradeCode="abe5d8e8-35c1-4375-8650-40638580aa50">
+
+    <Package InstallerVersion="200"
+             Compressed="yes"
+             InstallScope="perMachine"
+             Description="Class Widgets 1 - 桌面课程表" />
+
+    <MajorUpgrade DowngradeErrorMessage="检测到已安装更新版本的 [ProductName]。"
+                  Schedule="afterInstallInitialize"
+                  AllowSameVersionUpgrades="yes"
+                  AllowDowngrades="no" />
+
+    <MediaTemplate EmbedCab="yes" />
+
+    <Feature Id="ProductFeature" Title="Class Widgets 1" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+    </Feature>
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="Class Widgets 1" />
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="Class Widgets 1"/>
+      </Directory>
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <!-- 主程序文件 -->
+      <Component Id="MainExecutable" Guid="*">
+        <File Id="ClassWidgetsExe"
+              Source="ClassWidgets.exe"
+              KeyPath="yes"
+              Checksum="yes"/>
+
+        <!-- 开始菜单快捷方式 -->
+        <Shortcut Id="ApplicationStartMenuShortcut"
+                  Name="Class Widgets 1"
+                  Description="桌面课程表"
+                  Target="[#ClassWidgetsExe]"
+                  WorkingDirectory="INSTALLFOLDER"
+                  Directory="ApplicationProgramsFolder"/>
+
+        <!-- 桌面快捷方式 -->
+        <Shortcut Id="ApplicationDesktopShortcut"
+                  Name="Class Widgets 1"
+                  Description="桌面课程表"
+                  Target="[#ClassWidgetsExe]"
+                  WorkingDirectory="INSTALLFOLDER"
+                  Directory="DesktopFolder"/>
+      </Component>
+
+      <!-- 数据文件夹 -->
+      <Component Id="DataFiles" Guid="*" Directory="INSTALLFOLDER">
+        <CreateFolder/>
+        <File Id="DataFolder" Source="data\*" KeyPath="yes"/>
+      </Component>
+
+      <!-- 音频文件夹 -->
+      <Component Id="AudioFiles" Guid="*" Directory="INSTALLFOLDER">
+        <CreateFolder/>
+        <File Id="AudioFolder" Source="audio\*" KeyPath="yes"/>
+      </Component>
+
+      <!-- 图片文件夹 -->
+      <Component Id="ImageFiles" Guid="*" Directory="INSTALLFOLDER">
+        <CreateFolder/>
+        <File Id="ImageFolder" Source="img\*" KeyPath="yes"/>
+      </Component>
+
+      <!-- UI文件夹 -->
+      <Component Id="UIFiles" Guid="*" Directory="INSTALLFOLDER">
+        <CreateFolder/>
+        <File Id="UIFolder" Source="ui\*" KeyPath="yes"/>
+      </Component>
+
+      <!-- 字体文件夹 -->
+      <Component Id="FontFiles" Guid="*" Directory="INSTALLFOLDER">
+        <CreateFolder/>
+        <File Id="FontFolder" Source="font\*" KeyPath="yes"/>
+      </Component>
+
+      <!-- view文件夹 -->
+      <Component Id="ViewFiles" Guid="*" Directory="INSTALLFOLDER">
+        <CreateFolder/>
+        <File Id="ViewFolder" Source="view\*" KeyPath="yes"/>
+      </Component>
+
+      <!-- i18n文件夹 -->
+      <Component Id="I18nFiles" Guid="*" Directory="INSTALLFOLDER">
+        <CreateFolder/>
+        <File Id="I18nFolder" Source="i18n\*.qm" KeyPath="yes"/>
+      </Component>
+
+      <!-- 许可证文件 -->
+      <Component Id="LicenseFile" Guid="*" Directory="INSTALLFOLDER">
+        <File Id="LicenseFile" Source="LICENSE" KeyPath="yes"/>
+      </Component>
+
+      <!-- 卸载程序注册 -->
+      <Component Id="RegistryEntries" Guid="*">
+        <RegistryKey Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Uninstall\ClassWidgets">
+          <RegistryValue Name="DisplayName" Value="Class Widgets 1" Type="string" KeyPath="yes"/>
+          <RegistryValue Name="UninstallString" Value="[SystemFolder]msiexec.exe /x [ProductCode]" Type="string"/>
+          <RegistryValue Name="DisplayIcon" Value="[INSTALLFOLDER]ClassWidgets.exe" Type="string"/>
+          <RegistryValue Name="Publisher" Value="Class Widgets" Type="string"/>
+          <RegistryValue Name="DisplayVersion" Value="1.0.0.0" Type="string"/>
+          <RegistryValue Name="InstallLocation" Value="[INSTALLFOLDER]" Type="string"/>
+          <RegistryValue Name="InstallDate" Value="[Date]" Type="string"/>
+          <RegistryValue Name="EstimatedSize" Value="50000" Type="integer"/>
+          <RegistryValue Name="NoModify" Value="1" Type="integer"/>
+          <RegistryValue Name="NoRepair" Value="1" Type="integer"/>
+        </RegistryKey>
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <!-- 自定义操作：清理用户数据 -->
+  <CustomAction Id="CleanupUserData"
+                BinaryKey="CleanupScript"
+                VBScriptCall="CleanupUserData"
+                Execute="deferred"
+                Impersonate="yes"
+                Return="ignore"/>
+
+  <!-- 自定义操作：移除开机启动项 -->
+  <CustomAction Id="RemoveStartupShortcut"
+                BinaryKey="CleanupScript"
+                VBScriptCall="RemoveStartupShortcut"
+                Execute="deferred"
+                Impersonate="yes"
+                Return="ignore"/>
+
+  <Binary Id="CleanupScript" SourceFile="cleanup.vbs"/>
+
+  <!-- 安装序列 -->
+  <InstallExecuteSequence>
+    <!-- 卸载时执行清理操作 -->
+    <Custom Action="RemoveStartupShortcut" Before="RemoveFiles">REMOVE="ALL"</Custom>
+    <Custom Action="CleanupUserData" Before="RemoveFiles">REMOVE="ALL"</Custom>
+  </InstallExecuteSequence>
+</Wix>

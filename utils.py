@@ -12,10 +12,12 @@ import time
 import weakref
 from abc import ABC, abstractmethod
 from heapq import heapify, heappop, heappush
+from pathlib import Path
 from typing import Any, Callable, ClassVar, Dict, List, Optional, Tuple, Type, Union
 
 if os.name == 'nt':
     import win32gui
+    from win32com.client import Dispatch
 
 import darkdetect
 import ntplib
@@ -53,7 +55,7 @@ class StreamToLogger:
         pass
 
 
-def qt_message_handler(mode, context, message):
+def qt_message_handler(mode, context, message):  # noqa
     """Qt 消息转发到 loguru"""
     msg = message.strip()
     if not msg:
@@ -87,10 +89,22 @@ if config_center.read_conf("Other", "do_not_log") == "0":
 else:
     logger.info("已禁用日志输出功能, 若需保存日志, 请在“设置”->“高级选项”中关闭禁用日志功能")
 
-LOGO_PATH = CW_HOME / "img" / "logo"
 
-_stop_in_progress = False
+def run_once(func: Callable) -> Callable:
+    """装饰器: 只执行一次"""
+
+    def wrapper(*args, **kwargs):
+        if not wrapper.has_run:
+            wrapper.has_run = True
+            return func(*args, **kwargs)
+        return None
+
+    wrapper.has_run = False
+    return wrapper
+
+
 update_timer: Optional['UnionUpdateTimer'] = None
+LOGO_PATH = CW_HOME / "img" / "logo"
 CallbackInfoType = Dict[str, Union[float, dt.datetime]]
 TaskHeapType = List[Tuple[dt.datetime, int, Callable[[], Any], float]]
 
@@ -153,17 +167,13 @@ def restart() -> None:
     os.execl(sys.executable, sys.executable, *sys.argv)
 
 
+@run_once
 def stop(status: int = 0) -> None:
     """
     退出程序
 
     :param status: 退出状态码,0=正常退出,!=0表示异常退出
     """
-    global update_timer, _stop_in_progress
-    if _stop_in_progress:
-        return
-    _stop_in_progress = True
-
     logger.debug('退出程序...')
 
     try:
@@ -173,10 +183,9 @@ def stop(status: int = 0) -> None:
     except Exception as e:
         logger.warning(f"清理TTS管理器时出错: {e}")
 
-    if 'update_timer' in globals() and update_timer:
+    if update_timer:
         try:
             update_timer.stop()
-            update_timer = None
         except Exception as e:
             logger.warning(f"停止全局更新定时器时出错: {e}")
     gc.collect()
@@ -296,7 +305,7 @@ class UnionUpdateTimer(QObject):
         self._callback_refs: Dict[int, weakref.ReferenceType] = {}  # 弱引用存储
         self._callback_hashes: Dict[int, int] = {}  # 回调函数哈希值验证
         self._removed_callbacks: set = set()  # 惰性删除标记
-        self._callback_error_count: Dict[int, Dict[str, Any]] = {}  # 回调错误计数，使用id作为键
+        self._callback_error_count: Dict[int, Dict[str, Any]] = {}  # 回调错误计数,使用id作为键
         self._max_error_count: int = 10  # 最大错误次数, 超过自动移除
         self._is_running: bool = False
         self._base_interval: float = max(0.05, base_interval)  # 基础间隔,最小50ms
@@ -319,7 +328,7 @@ class UnionUpdateTimer(QObject):
             current_time = TimeManagerFactory.get_instance().get_current_time()
         except Exception as e:
             logger.error(f"获取当前时间失败: {e}")
-            raise RuntimeError("无法获得当前时间")
+            raise RuntimeError("无法获得当前时间") from e
         callbacks_to_run = []
         invalid_callbacks = []
 
@@ -360,7 +369,7 @@ class UnionUpdateTimer(QObject):
                 )  # 重新加入堆
             # if expired_count > 0:
             #     logger.debug(f"处理 {expired_count} 个到期任务, 执行 {len(callbacks_to_run)} 个有效回调")
-        for callback, interval, cb_id in callbacks_to_run:  # 锁外执行
+        for callback, interval, cb_id in callbacks_to_run:  # 锁外执行  # noqa: B007
             self._execute_callback_with_timeout(callback, cb_id, invalid_callbacks)
 
         if invalid_callbacks:  # 清理无效回调
@@ -384,7 +393,7 @@ class UnionUpdateTimer(QObject):
             current_time = TimeManagerFactory.get_instance().get_current_time()
         except Exception as e:
             logger.error(f"获取当前时间失败: {e}")
-            raise RuntimeError("无法获得当前时间")
+            raise RuntimeError("无法获得当前时间") from e
         next_task_time = self.task_heap[0][0]
         delay_seconds = (next_task_time - current_time).total_seconds()
         if delay_seconds <= 0:
@@ -564,11 +573,11 @@ class UnionUpdateTimer(QObject):
             TypeError: 当callback不是可调用对象时
         """
         if not callable(callback):
-            raise TypeError("回调必须是可调用对象")
+            raise TypeError("回调必须是可调用对象") from None
         try:
             callback_hash = hash(callback)
-        except TypeError:
-            raise TypeError("回调函数必须是可哈希的")
+        except TypeError as err:
+            raise TypeError("回调函数必须是可哈希的") from err
         # logger.debug(f"添加回调: {callback.__name__ if hasattr(callback, '__name__') else str(callback)}, 间隔: {interval}秒")
         interval = max(0.1, interval)
         current_time: dt.datetime = TimeManagerFactory.get_instance().get_current_time()
@@ -737,7 +746,7 @@ class UnionUpdateTimer(QObject):
         """获取所有回调函数的详细信息
 
         Returns:
-            Dict: 回调函数到其信息的映射，包含间隔时间和下次执行时间
+            Dict: 回调函数到其信息的映射,包含间隔时间和下次执行时间
         """
         with QMutexLocker(self._mutex):
             info: Dict[Callable[[], Any], CallbackInfoType] = {}
@@ -1156,7 +1165,7 @@ class TimeManagerFactory:
             # Note: 不再修改其他模块的引用
             globals()['time_manager'] = cls._instance
 
-            return cls._instance
+        return cls._instance
 
 
 main_mgr = None
@@ -1238,6 +1247,107 @@ class PreviousWindowFocusManager(QObject):
             update_timer.remove_callback(self._callback_id)
             self._callback_id = None
         self._last_hwnd = None
+
+
+def _create_shortcut(
+    target_path: str,
+    shortcut_path: Path,
+    icon_path: Optional[str] = None,
+    description: str = "Class Widgets",
+) -> bool:
+    """创建快捷方式"""
+    if os.name != 'nt':
+        logger.error("仅支持 Windows")
+        return False
+    try:
+        target = Path(target_path)
+        if not target.exists():
+            logger.error(f"目标路径不存在: {target}")
+            return False
+        if shortcut_path.exists():
+            shortcut_path.unlink()
+            logger.info(f"已删除旧快捷方式: {shortcut_path}")
+        shell = Dispatch('WScript.Shell')
+        shortcut = shell.CreateShortCut(str(shortcut_path))
+        shortcut.Targetpath = str(target)
+        shortcut.Description = description
+        shortcut.WorkingDirectory = str(CW_HOME)
+        if icon_path and Path(icon_path).exists():
+            shortcut.IconLocation = str(icon_path)
+        shortcut.save()
+        logger.success(f"快捷方式创建成功: {shortcut_path}")
+        return True
+    except (FileNotFoundError, PermissionError) as e:
+        logger.error(f"创建快捷方式失败: {e}")
+    return False
+
+
+def add_shortcut(exe_name: str, icon_path: Optional[str] = None) -> bool:
+    """添加桌面快捷方式"""
+    if os.name != 'nt':
+        logger.error("仅支持 Windows")
+        return False
+    desktop_path = Path.home() / 'Desktop'
+    shortcut_path = desktop_path / 'Class Widgets.lnk'
+    target_path = str(CW_HOME / exe_name)
+    return _create_shortcut(target_path, shortcut_path, icon_path)
+
+
+def add_shortcut_to_startmenu(exe_path: str, icon_path: Optional[str] = None) -> bool:
+    """添加开始菜单快捷方式"""
+    if os.name != 'nt':
+        logger.error("仅支持 Windows")
+        return False
+    start_menu_path = (
+        Path(os.environ['APPDATA']) / 'Microsoft' / 'Windows' / 'Start Menu' / 'Programs'
+    )
+    shortcut_path = start_menu_path / 'Class Widgets.lnk'
+    return _create_shortcut(exe_path, shortcut_path, icon_path)
+
+
+def add_to_startup() -> bool:
+    """添加到开机自启动"""
+    if os.name != 'nt':
+        logger.error("仅支持 Windows")
+        return False
+    startup_path = (
+        Path(os.environ['APPDATA'])
+        / 'Microsoft'
+        / 'Windows'
+        / 'Start Menu'
+        / 'Programs'
+        / 'Startup'
+    )
+    shortcut_path = startup_path / 'Class Widgets.lnk'
+    target_path = str(CW_HOME / 'ClassWidgets.exe')
+    icon_path = str(CW_HOME / 'img' / 'favicon.ico')
+    return _create_shortcut(target_path, shortcut_path, icon_path)
+
+
+def remove_from_startup() -> bool:
+    """从开机自启动中移除"""
+    if os.name != 'nt':
+        logger.error("仅支持 Windows")
+        return False
+    try:
+        startup_path = (
+            Path(os.environ['APPDATA'])
+            / 'Microsoft'
+            / 'Windows'
+            / 'Start Menu'
+            / 'Programs'
+            / 'Startup'
+        )
+        shortcut_path = startup_path / 'Class Widgets.lnk'
+        if shortcut_path.exists():
+            shortcut_path.unlink()
+            logger.success(f"快捷方式删除成功: {shortcut_path}")
+            return True
+        logger.warning(f"快捷方式不存在: {shortcut_path}")
+        return False
+    except Exception as e:
+        logger.error(f"删除快捷方式失败: {e}")
+        return False
 
 
 tray_icon = None

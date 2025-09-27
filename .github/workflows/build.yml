@@ -568,74 +568,149 @@ jobs:
       matrix:
         arch: [x64, x86]
     steps:
-      - name: Download Windows build artifacts
-        id: download-artifact
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Sign Windows executable
+        id: sign_exe
+        uses: ./.github/workflows/sign.yml
+        with:
+          manifest_artifact: windows-${{ matrix.arch }}-build
+          executable_name: ClassWidgets.exe
+
+      - name: Download signed executable
+        if: inputs.is_signing == true && steps.sign_exe.outputs.signed_executable_artifact != ''
         uses: actions/download-artifact@v5
         with:
-          name: windows-${{ matrix.arch }}-build
-          path: ./artifacts
+          name: ${{ steps.sign_exe.outputs.signed_executable_artifact }}
+          path: ./signed-exe
 
-      - name: Extract executable for signing
-        shell: pwsh
+      - name: Replace executable with signed version
+        if: inputs.is_signing == true && steps.sign_exe.outputs.signed_executable_artifact != ''
+        shell: bash
         run: |
-          $zipFile = Get-ChildItem -Path ./artifacts -Filter "*.zip" | Select-Object -First 1
-          if ($zipFile) {
-            Expand-Archive -Path $zipFile.FullName -DestinationPath ./extracted -Force
-            $exeFile = Get-ChildItem -Path ./extracted -Filter "ClassWidgets.exe" -Recurse | Select-Object -First 1
-            if ($exeFile) {
-              New-Item -ItemType Directory -Path "./exe-only" -Force | Out-Null
-              Copy-Item $exeFile.FullName -Destination "./exe-only/ClassWidgets.exe" -Force
-            } else {
-              Write-Error "ClassWidgets.exe not found in extracted files"
-              exit 1
-            }
-          } else {
-            Write-Error "ZIP file not found in artifacts"
+          if [[ -f "./signed-exe/ClassWidgets.exe" ]]; then
+            cp "./signed-exe/ClassWidgets.exe" "dist/ClassWidgets/ClassWidgets.exe"
+            echo "[DEBUG] 已签名可执行文件替换成功"
+          else
+            echo "[ERROR] 未找到已签名的可执行文件"
             exit 1
-          }
+          fi
 
-      - name: Upload exe for signing
-        id: upload-for-signing
+      - name: Update WiX Version and ProductCode
+        if: needs.prepare.outputs.build_type == 'Release'
+        shell: bash
+        run: |
+          VERSION="${{ needs.prepare.outputs.release_version }}"
+          if [[ -z "$VERSION" ]]; then
+            VERSION="1.0.0.0"
+          fi
+          PRODUCT_CODE=$(echo -n "$VERSION" | md5sum | awk '{print $1}')
+          PRODUCT_CODE="${PRODUCT_CODE:0:8}-${PRODUCT_CODE:8:4}-${PRODUCT_CODE:12:4}-${PRODUCT_CODE:16:4}-${PRODUCT_CODE:20:12}"
+          sed -i "0,/<Product/ s/Id=\"[^\"]*\"/Id=\"$PRODUCT_CODE\"/" installer/ClassWidgets.wxs
+          sed -i "s/Version=\"[^\"]*\"/Version=\"$VERSION\"/g" installer/ClassWidgets.wxs
+          echo "[DEBUG] Updated WiX version to: $VERSION"
+          echo "[DEBUG] Updated ProductCode to: $PRODUCT_CODE"
+
+      - name: Build Windows MSI
+        id: build_msi
+        if: needs.prepare.outputs.build_type == 'Release'
+        uses: utilitywarehouse/ghaction-wix@main
+        with:
+          wix-project-file: installer/ClassWidgets.wxs
+          wix-project-directory: dist/ClassWidgets
+          output-directory: packages
+          output-name: ClassWidgets-Windows-${{ matrix.arch }}.msi
+
+      - name: Upload MSI for signing
+        id: upload_msi
+        if: needs.prepare.outputs.build_type == 'Release'
         uses: actions/upload-artifact@v4
         with:
-          name: windows-${{ matrix.arch }}-exe-unsigned
-          path: ./exe-only
+          name: windows-${{ matrix.arch }}-msi-unsigned
+          path: packages/ClassWidgets-Windows-${{ matrix.arch }}.msi
 
-      - name: Sign application
-        uses: signpath/github-action-submit-signing-request@v1
+      - name: Sign Windows MSI
+        id: sign_msi
+        if: needs.prepare.outputs.build_type == 'Release'
+        uses: ./.github/workflows/sign.yml
         with:
-          api-token: "${{ secrets.SIGNPATH_API_TOKEN }}"
-          organization-id: "2e13633d-4e7d-4462-9091-27536751c84c"
-          project-slug: "Class-Widgets.git"
-          signing-policy-slug: "release-signing"
-          github-artifact-id: "${{ steps.upload-for-signing.outputs.artifact-id }}"
-          wait-for-completion: true
-          output-artifact-directory: "./signed"
+          manifest_artifact: windows-${{ matrix.arch }}-msi-unsigned
+          executable_name: ClassWidgets-Windows-${{ matrix.arch }}.msi
 
-      - name: Repackage signed application
-        shell: pwsh
+      - name: Upload signed executable
+        if: inputs.is_signing == true && steps.sign_exe.outputs.signed_executable_artifact != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-${{ matrix.arch }}-exe-signed
+          path: ./signed-exe
+
+      - name: Create signed build package
+        if: inputs.is_signing == true && steps.sign_exe.outputs.signed_executable_artifact != ''
+        shell: bash
         run: |
-          $signedExe = Get-ChildItem -Path ./signed -Filter "ClassWidgets.exe" | Select-Object -First 1
-          if ($signedExe) {
-            $targetExe = Get-ChildItem -Path ./extracted -Filter "ClassWidgets.exe" -Recurse | Select-Object -First 1
-            if ($targetExe) {
-              Copy-Item $signedExe.FullName -Destination $targetExe.FullName -Force
-            } else {
-              Write-Error "目标 exe 未找到"
-              exit 1
-            }
-            New-Item -ItemType Directory -Path "signed-packages" -Force | Out-Null
-            Compress-Archive -Path (Join-Path (Get-Location) "extracted\*") -DestinationPath "signed-packages/ClassWidgets-Windows-${{ matrix.arch }}.zip" -Force
-          } else {
-            Write-Error "签名输出中未找到签名的 exe"
-            exit 1
-          }
+          echo "[DEBUG] 创建签名版本的完整 build 包"
+          mkdir -p signed-build-temp
+          cp -r dist/ClassWidgets/* signed-build-temp/
+          cd signed-build-temp
+          zip -r "../packages/ClassWidgets-Windows-${{ matrix.arch }}-signed.zip" .
+          cd ..
 
-      - name: Upload signed application
+      - name: Upload signed build package
+        if: inputs.is_signing == true && steps.sign_exe.outputs.signed_executable_artifact != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-${{ matrix.arch }}-build-signed
+          path: packages/ClassWidgets-Windows-${{ matrix.arch }}-signed.zip
+
+      - name: Upload signed MSI
+        if: inputs.is_signing == true && needs.prepare.outputs.build_type == 'Release' && steps.sign_msi.outputs.signed_executable_artifact != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-${{ matrix.arch }}-msi-signed
+          path: ./signed-msi
+
+      - name: Organize final packages
+        shell: bash
+        run: |
+          mkdir -p final-signed-packages
+          echo "[DEBUG] 组织最终签名包"
+          if [[ -f "packages/ClassWidgets-Windows-${{ matrix.arch }}.zip" ]]; then
+            if [[ "${{ steps.sign_exe.outputs.signed_executable_artifact }}" != "" ]]; then
+              echo "[DEBUG] 使用已签名可执行文件重新打包 ZIP"
+              cd dist/ClassWidgets
+              zip -r "../../final-signed-packages/ClassWidgets-Windows-${{ matrix.arch }}.zip" .
+              cd ../..
+            fi
+          fi
+          echo "[DEBUG] 最终包列表:"
+          ls -la final-signed-packages/ || echo "无最终包文件"
+
+      - name: Download signed MSI
+        if: needs.prepare.outputs.build_type == 'Release' && steps.sign_msi.outputs.signed_executable_artifact != ''
+        uses: actions/download-artifact@v5
+        with:
+          name: ${{ steps.sign_msi.outputs.signed_executable_artifact }}
+          path: ./signed-msi
+
+      - name: Add signed MSI to final packages
+        if: needs.prepare.outputs.build_type == 'Release' && steps.sign_msi.outputs.signed_executable_artifact != ''
+        shell: bash
+        run: |
+          if [[ -f "./signed-msi/ClassWidgets-Windows-${{ matrix.arch }}.msi" ]]; then
+            cp "./signed-msi/ClassWidgets-Windows-${{ matrix.arch }}.msi" "final-signed-packages/"
+            echo "[DEBUG] 已签名 MSI 添加到最终包: $(ls -la final-signed-packages/*.msi)"
+          else
+            echo "[ERROR] 未找到已签名的 MSI 文件"
+          fi
+
+      - name: Upload signed packages
         uses: actions/upload-artifact@v4
         with:
           name: windows-${{ matrix.arch }}-signed
-          path: ./signed-packages
+          path: final-signed-packages
 
   package:
     needs: [prepare, build, sign]
@@ -659,89 +734,163 @@ jobs:
         run: |
           mkdir -p final-packages || { rm -rf final-packages; mkdir final-packages; }
           package_count=0
-          platforms=("windows-x64" "windows-x86" "macos-arm64" "linux-x64")
+          run_id="${{ github.run_id }}"
+          declare -A platforms=(
+            ["windows-x64"]="windows"
+            ["windows-x86"]="windows"
+            ["macos-arm64"]="macos"
+            ["linux-x64"]="linux"
+          )
+
           declare -A artifact_cache
           for artifact_dir in ./all-artifacts/*/; do
             if [[ -d "$artifact_dir" ]]; then
               dir_name=$(basename "$artifact_dir")
-              zip_files=$(find "$artifact_dir" -name "*.zip" -type f | wc -l)
-              if [[ $zip_files -gt 0 ]]; then
-                artifact_cache["$dir_name"]="$artifact_dir"
+              artifact_cache["$dir_name"]="$artifact_dir"
+            fi
+          done
+
+          process_file() {
+            local source_file=$1
+            local target_name=$2
+            local platform=$3
+            local file_type=$4
+
+            if [[ -f "$source_file" ]]; then
+              cp -f "$source_file" "final-packages/$target_name"
+              package_count=$(($package_count + 1))
+              file_size=$(stat -c%s "$source_file" 2>/dev/null || echo "未知")
+              file_md5=$(md5sum "$source_file" 2>/dev/null | cut -d' ' -f1 || echo "未知")
+              if [[ "$file_size" != "未知" ]]; then
+                file_size_mb=$(echo "scale=2; $file_size / 1024 / 1024" | bc 2>/dev/null || echo "未知")
+              else
+                file_size_mb="未知"
+              fi
+              echo "[DEBUG] ($platform - $file_type): $target_name, $file_size_mb MB, $file_size bytes, $file_md5"
+            else
+              echo "[DEBUG] 文件不存在: $source_file"
+            fi
+          }
+          for platform in "${!platforms[@]}"; do
+            platform_type="${platforms[$platform]}"
+
+            if [[ "$platform_type" == "windows" ]]; then
+              # Windows 平台：优先使用签名版本
+              build_signed_key="${platform}-build-signed"
+              exe_signed_key="${platform}-exe-signed"
+              msi_signed_key="${platform}-msi-signed"
+              build_key="${platform}-build"
+              # 处理 ZIP 包（优先签名版本）
+              if [[ -n "${artifact_cache[$build_signed_key]:-}" ]]; then
+                echo "[DEBUG] 使用 ${platform} 签名版本 ZIP"
+                for zip_file in "${artifact_cache[$build_signed_key]}"/*.zip; do
+                  if [[ -f "$zip_file" ]]; then
+                    target_name="ClassWidgets-Windows-${platform#windows-}_${run_id}.zip"
+                    process_file "$zip_file" "$target_name" "$platform" "已签名ZIP"
+                    break
+                  fi
+                done
+              elif [[ -n "${artifact_cache[$build_key]:-}" ]]; then
+                echo "[DEBUG] 使用 ${platform} 构建版本 ZIP"
+                for zip_file in "${artifact_cache[$build_key]}"/*.zip; do
+                  if [[ -f "$zip_file" ]]; then
+                    target_name="ClassWidgets-Windows-${platform#windows-}_${run_id}.zip"
+                    process_file "$zip_file" "$target_name" "$platform" "构建ZIP"
+                    break
+                  fi
+                done
+              fi
+              # 处理 MSI 包（仅签名版本）
+              if [[ -n "${artifact_cache[$msi_signed_key]:-}" ]]; then
+                echo "[DEBUG] 使用 ${platform} 签名版本 MSI"
+                for msi_file in "${artifact_cache[$msi_signed_key]}"/*.msi; do
+                  if [[ -f "$msi_file" ]]; then
+                    target_name="ClassWidgets-Windows-${platform#windows-}_${run_id}.msi"
+                    process_file "$msi_file" "$target_name" "$platform" "已签名MSI"
+                    break
+                  fi
+                done
+              else
+                echo "[DEBUG] ${platform} 跳过未签名的 MSI 文件"
+              fi
+            else
+              # 非 Windows 平台：使用构建版本
+              build_key="${platform}-build"
+              if [[ -n "${artifact_cache[$build_key]:-}" ]]; then
+                echo "[DEBUG] 使用 ${platform} 构建版本"
+                for zip_file in "${artifact_cache[$build_key]}"/*.zip; do
+                  if [[ -f "$zip_file" ]]; then
+                    case "$platform_type" in
+                      "macos")
+                        target_name="ClassWidgets-Macos-${platform#macos-}_${run_id}.zip"
+                        ;;
+                      "linux")
+                        target_name="ClassWidgets-Linux-${platform#linux-}_${run_id}.zip"
+                        ;;
+                    esac
+                    process_file "$zip_file" "$target_name" "$platform" "构建"
+                    break
+                  fi
+                done
+              else
+                echo "[DEBUG] ${platform} 版本未找到"
               fi
             fi
           done
-          process_file() {
-            local zip_file=$1
-            local platform=$2
-            local signed=$3
-            cp -f "$zip_file" final-packages/
-            package_count=$(($package_count + 1))
-            filename=$(basename "$zip_file")
-            file_size=$(stat -c%s "$zip_file" 2>/dev/null || echo "未知")
-            file_md5=$(md5sum "$zip_file" 2>/dev/null | cut -d' ' -f1 || echo "未知")
-            if [[ "$file_size" != "未知" ]]; then
-              file_size_mb=$(echo "scale=2; $file_size / 1024 / 1024" | bc 2>/dev/null || echo "未知")
-            else
-              file_size_mb="未知"
-            fi
-            echo "[DEBUG] ($platform - $signed): $filename, $file_size_mb MB, $file_size bytes, $file_md5"
-          }
-          for platform in "${platforms[@]}"; do
-            signed_key="${platform}-signed"
-            build_key="${platform}-build"
-            if [[ -n "${artifact_cache[$signed_key]:-}" ]]; then
-              echo "[DEBUG] 使用 ${platform} 签名版本"
-              for zip_file in "${artifact_cache[$signed_key]}"/*.zip; do
-                if [[ -f "$zip_file" ]]; then
-                  process_file "$zip_file" "$platform" "已签名"
-                else
-                  echo "[DEBUG] ${platform} 签名版本文件不存在: $zip_file"
-                fi
-              done
-            elif [[ -n "${artifact_cache[$build_key]:-}" ]]; then
-              echo "[DEBUG] 使用 ${platform} 构建版本"
-              for zip_file in "${artifact_cache[$build_key]}"/*.zip; do
-                if [[ -f "$zip_file" ]]; then
-                  process_file "$zip_file" "$platform" "构建"
-                else
-                  echo "[DEBUG] ${platform} 构建版本文件不存在: $zip_file"
-                fi
-              done
-            else
-              echo "[DEBUG] ${platform} 版本未找到"
-            fi
-          done
+
           echo "package-count=$package_count" >> $GITHUB_OUTPUT
           if [[ $package_count -eq 0 ]]; then
             echo "[DEBUG] 没有找到任何包文件"
           fi
+
+          echo "[DEBUG] 最终包列表:"
           ls -la final-packages/ || true
 
       - name: Calculate package properties
         shell: bash
         run: |
           {
+            echo "构建时间: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+            echo "构建ID: ${{ github.run_id }}"
+            echo "提交: ${{ github.sha }}"
             echo ""
             echo "---"
             echo ""
             echo "## 包信息 (${{ steps.organize.outputs.package-count }}个文件)"
             echo ""
-            echo "| 文件名 | 大小(MB) | 大小(字节) | MD5 |"
-            echo "|--------|----------|------------|-----|"
-          } >> $GITHUB_STEP_SUMMARY
+            echo "| 文件名 | 类型 | 大小(MB) | 大小(字节) | MD5 |"
+            echo "|--------|------|----------|------------|-----|"
+          } > final-packages/file-info.md
           shopt -s nullglob
-          files=(final-packages/*.zip)
+          files=(final-packages/*.zip final-packages/*.msi)
           if [ ${#files[@]} -eq 0 ]; then
-            echo "未找到任何最终包文件" >> $GITHUB_STEP_SUMMARY
+            echo "未找到任何包文件" >> final-packages/file-info.md
           else
-            for zip_file in "${files[@]}"; do
-              filename=$(basename "$zip_file")
-              file_size=$(stat -c%s "$zip_file" 2>/dev/null || wc -c < "$zip_file" 2>/dev/null || echo "未知")
-              file_md5=$(md5sum "$zip_file" 2>/dev/null | cut -d' ' -f1 || echo "未知")
-              file_size_mb=$(awk "BEGIN {printf \"%.2f\", $file_size / 1024 / 1024}" 2>/dev/null || echo "未知")
-              echo "| $filename | $file_size_mb | $file_size | $file_md5 |" >> $GITHUB_STEP_SUMMARY
+            for package_file in "${files[@]}"; do
+              if [[ -f "$package_file" ]]; then
+                filename=$(basename "$package_file")
+                file_extension="${filename##*.}"
+                file_type=""
+                case "$file_extension" in
+                  "zip") file_type="ZIP包" ;;
+                  "msi") file_type="MSI安装包" ;;
+                  *) file_type="其他" ;;
+                esac
+                file_size=$(stat -c%s "$package_file" 2>/dev/null || wc -c < "$package_file" 2>/dev/null || echo "未知")
+                file_md5=$(md5sum "$package_file" 2>/dev/null | cut -d' ' -f1 || echo "未知")
+                file_size_mb=$(awk "BEGIN {printf \"%.2f\", $file_size / 1024 / 1024}" 2>/dev/null || echo "未知")
+                echo "| $filename | $file_type | $file_size_mb | $file_size | \`$file_md5\` |" >> final-packages/file-info.md
+              fi
             done
           fi
+          echo "" >> final-packages/file-info.md
+          cat final-packages/file-info.md >> $GITHUB_STEP_SUMMARY
+
+      - name: Generate package provenance
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: "final-packages/*"
+          bundle-path: final-packages/attestation.json
 
       - name: Upload final packages
         uses: actions/upload-artifact@v4
@@ -749,10 +898,6 @@ jobs:
           name: ClassWidgets-Packages
           path: final-packages
 
-      - name: Generate package provenance
-        uses: actions/attest-build-provenance@v3
-        with:
-          subject-path: "final-packages/*.zip"
 
   publish:
     name: Publish
