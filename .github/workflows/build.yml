@@ -570,6 +570,7 @@ jobs:
             --add-data "view:view" \
             --add-data "i18n/*.qm:i18n" \
             --add-data "LICENSE:." \
+            --hidden-import darkdetect \
             --strip \
             --optimize 2
 
