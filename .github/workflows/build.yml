@@ -326,11 +326,8 @@ jobs:
         if: matrix.platform == 'linux-x64'
         shell: bash
         run: |
-          sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /etc/apt/sources.list
-          sed -i 's|http://security.debian.org/debian-security|http://archive.debian.org/debian-security|g' /etc/apt/sources.list
-          export DEBIAN_FRONTEND=noninteractive
           apt-get update -qq && apt-get upgrade -y
-          sudo apt update && sudo apt install -y \
+          apt-get install -y \
             zip unzip wget curl ca-certificates git build-essential pkg-config python3-dev \
             libc6-dev linux-libc-dev libffi-dev libxau-dev libxdmcp-dev libxkbcommon-dev \
             libxcb1-dev libx11-dev libxcb-xkb-dev libxcb-xinerama0 libxinerama1 \
