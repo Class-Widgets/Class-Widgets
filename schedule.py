@@ -13,8 +13,8 @@ class ScheduleManager(ABC):
 
     @abstractmethod
     def get_next_lessons(self) -> List[str]:
-        pass #noqa
+        pass # noqa
 
     @abstractmethod
     def get_status_with_time(self) -> Tuple[str, float]:
-        pass #noqa
+        pass # noqa
