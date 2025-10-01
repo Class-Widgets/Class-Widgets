@@ -35,6 +35,10 @@ class ClassWidgetsScheduleVersion1Manager(ScheduleManager):
             'odd': {"0": [], "1": [], "2": [], "3": [], "4": [], "5": [], "6": []},
             'even': {"0": [], "1": [], "2": [], "3": [], "4": [], "5": [], "6": []},
         }
+        self._cache_lesson_index = None
+        self._cache_status = None
+        self._cache_time = None
+        self._cache_lesson_today = None
         self._init_parser(self.file_path)
         self._init_part()
         self._init_lessons()
@@ -77,8 +81,8 @@ class ClassWidgetsScheduleVersion1Manager(ScheduleManager):
                         self.lessons['odd'][week].append(
                             (
                                 (
-                                    timeline_current_usage.get(item_name, self.parts[item_name][0]),
-                                    item_time,
+                                    timeline_current_usage.get(item_name, self.parts[item_name][0]) * 60,
+                                    item_time * 60,
                                     {lessons_data[lesson_cnt]},
                                 )
                             )
@@ -106,6 +110,32 @@ class ClassWidgetsScheduleVersion1Manager(ScheduleManager):
                     )
             self.lessons['odd'][week] = merged_lessons
 
+        for week, lessons_data in self.schedule.schedule_even.items():
+            current_week = (
+                'default' if len(self.schedule.timeline_even.get(week, [])) == 0 else week
+            )
+            timeline_data = self.schedule.timeline_even[current_week]
+            timeline_data_sorted = sorted(timeline_data, key=sort_timeline_key)
+            timeline_current_usage = {}
+            lesson_cnt = 0
+            self.lessons['even'][week] = []
+            for isbreak, item_name, _item_index, item_time in timeline_data_sorted:
+                if not isbreak:
+                    if lessons_data[lesson_cnt] != QCoreApplication.translate('menu', '未添加'):
+                        self.lessons['even'][week].append(
+                            (
+                                (
+                                    timeline_current_usage.get(item_name, self.parts[item_name][0]) * 60,
+                                    item_time * 60,
+                                    {lessons_data[lesson_cnt]},
+                                )
+                            )
+                        )
+                    lesson_cnt += 1
+                timeline_current_usage[item_name] = (
+                    timeline_current_usage.get(item_name, self.parts[item_name][0]) + item_time
+                )
+            
             self.lessons['even'][week] = sorted(self.lessons['even'][week], key=sort_lessons_key)
             merged_lessons = []
             for start_time, duration, lessons_set in self.lessons['even'][week]:
@@ -124,32 +154,6 @@ class ClassWidgetsScheduleVersion1Manager(ScheduleManager):
                     )
             self.lessons['even'][week] = merged_lessons
 
-        for week, lessons_data in self.schedule.schedule_even.items():
-            current_week = (
-                'default' if len(self.schedule.timeline_even.get(week, [])) == 0 else week
-            )
-            timeline_data = self.schedule.timeline_even[current_week]
-            timeline_data_sorted = sorted(timeline_data, key=sort_timeline_key)
-            timeline_current_usage = {}
-            lesson_cnt = 0
-            self.lessons['even'][week] = []
-            for isbreak, item_name, _item_index, item_time in timeline_data_sorted:
-                if not isbreak:
-                    if lessons_data[lesson_cnt] != QCoreApplication.translate('menu', '未添加'):
-                        self.lessons['even'][week].append(
-                            (
-                                (
-                                    timeline_current_usage.get(item_name, self.parts[item_name][0]),
-                                    item_time,
-                                    {lessons_data[lesson_cnt]},
-                                )
-                            )
-                        )
-                    lesson_cnt += 1
-                timeline_current_usage[item_name] = (
-                    timeline_current_usage.get(item_name, self.parts[item_name][0]) + item_time
-                )
-
     def print_schedule(self):
         # For Debug 用完就删！！
         print(self.lessons)
@@ -159,7 +163,7 @@ class ClassWidgetsScheduleVersion1Manager(ScheduleManager):
         current_time = self.time_manager.get_current_time()
         current_weekday = self.time_manager.get_current_weekday()
         current_week_type = conf.get_week_type()
-        current_time_in_minutes = current_time.hour * 60 + current_time.minute
+        current_time_in_seconds = current_time.hour * 3600 + current_time.minute * 60 + current_time.second
         lessons_today = self.lessons['even' if current_week_type else 'odd'].get(
             str(current_weekday), []
         )
@@ -167,39 +171,118 @@ class ClassWidgetsScheduleVersion1Manager(ScheduleManager):
         while l <= r:
             mid = (l + r) // 2
             start_time, duration, lesson_names = lessons_today[mid]
-            if start_time <= current_time_in_minutes < start_time + duration:
+            if start_time <= current_time_in_seconds < start_time + duration:
                 return [x for lesson in lessons_today[mid:] for x in lesson[2]]
         if l < len(lessons_today):
             return [x for lesson in lessons_today[l:] for x in lesson[2]]
         return []  # 没有课程了
 
-    def get_status(self) -> Tuple[bool, float, str]:
+    def _init_get_status(self) -> Tuple[bool, float, str]:
         # 查找当前时间对应课程 返回 is_break, duration, lesson_name
         current_time = self.time_manager.get_current_time()
+        self._cache_time = current_time
         current_weekday = self.time_manager.get_current_weekday()
         current_week_type = conf.get_week_type()
-        current_time_in_minutes = current_time.hour * 60 + current_time.minute
+        current_time_in_seconds = current_time.hour * 3600 + current_time.minute * 60 + current_time.second
         lessons_today = self.lessons['even' if current_week_type else 'odd'].get(
             str(current_weekday), []
         )
+        self._cache_lessons_today: List[Tuple[int, int, str]] = lessons_today
         l, r = 0, len(lessons_today) - 1
         while l <= r:
             mid = (l + r) // 2
             start_time, duration, lesson_names = lessons_today[mid]
-            if start_time <= current_time_in_minutes < start_time + duration:
+            if start_time <= current_time_in_seconds < start_time + duration:
+                self._cache_status, self._cache_lesson_index = (
+                    False,
+                    mid,
+                )
                 return (
                     False,
-                    (start_time + duration - current_time_in_minutes),
+                    (start_time + duration - current_time_in_seconds),
                     '、'.join(lesson_names),
                 )
-            elif current_time_in_minutes < start_time:
+            elif current_time_in_seconds < start_time:
                 r = mid - 1
             else:
                 l = mid + 1
+        self._cache_lesson_index, self._cache_status = l, True
         if l < len(lessons_today):
-            next_start_time, next_duration, next_lesson_names = lessons_today[l]
-            return True, (next_start_time - current_time_in_minutes), ''
+            next_start_time, _next_duration, _next_lesson_names = lessons_today[l]
+            return True, (next_start_time - current_time_in_seconds), ''
         return True, -1.0, ''  # 没有课程了
+    
+    def get_status(self) -> Tuple[bool, float, str]:
+        if self._cache_time is None:
+            return self._init_get_status()
+        assert self._cache_lesson_index is not None
+        assert self._cache_status is not None
+        assert self._cache_lessons_today is not None
+
+        current_time = self.time_manager.get_current_time()
+        current_weekday = self.time_manager.get_current_weekday()
+        current_week_type = conf.get_week_type()
+        current_time_in_seconds = current_time.hour * 60 + current_time.minute
+
+        # 如果跨天或课表变动，重新初始化
+        if self._cache_time.weekday() != current_time.weekday() or \
+        self._cache_lessons_today != self.lessons['even' if current_week_type else 'odd'].get(str(current_weekday), []):
+            return self._init_get_status()
+
+        idx = self._cache_lesson_index
+        lessons_today = self._cache_lessons_today
+
+        if current_time_in_seconds == self._cache_time.hour * 3600 + self._cache_time.minute * 60 + self._cache_time.second:
+            if self._cache_status:
+                if idx < len(lessons_today):
+                    next_start, _, _ = lessons_today[idx]
+                    return True, (next_start - current_time_in_seconds), ''
+                return True, -1.0, ''
+            start, duration, names = lessons_today[idx]
+            return False, (start + duration - current_time_in_seconds), '、'.join(names)
+
+        # 优雅地向前或向后查找
+        if current_time_in_seconds > self._cache_time.hour * 3600 + self._cache_time.minute * 60 + self._cache_time.second:
+            # 向后查找
+            while idx + 1 < len(lessons_today):
+                start, duration, names = lessons_today[idx + 1]
+                if current_time_in_seconds < start + duration:
+                    if current_time_in_seconds >= start:
+                        self._cache_lesson_index = idx + 1
+                        self._cache_time = current_time
+                        self._cache_status = False
+                        return False, (start + duration - current_time_in_seconds), '、'.join(names)
+                    break
+                idx += 1
+            # 如果没找到，说明已经下课
+            self._cache_lesson_index = idx + 1
+            self._cache_time = current_time
+            self._cache_status = True
+            if self._cache_lesson_index < len(lessons_today):
+                next_start, _, _ = lessons_today[self._cache_lesson_index]
+                return True, (next_start - current_time_in_seconds), ''
+            return True, -1.0, ''
+        
+        # 向前查找
+        while idx > 0:
+            start, duration, names = lessons_today[idx - 1]
+            if current_time_in_seconds >= start:
+                if current_time_in_seconds < start + duration:
+                    self._cache_lesson_index = idx - 1
+                    self._cache_time = current_time
+                    self._cache_status = False
+                    return False, (start + duration - current_time_in_seconds), '、'.join(names)
+                break
+            idx -= 1
+        # 如果没找到，说明还没上课
+        self._cache_lesson_index = idx
+        self._cache_time = current_time
+        self._cache_status = True
+        if idx < len(lessons_today):
+            next_start, _, _ = lessons_today[idx]
+            return True, (next_start - current_time_in_seconds), ''
+        return True, -1.0, ''
+        
 
 
 if __name__ == '__main__':
