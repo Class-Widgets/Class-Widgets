@@ -198,20 +198,26 @@ class ClassWidgetsScheduleVersion1Manager(ScheduleManager):
         while l <= r:
             mid = (l + r) // 2
             start_time, duration, lesson_names = lessons_today[mid]
-            if start_time <= current_time_in_seconds < start_time + duration:
-                self._cache_status, self._cache_lesson_index = (
-                    False,
-                    mid,
-                )
-                return (
-                    False,
-                    (start_time + duration - current_time_in_seconds),
-                    '、'.join(lesson_names),
-                )
-            elif current_time_in_seconds < start_time:
-                r = mid - 1
-            else:
+            if start_time <= current_time_in_seconds:
+                if current_time_in_seconds < start_time + duration:
+                    self._cache_status, self._cache_lesson_index = (
+                        False,
+                        mid,
+                    )
+                    return (
+                        False,
+                        (start_time + duration - current_time_in_seconds),
+                        '、'.join(lesson_names),
+                    )
+                elif mid == len(lessons_today) - 1 or current_time_in_seconds < lessons_today[mid + 1][0]:
+                    # 在当前课程结束和下一节课开始之间
+                    self._cache_status, self._cache_lesson_index = True, mid + 1
+                    if mid + 1 < len(lessons_today):
+                        return True, (lessons_today[mid + 1][0] - current_time_in_seconds), ''
+                    return True, -1.0, ''
                 l = mid + 1
+            else:
+                r = mid - 1
         self._cache_lesson_index, self._cache_status = l, True
         if l < len(lessons_today):
             next_start_time, _next_duration, _next_lesson_names = lessons_today[l]
@@ -228,7 +234,7 @@ class ClassWidgetsScheduleVersion1Manager(ScheduleManager):
         current_time = self.time_manager.get_current_time()
         current_weekday = self.time_manager.get_current_weekday()
         current_week_type = conf.get_week_type()
-        current_time_in_seconds = current_time.hour * 60 + current_time.minute
+        current_time_in_seconds = current_time.hour * 3600 + current_time.minute * 60 + current_time.second
 
         # 如果跨天或课表变动，重新初始化
         if self._cache_time.weekday() != current_time.weekday() or self._cache_lessons_today != self.lessons[
@@ -241,10 +247,8 @@ class ClassWidgetsScheduleVersion1Manager(ScheduleManager):
         idx = self._cache_lesson_index
         lessons_today = self._cache_lessons_today
 
-        if (
-            current_time_in_seconds
-            == self._cache_time.hour * 3600 + self._cache_time.minute * 60 + self._cache_time.second
-        ):
+        cache_time_in_seconds = self._cache_time.hour * 3600 + self._cache_time.minute * 60 + self._cache_time.second
+        if current_time_in_seconds == cache_time_in_seconds:
             if self._cache_status:
                 if idx < len(lessons_today):
                     next_start, _, _ = lessons_today[idx]
@@ -254,28 +258,35 @@ class ClassWidgetsScheduleVersion1Manager(ScheduleManager):
             return False, (start + duration - current_time_in_seconds), '、'.join(names)
 
         # 优雅地向前或向后查找
-        if (
-            current_time_in_seconds
-            > self._cache_time.hour * 3600 + self._cache_time.minute * 60 + self._cache_time.second
-        ):
+        if current_time_in_seconds > cache_time_in_seconds:
             # 向后查找
-            while idx + 1 < len(lessons_today):
-                start, duration, names = lessons_today[idx + 1]
-                if current_time_in_seconds < start + duration:
-                    if current_time_in_seconds >= start:
-                        self._cache_lesson_index = idx + 1
+            # 先检查当前课程是否结束
+            start, duration, names = lessons_today[idx]
+            if current_time_in_seconds < start + duration:
+                return False, (start + duration - current_time_in_seconds), '、'.join(names)
+            
+            # 查找下一节课
+            idx += 1
+            if idx < len(lessons_today):
+                next_start, next_duration, next_names = lessons_today[idx]
+                if current_time_in_seconds >= next_start:
+                    # 已经到达下一节课时间
+                    if current_time_in_seconds < next_start + next_duration:
+                        self._cache_lesson_index = idx
                         self._cache_time = current_time
                         self._cache_status = False
-                        return False, (start + duration - current_time_in_seconds), '、'.join(names)
-                    break
-                idx += 1
-            # 如果没找到，说明已经下课
-            self._cache_lesson_index = idx + 1
+                        return False, (next_start + next_duration - current_time_in_seconds), '、'.join(next_names)
+                else:
+                    # 在两节课之间
+                    self._cache_lesson_index = idx
+                    self._cache_time = current_time
+                    self._cache_status = True
+                    return True, (next_start - current_time_in_seconds), ''
+            
+            # 没有更多课程
+            self._cache_lesson_index = idx
             self._cache_time = current_time
             self._cache_status = True
-            if self._cache_lesson_index < len(lessons_today):
-                next_start, _, _ = lessons_today[self._cache_lesson_index]
-                return True, (next_start - current_time_in_seconds), ''
             return True, -1.0, ''
 
         # 向前查找
@@ -308,4 +319,3 @@ if __name__ == '__main__':
     while True:
         print(mgr.get_status())
         time.sleep(0.5)
-        
