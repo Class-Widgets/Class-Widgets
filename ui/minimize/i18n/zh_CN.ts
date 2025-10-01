@@ -24,70 +24,70 @@
         <translation type="vanished">取消</translation>
     </message>
     <message>
-        <location filename="../widget-base.ui" line="26"/>
         <location filename="../dark/widget-base.ui" line="26"/>
+        <location filename="../widget-base.ui" line="26"/>
         <source>基本组件</source>
         <translation>基本组件</translation>
     </message>
     <message>
-        <location filename="../widget-base.ui" line="89"/>
         <location filename="../dark/widget-base.ui" line="91"/>
+        <location filename="../widget-base.ui" line="89"/>
         <source>Title</source>
         <translation>Title</translation>
     </message>
     <message>
-        <location filename="../widget-base.ui" line="125"/>
         <location filename="../dark/widget-base.ui" line="128"/>
+        <location filename="../widget-base.ui" line="125"/>
         <source>Content</source>
         <translation>Content</translation>
     </message>
     <message>
-        <location filename="../dark/widget-countdown-day.ui" line="26"/>
         <location filename="../widget-countdown-day.ui" line="26"/>
+        <location filename="../dark/widget-countdown-day.ui" line="26"/>
         <source>倒计日</source>
         <translation>倒计日</translation>
     </message>
     <message>
-        <location filename="../dark/widget-countdown-day.ui" line="50"/>
         <location filename="../widget-countdown-day.ui" line="50"/>
+        <location filename="../dark/widget-countdown-day.ui" line="50"/>
         <source>距离 中考 还有</source>
         <translation>距离 中考 还有</translation>
     </message>
     <message>
-        <location filename="../dark/widget-countdown-day.ui" line="82"/>
         <location filename="../widget-countdown-day.ui" line="82"/>
+        <location filename="../dark/widget-countdown-day.ui" line="82"/>
         <source>300 天</source>
         <translation>-- 天</translation>
     </message>
     <message>
-        <location filename="../widget-countdown.ui" line="26"/>
         <location filename="../dark/widget-countdown.ui" line="26"/>
+        <location filename="../widget-countdown.ui" line="26"/>
         <source>活动倒计时</source>
         <translation>活动倒计时</translation>
     </message>
     <message>
-        <location filename="../widget-countdown.ui" line="93"/>
         <location filename="../dark/widget-countdown.ui" line="93"/>
+        <location filename="../widget-countdown.ui" line="93"/>
         <source>倒计时</source>
         <translation>倒计时</translation>
     </message>
     <message>
-        <location filename="../widget-countdown.ui" line="125"/>
         <location filename="../dark/widget-countdown.ui" line="125"/>
+        <location filename="../widget-countdown.ui" line="125"/>
         <source>00:00</source>
         <translation>--:--</translation>
     </message>
     <message>
-        <location filename="../dark/widget-current-activity.ui" line="26"/>
-        <location filename="../dark/widget-current-activity.ui" line="103"/>
         <location filename="../widget-current-activity.ui" line="26"/>
         <location filename="../widget-current-activity.ui" line="103"/>
+        <location filename="../dark/widget-current-activity.ui" line="26"/>
+        <location filename="../dark/widget-current-activity.ui" line="103"/>
         <source>当前活动</source>
         <translation>当前活动</translation>
     </message>
     <message>
-        <location filename="../dark/widget-current-activity.ui" line="51"/>
         <location filename="../widget-current-activity.ui" line="51"/>
+        <location filename="../dark/widget-current-activity.ui" line="51"/>
         <source>  测试</source>
         <translation>  正在加载</translation>
     </message>
@@ -100,20 +100,20 @@
         <translation type="vanished">%p%</translation>
     </message>
     <message>
-        <location filename="../widget-next-activity.ui" line="26"/>
         <location filename="../dark/widget-next-activity.ui" line="26"/>
+        <location filename="../widget-next-activity.ui" line="26"/>
         <source>更多活动</source>
         <translation>更多活动</translation>
     </message>
     <message>
-        <location filename="../widget-next-activity.ui" line="50"/>
         <location filename="../dark/widget-next-activity.ui" line="50"/>
+        <location filename="../widget-next-activity.ui" line="50"/>
         <source>接下来</source>
         <translation>接下来</translation>
     </message>
     <message>
-        <location filename="../widget-next-activity.ui" line="82"/>
         <location filename="../dark/widget-next-activity.ui" line="82"/>
+        <location filename="../widget-next-activity.ui" line="82"/>
         <source>一  二  三  四  五</source>
         <translation type="unfinished"></translation>
     </message>

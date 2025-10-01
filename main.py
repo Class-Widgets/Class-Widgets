@@ -1176,7 +1176,6 @@ class WidgetsManager:
                 get_countdown(True)
             widget.update_data(path=widget.path)
             c += 1
-        p_loader.update_plugins()
 
         if notification.pushed_notification:
             notification.pushed_notification = False
@@ -3664,7 +3663,8 @@ def init() -> None:
             )
         mgr.full_hide_windows()
 
-    update_timer.add_callback(mgr.update_widgets)
+    update_timer.add_callback(mgr.update_widgets, interval=0.25)
+    update_timer.add_callback(p_loader.update_plugins, interval=1)
     update_timer.start()
 
     version = config_center.read_conf("Version", "version")
@@ -3836,8 +3836,8 @@ if __name__ == '__main__':
 
     if config_center.read_conf('Other', 'initialstartup') == '1':  # 首次启动
         try:
-            conf.add_shortcut('ClassWidgets.exe', str(CW_HOME / 'img/favicon.ico'))
-            conf.add_shortcut_to_startmenu(
+            utils.add_shortcut('ClassWidgets.exe', str(CW_HOME / 'img/favicon.ico'))
+            utils.add_shortcut_to_startmenu(
                 str(CW_HOME / 'ClassWidgets.exe'), str(CW_HOME / 'img/favicon.ico')
             )
             config_center.write_conf('Other', 'initialstartup', '')
