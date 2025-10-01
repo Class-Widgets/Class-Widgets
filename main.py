@@ -3245,7 +3245,11 @@ class DesktopWidget(QWidget):  # 主要小组件
             if temp_data and temp_data.lower() != 'none':
                 temperature = db.weather_processor._convert_temperature_unit(temp_data)
             else:
-                temperature = '--°'
+                target_unit = config_center.read_conf('Weather', 'temperature_unit', 'celsius')
+                temperature = '--℃'
+                if target_unit == 'fahrenheit':
+                    temperature = '--℉'
+                self.temperature.setText(temperature)
             current_city = self.findChild(QLabel, 'current_city')
             try:
                 path = db.get_weather_icon_by_code(db.get_weather_data('icon', weather_data))
@@ -3259,7 +3263,11 @@ class DesktopWidget(QWidget):  # 主要小组件
                     converted_temp = db.weather_processor._convert_temperature_unit(temp_data)
                     self.temperature.setText(converted_temp)
                 else:
-                    self.temperature.setText('--°')
+                    target_unit = config_center.read_conf('Weather', 'temperature_unit', 'celsius')
+                    temperature = '--℃'
+                    if target_unit == 'fahrenheit':
+                        temperature = '--℉'
+                    self.temperature.setText(temperature)
                 city_name = db.search_by_num(config_center.read_conf('Weather', 'city'))
                 if city_name != 'coordinates':
                     current_city.setText(f"{city_name} · " f"{weather_name}")
@@ -3280,10 +3288,16 @@ class DesktopWidget(QWidget):  # 主要小组件
             logger.error(f'获取天气数据出错：{weather_data}')
             try:
                 if hasattr(self, 'weather_icon'):
-                    self.weather_icon.setIcon(QIcon(CW_HOME / 'img/weather/99.svg'))
+                    self.weather_icon.setIcon(QIcon(str(CW_HOME) + '/img/weather/99.svg'))
                     self.alert_icon.hide()
                     self.weather_alert_text.hide()
-                    self.temperature.setText('--°')
+
+                    target_unit = config_center.read_conf('Weather', 'temperature_unit', 'celsius')
+                    temperature = '--℃'
+                    if target_unit == 'fahrenheit':
+                        temperature = '--℉'
+
+                    self.temperature.setText(temperature)
                     self.current_alerts = []
                     self.current_alert_index = 0
                     self.current_reminders = []
