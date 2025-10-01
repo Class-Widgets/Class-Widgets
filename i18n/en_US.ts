@@ -37,49 +37,49 @@ You can add more voice in system settings (*≧▽≦)</translation>
 <context>
     <name>DesktopWidget</name>
     <message>
-        <location filename="../main.py" line="1948"/>
-        <location filename="../main.py" line="2461"/>
+        <location filename="../main.py" line="1947"/>
+        <location filename="../main.py" line="2460"/>
         <source>{year} 年 {month}</source>
         <translation>{month} {year}</translation>
     </message>
     <message>
-        <location filename="../main.py" line="1954"/>
-        <location filename="../main.py" line="2466"/>
+        <location filename="../main.py" line="1953"/>
+        <location filename="../main.py" line="2465"/>
         <source>{day}日  {week}</source>
         <translation>{day}  {week}</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2375"/>
+        <location filename="../main.py" line="2374"/>
         <source>完全隐藏/显示小组件</source>
         <translation>Completely hide or show widgets</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2380"/>
+        <location filename="../main.py" line="2379"/>
         <source>最小化为浮窗</source>
         <translation>Minimize to floating windows</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2388"/>
+        <location filename="../main.py" line="2387"/>
         <source>插件广场</source>
         <translation>Plugin Plaza</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2389"/>
+        <location filename="../main.py" line="2388"/>
         <source>额外选项</source>
         <translation>Additional Options</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2390"/>
+        <location filename="../main.py" line="2389"/>
         <source>设置</source>
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2394"/>
+        <location filename="../main.py" line="2393"/>
         <source>重新启动</source>
         <translation>Restart</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2395"/>
+        <location filename="../main.py" line="2394"/>
         <source>退出</source>
         <translation>Exit</translation>
     </message>
@@ -88,7 +88,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
         <translation type="vanished">{data}</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3301"/>
+        <location filename="../main.py" line="3300"/>
         <source>未知</source>
         <translation>Unknown</translation>
     </message>
@@ -97,17 +97,17 @@ You can add more voice in system settings (*≧▽≦)</translation>
         <translation type="vanished">{month} {year}</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2528"/>
+        <location filename="../main.py" line="2527"/>
         <source>&lt; - 分钟</source>
         <translation>&lt; - min</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2531"/>
+        <location filename="../main.py" line="2530"/>
         <source>&lt;&#x2005;{minutes}&#x2005;分钟</source>
         <translation>&lt;&#x2005;{minutes}&#x2005;min</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2543"/>
+        <location filename="../main.py" line="2542"/>
         <source>距离 {cd_text} 还有</source>
         <translation>Till {cd_text}</translation>
     </message>
@@ -120,7 +120,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
         <translation type="vanished">{data} alert</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3299"/>
+        <location filename="../main.py" line="3298"/>
         <source>{city} · 未知</source>
         <translation>{city} · Unknown</translation>
     </message>
@@ -224,12 +224,12 @@ You can add more voice in system settings (*≧▽≦)</translation>
 <context>
     <name>FloatingWidget</name>
     <message>
-        <location filename="../main.py" line="1651"/>
+        <location filename="../main.py" line="1650"/>
         <source>&lt; - 分钟</source>
         <translation>&lt; - min</translation>
     </message>
     <message>
-        <location filename="../main.py" line="1655"/>
+        <location filename="../main.py" line="1654"/>
         <source>&lt;&#x2005;{minutes}&#x2005;分钟</source>
         <translation>&lt;&#x2005;{minutes}&#x2005;min</translation>
     </message>
@@ -237,27 +237,27 @@ You can add more voice in system settings (*≧▽≦)</translation>
 <context>
     <name>Form</name>
     <message>
-        <location filename="../view/pp/settings.ui" line="20"/>
-        <location filename="../view/pp/latests.ui" line="20"/>
-        <location filename="../view/pp/plugin_detail.ui" line="20"/>
-        <location filename="../view/pp/home.ui" line="20"/>
-        <location filename="../view/pp/search.ui" line="20"/>
-        <location filename="../view/menu/countdown_custom_edit.ui" line="14"/>
-        <location filename="../view/menu/schedule_edit.ui" line="14"/>
-        <location filename="../view/menu/subject.ui" line="14"/>
-        <location filename="../view/menu/about.ui" line="14"/>
+        <location filename="../view/extra_menu.ui" line="14"/>
         <location filename="../view/menu/configs.ui" line="20"/>
-        <location filename="../view/menu/timeline_edit.ui" line="14"/>
-        <location filename="../view/menu/weather.ui" line="21"/>
         <location filename="../view/menu/preview.ui" line="14"/>
+        <location filename="../view/menu/advance.ui" line="20"/>
+        <location filename="../view/menu/help.ui" line="14"/>
+        <location filename="../view/menu/timeline_edit.ui" line="14"/>
+        <location filename="../view/menu/file_item.ui" line="14"/>
+        <location filename="../view/menu/schedule_edit.ui" line="14"/>
+        <location filename="../view/menu/custom.ui" line="20"/>
+        <location filename="../view/menu/subject.ui" line="14"/>
+        <location filename="../view/menu/schedule_db_edit.ui" line="14"/>
+        <location filename="../view/menu/countdown_custom_edit.ui" line="14"/>
+        <location filename="../view/menu/weather.ui" line="21"/>
+        <location filename="../view/menu/about.ui" line="14"/>
         <location filename="../view/menu/sound.ui" line="20"/>
         <location filename="../view/menu/plugin_mgr.ui" line="14"/>
-        <location filename="../view/menu/help.ui" line="14"/>
-        <location filename="../view/menu/advance.ui" line="20"/>
-        <location filename="../view/menu/file_item.ui" line="14"/>
-        <location filename="../view/menu/custom.ui" line="20"/>
-        <location filename="../view/menu/schedule_db_edit.ui" line="14"/>
-        <location filename="../view/extra_menu.ui" line="14"/>
+        <location filename="../view/pp/search.ui" line="20"/>
+        <location filename="../view/pp/plugin_detail.ui" line="20"/>
+        <location filename="../view/pp/latests.ui" line="20"/>
+        <location filename="../view/pp/home.ui" line="20"/>
+        <location filename="../view/pp/settings.ui" line="20"/>
         <location filename="../view/widget-toast-bar.ui" line="26"/>
         <source>Form</source>
         <translation>Form</translation>
@@ -293,14 +293,14 @@ You can add more voice in system settings (*≧▽≦)</translation>
         <translation>Temporary replacement of the course of the day, invalid after restart</translation>
     </message>
     <message>
-        <location filename="../view/menu/schedule_edit.ui" line="294"/>
         <location filename="../view/extra_menu.ui" line="208"/>
+        <location filename="../view/menu/schedule_edit.ui" line="294"/>
         <source>课程/活动</source>
         <translation>Courses/Activities</translation>
     </message>
     <message>
-        <location filename="../view/menu/schedule_edit.ui" line="320"/>
         <location filename="../view/extra_menu.ui" line="234"/>
+        <location filename="../view/menu/schedule_edit.ui" line="320"/>
         <source>自定义课程</source>
         <translation>Custom courses</translation>
     </message>
@@ -315,12 +315,12 @@ You can add more voice in system settings (*≧▽≦)</translation>
         <translation>View more Settings</translation>
     </message>
     <message>
-        <location filename="../view/menu/countdown_custom_edit.ui" line="229"/>
+        <location filename="../view/extra_menu.ui" line="306"/>
+        <location filename="../view/menu/timeline_edit.ui" line="582"/>
         <location filename="../view/menu/schedule_edit.ui" line="378"/>
         <location filename="../view/menu/subject.ui" line="89"/>
-        <location filename="../view/menu/timeline_edit.ui" line="582"/>
         <location filename="../view/menu/schedule_db_edit.ui" line="160"/>
-        <location filename="../view/extra_menu.ui" line="306"/>
+        <location filename="../view/menu/countdown_custom_edit.ui" line="229"/>
         <source>保存</source>
         <translation>Save</translation>
     </message>
@@ -437,14 +437,6 @@ You can add more voice in system settings (*≧▽≦)</translation>
         <translation>If enabled, Class Widgets will check on the network at startup to see if the selected update channel has the latest version updated.</translation>
     </message>
     <message>
-        <location filename="../view/pp/settings.ui" line="144"/>
-        <location filename="../view/menu/about.ui" line="693"/>
-        <location filename="../view/menu/sound.ui" line="136"/>
-        <location filename="../view/menu/sound.ui" line="214"/>
-        <location filename="../view/menu/sound.ui" line="292"/>
-        <location filename="../view/menu/sound.ui" line="383"/>
-        <location filename="../view/menu/sound.ui" line="608"/>
-        <location filename="../view/menu/sound.ui" line="687"/>
         <location filename="../view/menu/advance.ui" line="152"/>
         <location filename="../view/menu/advance.ui" line="715"/>
         <location filename="../view/menu/advance.ui" line="1227"/>
@@ -452,11 +444,23 @@ You can add more voice in system settings (*≧▽≦)</translation>
         <location filename="../view/menu/advance.ui" line="1747"/>
         <location filename="../view/menu/advance.ui" line="1845"/>
         <location filename="../view/menu/advance.ui" line="1926"/>
+        <location filename="../view/menu/about.ui" line="693"/>
+        <location filename="../view/menu/sound.ui" line="136"/>
+        <location filename="../view/menu/sound.ui" line="214"/>
+        <location filename="../view/menu/sound.ui" line="292"/>
+        <location filename="../view/menu/sound.ui" line="383"/>
+        <location filename="../view/menu/sound.ui" line="608"/>
+        <location filename="../view/menu/sound.ui" line="687"/>
+        <location filename="../view/pp/settings.ui" line="144"/>
         <source>启用</source>
         <translation>Enable</translation>
     </message>
     <message>
-        <location filename="../view/pp/settings.ui" line="147"/>
+        <location filename="../view/menu/advance.ui" line="1230"/>
+        <location filename="../view/menu/advance.ui" line="1404"/>
+        <location filename="../view/menu/advance.ui" line="1750"/>
+        <location filename="../view/menu/advance.ui" line="1848"/>
+        <location filename="../view/menu/advance.ui" line="1929"/>
         <location filename="../view/menu/about.ui" line="696"/>
         <location filename="../view/menu/sound.ui" line="139"/>
         <location filename="../view/menu/sound.ui" line="217"/>
@@ -464,11 +468,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
         <location filename="../view/menu/sound.ui" line="386"/>
         <location filename="../view/menu/sound.ui" line="611"/>
         <location filename="../view/menu/sound.ui" line="690"/>
-        <location filename="../view/menu/advance.ui" line="1230"/>
-        <location filename="../view/menu/advance.ui" line="1404"/>
-        <location filename="../view/menu/advance.ui" line="1750"/>
-        <location filename="../view/menu/advance.ui" line="1848"/>
-        <location filename="../view/menu/advance.ui" line="1929"/>
+        <location filename="../view/pp/settings.ui" line="147"/>
         <source>禁用</source>
         <translation>Disable</translation>
     </message>
@@ -650,9 +650,9 @@ When disabled: Clicking on the widget will appear as if it&apos;s not there, dir
         <translation>Minimize to a floating window</translation>
     </message>
     <message>
-        <location filename="../view/menu/plugin_mgr.ui" line="637"/>
         <location filename="../view/menu/advance.ui" line="1062"/>
         <location filename="../view/menu/advance.ui" line="1767"/>
+        <location filename="../view/menu/plugin_mgr.ui" line="637"/>
         <source>其他</source>
         <translation>Others</translation>
     </message>
@@ -843,8 +843,8 @@ If disabled, clicking a widget is equivalent to clicking the window behind the w
         <translation>Database Edit</translation>
     </message>
     <message>
-        <location filename="../view/menu/schedule_edit.ui" line="44"/>
         <location filename="../view/menu/preview.ui" line="35"/>
+        <location filename="../view/menu/schedule_edit.ui" line="44"/>
         <source>课程表</source>
         <translation>Schedule</translation>
     </message>
@@ -1072,22 +1072,22 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
         <translation type="vanished">* After changing weather sources, you need to select the city again</translation>
     </message>
     <message>
-        <location filename="../view/menu/plugin_mgr.ui" line="706"/>
-        <location filename="../view/menu/plugin_mgr.ui" line="712"/>
         <location filename="../view/menu/custom.ui" line="738"/>
         <location filename="../view/menu/custom.ui" line="744"/>
         <location filename="../view/menu/custom.ui" line="816"/>
         <location filename="../view/menu/custom.ui" line="822"/>
         <location filename="../view/menu/custom.ui" line="911"/>
         <location filename="../view/menu/custom.ui" line="917"/>
+        <location filename="../view/menu/plugin_mgr.ui" line="706"/>
+        <location filename="../view/menu/plugin_mgr.ui" line="712"/>
         <source>关</source>
         <translation>Off</translation>
     </message>
     <message>
-        <location filename="../view/menu/plugin_mgr.ui" line="709"/>
         <location filename="../view/menu/custom.ui" line="741"/>
         <location filename="../view/menu/custom.ui" line="819"/>
         <location filename="../view/menu/custom.ui" line="914"/>
+        <location filename="../view/menu/plugin_mgr.ui" line="709"/>
         <source>开</source>
         <translation>On</translation>
     </message>
@@ -1097,8 +1097,8 @@ Note: The readability of the resulting CSES schedule may be reduced</translation
         <translation>Approximate countdown of floating window</translation>
     </message>
     <message>
-        <location filename="../view/menu/weather.ui" line="1374"/>
         <location filename="../view/menu/custom.ui" line="839"/>
+        <location filename="../view/menu/weather.ui" line="1374"/>
         <source>显示</source>
         <translation>Display</translation>
     </message>
@@ -1374,8 +1374,8 @@ Use spaces to separate multiple strings</translation>
         <translation>Discord</translation>
     </message>
     <message>
-        <location filename="../view/pp/settings.ui" line="71"/>
         <location filename="../view/menu/plugin_mgr.ui" line="35"/>
+        <location filename="../view/pp/settings.ui" line="71"/>
         <source>插件</source>
         <translation>Plugins</translation>
     </message>
@@ -1891,17 +1891,17 @@ But make sure that the plugins you have downloaded in Plugin Plaza are secure pl
 <context>
     <name>PluginCard_Horizontal</name>
     <message>
-        <location filename="../plugin_plaza.py" line="479"/>
+        <location filename="../plugin_plaza.py" line="480"/>
         <source>安装</source>
         <translation>Install</translation>
     </message>
     <message>
-        <location filename="../plugin_plaza.py" line="486"/>
+        <location filename="../plugin_plaza.py" line="487"/>
         <source>已安装</source>
         <translation>Installed</translation>
     </message>
     <message>
-        <location filename="../plugin_plaza.py" line="492"/>
+        <location filename="../plugin_plaza.py" line="493"/>
         <source>更新</source>
         <translation>Update</translation>
     </message>
@@ -1909,33 +1909,33 @@ But make sure that the plugins you have downloaded in Plugin Plaza are secure pl
 <context>
     <name>PluginDetailPage</name>
     <message>
-        <location filename="../plugin_plaza.py" line="351"/>
+        <location filename="../plugin_plaza.py" line="352"/>
         <source>  安装  </source>
         <translation>  Install  </translation>
     </message>
     <message>
-        <location filename="../plugin_plaza.py" line="356"/>
-        <location filename="../plugin_plaza.py" line="389"/>
+        <location filename="../plugin_plaza.py" line="357"/>
+        <location filename="../plugin_plaza.py" line="390"/>
         <source>  安装中  </source>
         <translation>  Installing  </translation>
     </message>
     <message>
-        <location filename="../plugin_plaza.py" line="359"/>
+        <location filename="../plugin_plaza.py" line="360"/>
         <source>  已安装  </source>
         <translation>  Installed  </translation>
     </message>
     <message>
-        <location filename="../plugin_plaza.py" line="365"/>
+        <location filename="../plugin_plaza.py" line="366"/>
         <source>更新</source>
         <translation>Update</translation>
     </message>
     <message>
-        <location filename="../plugin_plaza.py" line="372"/>
+        <location filename="../plugin_plaza.py" line="373"/>
         <source>为 Class Widgets 安装</source>
         <translation>Install for Class Widgets</translation>
     </message>
     <message>
-        <location filename="../plugin_plaza.py" line="375"/>
+        <location filename="../plugin_plaza.py" line="376"/>
         <source>下载到本地</source>
         <translation>Download to local</translation>
     </message>
@@ -1943,12 +1943,12 @@ But make sure that the plugins you have downloaded in Plugin Plaza are secure pl
 <context>
     <name>PluginPlaza</name>
     <message>
-        <location filename="../plugin_plaza.py" line="704"/>
+        <location filename="../plugin_plaza.py" line="705"/>
         <source>{month}月{day}日 {weekday}</source>
         <translation>{month} {day} {weekday}</translation>
     </message>
     <message>
-        <location filename="../plugin_plaza.py" line="854"/>
+        <location filename="../plugin_plaza.py" line="855"/>
         <source>错误原因：{error_info}</source>
         <translation>Error: {error_info}</translation>
     </message>
@@ -2979,14 +2979,14 @@ Save failed. Please submit the logs in ./log/ to the developer to report the iss
         <translation>Weather</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6315"/>
+        <location filename="../menu.py" line="6322"/>
         <source>界面语言已切换为 {selected_lang_name}
 新语言将在重启程序后完全生效</source>
         <translation>Interface language has been switched to {selected_lang_name}.
 The new language will take full effect after restarting the program</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6353"/>
+        <location filename="../menu.py" line="6360"/>
         <source>界面语言切换时出错: {e}</source>
         <translation>Error switching interface language: {e}</translation>
     </message>
@@ -3389,12 +3389,12 @@ Saved to ./config.ini</translation>
         <translation>About This Product</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6230"/>
+        <location filename="../menu.py" line="6237"/>
         <source>Class Widgets - 设置</source>
         <translation>Class Widgets - Settings</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6313"/>
+        <location filename="../menu.py" line="6320"/>
         <source>界面语言切换成功 ♪(´▽｀)</source>
         <translation>Interface language switched successfully ♪(´▽｀)</translation>
     </message>
@@ -3407,19 +3407,19 @@ The interface language has been switched to {selected_lang_name}.
 The new language will take full effect after restarting the application.</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6345"/>
+        <location filename="../menu.py" line="6352"/>
         <source>界面语言切换失败 (＃°Д°)</source>
         <translation>Interface language switch failed (＃°Д°)</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6346"/>
+        <location filename="../menu.py" line="6353"/>
         <source>无法加载选定的界面语言包，请检查翻译文件是否存在</source>
         <translation>Failed to load the selected interface language pack. Please check if the translation file exists</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1897"/>
-        <location filename="../menu.py" line="6349"/>
-        <location filename="../menu.py" line="6359"/>
+        <location filename="../menu.py" line="6356"/>
+        <location filename="../menu.py" line="6366"/>
         <source>确定</source>
         <translation>OK</translation>
     </message>
@@ -3430,12 +3430,12 @@ The new language will take full effect after restarting the application.</transl
 Error occurred while switching interface language: {e}</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6355"/>
+        <location filename="../menu.py" line="6362"/>
         <source>界面语言切换出错 (＃°Д°)</source>
         <translation>Interface language switch error (＃°Д°)</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6356"/>
+        <location filename="../menu.py" line="6363"/>
         <source>切换界面语言时发生错误: {e}</source>
         <translation>An error occurred while switching the interface language: {e}</translation>
     </message>
@@ -3879,7 +3879,7 @@ These placeholders apply only to the “Other Notifications”:
 <context>
     <name>WidgetsManager</name>
     <message>
-        <location filename="../main.py" line="1221"/>
+        <location filename="../main.py" line="1220"/>
         <source>未知组件</source>
         <translation>Unknown components</translation>
     </message>
@@ -3950,11 +3950,11 @@ These placeholders apply only to the “Other Notifications”:
 <context>
     <name>conf</name>
     <message>
-        <location filename="../conf.py" line="222"/>
-        <location filename="../conf.py" line="224"/>
-        <location filename="../conf.py" line="231"/>
-        <location filename="../conf.py" line="234"/>
-        <location filename="../conf.py" line="237"/>
+        <location filename="../conf.py" line="131"/>
+        <location filename="../conf.py" line="133"/>
+        <location filename="../conf.py" line="140"/>
+        <location filename="../conf.py" line="143"/>
+        <location filename="../conf.py" line="146"/>
         <source>未设置</source>
         <translation>Not Set</translation>
     </message>
@@ -4010,7 +4010,7 @@ These placeholders apply only to the “Other Notifications”:
 <context>
     <name>downloadProgressBar</name>
     <message>
-        <location filename="../plugin_plaza.py" line="187"/>
+        <location filename="../plugin_plaza.py" line="188"/>
         <source>取消</source>
         <translation>Cancel</translation>
     </message>
@@ -4848,25 +4848,25 @@ Error message: {e}</translation>
         <translation>This is a example notification</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3348"/>
-        <location filename="../main.py" line="3382"/>
+        <location filename="../main.py" line="3347"/>
+        <location filename="../main.py" line="3381"/>
         <source>上课时自动隐藏</source>
         <translation>Auto hide when having classes</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3350"/>
-        <location filename="../main.py" line="3384"/>
+        <location filename="../main.py" line="3349"/>
+        <location filename="../main.py" line="3383"/>
         <source>窗口最大化时隐藏</source>
         <translation>Auto Hide when maximizing the window</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3352"/>
-        <location filename="../main.py" line="3386"/>
+        <location filename="../main.py" line="3351"/>
+        <location filename="../main.py" line="3385"/>
         <source>暂时无法变更“状态”</source>
         <translation>Unable to change &apos;status&apos; temporarily</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3358"/>
+        <location filename="../main.py" line="3357"/>
         <source>您正在使用 {hide_mode_text} 模式，无法变更隐藏状态
 若变更状态，将修改隐藏模式“灵活隐藏” (您稍后可以在“设置”中更改此选项)
 您确定要隐藏组件吗?</source>
@@ -4875,19 +4875,19 @@ If changing hiding status, we will change hiding mode to &quot;Flexible hiding&q
 Do you want to hide the widget?</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3361"/>
-        <location filename="../main.py" line="3395"/>
+        <location filename="../main.py" line="3360"/>
+        <location filename="../main.py" line="3394"/>
         <source>确定</source>
         <translation>Confirm</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3363"/>
-        <location filename="../main.py" line="3397"/>
+        <location filename="../main.py" line="3362"/>
+        <location filename="../main.py" line="3396"/>
         <source>取消</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3392"/>
+        <location filename="../main.py" line="3391"/>
         <source>您正在使用 {hide_mode_text} 模式，无法变更隐藏状态
 若变更状态，将修改隐藏模式“灵活隐藏” (您可以在“设置”中更改此选项)
 您确定要隐藏组件吗?</source>
@@ -5300,19 +5300,19 @@ It is recommended to set the scaling factor to a value between 100% and 180%.</t
 <context>
     <name>plugin_plaza</name>
     <message>
-        <location filename="../plugin_plaza.py" line="271"/>
+        <location filename="../plugin_plaza.py" line="272"/>
         <source>此插件版本（{plugin_ver}）高于当前设备中 Class Widgets 兼容的插件版本（{SELF_PLUGIN_VERSION}）；
 请更新 Class Widgets 后再尝试安装此插件。</source>
         <translation>This plugin version ({plugin_ver}) is higher than the plugin version ({SELF_PLUGIN_VERSION}) that Class Widgets is compatible with on the current device;
 Please update Class Widgets before trying to install this plugin.</translation>
     </message>
     <message>
-        <location filename="../plugin_plaza.py" line="283"/>
+        <location filename="../plugin_plaza.py" line="284"/>
         <source>取消安装</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../plugin_plaza.py" line="284"/>
+        <location filename="../plugin_plaza.py" line="285"/>
         <source>强制安装（不建议）</source>
         <translation>Force install (not recommended)</translation>
     </message>

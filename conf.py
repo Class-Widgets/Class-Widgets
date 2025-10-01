@@ -15,9 +15,6 @@ from data_model import ThemeConfig, ThemeInfo
 from file import config_center
 from utils import TimeManagerFactory
 
-if os.name == 'nt':
-    from win32com.client import Dispatch
-
 conf = config.ConfigParser()
 name = 'Class Widgets'
 
@@ -109,94 +106,6 @@ def is_temp_week() -> Union[bool, str]:
 
 def is_temp_schedule() -> bool:
     return config_center.read_conf('Temp', 'temp_schedule') not in [None, '']
-
-
-def add_shortcut_to_startmenu(file: str = '', icon: str = '') -> None:
-    if os.name != 'nt':
-        return
-    try:
-        file_path = Path(file) if file else Path(__file__).resolve()
-        icon_path = Path(icon) if icon else file_path
-
-        # 获取开始菜单文件夹路径
-        menu_folder = (
-            Path(os.getenv('APPDATA')) / 'Microsoft' / 'Windows' / 'Start Menu' / 'Programs'
-        )
-
-        # 快捷方式文件名（使用文件名或自定义名称）
-        name = file_path.stem  # 使用文件名作为快捷方式名称
-        shortcut_path = menu_folder / f'{name}.lnk'
-
-        # 创建快捷方式
-        shell = Dispatch('WScript.Shell')
-        shortcut = shell.CreateShortCut(str(shortcut_path))
-        shortcut.Targetpath = str(file_path)
-        shortcut.WorkingDirectory = str(file_path.parent)
-        shortcut.IconLocation = str(icon_path)  # 设置图标路径
-        shortcut.save()
-    except Exception as e:
-        logger.error(f"创建开始菜单快捷方式时出错: {e}")
-
-
-def add_shortcut(file: str = '', icon: str = '') -> None:
-    if os.name != 'nt':
-        return
-    try:
-        file_path = Path(file) if file else Path(__file__).resolve()
-        icon_path = Path(icon) if icon else file_path
-
-        # 获取桌面文件夹路径
-        desktop_folder = Path(os.environ['USERPROFILE']) / 'Desktop'
-
-        # 快捷方式文件名（使用文件名或自定义名称）
-        name = file_path.stem  # 使用文件名作为快捷方式名称
-        shortcut_path = desktop_folder / f'{name}.lnk'
-
-        # 创建快捷方式
-        shell = Dispatch('WScript.Shell')
-        shortcut = shell.CreateShortCut(str(shortcut_path))
-        shortcut.Targetpath = str(file_path)
-        shortcut.WorkingDirectory = str(file_path.parent)
-        shortcut.IconLocation = str(icon_path)  # 设置图标路径
-        shortcut.save()
-    except Exception as e:
-        logger.error(f"创建桌面快捷方式时出错: {e}")
-
-
-def add_to_startup(
-    file_path: Union[str, Path] = str(CW_HOME / "ClassWidgets.exe"),
-    icon_path: Union[str, Path] = '',
-) -> None:  # 注册到开机启动
-    if os.name != 'nt':
-        return
-    file_path = Path(file_path) if file_path else Path(__file__).resolve()
-    icon_path = Path(icon_path) if icon_path else file_path
-
-    # 获取启动文件夹路径
-    startup_folder = (
-        Path(os.getenv('APPDATA')) / 'Microsoft' / 'Windows' / 'Start Menu' / 'Programs' / 'Startup'
-    )
-
-    # 快捷方式文件名（使用文件名或自定义名称）
-    name = file_path.stem  # 使用文件名作为快捷方式名称
-    shortcut_path = startup_folder / f'{name}.lnk'
-
-    # 创建快捷方式
-    shell = Dispatch('WScript.Shell')
-    shortcut = shell.CreateShortCut(str(shortcut_path))
-    shortcut.Targetpath = str(file_path)
-    shortcut.WorkingDirectory = str(file_path.parent)
-    shortcut.IconLocation = str(icon_path)  # 设置图标路径
-    shortcut.save()
-
-
-def remove_from_startup() -> None:
-    startup_folder = os.path.join(
-        os.getenv('APPDATA'), 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'Startup'
-    )
-    shortcut_path = os.path.join(startup_folder, f'{name}.lnk')
-    if os.path.exists(shortcut_path):
-        os.remove(shortcut_path)
 
 
 def update_countdown(cnt: int) -> None:

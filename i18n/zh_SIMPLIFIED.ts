@@ -36,74 +36,74 @@
 <context>
     <name>DesktopWidget</name>
     <message>
-        <location filename="../main.py" line="1948"/>
-        <location filename="../main.py" line="2461"/>
+        <location filename="../main.py" line="1947"/>
+        <location filename="../main.py" line="2460"/>
         <source>{year} 年 {month}</source>
         <translation>{year} 年 {month}</translation>
     </message>
     <message>
-        <location filename="../main.py" line="1954"/>
-        <location filename="../main.py" line="2466"/>
+        <location filename="../main.py" line="1953"/>
+        <location filename="../main.py" line="2465"/>
         <source>{day}日  {week}</source>
         <translation>{day}日是{week}</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2375"/>
+        <location filename="../main.py" line="2374"/>
         <source>完全隐藏/显示小组件</source>
         <translation>让小组件彻底死掉/复活</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2380"/>
+        <location filename="../main.py" line="2379"/>
         <source>最小化为浮窗</source>
         <translation>死成小盒子</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2388"/>
+        <location filename="../main.py" line="2387"/>
         <source>插件广场</source>
         <translation>插件跳广场舞基地</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2389"/>
+        <location filename="../main.py" line="2388"/>
         <source>额外选项</source>
         <translation>Extraaaaaa!</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2390"/>
+        <location filename="../main.py" line="2389"/>
         <source>设置</source>
         <translation>高级货</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2394"/>
+        <location filename="../main.py" line="2393"/>
         <source>重新启动</source>
         <translation>坠后原神</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2395"/>
+        <location filename="../main.py" line="2394"/>
         <source>退出</source>
         <translation>溜了</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2528"/>
+        <location filename="../main.py" line="2527"/>
         <source>&lt; - 分钟</source>
         <translation>&lt; - /24 小时</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2531"/>
+        <location filename="../main.py" line="2530"/>
         <source>&lt;&#x2005;{minutes}&#x2005;分钟</source>
         <translation>{minutes} 分钟后还是一条好汉</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2543"/>
+        <location filename="../main.py" line="2542"/>
         <source>距离 {cd_text} 还有</source>
         <translation>{cd_text} 降临日</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3299"/>
+        <location filename="../main.py" line="3298"/>
         <source>{city} · 未知</source>
         <translation>{city} · 我咋知道</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3301"/>
+        <location filename="../main.py" line="3300"/>
         <source>未知</source>
         <translation>我咋知道</translation>
     </message>
@@ -207,12 +207,12 @@
 <context>
     <name>FloatingWidget</name>
     <message>
-        <location filename="../main.py" line="1651"/>
+        <location filename="../main.py" line="1650"/>
         <source>&lt; - 分钟</source>
         <translation type="unfinished">&lt; - 分钟</translation>
     </message>
     <message>
-        <location filename="../main.py" line="1655"/>
+        <location filename="../main.py" line="1654"/>
         <source>&lt;&#x2005;{minutes}&#x2005;分钟</source>
         <translation type="unfinished">&lt;&#x2005;{minutes}&#x2005;分钟</translation>
     </message>
@@ -220,27 +220,27 @@
 <context>
     <name>Form</name>
     <message>
-        <location filename="../view/pp/settings.ui" line="20"/>
-        <location filename="../view/pp/latests.ui" line="20"/>
-        <location filename="../view/pp/plugin_detail.ui" line="20"/>
-        <location filename="../view/pp/home.ui" line="20"/>
-        <location filename="../view/pp/search.ui" line="20"/>
-        <location filename="../view/menu/countdown_custom_edit.ui" line="14"/>
-        <location filename="../view/menu/schedule_edit.ui" line="14"/>
-        <location filename="../view/menu/subject.ui" line="14"/>
-        <location filename="../view/menu/about.ui" line="14"/>
+        <location filename="../view/extra_menu.ui" line="14"/>
         <location filename="../view/menu/configs.ui" line="20"/>
-        <location filename="../view/menu/timeline_edit.ui" line="14"/>
-        <location filename="../view/menu/weather.ui" line="21"/>
         <location filename="../view/menu/preview.ui" line="14"/>
+        <location filename="../view/menu/advance.ui" line="20"/>
+        <location filename="../view/menu/help.ui" line="14"/>
+        <location filename="../view/menu/timeline_edit.ui" line="14"/>
+        <location filename="../view/menu/file_item.ui" line="14"/>
+        <location filename="../view/menu/schedule_edit.ui" line="14"/>
+        <location filename="../view/menu/custom.ui" line="20"/>
+        <location filename="../view/menu/subject.ui" line="14"/>
+        <location filename="../view/menu/schedule_db_edit.ui" line="14"/>
+        <location filename="../view/menu/countdown_custom_edit.ui" line="14"/>
+        <location filename="../view/menu/weather.ui" line="21"/>
+        <location filename="../view/menu/about.ui" line="14"/>
         <location filename="../view/menu/sound.ui" line="20"/>
         <location filename="../view/menu/plugin_mgr.ui" line="14"/>
-        <location filename="../view/menu/help.ui" line="14"/>
-        <location filename="../view/menu/advance.ui" line="20"/>
-        <location filename="../view/menu/file_item.ui" line="14"/>
-        <location filename="../view/menu/custom.ui" line="20"/>
-        <location filename="../view/menu/schedule_db_edit.ui" line="14"/>
-        <location filename="../view/extra_menu.ui" line="14"/>
+        <location filename="../view/pp/search.ui" line="20"/>
+        <location filename="../view/pp/plugin_detail.ui" line="20"/>
+        <location filename="../view/pp/latests.ui" line="20"/>
+        <location filename="../view/pp/home.ui" line="20"/>
+        <location filename="../view/pp/settings.ui" line="20"/>
         <location filename="../view/widget-toast-bar.ui" line="26"/>
         <source>Form</source>
         <translation type="unfinished">小组件透明度</translation>
@@ -276,14 +276,14 @@
         <translation>大家就当无事发生.jpg</translation>
     </message>
     <message>
-        <location filename="../view/menu/schedule_edit.ui" line="294"/>
         <location filename="../view/extra_menu.ui" line="208"/>
+        <location filename="../view/menu/schedule_edit.ui" line="294"/>
         <source>课程/活动</source>
         <translation>反正你也听不进去,zako</translation>
     </message>
     <message>
-        <location filename="../view/menu/schedule_edit.ui" line="320"/>
         <location filename="../view/extra_menu.ui" line="234"/>
+        <location filename="../view/menu/schedule_edit.ui" line="320"/>
         <source>自定义课程</source>
         <translation>学校的“多元化&quot;课程（占课率100%）</translation>
     </message>
@@ -298,12 +298,12 @@
         <translation>设置Extraaaaaaa!</translation>
     </message>
     <message>
-        <location filename="../view/menu/countdown_custom_edit.ui" line="229"/>
+        <location filename="../view/extra_menu.ui" line="306"/>
+        <location filename="../view/menu/timeline_edit.ui" line="582"/>
         <location filename="../view/menu/schedule_edit.ui" line="378"/>
         <location filename="../view/menu/subject.ui" line="89"/>
-        <location filename="../view/menu/timeline_edit.ui" line="582"/>
         <location filename="../view/menu/schedule_db_edit.ui" line="160"/>
-        <location filename="../view/extra_menu.ui" line="306"/>
+        <location filename="../view/menu/countdown_custom_edit.ui" line="229"/>
         <source>保存</source>
         <translation>珍贵的回忆</translation>
     </message>
@@ -420,14 +420,6 @@
         <translation>启用后你就没有退路可言了😈</translation>
     </message>
     <message>
-        <location filename="../view/pp/settings.ui" line="144"/>
-        <location filename="../view/menu/about.ui" line="693"/>
-        <location filename="../view/menu/sound.ui" line="136"/>
-        <location filename="../view/menu/sound.ui" line="214"/>
-        <location filename="../view/menu/sound.ui" line="292"/>
-        <location filename="../view/menu/sound.ui" line="383"/>
-        <location filename="../view/menu/sound.ui" line="608"/>
-        <location filename="../view/menu/sound.ui" line="687"/>
         <location filename="../view/menu/advance.ui" line="152"/>
         <location filename="../view/menu/advance.ui" line="715"/>
         <location filename="../view/menu/advance.ui" line="1227"/>
@@ -435,11 +427,23 @@
         <location filename="../view/menu/advance.ui" line="1747"/>
         <location filename="../view/menu/advance.ui" line="1845"/>
         <location filename="../view/menu/advance.ui" line="1926"/>
+        <location filename="../view/menu/about.ui" line="693"/>
+        <location filename="../view/menu/sound.ui" line="136"/>
+        <location filename="../view/menu/sound.ui" line="214"/>
+        <location filename="../view/menu/sound.ui" line="292"/>
+        <location filename="../view/menu/sound.ui" line="383"/>
+        <location filename="../view/menu/sound.ui" line="608"/>
+        <location filename="../view/menu/sound.ui" line="687"/>
+        <location filename="../view/pp/settings.ui" line="144"/>
         <source>启用</source>
         <translation>原神，启动！</translation>
     </message>
     <message>
-        <location filename="../view/pp/settings.ui" line="147"/>
+        <location filename="../view/menu/advance.ui" line="1230"/>
+        <location filename="../view/menu/advance.ui" line="1404"/>
+        <location filename="../view/menu/advance.ui" line="1750"/>
+        <location filename="../view/menu/advance.ui" line="1848"/>
+        <location filename="../view/menu/advance.ui" line="1929"/>
         <location filename="../view/menu/about.ui" line="696"/>
         <location filename="../view/menu/sound.ui" line="139"/>
         <location filename="../view/menu/sound.ui" line="217"/>
@@ -447,11 +451,7 @@
         <location filename="../view/menu/sound.ui" line="386"/>
         <location filename="../view/menu/sound.ui" line="611"/>
         <location filename="../view/menu/sound.ui" line="690"/>
-        <location filename="../view/menu/advance.ui" line="1230"/>
-        <location filename="../view/menu/advance.ui" line="1404"/>
-        <location filename="../view/menu/advance.ui" line="1750"/>
-        <location filename="../view/menu/advance.ui" line="1848"/>
-        <location filename="../view/menu/advance.ui" line="1929"/>
+        <location filename="../view/pp/settings.ui" line="147"/>
         <source>禁用</source>
         <translation>欸你怎么开挂被Ban 30d了啊</translation>
     </message>
@@ -631,9 +631,9 @@
         <translation>最推荐</translation>
     </message>
     <message>
-        <location filename="../view/menu/plugin_mgr.ui" line="637"/>
         <location filename="../view/menu/advance.ui" line="1062"/>
         <location filename="../view/menu/advance.ui" line="1767"/>
+        <location filename="../view/menu/plugin_mgr.ui" line="637"/>
         <source>其他</source>
         <translation>吉他（和我组一辈子乐队吧..?）</translation>
     </message>
@@ -824,8 +824,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/menu/schedule_edit.ui" line="44"/>
         <location filename="../view/menu/preview.ui" line="35"/>
+        <location filename="../view/menu/schedule_edit.ui" line="44"/>
         <source>课程表</source>
         <translation>课程桌子</translation>
     </message>
@@ -985,22 +985,22 @@
         <translation type="unfinished">将以 &apos;&lt;x 分钟&apos; 的形式模糊显示倒计时</translation>
     </message>
     <message>
-        <location filename="../view/menu/plugin_mgr.ui" line="706"/>
-        <location filename="../view/menu/plugin_mgr.ui" line="712"/>
         <location filename="../view/menu/custom.ui" line="738"/>
         <location filename="../view/menu/custom.ui" line="744"/>
         <location filename="../view/menu/custom.ui" line="816"/>
         <location filename="../view/menu/custom.ui" line="822"/>
         <location filename="../view/menu/custom.ui" line="911"/>
         <location filename="../view/menu/custom.ui" line="917"/>
+        <location filename="../view/menu/plugin_mgr.ui" line="706"/>
+        <location filename="../view/menu/plugin_mgr.ui" line="712"/>
         <source>关</source>
         <translation type="unfinished">关</translation>
     </message>
     <message>
-        <location filename="../view/menu/plugin_mgr.ui" line="709"/>
         <location filename="../view/menu/custom.ui" line="741"/>
         <location filename="../view/menu/custom.ui" line="819"/>
         <location filename="../view/menu/custom.ui" line="914"/>
+        <location filename="../view/menu/plugin_mgr.ui" line="709"/>
         <source>开</source>
         <translation type="unfinished">开</translation>
     </message>
@@ -1010,8 +1010,8 @@
         <translation type="unfinished">模糊浮窗倒计时</translation>
     </message>
     <message>
-        <location filename="../view/menu/weather.ui" line="1374"/>
         <location filename="../view/menu/custom.ui" line="839"/>
+        <location filename="../view/menu/weather.ui" line="1374"/>
         <source>显示</source>
         <translation type="unfinished">显示</translation>
     </message>
@@ -1282,8 +1282,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/pp/settings.ui" line="71"/>
         <location filename="../view/menu/plugin_mgr.ui" line="35"/>
+        <location filename="../view/pp/settings.ui" line="71"/>
         <source>插件</source>
         <translation type="unfinished">插件</translation>
     </message>
@@ -1798,17 +1798,17 @@
 <context>
     <name>PluginCard_Horizontal</name>
     <message>
-        <location filename="../plugin_plaza.py" line="479"/>
+        <location filename="../plugin_plaza.py" line="480"/>
         <source>安装</source>
         <translation type="unfinished">安装</translation>
     </message>
     <message>
-        <location filename="../plugin_plaza.py" line="486"/>
+        <location filename="../plugin_plaza.py" line="487"/>
         <source>已安装</source>
         <translation type="unfinished">已安装</translation>
     </message>
     <message>
-        <location filename="../plugin_plaza.py" line="492"/>
+        <location filename="../plugin_plaza.py" line="493"/>
         <source>更新</source>
         <translation type="unfinished">更新</translation>
     </message>
@@ -1816,33 +1816,33 @@
 <context>
     <name>PluginDetailPage</name>
     <message>
-        <location filename="../plugin_plaza.py" line="351"/>
+        <location filename="../plugin_plaza.py" line="352"/>
         <source>  安装  </source>
         <translation type="unfinished">  安装  </translation>
     </message>
     <message>
-        <location filename="../plugin_plaza.py" line="356"/>
-        <location filename="../plugin_plaza.py" line="389"/>
+        <location filename="../plugin_plaza.py" line="357"/>
+        <location filename="../plugin_plaza.py" line="390"/>
         <source>  安装中  </source>
         <translation type="unfinished">  安装中  </translation>
     </message>
     <message>
-        <location filename="../plugin_plaza.py" line="359"/>
+        <location filename="../plugin_plaza.py" line="360"/>
         <source>  已安装  </source>
         <translation type="unfinished">  已安装  </translation>
     </message>
     <message>
-        <location filename="../plugin_plaza.py" line="365"/>
+        <location filename="../plugin_plaza.py" line="366"/>
         <source>更新</source>
         <translation type="unfinished">更新</translation>
     </message>
     <message>
-        <location filename="../plugin_plaza.py" line="372"/>
+        <location filename="../plugin_plaza.py" line="373"/>
         <source>为 Class Widgets 安装</source>
         <translation type="unfinished">为 Class Widgets 安装</translation>
     </message>
     <message>
-        <location filename="../plugin_plaza.py" line="375"/>
+        <location filename="../plugin_plaza.py" line="376"/>
         <source>下载到本地</source>
         <translation type="unfinished">下载至本地</translation>
     </message>
@@ -1850,12 +1850,12 @@
 <context>
     <name>PluginPlaza</name>
     <message>
-        <location filename="../plugin_plaza.py" line="704"/>
+        <location filename="../plugin_plaza.py" line="705"/>
         <source>{month}月{day}日 {weekday}</source>
         <translation type="unfinished">{month}月{day}日 {weekday}</translation>
     </message>
     <message>
-        <location filename="../plugin_plaza.py" line="854"/>
+        <location filename="../plugin_plaza.py" line="855"/>
         <source>错误原因：{error_info}</source>
         <translation type="unfinished">错误原因：{error_info}</translation>
     </message>
@@ -2632,17 +2632,17 @@
         <translation type="unfinished">选择文件</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6353"/>
+        <location filename="../menu.py" line="6360"/>
         <source>界面语言切换时出错: {e}</source>
         <translation type="unfinished">界面语言切换出错: {e}</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6355"/>
+        <location filename="../menu.py" line="6362"/>
         <source>界面语言切换出错 (＃°Д°)</source>
         <translation type="unfinished">界面语言切换出错 (（＃°Д°）)</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6356"/>
+        <location filename="../menu.py" line="6363"/>
         <source>切换界面语言时发生错误: {e}</source>
         <translation type="unfinished">切换界面语言时发生错误: {e}</translation>
     </message>
@@ -3111,36 +3111,36 @@
         <translation type="unfinished">关于本产品</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6230"/>
+        <location filename="../menu.py" line="6237"/>
         <source>Class Widgets - 设置</source>
         <translation type="unfinished">Class Widgets - 设置</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6313"/>
+        <location filename="../menu.py" line="6320"/>
         <source>界面语言切换成功 ♪(´▽｀)</source>
         <translation type="unfinished">界面语言切换成功 （´▽｀）</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6315"/>
+        <location filename="../menu.py" line="6322"/>
         <source>界面语言已切换为 {selected_lang_name}
 新语言将在重启程序后完全生效</source>
         <translation type="unfinished">界面语言已切换为 {selected_lang_name}
 新语言将在重启程序后完全生效</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6345"/>
+        <location filename="../menu.py" line="6352"/>
         <source>界面语言切换失败 (＃°Д°)</source>
         <translation type="unfinished">界面语言切换失败 (（＃°Д°）)</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6346"/>
+        <location filename="../menu.py" line="6353"/>
         <source>无法加载选定的界面语言包，请检查翻译文件是否存在</source>
         <translation type="unfinished">无法加载选定的界面语言包，请检查翻译文件是否存在</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1897"/>
-        <location filename="../menu.py" line="6349"/>
-        <location filename="../menu.py" line="6359"/>
+        <location filename="../menu.py" line="6356"/>
+        <location filename="../menu.py" line="6366"/>
         <source>确定</source>
         <translation type="unfinished">确定</translation>
     </message>
@@ -3543,7 +3543,7 @@
 <context>
     <name>WidgetsManager</name>
     <message>
-        <location filename="../main.py" line="1221"/>
+        <location filename="../main.py" line="1220"/>
         <source>未知组件</source>
         <translation type="unfinished">未知组件</translation>
     </message>
@@ -3614,11 +3614,11 @@
 <context>
     <name>conf</name>
     <message>
-        <location filename="../conf.py" line="222"/>
-        <location filename="../conf.py" line="224"/>
-        <location filename="../conf.py" line="231"/>
-        <location filename="../conf.py" line="234"/>
-        <location filename="../conf.py" line="237"/>
+        <location filename="../conf.py" line="131"/>
+        <location filename="../conf.py" line="133"/>
+        <location filename="../conf.py" line="140"/>
+        <location filename="../conf.py" line="143"/>
+        <location filename="../conf.py" line="146"/>
         <source>未设置</source>
         <translation type="unfinished">未设置</translation>
     </message>
@@ -3674,7 +3674,7 @@
 <context>
     <name>downloadProgressBar</name>
     <message>
-        <location filename="../plugin_plaza.py" line="187"/>
+        <location filename="../plugin_plaza.py" line="188"/>
         <source>取消</source>
         <translation type="unfinished">取消</translation>
     </message>
@@ -4484,25 +4484,25 @@
         <translation type="unfinished">这是一条通知示例</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3348"/>
-        <location filename="../main.py" line="3382"/>
+        <location filename="../main.py" line="3347"/>
+        <location filename="../main.py" line="3381"/>
         <source>上课时自动隐藏</source>
         <translation type="unfinished">上课时自动隐藏</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3350"/>
-        <location filename="../main.py" line="3384"/>
+        <location filename="../main.py" line="3349"/>
+        <location filename="../main.py" line="3383"/>
         <source>窗口最大化时隐藏</source>
         <translation type="unfinished">窗口最大化时隐藏</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3352"/>
-        <location filename="../main.py" line="3386"/>
+        <location filename="../main.py" line="3351"/>
+        <location filename="../main.py" line="3385"/>
         <source>暂时无法变更“状态”</source>
         <translation type="unfinished">暂时无法变更“状态”</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3358"/>
+        <location filename="../main.py" line="3357"/>
         <source>您正在使用 {hide_mode_text} 模式，无法变更隐藏状态
 若变更状态，将修改隐藏模式“灵活隐藏” (您稍后可以在“设置”中更改此选项)
 您确定要隐藏组件吗?</source>
@@ -4511,19 +4511,19 @@
 您确定要隐藏组件吗?</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3361"/>
-        <location filename="../main.py" line="3395"/>
+        <location filename="../main.py" line="3360"/>
+        <location filename="../main.py" line="3394"/>
         <source>确定</source>
         <translation type="unfinished">确定</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3363"/>
-        <location filename="../main.py" line="3397"/>
+        <location filename="../main.py" line="3362"/>
+        <location filename="../main.py" line="3396"/>
         <source>取消</source>
         <translation type="unfinished">取消</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3392"/>
+        <location filename="../main.py" line="3391"/>
         <source>您正在使用 {hide_mode_text} 模式，无法变更隐藏状态
 若变更状态，将修改隐藏模式“灵活隐藏” (您可以在“设置”中更改此选项)
 您确定要隐藏组件吗?</source>
@@ -4929,19 +4929,19 @@
 <context>
     <name>plugin_plaza</name>
     <message>
-        <location filename="../plugin_plaza.py" line="271"/>
+        <location filename="../plugin_plaza.py" line="272"/>
         <source>此插件版本（{plugin_ver}）高于当前设备中 Class Widgets 兼容的插件版本（{SELF_PLUGIN_VERSION}）；
 请更新 Class Widgets 后再尝试安装此插件。</source>
         <translation type="unfinished">此插件版本（{plugin_ver}）高于当前设备中 Class Widgets 兼容的插件版本（{SELF_PLUGIN_VERSION}）；
 请更新 Class Widgets 后再尝试安装此插件。</translation>
     </message>
     <message>
-        <location filename="../plugin_plaza.py" line="283"/>
+        <location filename="../plugin_plaza.py" line="284"/>
         <source>取消安装</source>
         <translation type="unfinished">取消安装</translation>
     </message>
     <message>
-        <location filename="../plugin_plaza.py" line="284"/>
+        <location filename="../plugin_plaza.py" line="285"/>
         <source>强制安装（不建议）</source>
         <translation type="unfinished">强制安装（不建议）</translation>
     </message>

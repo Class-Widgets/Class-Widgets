@@ -4,49 +4,33 @@ dev = [
   "mypy>=1.14.1",
   "pre-commit>=3.5.0",
   "pylint>=3.2.7",
-  "pyright>=1.1.403",
-  "ruff>=0.12.8"
+  "pyqt5-stubs~=5.15.6.0",
+  "pyright>=1.1.405",
+  "ruff>=0.13.2"
 ]
-package = ["pyinstaller>=6.15.0"]
+package = ["pyinstaller>=6.16.0"]
 
 [project]
 dependencies = [
-  "annotated-types==0.7.0",
-  "certifi==2025.8.3",
-  "charset-normalizer==3.4.2",
-  "colorama==0.4.6",
   "configparser~=7.1.0",
   "darkdetect==0.8.0",
-  "distro~=1.8.0 ; sys_platform == 'linux'",
-  "edge-tts~=7.0.0",
-  "idna==3.10",
+  "distro~=1.9.0; sys_platform == 'linux'",
+  "edge-tts~=7.2.3",
   "loguru~=0.7.2",
-  "markdown~=3.7",
   "ntplib~=0.4.0",
-  "packaging~=25.0",
-  "psutil~=7.0.0",
+  "psutil~=7.1.0",
   "pycses",
-  "pydantic-core==2.27.2",
-  "pydantic==2.10.6",
+  "pydantic~=2.10.6",
   "pygame~=2.6.1",
   "pygetwindow~=0.0.9",
-  "pyqt-fluent-widgets~=1.8.1",
-  "pyqt5-frameless-window~=0.7.3",
+  "pyqt-fluent-widgets~=1.9.0",
+  "pyqt5-qt5==5.15.2; sys_platform == 'win32'",
   "pyqt5-qt5",
-  "pyqt5-qt5==5.15.2 ; sys_platform == 'win32'",
-  "pyqt5-sip==12.15.0",
-  "pyqt5-stubs==5.15.6.0",
   "pyqt5~=5.15.11",
-  "pyqtwebengine",
-  "pyqtwebengine==5.15.2 ; sys_platform == 'win32'",
   "python-dateutil~=2.9.0",
   "pyttsx3~=2.99",
   "pytz~=2025.2",
-  "pywin32==311 ; sys_platform == 'win32'",
-  "requests==2.32.4",
-  "typing-extensions==4.13.2",
-  "urllib3==2.2.3",
-  "win32-setctime~=1.2.0"
+  "requests~=2.32.4"
 ]
 description = ""
 name = "class_widgets"
@@ -73,7 +57,6 @@ skip-string-normalization = true
 "pythonVersion" = "3.8"
 "reportArgumentType" = "warning"
 "reportAssertAlwaysTrue" = "information"
-"reportAttributeAccess" = "information"
 "reportAttributeAccessIssue" = "information"
 "reportConstantRedefinition" = "warning"
 "reportDuplicateImport" = "warning"
@@ -84,7 +67,6 @@ skip-string-normalization = true
 "reportIncompatibleVariableOverride" = "warning"
 "reportMissingImports" = "warning"
 "reportMissingParameterType" = "information"
-"reportMissingReturnType" = "information"
 "reportMissingTypeStubs" = "information"
 "reportOptionalCall" = "information"
 "reportOptionalContextManager" = "information"
@@ -156,6 +138,9 @@ select = [
 [tool.ruff.lint.per-file-ignores]
 "**/migrations/*" = ["E501"]
 "__init__.py" = ["F401"]
+
+[tool.tomlsort.overrides."project.dependencies"]
+inline_arrays = false
 
 [tool.uv.sources]
 pycses = {git = "https://github.com/SmartTeachCN/pycses.git"}

@@ -98,6 +98,20 @@ jobs:
             git cliff --config .github/cliff.toml --latest --output CHANGELOG.md
           fi
 
+      - name: Append file info to changelog
+        shell: bash
+        run: |
+          if [ -f "artifacts/file-info.md" ]; then
+            echo "" >> CHANGELOG.md
+            echo "---" >> CHANGELOG.md
+            echo "" >> CHANGELOG.md
+            cat artifacts/file-info.md >> CHANGELOG.md
+            echo "[DEBUG] 已将包信息添加到 Changelog"
+            rm -f artifacts/file-info.md
+          else
+            echo "[DEBUG] 未找到 file-info.md 文件"
+          fi
+
       - name: Release
         uses: softprops/action-gh-release@v2
         with:

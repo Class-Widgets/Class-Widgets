@@ -15,6 +15,10 @@ on:
         description: "要删除缓存的分支名"
         required: false
         type: string
+      cache_key_pattern:
+        description: "缓存键匹配"
+        required: false
+        type: string
       max_delete_count:
         description: "最大删除条数(可选,默认全部)"
         required: false
@@ -26,6 +30,10 @@ on:
       branch_name:
         description: "要删除缓存的分支名"
         required: true
+        type: string
+      cache_key_pattern:
+        description: "缓存键匹配"
+        required: false
         type: string
 
   schedule:
@@ -39,140 +47,60 @@ jobs:
   delete-cache:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Delete PR cache
         if: github.event_name == 'pull_request_target'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          BRANCH_NAME: ${{ github.event.pull_request.head.ref }}
-        run: |
-          echo "[DEBUG] 删除PR #$PR_NUMBER (分支: $BRANCH_NAME) 的缓存"
-          # PR缓存包含: refs/pull/{number}/merge, (refs/heads/{branch})(不常见)
-          cache_list=$(gh cache list --json id,ref --repo ${{ github.repository }} | jq -r '.[] | select(.ref == "refs/pull/'"$PR_NUMBER"'/merge" or .ref == "refs/heads/'"$BRANCH_NAME"'") | .id')
-          if [ -z "$cache_list" ]; then
-            echo "[DEBUG] 没有找到PR #$PR_NUMBER (分支: $BRANCH_NAME) 的缓存,当前所有缓存:"
-            gh cache list --repo ${{ github.repository }} || echo "❌ 无法获取缓存列表"
-          else
-            echo "::group::缓存ID"
-            echo "[DEBUG] 找到的缓存ID:"
-            echo "[DEBUG] $cache_list"
-            echo "::endgroup::"
-            for cache_id in $cache_list; do
-              echo "[DEBUG] 正在删除缓存 ID: $cache_id"
-              gh cache delete "$cache_id" --repo ${{ github.repository }}
-              if [ $? -eq 0 ]; then
-                echo "[DEBUG] 成功删除缓存: $cache_id"
-              else
-                echo "[DEBUG] 删除ID为 $cache_id 的缓存时失败"
-              fi
-            done
-          fi
+        uses: baiyao105/gh-cache-cleaner@v1
+        with:
+          token: ${{ github.token }}
+          branches: |
+            refs/pull/${{ github.event.pull_request.number }}/merge
+            refs/heads/${{ github.event.pull_request.head.ref }}
 
       - name: Delete all caches
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.delete_all == 'true'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh cache delete --all --succeed-on-no-caches --repo ${{ github.repository }}
+        uses: baiyao105/gh-cache-cleaner@v1
+        with:
+          token: ${{ github.token }}
+          delete_all: true
+          max_delete_count: ${{ github.event.inputs.max_delete_count != '' && github.event.inputs.max_delete_count || -1 }}
+          cache_key_pattern: ${{ github.event.inputs.cache_key_pattern != '' && github.event.inputs.cache_key_pattern || '*' }}
 
       - name: Delete branch cache
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.delete_all == 'false' && github.event.inputs.branch_name != ''
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH_NAME: ${{ github.event.inputs.branch_name }}
-          MAX_COUNT: ${{ github.event.inputs.max_delete_count }}
-        run: |
-          echo "::group::Delete branch cache '$BRANCH_NAME'"
-          echo "[DEBUG] 删除分支 '$BRANCH_NAME' 的缓存"
-          if [ -n "$MAX_COUNT" ] && [ "$MAX_COUNT" -gt 0 ]; then
-            cache_list=$(gh cache list --json id,ref --repo ${{ github.repository }} | jq -r '.[] | select(.ref == "refs/heads/'"$BRANCH_NAME"'") | .id' | head -n $MAX_COUNT)
-            echo "[DEBUG] 限制删除条数: $MAX_COUNT"
-          else
-            cache_list=$(gh cache list --json id,ref --repo ${{ github.repository }} | jq -r '.[] | select(.ref == "refs/heads/'"$BRANCH_NAME"'") | .id')
-          fi
-          if [ -z "$cache_list" ]; then
-            echo "[DEBUG] 分支 '$BRANCH_NAME' 没有找到缓存"
-          else
-            echo "[DEBUG] 找到以下缓存ID:"
-            echo "[DEBUG] $cache_list"
-            echo "::endgroup::"
-            count=0
-            for cache_id in $cache_list; do
-              count=$((count + 1))
-              echo "[DEBUG] 正在删除缓存: $cache_id (第 $count 个)"
-              gh cache delete "$cache_id" --repo ${{ github.repository }}
-              if [ $? -eq 0 ]; then
-                echo "[DEBUG] 成功删除缓存: $cache_id"
-              else
-                echo "[DEBUG] 删除ID为 $cache_id 的缓存时失败"
-              fi
-            done
-            echo "[DEBUG] 共删除了 $count 个缓存"
-          fi
+        uses: baiyao105/gh-cache-cleaner@v1
+        with:
+          token: ${{ github.token }}
+          branches: ${{ github.event.inputs.branch_name }}
+          max_delete_count: ${{ github.event.inputs.max_delete_count != '' && github.event.inputs.max_delete_count || -1 }}
+          cache_key_pattern: ${{ github.event.inputs.cache_key_pattern != '' && github.event.inputs.cache_key_pattern || '*' }}
+
+      - name: Delete cache by pattern only
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.delete_all == 'false' && github.event.inputs.branch_name == '' && github.event.inputs.cache_key_pattern != ''
+        uses: baiyao105/gh-cache-cleaner@v1
+        with:
+          token: ${{ github.token }}
+          delete_all: true
+          cache_key_pattern: ${{ github.event.inputs.cache_key_pattern }}
+          max_delete_count: ${{ github.event.inputs.max_delete_count != '' && github.event.inputs.max_delete_count || -1 }}
 
       - name: Delete non-main branch caches (scheduled)
         if: github.event_name == 'schedule'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "[DEBUG] 定时清理非main分支的缓存"
-          cache_list=$(gh cache list --json id,ref --repo ${{ github.repository }} | jq -r '.[] | select(.ref != "refs/heads/main") | .id')
-          if [ -z "$cache_list" ]; then
-            echo "[DEBUG] 没有找到非main分支的缓存"
-          else
-            echo "[DEBUG] 找到以下非main分支缓存ID:"
-            echo "[DEBUG] $cache_list"
-            count=0
-            for cache_id in $cache_list; do
-              count=$((count + 1))
-              echo "[DEBUG] 正在删除缓存: $cache_id (第 $count 个)"
-              gh cache delete "$cache_id" --repo ${{ github.repository }}
-              if [ $? -eq 0 ]; then
-                echo "[DEBUG] 成功删除缓存: $cache_id"
-              else
-                echo "[DEBUG] 删除ID为 $cache_id 的缓存时失败"
-              fi
-            done
-            echo "[DEBUG] 共删除了 $count 个非main分支缓存"
-          fi
+        uses: baiyao105/gh-cache-cleaner@v1
+        with:
+          token: ${{ github.token }}
+          delete_all: true
+          exclude_branches: "main"
 
       - name: Delete cache from workflow call
         if: github.event_name == 'workflow_call'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH_NAME: ${{ inputs.branch_name }}
-        run: |
-          echo "[DEBUG] 通过工作流调用删除分支 '$BRANCH_NAME' 的缓存"
-          cache_list=$(gh cache list --json id,ref --repo ${{ github.repository }} | jq -r '.[] | select(.ref == "refs/heads/'"$BRANCH_NAME"'") | .id')
-          if [ -z "$cache_list" ]; then
-            echo "[DEBUG] 分支 '$BRANCH_NAME' 没有找到缓存"
-          else
-            echo "[DEBUG] 找到以下缓存ID:"
-            echo "[DEBUG] $cache_list"
-            count=0
-            for cache_id in $cache_list; do
-              count=$((count + 1))
-              echo "[DEBUG] 正在删除缓存: $cache_id (第 $count 个)"
-              gh cache delete "$cache_id" --repo ${{ github.repository }}
-              if [ $? -eq 0 ]; then
-                echo "[DEBUG] 成功删除缓存: $cache_id"
-              else
-                echo "[DEBUG] 删除ID为 $cache_id 的缓存时失败"
-              fi
-            done
-            echo "[DEBUG] 共删除了 $count 个缓存"
-          fi
+        uses: baiyao105/gh-cache-cleaner@v1
+        with:
+          token: ${{ github.token }}
+          branches: ${{ inputs.branch_name }}
+          cache_key_pattern: ${{ inputs.cache_key_pattern != '' && inputs.cache_key_pattern || '*' }}
 
-      - name: No action specified
-        if: github.event_name == 'workflow_dispatch' && github.event.inputs.delete_all == 'false' && github.event.inputs.branch_name == ''
-        run: |
-          echo "[DEBUG] [WARNING] 未指定操作"
-          echo "[DEBUG] 当前可用的缓存列表:"
-          gh cache list --repo ${{ github.repository }} || echo "[DEBUG] 无法获取缓存列表"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Preview caches (no action specified)
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.delete_all == 'false' && github.event.inputs.branch_name == '' && github.event.inputs.cache_key_pattern == ''
+        uses: baiyao105/gh-cache-cleaner@v1
+        with:
+          token: ${{ github.token }}
