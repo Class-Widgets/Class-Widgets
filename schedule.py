@@ -8,7 +8,7 @@ import utils
 import conf
 
 
-class ScheduleManager(ABC):
+class ScheduleProvider(ABC):
     def __init__(self, file_path: Path):
         self.file_path = file_path
         self.time_manager = utils.TimeManagerFactory.get_instance()
@@ -27,7 +27,7 @@ class ScheduleManager(ABC):
         pass  # noqa
 
 
-class ClassWidgetsScheduleVersion1Manager(ScheduleManager):
+class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
     def init(self):
         self.schedule = None
         self.parts = {}
@@ -312,7 +312,7 @@ class ClassWidgetsScheduleVersion1Manager(ScheduleManager):
 
 if __name__ == '__main__':
     # For Debug 用完就删！！
-    mgr = ClassWidgetsScheduleVersion1Manager(
+    mgr = ClassWidgetsScheduleVersion1Provider(
         Path('./config/schedule/202501备份(1) @(半白bani_DeBug)254867116-backup.json')
     )
     import time
