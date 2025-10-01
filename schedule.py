@@ -81,7 +81,8 @@ class ClassWidgetsScheduleVersion1Manager(ScheduleManager):
                         self.lessons['odd'][week].append(
                             (
                                 (
-                                    timeline_current_usage.get(item_name, self.parts[item_name][0]) * 60,
+                                    timeline_current_usage.get(item_name, self.parts[item_name][0])
+                                    * 60,
                                     item_time * 60,
                                     {lessons_data[lesson_cnt]},
                                 )
@@ -125,7 +126,8 @@ class ClassWidgetsScheduleVersion1Manager(ScheduleManager):
                         self.lessons['even'][week].append(
                             (
                                 (
-                                    timeline_current_usage.get(item_name, self.parts[item_name][0]) * 60,
+                                    timeline_current_usage.get(item_name, self.parts[item_name][0])
+                                    * 60,
                                     item_time * 60,
                                     {lessons_data[lesson_cnt]},
                                 )
@@ -135,7 +137,7 @@ class ClassWidgetsScheduleVersion1Manager(ScheduleManager):
                 timeline_current_usage[item_name] = (
                     timeline_current_usage.get(item_name, self.parts[item_name][0]) + item_time
                 )
-            
+
             self.lessons['even'][week] = sorted(self.lessons['even'][week], key=sort_lessons_key)
             merged_lessons = []
             for start_time, duration, lessons_set in self.lessons['even'][week]:
@@ -163,7 +165,9 @@ class ClassWidgetsScheduleVersion1Manager(ScheduleManager):
         current_time = self.time_manager.get_current_time()
         current_weekday = self.time_manager.get_current_weekday()
         current_week_type = conf.get_week_type()
-        current_time_in_seconds = current_time.hour * 3600 + current_time.minute * 60 + current_time.second
+        current_time_in_seconds = (
+            current_time.hour * 3600 + current_time.minute * 60 + current_time.second
+        )
         lessons_today = self.lessons['even' if current_week_type else 'odd'].get(
             str(current_weekday), []
         )
@@ -183,7 +187,9 @@ class ClassWidgetsScheduleVersion1Manager(ScheduleManager):
         self._cache_time = current_time
         current_weekday = self.time_manager.get_current_weekday()
         current_week_type = conf.get_week_type()
-        current_time_in_seconds = current_time.hour * 3600 + current_time.minute * 60 + current_time.second
+        current_time_in_seconds = (
+            current_time.hour * 3600 + current_time.minute * 60 + current_time.second
+        )
         lessons_today = self.lessons['even' if current_week_type else 'odd'].get(
             str(current_weekday), []
         )
@@ -211,7 +217,7 @@ class ClassWidgetsScheduleVersion1Manager(ScheduleManager):
             next_start_time, _next_duration, _next_lesson_names = lessons_today[l]
             return True, (next_start_time - current_time_in_seconds), ''
         return True, -1.0, ''  # 没有课程了
-    
+
     def get_status(self) -> Tuple[bool, float, str]:
         if self._cache_time is None:
             return self._init_get_status()
@@ -225,14 +231,20 @@ class ClassWidgetsScheduleVersion1Manager(ScheduleManager):
         current_time_in_seconds = current_time.hour * 60 + current_time.minute
 
         # 如果跨天或课表变动，重新初始化
-        if self._cache_time.weekday() != current_time.weekday() or \
-        self._cache_lessons_today != self.lessons['even' if current_week_type else 'odd'].get(str(current_weekday), []):
+        if self._cache_time.weekday() != current_time.weekday() or self._cache_lessons_today != self.lessons[
+            'even' if current_week_type else 'odd'
+        ].get(
+            str(current_weekday), []
+        ):
             return self._init_get_status()
 
         idx = self._cache_lesson_index
         lessons_today = self._cache_lessons_today
 
-        if current_time_in_seconds == self._cache_time.hour * 3600 + self._cache_time.minute * 60 + self._cache_time.second:
+        if (
+            current_time_in_seconds
+            == self._cache_time.hour * 3600 + self._cache_time.minute * 60 + self._cache_time.second
+        ):
             if self._cache_status:
                 if idx < len(lessons_today):
                     next_start, _, _ = lessons_today[idx]
@@ -242,7 +254,10 @@ class ClassWidgetsScheduleVersion1Manager(ScheduleManager):
             return False, (start + duration - current_time_in_seconds), '、'.join(names)
 
         # 优雅地向前或向后查找
-        if current_time_in_seconds > self._cache_time.hour * 3600 + self._cache_time.minute * 60 + self._cache_time.second:
+        if (
+            current_time_in_seconds
+            > self._cache_time.hour * 3600 + self._cache_time.minute * 60 + self._cache_time.second
+        ):
             # 向后查找
             while idx + 1 < len(lessons_today):
                 start, duration, names = lessons_today[idx + 1]
@@ -262,7 +277,7 @@ class ClassWidgetsScheduleVersion1Manager(ScheduleManager):
                 next_start, _, _ = lessons_today[self._cache_lesson_index]
                 return True, (next_start - current_time_in_seconds), ''
             return True, -1.0, ''
-        
+
         # 向前查找
         while idx > 0:
             start, duration, names = lessons_today[idx - 1]
@@ -282,7 +297,6 @@ class ClassWidgetsScheduleVersion1Manager(ScheduleManager):
             next_start, _, _ = lessons_today[idx]
             return True, (next_start - current_time_in_seconds), ''
         return True, -1.0, ''
-        
 
 
 if __name__ == '__main__':
