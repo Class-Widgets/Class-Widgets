@@ -300,6 +300,12 @@ class ClassWidgetsScheduleVersion1Manager(ScheduleManager):
 
 
 if __name__ == '__main__':
+    # For Debug 用完就删！！
     mgr = ClassWidgetsScheduleVersion1Manager(
         Path('./config/schedule/202501备份(1) @(半白bani_DeBug)254867116-backup.json')
     )
+    import time
+    while True:
+        print(mgr.get_status())
+        time.sleep(0.5)
+        
