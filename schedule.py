@@ -209,7 +209,10 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
                         (start_time + duration - current_time_in_seconds),
                         '、'.join(lesson_names),
                     )
-                elif mid == len(lessons_today) - 1 or current_time_in_seconds < lessons_today[mid + 1][0]:
+                elif (
+                    mid == len(lessons_today) - 1
+                    or current_time_in_seconds < lessons_today[mid + 1][0]
+                ):
                     # 在当前课程结束和下一节课开始之间
                     self._cache_status, self._cache_lesson_index = True, mid + 1
                     if mid + 1 < len(lessons_today):
@@ -234,7 +237,9 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
         current_time = self.time_manager.get_current_time()
         current_weekday = self.time_manager.get_current_weekday()
         current_week_type = conf.get_week_type()
-        current_time_in_seconds = current_time.hour * 3600 + current_time.minute * 60 + current_time.second
+        current_time_in_seconds = (
+            current_time.hour * 3600 + current_time.minute * 60 + current_time.second
+        )
 
         # 如果跨天或课表变动，重新初始化
         if self._cache_time.weekday() != current_time.weekday() or self._cache_lessons_today != self.lessons[
@@ -247,7 +252,9 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
         idx = self._cache_lesson_index
         lessons_today = self._cache_lessons_today
 
-        cache_time_in_seconds = self._cache_time.hour * 3600 + self._cache_time.minute * 60 + self._cache_time.second
+        cache_time_in_seconds = (
+            self._cache_time.hour * 3600 + self._cache_time.minute * 60 + self._cache_time.second
+        )
         if current_time_in_seconds == cache_time_in_seconds:
             if self._cache_status:
                 if idx < len(lessons_today):
@@ -264,7 +271,7 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
             start, duration, names = lessons_today[idx]
             if current_time_in_seconds < start + duration:
                 return False, (start + duration - current_time_in_seconds), '、'.join(names)
-            
+
             # 查找下一节课
             idx += 1
             if idx < len(lessons_today):
@@ -275,14 +282,18 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
                         self._cache_lesson_index = idx
                         self._cache_time = current_time
                         self._cache_status = False
-                        return False, (next_start + next_duration - current_time_in_seconds), '、'.join(next_names)
+                        return (
+                            False,
+                            (next_start + next_duration - current_time_in_seconds),
+                            '、'.join(next_names),
+                        )
                 else:
                     # 在两节课之间
                     self._cache_lesson_index = idx
                     self._cache_time = current_time
                     self._cache_status = True
                     return True, (next_start - current_time_in_seconds), ''
-            
+
             # 没有更多课程
             self._cache_lesson_index = idx
             self._cache_time = current_time
@@ -316,6 +327,7 @@ if __name__ == '__main__':
         Path('./config/schedule/202501备份(1) @(半白bani_DeBug)254867116-backup.json')
     )
     import time
+
     while True:
         print(mgr.get_status())
         time.sleep(0.5)
