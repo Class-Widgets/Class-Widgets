@@ -6221,15 +6221,8 @@ class SettingsMenu(FluentWindow):
         screen_width = screen_geometry.width()
         screen_height = screen_geometry.height()
 
-        scale_factor = float(config_center.read_conf('General', 'scale'))
-        base_width = int(screen_width * 0.45 / scale_factor)
-        base_height = int(screen_height * 0.55 / scale_factor)
-        max_width = min(1000, int(screen_width * 0.7))
-        max_height = min(700, int(screen_height * 0.7))
-        width = min(max(base_width, 700), max_width)
-        height = min(max(base_height, 400), max_height)
-        self.setMaximumWidth(max_width)
-        self.setMaximumHeight(max_height)
+        width = int(screen_width * 0.6)
+        height = int(screen_height * 0.7)
 
         self.move(int(screen_width / 2 - width / 2), 150)
         self.resize(width, height)

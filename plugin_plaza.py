@@ -18,7 +18,6 @@ from PyQt5.QtCore import (
 )
 from PyQt5.QtGui import QDesktopServices, QIcon, QPixmap
 from PyQt5.QtWidgets import (
-    QApplication,
     QCompleter,
     QGridLayout,
     QHBoxLayout,
@@ -955,11 +954,6 @@ class PluginPlaza(MSFluentWindow):
 
         # 设置窗口大小
         size, pos = calculate_size()
-        screen_geometry = QApplication.primaryScreen().geometry()
-        max_width = min(1200, int(screen_geometry.width() * 0.8))
-        max_height = min(800, int(screen_geometry.height() * 0.8))
-        self.setMaximumWidth(max_width)
-        self.setMaximumHeight(max_height)
 
         self.move(pos[0], pos[1])
         self.resize(size[0], size[1])

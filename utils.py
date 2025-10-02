@@ -211,13 +211,8 @@ def calculate_size(
     screen_width = screen_geometry.width()
     screen_height = screen_geometry.height()
 
-    scale_factor = float(config_center.read_conf('General', 'scale'))
-    base_width = int(screen_width * p_w / scale_factor)
-    base_height = int(screen_height * p_h / scale_factor)
-    max_width = min(1200, int(screen_width * 0.8))
-    max_height = min(800, int(screen_height * 0.8))
-    width = min(max(base_width, 850), max_width)
-    height = min(max(base_height, 500), max_height)
+    width = int(screen_width * p_w)
+    height = int(screen_height * p_h)
 
     return (width, height), (int(screen_width / 2 - width / 2), 150)
 
