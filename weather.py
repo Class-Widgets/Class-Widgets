@@ -18,6 +18,8 @@ from file import config_center
 from network_thread import proxies
 
 ICON_DIR = CW_HOME / "img" / "weather"
+TEMPERATURE_UNIT = {"fahrenheit": "--℉", "celsius": "--℃","unset": "--°"}
+
 
 
 class WeatherFetchThread(QThread):

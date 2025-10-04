@@ -46,7 +46,7 @@
     "api": "xiaomi_weather",
     "api_key": "",
     "refresh_interval": "15",
-    "temperature_unit": "°C",
+    "temperature_unit": "unset",
     "alert_exclude": "",
     "widget_display": "'temperature', 'alert', 'reminder'"
   },

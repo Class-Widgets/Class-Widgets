@@ -3245,8 +3245,8 @@ class DesktopWidget(QWidget):  # 主要小组件
             if temp_data and temp_data.lower() != 'none':
                 temperature = db.weather_processor._convert_temperature_unit(temp_data)
             else:
-                target_unit = config_center.read_conf('Weather', 'temperature_unit', 'celsius')
-                temperature = '---℉' if target_unit == 'fahrenheit' else '--℃'
+                target_unit = config_center.read_conf('Weather', 'temperature_unit')
+                temperature = db.TEMPERATURE_UNIT[target_unit]
                 self.temperature.setText(temperature)
             current_city = self.findChild(QLabel, 'current_city')
             try:
@@ -3261,8 +3261,8 @@ class DesktopWidget(QWidget):  # 主要小组件
                     converted_temp = db.weather_processor._convert_temperature_unit(temp_data)
                     self.temperature.setText(converted_temp)
                 else:
-                    target_unit = config_center.read_conf('Weather', 'temperature_unit', 'celsius')
-                    temperature = '---℉' if target_unit == 'fahrenheit' else '--℃'
+                    target_unit = config_center.read_conf('Weather', 'temperature_unit')
+                    temperature = db.TEMPERATURE_UNIT[target_unit]
                     self.temperature.setText(temperature)
                 city_name = db.search_by_num(config_center.read_conf('Weather', 'city'))
                 if city_name != 'coordinates':
@@ -3289,8 +3289,8 @@ class DesktopWidget(QWidget):  # 主要小组件
                     self.alert_icon.hide()
                     self.weather_alert_text.hide()
 
-                    target_unit = config_center.read_conf('Weather', 'temperature_unit', 'celsius')
-                    temperature = '---℉' if target_unit == 'fahrenheit' else '--℃'
+                    target_unit = config_center.read_conf('Weather', 'temperature_unit')
+                    temperature = db.TEMPERATURE_UNIT[target_unit]
 
                     self.temperature.setText(temperature)
                     self.current_alerts = []
