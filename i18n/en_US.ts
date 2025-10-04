@@ -4963,7 +4963,7 @@ It is recommended to set the scaling factor to a value between 100% and 180%.</t
     <message>
         <location filename="../main.py" line="3853"/>
         <source>检查临时课表...</source>
-        <translation type="unfinished"></translation>
+        <translation>Check the temporary class schedule</translation>
     </message>
     <message>
         <location filename="../main.py" line="3858"/>
