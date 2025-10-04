@@ -4360,7 +4360,7 @@
         <location filename="../main.py" line="3816"/>
         <location filename="../main.py" line="3822"/>
         <source>初始化窗口焦点监视器...</source>
-        <translation type="unfinished"></translation>
+        <translation>ウインドウフォーカスモニターを初期化しています</translation>
     </message>
     <message>
         <location filename="../main.py" line="3828"/>
@@ -4380,17 +4380,17 @@
     <message>
         <location filename="../main.py" line="3853"/>
         <source>检查临时课表...</source>
-        <translation type="unfinished"></translation>
+        <translation>確認しています</translation>
     </message>
     <message>
         <location filename="../main.py" line="3858"/>
         <source>存在临时课表</source>
-        <translation type="unfinished"></translation>
+        <translation>一時的なタイムテーブルが存在しています</translation>
     </message>
     <message>
         <location filename="../main.py" line="3859"/>
         <source>当前存在临时课表，是否沿用</source>
-        <translation type="unfinished"></translation>
+        <translation>現在、一時的なタイムテーブルがあります。引き続き使用しますか？</translation>
     </message>
     <message>
         <location filename="../main.py" line="3869"/>
