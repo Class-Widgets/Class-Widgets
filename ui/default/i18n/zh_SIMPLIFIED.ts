@@ -127,19 +127,19 @@
         <location filename="../dark/widget-next-activity.ui" line="50"/>
         <location filename="../widget-next-activity.ui" line="50"/>
         <source>接下来</source>
-        <translation type="unfinished"></translation>
+        <translation>然后呢</translation>
     </message>
     <message>
         <location filename="../dark/widget-next-activity.ui" line="82"/>
         <location filename="../widget-next-activity.ui" line="82"/>
         <source>测试测试</source>
-        <translation type="unfinished"></translation>
+        <translation>111</translation>
     </message>
     <message>
         <location filename="../dark/widget-time.ui" line="26"/>
         <location filename="../widget-time.ui" line="26"/>
         <source>时间</source>
-        <translation type="unfinished"></translation>
+        <translation>04点05分</translation>
     </message>
     <message>
         <location filename="../dark/widget-time.ui" line="50"/>
