@@ -3846,8 +3846,10 @@ if __name__ == '__main__':
         try:
             import distro
 
-            name, version, _ = distro.linux_distribution(full_distribution_name=True)
-            os_version = f"{name} {version}"
+            name = distro.name()
+            version = distro.version()
+            id_ = distro.id()
+            os_version = f"{name} {version} ({id_})"
         except ImportError:
             pass
     logger.debug("系统环境信息:")

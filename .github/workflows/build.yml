@@ -111,7 +111,7 @@ on:
         description: "打包作业结果"
         value: ${{ jobs.package.result }}
   pull_request:
-    types: [opened, synchronize, closed]
+    types: [opened, synchronize]
     paths-ignore:
       - "**/*.md"
       - "**/*.txt"
@@ -263,7 +263,7 @@ jobs:
              ["win32-x64"]="{\"os\":\"windows-latest\",\"arch\":\"x64\",\"platform\":\"windows-x64\",\"platform_id\":\"win32-x64\"}"
              ["win32-x86"]="{\"os\":\"windows-latest\",\"arch\":\"x86\",\"platform\":\"windows-x86\",\"platform_id\":\"win32-x86\"}"
              ["macos-arm64"]="{\"os\":\"macos-latest\",\"arch\":\"arm64\",\"platform\":\"macos-arm64\",\"platform_id\":\"macos-arm64\"}"
-             ["linux-x64"]="{\"os\":\"ubuntu-latest\",\"arch\":\"x64\",\"platform\":\"linux-x64\",\"platform_id\":\"linux-x64\"}"
+             ["linux-x64"]="{\"container\":\"debian:10-slim\",\"arch\":\"x64\",\"platform\":\"linux-x64\",\"platform_id\":\"linux-x64\"}"
            )
            platforms_array="[]"
            if [[ -n "$platforms" ]]; then
@@ -306,9 +306,12 @@ jobs:
   build:
     needs: [prepare]
     if: needs.prepare.result == 'success' && needs.prepare.outputs.skip_ci != 'true'
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os || 'ubuntu-latest' }}
+    container: ${{ matrix.container || null }}
+    timeout-minutes: 45
     strategy:
       fail-fast: true
+      max-parallel: 4
       matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
     env:
       PYTHON_VERSION: ${{ startsWith(matrix.os, 'windows') && '3.8' || '3.11' }}
@@ -319,12 +322,28 @@ jobs:
       BUILD_RUNID: ${{ needs.prepare.outputs.build_runid }}
       RELEASE_VERSION: ${{ needs.prepare.outputs.release_version }}
     steps:
+      - name: Cache dependencies (Linux)
+        if: matrix.platform == 'linux-x64'
+        uses: actions/cache@v4
+        with:
+          path: /var/cache/apt/archives
+          key: ${{ runner.os }}-apt-archives
+
       - name: Install dependencies (Linux)
         if: matrix.platform == 'linux-x64'
         shell: bash
         run: |
-          sudo apt-get update
-          sudo apt-get install -y zip
+          sed -i 's|deb.debian.org|archive.debian.org|g' /etc/apt/sources.list
+          sed -i 's|security.debian.org|archive.debian.org/debian-security|g' /etc/apt/sources.list
+          apt -o Acquire::Check-Valid-Until=false update
+          apt-get update -qq && apt-get upgrade -y
+          apt-get install -y --no-install-recommends \
+            git curl ca-certificates zip \
+            build-essential pkg-config python3-dev libfontconfig1 libxrender1 \
+            libffi-dev libglib2.0-dev libx11-dev libxcb1-dev libglu1-mesa-dev \
+            libxkbcommon-dev libxkbcommon-x11-0 libxcb-shm0-dev libxcb-render0-dev \
+            libgl1-mesa-dev mesa-utils libgl1-mesa-glx libgl1-mesa-dri
+          apt-get clean && rm -rf /var/lib/apt/lists/*
 
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -356,6 +375,7 @@ jobs:
       - name: Python Syntax Check
         id: syntax_check
         shell: bash
+        continue-on-error: false
         run: |
           python_files=$(find . -name "*.py" -not -path "*/__pycache__/*" -not -path "*/.venv/*" -not -path "*/build/*" -not -path "*/dist/*" | sort)
           total_files=$(echo "$python_files" | wc -l)
@@ -447,8 +467,11 @@ jobs:
             ${{ runner.os }}-${{ matrix.arch }}-python${{ env.PYTHON_VERSION }}-uv-cache-
 
       - name: Install dependencies
+        shell: bash
         run: |
           uv sync --group package --no-dev
+          uv pip install cffi ply --upgrade
+          uv pip list --outdated
 
       - name: Prepare output directory
         run: |
