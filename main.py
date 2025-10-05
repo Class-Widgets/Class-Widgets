@@ -3845,6 +3845,7 @@ if __name__ == '__main__':
     elif system == 'Linux':
         try:
             import distro
+
             name = distro.name()
             version = distro.version()
             id_ = distro.id()
