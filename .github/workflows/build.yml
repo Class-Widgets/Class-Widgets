@@ -472,8 +472,6 @@ jobs:
         shell: bash
         run: |
           curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
-          DLLDIR="$(uv run python -c 'import sys,os; print(os.path.join(sys.base_prefix, "DLLs"))')"
-          echo "DLLDIR=$DLLDIR"
           uv run --no-dev pyinstaller main.py \
             -w \
             -i ./img/favicon.ico \
@@ -489,9 +487,14 @@ jobs:
             --add-data "LICENSE:." \
             --hidden-import darkdetect \
             --strip \
-            --optimize 2 \
-            --add-binary "$DLLDIR/libcrypto-1_1-x64.dll;." \
-            --add-binary "$DLLDIR/libssl-1_1-x64.dll;."
+            --optimize 2 
+
+          # === 打包完成后拷贝 SSL 依赖 ===
+          DLLDIR="$(uv run python -c 'import sys,os; print(os.path.join(os.path.dirname(sys.base_prefix), "DLLs"))')"
+          echo "Copying SSL binaries from $DLLDIR"
+          cp "$DLLDIR/_ssl.pyd" "dist/ClassWidgets/" || true
+          cp "$DLLDIR/libcrypto-1_1-x64.dll" "dist/ClassWidgets/" || true
+          cp "$DLLDIR/libssl-1_1-x64.dll" "dist/ClassWidgets/" || true
 
           if [[ "$BUILD_TYPE" == "Release" ]]; then
             zip_name="ClassWidgets-Windows-${{ matrix.arch }}"
