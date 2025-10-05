@@ -472,6 +472,7 @@ jobs:
         shell: bash
         run: |
           curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
+          PYDIR=$(uv python dir 3.8)
           uv run --no-dev pyinstaller main.py \
             -w \
             -i ./img/favicon.ico \
@@ -487,7 +488,9 @@ jobs:
             --add-data "LICENSE:." \
             --hidden-import darkdetect \
             --strip \
-            --optimize 2
+            --optimize 2 \
+            --add-binary "$PYDIR/DLLs/libcrypto-1_1-x64.dll;." \
+            --add-binary "$PYDIR/DLLs/libssl-1_1-x64.dll;."
 
           if [[ "$BUILD_TYPE" == "Release" ]]; then
             zip_name="ClassWidgets-Windows-${{ matrix.arch }}"
