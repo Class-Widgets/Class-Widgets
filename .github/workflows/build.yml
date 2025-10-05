@@ -490,8 +490,8 @@ jobs:
             --hidden-import darkdetect \
             --strip \
             --optimize 2 \
-            --add-binary "$PYDIR/DLLs/libcrypto-1_1-x64.dll;." \
-            --add-binary "$PYDIR/DLLs/libssl-1_1-x64.dll;."
+            --add-binary "$DLLDIR/DLLs/libcrypto-1_1-x64.dll;." \
+            --add-binary "$DLLDIR/DLLs/libssl-1_1-x64.dll;."
 
           if [[ "$BUILD_TYPE" == "Release" ]]; then
             zip_name="ClassWidgets-Windows-${{ matrix.arch }}"
