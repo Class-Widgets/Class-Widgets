@@ -20,6 +20,8 @@ dependencies = [
   "ntplib~=0.4.0",
   "psutil~=7.1.0",
   "pycses",
+  "pycparser==2.14; sys_platform == 'linux'",
+  "pycparser",
   "pydantic~=2.10.6",
   "pygame~=2.6.1",
   "pygetwindow~=0.0.9",
