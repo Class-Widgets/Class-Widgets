@@ -1057,7 +1057,7 @@ class PreviousWindowFocusManager(QObject):
         self.restore_requested.connect(self.restore)
         self.ignore.connect(self.ignore_hwnds.add)
         self.remove_ignore.connect(self.ignore_hwnds.discard)
-        self._callback_id = update_timer.add_callback(self.store, interval=0.2)
+        self.update_callback()
 
     def store(self):
         """记录当前前台窗口句柄"""
@@ -1091,9 +1091,13 @@ class PreviousWindowFocusManager(QObject):
     def stop(self):
         """停止焦点管理器"""
         if hasattr(self, '_callback_id') and self._callback_id:
-            update_timer.remove_callback(self._callback_id)
+            update_timer.remove_callback_by_id(self._callback_id)
             self._callback_id = None
         self._last_hwnd = None
+
+    def update_callback(self):
+        """更新回调"""
+        self._callback_id = update_timer.add_callback(self.store, interval=0.2)
 
 
 def _create_shortcut(
@@ -1201,3 +1205,4 @@ tray_icon = None
 update_timer = UnionUpdateTimer()
 time_manager = TimeManagerFactory.get_instance()
 guard: Optional[SingleInstanceGuard] = None
+focus_manager: Optional[PreviousWindowFocusManager] = None

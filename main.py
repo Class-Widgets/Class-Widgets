@@ -145,8 +145,6 @@ ex_menu = None
 dark_mode_watcher = None
 was_floating_mode = False  # 浮窗状态
 
-focus_manager = None
-
 
 @logger.catch
 def global_exceptHook(exc_type: type, exc_value: Exception, exc_tb: any) -> None:
@@ -1080,10 +1078,10 @@ class WidgetsManager:
             widget.show()
             # print(int(widget.winId()))
             # print(ctypes.c_void_p(int(widget.winId())).value)
-            if focus_manager:
+            if utils.focus_manager:
                 QTimer.singleShot(
                     0,
-                    lambda w=widget: focus_manager.ignore.emit(
+                    lambda w=widget: utils.focus_manager.ignore.emit(
                         ctypes.c_void_p(int(w.winId())).value
                     ),
                 )
@@ -1193,10 +1191,10 @@ class WidgetsManager:
             if not fw.animating:
                 self.full_hide_windows()
                 fw.show()
-                if focus_manager:
+                if utils.focus_manager:
                     QTimer.singleShot(
                         0,
-                        lambda w=fw: focus_manager.ignore.emit(
+                        lambda w=fw: utils.focus_manager.ignore.emit(
                             ctypes.c_void_p(int(w.winId())).value
                         ),
                     )
@@ -1789,11 +1787,11 @@ class FloatingWidget(QWidget):  # 浮窗
 
         self.animation_rect.finished.connect(cleanup)
 
-        if focus_manager:
+        if utils.focus_manager:
             QTimer.singleShot(
                 500,
                 lambda: (
-                    focus_manager.remove_ignore.emit(ctypes.c_void_p(int(self.winId())).value)
+                    utils.focus_manager.remove_ignore.emit(ctypes.c_void_p(int(self.winId())).value)
                 ),
             )
 
@@ -1856,8 +1854,8 @@ class FloatingWidget(QWidget):  # 浮窗
             elif hide_mode == '0':
                 mgr.show_windows()
                 self.close()
-        if focus_manager:
-            focus_manager.restore_requested.emit()
+        if utils.focus_manager:
+            utils.focus_manager.restore_requested.emit()
 
     def focusInEvent(self, event: QFocusEvent) -> None:
         self.focusing = True
@@ -2327,11 +2325,11 @@ class DesktopWidget(QWidget):  # 主要小组件
 
             self.backgnd.setGraphicsEffect(shadow_effect)
 
-        if focus_manager:
+        if utils.focus_manager:
             QTimer.singleShot(
                 500,
                 lambda: (
-                    focus_manager.remove_ignore.emit(ctypes.c_void_p(int(self.winId())).value)
+                    utils.focus_manager.remove_ignore.emit(ctypes.c_void_p(int(self.winId())).value)
                 ),
             )
 
@@ -2418,8 +2416,8 @@ class DesktopWidget(QWidget):  # 主要小组件
         event.ignore()
         if event.button() == Qt.MouseButton.RightButton:
             self.open_extra_menu()
-        if focus_manager:
-            focus_manager.restore_requested.emit()
+        if utils.focus_manager:
+            utils.focus_manager.restore_requested.emit()
 
     def update_data(self, path: str = '') -> None:
         global current_time, current_week, start_y, today
@@ -3439,10 +3437,10 @@ class DesktopWidget(QWidget):  # 主要小组件
             if w.exec():
                 if mgr.state:
                     fw.show()
-                    if focus_manager:
+                    if utils.focus_manager:
                         QTimer.singleShot(
                             0,
-                            lambda w=fw: focus_manager.ignore.emit(
+                            lambda w=fw: utils.focus_manager.ignore.emit(
                                 ctypes.c_void_p(int(w.winId())).value
                             ),
                         )
@@ -3451,9 +3449,12 @@ class DesktopWidget(QWidget):  # 主要小组件
                     mgr.show_windows()
         elif mgr.state:
             fw.show()
-            if focus_manager:
+            if utils.focus_manager:
                 QTimer.singleShot(
-                    0, lambda w=fw: focus_manager.ignore.emit(ctypes.c_void_p(int(w.winId())).value)
+                    0,
+                    lambda w=fw: utils.focus_manager.ignore.emit(
+                        ctypes.c_void_p(int(w.winId())).value
+                    ),
                 )
             mgr.full_hide_windows()
         else:
@@ -3573,8 +3574,8 @@ class DesktopWidget(QWidget):  # 主要小组件
                 mgr.hide_status = (current_state, 0)
         else:
             event.ignore()
-        if focus_manager:
-            focus_manager.restore_requested.emit()
+        if utils.focus_manager:
+            utils.focus_manager.restore_requested.emit()
 
     def stop(self):
         if mgr:
@@ -3682,6 +3683,7 @@ def init_config() -> None:  # 重设配置文件
 def init() -> None:
     global theme, radius, mgr, screen_width, first_start, fw, was_floating_mode
     update_timer.remove_all_callbacks()
+    utils.focus_manager.update_callback()
 
     global_i18n_manager.scan_available_languages()
 
@@ -3702,9 +3704,10 @@ def init() -> None:
     mgr.init_widgets()
     if not first_start and was_floating_mode and fw:
         fw.show()
-        if focus_manager:
+        if utils.focus_manager:
             QTimer.singleShot(
-                0, lambda w=fw: focus_manager.ignore.emit(ctypes.c_void_p(int(w.winId())).value)
+                0,
+                lambda w=fw: utils.focus_manager.ignore.emit(ctypes.c_void_p(int(w.winId())).value),
             )
         mgr.full_hide_windows()
 
@@ -3862,13 +3865,7 @@ if __name__ == '__main__':
         splash_window.update_status(
             (45, QCoreApplication.translate('main', '初始化窗口焦点监视器...'))
         )
-        focus_manager = utils.PreviousWindowFocusManager()
-
-    if system == 'Windows':
-        splash_window.update_status(
-            (45, QCoreApplication.translate('main', '初始化窗口焦点监视器...'))
-        )
-        focus_manager = utils.PreviousWindowFocusManager()
+        utils.focus_manager = utils.PreviousWindowFocusManager()
 
     # list_pyttsx3_voices()
 
