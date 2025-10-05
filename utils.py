@@ -1205,4 +1205,4 @@ tray_icon = None
 update_timer = UnionUpdateTimer()
 time_manager = TimeManagerFactory.get_instance()
 guard: Optional[SingleInstanceGuard] = None
-focus_manager: PreviousWindowFocusManager = PreviousWindowFocusManager()
+focus_manager: Optional[PreviousWindowFocusManager] = None

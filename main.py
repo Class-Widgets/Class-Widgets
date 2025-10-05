@@ -3859,6 +3859,7 @@ if __name__ == '__main__':
         splash_window.update_status(
             (45, QCoreApplication.translate('main', '初始化窗口焦点监视器...'))
         )
+        utils.focus_manager = utils.PreviousWindowFocusManager()
 
     # list_pyttsx3_voices()
 
