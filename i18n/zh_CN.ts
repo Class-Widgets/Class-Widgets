@@ -2183,7 +2183,7 @@
     <message>
         <location filename="../menu.py" line="1678"/>
         <source>体感温度: --{default_unit}</source>
-        <translation type="unfinished"></translation>
+        <translation>体感温度: --{default_unit}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3596"/>
@@ -3921,12 +3921,12 @@
     <message>
         <location filename="../list_.py" line="68"/>
         <source>摄氏度 (℃)</source>
-        <translation type="unfinished"></translation>
+        <translation>摄氏度 (℃)</translation>
     </message>
     <message>
         <location filename="../list_.py" line="69"/>
         <source>华氏度 (℉)</source>
-        <translation type="unfinished"></translation>
+        <translation>华氏度 (℉)</translation>
     </message>
     <message>
         <location filename="../list_.py" line="80"/>
@@ -4324,7 +4324,7 @@
         <location filename="../main.py" line="3821"/>
         <location filename="../main.py" line="3827"/>
         <source>初始化窗口焦点监视器...</source>
-        <translation type="unfinished"></translation>
+        <translation>初始化窗口焦点监视器...</translation>
     </message>
     <message>
         <location filename="../main.py" line="3833"/>
@@ -4344,17 +4344,17 @@
     <message>
         <location filename="../main.py" line="3858"/>
         <source>检查临时课表...</source>
-        <translation type="unfinished"></translation>
+        <translation>检查临时课表...</translation>
     </message>
     <message>
         <location filename="../main.py" line="3863"/>
         <source>存在临时课表</source>
-        <translation type="unfinished"></translation>
+        <translation>存在临时课表</translation>
     </message>
     <message>
         <location filename="../main.py" line="3864"/>
         <source>当前存在临时课表，是否沿用</source>
-        <translation type="unfinished"></translation>
+        <translation>当前存在临时课表，是否沿用</translation>
     </message>
     <message>
         <location filename="../main.py" line="3874"/>
