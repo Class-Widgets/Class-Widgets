@@ -23,7 +23,7 @@
     <message>
         <location filename="../menu.py" line="2771"/>
         <source>这个语音引擎还没有提示信息呢~(・ω&lt;)</source>
-        <translation type="unfinished"></translation>
+        <translation>འབྱེད་པ་གཞིགས་ཡིག་ཆ་འཕྲིན་ཚོགས་མེད།(・ω&lt;)</translation>
     </message>
 </context>
 <context>
@@ -32,28 +32,28 @@
         <location filename="../main.py" line="1947"/>
         <location filename="../main.py" line="2460"/>
         <source>{year} 年 {month}</source>
-        <translation type="unfinished"></translation>
+        <translation>{year} འུང་ {month} ཟླ་</translation>
     </message>
     <message>
         <location filename="../main.py" line="1953"/>
         <location filename="../main.py" line="2465"/>
         <source>{day}日  {week}</source>
-        <translation type="unfinished"></translation>
+        <translation>{day} ཚེས་ {week} བོད་</translation>
     </message>
     <message>
         <location filename="../main.py" line="2374"/>
         <source>完全隐藏/显示小组件</source>
-        <translation type="unfinished"></translation>
+        <translation>ད་རྣམ་ལག་རྟགས་བཟོ། / འོ།</translation>
     </message>
     <message>
         <location filename="../main.py" line="2379"/>
         <source>最小化为浮窗</source>
-        <translation type="unfinished"></translation>
+        <translation>ཡོད་པ་ཚོམ་གྱི་ཕྱིར་བཞིན་པ་བཟོ།</translation>
     </message>
     <message>
         <location filename="../main.py" line="2387"/>
         <source>插件广场</source>
-        <translation type="unfinished"></translation>
+        <translation>ཡོག་གྲངས་ཁང་</translation>
     </message>
     <message>
         <location filename="../main.py" line="2388"/>
