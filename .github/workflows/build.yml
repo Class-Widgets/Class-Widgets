@@ -490,7 +490,7 @@ jobs:
             --optimize 2
 
           # temp: 修复 ssl 相关 dll 打包错误
-          DLLDIR="$(uv run python -c 'import sys, os; print(os.path.join(sys.base_prefix, "DLLs"))')"
+          DLLDIR="$(uv run --no-dev python -c 'import sys, os; print(os.path.join(sys.base_prefix, "DLLs"))')"
           echo "[DEBUG] Copying SSL binaries from $DLLDIR"
           cp -af "$DLLDIR/_ssl.pyd" "dist/ClassWidgets/" || true
           cp -af "$DLLDIR/libcrypto-1_1-x64.dll" "dist/ClassWidgets/" || true
