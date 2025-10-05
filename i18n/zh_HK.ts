@@ -2316,7 +2316,7 @@ https://classwidgets.rinlit.cn/docs-user/</translation>
     <message>
         <location filename="../menu.py" line="1678"/>
         <source>体感温度: --{default_unit}</source>
-        <translation type="unfinished"></translation>
+        <translation>體感溫度: --{default_unit}</translation>
     </message>
     <message>
         <location filename="../menu.py" line="3596"/>
@@ -4556,12 +4556,12 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../list_.py" line="68"/>
         <source>摄氏度 (℃)</source>
-        <translation type="unfinished"></translation>
+        <translation>攝氏度 (℃)</translation>
     </message>
     <message>
         <location filename="../list_.py" line="69"/>
         <source>华氏度 (℉)</source>
-        <translation type="unfinished"></translation>
+        <translation>華氏度 (℉)</translation>
     </message>
     <message>
         <location filename="../list_.py" line="80"/>
@@ -4959,7 +4959,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
         <location filename="../main.py" line="3821"/>
         <location filename="../main.py" line="3827"/>
         <source>初始化窗口焦点监视器...</source>
-        <translation type="unfinished"></translation>
+        <translation>初始化窗囗焦點監視器...</translation>
     </message>
     <message>
         <location filename="../main.py" line="3833"/>
@@ -4979,17 +4979,17 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../main.py" line="3858"/>
         <source>检查临时课表...</source>
-        <translation type="unfinished"></translation>
+        <translation>檢查臨時課表...</translation>
     </message>
     <message>
         <location filename="../main.py" line="3863"/>
         <source>存在临时课表</source>
-        <translation type="unfinished"></translation>
+        <translation>存在臨時課表</translation>
     </message>
     <message>
         <location filename="../main.py" line="3864"/>
         <source>当前存在临时课表，是否沿用</source>
-        <translation type="unfinished"></translation>
+        <translation>當前存在臨時課表，是否沿用</translation>
     </message>
     <message>
         <location filename="../main.py" line="3874"/>
