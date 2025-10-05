@@ -3451,7 +3451,10 @@ class DesktopWidget(QWidget):  # 主要小组件
             fw.show()
             if utils.focus_manager:
                 QTimer.singleShot(
-                    0, lambda w=fw: utils.focus_manager.ignore.emit(ctypes.c_void_p(int(w.winId())).value)
+                    0,
+                    lambda w=fw: utils.focus_manager.ignore.emit(
+                        ctypes.c_void_p(int(w.winId())).value
+                    ),
                 )
             mgr.full_hide_windows()
         else:
@@ -3703,7 +3706,8 @@ def init() -> None:
         fw.show()
         if utils.focus_manager:
             QTimer.singleShot(
-                0, lambda w=fw: utils.focus_manager.ignore.emit(ctypes.c_void_p(int(w.winId())).value)
+                0,
+                lambda w=fw: utils.focus_manager.ignore.emit(ctypes.c_void_p(int(w.winId())).value),
             )
         mgr.full_hide_windows()
 

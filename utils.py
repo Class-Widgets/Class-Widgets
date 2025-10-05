@@ -1099,6 +1099,7 @@ class PreviousWindowFocusManager(QObject):
         """更新回调"""
         self._callback_id = update_timer.add_callback(self.store, interval=0.2)
 
+
 def _create_shortcut(
     target_path: str,
     shortcut_path: Path,
