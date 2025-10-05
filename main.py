@@ -3862,12 +3862,6 @@ if __name__ == '__main__':
         )
         focus_manager = utils.PreviousWindowFocusManager()
 
-    if system == 'Windows':
-        splash_window.update_status(
-            (45, QCoreApplication.translate('main', '初始化窗口焦点监视器...'))
-        )
-        focus_manager = utils.PreviousWindowFocusManager()
-
     # list_pyttsx3_voices()
 
     splash_window.update_status((50, QCoreApplication.translate('main', '初始化窗口管理器...')))
