@@ -489,6 +489,13 @@ jobs:
             --strip \
             --optimize 2
 
+          # temp: 修复 ssl 相关 dll 打包错误
+          DLLDIR="$(uv run --no-dev python -c 'import sys, os; print(os.path.join(sys.base_prefix, "DLLs"))')"
+          echo "[DEBUG] Copying SSL binaries from $DLLDIR"
+          cp -af "$DLLDIR/_ssl.pyd" "dist/ClassWidgets/" || true
+          cp -af "$DLLDIR/libcrypto-1_1-x64.dll" "dist/ClassWidgets/" || true
+          cp -af "$DLLDIR/libssl-1_1-x64.dll" "dist/ClassWidgets/" || true
+
           if [[ "$BUILD_TYPE" == "Release" ]]; then
             zip_name="ClassWidgets-Windows-${{ matrix.arch }}"
           else
