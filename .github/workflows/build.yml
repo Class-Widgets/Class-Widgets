@@ -472,7 +472,7 @@ jobs:
         shell: bash
         run: |
           curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
-          DLLDIR="$(uv run python -c 'import sys,os; print(os.path.join(os.path.dirname(sys.executable), "DLLs"))')"
+          DLLDIR="$(uv run python -c 'import sys,os; print(os.path.join(sys.base_prefix, "DLLs"))')
           echo "DLLDIR=$DLLDIR"
           uv run --no-dev pyinstaller main.py \
             -w \
