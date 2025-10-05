@@ -18,7 +18,6 @@ from typing import Any, Callable, ClassVar, Dict, List, Optional, Tuple, Type, U
 if os.name == 'nt':
     import win32gui
     from win32com.client import Dispatch
-    # import win32process
 
 import darkdetect
 import ntplib
@@ -1063,20 +1062,6 @@ class PreviousWindowFocusManager(QObject):
     def store(self):
         """记录当前前台窗口句柄"""
         hwnd = win32gui.GetForegroundWindow()
-        # 输出窗口对应的文件名
-        # logger.debug(f"前台窗口句柄: {self._last_hwnd}")
-        # try:
-        #     window_text = win32gui.GetWindowText(hwnd)
-        #     class_name = win32gui.GetClassName(hwnd)
-        #     _, process_id = win32process.GetWindowThreadProcessId(hwnd)
-        #     process = psutil.Process(process_id)
-        #     exe_path = process.exe()
-        #     logger.debug(
-        #         f"前台窗口句柄: {hwnd}, 标题: {
-        # window_text}, 类名: {class_name}, 进程ID: {process_id}, 可执行文件: {exe_path}"
-        #     )
-        # except Exception as e:
-        #     logger.debug(f"获取前台窗口信息失败: {e}")
         if hwnd in self.ignore_hwnds:
             return
         self._last_hwnd = hwnd
