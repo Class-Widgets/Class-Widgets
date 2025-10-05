@@ -472,7 +472,8 @@ jobs:
         shell: bash
         run: |
           curl -o zip.exe -L http://www.stahlworks.com/dev/zip.exe
-          PYDIR=$(uv python dir 3.8)
+          DLLDIR="$(uv run python -c 'import sys,os; print(os.path.join(os.path.dirname(sys.executable), "DLLs"))')"
+          echo "DLLDIR=$DLLDIR"
           uv run --no-dev pyinstaller main.py \
             -w \
             -i ./img/favicon.ico \
