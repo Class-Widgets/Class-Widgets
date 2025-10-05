@@ -4957,58 +4957,58 @@ It is recommended to set the scaling factor to a value between 100% and 180%.</t
         <translation>Retrieving system version...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3861"/>
-        <location filename="../main.py" line="3867"/>
+        <location filename="../main.py" line="3863"/>
+        <location filename="../main.py" line="3869"/>
         <source>初始化窗口焦点监视器...</source>
         <translation>Initialize window focus monitor...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3873"/>
+        <location filename="../main.py" line="3875"/>
         <source>初始化窗口管理器...</source>
         <translation>Initializing window manager...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3880"/>
+        <location filename="../main.py" line="3882"/>
         <source>检查初次启动...</source>
         <translation>Checking first-time launch...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3892"/>
+        <location filename="../main.py" line="3894"/>
         <source>初始化插件管理器...</source>
         <translation>Initializing plugin manager...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3898"/>
+        <location filename="../main.py" line="3900"/>
         <source>检查临时课表...</source>
         <translation>Check the temporary class schedule</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3903"/>
+        <location filename="../main.py" line="3905"/>
         <source>存在临时课表</source>
         <translation>Temporary schedule exists</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3904"/>
+        <location filename="../main.py" line="3906"/>
         <source>当前存在临时课表，是否沿用</source>
         <translation>Is the current temporary schedule to be continued?</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3914"/>
+        <location filename="../main.py" line="3916"/>
         <source>加载窗口...</source>
         <translation>Loading window...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3918"/>
+        <location filename="../main.py" line="3920"/>
         <source>加载课程...</source>
         <translation>Loading course...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3925"/>
+        <location filename="../main.py" line="3927"/>
         <source>加载隐藏状态...</source>
         <translation>Loading hidden state...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3944"/>
+        <location filename="../main.py" line="3946"/>
         <source>检查更新...</source>
         <translation>Checking for updates...</translation>
     </message>

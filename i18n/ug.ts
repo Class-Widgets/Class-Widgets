@@ -4189,58 +4189,58 @@ Siz sistem bexatliridin ta yana köp avaaz qoshaliysiz (*≧▽≦)</translation
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="3861"/>
-        <location filename="../main.py" line="3867"/>
+        <location filename="../main.py" line="3863"/>
+        <location filename="../main.py" line="3869"/>
         <source>初始化窗口焦点监视器...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="3873"/>
+        <location filename="../main.py" line="3875"/>
         <source>初始化窗口管理器...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="3880"/>
+        <location filename="../main.py" line="3882"/>
         <source>检查初次启动...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="3892"/>
+        <location filename="../main.py" line="3894"/>
         <source>初始化插件管理器...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="3898"/>
+        <location filename="../main.py" line="3900"/>
         <source>检查临时课表...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="3903"/>
+        <location filename="../main.py" line="3905"/>
         <source>存在临时课表</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="3904"/>
+        <location filename="../main.py" line="3906"/>
         <source>当前存在临时课表，是否沿用</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="3914"/>
+        <location filename="../main.py" line="3916"/>
         <source>加载窗口...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="3918"/>
+        <location filename="../main.py" line="3920"/>
         <source>加载课程...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="3925"/>
+        <location filename="../main.py" line="3927"/>
         <source>加载隐藏状态...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="3944"/>
+        <location filename="../main.py" line="3946"/>
         <source>检查更新...</source>
         <translation type="unfinished"></translation>
     </message>
