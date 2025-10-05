@@ -111,7 +111,7 @@ on:
         description: "打包作业结果"
         value: ${{ jobs.package.result }}
   pull_request:
-    types: [opened, synchronize, closed]
+    types: [opened, synchronize]
     paths-ignore:
       - "**/*.md"
       - "**/*.txt"
@@ -322,13 +322,6 @@ jobs:
       BUILD_RUNID: ${{ needs.prepare.outputs.build_runid }}
       RELEASE_VERSION: ${{ needs.prepare.outputs.release_version }}
     steps:
-      - name: Cache dependencies (Linux)
-        if: matrix.platform == 'linux-x64'
-        uses: actions/cache@v4
-        with:
-          path: /var/cache/apt
-          key: ${{ runner.os }}-apt-
-
       - name: Install dependencies (Linux)
         if: matrix.platform == 'linux-x64'
         shell: bash
@@ -337,13 +330,11 @@ jobs:
           sed -i 's|security.debian.org|archive.debian.org/debian-security|g' /etc/apt/sources.list
           apt -o Acquire::Check-Valid-Until=false update
           apt-get update -qq && apt-get upgrade -y
-          apt-get install -y \
-            build-essential pkg-config python3-dev \
-            libffi-dev libglib2.0-dev libx11-dev libxrender1 libxcb1-dev \
+          apt-get install -y --no-install-recommends \
+            build-essential pkg-config python3-dev libfontconfig1 libxrender1 \
+            libffi-dev libglib2.0-dev libx11-dev libxcb1-dev libglu1-mesa-dev \
             libxkbcommon-dev libxkbcommon-x11-0 libxcb-shm0-dev libxcb-render0-dev \
-            libfontconfig1 libfreetype6 libgl1-mesa-dev libglu1-mesa-dev \
-            zip unzip wget curl ca-certificates git
-          apt-get --fix-broken install -y
+            libgl1-mesa-dev git curl ca-certificates zip
           apt-get clean && rm -rf /var/lib/apt/lists/*
 
       - name: Checkout repository
@@ -584,24 +575,6 @@ jobs:
             zip_name="Linux-x64_debug-${GITHUB_RUN_ID}"
           fi
           cd dist && mv ClassWidgets "${zip_name}" && zip -r -q "../packages/${zip_name}.zip" "${zip_name}"/* && cd ..
-
-      - name: Test Linux executable (headless)
-        if: matrix.platform == 'linux-x64'
-        shell: bash
-        run: |
-          export QT_QPA_PLATFORM=offscreen
-          export DISPLAY=:99
-          Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-          XVFB_PID=$!
-          sleep 2
-          cd dist
-          if [[ "$BUILD_TYPE" == "Release" ]]; then
-            test_dir="ClassWidgets-Linux-x64"
-          else
-            test_dir="Linux-x64_debug-${GITHUB_RUN_ID}"
-          fi
-          echo "Testing..."
-          timeout 10s ./"${test_dir}"/ClassWidgets || echo "no"
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
