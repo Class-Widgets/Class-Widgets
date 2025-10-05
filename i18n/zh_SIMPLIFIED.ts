@@ -113,17 +113,17 @@
     <message>
         <location filename="../generate_speech.py" line="388"/>
         <source>文本内容不能为空</source>
-        <translation type="unfinished"></translation>
+        <translation>部队里不招女人了怎么办</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="392"/>
         <source>语音ID不能为空</source>
-        <translation type="unfinished"></translation>
+        <translation>棍母不可以说话</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="400"/>
         <source>语音文件生成失败，文件不存在</source>
-        <translation type="unfinished"></translation>
+        <translation>语音文件变成棍母了</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="406"/>
@@ -156,7 +156,7 @@
     <message>
         <location filename="../main.py" line="756"/>
         <source>Class Widgets 崩溃报告</source>
-        <translation type="unfinished">Class Widgets 崩溃报告</translation>
+        <translation>ClassIsWidgets 咋崩了啊</translation>
     </message>
     <message>
         <location filename="../main.py" line="761"/>
