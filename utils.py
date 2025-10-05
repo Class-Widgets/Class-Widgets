@@ -18,7 +18,7 @@ from typing import Any, Callable, ClassVar, Dict, List, Optional, Tuple, Type, U
 if os.name == 'nt':
     import win32gui
     from win32com.client import Dispatch
-    import win32process
+    # import win32process
 
 import darkdetect
 import ntplib
@@ -1064,23 +1064,23 @@ class PreviousWindowFocusManager(QObject):
         """记录当前前台窗口句柄"""
         hwnd = win32gui.GetForegroundWindow()
         # 输出窗口对应的文件名
-        logger.debug(f"前台窗口句柄: {self._last_hwnd}")
-        try:
-            window_text = win32gui.GetWindowText(hwnd)
-            class_name = win32gui.GetClassName(hwnd)
-            _, process_id = win32process.GetWindowThreadProcessId(hwnd)
-            process = psutil.Process(process_id)
-            exe_path = process.exe()
-            logger.debug(
-                f"前台窗口句柄: {hwnd}, 标题: {
-        window_text}, 类名: {class_name}, 进程ID: {process_id}, 可执行文件: {exe_path}"
-            )
-        except Exception as e:
-            logger.debug(f"获取前台窗口信息失败: {e}")
+        # logger.debug(f"前台窗口句柄: {self._last_hwnd}")
+        # try:
+        #     window_text = win32gui.GetWindowText(hwnd)
+        #     class_name = win32gui.GetClassName(hwnd)
+        #     _, process_id = win32process.GetWindowThreadProcessId(hwnd)
+        #     process = psutil.Process(process_id)
+        #     exe_path = process.exe()
+        #     logger.debug(
+        #         f"前台窗口句柄: {hwnd}, 标题: {
+        # window_text}, 类名: {class_name}, 进程ID: {process_id}, 可执行文件: {exe_path}"
+        #     )
+        # except Exception as e:
+        #     logger.debug(f"获取前台窗口信息失败: {e}")
         if hwnd in self.ignore_hwnds:
             return
         self._last_hwnd = hwnd
-        logger.debug(f"记录前台窗口句柄: {self._last_hwnd}")
+        # logger.debug(f"记录前台窗口句柄: {self._last_hwnd}")
 
     def restore(self, delay_ms=0):
         """
@@ -1089,11 +1089,11 @@ class PreviousWindowFocusManager(QObject):
         Args:
             delay_ms: 延迟执行毫秒数 (部分系统需要延迟才能成功)
         """
-        logger.debug(f"请求恢复焦点,延迟 {delay_ms} ms")
+        # logger.debug(f"请求恢复焦点,延迟 {delay_ms} ms")
         QTimer.singleShot(delay_ms, self._do_restore)
 
     def _do_restore(self):
-        logger.debug(f"尝试恢复焦点到窗口句柄: {self._last_hwnd}")
+        # logger.debug(f"尝试恢复焦点到窗口句柄: {self._last_hwnd}")
         if self._last_hwnd and win32gui.IsWindow(self._last_hwnd):
             try:
                 current_hwnd = win32gui.GetForegroundWindow()
