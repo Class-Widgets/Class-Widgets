@@ -490,7 +490,7 @@ jobs:
             --optimize 2 
 
           # === 打包完成后拷贝 SSL 依赖 ===
-          DLLDIR="$(uv run python -c 'import sys,os; print(os.path.join(os.path.dirname(sys.base_prefix), "DLLs"))')"
+          DLLDIR="$(uv run python -c 'import sys, os; print(os.path.join(sys.base_prefix, "DLLs"))')"
           echo "Copying SSL binaries from $DLLDIR"
           cp "$DLLDIR/_ssl.pyd" "dist/ClassWidgets/" || true
           cp "$DLLDIR/libcrypto-1_1-x64.dll" "dist/ClassWidgets/" || true
