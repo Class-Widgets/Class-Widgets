@@ -331,10 +331,11 @@ jobs:
           apt -o Acquire::Check-Valid-Until=false update
           apt-get update -qq && apt-get upgrade -y
           apt-get install -y --no-install-recommends \
+            git curl ca-certificates zip \
             build-essential pkg-config python3-dev libfontconfig1 libxrender1 \
             libffi-dev libglib2.0-dev libx11-dev libxcb1-dev libglu1-mesa-dev \
             libxkbcommon-dev libxkbcommon-x11-0 libxcb-shm0-dev libxcb-render0-dev \
-            libgl1-mesa-dev git curl ca-certificates zip
+            libgl1-mesa-dev mesa-utils libgl1-mesa-glx libgl1-mesa-dri
           apt-get clean && rm -rf /var/lib/apt/lists/*
 
       - name: Checkout repository
