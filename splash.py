@@ -155,7 +155,7 @@ class Splash:
         if 'error' in data:
             return
         if data == schedule_center.schedule_data:
-            return 
+            return
         self.error()
         w = Dialog(
             app.translate('splash', "检测到远端课表更新"),
@@ -169,7 +169,6 @@ class Splash:
             logger.info("已应用远端课表")
         self.unerror()
         app.processEvents()
-
 
 
 if __name__ == '__main__':
