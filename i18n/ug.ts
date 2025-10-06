@@ -1811,7 +1811,7 @@ Siz sistem bexatliridin ta yana köp avaaz qoshaliysiz (*≧▽≦)</translation
     <message>
         <location filename="../plugin_plaza.py" line="372"/>
         <source>为 Class Widgets 安装</source>
-        <translation type="unfinished">Class Widgets</translation>
+        <translation type="unfinished">Class Widgets ئىچىدە ئىپلىكەت قىلىش</translation>
     </message>
     <message>
         <location filename="../plugin_plaza.py" line="375"/>
