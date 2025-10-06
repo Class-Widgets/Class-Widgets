@@ -630,7 +630,7 @@ class scheduleThread(QThread):  # 获取课表
                 data = response.json()
                 if 'data' in data:
                     data = json.loads(data.get('data'))
-                
+
                 if 'timeline' not in data:
                     data['timeline'] = {
                         "default": [],
@@ -672,7 +672,12 @@ class scheduleThread(QThread):  # 获取课表
                         for item_name, item_time in sorted_timeline:
                             try:
                                 new_timeline.append(
-                                    [int(item_name[0] == 'f'), item_name[1], int(item_name[2:]), item_time]
+                                    [
+                                        int(item_name[0] == 'f'),
+                                        item_name[1],
+                                        int(item_name[2:]),
+                                        item_time,
+                                    ]
                                 )
                             except Exception as e:
                                 logger.error(f'加载课程表文件[课程数据]出错：{e}')
