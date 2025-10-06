@@ -24,7 +24,7 @@ jobs:
 
       - name: Find branch comment
         if: steps.branch.outputs.head_ref_branch == 'main'
-        uses: peter-evans/find-comment@v3
+        uses: peter-evans/find-comment@v4
         id: find-branch-comment
         with:
           issue-number: ${{ github.event.pull_request.number }}
@@ -52,7 +52,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Find title comment
-        uses: peter-evans/find-comment@v3
+        uses: peter-evans/find-comment@v4
         id: find-title-comment
         with:
           issue-number: ${{ github.event.pull_request.number }}
