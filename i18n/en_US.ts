@@ -3271,7 +3271,7 @@ For details, see Log, located under./log/.</translation>
     <message>
         <location filename="../menu.py" line="4606"/>
         <source>当前支持城市ID和经纬度两种方式, 请选择您偏好的方式:</source>
-        <translation type="unfinished"></translation>
+        <translation>Currently supports city ID and latitude/longitude. Please select your preferred method:</translation>
     </message>
     <message>
         <location filename="../menu.py" line="5805"/>
@@ -3903,7 +3903,7 @@ These placeholders apply only to the “Other Notifications”:
     <message>
         <location filename="../menu.py" line="4469"/>
         <source>复制</source>
-        <translation>&#xa0;</translation>
+        <translation>Copy</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4473"/>
@@ -5025,7 +5025,7 @@ It is recommended to set the scaling factor to a value between 100% and 180%.</t
     <message>
         <location filename="../splash.py" line="162"/>
         <source>当前存在远端课表与本地不一致，是否使用远端课表？</source>
-        <translation type="unfinished"></translation>
+        <translation>Current remote schedule and local schedule are inconsistent. Use the remote schedule?</translation>
     </message>
 </context>
 <context>
@@ -5361,7 +5361,7 @@ Please update Class Widgets before trying to install this plugin.</translation>
     <message>
         <location filename="../splash.py" line="161"/>
         <source>检测到远端课表更新</source>
-        <translation type="unfinished"></translation>
+        <translation>Remote schedule update detected</translation>
     </message>
 </context>
 <context>
