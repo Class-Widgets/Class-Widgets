@@ -5072,7 +5072,7 @@ class SettingsMenu(FluentWindow):
         self.table.currentRowChanged.connect(self.cf_change_file)
         QTimer.singleShot(0, lambda: self.table.resizeEvent(None))
 
-    def cf_new_config(self):
+    def cf_new_config(self, url:str='local'):
         try:
 
             def is_valid_filename(file_name):
@@ -5150,10 +5150,7 @@ class SettingsMenu(FluentWindow):
             self.table.clear()
 
             config_list = list_.get_schedule_config()
-            self.cf_file_list.clear()
-
-            for id in range(len(config_list)):
-                self.cf_file_list.append(self.cf_add_item(config_list[id], 'local', id))
+            self.cf_reload_table()
 
             self.table.setCurrentRow(list_.get_schedule_config().index(f'{new_name}.json'))
             self.table.currentRowChanged.connect(self.cf_change_file)
@@ -5287,6 +5284,7 @@ class SettingsMenu(FluentWindow):
             return
         self.config_url.setEnabled(True)
         self.config_url.clear()
+        self.cf_reload_table()
 
     def cf_post_schedule(self):
         url = self.cf_file_list[self.table.currentIndex().row()].url

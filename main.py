@@ -3908,10 +3908,10 @@ if __name__ == '__main__':
             init_config()
             splash_window.schedule_updater()
         splash_window.unerror()
-        schedule_center.update_schedule()
     else:
-        schedule_center.update_schedule()
         splash_window.schedule_updater()
+
+    schedule_center.update_schedule()
 
     splash_window.update_status((91, QCoreApplication.translate('main', '加载窗口...')))
 
