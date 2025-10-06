@@ -2728,7 +2728,7 @@
     <message>
         <location filename="../menu.py" line="4606"/>
         <source>当前支持城市ID和经纬度两种方式, 请选择您偏好的方式:</source>
-        <translation type="unfinished"></translation>
+        <translation>現在、都市IDと緯度経度の2つの方法がサポートされています。ご希望の方法を選んでください。</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4914"/>
@@ -4442,7 +4442,7 @@
     <message>
         <location filename="../splash.py" line="162"/>
         <source>当前存在远端课表与本地不一致，是否使用远端课表？</source>
-        <translation type="unfinished"></translation>
+        <translation>ローカルのタイムテーブルとリモートのタイムテーブルが一致していない場合、リモートのタイムテーブルを使用しますか？</translation>
     </message>
 </context>
 <context>
@@ -4777,7 +4777,7 @@ Class Widgets を更新してから、このプラグインのインストール
     <message>
         <location filename="../splash.py" line="161"/>
         <source>检测到远端课表更新</source>
-        <translation type="unfinished"></translation>
+        <translation>リモートのタイムテーブルが更新され検出されました</translation>
     </message>
 </context>
 <context>
