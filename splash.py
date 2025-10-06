@@ -152,6 +152,8 @@ class Splash:
         self.schedule_updater_thread.start()
 
     def schedule_receiver(self, data: dict):
+        if 'error' in data:
+            return
         if data == schedule_center.schedule_data:
             return 
         self.error()
