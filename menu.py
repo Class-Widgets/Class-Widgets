@@ -5072,7 +5072,7 @@ class SettingsMenu(FluentWindow):
         self.table.currentRowChanged.connect(self.cf_change_file)
         QTimer.singleShot(0, lambda: self.table.resizeEvent(None))
 
-    def cf_new_config(self, url:str='local'):
+    def cf_new_config(self):
         try:
 
             def is_valid_filename(file_name):
