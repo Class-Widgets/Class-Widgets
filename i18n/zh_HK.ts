@@ -3278,7 +3278,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../menu.py" line="4606"/>
         <source>当前支持城市ID和经纬度两种方式, 请选择您偏好的方式:</source>
-        <translation type="unfinished"></translation>
+        <translation>目前支援城市ID與經緯度兩種方式，請選擇您偏好的方式：</translation>
     </message>
     <message>
         <location filename="../menu.py" line="5805"/>
@@ -5029,7 +5029,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../splash.py" line="162"/>
         <source>当前存在远端课表与本地不一致，是否使用远端课表？</source>
-        <translation type="unfinished"></translation>
+        <translation>目前遠端課表與本地不一致，是否使用遠端課表？</translation>
     </message>
 </context>
 <context>
@@ -5364,7 +5364,7 @@ CSES 通用課程時間表交換文件(*.yaml)</translation>
     <message>
         <location filename="../splash.py" line="161"/>
         <source>检测到远端课表更新</source>
-        <translation type="unfinished"></translation>
+        <translation>偵測到遠端課表更新</translation>
     </message>
 </context>
 <context>
