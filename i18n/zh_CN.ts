@@ -2540,7 +2540,7 @@
     <message>
         <location filename="../menu.py" line="4606"/>
         <source>当前支持城市ID和经纬度两种方式, 请选择您偏好的方式:</source>
-        <translation type="unfinished"></translation>
+        <translation>当前支持城市ID和经纬度两种方式，请选择您偏好的方式：</translation>
     </message>
     <message>
         <location filename="../menu.py" line="4678"/>
@@ -4394,7 +4394,7 @@
     <message>
         <location filename="../splash.py" line="162"/>
         <source>当前存在远端课表与本地不一致，是否使用远端课表？</source>
-        <translation type="unfinished"></translation>
+        <translation>当前本地课表与远端课表存在不一致，是否采用远端课表？</translation>
     </message>
 </context>
 <context>
@@ -4612,7 +4612,7 @@
     <message>
         <location filename="../splash.py" line="161"/>
         <source>检测到远端课表更新</source>
-        <translation type="unfinished"></translation>
+        <translation>检测到远端课表更新</translation>
     </message>
 </context>
 <context>
