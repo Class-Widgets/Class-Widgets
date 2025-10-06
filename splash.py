@@ -6,11 +6,13 @@ from PyQt5 import uic
 from PyQt5.QtCore import QObject, Qt, QThread, pyqtSignal
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QLabel, QWidget
-from qfluentwidgets import ProgressBar, Theme, theme
+from qfluentwidgets import ProgressBar, Theme, theme, Dialog
 
 from basic_dirs import CW_HOME
 from file import config_center
 from i18n_manager import app
+from network_thread import scheduleThread
+from file import schedule_center, config_center
 
 
 class DarkModeWatcherThread(QThread):
@@ -139,6 +141,33 @@ class Splash:
             | Qt.Tool
         )
         self.splash_window.show()
+
+    def schedule_updater(self):
+        url = schedule_center.schedule_data.get('url', '')
+        if url in ['', None, 'local']:
+            return
+        logger.info(f"启动远端课表更新检查: {url}")
+        self.schedule_updater_thread = scheduleThread(url)
+        self.schedule_updater_thread.update_signal.connect(self.schedule_receiver)
+        self.schedule_updater_thread.start()
+
+    def schedule_receiver(self, data: dict):
+        if data == schedule_center.schedule_data:
+            return 
+        self.error()
+        w = Dialog(
+            app.translate('splash', "检测到远端课表更新"),
+            app.translate('main', "当前存在远端课表与本地不一致，是否使用远端课表？"),
+        )
+        w.buttonLayout.insertStretch(0, 1)
+        w.setFixedWidth(550)
+        if w.exec():
+            schedule_center.schedule_data = data
+            schedule_center.save_data(data, config_center.schedule_name)
+            logger.info("已应用远端课表")
+        self.unerror()
+        app.processEvents()
+
 
 
 if __name__ == '__main__':
