@@ -3683,7 +3683,8 @@ def init_config() -> None:  # 重设配置文件
 def init() -> None:
     global theme, radius, mgr, screen_width, first_start, fw, was_floating_mode
     update_timer.remove_all_callbacks()
-    utils.focus_manager.update_callback()
+    if utils.focus_manager:
+        utils.focus_manager.update_callback()
 
     global_i18n_manager.scan_available_languages()
 
