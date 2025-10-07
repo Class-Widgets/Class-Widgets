@@ -1,12 +1,12 @@
 rem *GB2312
 @echo off
-echo ´´½¨ÐéÄâ»·¾³
+echo ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â»·ï¿½ï¿½
 uv venv
 call .venv\Scripts\activate
-echo °²×°ÒÀÀµ
+echo ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½
 uv pip install -r requirements.txt
 uv pip install nuitka imageio
-echo ´ò°ü
+echo ï¿½ï¿½ï¿½
 python -m nuitka main.py ^
 --enable-plugin=pyqt5 ^
 --disable-console ^
@@ -14,8 +14,8 @@ python -m nuitka main.py ^
 -o"ClassWidgets" ^
 --windows-icon-from-ico=img/favicon.icns ^
 --product-name="Class Widgets" ^
---product-version="1.2.0.1" ^
---file-description="È«ÐÂ×ÀÃæ¿Î±í" ^
+--product-version="1.2.0.2" ^
+--file-description="È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î±ï¿½" ^
 --include-data-dir=img=img ^
 --include-data-dir=ui=ui ^
 --include-data-dir=view=view ^
