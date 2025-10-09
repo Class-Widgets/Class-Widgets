@@ -306,6 +306,7 @@ class UnionUpdateTimer(QObject):
         self._is_running: bool = False
         self._base_interval: float = max(0.01, base_interval)  # 基础间隔,最小10ms
         self._next_check_time: Optional[dt.datetime] = None  # 下次检查时间
+        self._last_current_time: Optional[dt.datetime] = None  # 上次记录的当前时间
 
     def _on_timeout(self) -> None:
         app = QApplication.instance()
@@ -318,6 +319,15 @@ class UnionUpdateTimer(QObject):
         except Exception as e:
             logger.error(f"获取当前时间失败: {e}")
             raise RuntimeError("无法获得当前时间") from e
+
+        # 检测时间跳跃
+        if self._last_current_time is not None:
+            time_diff = (current_time - self._last_current_time).total_seconds()
+            if abs(time_diff) > 2:
+                logger.info(f"检测到时间跳跃: {time_diff:.2f}秒，重新调度所有任务")
+                self._reschedule_all_tasks(current_time)
+
+        self._last_current_time = current_time
 
         if not self.task_heap:
             self._is_running = False
@@ -358,6 +368,20 @@ class UnionUpdateTimer(QObject):
         if self._is_running:
             self._schedule_next()
 
+    def _reschedule_all_tasks(self, current_time: dt.datetime) -> None:
+        """重新调度所有任务，用于处理时间跳跃"""
+        new_heap = []
+        for next_run_time, cb_id, callback, interval in self.task_heap:
+            # 重新计算下次执行时间
+            new_next_time = current_time + dt.timedelta(seconds=interval)
+            new_heap.append((new_next_time, cb_id, callback, interval))
+            # 更新回调信息
+            if cb_id in self.callback_info:
+                self.callback_info[cb_id]['next_run'] = new_next_time
+
+        self.task_heap = new_heap
+        heapify(self.task_heap)
+
     def _schedule_next(self) -> None:
         """调度器"""
         if not self.task_heap:
@@ -370,6 +394,17 @@ class UnionUpdateTimer(QObject):
             raise RuntimeError("无法获得当前时间") from e
         next_task_time = self.task_heap[0][0]
         delay_seconds = (next_task_time - current_time).total_seconds()
+
+        # 处理时间异常情况 - 如果延迟时间异常，可能是时间跳跃
+        if abs(delay_seconds) > 120:  # 如果延迟时间超过±2分钟，重新调度
+            logger.warning(f"检测到异常延迟时间: {delay_seconds:.2f}秒，重新调度任务")
+            self._reschedule_all_tasks(current_time)
+            if self.task_heap:
+                next_task_time = self.task_heap[0][0]
+                delay_seconds = (next_task_time - current_time).total_seconds()
+            else:
+                return
+        
         if delay_seconds <= 0:
             delay_ms = 1  # 立即执行已到期任务
         elif delay_seconds > 60.0:
@@ -674,7 +709,7 @@ def slice_str_by_length(text: str, max_length: int) -> str:
     current_length = 0
     char_index = 0
     chinese_index = 0
-    # 交替处理非中文和中文字符
+    # 交替处理非中文中和文字符
     while char_index < len(chars):
         # 添加非中文部分
         part = chars[char_index]
