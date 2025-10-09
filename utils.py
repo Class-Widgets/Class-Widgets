@@ -396,7 +396,7 @@ class UnionUpdateTimer(QObject):
         delay_seconds = (next_task_time - current_time).total_seconds()
 
         # 处理时间异常情况 - 如果延迟时间异常，可能是时间跳跃
-        if abs(delay_seconds) > 120:  # 如果延迟时间超过±2分钟，重新调度
+        if abs(delay_seconds) > 2:  # 如果延迟时间超过±2秒，重新调度
             logger.warning(f"检测到异常延迟时间: {delay_seconds:.2f}秒，重新调度任务")
             self._reschedule_all_tasks(current_time)
             if self.task_heap:
@@ -709,7 +709,7 @@ def slice_str_by_length(text: str, max_length: int) -> str:
     current_length = 0
     char_index = 0
     chinese_index = 0
-    # 交替处理非中文中和文字符
+    # 交替处理非中文和中文字符
     while char_index < len(chars):
         # 添加非中文部分
         part = chars[char_index]
