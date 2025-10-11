@@ -404,7 +404,7 @@ class UnionUpdateTimer(QObject):
                 delay_seconds = (next_task_time - current_time).total_seconds()
             else:
                 return
-        
+
         if delay_seconds <= 0:
             delay_ms = 1  # 立即执行已到期任务
         elif delay_seconds > 60.0:
