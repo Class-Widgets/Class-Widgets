@@ -14,8 +14,6 @@ from shutil import copy
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 import psutil
-from loguru import logger
-from packaging.version import Version
 from PyQt5 import uic
 from PyQt5.QtCore import (
     QCoreApplication,
@@ -56,6 +54,8 @@ from PyQt5.QtWidgets import (
     QSystemTrayIcon,
     QWidget,
 )
+from loguru import logger
+from packaging.version import Version
 from qfluentwidgets import (
     Action,
     CheckBox,
@@ -3940,9 +3940,9 @@ if __name__ == '__main__':
         mgr.decide_to_hide()
 
     if current_state == 1:
-        setThemeColor(f"#{config_center.read_conf('Color', 'attend_class')}")
+        QTimer.singleShot(0, lambda: setThemeColor(f"#{config_center.read_conf('Color', 'attend_class')}"))
     else:
-        setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}")
+        QTimer.singleShot(0, lambda: setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}"))
 
     splash_window.update_status((100, QCoreApplication.translate('main', '检查更新...')))
 
