@@ -138,7 +138,9 @@ class tip_toast(QWidget):
             format_values['lesson_name'] = lesson_name
             tts_text = config_center.read_conf('TTS', 'attend_class').format_map(format_values)
             # 使用 QTimer.singleShot 延迟设置主题色，避免 WeakKeyDictionary 并发修改错误
-            QTimer.singleShot(0, lambda: setThemeColor(f"#{config_center.read_conf('Color', 'attend_class')}"))
+            QTimer.singleShot(
+                0, lambda: setThemeColor(f"#{config_center.read_conf('Color', 'attend_class')}")
+            )
         elif state == 0:
             logger.info(self.tr('下课铃声显示'))
             title_label.setText(self.tr('下课'))
@@ -151,7 +153,9 @@ class tip_toast(QWidget):
             format_values['lesson_name'] = lesson_name
             tts_text = config_center.read_conf('TTS', 'finish_class').format_map(format_values)
             # 使用 QTimer.singleShot 延迟设置主题色，避免 WeakKeyDictionary 并发修改错误
-            QTimer.singleShot(0, lambda: setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}"))
+            QTimer.singleShot(
+                0, lambda: setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}")
+            )
         elif state == 2:
             logger.info(self.tr('放学铃声显示'))
             title_label.setText(self.tr('放学'))
@@ -160,7 +164,9 @@ class tip_toast(QWidget):
             sound_to_play = finish_class
             tts_text = config_center.read_conf('TTS', 'after_school').format_map(format_values)
             # 使用 QTimer.singleShot 延迟设置主题色，避免 WeakKeyDictionary 并发修改错误
-            QTimer.singleShot(0, lambda: setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}"))
+            QTimer.singleShot(
+                0, lambda: setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}")
+            )
         elif state == 3:
             logger.info(self.tr('预备铃声显示'))
             title_label.setText(self.tr('即将开始'))  # 同上
@@ -171,7 +177,9 @@ class tip_toast(QWidget):
             format_values['minutes'] = prepare_minutes
             tts_text = config_center.read_conf('TTS', 'prepare_class').format_map(format_values)
             # 使用 QTimer.singleShot 延迟设置主题色，避免 WeakKeyDictionary 并发修改错误
-            QTimer.singleShot(0, lambda: setThemeColor(f"#{config_center.read_conf('Color', 'prepare_class')}"))
+            QTimer.singleShot(
+                0, lambda: setThemeColor(f"#{config_center.read_conf('Color', 'prepare_class')}")
+            )
         elif state == 4:
             logger.info(self.tr('通知显示: {title}').format(title=title))
             title_label.setText(title)

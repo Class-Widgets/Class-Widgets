@@ -3940,9 +3940,13 @@ if __name__ == '__main__':
         mgr.decide_to_hide()
 
     if current_state == 1:
-        QTimer.singleShot(0, lambda: setThemeColor(f"#{config_center.read_conf('Color', 'attend_class')}"))
+        QTimer.singleShot(
+            0, lambda: setThemeColor(f"#{config_center.read_conf('Color', 'attend_class')}")
+        )
     else:
-        QTimer.singleShot(0, lambda: setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}"))
+        QTimer.singleShot(
+            0, lambda: setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}")
+        )
 
     splash_window.update_status((100, QCoreApplication.translate('main', '检查更新...')))
 
