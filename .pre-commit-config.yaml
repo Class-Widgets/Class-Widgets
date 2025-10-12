@@ -38,8 +38,8 @@ repos:
     rev: v0.14.0
     hooks:
       - id: ruff-format
-      # - id: ruff-check
-      #   args: ["--fix"]
+      - id: ruff-check
+        args: ["--fix", "--unsafe-fixes", "--show-fixes", "--exit-zero"]
 
   - repo: https://github.com/adrienverge/yamllint
     rev: v1.37.1
