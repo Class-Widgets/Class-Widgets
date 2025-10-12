@@ -371,7 +371,7 @@ class UnionUpdateTimer(QObject):
     def _reschedule_all_tasks(self, current_time: dt.datetime) -> None:
         """重新调度所有任务，用于处理时间跳跃"""
         new_heap = []
-        for next_run_time, cb_id, callback, interval in self.task_heap:
+        for _next_run_time, cb_id, callback, interval in self.task_heap:
             # 重新计算下次执行时间
             new_next_time = current_time + dt.timedelta(seconds=interval)
             new_heap.append((new_next_time, cb_id, callback, interval))
