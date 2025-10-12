@@ -1,6 +1,5 @@
 [dependency-groups]
 dev = [
-  "black>=24.8.0",
   "mypy>=1.14.1",
   "pre-commit>=3.5.0",
   "pylint>=3.2.7",
@@ -105,18 +104,33 @@ skip-string-normalization = true
 line-length = 100
 target-version = "py38"
 
+[tool.ruff.format]
+indent-style = "space"
+line-ending = "auto"
+quote-style = "preserve"
+skip-magic-trailing-comma = false
+
 [tool.ruff.lint]
 ignore = [
-  "ARG002", # unused method argument
-  "E203", # whitespace before ':'
-  "E501", # line too long
+  "ARG002",
+  "B008",
+  "C901",
+  "E203",
+  "E402",
+  "E501",
   "ERA001",
-  "F841", # local variable assigned but never used
-  "PLR0912", # too many branches
-  "PLR0913", # too many arguments
-  "PLR0915", # too many statements
-  "PLR2004", # magic value used in comparison
-  "PTH123" # pathlib instead of os.path.join
+  "F841",
+  "N801",
+  "N802",
+  "N815",
+  "N999",
+  "PLC0415",
+  "PLR0911",
+  "PLR0912",
+  "PLR0913",
+  "PLR0915",
+  "PLR2004",
+  "PTH123"
 ]
 select = [
   "ARG", # flake8-unused-arguments

@@ -34,19 +34,12 @@ repos:
   #   hooks:
   #     - id: mdformat
 
-  - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 25.9.0
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.0
     hooks:
-      - id: black
-        args:
-          - --line-length=100
-          - --skip-string-normalization
-
-  # - repo: https://github.com/astral-sh/ruff-pre-commit
-  #   rev: v0.12.10
-  #   hooks:
-  #     - id: ruff-check
-  #       args: ["--fix", "--line-length=100"]
+      - id: ruff-format
+      # - id: ruff-check
+      #   args: ["--fix"]
 
   - repo: https://github.com/adrienverge/yamllint
     rev: v1.37.1

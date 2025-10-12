@@ -25,7 +25,9 @@ app_icon = (
     / (
         'favicon.ico'
         if os.name == 'nt'
-        else 'favicon.icns' if os.name == 'darwin' else 'favicon.png'
+        else 'favicon.icns'
+        if os.name == 'darwin'
+        else 'favicon.png'
     )
 )
 

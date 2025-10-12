@@ -2,6 +2,7 @@ import sys
 from collections import defaultdict
 from typing import Any, Dict, List, Optional, Tuple
 
+from loguru import logger
 from PyQt5 import uic
 from PyQt5.QtCore import (
     QEasingCurve,
@@ -15,7 +16,6 @@ from PyQt5.QtCore import (
 )
 from PyQt5.QtGui import QBrush, QColor, QPainter, QPixmap
 from PyQt5.QtWidgets import QApplication, QFrame, QGraphicsBlurEffect, QLabel, QWidget
-from loguru import logger
 from qfluentwidgets import setThemeColor
 
 import conf
@@ -489,7 +489,15 @@ def main(
     if detect_enable_toast(state):
         return
 
-    global start_x, start_y, total_width, height, radius, attend_class_color, finish_class_color, prepare_class_color
+    global \
+        start_x, \
+        start_y, \
+        total_width, \
+        height, \
+        radius, \
+        attend_class_color, \
+        finish_class_color, \
+        prepare_class_color
 
     widgets = list_.get_widget_config()
     for widget in widgets:  # 检查组件

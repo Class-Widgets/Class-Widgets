@@ -461,7 +461,6 @@ jobs:
           path: |
             ~/.cache/uv
             ~\AppData\Local\uv
-            .venv
           key: ${{ runner.os }}-${{ matrix.arch }}-python${{ env.PYTHON_VERSION }}-uv-cache-${{ hashFiles('uv.lock') }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.arch }}-python${{ env.PYTHON_VERSION }}-uv-cache-

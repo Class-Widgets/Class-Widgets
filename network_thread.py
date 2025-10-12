@@ -603,7 +603,7 @@ class scheduleThread(QThread):  # 获取课表
 
         for db in list_.schedule_dbs:
             if self.url.startswith(f"{db}/"):
-                self.url = f"{list_.schedule_dbs[db]}/{self.url[len(db)+1:]}"
+                self.url = f"{list_.schedule_dbs[db]}/{self.url[len(db) + 1 :]}"
                 break
 
     def run(self):

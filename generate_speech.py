@@ -652,7 +652,6 @@ class TTSManager:
 
 
 def get_tts_manager(cache_dir: Optional[str] = None) -> TTSManager:
-
     return TTSManager.get_instance(cache_dir)
 
 

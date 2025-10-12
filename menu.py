@@ -3043,7 +3043,7 @@ class SettingsMenu(FluentWindow):
             is_db = False
             for db in list_.schedule_dbs:
                 if file_path.startswith(f"{list_.schedule_dbs[db]}/"):
-                    file_path = f"{db}/{file_path[len(list_.schedule_dbs[db]) + 1:]}"
+                    file_path = f"{db}/{file_path[len(list_.schedule_dbs[db]) + 1 :]}"
                     is_db = True
                     break
             if not is_db:
@@ -3446,11 +3446,9 @@ class SettingsMenu(FluentWindow):
                 icon=fIcon.INFO,
                 title=self.tr('提示'),
                 content=(
-                    self.tr("窗口实体状态\n" "会认真挡住前面的点击哦~\n\n" "*请重启应用以完全生效")
+                    self.tr("窗口实体状态\n会认真挡住前面的点击哦~\n\n*请重启应用以完全生效")
                     if checked
-                    else self.tr(
-                        "鼠标穿透启用\n" "窗口不挡你啦,可以点穿它~\n\n" "*请重启应用以完全生效"
-                    )
+                    else self.tr("鼠标穿透启用\n窗口不挡你啦,可以点穿它~\n\n*请重启应用以完全生效")
                 ),
                 target=switch_enable_click,
                 parent=self,
@@ -4789,7 +4787,7 @@ class SettingsMenu(FluentWindow):
                 print('导出失败！')
                 alert = MessageBox(
                     '导出失败！',
-                    '课程表文件导出失败，\n' '可能为文件损坏，请将此情况反馈给开发者。',
+                    '课程表文件导出失败，\n可能为文件损坏，请将此情况反馈给开发者。',
                     self,
                 )
                 alert.cancelButton.hide()
@@ -4898,7 +4896,7 @@ class SettingsMenu(FluentWindow):
                     self.cf_reload_table()
                     self.show_tip_flyout(
                         self.tr('导入成功！'),
-                        self.tr('课程表文件导入成功！\n' '请手动切换您的配置文件。'),
+                        self.tr('课程表文件导入成功！\n请手动切换您的配置文件。'),
                         self.import_from_file,
                         InfoBarIcon.SUCCESS,
                         FlyoutAnimationType.PULL_UP,
@@ -4938,7 +4936,7 @@ class SettingsMenu(FluentWindow):
             else:
                 self.show_tip_flyout(
                     self.tr('导出失败！'),
-                    self.tr('课程表文件导出失败，\n' '可能为文件损坏，请将此情况反馈给开发者。'),
+                    self.tr('课程表文件导出失败，\n可能为文件损坏，请将此情况反馈给开发者。'),
                     self,
                     InfoBarIcon.ERROR,
                     FlyoutAnimationType.PULL_UP,
@@ -5304,7 +5302,7 @@ class SettingsMenu(FluentWindow):
 
                 for db in list_.schedule_dbs:
                     if url.startswith(f"{db}/"):
-                        url = f"{list_.schedule_dbs[db]}/{url[len(db)+1:]}"
+                        url = f"{list_.schedule_dbs[db]}/{url[len(db) + 1 :]}"
                         break
 
                 self.cf_file_list[self.table.currentIndex().row()].set_file_path(url)
@@ -5714,9 +5712,9 @@ class SettingsMenu(FluentWindow):
             item_text = te_timeline_list.item(i).text()
             cache_list.append(item_text)
         if te_select_timeline.currentIndex() == 0:
-            timeline_dict['even' if te_select_week_type.currentIndex() else 'odd'][
-                'default'
-            ] = cache_list
+            timeline_dict['even' if te_select_week_type.currentIndex() else 'odd']['default'] = (
+                cache_list
+            )
         else:
             timeline_dict['even' if te_select_week_type.currentIndex() else 'odd'][
                 str(te_select_timeline.currentIndex() - 1)
@@ -6319,7 +6317,7 @@ class SettingsMenu(FluentWindow):
                         config_center.write_conf('General', 'language_view', selected_lang_code)
                         title = self.tr('界面语言切换成功 ♪(´▽｀)')
                         content = self.tr(
-                            '界面语言已切换为 {selected_lang_name}\n' '新语言将在重启程序后完全生效'
+                            '界面语言已切换为 {selected_lang_name}\n新语言将在重启程序后完全生效'
                         ).format(selected_lang_name=selected_lang_name)
                         flyout = Flyout.create(
                             title=title,
