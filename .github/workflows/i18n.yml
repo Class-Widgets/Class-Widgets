@@ -124,7 +124,7 @@ jobs:
           git rebase origin/${{ github.ref_name }}
 
       - name: Set up Python & uv
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@v7
         with:
           python-version: "3.11"
           activate-environment: true
@@ -235,7 +235,7 @@ jobs:
           git rebase origin/${{ github.ref_name }}
 
       - name: Set up Python & uv
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@v7
         with:
           python-version: "3.11"
           activate-environment: true

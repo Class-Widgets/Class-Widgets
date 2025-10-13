@@ -365,7 +365,7 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.arch }}-python${{ env.PYTHON_VERSION }}
 
       - name: Setup Python & uv
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@v7
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           activate-environment: true
