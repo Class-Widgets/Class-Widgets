@@ -139,7 +139,7 @@ jobs:
           fi
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@v4
         if: steps.codeql-config.outputs.scan_mode != 'skip'
         with:
           languages: python
@@ -173,7 +173,7 @@ jobs:
 
       - name: Autobuild for CodeQL
         if: steps.codeql-config.outputs.scan_mode != 'skip'
-        uses: github/codeql-action/autobuild@v3
+        uses: github/codeql-action/autobuild@v4
 
       - name: Cache CodeQL queries
         uses: actions/cache@v4
@@ -183,7 +183,7 @@ jobs:
           key: ${{ runner.os }}-codeql-queries
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
         if: steps.codeql-config.outputs.scan_mode != 'skip'
         with:
           category: "/language:python"
