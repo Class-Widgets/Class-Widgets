@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import List, Optional, Union, Tuple
+from typing import List, Tuple
 
 from PyQt5.QtCore import QCoreApplication
 
-import utils
 import conf
+import utils
 
 
 class ScheduleProvider(ABC):
@@ -16,15 +16,15 @@ class ScheduleProvider(ABC):
 
     @abstractmethod
     def init(self) -> None:
-        pass  # noqa
+        pass
 
     @abstractmethod
     def get_next_lessons(self) -> List[str]:
-        pass  # noqa
+        pass
 
     @abstractmethod
     def get_status(self) -> Tuple[bool, float, str]:
-        pass  # noqa
+        pass
 
 
 class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
@@ -79,14 +79,14 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
                 if not isbreak:
                     if lessons_data[lesson_cnt] != QCoreApplication.translate('menu', '未添加'):
                         self.lessons['odd'][week].append(
-                            (
+
                                 (
                                     timeline_current_usage.get(item_name, self.parts[item_name][0])
                                     * 60,
                                     item_time * 60,
                                     {lessons_data[lesson_cnt]},
                                 )
-                            )
+
                         )
                     lesson_cnt += 1
                 timeline_current_usage[item_name] = (
@@ -124,14 +124,14 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
                 if not isbreak:
                     if lessons_data[lesson_cnt] != QCoreApplication.translate('menu', '未添加'):
                         self.lessons['even'][week].append(
-                            (
+
                                 (
                                     timeline_current_usage.get(item_name, self.parts[item_name][0])
                                     * 60,
                                     item_time * 60,
                                     {lessons_data[lesson_cnt]},
                                 )
-                            )
+
                         )
                     lesson_cnt += 1
                 timeline_current_usage[item_name] = (
@@ -174,7 +174,7 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
         l, r = 0, len(lessons_today) - 1
         while l <= r:
             mid = (l + r) // 2
-            start_time, duration, lesson_names = lessons_today[mid]
+            start_time, duration, _lesson_names = lessons_today[mid]
             if start_time <= current_time_in_seconds < start_time + duration:
                 return [x for lesson in lessons_today[mid:] for x in lesson[2]]
         if l < len(lessons_today):
@@ -209,7 +209,7 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
                         (start_time + duration - current_time_in_seconds),
                         '、'.join(lesson_names),
                     )
-                elif (
+                if (
                     mid == len(lessons_today) - 1
                     or current_time_in_seconds < lessons_today[mid + 1][0]
                 ):
@@ -242,10 +242,10 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
         )
 
         # 如果跨天或课表变动，重新初始化
-        if self._cache_time.weekday() != current_time.weekday() or self._cache_lessons_today != self.lessons[
-            'even' if current_week_type else 'odd'
-        ].get(
-            str(current_weekday), []
+        if (
+            self._cache_time.weekday() != current_time.weekday()
+            or self._cache_lessons_today
+            != self.lessons['even' if current_week_type else 'odd'].get(str(current_weekday), [])
         ):
             return self._init_get_status()
 
