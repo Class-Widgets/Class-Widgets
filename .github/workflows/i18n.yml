@@ -195,7 +195,7 @@ jobs:
           git_commit_gpgsign: true
 
       - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v6
+        uses: stefanzweifel/git-auto-commit-action@v7
         continue-on-error: true
         with:
           commit_message: |
@@ -288,7 +288,7 @@ jobs:
           git_commit_gpgsign: true
 
       - name: Commit compiled and config files
-        uses: stefanzweifel/git-auto-commit-action@v6
+        uses: stefanzweifel/git-auto-commit-action@v7
         continue-on-error: true
         with:
           commit_message: |
