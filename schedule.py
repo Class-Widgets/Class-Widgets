@@ -79,14 +79,12 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
                 if not isbreak:
                     if lessons_data[lesson_cnt] != QCoreApplication.translate('menu', '未添加'):
                         self.lessons['odd'][week].append(
-
-                                (
-                                    timeline_current_usage.get(item_name, self.parts[item_name][0])
-                                    * 60,
-                                    item_time * 60,
-                                    {lessons_data[lesson_cnt]},
-                                )
-
+                            (
+                                timeline_current_usage.get(item_name, self.parts[item_name][0])
+                                * 60,
+                                item_time * 60,
+                                {lessons_data[lesson_cnt]},
+                            )
                         )
                     lesson_cnt += 1
                 timeline_current_usage[item_name] = (
@@ -124,14 +122,12 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
                 if not isbreak:
                     if lessons_data[lesson_cnt] != QCoreApplication.translate('menu', '未添加'):
                         self.lessons['even'][week].append(
-
-                                (
-                                    timeline_current_usage.get(item_name, self.parts[item_name][0])
-                                    * 60,
-                                    item_time * 60,
-                                    {lessons_data[lesson_cnt]},
-                                )
-
+                            (
+                                timeline_current_usage.get(item_name, self.parts[item_name][0])
+                                * 60,
+                                item_time * 60,
+                                {lessons_data[lesson_cnt]},
+                            )
                         )
                     lesson_cnt += 1
                 timeline_current_usage[item_name] = (
