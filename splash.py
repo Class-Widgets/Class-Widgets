@@ -6,13 +6,12 @@ from PyQt5 import uic
 from PyQt5.QtCore import QObject, Qt, QThread, pyqtSignal
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QLabel, QWidget
-from qfluentwidgets import ProgressBar, Theme, theme, Dialog
+from qfluentwidgets import Dialog, ProgressBar, Theme, theme
 
 from basic_dirs import CW_HOME
-from file import config_center
+from file import config_center, schedule_center
 from i18n_manager import app
 from network_thread import scheduleThread
-from file import schedule_center, config_center
 
 
 class DarkModeWatcherThread(QThread):

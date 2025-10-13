@@ -137,7 +137,10 @@ class tip_toast(QWidget):
             sound_to_play = attend_class
             format_values['lesson_name'] = lesson_name
             tts_text = config_center.read_conf('TTS', 'attend_class').format_map(format_values)
-            setThemeColor(f"#{config_center.read_conf('Color', 'attend_class')}")  # 主题色
+            # 使用 QTimer.singleShot 延迟设置主题色，避免 WeakKeyDictionary 并发修改错误
+            QTimer.singleShot(
+                0, lambda: setThemeColor(f"#{config_center.read_conf('Color', 'attend_class')}")
+            )
         elif state == 0:
             logger.info(self.tr('下课铃声显示'))
             title_label.setText(self.tr('下课'))
@@ -149,7 +152,10 @@ class tip_toast(QWidget):
             sound_to_play = finish_class
             format_values['lesson_name'] = lesson_name
             tts_text = config_center.read_conf('TTS', 'finish_class').format_map(format_values)
-            setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}")
+            # 使用 QTimer.singleShot 延迟设置主题色，避免 WeakKeyDictionary 并发修改错误
+            QTimer.singleShot(
+                0, lambda: setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}")
+            )
         elif state == 2:
             logger.info(self.tr('放学铃声显示'))
             title_label.setText(self.tr('放学'))
@@ -157,7 +163,10 @@ class tip_toast(QWidget):
             lesson.setText('')  # 课程名
             sound_to_play = finish_class
             tts_text = config_center.read_conf('TTS', 'after_school').format_map(format_values)
-            setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}")
+            # 使用 QTimer.singleShot 延迟设置主题色，避免 WeakKeyDictionary 并发修改错误
+            QTimer.singleShot(
+                0, lambda: setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}")
+            )
         elif state == 3:
             logger.info(self.tr('预备铃声显示'))
             title_label.setText(self.tr('即将开始'))  # 同上
@@ -167,7 +176,10 @@ class tip_toast(QWidget):
             format_values['lesson_name'] = lesson_name
             format_values['minutes'] = prepare_minutes
             tts_text = config_center.read_conf('TTS', 'prepare_class').format_map(format_values)
-            setThemeColor(f"#{config_center.read_conf('Color', 'prepare_class')}")
+            # 使用 QTimer.singleShot 延迟设置主题色，避免 WeakKeyDictionary 并发修改错误
+            QTimer.singleShot(
+                0, lambda: setThemeColor(f"#{config_center.read_conf('Color', 'prepare_class')}")
+            )
         elif state == 4:
             logger.info(self.tr('通知显示: {title}').format(title=title))
             title_label.setText(title)
@@ -178,7 +190,8 @@ class tip_toast(QWidget):
             format_values['content'] = content
             tts_text = config_center.read_conf('TTS', 'otherwise').format_map(format_values)
 
-        if tts_enabled and tts_text and tts_voice_id:
+        # 检查 TTS 文本是否为空或仅包含空白字符
+        if tts_enabled and tts_text and tts_text.strip() and tts_voice_id:
             logger.info(f"播放TTS: '{tts_text}', 语音ID: {tts_voice_id}")
             try:
                 from generate_speech import is_tts_playing, stop_tts
@@ -202,8 +215,8 @@ class tip_toast(QWidget):
                 logger.warning("TTS任务启动失败")
         elif tts_enabled and tts_text and not tts_voice_id:
             logger.warning(f"TTS已启用，但未找到有效的语音ID: '{tts_voice_id}'")
-        elif tts_enabled and not tts_text:
-            logger.warning("TTS已启用，但当前没有文本供生成")
+        elif tts_enabled and (not tts_text or not tts_text.strip()):
+            logger.warning("TTS已启用，但文本内容为空，跳过TTS生成")
 
         # 设置样式表
         if state == 1:  # 上课铃声
@@ -476,7 +489,15 @@ def main(
     if detect_enable_toast(state):
         return
 
-    global start_x, start_y, total_width, height, radius, attend_class_color, finish_class_color, prepare_class_color
+    global \
+        start_x, \
+        start_y, \
+        total_width, \
+        height, \
+        radius, \
+        attend_class_color, \
+        finish_class_color, \
+        prepare_class_color
 
     widgets = list_.get_widget_config()
     for widget in widgets:  # 检查组件

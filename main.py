@@ -1415,7 +1415,8 @@ class FloatingWidget(QWidget):  # 浮窗
         else:
             # 使用动态计算的默认位置
             self.position = QPoint(
-                (screen_width - self.width()) // 2, 50  # 居中横向  # 距离顶部 50px
+                (screen_width - self.width()) // 2,
+                50,  # 居中横向  # 距离顶部 50px
             )
 
         update_timer.add_callback(self.update_data)
@@ -2032,7 +2033,8 @@ class DesktopWidget(QWidget):  # 主要小组件
 
             refresh_interval = int(config_center.read_conf('Weather', 'refresh_interval'))
             self.weather_callback_id = update_timer.add_callback(
-                self.get_weather_data, interval=refresh_interval * 60  # 转换为秒
+                self.get_weather_data,
+                interval=refresh_interval * 60,  # 转换为秒
             )
             self.get_weather_data()
             update_timer.add_callback(self.detect_weather_code_changed)
@@ -2572,7 +2574,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             if self.current_reminders:
                 logger.debug(f'获取到 {len(self.current_reminders)} 个天气提醒')
                 for i, reminder in enumerate(self.current_reminders):
-                    logger.debug(f'提醒 {i+1}: {reminder.get("title", "未知")}')
+                    logger.debug(f'提醒 {i + 1}: {reminder.get("title", "未知")}')
             self._update_weather_alert_display()
         except Exception as e:
             logger.error(f'处理天气提醒数据失败: {e}')
@@ -2585,7 +2587,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             if self.current_alerts:
                 logger.debug(f'获取到 {len(self.current_alerts)} 个天气预警')
                 for i, alert in enumerate(self.current_alerts):
-                    logger.debug(f'预警 {i+1}: {alert.get("title", "未知")}')
+                    logger.debug(f'预警 {i + 1}: {alert.get("title", "未知")}')
             self._update_weather_alert_display()
         except Exception as e:
             logger.error(f'处理天气预警数据失败: {e}')
@@ -3353,7 +3355,8 @@ class DesktopWidget(QWidget):  # 主要小组件
             if hasattr(self, 'weather_callback_id') and self.weather_callback_id:
                 update_timer.remove_callback_by_id(self.weather_callback_id)
             self.weather_callback_id = update_timer.add_callback(
-                self.get_weather_data, interval=minutes * 60  # 转换为秒
+                self.get_weather_data,
+                interval=minutes * 60,  # 转换为秒
             )
             # logger.debug(f'天气定时器间隔已更新为 {minutes} 分钟')
         except Exception as e:
@@ -3683,7 +3686,8 @@ def init_config() -> None:  # 重设配置文件
 def init() -> None:
     global theme, radius, mgr, screen_width, first_start, fw, was_floating_mode
     update_timer.remove_all_callbacks()
-    utils.focus_manager.update_callback()
+    if utils.focus_manager:
+        utils.focus_manager.update_callback()
 
     global_i18n_manager.scan_available_languages()
 
@@ -3908,10 +3912,10 @@ if __name__ == '__main__':
             init_config()
             splash_window.schedule_updater()
         splash_window.unerror()
-        schedule_center.update_schedule()
     else:
-        schedule_center.update_schedule()
         splash_window.schedule_updater()
+
+    schedule_center.update_schedule()
 
     splash_window.update_status((91, QCoreApplication.translate('main', '加载窗口...')))
 
@@ -3939,9 +3943,13 @@ if __name__ == '__main__':
         mgr.decide_to_hide()
 
     if current_state == 1:
-        setThemeColor(f"#{config_center.read_conf('Color', 'attend_class')}")
+        QTimer.singleShot(
+            0, lambda: setThemeColor(f"#{config_center.read_conf('Color', 'attend_class')}")
+        )
     else:
-        setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}")
+        QTimer.singleShot(
+            0, lambda: setThemeColor(f"#{config_center.read_conf('Color', 'finish_class')}")
+        )
 
     splash_window.update_status((100, QCoreApplication.translate('main', '检查更新...')))
 

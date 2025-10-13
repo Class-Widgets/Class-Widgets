@@ -80,7 +80,7 @@ class AudioManager:
             else:
                 return False, f"音频文件写入超时或为空: {file_path}"
         if file_size < 10:
-            return False, (f"音频文件可能无效或不完整，" f"大小仅为 {file_size} 字节: {file_path}")
+            return False, (f"音频文件可能无效或不完整，大小仅为 {file_size} 字节: {file_path}")
         return True, file_path
 
     def _get_or_load_sound(self, file_path: str) -> Optional[pygame.mixer.Sound]:

@@ -991,9 +991,7 @@ def add2save_plugin(p_name: str) -> None:  # 保存已安装插件
 
 
 def replace_to_file_server(url: str, branch: str = 'main') -> str:
-    return (
-        f'{url.replace("https://github.com/", "https://raw.githubusercontent.com/")}' f'/{branch}'
-    )
+    return f'{url.replace("https://github.com/", "https://raw.githubusercontent.com/")}/{branch}'
 
 
 def load_local_plugins_version() -> None:

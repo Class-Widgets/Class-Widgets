@@ -603,7 +603,7 @@ class scheduleThread(QThread):  # 获取课表
 
         for db in list_.schedule_dbs:
             if self.url.startswith(f"{db}/"):
-                self.url = f"{list_.schedule_dbs[db]}/{self.url[len(db)+1:]}"
+                self.url = f"{list_.schedule_dbs[db]}/{self.url[len(db) + 1 :]}"
                 break
 
     def run(self):
@@ -629,8 +629,80 @@ class scheduleThread(QThread):  # 获取课表
             if response.status_code == 200:
                 data = response.json()
                 if 'data' in data:
-                    return json.loads(data.get('data'))
+                    data = json.loads(data.get('data'))
+
+                if 'timeline' not in data:
+                    data['timeline'] = {
+                        "default": [],
+                        "0": [],
+                        "1": [],
+                        "2": [],
+                        "3": [],
+                        "4": [],
+                        "5": [],
+                        "6": [],
+                    }
+                for key, value in data['timeline'].items():
+                    if isinstance(value, dict):
+                        timeline = value
+
+                        def sort_timeline_key(item):
+                            item_name = item[0]
+                            prefix = item_name[0]
+                            if len(item_name) > 1:
+                                try:
+                                    # 提取节点序数
+                                    part_num = int(item_name[1])
+                                    # 提取课程序数
+                                    class_num = 0
+                                    if len(item_name) > 2:
+                                        class_num = int(item_name[2:])
+                                    if prefix == 'a':
+                                        return part_num, class_num, 0
+                                    return part_num, class_num, 1
+                                except ValueError:
+                                    # 如果转换失败，返回原始字符串
+                                    return item_name
+                            return item_name
+
+                        new_timeline = []
+
+                        # 对timeline排序后添加到timeline_data
+                        sorted_timeline = sorted(timeline.items(), key=sort_timeline_key)
+                        for item_name, item_time in sorted_timeline:
+                            try:
+                                new_timeline.append(
+                                    [
+                                        int(item_name[0] == 'f'),
+                                        item_name[1],
+                                        int(item_name[2:]),
+                                        item_time,
+                                    ]
+                                )
+                            except Exception as e:
+                                logger.error(f'加载课程表文件[课程数据]出错：{e}')
+                                return {'error': f'加载课程表文件[课程数据]出错：{e}'}
+                        data['timeline'][key] = new_timeline.copy()
+                    elif not isinstance(value, list):
+                        logger.error(f"课程表时间线格式错误: {key}: {value}")
+                        return {'error': f"课程表时间线格式错误: {key}: {value}"}
+
+                if 'timeline_even' not in data:
+                    data['timeline_even'] = {
+                        "default": [],
+                        "0": [],
+                        "1": [],
+                        "2": [],
+                        "3": [],
+                        "4": [],
+                        "5": [],
+                        "6": [],
+                    }
+                if data.get('url', None) is None:
+                    data['url'] = self.url
+
                 return data
+
             logger.error(
                 f"无法获取课表 {self.url} 错误代码：{response.status_code}，响应内容: {response.text}"
             )

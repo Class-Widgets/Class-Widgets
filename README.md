@@ -2,18 +2,11 @@
 简体中文 | <a href="/docs/readme/README.en_US.md">English</a> | <a href="/docs/readme/README.ja.md">日本語</a>
 </div>
 
-> [!WARNING]
-> Class Widgets _1_ 目前完全由社区开发者进行开发，而您在 Class Widgets 主仓库（即本仓库）提出的议题和提交的贡献将主要由以下四位成员接收和审查：
->
-> [![](https://images.weserv.nl/?url=github.com/pizeroLOL.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/pizeroLOL) [![](https://images.weserv.nl/?url=github.com/IsHPDuwu.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/IsHPDuwu) [![](https://images.weserv.nl/?url=github.com/baiyao105.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/baiyao105) [![](https://images.weserv.nl/?url=github.com/Artist-MOBAI.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/Artist-MOBAI)
->
-> 有任何需要社区开发者帮忙的地方，请前往 QQ 群或提 issue
-
 <p align="center">
   <img width="16%" align="center" src="img/Logo.png" alt="logo">
 </p>
   <h1 align="center">
-  Class Widgets
+  Class Widgets 1
 </h1>
 <p align="center">
  全新桌面课表

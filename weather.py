@@ -79,7 +79,6 @@ class WeatherReminderThread(QThread):
                 if self._is_running:
                     self.reminders_ready.emit(reminders)
             if self._is_running:
-
                 unified_alert_data = get_unified_weather_alerts(self.weather_data)
                 all_alerts = unified_alert_data.get('all_alerts', [])
                 seen_titles = set()
@@ -2597,7 +2596,7 @@ class OpenMeteoProvider(GenericWeatherProvider):
                         else None
                     ),
                     'visibility': (
-                        f"{visibility[i]/1000:.1f} km"
+                        f"{visibility[i] / 1000:.1f} km"
                         if i < len(visibility) and visibility[i] is not None
                         else None
                     ),
@@ -4002,7 +4001,7 @@ if __name__ == '__main__':
                 precip_status = "降水日" if day["precipitation_day"] else "非降水日"
                 day_precip_status = "白天有降水" if day["day_precipitation"] else "白天无降水"
 
-                print(f"第 {day['day']+1} 天: {day['temp_high']} - {day['temp_low']}℃")
+                print(f"第 {day['day'] + 1} 天: {day['temp_high']} - {day['temp_low']}℃")
                 print(f"  白天: {day_weather}, 夜间: {night_weather}")
                 print(f"  状态: {precip_status}, {day_precip_status}")
 

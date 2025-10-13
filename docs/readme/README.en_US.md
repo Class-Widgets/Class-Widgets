@@ -2,18 +2,11 @@
 <a href="/README.md">简体中文</a> | English | <a href="/docs/readme/README.ja.md">日本語</a>
 </div>
 
-> [!Warning]
-> Class Widgets _1_ is currently developed entirely by community contributors. Any issues or contributions you submit to the Class Widgets main repository (this repository) will primarily be received and reviewed by the following four members:
->
-> [![](https://images.weserv.nl/?url=github.com/pizeroLOL.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/pizeroLOL) [![](https://images.weserv.nl/?url=github.com/IsHPDuwu.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/IsHPDuwu) [![](https://images.weserv.nl/?url=github.com/baiyao105.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/baiyao105) [![](https://images.weserv.nl/?url=github.com/Artist-MOBAI.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/Artist-MOBAI)
->
-> If you need help from community contributors, please join the project's QQ group or open an GitHub issue.
-
 <p align="center">
   <img width="16%" align="center" src="../../img/Logo.png" alt="logo">
 </p>
   <h1 align="center">
-  Class Widgets
+  Class Widgets 1
 </h1>
 <p align="center">
   Brand New Desktop Class Schedule

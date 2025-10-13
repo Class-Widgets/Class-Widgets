@@ -2,18 +2,11 @@
 <a href="/README.md">简体中文</a> | <a href="/docs/readme/README.en_US.md">English</a> | 日本語
 </div>
 
-> [!Warning]
-> Class Widgets _1_ は現在、完全にコミュニティ開発者によって開発されています。Class Widgets のメインリポジトリ（本リポジトリ）で提起された課題や貢献は、主に以下の4名のメンバーによって受理・レビューされます：
->
-> [![](https://images.weserv.nl/?url=github.com/pizeroLOL.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/pizeroLOL) [![](https://images.weserv.nl/?url=github.com/IsHPDuwu.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/IsHPDuwu) [![](https://images.weserv.nl/?url=github.com/baiyao105.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/baiyao105) [![](https://images.weserv.nl/?url=github.com/Artist-MOBAI.png?v=4&h=80&w=80&mask=circle&maxage=7d)](https://github.com/Artist-MOBAI)
->
-> コミュニティ開発者のサポートが必要な場合は、プロジェクトの QQ グループに参加するか、 GitHub で Issue を作成してください。
-
 <p align="center">
   <img width="16%" align="center" src="../../img/Logo.png" alt="logo">
 </p>
 <h1 align="center">
-  Class Widgets
+  Class Widgets 1
 </h1>
 <p align="center">
   新しいデスクトップ時間割アプリ

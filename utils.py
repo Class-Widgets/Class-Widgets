@@ -326,7 +326,7 @@ class UnionUpdateTimer(QObject):
 
         executed_count = 0
         while self.task_heap and (self.task_heap[0][0] <= current_time):
-            _next_run, cb_id, callback, interval = heappop(self.task_heap)
+            _next_run, cb_id, _callback, interval = heappop(self.task_heap)
             if cb_id not in self._callback_refs or self._callback_refs[cb_id]() is None:
                 self._cleanup_dead_callback(cb_id)
                 continue
@@ -1040,7 +1040,6 @@ class SingleInstanceGuard:
 
 
 class PreviousWindowFocusManager(QObject):
-
     restore_requested = pyqtSignal()  # 请求恢复焦点信号
     ignore = pyqtSignal(int)  # 忽略特定窗口句柄信号
     remove_ignore = pyqtSignal(int)  # 移除忽略窗口句柄信号
