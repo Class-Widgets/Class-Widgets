@@ -2,6 +2,7 @@ import asyncio
 import atexit
 import datetime as dt
 import gc
+import hashlib
 import inspect
 import os
 import re
@@ -358,10 +359,11 @@ class UnionUpdateTimer(QObject):
                     self._cleanup_dead_callback(cb_id)
                     continue
             # 重新调度回调
-            self.callback_info[cb_id]['last_run'] = current_time
-            next_time = current_time + dt.timedelta(seconds=interval)
-            self.callback_info[cb_id]['next_run'] = next_time
-            heappush(self.task_heap, (next_time, cb_id, actual_callback, interval))
+            if cb_id in self.callback_info:
+                self.callback_info[cb_id]['last_run'] = current_time
+                next_time = current_time + dt.timedelta(seconds=interval)
+                self.callback_info[cb_id]['next_run'] = next_time
+                heappush(self.task_heap, (next_time, cb_id, actual_callback, interval))
         # if executed_count > 0:
         #     logger.debug(f"执行了 {executed_count} 个回调")
 
@@ -1235,6 +1237,221 @@ def remove_from_startup() -> bool:
         return False
 
 
+class WidgetHelper:
+    """小组件生命周期管理"""
+
+    def __init__(self):
+        self.widget_states = {}  # 小组件状态缓存
+        self.last_reload_time = 0
+        self.debounce_time = 0.5  # 防抖时间
+        self.active_widgets = []  # 当前活跃的小组件列表
+        self.last_config_hash = None  # 配置
+
+    def should_reload(self) -> bool:
+        """防抖"""
+        current_time = time.time()
+        if current_time - self.last_reload_time < self.debounce_time:
+            return False
+        self.last_reload_time = current_time
+        return True
+
+    def get_config_hash(self, config) -> str:
+        try:
+            return hashlib.md5(str(config).encode()).hexdigest()
+        except Exception:
+            return str(hash(str(config)))
+
+    def init_widgets_lifecycle(self, widgets_manager) -> bool:
+        """初始化小组件"""
+        try:
+            self.close_widgets_manager(widgets_manager)
+            from list_ import get_widget_config
+
+            widgets_list = get_widget_config()
+            if not widgets_list:
+                return False
+            new_widgets = self.create_widgets(widgets_manager, widgets_list)
+            if not new_widgets:
+                logger.error("没有成功创建任何小组件")
+                return False
+            widgets_manager.widgets.extend(new_widgets)
+            self.active_widgets = new_widgets.copy()
+            success_count = self.show_widgets(new_widgets)
+            logger.success(f"成功创建组件{len(new_widgets)}个(显示{success_count}个组件)")
+            return success_count > 0
+
+        except Exception as e:
+            logger.error(f"小组件生命周期初始化失败: {e}")
+            return False
+
+    def create_widgets(self, widgets_manager, widgets_list: list) -> list:
+        """批量创建小组件实例"""
+        widgets_to_create = []
+        cnt_all = {}
+        try:
+            from main import DesktopWidget, splash_window
+
+            for w in range(len(widgets_list)):
+                widget_path = widgets_list[w]
+                cnt_all[widget_path] = cnt_all.get(widget_path, -1) + 1
+                try:
+                    widget = DesktopWidget(
+                        widgets_manager,
+                        widget_path,
+                        w == 0,  # 是否为第一个小组件
+                        cnt=cnt_all[widget_path],
+                        position=widgets_manager.get_widget_pos("", w),
+                        widget_cnt=w,
+                    )
+                    widgets_to_create.append(widget)
+                    logger.trace(f"创建小组件成功: {widget_path}")
+                except Exception as e:
+                    logger.error(f"创建小组件 {widget_path} 失败: {e}")
+                    continue
+            splash_window.close()
+            logger.trace(f"批量创建完成: {len(widgets_to_create)}/{len(widgets_list)} 个小组件")
+            return widgets_to_create
+        except Exception as e:
+            logger.error(f"创建小组件失败: {e}")
+            splash_window.close()
+            return []
+
+    def show_widgets(self, widgets: list) -> int:
+        """批量显示小组件"""
+        success_count = 0
+        for widget in widgets:
+            try:
+                widget.show()
+                success_count += 1
+                if focus_manager:
+                    import ctypes
+
+                    QTimer.singleShot(
+                        0,
+                        lambda w=widget: focus_manager.ignore.emit(
+                            ctypes.c_void_p(int(w.winId())).value
+                        ),
+                    )
+            except Exception as e:
+                logger.error(f"显示小组件 {getattr(widget, 'path', 'unknown')} 失败: {e}")
+                continue
+        logger.trace(f"成功显示 {success_count}/{len(widgets)} 个小组件")
+        return success_count
+
+    def close_widgets_manager(self, widgets_manager) -> bool:
+        """关闭所有小组件"""
+        try:
+            fw = get_floating_widget()
+            if fw and fw.isVisible():
+                fw.close()
+            closed_count = 0
+            for widget in widgets_manager.widgets[:]:  # 使用切片
+                try:
+                    if hasattr(widget, 'animate_hide_opacity'):
+                        widget.animate_hide_opacity()
+                    elif hasattr(widget, 'close'):
+                        widget.close()
+                    widgets_manager.widgets.remove(widget)
+                    closed_count += 1
+                except Exception as e:
+                    logger.error(f"关闭小组件失败: {e}")
+                    continue
+            self.active_widgets.clear()
+            logger.trace(f"成功关闭 {closed_count} 个小组件")
+            return True
+        except Exception as e:
+            logger.error(f"关闭小组件失败: {e}")
+            return False
+
+    def close_widgets(self, widgets: list) -> None:
+        """批量关闭小组件列表"""
+        closed_count = 0
+        for widget in widgets:
+            try:
+                if hasattr(widget, 'close'):
+                    widget.close()
+                    closed_count += 1
+            except Exception as e:
+                logger.error(f"关闭小组件失败: {e}")
+        logger.trace(f"成功关闭 {closed_count} 个小组件")
+
+    def update_widgets(self, widgets: list) -> bool:
+        """批量更新小组件"""
+        try:
+            updated_count = 0
+            for widget in widgets:
+                try:
+                    if hasattr(widget, 'update_data'):
+                        widget.update_data()
+                        updated_count += 1
+                    elif hasattr(widget, 'refresh'):
+                        widget.refresh()
+                        updated_count += 1
+                except Exception as e:
+                    logger.warning(f"更新小组件失败: {e}")
+                    continue
+
+            logger.trace(f"成功更新 {updated_count}/{len(widgets)} 个小组件")
+            return updated_count > 0
+
+        except Exception as e:
+            logger.error(f"批量更新小组件失败: {e}")
+            return False
+
+    def reload_widgets(self, widgets_manager, new_configs=None) -> bool:
+        """重载小组件"""
+        try:
+            if not self.should_reload():
+                return True
+            if new_configs:
+                if (
+                    isinstance(new_configs, list)
+                    and new_configs
+                    and isinstance(new_configs[0], str)
+                ):
+                    new_configs = [{'path': config} for config in new_configs]
+                new_config_hashes = {
+                    config.get('path', str(i)): self.get_config_hash(config)
+                    for i, config in enumerate(new_configs)
+                }
+                if new_config_hashes == self.widget_states:
+                    return True
+                self.widget_states = new_config_hashes
+            # 增量更新
+            if new_configs and self._try_incremental_update(widgets_manager, new_configs):
+                return True
+            logger.trace(f"执行完整重载 ({len(new_configs) if new_configs else 0}个小组件)")
+            return self.init_widgets_lifecycle(widgets_manager)
+        except Exception as e:
+            logger.error(f"重载小组件失败: {e}")
+            return False
+
+    def _try_incremental_update(self, widgets_manager, new_configs) -> bool:
+        """增量更新"""
+        try:
+            if not hasattr(widgets_manager, 'widgets') or not widgets_manager.widgets:
+                return False
+            if len(new_configs) != len(widgets_manager.widgets):
+                return False
+            return self.update_widgets(widgets_manager.widgets)
+
+        except Exception as e:
+            return False
+
+
+def get_floating_widget():
+    """获取浮动小组件实例"""
+    return floating_widget
+
+
+def set_floating_widget(widget):
+    """设置浮动小组件实例"""
+    global floating_widget
+    floating_widget = widget
+
+
+widget_helper = WidgetHelper()
+floating_widget = None
 tray_icon = None
 update_timer = UnionUpdateTimer()
 time_manager = TimeManagerFactory.get_instance()

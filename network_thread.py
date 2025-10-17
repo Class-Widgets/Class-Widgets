@@ -569,9 +569,12 @@ def check_version(version: Dict[str, Any]) -> bool:  # 检查更新
         thread.terminate()
     threads = []
     if 'error' in version:
-        utils.tray_icon.push_error_notification(
-            "检查更新失败！", f"检查更新失败！\n{version['error']}"
-        )
+        if utils.tray_icon:
+            utils.tray_icon.push_error_notification(
+                "检查更新失败！", f"检查更新失败！\n{version['error']}"
+            )
+        else:
+            logger.error(f"检查更新失败: {version['error']}")
         return False
 
     channel = int(

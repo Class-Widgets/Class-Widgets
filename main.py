@@ -1027,28 +1027,20 @@ class WidgetsManager:
             if widget.path == 'widget-current-activity.ui':
                 widget.animate_expand(target_pos)  # 主组件形变动画
 
-    def init_widgets(self) -> None:  # 初始化小组件
-        self.widgets_list = list_.get_widget_config()
-        self.check_widgets_exist()
-        self.spacing = conf.load_theme_config(theme).config.spacing
+    def init_widgets(self) -> None:
+        """初始化小组件"""
+        try:
+            from utils import widget_helper
 
-        self.get_start_pos()
-        cnt_all = {}
-
-        # 添加小组件实例
-        for w in range(len(self.widgets_list)):
-            cnt_all[self.widgets_list[w]] = cnt_all.get(self.widgets_list[w], -1) + 1
-            widget = DesktopWidget(
-                self,
-                self.widgets_list[w],
-                w == 0,
-                cnt=cnt_all[self.widgets_list[w]],
-                position=self.get_widget_pos("", w),
-                widget_cnt=w,
-            )
-            self.widgets.append(widget)
-
-        self.create_widgets()
+            self.widgets.clear()
+            self.widgets_list = list_.get_widget_config()
+            self.check_widgets_exist()
+            self.spacing = conf.load_theme_config(theme).config.spacing
+            self.get_start_pos()
+            widget_helper.init_widgets_lifecycle(self)
+            # logger.info(f"成功初始化 {len(self.widgets)} 个小组件")
+        except Exception as e:
+            logger.error(f"初始化小组件过程中出现错误: {e}")
 
     def close_all_widgets(self) -> None:
         # 统一关闭所有组件
@@ -1072,20 +1064,6 @@ class WidgetsManager:
     @staticmethod
     def get_widgets_height() -> int:
         return conf.load_theme_config(theme).config.height
-
-    def create_widgets(self) -> None:
-        for widget in self.widgets:
-            widget.show()
-            # print(int(widget.winId()))
-            # print(ctypes.c_void_p(int(widget.winId())).value)
-            if utils.focus_manager:
-                QTimer.singleShot(
-                    0,
-                    lambda w=widget: utils.focus_manager.ignore.emit(
-                        ctypes.c_void_p(int(w.winId())).value
-                    ),
-                )
-            logger.info(f'显示小组件：{widget.path, widget.windowTitle()}')
 
     def adjust_ui(self) -> None:  # 更新小组件UI
         if self.state == 0:
@@ -1153,7 +1131,8 @@ class WidgetsManager:
             widget.animate_show()
 
     def clear_widgets(self) -> None:
-        global fw, was_floating_mode
+        global was_floating_mode
+        fw = utils.get_floating_widget()
         if fw and fw.isVisible():
             fw.close()
             was_floating_mode = True
@@ -1163,7 +1142,7 @@ class WidgetsManager:
             widget.animate_hide_opacity()
         for widget in self.widgets:
             self.widgets.remove(widget)
-        init()
+        self.reload_widgets()
 
     def update_widgets(self) -> None:
         c = 0
@@ -1244,6 +1223,19 @@ class WidgetsManager:
         if self.opacity_animation:
             self.opacity_animation.stop()
         self.close()
+
+    def reload_widgets(self) -> None:
+        try:
+            current_widgets_config = list_.get_widget_config()
+            from utils import widget_helper
+
+            if widget_helper.reload_widgets(self, current_widgets_config):
+                self.init_widgets()
+            else:
+                init()
+        except Exception as e:
+            logger.error(f"组件重载过程中出现错误: {e}")
+            init()
 
 
 class openProgressDialog(QWidget):
@@ -1914,7 +1906,8 @@ class DesktopWidget(QWidget):  # 主要小组件
         self.position = parent.get_widget_pos(self.path, None) if position is None else position
         self.animation = None
         self.opacity_animation = None
-        mgr.hide_status = None
+        if hasattr(utils, 'main_mgr') and utils.main_mgr:
+            utils.main_mgr.hide_status = None
         self._is_topmost_callback_added = False  # 添加一个标志来跟踪回调是否已添加
 
         try:
@@ -3195,7 +3188,8 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.last_color_mode = color_mode
             self.last_widgets = widgets
             logger.info(f'切换主题：{theme_}，颜色模式{color_mode}')
-            mgr.clear_widgets()
+            if hasattr(utils, 'main_mgr') and utils.main_mgr:
+                utils.main_mgr.clear_widgets()
 
     def update_weather_data(
         self, weather_data: Dict[str, Any]
@@ -3563,18 +3557,19 @@ class DesktopWidget(QWidget):  # 主要小组件
     def mouseReleaseEvent(self, event: QMouseEvent) -> None:
         if event.button() == Qt.MouseButton.RightButton:
             return  # 右键不执行
-        if config_center.read_conf('General', 'hide') == '0':  # 置顶
-            if mgr.state:
-                mgr.decide_to_hide()
-            else:
-                mgr.show_windows()
-        elif config_center.read_conf('General', 'hide') == '3':  # 隐藏
-            if mgr.state:
-                mgr.decide_to_hide()
-                mgr.hide_status = (current_state, 1)
-            else:
-                mgr.show_windows()
-                mgr.hide_status = (current_state, 0)
+        if hasattr(utils, 'main_mgr') and utils.main_mgr:
+            if config_center.read_conf('General', 'hide') == '0':  # 置顶
+                if utils.main_mgr.state:
+                    utils.main_mgr.decide_to_hide()
+                else:
+                    utils.main_mgr.show_windows()
+            elif config_center.read_conf('General', 'hide') == '3':  # 隐藏
+                if utils.main_mgr.state:
+                    utils.main_mgr.decide_to_hide()
+                    utils.main_mgr.hide_status = (current_state, 1)
+                else:
+                    utils.main_mgr.show_windows()
+                    utils.main_mgr.hide_status = (current_state, 0)
         else:
             event.ignore()
         if utils.focus_manager:

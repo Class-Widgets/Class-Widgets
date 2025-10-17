@@ -111,12 +111,22 @@ class Splash:
         app.processEvents()
 
     def close(self):
-        logger.info("Splash 关闭")
-        dark_mode_watcher.dark_mode_changed.disconnect(self.dark_mode_watcher_connection)
-        dark_mode_watcher.stop()
-        self.splash_window.close()
-        self.splash_window.deleteLater()
-        self.splash_window = None
+        try:
+            if self.splash_window:
+                self.splash_window.setVisible(False)
+                self.splash_window.setWindowOpacity(0)
+                if hasattr(self, 'dark_mode_watcher_connection'):
+                    dark_mode_watcher.dark_mode_changed.disconnect(
+                        self.dark_mode_watcher_connection
+                    )
+                dark_mode_watcher.stop()
+                self.splash_window.close()
+                self.splash_window.deleteLater()
+                app.processEvents()
+                self.splash_window = None
+        except Exception as e:
+            logger.error(f"关闭窗口时出错: {e}")
+            self.splash_window = None
 
     def error(self):
         if self.splash_window is None:
