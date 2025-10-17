@@ -4,36 +4,36 @@
 <context>
     <name>Theme</name>
     <message>
-        <location filename="../toast-open_dialog.ui" line="20"/>
-        <location filename="../dark/toast-open_dialog.ui" line="20"/>
-        <location filename="../dark/widget-floating.ui" line="20"/>
         <location filename="../widget-floating.ui" line="20"/>
+        <location filename="../dark/widget-floating.ui" line="20"/>
+        <location filename="../dark/toast-open_dialog.ui" line="20"/>
+        <location filename="../toast-open_dialog.ui" line="20"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../toast-open_dialog.ui" line="105"/>
         <location filename="../dark/toast-open_dialog.ui" line="105"/>
+        <location filename="../toast-open_dialog.ui" line="105"/>
         <source>%p</source>
         <translation>%p</translation>
     </message>
     <message>
-        <location filename="../toast-open_dialog.ui" line="142"/>
         <location filename="../dark/toast-open_dialog.ui" line="142"/>
+        <location filename="../toast-open_dialog.ui" line="142"/>
         <source>即将打开</source>
         <translation>即将打开</translation>
     </message>
     <message>
-        <location filename="../toast-open_dialog.ui" line="171"/>
-        <location filename="../dark/toast-open_dialog.ui" line="171"/>
-        <location filename="../dark/widget-floating.ui" line="153"/>
         <location filename="../widget-floating.ui" line="146"/>
+        <location filename="../dark/widget-floating.ui" line="153"/>
+        <location filename="../dark/toast-open_dialog.ui" line="171"/>
+        <location filename="../toast-open_dialog.ui" line="171"/>
         <source>测试</source>
         <translation>测试</translation>
     </message>
     <message>
-        <location filename="../toast-open_dialog.ui" line="210"/>
         <location filename="../dark/toast-open_dialog.ui" line="210"/>
+        <location filename="../toast-open_dialog.ui" line="210"/>
         <source>取消</source>
         <translation>取消</translation>
     </message>
@@ -56,20 +56,20 @@
         <translation>Content</translation>
     </message>
     <message>
-        <location filename="../widget-countdown-day.ui" line="26"/>
         <location filename="../dark/widget-countdown-day.ui" line="26"/>
+        <location filename="../widget-countdown-day.ui" line="26"/>
         <source>倒计日</source>
         <translation>倒计日</translation>
     </message>
     <message>
-        <location filename="../widget-countdown-day.ui" line="50"/>
         <location filename="../dark/widget-countdown-day.ui" line="50"/>
+        <location filename="../widget-countdown-day.ui" line="50"/>
         <source>距离 中考 还有</source>
         <translation>距离 中考 还有</translation>
     </message>
     <message>
-        <location filename="../widget-countdown-day.ui" line="82"/>
         <location filename="../dark/widget-countdown-day.ui" line="82"/>
+        <location filename="../widget-countdown-day.ui" line="82"/>
         <source>300 天</source>
         <translation>-- 天</translation>
     </message>
@@ -92,28 +92,28 @@
         <translation>--:--</translation>
     </message>
     <message>
-        <location filename="../widget-current-activity.ui" line="26"/>
-        <location filename="../widget-current-activity.ui" line="103"/>
         <location filename="../dark/widget-current-activity.ui" line="26"/>
         <location filename="../dark/widget-current-activity.ui" line="108"/>
+        <location filename="../widget-current-activity.ui" line="26"/>
+        <location filename="../widget-current-activity.ui" line="103"/>
         <source>当前活动</source>
         <translation>当前活动</translation>
     </message>
     <message>
-        <location filename="../widget-current-activity.ui" line="51"/>
         <location filename="../dark/widget-current-activity.ui" line="56"/>
+        <location filename="../widget-current-activity.ui" line="51"/>
         <source>  测试</source>
         <translation>  正在加载</translation>
     </message>
     <message>
-        <location filename="../dark/widget-floating.ui" line="178"/>
         <location filename="../widget-floating.ui" line="165"/>
+        <location filename="../dark/widget-floating.ui" line="178"/>
         <source>&lt;0分钟</source>
         <translation>&lt; - 分钟</translation>
     </message>
     <message>
-        <location filename="../dark/widget-floating.ui" line="219"/>
         <location filename="../widget-floating.ui" line="206"/>
+        <location filename="../dark/widget-floating.ui" line="219"/>
         <source>%p%</source>
         <translation>%p%</translation>
     </message>
@@ -154,20 +154,20 @@
         <translation>-- 日  周 -</translation>
     </message>
     <message>
-        <location filename="../widget-weather.ui" line="26"/>
         <location filename="../dark/widget-weather.ui" line="26"/>
+        <location filename="../widget-weather.ui" line="26"/>
         <source>天气</source>
         <translation>天气</translation>
     </message>
     <message>
-        <location filename="../widget-weather.ui" line="49"/>
         <location filename="../dark/widget-weather.ui" line="49"/>
+        <location filename="../widget-weather.ui" line="49"/>
         <source>当前城市</source>
         <translation>当前城市</translation>
     </message>
     <message>
-        <location filename="../widget-weather.ui" line="127"/>
         <location filename="../dark/widget-weather.ui" line="127"/>
+        <location filename="../widget-weather.ui" line="127"/>
         <source>114℉</source>
         <translation>--℉</translation>
     </message>

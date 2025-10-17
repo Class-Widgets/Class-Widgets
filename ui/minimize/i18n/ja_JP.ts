@@ -42,20 +42,20 @@
         <translation>Content</translation>
     </message>
     <message>
-        <location filename="../widget-countdown-day.ui" line="26"/>
         <location filename="../dark/widget-countdown-day.ui" line="26"/>
+        <location filename="../widget-countdown-day.ui" line="26"/>
         <source>倒计日</source>
         <translation>カウントダウンデー</translation>
     </message>
     <message>
-        <location filename="../widget-countdown-day.ui" line="50"/>
         <location filename="../dark/widget-countdown-day.ui" line="50"/>
+        <location filename="../widget-countdown-day.ui" line="50"/>
         <source>距离 中考 还有</source>
         <translation>高校入試 まであと</translation>
     </message>
     <message>
-        <location filename="../widget-countdown-day.ui" line="82"/>
         <location filename="../dark/widget-countdown-day.ui" line="82"/>
+        <location filename="../widget-countdown-day.ui" line="82"/>
         <source>300 天</source>
         <translation>300日</translation>
     </message>
@@ -78,16 +78,16 @@
         <translation>00:00</translation>
     </message>
     <message>
-        <location filename="../widget-current-activity.ui" line="26"/>
-        <location filename="../widget-current-activity.ui" line="103"/>
         <location filename="../dark/widget-current-activity.ui" line="26"/>
         <location filename="../dark/widget-current-activity.ui" line="103"/>
+        <location filename="../widget-current-activity.ui" line="26"/>
+        <location filename="../widget-current-activity.ui" line="103"/>
         <source>当前活动</source>
         <translation>現在のイベント</translation>
     </message>
     <message>
-        <location filename="../widget-current-activity.ui" line="51"/>
         <location filename="../dark/widget-current-activity.ui" line="51"/>
+        <location filename="../widget-current-activity.ui" line="51"/>
         <source>  测试</source>
         <translation>  テスト</translation>
     </message>
@@ -140,20 +140,20 @@
         <translation>2日目</translation>
     </message>
     <message>
-        <location filename="../widget-weather.ui" line="26"/>
         <location filename="../dark/widget-weather.ui" line="26"/>
+        <location filename="../widget-weather.ui" line="26"/>
         <source>天气</source>
         <translation>天気</translation>
     </message>
     <message>
-        <location filename="../widget-weather.ui" line="49"/>
         <location filename="../dark/widget-weather.ui" line="49"/>
+        <location filename="../widget-weather.ui" line="49"/>
         <source>当前城市</source>
         <translation>現在の都市</translation>
     </message>
     <message>
-        <location filename="../widget-weather.ui" line="128"/>
         <location filename="../dark/widget-weather.ui" line="128"/>
+        <location filename="../widget-weather.ui" line="128"/>
         <source>114℉</source>
         <translation>114°Fの</translation>
     </message>

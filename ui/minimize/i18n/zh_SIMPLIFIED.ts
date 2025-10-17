@@ -42,20 +42,20 @@
         <translation>康疼特</translation>
     </message>
     <message>
-        <location filename="../widget-countdown-day.ui" line="26"/>
         <location filename="../dark/widget-countdown-day.ui" line="26"/>
+        <location filename="../widget-countdown-day.ui" line="26"/>
         <source>倒计日</source>
         <translation>压迫感</translation>
     </message>
     <message>
-        <location filename="../widget-countdown-day.ui" line="50"/>
         <location filename="../dark/widget-countdown-day.ui" line="50"/>
+        <location filename="../widget-countdown-day.ui" line="50"/>
         <source>距离 中考 还有</source>
         <translation>死期</translation>
     </message>
     <message>
-        <location filename="../widget-countdown-day.ui" line="82"/>
         <location filename="../dark/widget-countdown-day.ui" line="82"/>
+        <location filename="../widget-countdown-day.ui" line="82"/>
         <source>300 天</source>
         <translation>三倍伤筋动骨</translation>
     </message>
@@ -78,16 +78,16 @@
         <translation>11:45</translation>
     </message>
     <message>
-        <location filename="../widget-current-activity.ui" line="26"/>
-        <location filename="../widget-current-activity.ui" line="103"/>
         <location filename="../dark/widget-current-activity.ui" line="26"/>
         <location filename="../dark/widget-current-activity.ui" line="103"/>
+        <location filename="../widget-current-activity.ui" line="26"/>
+        <location filename="../widget-current-activity.ui" line="103"/>
         <source>当前活动</source>
         <translation>活跃的当前</translation>
     </message>
     <message>
-        <location filename="../widget-current-activity.ui" line="51"/>
         <location filename="../dark/widget-current-activity.ui" line="51"/>
+        <location filename="../widget-current-activity.ui" line="51"/>
         <source>  测试</source>
         <translation>  捉虫子</translation>
     </message>
@@ -136,20 +136,20 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widget-weather.ui" line="26"/>
         <location filename="../dark/widget-weather.ui" line="26"/>
+        <location filename="../widget-weather.ui" line="26"/>
         <source>天气</source>
         <translation>今天是个好日子啊（喜</translation>
     </message>
     <message>
-        <location filename="../widget-weather.ui" line="49"/>
         <location filename="../dark/widget-weather.ui" line="49"/>
+        <location filename="../widget-weather.ui" line="49"/>
         <source>当前城市</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widget-weather.ui" line="128"/>
         <location filename="../dark/widget-weather.ui" line="128"/>
+        <location filename="../widget-weather.ui" line="128"/>
         <source>114℉</source>
         <translation type="unfinished"></translation>
     </message>

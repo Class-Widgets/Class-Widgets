@@ -42,20 +42,20 @@
         <translation>Content</translation>
     </message>
     <message>
-        <location filename="../widget-countdown-day.ui" line="26"/>
         <location filename="../dark/widget-countdown-day.ui" line="26"/>
+        <location filename="../widget-countdown-day.ui" line="26"/>
         <source>倒计日</source>
         <translation>倒计日</translation>
     </message>
     <message>
-        <location filename="../widget-countdown-day.ui" line="50"/>
         <location filename="../dark/widget-countdown-day.ui" line="50"/>
+        <location filename="../widget-countdown-day.ui" line="50"/>
         <source>距离 中考 还有</source>
         <translation>距离 中考 还有</translation>
     </message>
     <message>
-        <location filename="../widget-countdown-day.ui" line="82"/>
         <location filename="../dark/widget-countdown-day.ui" line="82"/>
+        <location filename="../widget-countdown-day.ui" line="82"/>
         <source>300 天</source>
         <translation>-- 天</translation>
     </message>
@@ -78,16 +78,16 @@
         <translation>--:--</translation>
     </message>
     <message>
-        <location filename="../widget-current-activity.ui" line="26"/>
-        <location filename="../widget-current-activity.ui" line="103"/>
         <location filename="../dark/widget-current-activity.ui" line="26"/>
         <location filename="../dark/widget-current-activity.ui" line="108"/>
+        <location filename="../widget-current-activity.ui" line="26"/>
+        <location filename="../widget-current-activity.ui" line="103"/>
         <source>当前活动</source>
         <translation>当前活动</translation>
     </message>
     <message>
-        <location filename="../widget-current-activity.ui" line="51"/>
         <location filename="../dark/widget-current-activity.ui" line="56"/>
+        <location filename="../widget-current-activity.ui" line="51"/>
         <source>  测试</source>
         <translation>  正在加载</translation>
     </message>
@@ -136,20 +136,20 @@
         <translation>-- 日  周 -</translation>
     </message>
     <message>
-        <location filename="../widget-weather.ui" line="26"/>
         <location filename="../dark/widget-weather.ui" line="26"/>
+        <location filename="../widget-weather.ui" line="26"/>
         <source>天气</source>
         <translation>天气</translation>
     </message>
     <message>
-        <location filename="../widget-weather.ui" line="49"/>
         <location filename="../dark/widget-weather.ui" line="49"/>
+        <location filename="../widget-weather.ui" line="49"/>
         <source>当前城市</source>
         <translation>当前城市</translation>
     </message>
     <message>
-        <location filename="../widget-weather.ui" line="127"/>
         <location filename="../dark/widget-weather.ui" line="127"/>
+        <location filename="../widget-weather.ui" line="127"/>
         <source>114℉</source>
         <translation>--℉</translation>
     </message>
