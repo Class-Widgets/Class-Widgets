@@ -35,7 +35,7 @@ repos:
   #     - id: mdformat
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.0
+    rev: v0.14.1
     hooks:
       - id: ruff-format
       - id: ruff-check
