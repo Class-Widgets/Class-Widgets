@@ -54,7 +54,7 @@ jobs:
 
       - name: Sign executable
         id: sign-exe
-        uses: signpath/github-action-submit-signing-request@v1
+        uses: signpath/github-action-submit-signing-request@v2
         with:
           api-token: "${{ secrets.SIGNPATH_API_TOKEN }}"
           organization-id: "2e13633d-4e7d-4462-9091-27536751c84c"
