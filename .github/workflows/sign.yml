@@ -47,7 +47,7 @@ jobs:
 
       - name: Upload executable for signing
         id: upload-for-signing
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ${{ inputs.executable_name }}-unsigned
           path: ./exe-for-signing
@@ -67,7 +67,7 @@ jobs:
       - name: Upload signed executable
         id: upload-signed
         if: success()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ${{ inputs.executable_name }}-signed
           path: ./signed-output

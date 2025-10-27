@@ -583,7 +583,7 @@ jobs:
           cd dist && mv ClassWidgets "${zip_name}" && zip -r -q "../packages/${zip_name}.zip" "${zip_name}"/* && cd ..
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ${{ matrix.platform }}-build
           path: ./packages
@@ -655,7 +655,7 @@ jobs:
       - name: Upload MSI for signing
         id: upload_msi
         if: needs.prepare.outputs.build_type == 'Release'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: windows-${{ matrix.arch }}-msi-unsigned
           path: packages/ClassWidgets-Windows-${{ matrix.arch }}.msi
@@ -670,7 +670,7 @@ jobs:
 
       - name: Upload signed executable
         if: inputs.is_signing == true && steps.sign_exe.outputs.signed_executable_artifact != ''
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: windows-${{ matrix.arch }}-exe-signed
           path: ./signed-exe
@@ -688,14 +688,14 @@ jobs:
 
       - name: Upload signed build package
         if: inputs.is_signing == true && steps.sign_exe.outputs.signed_executable_artifact != ''
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: windows-${{ matrix.arch }}-build-signed
           path: packages/ClassWidgets-Windows-${{ matrix.arch }}-signed.zip
 
       - name: Upload signed MSI
         if: inputs.is_signing == true && needs.prepare.outputs.build_type == 'Release' && steps.sign_msi.outputs.signed_executable_artifact != ''
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: windows-${{ matrix.arch }}-msi-signed
           path: ./signed-msi
@@ -735,7 +735,7 @@ jobs:
           fi
 
       - name: Upload signed packages
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: windows-${{ matrix.arch }}-signed
           path: final-signed-packages
@@ -918,7 +918,7 @@ jobs:
           ls -la final-packages/ || true
 
       - name: Upload final packages
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ClassWidgets-Packages
           path: final-packages
