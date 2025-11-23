@@ -413,10 +413,13 @@ class ScheduleThread(QThread):
 
 if __name__ == '__main__':
     thread_test = ScheduleThread('cw1pvd', '202501备份(1) @(半白bani_DeBug)254867116-backup.json')
+
     def print_status(is_break: bool, duration: float, lesson_name: str):
         print(f"is_break: {is_break}, duration: {duration}, lesson_name: {lesson_name}")
+
     def print_next_lessons(lessons: list):
         print(f"next_lessons: {lessons}")
+
     thread_test.status_updated.connect(print_status)
     thread_test.next_lessons_updated.connect(print_next_lessons)
     thread_test.start()
