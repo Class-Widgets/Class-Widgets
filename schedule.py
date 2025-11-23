@@ -20,13 +20,13 @@ class ScheduleProvider(ABC):
     def init(self) -> None:
         pass
 
-    @abstractmethod
     @staticmethod
+    @abstractmethod
     def name() -> str:
         pass
 
-    @abstractmethod
     @staticmethod
+    @abstractmethod
     def init_schedule(schedule_name: Path) -> bool:
         pass
 
@@ -275,6 +275,9 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
 
         idx = self._cache_lesson_index
         lessons_today = self._cache_lessons_today
+
+        if not lessons_today:
+            return True, -1.0, ''
 
         cache_time_in_seconds = (
             self._cache_time.hour * 3600 + self._cache_time.minute * 60 + self._cache_time.second
