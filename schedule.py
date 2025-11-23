@@ -1,10 +1,9 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import List, Tuple, Optional, Dict, Type 
 from shutil import copy
+from typing import Dict, List, Optional, Tuple, Type
 
 from PyQt5.QtCore import QCoreApplication, QThread, pyqtSignal
-
 
 import conf
 import utils
@@ -28,7 +27,7 @@ class ScheduleProvider(ABC):
 
     @abstractmethod
     @staticmethod
-    def init_schedule(schedule_name:Path) -> bool:
+    def init_schedule(schedule_name: Path) -> bool:
         pass
 
     @abstractmethod
@@ -48,15 +47,15 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
     @staticmethod
     def name() -> str:
         return "cw1pvd"
-    
+
     @staticmethod
-    def init_schedule(schedule_name:Path) -> bool:
+    def init_schedule(schedule_name: Path) -> bool:
         try:
             copy(CW_HOME / 'data' / 'default_schedule.json', SCHEDULE_DIR / schedule_name)
             return True
         except Exception:
             return False
-    
+
     def init(self):
         self.schedule = None
         self.parts = {}
@@ -344,35 +343,37 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
             next_start, _, _ = lessons_today[idx]
             return True, (next_start - current_time_in_seconds), ''
         return True, -1.0, ''
-    
+
     def stop(self) -> None:
         pass
-    
 
-class ScheduleManager():
+
+class ScheduleManager:
     def __init__(self):
-        self.provider:Optional[ScheduleProvider] = None
-        self.providers:Dict[str, Type[ScheduleProvider]] = {}
+        self.provider: Optional[ScheduleProvider] = None
+        self.providers: Dict[str, Type[ScheduleProvider]] = {}
         self._init_providers()
 
     def _init_providers(self):
-        hard_coded_providers: List[Tuple[str,Type[ScheduleProvider]]] = [("cw1pvd",ClassWidgetsScheduleVersion1Provider)]
+        hard_coded_providers: List[Tuple[str, Type[ScheduleProvider]]] = [
+            ("cw1pvd", ClassWidgetsScheduleVersion1Provider)
+        ]
         for name, pvd in hard_coded_providers:
             self.providers[name] = pvd
 
-    def switch_manager(self, provider_str:str, schedule_name:str):
+    def switch_manager(self, provider_str: str, schedule_name: str):
         if self.provider:
             self.provider.stop()
         self.provider = self.providers[provider_str](schedule_name)
 
-    def _init_schedule(self, provider_str:str, schedule_name:Path) -> bool:
+    def _init_schedule(self, provider_str: str, schedule_name: Path) -> bool:
         if provider_str not in self.providers:
             return False
         return self.providers[provider_str].init_schedule(schedule_name)
-    
-    def create_new_schedule(self, provider_str:str, schedule_name:Path) -> bool:
+
+    def create_new_schedule(self, provider_str: str, schedule_name: Path) -> bool:
         return self._init_schedule(provider_str, schedule_name)
-    
+
     def get_next_lessons(self) -> List[str]:
         if not self.provider:
             return []
@@ -382,6 +383,7 @@ class ScheduleManager():
         if not self.provider:
             return True, -1.0, ''
         return self.provider.get_status()
+
 
 class ScheduleThread(QThread):
     status_updated = pyqtSignal(bool, float, str)
@@ -403,6 +405,7 @@ class ScheduleThread(QThread):
     def stop(self):
         self._running = False
         self.wait()
+
 
 if __name__ == '__main__':
     # For Debug 用完就删！！
