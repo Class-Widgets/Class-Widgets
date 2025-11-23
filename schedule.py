@@ -392,9 +392,10 @@ class ScheduleThread(QThread):
     status_updated = pyqtSignal(bool, float, str)
     next_lessons_updated = pyqtSignal(list)
 
-    def __init__(self, schedule_manager: ScheduleManager):
+    def __init__(self, provider: str, name: str):
         super().__init__()
-        self.schedule_manager = schedule_manager
+        self.schedule_manager = ScheduleManager()
+        self.schedule_manager.switch_manager(provider, name)
         self._running = True
 
     def run(self):
@@ -411,12 +412,14 @@ class ScheduleThread(QThread):
 
 
 if __name__ == '__main__':
-    # For Debug 用完就删！！
-    mgr = ClassWidgetsScheduleVersion1Provider(
-        "202501备份(1) @(半白bani_DeBug)254867116-backup.json"
-    )
-    import time
-
-    while True:
-        print(mgr.get_status())
-        time.sleep(0.5)
+    thread_test = ScheduleThread('cw1pvd', '202501备份(1) @(半白bani_DeBug)254867116-backup.json')
+    def print_status(is_break: bool, duration: float, lesson_name: str):
+        print(f"is_break: {is_break}, duration: {duration}, lesson_name: {lesson_name}")
+    def print_next_lessons(lessons: list):
+        print(f"next_lessons: {lessons}")
+    thread_test.status_updated.connect(print_status)
+    thread_test.next_lessons_updated.connect(print_next_lessons)
+    thread_test.start()
+    app = QCoreApplication([])
+    app.exec_()
+    thread_test.stop()
