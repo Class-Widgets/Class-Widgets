@@ -1,21 +1,34 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import List, Tuple
+from typing import List, Tuple, Optional, Dict, Type 
+from shutil import copy
 
-from PyQt5.QtCore import QCoreApplication
+from PyQt5.QtCore import QCoreApplication, QThread, pyqtSignal
+
 
 import conf
 import utils
+from basic_dirs import CW_HOME, SCHEDULE_DIR
 
 
 class ScheduleProvider(ABC):
-    def __init__(self, file_path: Path):
-        self.file_path = file_path
+    def __init__(self, schedule_name: str):
+        self.schedule_name = schedule_name
         self.time_manager = utils.TimeManagerFactory.get_instance()
         self.init()
 
     @abstractmethod
     def init(self) -> None:
+        pass
+
+    @abstractmethod
+    @staticmethod
+    def name() -> str:
+        pass
+
+    @abstractmethod
+    @staticmethod
+    def init_schedule(schedule_name:Path) -> bool:
         pass
 
     @abstractmethod
@@ -26,8 +39,24 @@ class ScheduleProvider(ABC):
     def get_status(self) -> Tuple[bool, float, str]:
         pass
 
+    @abstractmethod
+    def stop(self) -> None:
+        pass
+
 
 class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
+    @staticmethod
+    def name() -> str:
+        return "cw1pvd"
+    
+    @staticmethod
+    def init_schedule(schedule_name:Path) -> bool:
+        try:
+            copy(CW_HOME / 'data' / 'default_schedule.json', SCHEDULE_DIR / schedule_name)
+            return True
+        except Exception:
+            return False
+    
     def init(self):
         self.schedule = None
         self.parts = {}
@@ -39,7 +68,7 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
         self._cache_status = None
         self._cache_time = None
         self._cache_lesson_today = None
-        self._init_parser(self.file_path)
+        self._init_parser(SCHEDULE_DIR / self.schedule_name)
         self._init_part()
         self._init_lessons()
         self.print_schedule()
@@ -315,12 +344,70 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
             next_start, _, _ = lessons_today[idx]
             return True, (next_start - current_time_in_seconds), ''
         return True, -1.0, ''
+    
+    def stop(self) -> None:
+        pass
+    
 
+class ScheduleManager():
+    def __init__(self):
+        self.provider:Optional[ScheduleProvider] = None
+        self.providers:Dict[str, Type[ScheduleProvider]] = {}
+        self._init_providers()
+
+    def _init_providers(self):
+        hard_coded_providers: List[Tuple[str,Type[ScheduleProvider]]] = [("cw1pvd",ClassWidgetsScheduleVersion1Provider)]
+        for name, pvd in hard_coded_providers:
+            self.providers[name] = pvd
+
+    def switch_manager(self, provider_str:str, schedule_name:str):
+        if self.provider:
+            self.provider.stop()
+        self.provider = self.providers[provider_str](schedule_name)
+
+    def _init_schedule(self, provider_str:str, schedule_name:Path) -> bool:
+        if provider_str not in self.providers:
+            return False
+        return self.providers[provider_str].init_schedule(schedule_name)
+    
+    def create_new_schedule(self, provider_str:str, schedule_name:Path) -> bool:
+        return self._init_schedule(provider_str, schedule_name)
+    
+    def get_next_lessons(self) -> List[str]:
+        if not self.provider:
+            return []
+        return self.provider.get_next_lessons()
+
+    def get_status(self) -> Tuple[bool, float, str]:
+        if not self.provider:
+            return True, -1.0, ''
+        return self.provider.get_status()
+
+class ScheduleThread(QThread):
+    status_updated = pyqtSignal(bool, float, str)
+    next_lessons_updated = pyqtSignal(list)
+
+    def __init__(self, schedule_manager: ScheduleManager):
+        super().__init__()
+        self.schedule_manager = schedule_manager
+        self._running = True
+
+    def run(self):
+        while self._running:
+            status = self.schedule_manager.get_status()
+            self.status_updated.emit(*status)
+            next_lessons = self.schedule_manager.get_next_lessons()
+            self.next_lessons_updated.emit(next_lessons)
+            self.msleep(500)  # 每500毫秒更新一次状态
+
+    def stop(self):
+        self._running = False
+        self.wait()
 
 if __name__ == '__main__':
     # For Debug 用完就删！！
     mgr = ClassWidgetsScheduleVersion1Provider(
-        Path('./config/schedule/202501备份(1) @(半白bani_DeBug)254867116-backup.json')
+        "202501备份(1) @(半白bani_DeBug)254867116-backup.json"
     )
     import time
 
