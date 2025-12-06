@@ -610,7 +610,7 @@ jobs:
 
       - name: Download signed executable
         if: inputs.is_signing == true && steps.sign_exe.outputs.signed_executable_artifact != ''
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: ${{ steps.sign_exe.outputs.signed_executable_artifact }}
           path: ./signed-exe
@@ -718,7 +718,7 @@ jobs:
 
       - name: Download signed MSI
         if: needs.prepare.outputs.build_type == 'Release' && steps.sign_msi.outputs.signed_executable_artifact != ''
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: ${{ steps.sign_msi.outputs.signed_executable_artifact }}
           path: ./signed-msi
@@ -752,7 +752,7 @@ jobs:
       BUILD_TYPE: ${{ needs.prepare.outputs.build_type }}
     steps:
       - name: Download all build artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           path: ./all-artifacts
 
