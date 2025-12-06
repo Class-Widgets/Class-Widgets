@@ -128,12 +128,12 @@
     <message>
         <location filename="../generate_speech.py" line="403"/>
         <source>语音文件生成失败，文件为空</source>
-        <translation type="unfinished"></translation>
+        <translation>语音文件生成失败，文件为空</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="413"/>
         <source>Edge TTS服务未返回音频数据,可能是网络问题或语音参数错误。语音ID: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Edge TTS服务未返回音频数据,可能是网络问题或语音参数错误。语音ID: {}</translation>
     </message>
     <message>
         <location filename="../generate_speech.py" line="420"/>

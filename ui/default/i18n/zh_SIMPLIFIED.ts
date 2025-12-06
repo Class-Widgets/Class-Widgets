@@ -145,13 +145,13 @@
         <location filename="../dark/widget-time.ui" line="50"/>
         <location filename="../widget-time.ui" line="49"/>
         <source>2025 年  13 月</source>
-        <translation type="unfinished"></translation>
+        <translation>2025 年  13 月</translation>
     </message>
     <message>
         <location filename="../dark/widget-time.ui" line="82"/>
         <location filename="../widget-time.ui" line="80"/>
         <source>32 日 周二</source>
-        <translation type="unfinished"></translation>
+        <translation>32 日 周二</translation>
     </message>
     <message>
         <location filename="../widget-weather.ui" line="26"/>
@@ -163,13 +163,13 @@
         <location filename="../widget-weather.ui" line="49"/>
         <location filename="../dark/widget-weather.ui" line="49"/>
         <source>当前城市</source>
-        <translation type="unfinished"></translation>
+        <translation>当前城市</translation>
     </message>
     <message>
         <location filename="../widget-weather.ui" line="127"/>
         <location filename="../dark/widget-weather.ui" line="127"/>
         <source>114℉</source>
-        <translation type="unfinished"></translation>
+        <translation>114℉</translation>
     </message>
 </context>
 </TS>
