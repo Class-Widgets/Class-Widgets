@@ -151,7 +151,7 @@ jobs:
       is_signing: ${{ steps.build-info.outputs.is_signing }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 2
 
@@ -346,7 +346,7 @@ jobs:
           apt-get clean && rm -rf /var/lib/apt/lists/*
 
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Install gettext (macOS)
         if: startsWith(matrix.os, 'macos')
@@ -597,7 +597,7 @@ jobs:
         arch: [x64, x86]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
