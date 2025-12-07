@@ -14,7 +14,7 @@ dependencies = [
   "configparser~=7.1.0",
   "darkdetect==0.8.0",
   "distro~=1.9.0; sys_platform == 'linux'",
-  "edge-tts~=7.2.3",
+  "edge-tts==7.2.1",
   "loguru~=0.7.2",
   "ntplib~=0.4.0",
   "packaging>=25.0",
