@@ -227,7 +227,8 @@ class DarkModeWatcher(QObject):
     def __init__(self, interval: int = 500, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
         self._isDarkMode: bool = bool(darkdetect.isDark())  # 初始状态
-        self._callback_id = update_timer.add_callback(self._check_theme, interval=interval / 1000)
+        self.interval = interval
+        self.update_callback()
 
     def _check_theme(self) -> None:
         current_mode: bool = bool(darkdetect.isDark())
@@ -239,16 +240,19 @@ class DarkModeWatcher(QObject):
         """返回当前是否暗黑模式"""
         return self._isDarkMode
 
+    def update_callback(self) -> None:
+        self._callback_id = update_timer.add_callback(self._check_theme, interval=self.interval / 1000)
+
     def stop(self) -> None:
         """停止监听"""
         if hasattr(self, '_callback_id') and self._callback_id:
-            update_timer.remove_callback(self._callback_id)
+            update_timer.remove_callback_by_id(self._callback_id)
             self._callback_id = None
 
     def start(self, interval: Optional[int] = None) -> None:
         """开始监听"""
         if hasattr(self, '_callback_id') and self._callback_id:
-            update_timer.remove_callback(self._callback_id)
+            update_timer.remove_callback_by_id(self._callback_id)
         interval_seconds = (interval / 1000) if interval else 0.5  # 默认0.5秒
         self._callback_id = update_timer.add_callback(self._check_theme, interval=interval_seconds)
 

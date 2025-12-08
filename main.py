@@ -3743,6 +3743,9 @@ def init() -> None:
     if utils.focus_manager:
         utils.focus_manager.update_callback()
 
+    if dark_mode_watcher:
+        dark_mode_watcher.update_callback()
+
     global_i18n_manager.scan_available_languages()
 
     theme = load_theme_config(config_center.read_conf('General', 'theme')).path.name  # 主题
