@@ -835,7 +835,7 @@ jobs:
 
       - name: Upload provenance artifacts
         if: ${{ env.BUILD_TYPE == 'Release' && steps.generate-provenance.outputs.bundle-path != '' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: provenance
           path: |
