@@ -241,7 +241,9 @@ class DarkModeWatcher(QObject):
         return self._isDarkMode
 
     def update_callback(self) -> None:
-        self._callback_id = update_timer.add_callback(self._check_theme, interval=self.interval / 1000)
+        self._callback_id = update_timer.add_callback(
+            self._check_theme, interval=self.interval / 1000
+        )
 
     def stop(self) -> None:
         """停止监听"""
