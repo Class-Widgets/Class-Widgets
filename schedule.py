@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from shutil import copy
 from typing import Dict, List, Optional, Tuple, Type
+from loguru import logger
 
 from PyQt5.QtCore import QCoreApplication, QThread, pyqtSignal
 
@@ -35,7 +36,7 @@ class ScheduleProvider(ABC):
         pass
 
     @abstractmethod
-    def get_status(self) -> Tuple[bool, float, str]:
+    def get_status(self) -> Tuple[bool, float, float, str]:
         pass
 
     @abstractmethod
@@ -201,12 +202,16 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
             start_time, duration, _lesson_names = lessons_today[mid]
             if start_time <= current_time_in_seconds < start_time + duration:
                 return [x for lesson in lessons_today[mid:] for x in lesson[2]]
+            if start_time < current_time_in_seconds:
+                l = mid + 1
+            else:
+                r = mid - 1
         if l < len(lessons_today):
             return [x for lesson in lessons_today[l:] for x in lesson[2]]
         return []  # 没有课程了
 
-    def _init_get_status(self) -> Tuple[bool, float, str]:
-        # 查找当前时间对应课程 返回 is_break, duration, lesson_name
+    def _init_get_status(self) -> Tuple[bool, float, float, str]:
+        # 查找当前时间对应课程 返回 is_break, duration, total_time, lesson_name
         current_time = self.time_manager.get_current_time()
         self._cache_time = current_time
         current_weekday = self.time_manager.get_current_weekday()
@@ -231,6 +236,7 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
                     return (
                         False,
                         (start_time + duration - current_time_in_seconds),
+                        float(duration),
                         '、'.join(lesson_names),
                     )
                 if (
@@ -240,18 +246,18 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
                     # 在当前课程结束和下一节课开始之间
                     self._cache_status, self._cache_lesson_index = True, mid + 1
                     if mid + 1 < len(lessons_today):
-                        return True, (lessons_today[mid + 1][0] - current_time_in_seconds), ''
-                    return True, -1.0, ''
+                        return True, (lessons_today[mid + 1][0] - current_time_in_seconds), 0.0, ''
+                    return True, -1.0, 0.0, ''
                 l = mid + 1
             else:
                 r = mid - 1
         self._cache_lesson_index, self._cache_status = l, True
         if l < len(lessons_today):
-            next_start_time, _next_duration, _next_lesson_names = lessons_today[l]
-            return True, (next_start_time - current_time_in_seconds), ''
-        return True, -1.0, ''  # 没有课程了
+            next_start_time, next_duration, _next_lesson_names = lessons_today[l]
+            return True, (next_start_time - current_time_in_seconds), float(next_duration), ''
+        return True, -1.0, 0.0, ''  # 没有课程了
 
-    def get_status(self) -> Tuple[bool, float, str]:
+    def get_status(self) -> Tuple[bool, float, float, str]:
         if self._cache_time is None:
             return self._init_get_status()
         assert self._cache_lesson_index is not None
@@ -277,7 +283,7 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
         lessons_today = self._cache_lessons_today
 
         if not lessons_today:
-            return True, -1.0, ''
+            return True, -1.0, 0.0, ''
 
         cache_time_in_seconds = (
             self._cache_time.hour * 3600 + self._cache_time.minute * 60 + self._cache_time.second
@@ -285,11 +291,11 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
         if current_time_in_seconds == cache_time_in_seconds:
             if self._cache_status:
                 if idx < len(lessons_today):
-                    next_start, _, _ = lessons_today[idx]
-                    return True, (next_start - current_time_in_seconds), ''
-                return True, -1.0, ''
+                    next_start, _, next_duration = lessons_today[idx]
+                    return True, (next_start - current_time_in_seconds), float(next_duration), ''
+                return True, -1.0, 0.0, ''
             start, duration, names = lessons_today[idx]
-            return False, (start + duration - current_time_in_seconds), '、'.join(names)
+            return False, (start + duration - current_time_in_seconds), float(duration), '、'.join(names)
 
         # 优雅地向前或向后查找
         if current_time_in_seconds > cache_time_in_seconds:
@@ -297,7 +303,7 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
             # 先检查当前课程是否结束
             start, duration, names = lessons_today[idx]
             if current_time_in_seconds < start + duration:
-                return False, (start + duration - current_time_in_seconds), '、'.join(names)
+                return False, (start + duration - current_time_in_seconds), float(duration), '、'.join(names)
 
             # 查找下一节课
             idx += 1
@@ -312,6 +318,7 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
                         return (
                             False,
                             (next_start + next_duration - current_time_in_seconds),
+                            float(next_duration),
                             '、'.join(next_names),
                         )
                 else:
@@ -319,13 +326,13 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
                     self._cache_lesson_index = idx
                     self._cache_time = current_time
                     self._cache_status = True
-                    return True, (next_start - current_time_in_seconds), ''
+                    return True, (next_start - current_time_in_seconds), float(next_duration), ''
 
             # 没有更多课程
             self._cache_lesson_index = idx
             self._cache_time = current_time
             self._cache_status = True
-            return True, -1.0, ''
+            return True, -1.0, 0.0, ''
 
         # 向前查找
         while idx > 0:
@@ -335,7 +342,7 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
                     self._cache_lesson_index = idx - 1
                     self._cache_time = current_time
                     self._cache_status = False
-                    return False, (start + duration - current_time_in_seconds), '、'.join(names)
+                    return False, (start + duration - current_time_in_seconds), float(duration), '、'.join(names)
                 break
             idx -= 1
         # 如果没找到，说明还没上课
@@ -343,9 +350,9 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
         self._cache_time = current_time
         self._cache_status = True
         if idx < len(lessons_today):
-            next_start, _, _ = lessons_today[idx]
-            return True, (next_start - current_time_in_seconds), ''
-        return True, -1.0, ''
+            next_start, next_duration, _ = lessons_today[idx]
+            return True, (next_start - current_time_in_seconds), float(next_duration), ''
+        return True, -1.0, 0.0, ''
 
     def stop(self) -> None:
         pass
@@ -382,27 +389,32 @@ class ScheduleManager:
             return []
         return self.provider.get_next_lessons()
 
-    def get_status(self) -> Tuple[bool, float, str]:
+    def get_status(self) -> Tuple[bool, float, float, str]:
         if not self.provider:
-            return True, -1.0, ''
-        return self.provider.get_status()
+            return True, -1.0, 0.0, ''
+        status = self.provider.get_status()
+        return status
+    
+    def is_ready(self) -> bool:
+        return self.provider is not None
 
 
 class ScheduleThread(QThread):
-    status_updated = pyqtSignal(bool, float, str)
+    status_updated = pyqtSignal(bool, float, float, str)
     next_lessons_updated = pyqtSignal(list)
 
-    def __init__(self, provider: str, name: str):
+    def __init__(self, schedule_manager: ScheduleManager):
         super().__init__()
-        self.schedule_manager = ScheduleManager()
-        self.schedule_manager.switch_manager(provider, name)
+        self.schedule_manager = schedule_manager
         self._running = True
 
     def run(self):
         while self._running:
             status = self.schedule_manager.get_status()
             self.status_updated.emit(*status)
+            logger.debug(f"Status updated: {status}")
             next_lessons = self.schedule_manager.get_next_lessons()
+            logger.debug(f"Next lessons: {next_lessons}")
             self.next_lessons_updated.emit(next_lessons)
             self.msleep(500)  # 每500毫秒更新一次状态
 
@@ -410,12 +422,15 @@ class ScheduleThread(QThread):
         self._running = False
         self.wait()
 
+schedule_manager = ScheduleManager()
+schedule_thread = ScheduleThread(schedule_manager)
+
 
 if __name__ == '__main__':
-    thread_test = ScheduleThread('cw1pvd', '202501备份(1) @(半白bani_DeBug)254867116-backup.json')
+    thread_test = ScheduleThread(schedule_manager)
 
-    def print_status(is_break: bool, duration: float, lesson_name: str):
-        print(f"is_break: {is_break}, duration: {duration}, lesson_name: {lesson_name}")
+    def print_status(is_break: bool, duration: float, total_time: float, lesson_name: str):
+        print(f"is_break: {is_break}, duration: {duration}, total_time: {total_time}, lesson_name: {lesson_name}")
 
     def print_next_lessons(lessons: list):
         print(f"next_lessons: {lessons}")
