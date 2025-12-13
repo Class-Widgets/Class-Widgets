@@ -534,7 +534,13 @@ def get_countdown(toast: bool = False) -> Optional[Tuple[str, str, int]]:  # 重
                         seconds = time_diff.seconds
                         # return_text.append(int(100 - seconds / (int(item_time) * 60) * 100))
                         got_return_data = True
-                        return_text = (QCoreApplication.translate('main', '课间时长还有') if isbreak else QCoreApplication.translate('main', '当前活动结束还有'), f'{minute:02d}:{sec:02d}', int(100 - seconds / (int(item_time) * 60) * 100))
+                        return_text = (
+                            QCoreApplication.translate('main', '课间时长还有')
+                            if isbreak
+                            else QCoreApplication.translate('main', '当前活动结束还有'),
+                            f'{minute:02d}:{sec:02d}',
+                            int(100 - seconds / (int(item_time) * 60) * 100),
+                        )
             if not return_text:
                 return_text = (QCoreApplication.translate('main', '目前课程已结束'), '00:00', 100)
         else:
@@ -595,7 +601,7 @@ def get_next_lessons() -> None:
     if parts_start_time:
         get_part_data = get_part()
         if not get_part_data:
-            return None
+            return
         c_time, part = get_part_data
 
         def before_class():
@@ -644,7 +650,7 @@ def get_current_lesson_name() -> None:
     if parts_start_time:
         get_part_data = get_part()
         if not get_part_data:
-            return None
+            return
         c_time, part = get_part_data
 
         if current_dt >= c_time:
@@ -1137,7 +1143,9 @@ class WidgetsManager:
             if widget.animation is None:
                 widget.widget_transition(pos_x, width, height, op, pos_y)
 
-    def get_widget_pos(self, path: str, cnt: Optional[int] = None) -> Tuple[int, int]:  # 获取小组件位置
+    def get_widget_pos(
+        self, path: str, cnt: Optional[int] = None
+    ) -> Tuple[int, int]:  # 获取小组件位置
         num = self.widgets_list.index(path) if cnt is None else cnt
         self.get_start_pos()
         pos_x = self.start_pos_x + self.spacing * num
@@ -3264,7 +3272,8 @@ class DesktopWidget(QWidget):  # 主要小组件
             mgr.clear_widgets()
 
     def update_weather_data(
-        self, weather_data: Dict[str, Dict[str, Any]] # type: ignore
+        self,
+        weather_data: Dict[str, Dict[str, Any]],  # type: ignore
     ) -> None:  # 更新天气数据(已兼容多api)
         global weather_name, temperature, weather_data_temp
         if (
