@@ -2,14 +2,14 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from shutil import copy
 from typing import Dict, List, Optional, Tuple, Type
-from loguru import logger
 
+from loguru import logger
 from PyQt5.QtCore import QCoreApplication, QThread, pyqtSignal
 
 import conf
+import tip_toast
 import utils
 from basic_dirs import CW_HOME, SCHEDULE_DIR
-import tip_toast
 
 
 class ScheduleProvider(ABC):
@@ -43,7 +43,6 @@ class ScheduleProvider(ABC):
     @abstractmethod
     def get_idx(self) -> int:
         """Return the current lesson index. -1 if is in break."""
-        pass
 
     @abstractmethod
     def stop(self) -> None:
@@ -290,7 +289,7 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
 
         if not lessons_today:
             return True, -1.0, 0.0, ''
-        
+
         if idx >= len(lessons_today):
             # 已经没有课程了
             self._cache_lesson_index = idx
@@ -308,7 +307,12 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
                     return True, (next_start - current_time_in_seconds), 0.0, ''
                 return True, -1.0, 0.0, ''
             start, duration, names = lessons_today[idx]
-            return False, (start + duration - current_time_in_seconds), float(duration), '、'.join(names)
+            return (
+                False,
+                (start + duration - current_time_in_seconds),
+                float(duration),
+                '、'.join(names),
+            )
 
         # 优雅地向前或向后查找
         if current_time_in_seconds > cache_time_in_seconds:
@@ -324,7 +328,12 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
                 self._cache_status = True
                 return True, (start - current_time_in_seconds), float(duration), ''
             if current_time_in_seconds < start + duration:
-                return False, (start + duration - current_time_in_seconds), float(duration), '、'.join(names)
+                return (
+                    False,
+                    (start + duration - current_time_in_seconds),
+                    float(duration),
+                    '、'.join(names),
+                )
 
             # 查找下一节课
             idx += 1
@@ -363,7 +372,12 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
                     self._cache_lesson_index = idx - 1
                     self._cache_time = current_time
                     self._cache_status = False
-                    return False, (start + duration - current_time_in_seconds), float(duration), '、'.join(names)
+                    return (
+                        False,
+                        (start + duration - current_time_in_seconds),
+                        float(duration),
+                        '、'.join(names),
+                    )
                 break
             idx -= 1
         # 如果没找到，说明还没上课
@@ -422,16 +436,16 @@ class ScheduleManager:
     def get_status(self) -> Tuple[bool, float, float, str]:
         if not self.provider:
             return True, -1.0, 0.0, ''
-        status = self.provider.get_status()
-        return status
-    
+        return self.provider.get_status()
+
     def get_idx(self) -> int:
         if not self.provider:
             return -1
         return self.provider.get_idx()
-    
+
     def is_ready(self) -> bool:
         return self.provider is not None
+
 
 class ScheduleThread(QThread):
     status_updated = pyqtSignal(bool, float, float, str)
@@ -452,38 +466,40 @@ class ScheduleThread(QThread):
             next_lessons = self.schedule_manager.get_next_lessons()
             self.next_lessons_updated.emit(next_lessons)
             logger.debug(f"Next lessons: {next_lessons}")
-            
+
             idx = self.schedule_manager.get_idx()
             logger.debug(f"Current lesson index: {idx}")
             self.idx_updated.emit(idx)
-            
+
             self.msleep(500)  # 每500毫秒更新一次状态
 
     def stop(self):
         self._running = False
         self.wait()
 
+
 class NotificationManager:
     def __init__(self, schedule_thread: ScheduleThread):
-        self.idx:Optional[int] = None
-        self.current_lesson_name:Optional[str] = None
-        self.next_lessons:Optional[List[str]] = None
+        self.idx: Optional[int] = None
+        self.current_lesson_name: Optional[str] = None
+        self.next_lessons: Optional[List[str]] = None
         self.schedule_thread = schedule_thread
         schedule_thread.status_updated.connect(self.on_status_updated)
         schedule_thread.next_lessons_updated.connect(self.on_next_lessons_updated)
         schedule_thread.idx_updated.connect(self.update_idx)
 
-
-    def update_idx(self, idx:int) -> None:
+    def update_idx(self, idx: int) -> None:
         if self.idx is None:
             self.idx = idx
-            return 
+            return
         if idx != self.idx:
             # 发送通知
             self._provide_notification(idx)
         self.idx = idx
 
-    def on_status_updated(self, is_break: bool, duration: float, total_time: float, lesson_name: str) -> None:
+    def on_status_updated(
+        self, is_break: bool, duration: float, total_time: float, lesson_name: str
+    ) -> None:
         if is_break:
             self.current_lesson_name = ''
         else:
@@ -503,6 +519,7 @@ class NotificationManager:
         else:
             tip_toast.push_notification(1, self.current_lesson_name)
 
+
 schedule_manager = ScheduleManager()
 schedule_thread = ScheduleThread(schedule_manager)
 notification_manager = NotificationManager(schedule_thread)
@@ -511,7 +528,9 @@ if __name__ == '__main__':
     thread_test = ScheduleThread(schedule_manager)
 
     def print_status(is_break: bool, duration: float, total_time: float, lesson_name: str):
-        print(f"is_break: {is_break}, duration: {duration}, total_time: {total_time}, lesson_name: {lesson_name}")
+        print(
+            f"is_break: {is_break}, duration: {duration}, total_time: {total_time}, lesson_name: {lesson_name}"
+        )
 
     def print_next_lessons(lessons: list):
         print(f"next_lessons: {lessons}")

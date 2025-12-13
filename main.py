@@ -74,7 +74,6 @@ from qfluentwidgets import (
     Theme,
     isDarkTheme,
     setTheme,
-    setThemeColor,
 )
 from qfluentwidgets import FluentIcon as fIcon
 
@@ -99,11 +98,11 @@ from i18n_manager import app, global_i18n_manager
 from menu import open_plaza
 from network_thread import check_update, getCity
 from plugin import p_loader
+from schedule import schedule_manager, schedule_thread
 from tip_toast import active_windows
 from utils import DarkModeWatcher, TimeManagerFactory, restart, stop, update_timer
 from weather import WeatherReportThread as weatherReportThread
 from weather import weather_manager
-from schedule import schedule_manager, schedule_thread
 
 if os.name == 'nt':
     import pygetwindow
@@ -348,7 +347,8 @@ def check_fullscreen() -> bool:  # 检查是否全屏
         # logger.debug(f"覆盖屏幕: {is_covering_screen}, 窗口面积: {window_area}, 屏幕面积: {screen_area}, 是否全屏判断: {is_fullscreen}")
     return False
 
-def get_next_lessons_text(lessons:List[str]) -> str:
+
+def get_next_lessons_text(lessons: List[str]) -> str:
     MAX_DISPLAY_LENGTH = 16
     if not lessons:
         return QCoreApplication.translate('main', '暂无课程')
@@ -496,7 +496,6 @@ class PluginManager:  # 插件管理器
             "Widgets_Code": list_.widget_conf,  # 小组件列表
             # "Current_Lesson": current_lesson_name,  # 当前课程名
             # "State": current_state,  # 0：课间 1：上课（上下课状态）
-            
             # "Current_Part": get_part(),  # 返回开始时间、Part序号
             # "Next_Lessons_text": get_next_lessons_text(),  # 下节课程
             # "Next_Lessons": next_lessons,  # 下节课程
@@ -1248,25 +1247,29 @@ class FloatingWidget(QWidget):  # 浮窗
                 """
             )
 
-    def update_status(self, isbreak:bool, duration:float, total_time:float, current_lesson_name:str) -> None:
+    def update_status(
+        self, isbreak: bool, duration: float, total_time: float, current_lesson_name: str
+    ) -> None:
         if total_time <= 0 and duration <= 0:
             self.current_lesson_name_text.setText(self.tr("暂无课程"))
             self.activity_countdown.setText(self.tr("- 分钟"))
             self.countdown_progress_bar.setValue(100)
         else:
             if total_time <= 0:
-                total_time = 1e9+7
+                total_time = 1e9 + 7
             if isbreak:
                 self.current_lesson_name_text.setText(self.tr("课间"))
             else:
                 self.current_lesson_name_text.setText(current_lesson_name)
             if config_center.read_conf('General', 'blur_floating_countdown') == '1':
                 minutes_left = (duration + 59) // 60  # 向上取整分钟
-                self.activity_countdown.setText(self.tr("< {minutes} 分钟").format(minutes=int(minutes_left)))
+                self.activity_countdown.setText(
+                    self.tr("< {minutes} 分钟").format(minutes=int(minutes_left))
+                )
             else:
                 mins, secs = divmod(duration, 60)
                 self.activity_countdown.setText(f"{int(mins):02d}:{int(secs):02d}")
-            self.countdown_progress_bar.setValue(100-int((duration / total_time) * 100))
+            self.countdown_progress_bar.setValue(100 - int((duration / total_time) * 100))
 
     def update_data(self) -> None:
         time_color = QColor(f'#{config_center.read_conf("Color", "floating_time")}')
@@ -1281,7 +1284,7 @@ class FloatingWidget(QWidget):  # 浮窗
             )  # 设置窗口透明度
         else:
             self.setWindowOpacity(1.0)
-        _isbreak, duration, total_time, current_lesson_name = schedule_manager.get_status()
+        _isbreak, _duration, _total_time, current_lesson_name = schedule_manager.get_status()
         self.text_changed = False
         if self.current_lesson_name_text.text() != current_lesson_name:
             self.text_changed = True
@@ -2055,9 +2058,11 @@ class DesktopWidget(QWidget):  # 主要小组件
         if utils.focus_manager:
             utils.focus_manager.restore_requested.emit()
 
-    def update_status_for_current_activity(self, isbreak:bool, duration:float, total_time:float, lesson_name:str) -> None:
+    def update_status_for_current_activity(
+        self, isbreak: bool, duration: float, total_time: float, lesson_name: str
+    ) -> None:
         if isbreak:
-                self.current_subject.setText(QApplication.translate('main', '课间'))
+            self.current_subject.setText(QApplication.translate('main', '课间'))
         else:
             self.current_subject.setText(lesson_name)
 
@@ -2104,29 +2109,37 @@ class DesktopWidget(QWidget):  # 主要小组件
         self.blur_effect.setBlurRadius(25)
         self.blur_effect_label.setGraphicsEffect(self.blur_effect)
 
-    def update_status_for_countdown(self, isbreak:bool, duration:float, total_time:float, lesson_name:str) -> None:
+    def update_status_for_countdown(
+        self, isbreak: bool, duration: float, total_time: float, lesson_name: str
+    ) -> None:
         if total_time <= 0 and duration <= 0:
             self.ac_title.setText(self.tr("暂无课程"))
             self.activity_countdown.setText(self.tr("- 分钟"))
             self.countdown_progress_bar.setValue(100)
         else:
             if total_time <= 0:
-                total_time = 1e9+7
-            self.ac_title.setText(QCoreApplication.translate('main', '课间时长还有') if isbreak else QCoreApplication.translate('main', '当前活动结束还有'))
+                total_time = 1e9 + 7
+            self.ac_title.setText(
+                QCoreApplication.translate('main', '课间时长还有')
+                if isbreak
+                else QCoreApplication.translate('main', '当前活动结束还有')
+            )
             if config_center.read_conf('General', 'blur_countdown') == '1':
                 minutes_left = (duration + 59) // 60  # 向上取整分钟
-                self.activity_countdown.setText(self.tr("< {minutes} 分钟").format(minutes=int(minutes_left)))
+                self.activity_countdown.setText(
+                    self.tr("< {minutes} 分钟").format(minutes=int(minutes_left))
+                )
             else:
                 mins, secs = divmod(duration, 60)
                 self.activity_countdown.setText(f"{int(mins):02d}:{int(secs):02d}")
-            self.countdown_progress_bar.setValue(100-int((duration / total_time) * 100))
+            self.countdown_progress_bar.setValue(100 - int((duration / total_time) * 100))
 
-    def update_next_lessons_for_next_activity(self, lessons:List[str]) -> None:
+    def update_next_lessons_for_next_activity(self, lessons: List[str]) -> None:
         self.nl_text.setText(get_next_lessons_text(lessons))
 
     def update_data(self, path: str = '') -> None:
         global current_time, current_week, start_y, today
-        isbreak, duration, total_time, lesson_name= schedule_manager.get_status()
+        isbreak, _duration, _total_time, _lesson_name = schedule_manager.get_status()
 
         today = TimeManagerFactory.get_instance().get_today()
         current_time = TimeManagerFactory.get_instance().get_current_time_str('%H:%M:%S')
@@ -3596,7 +3609,6 @@ if __name__ == '__main__':
     schedule_manager.switch_manager('cw1pvd', config_center.read_conf('General', 'schedule'))
 
     schedule_thread.start()
-
 
     status = app.exec()
 
