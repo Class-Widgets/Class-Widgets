@@ -702,7 +702,7 @@ class PluginPlaza(MSFluentWindow):
         time_today_label = self.homeInterface.findChild(TitleLabel, 'time_today_label')
         time_today_label.setText(
             self.tr("{month}月{day}日 {weekday}").format(
-                month=l.month[datetime.now().month],
+                month=l.month[datetime.now().month - 1],
                 day=datetime.now().day,
                 weekday=l.week[datetime.now().weekday()],
             )

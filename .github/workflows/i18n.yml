@@ -48,7 +48,7 @@ jobs:
           fi
 
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 2
 
@@ -112,7 +112,7 @@ jobs:
       contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
@@ -124,7 +124,7 @@ jobs:
           git rebase origin/${{ github.ref_name }}
 
       - name: Set up Python & uv
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@v7
         with:
           python-version: "3.11"
           activate-environment: true
@@ -195,7 +195,7 @@ jobs:
           git_commit_gpgsign: true
 
       - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v6
+        uses: stefanzweifel/git-auto-commit-action@v7
         continue-on-error: true
         with:
           commit_message: |
@@ -223,7 +223,7 @@ jobs:
       contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
@@ -235,7 +235,7 @@ jobs:
           git rebase origin/${{ github.ref_name }}
 
       - name: Set up Python & uv
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@v7
         with:
           python-version: "3.11"
           activate-environment: true
@@ -288,7 +288,7 @@ jobs:
           git_commit_gpgsign: true
 
       - name: Commit compiled and config files
-        uses: stefanzweifel/git-auto-commit-action@v6
+        uses: stefanzweifel/git-auto-commit-action@v7
         continue-on-error: true
         with:
           commit_message: |

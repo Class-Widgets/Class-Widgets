@@ -35,6 +35,7 @@ from PyQt5.QtGui import (
     QDesktopServices,
     QFocusEvent,
     QFontDatabase,
+    QFontMetrics,
     QHideEvent,
     QIcon,
     QMouseEvent,
@@ -121,6 +122,8 @@ notification = tip_toast
 excluded_lessons = []
 last_notify_time = None
 notify_cooldown = 2  # 2秒内仅能触发一次通知(防止触发114514个通知导致爆炸
+sent_notifications = {}  # 格式: {notification_key: timestamp}
+notification_dedup_timeout = 10  # 通知去重超时时间(秒)
 
 temperature = QCoreApplication.translate("main", '未设置')
 weather_icon = 0
@@ -2760,50 +2763,77 @@ class DesktopWidget(QWidget):  # 主要小组件
         reminder = self.current_reminders[self.current_reminder_index]
         # 提醒文本
         self.weather_reminder_text.setText(reminder['title'])
-        # 调整字号
-        char_count = len(reminder['title'])
-        if char_count <= 5:
-            font_size = 14
-        elif char_count <= 10:
-            font_size = 13
-        elif char_count <= 12:
-            font_size = 12
-        else:
-            font_size = 11
-        font = self.weather_reminder_text.font()
-        font.setPointSize(font_size)
-        self.weather_reminder_text.setFont(font)
+        self._optimize_reminder_font_and_layout(reminder['title'], reminder.get('icon'))
 
-        # 设置图标, 布局
+    def _optimize_reminder_font_and_layout(
+        self, text: str, icon_name: Optional[str] = None
+    ) -> None:
+        """优化字体布局"""
         content_layout = self.findChild(QHBoxLayout, 'horizontalLayout_2')
-        if char_count <= 6:
-            if content_layout.indexOf(self.reminder_icon) == -1:
+        if not content_layout:
+            return
+        total_width = 145
+        icon_width = 26 if icon_name else 0  # 图标宽度
+        spacing = 3 if icon_name else 0  # 图标与文本间距
+        available_text_width = total_width - icon_width - spacing
+        show_icon = self._should_show_reminder_icon(text, icon_name)
+        optimal_font_size = self._calculate_optimal_font_size(text, available_text_width)
+        font = self.weather_reminder_text.font()
+        font.setPointSize(optimal_font_size)
+        self.weather_reminder_text.setFont(font)
+        self._manage_reminder_icon_display(show_icon, icon_name, content_layout)
+        if show_icon:
+            self.weather_reminder_text.setFixedWidth(available_text_width)
+        else:
+            self.weather_reminder_text.setFixedWidth(total_width)
+
+    def _should_show_reminder_icon(self, text: str, icon_name: Optional[str] = None) -> bool:
+        """判断是否应该显示提醒图标"""
+        if not icon_name:
+            return False
+        icon_path = CW_HOME / "img/weather/reminders" / f"{icon_name}.svg"
+        if not icon_path.exists():
+            return False
+        char_count = len(text)
+        return char_count <= 10
+
+    def _calculate_optimal_font_size(self, text: str, available_width: int) -> int:
+        """计算字体大小"""
+        min_font_size = 10
+        max_font_size = 14
+        widget_width = available_width
+        for font_size in range(max_font_size, min_font_size - 1, -1):
+            test_font = self.weather_reminder_text.font()
+            test_font.setPointSize(font_size)
+            metrics = QFontMetrics(test_font)
+            text_width = metrics.horizontalAdvance(text)
+            if text_width <= widget_width:
+                return font_size
+        return min_font_size
+
+    def _manage_reminder_icon_display(
+        self, show_icon: bool, icon_name: str, content_layout: QHBoxLayout
+    ) -> None:
+        """管理图标显示/隐藏"""
+        icon_in_layout = content_layout.indexOf(self.reminder_icon) != -1
+        if show_icon and icon_name:
+            if not icon_in_layout:
                 text_index = content_layout.indexOf(self.weather_reminder_text)
                 if text_index != -1:
                     content_layout.insertWidget(text_index, self.reminder_icon)
                 else:
                     content_layout.addWidget(self.reminder_icon)
             try:
-                icon_path = CW_HOME / "img/weather/reminders" / f"{reminder['icon']}.svg"
-                if icon_path.exists():
-                    self.reminder_icon.setIcon(str(icon_path))
-                    self.reminder_icon.show()
-                else:
-                    logger.warning(f'天气提醒图标不存在: {icon_path}')
-                    self.reminder_icon.hide()
+                icon_path = CW_HOME / "img/weather/reminders" / f"{icon_name}.svg"
+                self.reminder_icon.setIcon(str(icon_path))
+                self.reminder_icon.show()
             except Exception as e:
                 logger.warning(f'设置天气提醒图标失败: {e}')
                 self.reminder_icon.hide()
-
-            if char_count == 6:
-                self.weather_reminder_text.setFixedWidth(102)
-            else:
-                self.weather_reminder_text.setFixedWidth(96)
         else:
-            if content_layout.indexOf(self.reminder_icon) != -1:
+            if icon_in_layout:
                 content_layout.removeWidget(self.reminder_icon)
-                self.reminder_icon.hide()
-            self.weather_reminder_text.setFixedWidth(138)
+            self.reminder_icon.hide()
 
     def detect_theme_changed(self) -> None:
         theme_ = config_center.read_conf('General', 'theme')
@@ -3312,6 +3342,9 @@ def init() -> None:
     update_timer.remove_all_callbacks()
     if utils.focus_manager:
         utils.focus_manager.update_callback()
+
+    if dark_mode_watcher:
+        dark_mode_watcher.update_callback()
 
     global_i18n_manager.scan_available_languages()
 

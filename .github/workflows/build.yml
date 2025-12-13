@@ -151,7 +151,7 @@ jobs:
       is_signing: ${{ steps.build-info.outputs.is_signing }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 2
 
@@ -321,6 +321,7 @@ jobs:
       BUILD_BRANCH: ${{ needs.prepare.outputs.build_branch }}
       BUILD_RUNID: ${{ needs.prepare.outputs.build_runid }}
       RELEASE_VERSION: ${{ needs.prepare.outputs.release_version }}
+      IS_SIGNING: ${{ needs.prepare.outputs.is_signing }}
     steps:
       - name: Cache dependencies (Linux)
         if: matrix.platform == 'linux-x64'
@@ -346,7 +347,7 @@ jobs:
           apt-get clean && rm -rf /var/lib/apt/lists/*
 
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Install gettext (macOS)
         if: startsWith(matrix.os, 'macos')
@@ -365,7 +366,7 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.arch }}-python${{ env.PYTHON_VERSION }}
 
       - name: Setup Python & uv
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@v7
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           activate-environment: true
@@ -451,8 +452,8 @@ jobs:
           export PATH="$HOME/.local/bin:$PATH" || true
           echo "::group::Python-Version"
           echo "[DEBUG] uvx-python: $(uvx python --version) | system-python: $(python --version)" || true
-          echo "[DEBUG] 已安装的Python:"
-          uv python list --only-installed || true
+          # echo "[DEBUG] 已安装的Python:"
+          # uv python list --only-installed || true
           echo "::endgroup::"
 
       - name: Cache Python dependencies
@@ -469,7 +470,6 @@ jobs:
         shell: bash
         run: |
           uv sync --group package --no-dev
-          uv pip install cffi ply --upgrade
           uv pip list --outdated
 
       - name: Prepare output directory
@@ -584,166 +584,85 @@ jobs:
           cd dist && mv ClassWidgets "${zip_name}" && zip -r -q "../packages/${zip_name}.zip" "${zip_name}"/* && cd ..
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ${{ matrix.platform }}-build
           path: ./packages
 
-  sign:
-    needs: [prepare, build]
-    if: needs.prepare.outputs.is_signing == 'true' && needs.build.result == 'success' && needs.prepare.outputs.skip_ci != 'true'
-    runs-on: windows-latest
-    strategy:
-      matrix:
-        arch: [x64, x86]
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
+      - name: Prepare file for signing (Windows)
+        if: startsWith(matrix.os, 'windows') && env.IS_SIGNING == 'true'
+        shell: pwsh
+        run: |
+          $zip = Get-ChildItem -Path ./packages -Filter "*.zip" | Select-Object -First 1
+          if ($null -eq $zip) { Write-Error "未找到构建 ZIP"; exit 1 }
+          New-Item -ItemType Directory -Path ./sign-work -Force | Out-Null
+          Expand-Archive -Path $zip.FullName -DestinationPath ./sign-work -Force
+          $top = Get-ChildItem -Path ./sign-work | Where-Object {$_.PSIsContainer} | Select-Object -First 1
+          if ($null -eq $top) { Write-Error "ZIP 内容异常"; exit 1 }
+          New-Item -ItemType Directory -Path ./exe-for-signing -Force | Out-Null
+          $exe = Get-ChildItem -Path $top.FullName -Filter "ClassWidgets.exe" -Recurse | Select-Object -First 1
+          if ($null -eq $exe) { Write-Error "未找到待签名的 ClassWidgets.exe"; exit 1 }
+          Copy-Item $exe.FullName -Destination "./exe-for-signing/ClassWidgets.exe" -Force
 
-      - name: Sign Windows executable
-        id: sign_exe
-        uses: ./.github/workflows/sign.yml
+      - name: Upload unsigned artifact (Windows)
+        if: startsWith(matrix.os, 'windows') && env.IS_SIGNING == 'true'
+        id: upload_unsigned
+        uses: actions/upload-artifact@v5
         with:
-          manifest_artifact: windows-${{ matrix.arch }}-build
-          executable_name: ClassWidgets.exe
+          name: windows-${{ matrix.arch }}-exe-unsigned
+          path: ./exe-for-signing
 
-      - name: Download signed executable
-        if: inputs.is_signing == true && steps.sign_exe.outputs.signed_executable_artifact != ''
-        uses: actions/download-artifact@v5
+      - name: Submit signing request (Windows)
+        if: startsWith(matrix.os, 'windows') && env.IS_SIGNING == 'true'
+        id: submit_sign
+        uses: signpath/github-action-submit-signing-request@v2
         with:
-          name: ${{ steps.sign_exe.outputs.signed_executable_artifact }}
-          path: ./signed-exe
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: 2e13633d-4e7d-4462-9091-27536751c84c
+          project-slug: Class-Widgets.git
+          signing-policy-slug: release-signing
+          github-artifact-id: ${{ steps.upload_unsigned.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: ./signed-output
+
+      - name: Extract original build ZIP to dist (Windows)
+        if: startsWith(matrix.os, 'windows') && env.IS_SIGNING == 'true'
+        shell: pwsh
+        run: |
+          $zip = Get-ChildItem -Path ./packages -Filter "*.zip" | Select-Object -First 1
+          if ($null -eq $zip) { Write-Error "未找到构建 ZIP"; exit 1 }
+          New-Item -ItemType Directory -Path ./workdir -Force | Out-Null
+          Expand-Archive -Path $zip.FullName -DestinationPath ./workdir -Force
+          $top = Get-ChildItem -Path ./workdir | Where-Object {$_.PSIsContainer} | Select-Object -First 1
+          if ($null -eq $top) { Write-Error "ZIP 内容异常"; exit 1 }
+          New-Item -ItemType Directory -Path ./dist/ClassWidgets -Force | Out-Null
+          Copy-Item -Path (Join-Path $top.FullName '*') -Destination ./dist/ClassWidgets -Recurse -Force
 
       - name: Replace executable with signed version
-        if: inputs.is_signing == true && steps.sign_exe.outputs.signed_executable_artifact != ''
-        shell: bash
+        if: startsWith(matrix.os, 'windows') && env.IS_SIGNING == 'true'
+        shell: pwsh
         run: |
-          if [[ -f "./signed-exe/ClassWidgets.exe" ]]; then
-            cp "./signed-exe/ClassWidgets.exe" "dist/ClassWidgets/ClassWidgets.exe"
-            echo "[DEBUG] 已签名可执行文件替换成功"
-          else
-            echo "[ERROR] 未找到已签名的可执行文件"
-            exit 1
-          fi
+          if (Test-Path "./signed-output/ClassWidgets.exe") {
+            New-Item -ItemType Directory -Path ./dist/ClassWidgets -Force | Out-Null
+            Copy-Item "./signed-output/ClassWidgets.exe" "dist/ClassWidgets/ClassWidgets.exe" -Force
+          } else { Write-Error "未找到已签名的可执行文件"; exit 1 }
 
-      - name: Update WiX Version and ProductCode
-        if: needs.prepare.outputs.build_type == 'Release'
-        shell: bash
+      - name: Create signed build package (Windows)
+        if: startsWith(matrix.os, 'windows') && env.IS_SIGNING == 'true'
+        shell: pwsh
         run: |
-          VERSION="${{ needs.prepare.outputs.release_version }}"
-          if [[ -z "$VERSION" ]]; then
-            VERSION="1.0.0.0"
-          fi
-          PRODUCT_CODE=$(echo -n "$VERSION" | md5sum | awk '{print $1}')
-          PRODUCT_CODE="${PRODUCT_CODE:0:8}-${PRODUCT_CODE:8:4}-${PRODUCT_CODE:12:4}-${PRODUCT_CODE:16:4}-${PRODUCT_CODE:20:12}"
-          sed -i "0,/<Product/ s/Id=\"[^\"]*\"/Id=\"$PRODUCT_CODE\"/" installer/ClassWidgets.wxs
-          sed -i "s/Version=\"[^\"]*\"/Version=\"$VERSION\"/g" installer/ClassWidgets.wxs
-          echo "[DEBUG] Updated WiX version to: $VERSION"
-          echo "[DEBUG] Updated ProductCode to: $PRODUCT_CODE"
+          Compress-Archive -Path "dist/ClassWidgets/*" -DestinationPath "packages/ClassWidgets-Windows-${{ matrix.arch }}-signed.zip" -Force
 
-      - name: Build Windows MSI
-        id: build_msi
-        if: needs.prepare.outputs.build_type == 'Release'
-        uses: utilitywarehouse/ghaction-wix@main
-        with:
-          wix-project-file: installer/ClassWidgets.wxs
-          wix-project-directory: dist/ClassWidgets
-          output-directory: packages
-          output-name: ClassWidgets-Windows-${{ matrix.arch }}.msi
-
-      - name: Upload MSI for signing
-        id: upload_msi
-        if: needs.prepare.outputs.build_type == 'Release'
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows-${{ matrix.arch }}-msi-unsigned
-          path: packages/ClassWidgets-Windows-${{ matrix.arch }}.msi
-
-      - name: Sign Windows MSI
-        id: sign_msi
-        if: needs.prepare.outputs.build_type == 'Release'
-        uses: ./.github/workflows/sign.yml
-        with:
-          manifest_artifact: windows-${{ matrix.arch }}-msi-unsigned
-          executable_name: ClassWidgets-Windows-${{ matrix.arch }}.msi
-
-      - name: Upload signed executable
-        if: inputs.is_signing == true && steps.sign_exe.outputs.signed_executable_artifact != ''
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows-${{ matrix.arch }}-exe-signed
-          path: ./signed-exe
-
-      - name: Create signed build package
-        if: inputs.is_signing == true && steps.sign_exe.outputs.signed_executable_artifact != ''
-        shell: bash
-        run: |
-          echo "[DEBUG] 创建签名版本的完整 build 包"
-          mkdir -p signed-build-temp
-          cp -r dist/ClassWidgets/* signed-build-temp/
-          cd signed-build-temp
-          zip -r "../packages/ClassWidgets-Windows-${{ matrix.arch }}-signed.zip" .
-          cd ..
-
-      - name: Upload signed build package
-        if: inputs.is_signing == true && steps.sign_exe.outputs.signed_executable_artifact != ''
-        uses: actions/upload-artifact@v4
+      - name: Upload signed build package (Windows)
+        if: startsWith(matrix.os, 'windows') && env.IS_SIGNING == 'true'
+        uses: actions/upload-artifact@v5
         with:
           name: windows-${{ matrix.arch }}-build-signed
           path: packages/ClassWidgets-Windows-${{ matrix.arch }}-signed.zip
 
-      - name: Upload signed MSI
-        if: inputs.is_signing == true && needs.prepare.outputs.build_type == 'Release' && steps.sign_msi.outputs.signed_executable_artifact != ''
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows-${{ matrix.arch }}-msi-signed
-          path: ./signed-msi
-
-      - name: Organize final packages
-        shell: bash
-        run: |
-          mkdir -p final-signed-packages
-          echo "[DEBUG] 组织最终签名包"
-          if [[ -f "packages/ClassWidgets-Windows-${{ matrix.arch }}.zip" ]]; then
-            if [[ "${{ steps.sign_exe.outputs.signed_executable_artifact }}" != "" ]]; then
-              echo "[DEBUG] 使用已签名可执行文件重新打包 ZIP"
-              cd dist/ClassWidgets
-              zip -r "../../final-signed-packages/ClassWidgets-Windows-${{ matrix.arch }}.zip" .
-              cd ../..
-            fi
-          fi
-          echo "[DEBUG] 最终包列表:"
-          ls -la final-signed-packages/ || echo "无最终包文件"
-
-      - name: Download signed MSI
-        if: needs.prepare.outputs.build_type == 'Release' && steps.sign_msi.outputs.signed_executable_artifact != ''
-        uses: actions/download-artifact@v5
-        with:
-          name: ${{ steps.sign_msi.outputs.signed_executable_artifact }}
-          path: ./signed-msi
-
-      - name: Add signed MSI to final packages
-        if: needs.prepare.outputs.build_type == 'Release' && steps.sign_msi.outputs.signed_executable_artifact != ''
-        shell: bash
-        run: |
-          if [[ -f "./signed-msi/ClassWidgets-Windows-${{ matrix.arch }}.msi" ]]; then
-            cp "./signed-msi/ClassWidgets-Windows-${{ matrix.arch }}.msi" "final-signed-packages/"
-            echo "[DEBUG] 已签名 MSI 添加到最终包: $(ls -la final-signed-packages/*.msi)"
-          else
-            echo "[ERROR] 未找到已签名的 MSI 文件"
-          fi
-
-      - name: Upload signed packages
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows-${{ matrix.arch }}-signed
-          path: final-signed-packages
-
   package:
-    needs: [prepare, build, sign]
-    if: always() && (needs.build.result == 'success') && (needs.sign.result == 'success' || needs.sign.result == 'skipped') && (needs.prepare.outputs.build_type== 'Release' || needs.prepare.outputs.build_type== 'Nightly') && needs.prepare.outputs.skip_ci != 'true'
+    needs: [prepare, build]
+    if: always() && (needs.build.result == 'success') && (needs.prepare.outputs.build_type== 'Release' || needs.prepare.outputs.build_type== 'Nightly') && needs.prepare.outputs.skip_ci != 'true'
     runs-on: ubuntu-latest
     outputs:
       package-count: ${{ steps.organize.outputs.package-count }}
@@ -753,7 +672,7 @@ jobs:
       BUILD_TYPE: ${{ needs.prepare.outputs.build_type }}
     steps:
       - name: Download all build artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           path: ./all-artifacts
 
@@ -806,8 +725,6 @@ jobs:
             if [[ "$platform_type" == "windows" ]]; then
               # Windows 平台：优先使用签名版本
               build_signed_key="${platform}-build-signed"
-              exe_signed_key="${platform}-exe-signed"
-              msi_signed_key="${platform}-msi-signed"
               build_key="${platform}-build"
               # 处理 ZIP 包（优先签名版本）
               if [[ -n "${artifact_cache[$build_signed_key]:-}" ]]; then
@@ -828,19 +745,6 @@ jobs:
                     break
                   fi
                 done
-              fi
-              # 处理 MSI 包（仅签名版本）
-              if [[ -n "${artifact_cache[$msi_signed_key]:-}" ]]; then
-                echo "[DEBUG] 使用 ${platform} 签名版本 MSI"
-                for msi_file in "${artifact_cache[$msi_signed_key]}"/*.msi; do
-                  if [[ -f "$msi_file" ]]; then
-                    target_name="ClassWidgets-Windows-${platform#windows-}_${run_id}.msi"
-                    process_file "$msi_file" "$target_name" "$platform" "已签名MSI"
-                    break
-                  fi
-                done
-              else
-                echo "[DEBUG] ${platform} 跳过未签名的 MSI 文件"
               fi
             else
               # 非 Windows 平台：使用构建版本
@@ -873,6 +777,7 @@ jobs:
           fi
 
       - name: Generate package provenance
+        if: env.BUILD_TYPE == 'Release'
         uses: actions/attest-build-provenance@v3
         id: generate-provenance
         with:
@@ -896,7 +801,7 @@ jobs:
             echo "|--------|----------|-----|"
           } > final-packages/file-info.md
           shopt -s nullglob
-          files=(final-packages/*.zip final-packages/*.msi)
+          files=(final-packages/*.zip)
           if [ ${#files[@]} -eq 0 ]; then
             echo "未找到任何包文件" >> final-packages/file-info.md
           else
@@ -914,15 +819,28 @@ jobs:
           echo "</div>" >> final-packages/file-info.md
           echo "" >> final-packages/file-info.md
           cat final-packages/file-info.md >> $GITHUB_STEP_SUMMARY
-          cp -af "${{ steps.generate-provenance.outputs.bundle-path }}" final-packages/file_provenance.json
+          BUNDLE_PATH="${{ steps.generate-provenance.outputs.bundle-path }}"
+          if [ -n "$BUNDLE_PATH" ] && [ -f "$BUNDLE_PATH" ]; then
+            cp -af "$BUNDLE_PATH" final-packages/file_provenance.json
+            echo "[DEBUG] 已生成并收集证明文件: $BUNDLE_PATH"
+          fi
           echo "[DEBUG] 最终包列表:"
           ls -la final-packages/ || true
 
       - name: Upload final packages
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ClassWidgets-Packages
           path: final-packages
+
+      - name: Upload provenance artifacts
+        if: ${{ env.BUILD_TYPE == 'Release' && steps.generate-provenance.outputs.bundle-path != '' }}
+        uses: actions/upload-artifact@v5
+        with:
+          name: provenance
+          path: |
+            provenance/*
+            ${{ steps.generate-provenance.outputs.bundle-path }}
 
   publish:
     name: Publish

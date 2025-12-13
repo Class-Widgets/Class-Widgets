@@ -227,7 +227,8 @@ class DarkModeWatcher(QObject):
     def __init__(self, interval: int = 500, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
         self._isDarkMode: bool = bool(darkdetect.isDark())  # 初始状态
-        self._callback_id = update_timer.add_callback(self._check_theme, interval=interval / 1000)
+        self.interval = interval
+        self.update_callback()
 
     def _check_theme(self) -> None:
         current_mode: bool = bool(darkdetect.isDark())
@@ -239,16 +240,21 @@ class DarkModeWatcher(QObject):
         """返回当前是否暗黑模式"""
         return self._isDarkMode
 
+    def update_callback(self) -> None:
+        self._callback_id = update_timer.add_callback(
+            self._check_theme, interval=self.interval / 1000
+        )
+
     def stop(self) -> None:
         """停止监听"""
         if hasattr(self, '_callback_id') and self._callback_id:
-            update_timer.remove_callback(self._callback_id)
+            update_timer.remove_callback_by_id(self._callback_id)
             self._callback_id = None
 
     def start(self, interval: Optional[int] = None) -> None:
         """开始监听"""
         if hasattr(self, '_callback_id') and self._callback_id:
-            update_timer.remove_callback(self._callback_id)
+            update_timer.remove_callback_by_id(self._callback_id)
         interval_seconds = (interval / 1000) if interval else 0.5  # 默认0.5秒
         self._callback_id = update_timer.add_callback(self._check_theme, interval=interval_seconds)
 
@@ -306,6 +312,7 @@ class UnionUpdateTimer(QObject):
         self._is_running: bool = False
         self._base_interval: float = max(0.01, base_interval)  # 基础间隔,最小10ms
         self._next_check_time: Optional[dt.datetime] = None  # 下次检查时间
+        self._last_current_time: Optional[dt.datetime] = None  # 上次记录的当前时间
 
     def _on_timeout(self) -> None:
         app = QApplication.instance()
@@ -318,6 +325,15 @@ class UnionUpdateTimer(QObject):
         except Exception as e:
             logger.error(f"获取当前时间失败: {e}")
             raise RuntimeError("无法获得当前时间") from e
+
+        # 检测时间跳跃
+        if self._last_current_time is not None:
+            time_diff = (current_time - self._last_current_time).total_seconds()
+            if abs(time_diff) > 2:
+                logger.info(f"检测到时间跳跃: {time_diff:.2f}秒，重新调度所有任务")
+                self._reschedule_all_tasks(current_time)
+
+        self._last_current_time = current_time
 
         if not self.task_heap:
             self._is_running = False
@@ -348,15 +364,35 @@ class UnionUpdateTimer(QObject):
                     self._cleanup_dead_callback(cb_id)
                     continue
             # 重新调度回调
-            self.callback_info[cb_id]['last_run'] = current_time
-            next_time = current_time + dt.timedelta(seconds=interval)
-            self.callback_info[cb_id]['next_run'] = next_time
-            heappush(self.task_heap, (next_time, cb_id, actual_callback, interval))
+            if cb_id in self.callback_info:
+                self.callback_info[cb_id]['last_run'] = current_time
+            # else:
+            #     logger.debug(f"try push {cb_id} cancelled")
+            if cb_id in self.callback_info:
+                next_time = current_time + dt.timedelta(seconds=interval)
+                self.callback_info[cb_id]['next_run'] = next_time
+                heappush(self.task_heap, (next_time, cb_id, actual_callback, interval))
+            # else:
+            #     logger.debug(f"try push {cb_id} cancelled")
         # if executed_count > 0:
         #     logger.debug(f"执行了 {executed_count} 个回调")
 
         if self._is_running:
             self._schedule_next()
+
+    def _reschedule_all_tasks(self, current_time: dt.datetime) -> None:
+        """重新调度所有任务，用于处理时间跳跃"""
+        new_heap = []
+        for _next_run_time, cb_id, callback, interval in self.task_heap:
+            # 重新计算下次执行时间
+            new_next_time = current_time + dt.timedelta(seconds=interval)
+            new_heap.append((new_next_time, cb_id, callback, interval))
+            # 更新回调信息
+            if cb_id in self.callback_info:
+                self.callback_info[cb_id]['next_run'] = new_next_time
+
+        self.task_heap = new_heap
+        heapify(self.task_heap)
 
     def _schedule_next(self) -> None:
         """调度器"""
@@ -370,6 +406,17 @@ class UnionUpdateTimer(QObject):
             raise RuntimeError("无法获得当前时间") from e
         next_task_time = self.task_heap[0][0]
         delay_seconds = (next_task_time - current_time).total_seconds()
+
+        # 处理时间异常情况 - 如果延迟时间异常，可能是时间跳跃
+        if abs(delay_seconds) > 2:  # 如果延迟时间超过±2秒，重新调度
+            logger.warning(f"检测到异常延迟时间: {delay_seconds:.2f}秒，重新调度任务")
+            self._reschedule_all_tasks(current_time)
+            if self.task_heap:
+                next_task_time = self.task_heap[0][0]
+                delay_seconds = (next_task_time - current_time).total_seconds()
+            else:
+                return
+
         if delay_seconds <= 0:
             delay_ms = 1  # 立即执行已到期任务
         elif delay_seconds > 60.0:
@@ -395,6 +442,7 @@ class UnionUpdateTimer(QObject):
 
     def _cleanup_dead_callback(self, cb_id: int) -> None:
         """清理失效的回调函数"""
+        # logger.debug(f"cleanup {cb_id}")
         self.callback_info.pop(cb_id, None)
         self._callback_refs.pop(cb_id, None)
         self._callback_hashes.pop(cb_id, None)
@@ -460,6 +508,7 @@ class UnionUpdateTimer(QObject):
         should_start = not self._is_running
         if should_start:
             self.start()
+        # logger.debug(f"add {cb_id}")
         return cb_id
 
     def remove_callback(self, callback: Callable[[], Any]) -> None:
@@ -491,6 +540,7 @@ class UnionUpdateTimer(QObject):
 
     def remove_all_callbacks(self) -> None:
         """移除所有已注册的回调函数"""
+        # logger.debug("remove_all_callbacks")
         self.callback_info.clear()
         self._callback_refs.clear()
         self._callback_hashes.clear()
