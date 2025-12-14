@@ -1250,13 +1250,11 @@ class FloatingWidget(QWidget):  # 浮窗
     def update_status(
         self, isbreak: bool, duration: float, total_time: float, current_lesson_name: str
     ) -> None:
-        if total_time <= 0 and duration <= 0:
+        if isbreak and total_time == 0 and duration == 0:
             self.current_lesson_name_text.setText(self.tr("暂无课程"))
             self.activity_countdown.setText(self.tr("- 分钟"))
             self.countdown_progress_bar.setValue(100)
         else:
-            if total_time <= 0:
-                total_time = 1e9 + 7
             if isbreak:
                 self.current_lesson_name_text.setText(self.tr("课间"))
             else:
@@ -2061,7 +2059,9 @@ class DesktopWidget(QWidget):  # 主要小组件
     def update_status_for_current_activity(
         self, isbreak: bool, duration: float, total_time: float, lesson_name: str
     ) -> None:
-        if isbreak:
+        if isbreak and total_time == 0 and duration == 0:
+            self.current_subject.setText(self.tr("暂无课程"))
+        elif isbreak:
             self.current_subject.setText(QApplication.translate('main', '课间'))
         else:
             self.current_subject.setText(lesson_name)
@@ -2112,15 +2112,13 @@ class DesktopWidget(QWidget):  # 主要小组件
     def update_status_for_countdown(
         self, isbreak: bool, duration: float, total_time: float, lesson_name: str
     ) -> None:
-        if total_time <= 0 and duration <= 0:
+        if isbreak and total_time == 0 and duration == 0:
             self.ac_title.setText(self.tr("暂无课程"))
             self.activity_countdown.setText(self.tr("- 分钟"))
             self.countdown_progress_bar.setValue(100)
         else:
-            if total_time <= 0:
-                total_time = 1e9 + 7
             self.ac_title.setText(
-                QCoreApplication.translate('main', '课间时长还有')
+                QCoreApplication.translate('main', '距离活动开始还有')
                 if isbreak
                 else QCoreApplication.translate('main', '当前活动结束还有')
             )
