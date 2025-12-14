@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
 from shutil import copy
-from typing import Dict, List, Optional, Tuple, Type, Set
+from typing import Dict, List, Optional, Set, Tuple, Type
 
 from loguru import logger
 from PyQt5.QtCore import QCoreApplication, QThread, pyqtSignal
@@ -205,10 +205,9 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
 
         # 使用短时缓存避免每次调用都做较重的计算
         now_ts = _time.time()
-        if (
-            self._find_cache_result is not None
-            and now_ts - getattr(self, "_find_cache_ts", 0.0) < getattr(self, "_find_cache_ttl", 0.0)
-        ):
+        if self._find_cache_result is not None and now_ts - getattr(
+            self, "_find_cache_ts", 0.0
+        ) < getattr(self, "_find_cache_ttl", 0.0):
             return self._find_cache_result
 
         current_time = self.time_manager.get_current_time()
@@ -253,10 +252,7 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
         if not lessons_today:
             return []
         # 不返回当前正在进行的课程（如果正在上课，则从下一节开始）
-        if not self._cache_status:
-            start = idx + 1
-        else:
-            start = idx
+        start = idx + 1 if not self._cache_status else idx
         if start < len(lessons_today):
             return [x for lesson in lessons_today[start:] for x in lesson[2]]
         return []
@@ -275,8 +271,8 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
                 float(duration),
                 '、'.join(names),
             )
-        # 处于课间或无课：返回 (is_break=True, 课间总时长或特殊值, 到下一节开始所剩时间, '')
-        # 所有课程未开始（在第一节之前）
+            # 处于课间或无课：返回 (is_break=True, 课间总时长或特殊值, 到下一节开始所剩时间, '')
+            # 所有课程未开始（在第一节之前）
             if idx == 0:
                 next_start, next_duration, _ = lessons_today[0]
                 # 首节前：duration 返回到首节开始的秒数，total_time 用大数标记
@@ -287,7 +283,7 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
         # 正常课间（位于第 idx-1 节与第 idx 节之间）
         prev_start, prev_duration, _ = lessons_today[idx - 1]
         prev_end = prev_start + prev_duration
-        next_start, next_duration, _ = lessons_today[idx]
+        next_start, _next_duration, _ = lessons_today[idx]
         break_total = next_start - prev_end
         return True, float(break_total), float(next_start - current_time_in_seconds), ''
 
@@ -313,12 +309,12 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
             return True, 0.0, 0.0, ''
         prev_start, prev_duration, _ = lessons_today[idx - 1]
         prev_end = prev_start + prev_duration
-        next_start, next_duration, _ = lessons_today[idx]
+        next_start, _next_duration, _ = lessons_today[idx]
         break_total = next_start - prev_end
         return True, float(break_total), float(next_start - current_time_in_seconds), ''
 
     def get_idx(self) -> int:
-        idx, lessons_today, _ = self._find_current_idx_and_cache()
+        idx, _lessons_today, _ = self._find_current_idx_and_cache()
         # 如果在课间返回 -1
         if self._cache_status:
             return -1
