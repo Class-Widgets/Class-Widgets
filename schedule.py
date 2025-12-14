@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
 from shutil import copy
-from typing import Dict, List, Optional, Tuple, Type
+from typing import Dict, List, Optional, Tuple, Type, Set
 
 from loguru import logger
 from PyQt5.QtCore import QCoreApplication, QThread, pyqtSignal
@@ -73,6 +73,11 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
         self._cache_status = None
         self._cache_time = None
         self._cache_lesson_today = None
+        self._cache_lessons_today = None
+        # 缓存 _find_current_idx_and_cache 的结果，避免频繁调用（秒）
+        self._find_cache_ts = 0.0
+        self._find_cache_result = None
+        self._find_cache_ttl = 1.0
         self._init_parser(SCHEDULE_DIR / self.schedule_name)
         self._init_part()
         self._init_lessons()
@@ -190,33 +195,22 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
         # For Debug 用完就删！！
         print(self.lessons)
 
-    def get_next_lessons(self) -> List[str]:
-        # 返回接下来的所有课程
-        current_time = self.time_manager.get_current_time()
-        current_weekday = self.time_manager.get_current_weekday()
-        current_week_type = conf.get_week_type()
-        current_time_in_seconds = (
-            current_time.hour * 3600 + current_time.minute * 60 + current_time.second
-        )
-        lessons_today = self.lessons['even' if current_week_type else 'odd'].get(
-            str(current_weekday), []
-        )
-        l, r = 0, len(lessons_today) - 1
-        while l <= r:
-            mid = (l + r) // 2
-            start_time, duration, _lesson_names = lessons_today[mid]
-            if start_time <= current_time_in_seconds < start_time + duration:
-                return [x for lesson in lessons_today[mid:] for x in lesson[2]]
-            if start_time < current_time_in_seconds:
-                l = mid + 1
-            else:
-                r = mid - 1
-        if l < len(lessons_today):
-            return [x for lesson in lessons_today[l:] for x in lesson[2]]
-        return []  # 没有课程了
+    def _find_current_idx_and_cache(self) -> Tuple[int, List[Tuple[int, int, Set]], int]:
+        """
+        统一的查找函数：计算当前时间对应的 lessons_today 与索引，并更新缓存。
+        返回 (idx, lessons_today, current_time_in_seconds)
+        idx 表示插入位置（如果在课间则为下一节的索引），若正在上课则为当前节的索引。
+        """
+        import time as _time
 
-    def _init_get_status(self) -> Tuple[bool, float, float, str]:
-        # 查找当前时间对应课程 返回 is_break, duration, total_time, lesson_name
+        # 使用短时缓存避免每次调用都做较重的计算
+        now_ts = _time.time()
+        if (
+            self._find_cache_result is not None
+            and now_ts - getattr(self, "_find_cache_ts", 0.0) < getattr(self, "_find_cache_ttl", 0.0)
+        ):
+            return self._find_cache_result
+
         current_time = self.time_manager.get_current_time()
         self._cache_time = current_time
         current_weekday = self.time_manager.get_current_weekday()
@@ -227,85 +221,53 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
         lessons_today = self.lessons['even' if current_week_type else 'odd'].get(
             str(current_weekday), []
         )
-        self._cache_lessons_today: List[Tuple[int, int, str]] = lessons_today
+        # 更新缓存的 lessons_today
+        self._cache_lessons_today = lessons_today
+        self._cache_lesson_today = lessons_today
+
+        # 二分查找当前索引或插入位置
         l, r = 0, len(lessons_today) - 1
         while l <= r:
             mid = (l + r) // 2
-            start_time, duration, lesson_names = lessons_today[mid]
-            if start_time <= current_time_in_seconds:
-                if current_time_in_seconds < start_time + duration:
-                    self._cache_status, self._cache_lesson_index = (
-                        False,
-                        mid,
-                    )
-                    return (
-                        False,
-                        (start_time + duration - current_time_in_seconds),
-                        float(duration),
-                        '、'.join(lesson_names),
-                    )
-                if (
-                    mid == len(lessons_today) - 1
-                    or current_time_in_seconds < lessons_today[mid + 1][0]
-                ):
-                    # 在当前课程结束和下一节课开始之间
-                    self._cache_status, self._cache_lesson_index = True, mid + 1
-                    if mid + 1 < len(lessons_today):
-                        return True, (lessons_today[mid + 1][0] - current_time_in_seconds), 0.0, ''
-                    return True, -1.0, 0.0, ''
+            start_time, duration, _ = lessons_today[mid]
+            if start_time <= current_time_in_seconds < start_time + duration:
+                # 正在上课
+                self._cache_status = False
+                self._cache_lesson_index = mid
+                return mid, lessons_today, current_time_in_seconds
+            if start_time < current_time_in_seconds:
                 l = mid + 1
             else:
                 r = mid - 1
-        self._cache_lesson_index, self._cache_status = l, True
-        if l < len(lessons_today):
-            next_start_time, next_duration, _next_lesson_names = lessons_today[l]
-            return True, (next_start_time - current_time_in_seconds), float(next_duration), ''
-        return True, -1.0, 0.0, ''  # 没有课程了
 
-    def get_status(self) -> Tuple[bool, float, float, str]:
-        if self._cache_time is None:
-            return self._init_get_status()
-        assert self._cache_lesson_index is not None
-        assert self._cache_status is not None
-        assert self._cache_lessons_today is not None
+        # 不在任何课程中，l 为下一节课的索引（可能等于 len）
+        self._cache_status = True
+        self._cache_lesson_index = l
+        self._find_cache_ts = now_ts
+        self._find_cache_result = (l, lessons_today, current_time_in_seconds)
+        return l, lessons_today, current_time_in_seconds
 
-        current_time = self.time_manager.get_current_time()
-        current_weekday = self.time_manager.get_current_weekday()
-        current_week_type = conf.get_week_type()
-        current_time_in_seconds = (
-            current_time.hour * 3600 + current_time.minute * 60 + current_time.second
-        )
+    def get_next_lessons(self) -> List[str]:
+        # 返回接下来的所有课程
+        idx, lessons_today, _ = self._find_current_idx_and_cache()
+        if not lessons_today:
+            return []
+        # 不返回当前正在进行的课程（如果正在上课，则从下一节开始）
+        if not self._cache_status:
+            start = idx + 1
+        else:
+            start = idx
+        if start < len(lessons_today):
+            return [x for lesson in lessons_today[start:] for x in lesson[2]]
+        return []
 
-        # 如果跨天或课表变动，重新初始化
-        if (
-            self._cache_time.weekday() != current_time.weekday()
-            or self._cache_lessons_today
-            != self.lessons['even' if current_week_type else 'odd'].get(str(current_weekday), [])
-        ):
-            return self._init_get_status()
-
-        idx = self._cache_lesson_index
-        lessons_today = self._cache_lessons_today
-
+    def _init_get_status(self) -> Tuple[bool, float, float, str]:
+        # 使用统一查找函数初始化并返回状态
+        idx, lessons_today, current_time_in_seconds = self._find_current_idx_and_cache()
         if not lessons_today:
             return True, -1.0, 0.0, ''
-
-        if idx >= len(lessons_today):
-            # 已经没有课程了
-            self._cache_lesson_index = idx
-            self._cache_time = current_time
-            self._cache_status = True
-            return True, -1.0, 0.0, ''
-
-        cache_time_in_seconds = (
-            self._cache_time.hour * 3600 + self._cache_time.minute * 60 + self._cache_time.second
-        )
-        if current_time_in_seconds == cache_time_in_seconds:
-            if self._cache_status:
-                if idx < len(lessons_today):
-                    next_start, _, next_duration = lessons_today[idx]
-                    return True, (next_start - current_time_in_seconds), 0.0, ''
-                return True, -1.0, 0.0, ''
+        # 正在上课：返回 (is_break=False, 剩余时长, 课时总时长, 课程名)
+        if not self._cache_status:
             start, duration, names = lessons_today[idx]
             return (
                 False,
@@ -313,90 +275,54 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
                 float(duration),
                 '、'.join(names),
             )
+        # 处于课间或无课：返回 (is_break=True, 课间总时长或特殊值, 到下一节开始所剩时间, '')
+        # 所有课程未开始（在第一节之前）
+            if idx == 0:
+                next_start, next_duration, _ = lessons_today[0]
+                # 首节前：duration 返回到首节开始的秒数，total_time 用大数标记
+                return True, float(next_start - current_time_in_seconds), 1e9 + 7, ''
+        # 已经全部结束
+        if idx >= len(lessons_today):
+            return True, 0.0, 0.0, ''
+        # 正常课间（位于第 idx-1 节与第 idx 节之间）
+        prev_start, prev_duration, _ = lessons_today[idx - 1]
+        prev_end = prev_start + prev_duration
+        next_start, next_duration, _ = lessons_today[idx]
+        break_total = next_start - prev_end
+        return True, float(break_total), float(next_start - current_time_in_seconds), ''
 
-        # 优雅地向前或向后查找
-        if current_time_in_seconds > cache_time_in_seconds:
-            # 向后查找
-            # 先检查当前课程是否结束
-            start, duration, names = lessons_today[idx]
-            # 如果当前缓存的 idx 指向的是下一节课（start 可能在当前时间之后），
-            # 先判断是否尚未到达该节课的开始时间：
-            if current_time_in_seconds < start:
-                # 仍在两节课之间（或在第一节课之前）
-                self._cache_lesson_index = idx
-                self._cache_time = current_time
-                self._cache_status = True
-                return True, (start - current_time_in_seconds), float(duration), ''
-            if current_time_in_seconds < start + duration:
-                return (
-                    False,
-                    (start + duration - current_time_in_seconds),
-                    float(duration),
-                    '、'.join(names),
-                )
-
-            # 查找下一节课
-            idx += 1
-            if idx < len(lessons_today):
-                next_start, next_duration, next_names = lessons_today[idx]
-                if current_time_in_seconds >= next_start:
-                    # 已经到达下一节课时间
-                    if current_time_in_seconds < next_start + next_duration:
-                        self._cache_lesson_index = idx
-                        self._cache_time = current_time
-                        self._cache_status = False
-                        return (
-                            False,
-                            (next_start + next_duration - current_time_in_seconds),
-                            float(next_duration),
-                            '、'.join(next_names),
-                        )
-                else:
-                    # 在两节课之间
-                    self._cache_lesson_index = idx
-                    self._cache_time = current_time
-                    self._cache_status = True
-                    return True, (next_start - current_time_in_seconds), float(next_duration), ''
-
-            # 没有更多课程
-            self._cache_lesson_index = idx
-            self._cache_time = current_time
-            self._cache_status = True
+    def get_status(self) -> Tuple[bool, float, float, str]:
+        # 为简洁直接使用统一查找函数，实时返回状态
+        idx, lessons_today, current_time_in_seconds = self._find_current_idx_and_cache()
+        if not lessons_today:
             return True, -1.0, 0.0, ''
-
-        # 向前查找
-        while idx > 0:
-            start, duration, names = lessons_today[idx - 1]
-            if current_time_in_seconds >= start:
-                if current_time_in_seconds < start + duration:
-                    self._cache_lesson_index = idx - 1
-                    self._cache_time = current_time
-                    self._cache_status = False
-                    return (
-                        False,
-                        (start + duration - current_time_in_seconds),
-                        float(duration),
-                        '、'.join(names),
-                    )
-                break
-            idx -= 1
-        # 如果没找到，说明还没上课
-        self._cache_lesson_index = idx
-        self._cache_time = current_time
-        self._cache_status = True
-        if idx < len(lessons_today):
-            next_start, next_duration, _ = lessons_today[idx]
-            return True, (next_start - current_time_in_seconds), float(next_duration), ''
-        return True, -1.0, 0.0, ''
+        if not self._cache_status:
+            start, duration, names = lessons_today[idx]
+            return (
+                False,
+                (start + duration - current_time_in_seconds),
+                float(duration),
+                '、'.join(names),
+            )
+        # 处于课间或无课
+        if idx == 0:
+            next_start, next_duration, _ = lessons_today[0]
+            # 首节前：duration 返回到首节开始的秒数，total_time 用大数标记
+            return True, float(next_start - current_time_in_seconds), 1e9 + 7, ''
+        if idx >= len(lessons_today):
+            return True, 0.0, 0.0, ''
+        prev_start, prev_duration, _ = lessons_today[idx - 1]
+        prev_end = prev_start + prev_duration
+        next_start, next_duration, _ = lessons_today[idx]
+        break_total = next_start - prev_end
+        return True, float(break_total), float(next_start - current_time_in_seconds), ''
 
     def get_idx(self) -> int:
-        status = self.get_status()
-        if status[0]:  # is_break
+        idx, lessons_today, _ = self._find_current_idx_and_cache()
+        # 如果在课间返回 -1
+        if self._cache_status:
             return -1
-        if self._cache_lesson_index is None:
-            self._init_get_status()
-        assert self._cache_lesson_index is not None
-        return self._cache_lesson_index
+        return idx
 
     def stop(self) -> None:
         pass
