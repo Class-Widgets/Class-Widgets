@@ -51,7 +51,7 @@ You can add more voice in system settings (*≧▽≦)</translation>
     <message>
         <location filename="../main.py" line="2421"/>
         <source>完全隐藏/显示小组件</source>
-        <translation>Completely hide or show widgets</translation>
+        <translation>Completely hide/show widgets</translation>
     </message>
     <message>
         <location filename="../main.py" line="2426"/>
