@@ -6,7 +6,8 @@ from loguru import logger
 
 APP_NAME = "Class Widgets"
 CW_HOME = Path(__file__).parent
-IS_PORTABLE = os.environ.get("CLASSWIDGETS_NOT_PORTABLE", "") == ""
+IS_PORTABLE = (CW_HOME / "IS_PORTABLE").exists()
+logger.debug(f"Running in {'portable' if IS_PORTABLE else 'standard'} mode.")
 
 
 def _ensure_dir(path: Path) -> Path:
