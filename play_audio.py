@@ -112,16 +112,12 @@ class AudioManager:
 
         try:
             conf_value = config_center.read_conf('Audio', 'volume')
-            if conf_value is None:
-                logger.warning("配置文件中Audio节volume键不存在，使用默认音量0.7")
-                return 0.7
-
             conf_volume = int(conf_value)
             conf_volume = max(0, min(100, conf_volume))  # 0-100
             final_volume = conf_volume / 100.0
             logger.debug(f"使用配置文件音量: {conf_volume}% -> {final_volume}")
             return final_volume
-        except Exception as e:
+        except (ValueError, TypeError) as e:
             logger.error(f"读取音量配置失败: {e}，使用默认音量0.7")
             return 0.7
 
