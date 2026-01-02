@@ -109,13 +109,13 @@ class AudioManager:
             final_volume = max(0.0, min(1.0, volume))
             logger.debug(f"使用传入音量: {final_volume}")
             return final_volume
-        
+
         try:
             conf_value = config_center.read_conf('Audio', 'volume')
             if conf_value is None:
                 logger.warning("配置文件中Audio节volume键不存在，使用默认音量0.7")
                 return 0.7
-                
+
             conf_volume = int(conf_value)
             conf_volume = max(0, min(100, conf_volume))  # 0-100
             final_volume = conf_volume / 100.0
@@ -154,9 +154,11 @@ class AudioManager:
                 logger.error(f"无法获取播放通道: {relative_path}")
                 return False
             channel.set_volume(final_volume)
-            
-            logger.debug(f'成功播放音频: {relative_path} (是否阻塞: {blocking}, 音量: {final_volume})')
-            
+
+            logger.debug(
+                f'成功播放音频: {relative_path} (是否阻塞: {blocking}, 音量: {final_volume})'
+            )
+
             if blocking:
                 while channel.get_busy():
                     pygame.time.wait(100)
