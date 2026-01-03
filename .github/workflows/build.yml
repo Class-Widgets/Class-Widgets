@@ -691,7 +691,7 @@ jobs:
       BUILD_TYPE: ${{ needs.prepare.outputs.build_type }}
     steps:
       - name: Download all build artifacts
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           path: ./all-artifacts
 
