@@ -520,29 +520,20 @@ def get_countdown(toast: bool = False) -> Optional[Tuple[str, str, int]]:  # 重
 
                     if c_time >= current_dt:
                         # 根据所在时间段使用不同标语
-                        # if not isbreak:
-                        #     return_text.append(
-                        #         QCoreApplication.translate('main', '当前活动结束还有')
-                        #     )
-                        # else:
-                        #     return_text.append(QCoreApplication.translate('main', '课间时长还有'))
                         # 返回倒计时、进度条
                         time_diff = c_time - current_dt
                         minute, sec = divmod(time_diff.seconds, 60)
-                        # return_text.append(f'{minute:02d}:{sec:02d}')
                         # 进度条
                         seconds = time_diff.seconds
-                        # return_text.append(int(100 - seconds / (int(item_time) * 60) * 100))
                         got_return_data = True
-                        return_text = (
+                        return (
                             QCoreApplication.translate('main', '课间时长还有')
                             if isbreak
                             else QCoreApplication.translate('main', '当前活动结束还有'),
                             f'{minute:02d}:{sec:02d}',
                             int(100 - seconds / (int(item_time) * 60) * 100),
                         )
-            if not return_text:
-                return_text = (QCoreApplication.translate('main', '目前课程已结束'), '00:00', 100)
+            return (QCoreApplication.translate('main', '目前课程已结束'), '00:00', 100)
         else:
             prepare_minutes_str = config_center.read_conf('Toast', 'prepare_minutes')
             if prepare_minutes_str != '0' and toast:
@@ -579,14 +570,12 @@ def get_countdown(toast: bool = False) -> Optional[Tuple[str, str, int]]:  # 重
             if have_class():  # 有课程
                 time_diff = c_time - current_dt
                 minute, sec = divmod(time_diff.seconds, 60)
-                return_text = (
+                return (
                     QCoreApplication.translate('main', '距离上课还有'),
                     f'{minute:02d}:{sec:02d}',
                     100,
                 )
-            else:
-                return_text = (QCoreApplication.translate('main', '目前课程已结束'), '00:00', 100)
-        return return_text
+            return (QCoreApplication.translate('main', '目前课程已结束'), '00:00', 100)
     return None
 
 
