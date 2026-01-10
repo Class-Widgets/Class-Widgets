@@ -553,8 +553,7 @@ def get_countdown(toast: bool = False) -> Optional[Tuple[str, str, int]]:  # 重
                 if current_state == 0:
                     now = TimeManagerFactory.get_instance().get_current_time()
                     if (
-                        not last_notify_time
-                        or (now - last_notify_time).seconds >= notify_cooldown
+                        not last_notify_time or (now - last_notify_time).seconds >= notify_cooldown
                     ) and next_lesson_name is not None:
                         if can_send_notification(3, next_lesson_name):
                             notification.push_notification(3, next_lesson_name)
