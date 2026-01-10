@@ -2,8 +2,9 @@
 
 try:
     import os
+
     if os.name == 'posix' and 'Darwin' in os.uname().sysname:
-        import resource_tracker_patch_for_macos # noqa: F401
+        import resource_tracker_patch_for_macos  # noqa: F401
 except Exception as e:
     pass
 

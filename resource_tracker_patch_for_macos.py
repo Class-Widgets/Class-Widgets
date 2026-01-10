@@ -11,17 +11,20 @@ from multiprocessing import resource_tracker
 _orig_register = resource_tracker.register
 _orig_unregister = resource_tracker.unregister
 
+
 def _safe_register(name, rtype):
     # 跳过 shared_memory 的登记
     if rtype == "shared_memory":
-        return
+        return None
     return _orig_register(name, rtype)
+
 
 def _safe_unregister(name, rtype):
     # 跳过 shared_memory 的注销
     if rtype == "shared_memory":
-        return
+        return None
     return _orig_unregister(name, rtype)
+
 
 # 应用 monkey patch
 resource_tracker.register = _safe_register
