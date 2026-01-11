@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import IntEnum
 from pathlib import Path
 from re import match
-from typing import Dict, List, Literal, Optional, Tuple, Union
+from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
 from pydantic import BaseModel, model_validator
 from pydantic.functional_validators import AfterValidator
@@ -187,3 +187,84 @@ class Schedule(BaseModel):
         if forget_day := timeline_day - self.timeline_even.keys():
             raise ValueError({"forget": {"timeline_even key": forget_day}})
         return self
+
+
+def _ensure_timeline_keys(data: Dict[str, Any]) -> None:
+    if "timeline" not in data:
+        data["timeline"] = {
+            "default": [],
+            "0": [],
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": [],
+            "6": [],
+        }
+    if "timeline_even" not in data:
+        data["timeline_even"] = {
+            "default": [],
+            "0": [],
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": [],
+            "6": [],
+        }
+
+
+def _normalize_timeline_map(timeline_map: Dict[str, Any]) -> Dict[str, List[TimelineUnit]]:
+    def sort_timeline_key(item: Tuple[str, Any]) -> Any:
+        item_name = item[0]
+        prefix = item_name[0]
+        if len(item_name) > 1:
+            try:
+                part_num = int(item_name[1])
+                class_num = 0
+                if len(item_name) > 2:
+                    class_num = int(item_name[2:])
+                if prefix == "a":
+                    return part_num, class_num, 0
+                return part_num, class_num, 1
+            except ValueError:
+                return item_name
+        return item_name
+
+    normalized: Dict[str, List[TimelineUnit]] = {}
+    for key, value in timeline_map.items():
+        if isinstance(value, dict):
+            sorted_items = sorted(value.items(), key=sort_timeline_key)
+            new_timeline: List[TimelineUnit] = []
+            for item_name, item_time in sorted_items:
+                new_timeline.append(
+                    (
+                        TimelineUnitType.Gap if item_name[0] == "f" else TimelineUnitType.Class,
+                        item_name[1],
+                        int(item_name[2:]) if len(item_name) > 2 else 0,
+                        int(item_time),
+                    )
+                )
+            normalized[key] = new_timeline
+        elif isinstance(value, list):
+            normalized[key] = [
+                (
+                    TimelineUnitType(unit[0]),
+                    str(unit[1]),
+                    int(unit[2]),
+                    int(unit[3]),
+                )
+                for unit in value
+            ]
+        else:
+            raise ValueError(f"invalid timeline format: {key}: {value}")
+    return normalized
+
+
+def normalize_schedule_data(data: Dict[str, Any]) -> Dict[str, Any]:
+    _ensure_timeline_keys(data)
+    data["timeline"] = _normalize_timeline_map(data["timeline"])
+    data["timeline_even"] = _normalize_timeline_map(data["timeline_even"])
+    if data.get("url") is None:
+        data["url"] = "local"
+    return data

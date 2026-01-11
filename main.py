@@ -265,6 +265,23 @@ def get_timeline_data() -> List[Tuple[int, str, int, int]]:
     return loaded_data['timeline'].get('default', [])
 
 
+def get_schedule_map() -> Dict[str, List[str]]:
+    try:
+        use_even = (
+            config_center.read_conf('General', 'enable_alt_schedule') == '1' or conf.is_temp_week()
+        )
+        schedule_raw = (
+            loaded_data.get('schedule_even')
+            if use_even and conf.get_week_type()
+            else loaded_data.get('schedule')
+        )
+        if isinstance(schedule_raw, dict):
+            return {k: (v if isinstance(v, list) else []) for k, v in schedule_raw.items()}
+        return {str(i): [] for i in range(7)}
+    except Exception:
+        return {str(i): [] for i in range(7)}
+
+
 # 获取Part开始时间
 def get_start_time() -> None:
     global parts_start_time, timeline_data, loaded_data, order, parts_type
@@ -380,29 +397,17 @@ def get_excluded_lessons() -> None:
 def get_current_lessons() -> None:  # 获取当前课程
     global current_lessons
     timeline = get_timeline_data()
-    if config_center.read_conf('General', 'enable_alt_schedule') == '1' or conf.is_temp_week():
-        try:
-            schedule = (
-                loaded_data.get('schedule_even')
-                if conf.get_week_type()
-                else loaded_data.get('schedule')
-            )
-        except Exception as e:
-            logger.error(f'加载课程表文件[单双周]出错：{e}')
-            schedule = loaded_data.get('schedule')
-    else:
-        schedule = loaded_data.get('schedule')
+    schedule = get_schedule_map()
     class_count = 0
     for isbreak, item_name, item_index, _item_time in timeline:
         if not isbreak:
-            if schedule[str(current_week)]:
+            day_schedule = schedule.get(str(current_week), [])
+            if day_schedule:
                 try:
-                    if schedule[str(current_week)][class_count] != QCoreApplication.translate(
-                        'main', '未添加'
-                    ):
-                        current_lessons[(isbreak, item_name, item_index)] = schedule[
-                            str(current_week)
-                        ][class_count]
+                    if day_schedule[class_count] != QCoreApplication.translate('main', '未添加'):
+                        current_lessons[(isbreak, item_name, item_index)] = day_schedule[
+                            class_count
+                        ]
                     else:
                         current_lessons[(isbreak, item_name, item_index)] = (
                             QCoreApplication.translate('main', '暂无课程')
@@ -553,11 +558,16 @@ def get_countdown(toast: bool = False) -> Optional[Tuple[str, str, int]]:  # 重
                 if current_state == 0:
                     now = TimeManagerFactory.get_instance().get_current_time()
                     if (
-                        not last_notify_time or (now - last_notify_time).seconds >= notify_cooldown
-                    ) and next_lesson_name is not None:
-                        if can_send_notification(3, next_lesson_name):
-                            notification.push_notification(3, next_lesson_name)
-                            last_notify_time = now
+                        (
+                            not last_notify_time
+                            or (now - last_notify_time).seconds >= notify_cooldown
+                        )
+                        and next_lesson_name is not None
+                        and can_send_notification(3, next_lesson_name)
+                    ):
+                        notification.push_notification(3, next_lesson_name)
+                        last_notify_time = now
+
         # if f'a{part}1' in timeline_data:
 
         def have_class():
@@ -608,7 +618,12 @@ def get_next_lessons() -> None:
                     add_time = int(item_time)
                     # if c_time > current_dt and item_name.startswith('a'):
                     if c_time > current_dt and not isbreak:
-                        next_lessons.append(current_lessons[(isbreak, item_name, item_index)])
+                        key = (isbreak, item_name, item_index)
+                        next_lessons.append(
+                            current_lessons[key]
+                            if key in current_lessons
+                            else QCoreApplication.translate('main', '暂无课程')
+                        )
                     c_time += dt.timedelta(minutes=add_time)
 
 
