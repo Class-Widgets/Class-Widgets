@@ -530,73 +530,60 @@ def get_countdown(toast: bool = False) -> Optional[Tuple[str, str, int]]:  # 重
 
                     if c_time >= current_dt:
                         # 根据所在时间段使用不同标语
-                        # if not isbreak:
-                        #     return_text.append(
-                        #         QCoreApplication.translate('main', '当前活动结束还有')
-                        #     )
-                        # else:
-                        #     return_text.append(QCoreApplication.translate('main', '课间时长还有'))
                         # 返回倒计时、进度条
                         time_diff = c_time - current_dt
                         minute, sec = divmod(time_diff.seconds, 60)
-                        # return_text.append(f'{minute:02d}:{sec:02d}')
                         # 进度条
                         seconds = time_diff.seconds
-                        # return_text.append(int(100 - seconds / (int(item_time) * 60) * 100))
                         got_return_data = True
-                        return_text = (
+                        return (
                             QCoreApplication.translate('main', '课间时长还有')
                             if isbreak
                             else QCoreApplication.translate('main', '当前活动结束还有'),
                             f'{minute:02d}:{sec:02d}',
                             int(100 - seconds / (int(item_time) * 60) * 100),
                         )
-            if not return_text:
-                return_text = (QCoreApplication.translate('main', '目前课程已结束'), '00:00', 100)
-        else:
-            prepare_minutes_str = config_center.read_conf('Toast', 'prepare_minutes')
-            if prepare_minutes_str != '0' and toast:
-                prepare_minutes = int(prepare_minutes_str)
-                if current_dt == c_time - dt.timedelta(minutes=prepare_minutes):
-                    next_lesson_name = None
-                    next_lesson_key = None
-                    if timeline_data:
-                        for isbreak, item_name, item_index, item_time in timeline_data:
-                            # if key.startswith(f'a{str(part)}'):
-                            if not isbreak and item_name == str(part):
-                                next_lesson_key = (isbreak, item_name, item_index)
-                                break
-                    if next_lesson_key and next_lesson_key in current_lessons:
-                        lesson_name = current_lessons[next_lesson_key]
-                        if lesson_name != QCoreApplication.translate('main', '暂无课程'):
-                            next_lesson_name = lesson_name
-                    if current_state == 0:
-                        now = TimeManagerFactory.get_instance().get_current_time()
-                        if (
-                            not last_notify_time
-                            or (now - last_notify_time).seconds >= notify_cooldown
-                        ) and next_lesson_name is not None:
-                            if can_send_notification(3, next_lesson_name):
-                                notification.push_notification(3, next_lesson_name)
-                                last_notify_time = now
-            # if f'a{part}1' in timeline_data:
+            return (QCoreApplication.translate('main', '目前课程已结束'), '00:00', 100)
+        prepare_minutes_str = config_center.read_conf('Toast', 'prepare_minutes')
+        if prepare_minutes_str != '0' and toast:
+            prepare_minutes = int(prepare_minutes_str)
+            if current_dt == c_time - dt.timedelta(minutes=prepare_minutes):
+                next_lesson_name = None
+                next_lesson_key = None
+                if timeline_data:
+                    for isbreak, item_name, item_index, item_time in timeline_data:
+                        # if key.startswith(f'a{str(part)}'):
+                        if not isbreak and item_name == str(part):
+                            next_lesson_key = (isbreak, item_name, item_index)
+                            break
+                if next_lesson_key and next_lesson_key in current_lessons:
+                    lesson_name = current_lessons[next_lesson_key]
+                    if lesson_name != QCoreApplication.translate('main', '暂无课程'):
+                        next_lesson_name = lesson_name
+                if current_state == 0:
+                    now = TimeManagerFactory.get_instance().get_current_time()
+                    if (
+                        not last_notify_time or (now - last_notify_time).seconds >= notify_cooldown
+                    ) and next_lesson_name is not None:
+                        if can_send_notification(3, next_lesson_name):
+                            notification.push_notification(3, next_lesson_name)
+                            last_notify_time = now
+        # if f'a{part}1' in timeline_data:
 
-            def have_class():
-                return any(
-                    not data[0] and data[1] == str(part) and data[2] == 1 for data in timeline_data
-                )
+        def have_class():
+            return any(
+                not data[0] and data[1] == str(part) and data[2] == 1 for data in timeline_data
+            )
 
-            if have_class():  # 有课程
-                time_diff = c_time - current_dt
-                minute, sec = divmod(time_diff.seconds, 60)
-                return_text = (
-                    QCoreApplication.translate('main', '距离上课还有'),
-                    f'{minute:02d}:{sec:02d}',
-                    100,
-                )
-            else:
-                return_text = (QCoreApplication.translate('main', '目前课程已结束'), '00:00', 100)
-        return return_text
+        if have_class():  # 有课程
+            time_diff = c_time - current_dt
+            minute, sec = divmod(time_diff.seconds, 60)
+            return (
+                QCoreApplication.translate('main', '距离上课还有'),
+                f'{minute:02d}:{sec:02d}',
+                100,
+            )
+        return (QCoreApplication.translate('main', '目前课程已结束'), '00:00', 100)
     return None
 
 

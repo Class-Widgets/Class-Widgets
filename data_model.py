@@ -99,9 +99,7 @@ class Cses(BaseModel):
             current_id = (schedule.weeks, schedule.enable_day)
             current_status = count_map.get(current_id, [])
             count_map[current_id] = [*current_status, schedule.name]
-        conflict_map = dict(  # noqa: C402
-            (id, names) for id, names in count_map.items() if len(names) > 1
-        )
+        conflict_map = {id: names for id, names in count_map.items() if len(names) > 1}
         if len(conflict_map) != 0:
             raise ValueError({"conflict": {"weeks & enable_day": conflict_map}})
         return self
