@@ -36,74 +36,74 @@
 <context>
     <name>DesktopWidget</name>
     <message>
-        <location filename="../main.py" line="1973"/>
-        <location filename="../main.py" line="2487"/>
+        <location filename="../main.py" line="1994"/>
+        <location filename="../main.py" line="2508"/>
         <source>{year} 年 {month}</source>
         <translation>{year} 年 {month}</translation>
     </message>
     <message>
-        <location filename="../main.py" line="1979"/>
-        <location filename="../main.py" line="2492"/>
+        <location filename="../main.py" line="2000"/>
+        <location filename="../main.py" line="2513"/>
         <source>{day}日  {week}</source>
         <translation>{day}日是{week}</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2401"/>
+        <location filename="../main.py" line="2422"/>
         <source>完全隐藏/显示小组件</source>
         <translation>让小组件彻底死掉/复活</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2406"/>
+        <location filename="../main.py" line="2427"/>
         <source>最小化为浮窗</source>
         <translation>死成小盒子</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2414"/>
+        <location filename="../main.py" line="2435"/>
         <source>插件广场</source>
         <translation>插件跳广场舞基地</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2415"/>
+        <location filename="../main.py" line="2436"/>
         <source>额外选项</source>
         <translation>Extraaaaaa!</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2416"/>
+        <location filename="../main.py" line="2437"/>
         <source>设置</source>
         <translation>高级货</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2420"/>
+        <location filename="../main.py" line="2441"/>
         <source>重新启动</source>
         <translation>坠后原神</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2421"/>
+        <location filename="../main.py" line="2442"/>
         <source>退出</source>
         <translation>溜了</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2554"/>
+        <location filename="../main.py" line="2575"/>
         <source>&lt; - 分钟</source>
         <translation>&lt; - /24 小时</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2557"/>
+        <location filename="../main.py" line="2578"/>
         <source>&lt;&#x2005;{minutes}&#x2005;分钟</source>
         <translation>{minutes} 分钟后还是一条好汉</translation>
     </message>
     <message>
-        <location filename="../main.py" line="2569"/>
+        <location filename="../main.py" line="2590"/>
         <source>距离 {cd_text} 还有</source>
         <translation>{cd_text} 降临日</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3392"/>
+        <location filename="../main.py" line="3414"/>
         <source>{city} · 未知</source>
         <translation>{city} · 我咋知道</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3394"/>
+        <location filename="../main.py" line="3416"/>
         <source>未知</source>
         <translation>我咋知道</translation>
     </message>
@@ -154,52 +154,52 @@
 <context>
     <name>ErrorDialog</name>
     <message>
-        <location filename="../main.py" line="781"/>
+        <location filename="../main.py" line="797"/>
         <source>Class Widgets 崩溃报告</source>
         <translation>ClassIsWidgets 咋崩了啊</translation>
     </message>
     <message>
-        <location filename="../main.py" line="782"/>
+        <location filename="../main.py" line="798"/>
         <source>抱歉！Class Widgets 发生了严重的错误从而无法正常运行。您可以保存下方的错误信息并向他人求助。若您认为这是程序的Bug，请点击“报告此问题”或联系开发者。</source>
         <translation type="unfinished">抱歉！Class Widgets 发生了严重的错误从而无法正常运行。您可以保存下方的错误信息并向他人求助。若您认为这是程序的Bug，请点击“报告此问题”或联系开发者。</translation>
     </message>
     <message>
-        <location filename="../main.py" line="801"/>
+        <location filename="../main.py" line="817"/>
         <source>报告此问题</source>
         <translation type="unfinished">报告此问题</translation>
     </message>
     <message>
-        <location filename="../main.py" line="802"/>
+        <location filename="../main.py" line="818"/>
         <source>复制日志</source>
         <translation type="unfinished">复制日志</translation>
     </message>
     <message>
-        <location filename="../main.py" line="803"/>
+        <location filename="../main.py" line="819"/>
         <source>忽略错误</source>
         <translation type="unfinished">忽略错误</translation>
     </message>
     <message>
-        <location filename="../main.py" line="805"/>
+        <location filename="../main.py" line="821"/>
         <source>在下次启动之前，忽略此错误</source>
         <translation type="unfinished">在下次启动之前，忽略此错误</translation>
     </message>
     <message>
-        <location filename="../main.py" line="806"/>
+        <location filename="../main.py" line="822"/>
         <source>重新启动</source>
         <translation type="unfinished">重新启动</translation>
     </message>
     <message>
-        <location filename="../main.py" line="810"/>
+        <location filename="../main.py" line="826"/>
         <source>出错啦！ヽ(*。&gt;Д&lt;)o゜</source>
         <translation type="unfinished">出错啦！ヽ(*。&gt;Д&lt;)o゜</translation>
     </message>
     <message>
-        <location filename="../main.py" line="856"/>
+        <location filename="../main.py" line="872"/>
         <source>复制成功！ヾ(^▽^*)))</source>
         <translation type="unfinished">复制成功！ヾ(^▽^*)))</translation>
     </message>
     <message>
-        <location filename="../main.py" line="857"/>
+        <location filename="../main.py" line="873"/>
         <source>日志已成功复制到剪贴板。</source>
         <translation type="unfinished">日志已成功复制到剪贴板。</translation>
     </message>
@@ -207,12 +207,12 @@
 <context>
     <name>FloatingWidget</name>
     <message>
-        <location filename="../main.py" line="1676"/>
+        <location filename="../main.py" line="1694"/>
         <source>&lt; - 分钟</source>
         <translation type="unfinished">&lt; - 分钟</translation>
     </message>
     <message>
-        <location filename="../main.py" line="1680"/>
+        <location filename="../main.py" line="1698"/>
         <source>&lt;&#x2005;{minutes}&#x2005;分钟</source>
         <translation type="unfinished">&lt;&#x2005;{minutes}&#x2005;分钟</translation>
     </message>
@@ -2638,17 +2638,17 @@
         <translation type="unfinished">选择文件</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6359"/>
+        <location filename="../menu.py" line="6360"/>
         <source>界面语言切换时出错: {e}</source>
         <translation type="unfinished">界面语言切换出错: {e}</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6361"/>
+        <location filename="../menu.py" line="6362"/>
         <source>界面语言切换出错 (＃°Д°)</source>
         <translation type="unfinished">界面语言切换出错 (（＃°Д°）)</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6362"/>
+        <location filename="../menu.py" line="6363"/>
         <source>切换界面语言时发生错误: {e}</source>
         <translation type="unfinished">切换界面语言时发生错误: {e}</translation>
     </message>
@@ -3116,36 +3116,36 @@
         <translation type="unfinished">关于本产品</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6236"/>
+        <location filename="../menu.py" line="6237"/>
         <source>Class Widgets - 设置</source>
         <translation type="unfinished">Class Widgets - 设置</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6318"/>
+        <location filename="../menu.py" line="6319"/>
         <source>界面语言切换成功 ♪(´▽｀)</source>
         <translation type="unfinished">界面语言切换成功 （´▽｀）</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6319"/>
+        <location filename="../menu.py" line="6320"/>
         <source>界面语言已切换为 {selected_lang_name}
 新语言将在重启程序后完全生效</source>
         <translation type="unfinished">界面语言已切换为 {selected_lang_name}
 新语言将在重启程序后完全生效</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6351"/>
+        <location filename="../menu.py" line="6352"/>
         <source>界面语言切换失败 (＃°Д°)</source>
         <translation type="unfinished">界面语言切换失败 (（＃°Д°）)</translation>
     </message>
     <message>
-        <location filename="../menu.py" line="6352"/>
+        <location filename="../menu.py" line="6353"/>
         <source>无法加载选定的界面语言包，请检查翻译文件是否存在</source>
         <translation type="unfinished">无法加载选定的界面语言包，请检查翻译文件是否存在</translation>
     </message>
     <message>
         <location filename="../menu.py" line="1906"/>
-        <location filename="../menu.py" line="6355"/>
-        <location filename="../menu.py" line="6365"/>
+        <location filename="../menu.py" line="6356"/>
+        <location filename="../menu.py" line="6366"/>
         <source>确定</source>
         <translation type="unfinished">确定</translation>
     </message>
@@ -3548,7 +3548,7 @@
 <context>
     <name>WidgetsManager</name>
     <message>
-        <location filename="../main.py" line="1245"/>
+        <location filename="../main.py" line="1263"/>
         <source>未知组件</source>
         <translation type="unfinished">未知组件</translation>
     </message>
@@ -3631,47 +3631,47 @@
 <context>
     <name>config</name>
     <message>
-        <location filename="../file.py" line="311"/>
+        <location filename="../file.py" line="312"/>
         <source>{section}.{key}</source>
         <translation type="unfinished">{section}.{key}</translation>
     </message>
     <message>
-        <location filename="../file.py" line="527"/>
+        <location filename="../file.py" line="468"/>
         <source>General.schedule</source>
         <translation type="unfinished">General.schedule</translation>
     </message>
     <message>
-        <location filename="../file.py" line="528"/>
+        <location filename="../file.py" line="469"/>
         <source>TTS.language</source>
         <translation type="unfinished">TTS.language</translation>
     </message>
     <message>
-        <location filename="../file.py" line="529"/>
+        <location filename="../file.py" line="470"/>
         <source>TTS.attend_class</source>
         <translation type="unfinished">TTS.attend_class</translation>
     </message>
     <message>
-        <location filename="../file.py" line="530"/>
+        <location filename="../file.py" line="471"/>
         <source>TTS.finish_class</source>
         <translation type="unfinished">TTS.finish_class</translation>
     </message>
     <message>
-        <location filename="../file.py" line="531"/>
+        <location filename="../file.py" line="472"/>
         <source>TTS.prepare_class</source>
         <translation type="unfinished">TTS.prepare_class</translation>
     </message>
     <message>
-        <location filename="../file.py" line="532"/>
+        <location filename="../file.py" line="473"/>
         <source>TTS.after_school</source>
         <translation type="unfinished">TTS.after_school</translation>
     </message>
     <message>
-        <location filename="../file.py" line="533"/>
+        <location filename="../file.py" line="474"/>
         <source>Weather.api</source>
         <translation type="unfinished">Weather.api</translation>
     </message>
     <message>
-        <location filename="../file.py" line="534"/>
+        <location filename="../file.py" line="475"/>
         <source>Plugin.mirror</source>
         <translation type="unfinished">Plugin.mirror</translation>
     </message>
@@ -3687,19 +3687,19 @@
 <context>
     <name>file</name>
     <message>
-        <location filename="../file.py" line="49"/>
+        <location filename="../file.py" line="50"/>
         <source>Class Widgets 启动失败w(ﾟДﾟ)w</source>
         <translation type="unfinished">Class Widgets 启动失败w(ﾟДﾟ)w</translation>
     </message>
     <message>
-        <location filename="../file.py" line="50"/>
+        <location filename="../file.py" line="51"/>
         <source>加载默认配置文件失败,请检查文件完整性或尝试重新安装。
 错误信息: {e}</source>
         <translation type="unfinished">加载默认配置文件失败,请检查文件完整性或尝试重新安装。
 错误信息: {e}</translation>
     </message>
     <message>
-        <location filename="../file.py" line="54"/>
+        <location filename="../file.py" line="55"/>
         <source>好</source>
         <translation type="unfinished">好</translation>
     </message>
@@ -4426,39 +4426,40 @@
         <translation type="unfinished">未设置</translation>
     </message>
     <message>
-        <location filename="../main.py" line="400"/>
+        <location filename="../main.py" line="406"/>
         <source>未添加</source>
         <translation type="unfinished">未添加</translation>
     </message>
     <message>
-        <location filename="../main.py" line="408"/>
-        <location filename="../main.py" line="411"/>
+        <location filename="../main.py" line="412"/>
         <location filename="../main.py" line="415"/>
-        <location filename="../main.py" line="421"/>
-        <location filename="../main.py" line="552"/>
-        <location filename="../main.py" line="619"/>
-        <location filename="../main.py" line="635"/>
+        <location filename="../main.py" line="419"/>
+        <location filename="../main.py" line="425"/>
+        <location filename="../main.py" line="555"/>
+        <location filename="../main.py" line="624"/>
+        <location filename="../main.py" line="632"/>
+        <location filename="../main.py" line="648"/>
         <source>暂无课程</source>
         <translation type="unfinished">暂无课程</translation>
     </message>
     <message>
-        <location filename="../main.py" line="523"/>
+        <location filename="../main.py" line="536"/>
         <source>当前活动结束还有</source>
         <translation type="unfinished">当前活动结束还有</translation>
     </message>
     <message>
-        <location filename="../main.py" line="526"/>
+        <location filename="../main.py" line="534"/>
         <source>课间时长还有</source>
         <translation type="unfinished">课间时长还有</translation>
     </message>
     <message>
-        <location filename="../main.py" line="574"/>
+        <location filename="../main.py" line="581"/>
         <source>距离上课还有</source>
         <translation type="unfinished">距离上课还有</translation>
     </message>
     <message>
-        <location filename="../main.py" line="536"/>
-        <location filename="../main.py" line="579"/>
+        <location filename="../main.py" line="540"/>
+        <location filename="../main.py" line="585"/>
         <source>目前课程已结束</source>
         <translation type="unfinished">目前课程已结束</translation>
     </message>
@@ -4468,50 +4469,50 @@
         <translation type="unfinished">加载模块...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="657"/>
+        <location filename="../main.py" line="673"/>
         <source>课间</source>
         <translation type="unfinished">课间</translation>
     </message>
     <message>
-        <location filename="../main.py" line="966"/>
+        <location filename="../main.py" line="982"/>
         <source>示例课程</source>
         <translation type="unfinished">示例课程</translation>
     </message>
     <message>
-        <location filename="../main.py" line="967"/>
+        <location filename="../main.py" line="983"/>
         <source>通知示例</source>
         <translation type="unfinished">通知示例</translation>
     </message>
     <message>
-        <location filename="../main.py" line="968"/>
+        <location filename="../main.py" line="984"/>
         <source>副标题</source>
         <translation type="unfinished">副标题</translation>
     </message>
     <message>
-        <location filename="../main.py" line="969"/>
+        <location filename="../main.py" line="985"/>
         <source>这是一条通知示例</source>
         <translation type="unfinished">这是一条通知示例</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3441"/>
-        <location filename="../main.py" line="3475"/>
+        <location filename="../main.py" line="3463"/>
+        <location filename="../main.py" line="3497"/>
         <source>上课时自动隐藏</source>
         <translation type="unfinished">上课时自动隐藏</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3443"/>
-        <location filename="../main.py" line="3477"/>
+        <location filename="../main.py" line="3465"/>
+        <location filename="../main.py" line="3499"/>
         <source>窗口最大化时隐藏</source>
         <translation type="unfinished">窗口最大化时隐藏</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3446"/>
-        <location filename="../main.py" line="3480"/>
+        <location filename="../main.py" line="3468"/>
+        <location filename="../main.py" line="3502"/>
         <source>暂时无法变更“状态”</source>
         <translation type="unfinished">暂时无法变更“状态”</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3447"/>
+        <location filename="../main.py" line="3469"/>
         <source>您正在使用 {hide_mode_text} 模式，无法变更隐藏状态
 若变更状态，将修改隐藏模式“灵活隐藏” (您稍后可以在“设置”中更改此选项)
 您确定要隐藏组件吗?</source>
@@ -4520,19 +4521,19 @@
 您确定要隐藏组件吗?</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3455"/>
-        <location filename="../main.py" line="3489"/>
+        <location filename="../main.py" line="3477"/>
+        <location filename="../main.py" line="3511"/>
         <source>确定</source>
         <translation type="unfinished">确定</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3457"/>
-        <location filename="../main.py" line="3491"/>
+        <location filename="../main.py" line="3479"/>
+        <location filename="../main.py" line="3513"/>
         <source>取消</source>
         <translation type="unfinished">取消</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3481"/>
+        <location filename="../main.py" line="3503"/>
         <source>您正在使用 {hide_mode_text} 模式，无法变更隐藏状态
 若变更状态，将修改隐藏模式“灵活隐藏” (您可以在“设置”中更改此选项)
 您确定要隐藏组件吗?</source>
@@ -4541,107 +4542,107 @@
 您确定要隐藏组件吗?</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3812"/>
+        <location filename="../main.py" line="3837"/>
         <source>检查多开...</source>
         <translation type="unfinished">检查多开...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3827"/>
+        <location filename="../main.py" line="3852"/>
         <source>Class Widgets 正在运行</source>
         <translation type="unfinished">Class Widgets 正在运行</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3828"/>
+        <location filename="../main.py" line="3853"/>
         <source>Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。
 (若您需要打开多个实例，请在“设置”-&gt;“高级选项”中启用“允许程序多开”)</source>
         <translation type="unfinished">Class Widgets 正在运行！请勿打开多个实例，否则将会出现不可预知的问题。
 (若您需要打开多个实例，请在“设置”-&gt;“高级选项”中启用“允许程序多开”)</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3852"/>
+        <location filename="../main.py" line="3877"/>
         <source>初始化颜色监视器...</source>
         <translation type="unfinished">初始化颜色监视器...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3862"/>
+        <location filename="../main.py" line="3887"/>
         <source>检查缩放...</source>
         <translation type="unfinished">检查缩放...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3868"/>
+        <location filename="../main.py" line="3893"/>
         <source>缩放系数过大</source>
         <translation type="unfinished">缩放系数过大</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3869"/>
+        <location filename="../main.py" line="3894"/>
         <source>当前缩放系数为 {scale_factor}%，可能导致显示异常。
 建议将缩放系数设置为 100% 到 180% 之间。</source>
         <translation type="unfinished">当前缩放系数为 {scale_factor}%，可能导致显示异常。
 建议将缩放系数设置为 100% 到 180% 之间。</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3881"/>
+        <location filename="../main.py" line="3906"/>
         <source>获取系统版本...</source>
         <translation type="unfinished">获取系统版本...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3924"/>
+        <location filename="../main.py" line="3949"/>
         <source>初始化窗口焦点监视器...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="3930"/>
+        <location filename="../main.py" line="3955"/>
         <source>初始化窗口管理器...</source>
         <translation type="unfinished">初始化窗口管理器...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3937"/>
+        <location filename="../main.py" line="3962"/>
         <source>检查初次启动...</source>
         <translation type="unfinished">检查初次启动...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3949"/>
+        <location filename="../main.py" line="3974"/>
         <source>初始化插件管理器...</source>
         <translation type="unfinished">初始化插件管理器...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3955"/>
+        <location filename="../main.py" line="3980"/>
         <source>检查临时课表...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="3960"/>
+        <location filename="../main.py" line="3985"/>
         <source>存在临时课表</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="3961"/>
+        <location filename="../main.py" line="3986"/>
         <source>当前存在临时课表，是否沿用</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="3974"/>
+        <location filename="../main.py" line="3999"/>
         <source>加载窗口...</source>
         <translation type="unfinished">加载窗口...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3978"/>
+        <location filename="../main.py" line="4003"/>
         <source>加载课程...</source>
         <translation type="unfinished">加载课程...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3985"/>
+        <location filename="../main.py" line="4010"/>
         <source>加载隐藏状态...</source>
         <translation type="unfinished">加载隐藏状态...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="4008"/>
+        <location filename="../main.py" line="4033"/>
         <source>检查更新...</source>
         <translation type="unfinished">检查更新...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="3834"/>
-        <location filename="../main.py" line="3874"/>
+        <location filename="../main.py" line="3859"/>
+        <location filename="../main.py" line="3899"/>
         <source>好</source>
         <translation type="unfinished">好</translation>
     </message>

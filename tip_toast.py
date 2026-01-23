@@ -361,7 +361,10 @@ class tip_toast(QWidget):
                 self.audio_thread.quit()
                 self.audio_thread.wait()
             self.audio_thread = PlayAudio(
-                file_path=str(file_path), volume=1.0, cleanup_callback=None, blocking=False
+                file_path=str(file_path),
+                volume=None,  # 使用配置文件
+                cleanup_callback=None,
+                blocking=False,
             )
             self.audio_thread.start()
             self.audio_thread.setPriority(QThread.Priority.HighestPriority)  # 设置优先级

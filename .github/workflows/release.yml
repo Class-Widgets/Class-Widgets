@@ -31,7 +31,7 @@ jobs:
           fi
 
       - name: Check out repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -40,7 +40,7 @@ jobs:
           mkdir -p release
 
       - name: Download artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v7
         with:
           name: ClassWidgets-Packages
           path: artifacts
@@ -53,6 +53,9 @@ jobs:
             exit 1
           fi
           find artifacts -name "*.zip" -type f -exec cp {} release/ \;
+          if [ -f "artifacts/file_provenance.json" ]; then
+            cp -f artifacts/file_provenance.json release/
+          fi
           if [ ! "$(ls -A release 2>/dev/null)" ]; then
             exit 1
           fi
@@ -86,6 +89,29 @@ jobs:
             git tag -s "$tag_name" -m "$tag_message"
             git push origin "$tag_name"
           fi
+
+      - name: Clear Nightly-Builds
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CURRENT_VERSION: ${{ inputs.release_version }}
+        run: |
+          echo "当前要发布的版本: $CURRENT_VERSION"
+          nightly_releases=$(gh release list --limit 4 --json tagName,name | jq -r '.[] | select(.tagName | contains("-nightly")) | .tagName' || true)
+          if [ -z "$nightly_releases" ]; then
+            echo "[DEBUG] 未找到旧的 nightly 版本"
+            exit 0
+          fi
+          echo "[DEBUG] 找到的 nightly 版本:"
+          echo "$nightly_releases"
+          for release in $nightly_releases; do
+            if [ "$release" != "$CURRENT_VERSION" ]; then
+              echo "[DEBUG] 删除旧版本: $release"
+              gh release delete "$release" --yes --cleanup-tag || echo "[DEBUG] 删除 $release 时失败"
+            else
+              echo "[DEBUG] 保留版本: $release"
+            fi
+          done
 
       - name: Set up git-cliff
         uses: kenji-miyake/setup-git-cliff@v2

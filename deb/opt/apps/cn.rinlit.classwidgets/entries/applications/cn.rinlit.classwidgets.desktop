@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Class Widgets
+Version=1.0
+Exec=env CLASSWIDGETS_NOT_PORTABLE=0 /opt/apps/cn.rinlit.classwidgets/files/ClassWidgets
+Icon=/opt/apps/cn.rinlit.classwidgets/entries/icons/hicolor/128x128/apps/favicon.png
+Type=Application
+Terminal=false
+StartupNotify=true
+Encoding=UTF-8
+Categories=Office;

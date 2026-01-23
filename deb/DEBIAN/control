@@ -1,0 +1,9 @@
+Package: cn.rinlit.classwidgets
+Version:
+Installed-Size:
+Maintainer: RinLit <contacts@rinlit.cn>
+Section: utils
+Architecture: amd64
+Priority: optional
+Description: 全新桌面课表
+ Class Widgets 是一款能够显示当前课程的桌面组件应用程序。其提供了易用课程表编辑和美观的桌面组件。

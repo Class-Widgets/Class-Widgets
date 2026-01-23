@@ -227,7 +227,8 @@ class DarkModeWatcher(QObject):
     def __init__(self, interval: int = 500, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
         self._isDarkMode: bool = bool(darkdetect.isDark())  # 初始状态
-        self._callback_id = update_timer.add_callback(self._check_theme, interval=interval / 1000)
+        self.interval = interval
+        self.update_callback()
 
     def _check_theme(self) -> None:
         current_mode: bool = bool(darkdetect.isDark())
@@ -239,16 +240,21 @@ class DarkModeWatcher(QObject):
         """返回当前是否暗黑模式"""
         return self._isDarkMode
 
+    def update_callback(self) -> None:
+        self._callback_id = update_timer.add_callback(
+            self._check_theme, interval=self.interval / 1000
+        )
+
     def stop(self) -> None:
         """停止监听"""
         if hasattr(self, '_callback_id') and self._callback_id:
-            update_timer.remove_callback(self._callback_id)
+            update_timer.remove_callback_by_id(self._callback_id)
             self._callback_id = None
 
     def start(self, interval: Optional[int] = None) -> None:
         """开始监听"""
         if hasattr(self, '_callback_id') and self._callback_id:
-            update_timer.remove_callback(self._callback_id)
+            update_timer.remove_callback_by_id(self._callback_id)
         interval_seconds = (interval / 1000) if interval else 0.5  # 默认0.5秒
         self._callback_id = update_timer.add_callback(self._check_theme, interval=interval_seconds)
 
@@ -358,10 +364,16 @@ class UnionUpdateTimer(QObject):
                     self._cleanup_dead_callback(cb_id)
                     continue
             # 重新调度回调
-            self.callback_info[cb_id]['last_run'] = current_time
-            next_time = current_time + dt.timedelta(seconds=interval)
-            self.callback_info[cb_id]['next_run'] = next_time
-            heappush(self.task_heap, (next_time, cb_id, actual_callback, interval))
+            if cb_id in self.callback_info:
+                self.callback_info[cb_id]['last_run'] = current_time
+            # else:
+            #     logger.debug(f"try push {cb_id} cancelled")
+            if cb_id in self.callback_info:
+                next_time = current_time + dt.timedelta(seconds=interval)
+                self.callback_info[cb_id]['next_run'] = next_time
+                heappush(self.task_heap, (next_time, cb_id, actual_callback, interval))
+            # else:
+            #     logger.debug(f"try push {cb_id} cancelled")
         # if executed_count > 0:
         #     logger.debug(f"执行了 {executed_count} 个回调")
 
@@ -430,6 +442,7 @@ class UnionUpdateTimer(QObject):
 
     def _cleanup_dead_callback(self, cb_id: int) -> None:
         """清理失效的回调函数"""
+        # logger.debug(f"cleanup {cb_id}")
         self.callback_info.pop(cb_id, None)
         self._callback_refs.pop(cb_id, None)
         self._callback_hashes.pop(cb_id, None)
@@ -495,6 +508,7 @@ class UnionUpdateTimer(QObject):
         should_start = not self._is_running
         if should_start:
             self.start()
+        # logger.debug(f"add {cb_id}")
         return cb_id
 
     def remove_callback(self, callback: Callable[[], Any]) -> None:
@@ -526,6 +540,7 @@ class UnionUpdateTimer(QObject):
 
     def remove_all_callbacks(self) -> None:
         """移除所有已注册的回调函数"""
+        # logger.debug("remove_all_callbacks")
         self.callback_info.clear()
         self._callback_refs.clear()
         self._callback_hashes.clear()

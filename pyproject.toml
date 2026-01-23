@@ -1,11 +1,9 @@
 [dependency-groups]
 dev = [
-  "mypy>=1.14.1",
-  "pre-commit>=3.5.0",
-  "pylint>=3.2.7",
+  "prek>=0.2.27",
   "pyqt5-stubs~=5.15.6.0",
-  "pyright>=1.1.405",
-  "ruff>=0.13.2"
+  "pyright>=1.1.408",
+  "ruff>=0.14.11"
 ]
 package = ["pyinstaller>=6.16.0"]
 
@@ -18,14 +16,14 @@ dependencies = [
   "loguru~=0.7.2",
   "ntplib~=0.4.0",
   "packaging>=25.0",
-  "psutil~=7.1.0",
+  "psutil~=7.2.1",
   "pycses",
   "pycparser==2.14; sys_platform == 'linux'",
   "pycparser",
   "pydantic~=2.10.6",
   "pygame~=2.6.1",
   "pygetwindow~=0.0.9",
-  "pyqt-fluent-widgets~=1.9.0",
+  "pyqt-fluent-widgets~=1.10.5",
   "pyqt5-qt5==5.15.2; sys_platform == 'win32'",
   "pyqt5-qt5",
   "pyqt5~=5.15.11",
@@ -41,55 +39,44 @@ requires-python = ">=3.8"
 version = "0.1.0"
 
 [tool.pyright]
-"autoImportCompletions" = true
-"exclude" = [
+typeCheckingMode = "standard"
+pythonVersion = "3.8"
+useLibraryCodeForTypes = true
+autoImportCompletions = true
+
+include = ["**/*.py"]
+exclude = [
   "**/.venv",
+  "**/venv",
   "**/__pycache__",
   "**/node_modules",
-  "**/venv",
   "build",
   "dist"
 ]
-"include" = ["**/*.py"]
-"pythonPlatform" = "All"
-"pythonVersion" = "3.8"
-"reportArgumentType" = "warning"
-"reportAssertAlwaysTrue" = "information"
-"reportAttributeAccessIssue" = "information"
-"reportConstantRedefinition" = "warning"
-"reportDuplicateImport" = "warning"
-"reportGeneralTypeIssues" = "warning"
-"reportImplicitStringConcatenation" = "information"
-"reportImportCycles" = "warning"
-"reportIncompatibleMethodOverride" = "warning"
-"reportIncompatibleVariableOverride" = "warning"
-"reportMissingImports" = "warning"
-"reportMissingParameterType" = "information"
-"reportMissingTypeStubs" = "information"
-"reportOptionalCall" = "information"
-"reportOptionalContextManager" = "information"
-"reportOptionalIterable" = "information"
-"reportOptionalMemberAccess" = "information"
-"reportOptionalOperand" = "information"
-"reportOptionalSubscript" = "information"
-"reportOverlappingOverload" = "warning"
-"reportPrivateUsage" = "information"
-"reportSelfClsParameterName" = "information"
-"reportUnnecessaryCast" = "information"
-"reportUnnecessaryIsInstance" = "information"
-"reportUntypedBaseClass" = "information"
-"reportUntypedClassDecorator" = "information"
-"reportUntypedFunctionDecorator" = "information"
-"reportUntypedNamedTuple" = "information"
-"reportUnusedClass" = "information"
-"reportUnusedFunction" = "information"
-"reportUnusedImport" = "information"
-"reportUnusedVariable" = "information"
-"strictDictionaryInference" = false
-"strictListInference" = false
-"strictSetInference" = false
-"typeCheckingMode" = "basic"
-"useLibraryCodeForTypes" = true
+
+reportArgumentType = "warning"
+reportGeneralTypeIssues = "warning"
+reportDuplicateImport = "warning"
+reportImportCycles = "warning"
+reportIncompatibleMethodOverride = "warning"
+reportIncompatibleVariableOverride = "warning"
+reportOverlappingOverload = "warning"
+reportAttributeAccessIssue = "none"
+reportOptionalMemberAccess = "none"
+reportOptionalCall = "none"
+reportOptionalSubscript = "none"
+reportMissingTypeStubs = "none"
+reportMissingParameterType = "none"
+reportUnusedImport = "none"
+reportUnusedVariable = "none"
+reportUnusedFunction = "none"
+reportUnusedClass = "none"
+reportPrivateUsage = "none"
+reportSelfClsParameterName = "none"
+strictDictionaryInference = false
+strictListInference = false
+strictSetInference = false
+
 
 [[tool.pyright.executionEnvironments]]
 "extraPaths" = [".", "./config", "./ui", "./view"]
