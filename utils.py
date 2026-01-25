@@ -1,7 +1,5 @@
 import asyncio
 import atexit
-import contextlib
-import ctypes
 import datetime as dt
 import gc
 import inspect
@@ -16,6 +14,10 @@ from abc import ABC, abstractmethod
 from heapq import heapify, heappop, heappush
 from pathlib import Path
 from typing import Any, Callable, ClassVar, Dict, List, Optional, Tuple, Type, Union
+
+if os.name == 'nt':
+    import win32gui
+    from win32com.client import Dispatch
 
 import darkdetect
 import ntplib
@@ -32,16 +34,11 @@ from PyQt5.QtCore import (
     qInstallMessageHandler,
 )
 from PyQt5.QtGui import QIcon
-from PyQt5.QtNetwork import QLocalServer, QLocalSocket
 from PyQt5.QtWidgets import QApplication, QSystemTrayIcon
 
 from basic_dirs import CW_HOME, LOG_HOME
 from file import config_center
 from generate_speech import get_tts_service
-
-if os.name == 'nt':
-    import win32gui
-    from win32com.client import Dispatch
 
 
 class StreamToLogger:
@@ -1072,89 +1069,16 @@ main_mgr = None
 
 
 class SingleInstanceGuard:
-    def __init__(self, lock_name: str = "ClassWidgets"):
-        self._lock_path = (
-            str(LOG_HOME.parent / "config" / f"{lock_name}.lock")
-            if LOG_HOME
-            else QDir.temp().absoluteFilePath(f"{lock_name}.lock")
-        )
-        try:
-            from basic_dirs import CONFIG_HOME
-
-            self._lock_path = str(CONFIG_HOME / f"{lock_name}.lock")
-        except Exception:
-            pass
-        self.lock_file = QLockFile(self._lock_path)
+    def __init__(self, lock_name="ClassWidgets.lock"):
+        lock_path = QDir.temp().absoluteFilePath(lock_name)
+        self.lock_file = QLockFile(lock_path)
         self.lock_acquired = False
-        self._server_name = f"{lock_name}-single-instance"
-        self._server = QLocalServer()
-        self._server_started = False
-        self._mutex_handle = None
-        self._mutex_acquired = False
 
-    def try_acquire(self, timeout: int = 100) -> bool:
-        if os.name == 'nt':
-            try:
-                name = f"Local\\{self._server_name}"
-                self._mutex_handle = ctypes.windll.kernel32.CreateMutexW(None, False, name)
-                if not self._mutex_handle:
-                    raise OSError("CreateMutexW failed")
-                wait = ctypes.windll.kernel32.WaitForSingleObject(self._mutex_handle, 0)
-                if wait in (0, 0x00000080):
-                    self._mutex_acquired = True
-                    return True
-                ctypes.windll.kernel32.CloseHandle(self._mutex_handle)
-                self._mutex_handle = None
-                return False
-            except Exception:
-                with contextlib.suppress(Exception):
-                    if self._mutex_handle:
-                        ctypes.windll.kernel32.CloseHandle(self._mutex_handle)
-                self._mutex_handle = None
-                self._mutex_acquired = False
-
+    def try_acquire(self, timeout: int = 100):
         self.lock_acquired = self.lock_file.tryLock(timeout)
-        if not self.lock_acquired:
-            with contextlib.suppress(Exception):
-                if self.lock_file.removeStaleLockFile():
-                    self.lock_acquired = self.lock_file.tryLock(timeout)
-        if not self.lock_acquired:
-            return False
+        return self.lock_acquired
 
-        if self._server.listen(self._server_name):
-            self._server_started = True
-            return True
-
-        sock = QLocalSocket()
-        sock.connectToServer(self._server_name)
-        is_running = sock.waitForConnected(100)
-        sock.abort()
-        if is_running:
-            self.release()
-            return False
-        with contextlib.suppress(Exception):
-            QLocalServer.removeServer(self._server_name)
-        if self._server.listen(self._server_name):
-            self._server_started = True
-            return True
-
-        return True
-
-    def release(self) -> None:
-        if os.name == 'nt':
-            with contextlib.suppress(Exception):
-                if self._mutex_handle:
-                    if self._mutex_acquired:
-                        ctypes.windll.kernel32.ReleaseMutex(self._mutex_handle)
-                    ctypes.windll.kernel32.CloseHandle(self._mutex_handle)
-            self._mutex_handle = None
-            self._mutex_acquired = False
-            return
-        try:
-            if self._server_started:
-                self._server.close()
-        except Exception:
-            pass
+    def release(self):
         if self.lock_acquired:
             self.lock_file.unlock()
 

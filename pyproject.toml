@@ -1,9 +1,9 @@
 [dependency-groups]
 dev = [
-  "prek>=0.3.0",
+  "prek>=0.2.27",
   "pyqt5-stubs~=5.15.6.0",
   "pyright>=1.1.408",
-  "ruff>=0.14.14"
+  "ruff>=0.14.11"
 ]
 package = ["pyinstaller>=6.16.0"]
 
@@ -23,7 +23,7 @@ dependencies = [
   "pydantic~=2.10.6",
   "pygame~=2.6.1",
   "pygetwindow~=0.0.9",
-  "pyqt-fluent-widgets~=1.11.0",
+  "pyqt-fluent-widgets~=1.10.5",
   "pyqt5-qt5==5.15.2; sys_platform == 'win32'",
   "pyqt5-qt5",
   "pyqt5~=5.15.11",

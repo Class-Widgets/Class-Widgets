@@ -6219,8 +6219,8 @@ class SettingsMenu(FluentWindow):
         self.setMinimumWidth(700)
         self.setMinimumHeight(400)
         self.navigationInterface.setExpandWidth(250)
-        self.navigationInterface.setIndicatorAnimationEnabled(False)
-        QTimer.singleShot(0, self._safe_set_navigation_collapsible)
+        self.navigationInterface.setIndicatorAnimationEnabled(True)
+        self.navigationInterface.setCollapsible(False)
         self.setMicaEffectEnabled(True)
 
         # 修复设置窗口在各个屏幕分辨率DPI下的窗口大小
@@ -6238,15 +6238,6 @@ class SettingsMenu(FluentWindow):
         self.setWindowIcon(QIcon(str(CW_HOME / 'img' / 'logo' / 'favicon-settings.ico')))
 
         self.init_font()  # 设置字体
-
-    def _safe_set_navigation_collapsible(self):
-        try:
-            self.navigationInterface.setCollapsible(False)
-        except Exception as e:
-            logger.warning(f"设置侧边栏可折叠状态失败: {e}")
-        finally:
-            with contextlib.suppress(Exception):
-                self.navigationInterface.setIndicatorAnimationEnabled(True)
 
     def _on_page_changed(self):
         """清理NTP flyout"""

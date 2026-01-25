@@ -72,7 +72,7 @@ Bug 反馈需包含的信息：
 
 1. **环境准备**
    - 本项目使用 [`uv`](https://docs.astral.sh/uv/getting-started/installation/) 作为项目包管理器，请使用任意方式安装最新的 uv 并在项目文件夹执行 `uv sync` 来配置环境
-   - 推荐随后执行 `uv run prek install` 添加提交前钩子进行代码风格统一
+   - 推荐随后执行 `uv run pre-commit install` 添加提交前钩子进行代码风格统一
 
 2. **分支准备**：
    - 基于主仓库 main 分支创建个人分支，命名建议：feat/功能名 或 fix/bug描述；
