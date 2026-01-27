@@ -30,7 +30,7 @@ dependencies = [
   "python-dateutil~=2.9.0",
   "pyttsx3~=2.99",
   "pytz~=2025.2",
-  "requests~=2.32.4"
+  "requests[socks]~=2.32.4",
 ]
 description = ""
 name = "class_widgets"
