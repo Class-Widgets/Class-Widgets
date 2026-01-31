@@ -441,13 +441,6 @@ class NotificationManager:
     def _provide_notification(self, idx: int) -> None:
         assert self.next_lessons is not None
         assert self.current_lesson_name is not None
-        # if idx == -1:
-        #     if self.next_lessons:
-        #         tip_toast.push_notification(0, self.next_lessons[0])
-        #     else:
-        #         tip_toast.push_notification(2, '')
-        # else:
-        #     tip_toast.push_notification(1, self.current_lesson_name)
         assert self.status is not None
         assert self.status != 2
         if self.status == 1:
