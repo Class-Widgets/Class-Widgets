@@ -1,0 +1,17 @@
+{
+  "appid": "cn.rinlit.classwidgets",
+  "name": "Class Widgets",
+  "version": "",
+  "arch": ["amd64"],
+  "permissions": {
+    "autostart": true,
+    "notification": true,
+    "trayicon": true,
+    "clipboard": true,
+    "account": false,
+    "bluetooth": false,
+    "camera": false,
+    "audio_record": false,
+    "installed_apps": true
+  }
+}

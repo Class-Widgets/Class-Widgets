@@ -40,7 +40,7 @@ jobs:
           mkdir -p release
 
       - name: Download artifacts
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: ClassWidgets-Packages
           path: artifacts
@@ -53,6 +53,7 @@ jobs:
             exit 1
           fi
           find artifacts -name "*.zip" -type f -exec cp {} release/ \;
+          find artifacts -name "*.deb" -type f -exec cp {} release/ \;
           if [ -f "artifacts/file_provenance.json" ]; then
             cp -f artifacts/file_provenance.json release/
           fi

@@ -33,15 +33,21 @@ repos:
   #   hooks:
   #     - id: mdformat
 
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.21.2
+    hooks:
+      - id: pyupgrade
+        args: [--py38-plus]
+
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.8
+    rev: v0.14.13
     hooks:
       - id: ruff-format
       - id: ruff-check
         args: ["--fix", "--unsafe-fixes", "--show-fixes", "--exit-zero"]
 
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.37.1
+    rev: v1.38.0
     hooks:
       - id: yamllint
         args:
@@ -55,7 +61,7 @@ repos:
         args: ["--write"]
         files: \.(json|md|yaml|yml)$
         additional_dependencies:
-          - "prettier@3.6.2"
+          - "prettier@3.7.4"
           - "@prettier/plugin-xml"
 
   - repo: https://github.com/pappasam/toml-sort

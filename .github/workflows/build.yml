@@ -325,7 +325,7 @@ jobs:
     steps:
       - name: Cache dependencies (Linux)
         if: matrix.platform == 'linux-x64'
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: /var/cache/apt/archives
           key: ${{ runner.os }}-apt-archives
@@ -358,7 +358,7 @@ jobs:
           fi
 
       - name: Cache Python
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~\AppData\Roaming\uv\python
@@ -457,7 +457,7 @@ jobs:
           echo "::endgroup::"
 
       - name: Cache Python dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.cache/uv
@@ -578,13 +578,32 @@ jobs:
 
           if [[ "$BUILD_TYPE" == "Release" ]]; then
             zip_name="ClassWidgets-Linux-x64"
+            rm deb/opt/apps/cn.rinlit.classwidgets/files/.gitkeep
+            cp dist/ClassWidgets/* deb/opt/apps/cn.rinlit.classwidgets/files/ -rvp
           else
             zip_name="Linux-x64_debug-${GITHUB_RUN_ID}"
           fi
           cd dist && mv ClassWidgets "${zip_name}" && zip -r -q "../packages/${zip_name}.zip" "${zip_name}"/* && cd ..
 
+      - name: Build .deb Package (Linux)
+        if: matrix.platform == 'linux-x64' && env.BUILD_TYPE == 'Release'
+        run: |
+          control_file="deb/DEBIAN/control"
+
+          # 计算 Installed-Size
+          installed_size=$(du -sk deb/opt deb/usr 2>/dev/null | awk '{s+=$1} END{print s}')
+
+          # 填入 control 文件
+          sed -i "s/^Version:.*/Version: $RELEASE_VERSION/" "$control_file"
+          sed -i "s/^Installed-Size:.*/Installed-Size: ${installed_size}/" "$control_file"
+
+          # 更改 info 版本号
+          sed -i "s/\"version\": \".*\"/\"version\": \"$RELEASE_VERSION\"/" deb/opt/apps/cn.rinlit.classwidgets/info
+
+          dpkg-deb -b deb packages/cn.rinlit.classwidgets_${RELEASE_VERSION}_amd64.deb
+
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ matrix.platform }}-build
           path: ./packages
@@ -607,7 +626,7 @@ jobs:
       - name: Upload unsigned artifact (Windows)
         if: startsWith(matrix.os, 'windows') && env.IS_SIGNING == 'true'
         id: upload_unsigned
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: windows-${{ matrix.arch }}-exe-unsigned
           path: ./exe-for-signing
@@ -655,7 +674,7 @@ jobs:
 
       - name: Upload signed build package (Windows)
         if: startsWith(matrix.os, 'windows') && env.IS_SIGNING == 'true'
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: windows-${{ matrix.arch }}-build-signed
           path: packages/ClassWidgets-Windows-${{ matrix.arch }}-signed.zip
@@ -672,7 +691,7 @@ jobs:
       BUILD_TYPE: ${{ needs.prepare.outputs.build_type }}
     steps:
       - name: Download all build artifacts
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           path: ./all-artifacts
 
@@ -751,6 +770,7 @@ jobs:
               build_key="${platform}-build"
               if [[ -n "${artifact_cache[$build_key]:-}" ]]; then
                 echo "[DEBUG] 使用 ${platform} 构建版本"
+                # 处理 ZIP 包
                 for zip_file in "${artifact_cache[$build_key]}"/*.zip; do
                   if [[ -f "$zip_file" ]]; then
                     case "$platform_type" in
@@ -761,10 +781,21 @@ jobs:
                         target_name="ClassWidgets-Linux-${platform#linux-}_${run_id}.zip"
                         ;;
                     esac
-                    process_file "$zip_file" "$target_name" "$platform" "构建"
+                    process_file "$zip_file" "$target_name" "$platform" "构建ZIP"
                     break
                   fi
                 done
+
+                # 处理 .deb 包（仅 Linux）
+                if [[ "$platform_type" == "linux" ]]; then
+                  for deb_file in "${artifact_cache[$build_key]}"/*.deb; do
+                    if [[ -f "$deb_file" ]]; then
+                      target_name="ClassWidgets-Linux-${platform#linux-}_${run_id}.deb"
+                      process_file "$deb_file" "$target_name" "$platform" "构建DEB"
+                      break
+                    fi
+                  done
+                fi
               else
                 echo "[DEBUG] ${platform} 版本未找到"
               fi
@@ -801,7 +832,7 @@ jobs:
             echo "|--------|----------|-----|"
           } > final-packages/file-info.md
           shopt -s nullglob
-          files=(final-packages/*.zip)
+          files=(final-packages/*.zip final-packages/*.deb)
           if [ ${#files[@]} -eq 0 ]; then
             echo "未找到任何包文件" >> final-packages/file-info.md
           else
@@ -828,14 +859,14 @@ jobs:
           ls -la final-packages/ || true
 
       - name: Upload final packages
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: ClassWidgets-Packages
           path: final-packages
 
       - name: Upload provenance artifacts
         if: ${{ env.BUILD_TYPE == 'Release' && steps.generate-provenance.outputs.bundle-path != '' }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: provenance
           path: |

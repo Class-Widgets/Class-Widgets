@@ -79,9 +79,7 @@ from qfluentwidgets import FluentIcon as fIcon
 
 import splash
 
-splash_window = splash.Splash()
-splash_window.run()
-splash_window.update_status((0, QCoreApplication.translate('main', '加载模块...')))
+splash_window = None
 
 import conf
 import list_
@@ -141,8 +139,7 @@ dark_mode_watcher = None
 was_floating_mode = False  # 浮窗状态
 
 
-@logger.catch
-def global_exceptHook(exc_type: type, exc_value: Exception, exc_tb: any) -> None:
+def global_exceptHook(exc_type: type, exc_value: Exception, exc_tb: Any) -> None:
     if config_center.read_conf('Other', 'safe_mode') == '1':
         return
     error_details = ''.join(traceback.format_exception(exc_type, exc_value, exc_tb))
@@ -467,17 +464,17 @@ class ErrorDialog(Dialog):  # 重大错误提示框
             ignore_errors.append(self.error_log.toPlainText())
         self.close()
 
-    def mousePressEvent(self, event: Any) -> None:
-        if event.button() == Qt.LeftButton and event.y() <= self.title_bar_height:
+    def mousePressEvent(self, a0: Any) -> None:
+        if a0.button() == Qt.LeftButton and a0.y() <= self.title_bar_height:
             self.is_dragging = True
-            self.drag_position = event.globalPos() - self.frameGeometry().topLeft()
+            self.drag_position = a0.globalPos() - self.frameGeometry().topLeft()
 
-    def mouseMoveEvent(self, event: Any) -> None:
+    def mouseMoveEvent(self, a0: Any) -> None:
         if self.is_dragging:
-            self.move(event.globalPos() - self.drag_position)
+            self.move(a0.globalPos() - self.drag_position)
 
-    def mouseReleaseEvent(self, event: Any) -> None:
-        if event.button() == Qt.LeftButton:
+    def mouseReleaseEvent(self, a0: Any) -> None:
+        if a0.button() == Qt.LeftButton:
             self.is_dragging = False
 
 
@@ -658,7 +655,7 @@ class WidgetsManager:
     def init_widgets(self) -> None:  # 初始化小组件
         self.widgets_list = list_.get_widget_config()
         self.check_widgets_exist()
-        self.spacing = conf.load_theme_config(theme).config.spacing
+        self.spacing = conf.load_theme_config(theme if theme else 'default').config.spacing
 
         self.get_start_pos()
         cnt_all = {}
@@ -699,7 +696,7 @@ class WidgetsManager:
 
     @staticmethod
     def get_widgets_height() -> int:
-        return conf.load_theme_config(theme).config.height
+        return conf.load_theme_config(theme if theme else 'default').config.height
 
     def create_widgets(self) -> None:
         for widget in self.widgets:
@@ -729,7 +726,9 @@ class WidgetsManager:
             if widget.animation is None:
                 widget.widget_transition(pos_x, width, height, op, pos_y)
 
-    def get_widget_pos(self, path: str, cnt: Optional[int] = None) -> List[int]:  # 获取小组件位置
+    def get_widget_pos(
+        self, path: str, cnt: Optional[int] = None
+    ) -> Tuple[int, int]:  # 获取小组件位置
         num = self.widgets_list.index(path) if cnt is None else cnt
         self.get_start_pos()
         pos_x = self.start_pos_x + self.spacing * num
@@ -738,7 +737,7 @@ class WidgetsManager:
             pos_x += conf.load_theme_config(
                 str('default' if theme is None else theme)
             ).config.widget_width.get(widget, list_.widget_width.get(widget, 0))
-        return [int(pos_x), int(self.start_pos_y)]
+        return (int(pos_x), int(self.start_pos_y))
 
     def get_start_pos(self) -> None:
         self.calculate_widgets_width()
@@ -985,8 +984,8 @@ class openProgressDialog(QWidget):
         self.animation.start()
         self.animation_rect.start()
 
-    def closeEvent(self, event: QCloseEvent) -> None:
-        event.ignore()
+    def closeEvent(self, a0: QCloseEvent) -> None:
+        a0.ignore()
         self.setMinimumWidth(0)
         self.position = self.pos()
         # 关闭时保存一次位置
@@ -1032,7 +1031,7 @@ class FloatingWidget(QWidget):  # 浮窗
 
         # 加载保存的位置
         saved_pos = self.load_position()
-        if saved_pos:
+        if saved_pos is not None:
             # 边界检查
             saved_pos = self.adjust_position_to_screen(saved_pos)
             self.position = saved_pos
@@ -1290,12 +1289,12 @@ class FloatingWidget(QWidget):  # 浮窗
 
         self.update()
 
-    def showEvent(self, event: QShowEvent) -> None:  # 窗口显示
+    def showEvent(self, a0: QShowEvent) -> None:  # 窗口显示
         logger.info('显示浮窗')
         current_screen = QApplication.screenAt(self.pos()) or QApplication.primaryScreen()
         screen_geometry = current_screen.availableGeometry()
 
-        if self.position:
+        if self.position is not None:
             if self.position.y() > screen_geometry.center().y():
                 # 下半屏
                 start_pos = QPoint(self.position.x(), screen_geometry.bottom() + self.height())
@@ -1338,13 +1337,13 @@ class FloatingWidget(QWidget):  # 浮窗
     def animation_done(self) -> None:
         self.animating = False
 
-    def closeEvent(self, event: QCloseEvent) -> None:
+    def closeEvent(self, a0: QCloseEvent) -> None:
         # 跳过动画
         if QApplication.instance().closingDown():
             self.save_position()
-            event.accept()
+            a0.accept()
             return
-        event.ignore()
+        a0.ignore()
         self.setMinimumWidth(0)
         self.position = self.pos()
         self.save_position()
@@ -1426,8 +1425,8 @@ class FloatingWidget(QWidget):  # 浮窗
                 ),
             )
 
-    def hideEvent(self, event: QHideEvent) -> None:
-        event.accept()
+    def hideEvent(self, a0: QHideEvent) -> None:
+        a0.accept()
         logger.info('隐藏浮窗')
         self.animating = False
         self.setMinimumSize(QSize(self.width(), self.height()))
@@ -1449,20 +1448,21 @@ class FloatingWidget(QWidget):  # 浮窗
         self.animation.start()
         self.animation.finished.connect(self.animation_done)
 
-    def mousePressEvent(self, event: QMouseEvent) -> None:
-        if event.button() == Qt.MouseButton.LeftButton:
+    def mousePressEvent(self, a0: QMouseEvent) -> None:
+        if a0.button() == Qt.MouseButton.LeftButton:
             self.m_flag = True
-            self.m_Position = event.globalPos() - self.pos()  # 获取鼠标相对窗口的位置
-            self.p_Position = event.globalPos()  # 获取鼠标相对屏幕的位置
-            event.accept()
+            self.m_Position = a0.globalPos() - self.pos()  # 获取鼠标相对窗口的位置
+            self.p_Position = a0.globalPos()  # 获取鼠标相对屏幕的位置
+            a0.accept()
 
-    def mouseMoveEvent(self, event: QMouseEvent) -> None:
-        if event.buttons() == Qt.MouseButton.LeftButton and self.m_flag:
-            self.move(event.globalPos() - self.m_Position)  # 更改窗口位置
-            event.accept()
+    def mouseMoveEvent(self, a0: QMouseEvent) -> None:
+        if a0.buttons() == Qt.MouseButton.LeftButton and self.m_flag:
+            if self.m_Position is not None:
+                self.move(a0.globalPos() - self.m_Position)  # 更改窗口位置
+            a0.accept()
 
-    def mouseReleaseEvent(self, event: QMouseEvent) -> None:
-        self.r_Position = event.globalPos()  # 获取鼠标相对窗口的位置
+    def mouseReleaseEvent(self, a0: QMouseEvent) -> None:
+        self.r_Position = a0.globalPos()  # 获取鼠标相对窗口的位置
         self.m_flag = False
         # 保存位置到配置文件
         self.save_position()
@@ -1489,10 +1489,10 @@ class FloatingWidget(QWidget):  # 浮窗
         if utils.focus_manager:
             utils.focus_manager.restore_requested.emit()
 
-    def focusInEvent(self, event: QFocusEvent) -> None:
+    def focusInEvent(self, a0: QFocusEvent) -> None:
         self.focusing = True
 
-    def focusOutEvent(self, event: QFocusEvent) -> None:
+    def focusOutEvent(self, a0: QFocusEvent) -> None:
         self.focusing = False
 
     def stop(self):
@@ -1510,7 +1510,7 @@ class FloatingWidget(QWidget):  # 浮窗
 class DesktopWidget(QWidget):  # 主要小组件
     def __init__(
         self,
-        parent: WidgetsManager = WidgetsManager,
+        parent: Optional[WidgetsManager] = None,
         path: str = 'widget-time.ui',
         enable_tray: bool = False,
         cnt: int = 0,
@@ -1518,6 +1518,8 @@ class DesktopWidget(QWidget):  # 主要小组件
         widget_cnt: Optional[int] = None,
     ) -> None:
         super().__init__()
+        if not parent:
+            raise ValueError("DesktopWidget parent 参数不能为空")
         self.setWindowFlags(self.windowFlags() | Qt.WindowType.WindowDoesNotAcceptFocus | Qt.Tool)
 
         self.cnt = cnt
@@ -1806,7 +1808,7 @@ class DesktopWidget(QWidget):  # 主要小组件
                     self.resize(self.w, self.h)
             else:
                 self.show()
-                if current_geometry and current_geometry.isValid():
+                if current_geometry is not None and current_geometry.isValid():
                     self.setGeometry(current_geometry)
                 else:
                     parent = self.parent()
@@ -1925,7 +1927,7 @@ class DesktopWidget(QWidget):  # 主要小组件
                     self._is_topmost_callback_added = False
                     logger.debug(f"因错误 {e} 移除置顶回调。")
 
-    def closeEvent(self, event):
+    def closeEvent(self, a0):
         try:
             if hasattr(self, 'weather_thread') and self.weather_thread.isRunning():
                 self.weather_thread.stop()
@@ -1945,7 +1947,7 @@ class DesktopWidget(QWidget):  # 主要小组件
                 logger.debug("尝试移除不存在的置顶回调。")
             except Exception as e:
                 logger.error(f"关闭窗口时移除置顶回调出错: {e}")
-        super().closeEvent(event)
+        super().closeEvent(a0)
 
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
@@ -2454,7 +2456,7 @@ class DesktopWidget(QWidget):  # 主要小组件
         self, animation: QPropertyAnimation, start_value: float, end_value: float, time: float = 500
     ) -> None:
         """动画属性"""
-        animation.setDuration(time)
+        animation.setDuration(int(time))
         animation.setEasingCurve(QEasingCurve.Type.OutCubic)
         animation.setStartValue(start_value)
         animation.setEndValue(end_value)
@@ -2823,7 +2825,7 @@ class DesktopWidget(QWidget):  # 主要小组件
         return min_font_size
 
     def _manage_reminder_icon_display(
-        self, show_icon: bool, icon_name: str, content_layout: QHBoxLayout
+        self, show_icon: bool, icon_name: Optional[str], content_layout: QHBoxLayout
     ) -> None:
         """管理图标显示/隐藏"""
         icon_in_layout = content_layout.indexOf(self.reminder_icon) != -1
@@ -2862,7 +2864,8 @@ class DesktopWidget(QWidget):  # 主要小组件
             mgr.clear_widgets()
 
     def update_weather_data(
-        self, weather_data: Dict[str, Any]
+        self,
+        weather_data: Dict[str, Dict[str, Any]],  # type: ignore
     ) -> None:  # 更新天气数据(已兼容多api)
         global weather_name, temperature, weather_data_temp
         if (
@@ -2872,7 +2875,7 @@ class DesktopWidget(QWidget):  # 主要小组件
         ):
             logger.success('已获取天气数据')
             original_weather_data = weather_data.copy()
-            weather_data = weather_data.get('now')
+            weather_data: Dict[str, Any] = weather_data.get('now', {})
             weather_data_temp = weather_data
             self._reset_weather_alert_state()
             try:
@@ -3224,8 +3227,8 @@ class DesktopWidget(QWidget):  # 主要小组件
         self.animation.finished.connect(self.clear_animation)
 
     # 点击自动隐藏
-    def mouseReleaseEvent(self, event: QMouseEvent) -> None:
-        if event.button() == Qt.MouseButton.RightButton:
+    def mouseReleaseEvent(self, a0: QMouseEvent) -> None:
+        if a0.button() == Qt.MouseButton.RightButton:
             return  # 右键不执行
         if config_center.read_conf('General', 'hide') == '0':  # 置顶
             if mgr.state:
@@ -3241,7 +3244,7 @@ class DesktopWidget(QWidget):  # 主要小组件
                 mgr.show_windows()
                 mgr.hide_status = (0 if isbreak else 1, 0)
         else:
-            event.ignore()
+            a0.ignore()
         if utils.focus_manager:
             utils.focus_manager.restore_requested.emit()
 
@@ -3407,7 +3410,7 @@ def init() -> None:
     first_start = False
 
 
-def setup_signal_handlers_optimized(app: QApplication) -> None:
+def setup_signal_handlers_optimized() -> None:
     """退出信号处理器"""
 
     def signal_handler(signum, frame):
@@ -3423,17 +3426,19 @@ def setup_signal_handlers_optimized(app: QApplication) -> None:
 
 
 if __name__ == '__main__':
-    splash_window.update_status((10, QCoreApplication.translate('main', '检查多开...')))
-    utils.guard = utils.SingleInstanceGuard("ClassWidgets.lock")
+    utils.guard = utils.SingleInstanceGuard("ClassWidgets")
 
     old_config_file = CW_HOME / "config.ini"
     if old_config_file.exists():
         old_config_file.replace(CONFIG_HOME / "config.ini")
 
     if config_center.read_conf('Other', 'multiple_programs') != '1':
-        if not utils.guard.try_acquire() and (info := utils.guard.get_lock_info()):
-            splash_window.error()
+        if not utils.guard.try_acquire():
+            info = utils.guard.get_lock_info()
             logger.debug(f'不允许多开实例，{info}')
+            if platform.system() == 'Darwin':
+                sys.exit(0)
+            splash_window and splash_window.error()
             from qfluentwidgets import Dialog
 
             app = QApplication.instance() or QApplication(sys.argv)
@@ -3451,6 +3456,11 @@ if __name__ == '__main__':
             dlg.setFixedWidth(550)
             dlg.exec()
             sys.exit(0)
+
+    splash_window = splash.Splash()
+    splash_window.run()
+    splash_window.update_status((0, QCoreApplication.translate('main', '加载模块...')))
+    splash_window.update_status((10, QCoreApplication.translate('main', '检查多开...')))
 
     scale_factor = float(config_center.read_conf('General', 'scale'))
     logger.info(f"当前缩放系数：{scale_factor * 100}%")
@@ -3545,7 +3555,7 @@ if __name__ == '__main__':
 
     mgr = WidgetsManager()
     app.aboutToQuit.connect(mgr.cleanup_resources)
-    setup_signal_handlers_optimized(app)
+    setup_signal_handlers_optimized()
     utils.main_mgr = mgr
 
     splash_window.update_status((55, QCoreApplication.translate('main', '检查初次启动...')))

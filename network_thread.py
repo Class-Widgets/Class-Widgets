@@ -15,6 +15,7 @@ import conf
 import list_
 import utils
 from basic_dirs import CACHE_HOME, CW_HOME
+from data_model import Schedule, normalize_schedule_data
 from file import config_center
 from i18n_manager import get_language_code
 
@@ -631,92 +632,28 @@ class scheduleThread(QThread):  # 获取课表
                 if 'data' in data:
                     data = json.loads(data.get('data'))
 
-                if 'timeline' not in data:
-                    data['timeline'] = {
-                        "default": [],
-                        "0": [],
-                        "1": [],
-                        "2": [],
-                        "3": [],
-                        "4": [],
-                        "5": [],
-                        "6": [],
-                    }
-                for key, value in data['timeline'].items():
-                    if isinstance(value, dict):
-                        timeline = value
+                try:
+                    data = normalize_schedule_data(data)
+                    Schedule.model_validate(data)
+                except Exception as e:
+                    logger.error(f"课程表数据校验失败: {e}")
+                    return {"error": f"课程表数据校验失败: {e}"}
 
-                        def sort_timeline_key(item):
-                            item_name = item[0]
-                            prefix = item_name[0]
-                            if len(item_name) > 1:
-                                try:
-                                    # 提取节点序数
-                                    part_num = int(item_name[1])
-                                    # 提取课程序数
-                                    class_num = 0
-                                    if len(item_name) > 2:
-                                        class_num = int(item_name[2:])
-                                    if prefix == 'a':
-                                        return part_num, class_num, 0
-                                    return part_num, class_num, 1
-                                except ValueError:
-                                    # 如果转换失败，返回原始字符串
-                                    return item_name
-                            return item_name
-
-                        new_timeline = []
-
-                        # 对timeline排序后添加到timeline_data
-                        sorted_timeline = sorted(timeline.items(), key=sort_timeline_key)
-                        for item_name, item_time in sorted_timeline:
-                            try:
-                                new_timeline.append(
-                                    [
-                                        int(item_name[0] == 'f'),
-                                        item_name[1],
-                                        int(item_name[2:]),
-                                        item_time,
-                                    ]
-                                )
-                            except Exception as e:
-                                logger.error(f'加载课程表文件[课程数据]出错：{e}')
-                                return {'error': f'加载课程表文件[课程数据]出错：{e}'}
-                        data['timeline'][key] = new_timeline.copy()
-                    elif not isinstance(value, list):
-                        logger.error(f"课程表时间线格式错误: {key}: {value}")
-                        return {'error': f"课程表时间线格式错误: {key}: {value}"}
-
-                if 'timeline_even' not in data:
-                    data['timeline_even'] = {
-                        "default": [],
-                        "0": [],
-                        "1": [],
-                        "2": [],
-                        "3": [],
-                        "4": [],
-                        "5": [],
-                        "6": [],
-                    }
-                if data.get('url', None) is None:
-                    data['url'] = self.url
-
+                data['url'] = data.get('url') or self.url
                 return data
 
             logger.error(
-                f"无法获取课表 {self.url} 错误代码：{response.status_code}，响应内容: {response.text}"
+                f"无法获取课表 {self.url} 错误代码: {response.status_code}, 响应内容: {response.text}"
             )
-            return {'error': f"请求失败，错误代码：{response.status_code}"}
+            return {'error': f"请求失败, 错误代码: {response.status_code}"}
         except Exception as e:
-            logger.error(f"请求失败，错误详情：{e!s}")
+            logger.error(f"请求失败, 错误详情: {e!s}")
             return {"error": f"请求失败\n{e!s}"}
 
     def post_schedule(self):
         try:
             logger.info(f"正在上传课表 {self.url}")
-            response = requests.post(
-                self.url, proxies=proxies, timeout=30, json={"data": json.dumps(self.data)}
-            )
+            response = requests.post(self.url, timeout=30, json={"data": json.dumps(self.data)})
             logger.debug(f"课表 {self.url} 请求响应: {response.status_code}")
             if response.status_code == 200:
                 data = response.json()
@@ -724,9 +661,9 @@ class scheduleThread(QThread):  # 获取课表
                     return json.loads(data.get('data'))
                 return data
             logger.error(
-                f"无法上传课表 {self.url} 错误代码：{response.status_code}，响应内容: {response.text}"
+                f"无法上传课表 {self.url} 错误代码: {response.status_code}, 响应内容: {response.text}"
             )
-            return {'error': f"请求失败，错误代码：{response.status_code}"}
+            return {'error': f"请求失败, 错误代码: {response.status_code}"}
         except Exception as e:
-            logger.error(f"请求失败，错误详情：{e!s}")
+            logger.error(f"请求失败, 错误详情: {e!s}")
             return {"error": f"请求失败\n{e!s}"}

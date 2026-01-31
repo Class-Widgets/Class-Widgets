@@ -106,8 +106,20 @@ class AudioManager:
     def _get_volume(self, volume: Optional[float]) -> float:
         """计算音量"""
         if volume is not None:
-            return max(0.0, min(1.0, volume))
-        return int(config_center.read_conf('Audio', 'volume')) / 100
+            final_volume = max(0.0, min(1.0, volume))
+            logger.debug(f"使用传入音量: {final_volume}")
+            return final_volume
+
+        try:
+            conf_value = config_center.read_conf('Audio', 'volume')
+            conf_volume = int(conf_value)
+            conf_volume = max(0, min(100, conf_volume))  # 0-100
+            final_volume = conf_volume / 100.0
+            logger.debug(f"使用配置文件音量: {conf_volume}% -> {final_volume}")
+            return final_volume
+        except (ValueError, TypeError) as e:
+            logger.error(f"读取音量配置失败: {e}，使用默认音量0.7")
+            return 0.7
 
     def play_audio(
         self, file_path: str, volume: Optional[float] = None, blocking: bool = True
@@ -133,17 +145,19 @@ class AudioManager:
             return False
         try:
             final_volume = self._get_volume(volume)
-            sound.set_volume(final_volume)
             channel = sound.play()
             if not channel:
                 logger.error(f"无法获取播放通道: {relative_path}")
                 return False
             channel.set_volume(final_volume)
+
+            logger.debug(
+                f'成功播放音频: {relative_path} (是否阻塞: {blocking}, 音量: {final_volume})'
+            )
+
             if blocking:
                 while channel.get_busy():
                     pygame.time.wait(100)
-
-            logger.debug(f'成功播放音频: {relative_path} (是否阻塞: {blocking})')
             return True
         except (pygame.error, OSError) as e:
             logger.error(f'音频播放失败: {relative_path} | 错误: {e}')

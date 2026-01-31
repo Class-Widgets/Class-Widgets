@@ -6219,6 +6219,7 @@ class SettingsMenu(FluentWindow):
         self.setMinimumWidth(700)
         self.setMinimumHeight(400)
         self.navigationInterface.setExpandWidth(250)
+        self.navigationInterface.setIndicatorAnimationEnabled(True)
         self.navigationInterface.setCollapsible(False)
         self.setMicaEffectEnabled(True)
 

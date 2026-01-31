@@ -1,11 +1,9 @@
 [dependency-groups]
 dev = [
-  "mypy>=1.14.1",
-  "pre-commit>=3.5.0",
-  "pylint>=3.2.7",
+  "prek>=0.2.27",
   "pyqt5-stubs~=5.15.6.0",
-  "pyright>=1.1.405",
-  "ruff>=0.13.2"
+  "pyright>=1.1.408",
+  "ruff>=0.14.11"
 ]
 package = ["pyinstaller>=6.16.0"]
 
@@ -14,18 +12,18 @@ dependencies = [
   "configparser~=7.1.0",
   "darkdetect==0.8.0",
   "distro~=1.9.0; sys_platform == 'linux'",
-  "edge-tts==7.2.1",
+  "edge-tts~=7.2.7",
   "loguru~=0.7.2",
   "ntplib~=0.4.0",
   "packaging>=25.0",
-  "psutil~=7.1.0",
+  "psutil~=7.2.1",
   "pycses",
   "pycparser==2.14; sys_platform == 'linux'",
   "pycparser",
   "pydantic~=2.10.6",
   "pygame~=2.6.1",
   "pygetwindow~=0.0.9",
-  "pyqt-fluent-widgets~=1.9.0",
+  "pyqt-fluent-widgets==1.10.3",
   "pyqt5-qt5==5.15.2; sys_platform == 'win32'",
   "pyqt5-qt5",
   "pyqt5~=5.15.11",
@@ -41,8 +39,8 @@ requires-python = ">=3.8"
 version = "0.1.0"
 
 [tool.pyright]
-"autoImportCompletions" = true
-"exclude" = [
+autoImportCompletions = true
+exclude = [
   "**/.venv",
   "**/__pycache__",
   "**/node_modules",
@@ -50,46 +48,32 @@ version = "0.1.0"
   "build",
   "dist"
 ]
-"include" = ["**/*.py"]
-"pythonPlatform" = "All"
-"pythonVersion" = "3.8"
-"reportArgumentType" = "warning"
-"reportAssertAlwaysTrue" = "information"
-"reportAttributeAccessIssue" = "information"
-"reportConstantRedefinition" = "warning"
-"reportDuplicateImport" = "warning"
-"reportGeneralTypeIssues" = "warning"
-"reportImplicitStringConcatenation" = "information"
-"reportImportCycles" = "warning"
-"reportIncompatibleMethodOverride" = "warning"
-"reportIncompatibleVariableOverride" = "warning"
-"reportMissingImports" = "warning"
-"reportMissingParameterType" = "information"
-"reportMissingTypeStubs" = "information"
-"reportOptionalCall" = "information"
-"reportOptionalContextManager" = "information"
-"reportOptionalIterable" = "information"
-"reportOptionalMemberAccess" = "information"
-"reportOptionalOperand" = "information"
-"reportOptionalSubscript" = "information"
-"reportOverlappingOverload" = "warning"
-"reportPrivateUsage" = "information"
-"reportSelfClsParameterName" = "information"
-"reportUnnecessaryCast" = "information"
-"reportUnnecessaryIsInstance" = "information"
-"reportUntypedBaseClass" = "information"
-"reportUntypedClassDecorator" = "information"
-"reportUntypedFunctionDecorator" = "information"
-"reportUntypedNamedTuple" = "information"
-"reportUnusedClass" = "information"
-"reportUnusedFunction" = "information"
-"reportUnusedImport" = "information"
-"reportUnusedVariable" = "information"
-"strictDictionaryInference" = false
-"strictListInference" = false
-"strictSetInference" = false
-"typeCheckingMode" = "basic"
-"useLibraryCodeForTypes" = true
+include = ["**/*.py"]
+pythonVersion = "3.8"
+reportArgumentType = "warning"
+reportAttributeAccessIssue = "none"
+reportDuplicateImport = "warning"
+reportGeneralTypeIssues = "warning"
+reportImportCycles = "warning"
+reportIncompatibleMethodOverride = "warning"
+reportIncompatibleVariableOverride = "warning"
+reportMissingParameterType = "none"
+reportMissingTypeStubs = "none"
+reportOptionalCall = "none"
+reportOptionalMemberAccess = "none"
+reportOptionalSubscript = "none"
+reportOverlappingOverload = "warning"
+reportPrivateUsage = "none"
+reportSelfClsParameterName = "none"
+reportUnusedClass = "none"
+reportUnusedFunction = "none"
+reportUnusedImport = "none"
+reportUnusedVariable = "none"
+strictDictionaryInference = false
+strictListInference = false
+strictSetInference = false
+typeCheckingMode = "standard"
+useLibraryCodeForTypes = true
 
 [[tool.pyright.executionEnvironments]]
 "extraPaths" = [".", "./config", "./ui", "./view"]

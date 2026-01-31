@@ -14,18 +14,19 @@
 
 <div align="center">
 
-[![Stars](https://img.shields.io/github/stars/Class-Widgets/Class-Widgets?style=for-the-badge&color=orange&label=Stars)](https://github.com/Class-Widgets/Class-Widgets)
-[![Latest](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?style=for-the-badge&color=purple&label=Latest)](https://github.com/Class-Widgets/Class-Widgets/releases/latest)
-[![Beta](https://img.shields.io/github/v/tag/Class-Widgets/Class-Widgets?include_prereleases&label=Beta&color=yellow&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets/actions)
-[![License](https://img.shields.io/badge/license-GPLv3-blue.svg?label=License&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets?tab=GPL-3.0-1-ov-file)
-[![Downloads](https://img.shields.io/github/downloads/Class-Widgets/Class-Widgets/total.svg?label=Downloads&color=green&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets)
+[![Stars](https://img.shields.io/github/stars/Class-Widgets/Class-Widgets?style=for-the-badge&color=orange&label=星マークです)](https://github.com/Class-Widgets/Class-Widgets)
+[![Latest](https://img.shields.io/github/v/release/Class-Widgets/Class-Widgets?style=for-the-badge&color=purple&label=現在のバージョンです)](https://github.com/Class-Widgets/Class-Widgets/releases/latest)
+[![Beta](https://img.shields.io/github/v/tag/Class-Widgets/Class-Widgets?include_prereleases&label=現在のテスト版です&color=yellow&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets/actions)
+[![License](https://img.shields.io/badge/license-GPLv3-blue.svg?label=許可証です&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets?tab=GPL-3.0-1-ov-file)
+[![Downloads](https://img.shields.io/github/downloads/Class-Widgets/Class-Widgets/total.svg?label=ダウンロードします&color=green&style=for-the-badge)](https://github.com/Class-Widgets/Class-Widgets)
 [![Translation Status](https://hosted.weblate.org/widget/class-widgets-1/view/svg-badge.svg)](https://hosted.weblate.org/engage/class-widgets-1/)
 [![Translation Status](https://hosted.weblate.org/widget/class-widgets-1/view/language-badge.svg)](https://hosted.weblate.org/engage/class-widgets-1/)
 
 ![Banner](../../img/Banner.png)
 
-[![QQ Group](https://img.shields.io/badge/QQ%20%E7%BE%A41-1060640788-blue.svg?logo=qq&color=blue&style=for-the-badge)](https://qm.qq.com/cgi-bin/qm/qr?k=BXGtB7cDFM9CdfIcf9dfmxIWYh9noL6k&jump_from=webapi&authKey=wqfE+jZfLoO52DdVo2KBkVCrzgsxJX78cxx4vaRIHrOKo7tPp9VGsRTx4/kPUZuw)
-[![DC](https://img.shields.io/discord/1332636953719476284?style=for-the-badge&logo=discord&logoColor=ffffff&label=discord%20Server&labelColor=5865f2)](https://discord.gg/EFF4PpqpqZ)
+[![QQ Group](https://img.shields.io/badge/QQ群です-1060640788-blue.svg?logo=qq&color=blue&style=for-the-badge)](https://qm.qq.com/cgi-bin/qm/qr?k=RQG4o-N9pdp3xtoRE1nK2nzUBdISiNbB&jump_from=webapi&authKey=S36TIQpmI3CRvraLr1kxr+ikINlKCyAv6XheWc3KfrfeLrsysV1XtH+jMBVHNaCP)
+[![QQ Group](https://img.shields.io/badge/QQチャンネルです。-pdcwrinlit-blue.svg?logo=qq&color=blue&style=for-the-badge)](https://pd.qq.com/s/1zyskp21s?b=5)
+[![DC](https://img.shields.io/discord/1332636953719476284?style=for-the-badge&logo=discord&logoColor=ffffff&label=Discordサーバーです&labelColor=5865f2)](https://discord.gg/EFF4PpqpqZ)
 
 #### [もっと詳しく >](https://www.bilibili.com/video/BV1xwW9eyEGu/)
 
