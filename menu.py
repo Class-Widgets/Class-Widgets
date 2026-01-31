@@ -121,7 +121,6 @@ from generate_speech import (
 from network_thread import VersionThread, getCity, scheduleThread
 from plugin import p_loader
 from plugin_plaza import PluginPlaza
-from schedule import schedule_manager
 
 
 class I18nManager:

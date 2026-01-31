@@ -1274,11 +1274,19 @@ class FloatingWidget(QWidget):  # 浮窗
             self.countdown_progress_bar.setValue(100 - int((duration / total_time) * 100))
         elif status == 2:
             self.current_lesson_name_text.setText(self.tr("暂无课程"))
-            self.activity_countdown.setText(self.tr("- 分钟") if config_center.read_conf('General', 'blur_floating_countdown') == '1' else '00:00')
+            self.activity_countdown.setText(
+                self.tr("- 分钟")
+                if config_center.read_conf('General', 'blur_floating_countdown') == '1'
+                else '00:00'
+            )
             self.countdown_progress_bar.setValue(100)
         elif status == 3:
             self.current_lesson_name_text.setText(self.tr("放学"))
-            self.activity_countdown.setText(self.tr("- 分钟") if config_center.read_conf('General', 'blur_floating_countdown') == '1' else '00:00')
+            self.activity_countdown.setText(
+                self.tr("- 分钟")
+                if config_center.read_conf('General', 'blur_floating_countdown') == '1'
+                else '00:00'
+            )
             self.countdown_progress_bar.setValue(100)
 
     def update_data(self) -> None:
@@ -2124,8 +2132,6 @@ class DesktopWidget(QWidget):  # 主要小组件
         self.blur_effect.setBlurRadius(25)
         self.blur_effect_label.setGraphicsEffect(self.blur_effect)
 
-
-
     def update_status_for_countdown(
         self, status: int, duration: float, total_time: float, lesson_name: str
     ) -> None:
@@ -2156,7 +2162,7 @@ class DesktopWidget(QWidget):  # 主要小组件
                 if config_center.read_conf('General', 'blur_countdown') == '1'
                 else '00:00'
             )
-        
+
     def update_next_lessons_for_next_activity(self, lessons: List[str]) -> None:
         self.nl_text.setText(get_next_lessons_text(lessons))
 
