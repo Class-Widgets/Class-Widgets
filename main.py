@@ -1247,17 +1247,11 @@ class FloatingWidget(QWidget):  # 浮窗
             )
 
     def update_status(
-        self, isbreak: bool, duration: float, total_time: float, current_lesson_name: str
+        self, status: int, duration: float, total_time: float, current_lesson_name: str
     ) -> None:
-        if isbreak and total_time == 0 and duration == 0:
-            self.current_lesson_name_text.setText(self.tr("暂无课程"))
-            self.activity_countdown.setText(self.tr("- 分钟"))
-            self.countdown_progress_bar.setValue(100)
-        else:
-            if isbreak:
-                self.current_lesson_name_text.setText(self.tr("课间"))
-            else:
-                self.current_lesson_name_text.setText(current_lesson_name)
+        # status 0 为 课间，1 为上课，2 为在所有课程之前，3 为放学
+        if status == 0:
+            self.current_lesson_name_text.setText(self.tr("课间"))
             if config_center.read_conf('General', 'blur_floating_countdown') == '1':
                 minutes_left = (duration + 59) // 60  # 向上取整分钟
                 self.activity_countdown.setText(
@@ -1267,6 +1261,25 @@ class FloatingWidget(QWidget):  # 浮窗
                 mins, secs = divmod(duration, 60)
                 self.activity_countdown.setText(f"{int(mins):02d}:{int(secs):02d}")
             self.countdown_progress_bar.setValue(100 - int((duration / total_time) * 100))
+        elif status == 1:
+            self.current_lesson_name_text.setText(current_lesson_name)
+            if config_center.read_conf('General', 'blur_floating_countdown') == '1':
+                minutes_left = (duration + 59) // 60  # 向上取整分钟
+                self.activity_countdown.setText(
+                    self.tr("< {minutes} 分钟").format(minutes=int(minutes_left))
+                )
+            else:
+                mins, secs = divmod(duration, 60)
+                self.activity_countdown.setText(f"{int(mins):02d}:{int(secs):02d}")
+            self.countdown_progress_bar.setValue(100 - int((duration / total_time) * 100))
+        elif status == 2:
+            self.current_lesson_name_text.setText(self.tr("暂无课程"))
+            self.activity_countdown.setText(self.tr("- 分钟") if config_center.read_conf('General', 'blur_floating_countdown') == '1' else '00:00')
+            self.countdown_progress_bar.setValue(100)
+        elif status == 3:
+            self.current_lesson_name_text.setText(self.tr("放学"))
+            self.activity_countdown.setText(self.tr("- 分钟") if config_center.read_conf('General', 'blur_floating_countdown') == '1' else '00:00')
+            self.countdown_progress_bar.setValue(100)
 
     def update_data(self) -> None:
         time_color = QColor(f'#{config_center.read_conf("Color", "floating_time")}')
@@ -2059,14 +2072,14 @@ class DesktopWidget(QWidget):  # 主要小组件
             utils.focus_manager.restore_requested.emit()
 
     def update_status_for_current_activity(
-        self, isbreak: bool, duration: float, total_time: float, lesson_name: str
+        self, status: int, duration: float, total_time: float, lesson_name: str
     ) -> None:
-        if isbreak and total_time == 0 and duration == 0:
-            self.current_subject.setText(self.tr("暂无课程"))
-        elif isbreak:
-            self.current_subject.setText(QApplication.translate('main', '课间'))
-        else:
+        if status == 0:
+            self.current_subject.setText(self.tr("课间"))
+        elif status == 1:
             self.current_subject.setText(lesson_name)
+        elif status in [2, 3]:
+            self.current_subject.setText(self.tr("暂无课程"))
 
         icon_path = list_.get_subject_icon(lesson_name)
         self.blur_effect_label.setStyleSheet(
@@ -2111,19 +2124,13 @@ class DesktopWidget(QWidget):  # 主要小组件
         self.blur_effect.setBlurRadius(25)
         self.blur_effect_label.setGraphicsEffect(self.blur_effect)
 
+
+
     def update_status_for_countdown(
-        self, isbreak: bool, duration: float, total_time: float, lesson_name: str
+        self, status: int, duration: float, total_time: float, lesson_name: str
     ) -> None:
-        if isbreak and total_time == 0 and duration == 0:
-            self.ac_title.setText(self.tr("暂无课程"))
-            self.activity_countdown.setText(self.tr("- 分钟"))
-            self.countdown_progress_bar.setValue(100)
-        else:
-            self.ac_title.setText(
-                QCoreApplication.translate('main', '距离活动开始还有')
-                if isbreak
-                else QCoreApplication.translate('main', '当前活动结束还有')
-            )
+        if status in [0, 2]:
+            self.ac_title.setText(self.tr('距离活动开始还有'))
             if config_center.read_conf('General', 'blur_countdown') == '1':
                 minutes_left = (duration + 59) // 60  # 向上取整分钟
                 self.activity_countdown.setText(
@@ -2132,8 +2139,24 @@ class DesktopWidget(QWidget):  # 主要小组件
             else:
                 mins, secs = divmod(duration, 60)
                 self.activity_countdown.setText(f"{int(mins):02d}:{int(secs):02d}")
-            self.countdown_progress_bar.setValue(100 - int((duration / total_time) * 100))
-
+        elif status == 1:
+            self.ac_title.setText(self.tr('当前活动结束还有'))
+            if config_center.read_conf('General', 'blur_countdown') == '1':
+                minutes_left = (duration + 59) // 60  # 向上取整分钟
+                self.activity_countdown.setText(
+                    self.tr("< {minutes} 分钟").format(minutes=int(minutes_left))
+                )
+            else:
+                mins, secs = divmod(duration, 60)
+                self.activity_countdown.setText(f"{int(mins):02d}:{int(secs):02d}")
+        else:
+            self.ac_title.setText(self.tr('暂无课程'))
+            self.activity_countdown.setText(
+                self.tr("- 分钟")
+                if config_center.read_conf('General', 'blur_countdown') == '1'
+                else '00:00'
+            )
+        
     def update_next_lessons_for_next_activity(self, lessons: List[str]) -> None:
         self.nl_text.setText(get_next_lessons_text(lessons))
 

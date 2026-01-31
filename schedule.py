@@ -37,7 +37,8 @@ class ScheduleProvider(ABC):
         pass
 
     @abstractmethod
-    def get_status(self) -> Tuple[bool, float, float, str]:
+    # 返回 (status, duration, total_time, lesson_name)
+    def get_status(self) -> Tuple[int, float, float, str]:
         pass
 
     @abstractmethod
@@ -96,9 +97,9 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
             self.parts[part_index] = (part[0] * 60 + part[1], part[2] == 'part', part_name)
 
     def _init_lessons(self):
-        if not self.schedule:
+        if self.schedule is None:
             raise RuntimeError("未初始化课表模型类")
-        if not self.parts:
+        if self.parts is None:
             raise RuntimeError("未初始化节点")
 
         def sort_timeline_key(item: Tuple[int, str, int, int]):
@@ -257,61 +258,55 @@ class ClassWidgetsScheduleVersion1Provider(ScheduleProvider):
             return [x for lesson in lessons_today[start:] for x in lesson[2]]
         return []
 
-    def _init_get_status(self) -> Tuple[bool, float, float, str]:
+    def _init_get_status(self) -> Tuple[int, float, float, str]:
         # 使用统一查找函数初始化并返回状态
+        # 返回 (status, duration, total_time, lesson_name)
+        # status: 0=课间, 1=上课, 2=在所有课程之前, 3=放学
         idx, lessons_today, current_time_in_seconds = self._find_current_idx_and_cache()
+        # 没有课程：视为放学
         if not lessons_today:
-            return True, -1.0, 0.0, ''
-        # 正在上课：返回 (is_break=False, 剩余时长, 课时总时长, 课程名)
+            return 3, -1.0, 0.0, ''
+        # 正在上课 -> status=1
         if not self._cache_status:
             start, duration, names = lessons_today[idx]
-            return (
-                False,
-                (start + duration - current_time_in_seconds),
-                float(duration),
-                '、'.join(names),
-            )
-            # 处于课间或无课：返回 (is_break=True, 课间总时长或特殊值, 到下一节开始所剩时间, '')
-            # 所有课程未开始（在第一节之前）
-            if idx == 0:
-                next_start, next_duration, _ = lessons_today[0]
-                # 首节前：duration 返回到首节开始的秒数，total_time 用大数标记
-                return True, float(next_start - current_time_in_seconds), 1e9 + 7, ''
-        # 已经全部结束
+            return 1, (start + duration - current_time_in_seconds), float(duration), '、'.join(names)
+        # 处于课间或无课
+        # 在第一节之前 -> status=2
+        if idx == 0:
+            next_start, next_duration, _ = lessons_today[0]
+            return 2, float(next_start - current_time_in_seconds), 1e9 + 7, ''
+        # 已经全部结束 -> status=3
         if idx >= len(lessons_today):
-            return True, 0.0, 0.0, ''
-        # 正常课间（位于第 idx-1 节与第 idx 节之间）
+            return 3, 0.0, 0.0, ''
+        # 正常课间（位于第 idx-1 节与第 idx 节之间） -> status=0
         prev_start, prev_duration, _ = lessons_today[idx - 1]
         prev_end = prev_start + prev_duration
         next_start, _next_duration, _ = lessons_today[idx]
         break_total = next_start - prev_end
-        return True, float(break_total), float(next_start - current_time_in_seconds), ''
+        return 0, float(break_total), float(next_start - current_time_in_seconds), ''
 
-    def get_status(self) -> Tuple[bool, float, float, str]:
+    def get_status(self) -> Tuple[int, float, float, str]:
         # 为简洁直接使用统一查找函数，实时返回状态
+        # 返回 (status, duration, total_time, lesson_name)
         idx, lessons_today, current_time_in_seconds = self._find_current_idx_and_cache()
+        # 没有课程：视为放学
         if not lessons_today:
-            return True, -1.0, 0.0, ''
+            return 3, -1.0, 0.0, ''
+        # 正在上课 -> status=1
         if not self._cache_status:
             start, duration, names = lessons_today[idx]
-            return (
-                False,
-                (start + duration - current_time_in_seconds),
-                float(duration),
-                '、'.join(names),
-            )
+            return 1, (start + duration - current_time_in_seconds), float(duration), '、'.join(names)
         # 处于课间或无课
         if idx == 0:
             next_start, next_duration, _ = lessons_today[0]
-            # 首节前：duration 返回到首节开始的秒数，total_time 用大数标记
-            return True, float(next_start - current_time_in_seconds), 1e9 + 7, ''
+            return 2, float(next_start - current_time_in_seconds), 1e9 + 7, ''
         if idx >= len(lessons_today):
-            return True, 0.0, 0.0, ''
+            return 3, 0.0, 0.0, ''
         prev_start, prev_duration, _ = lessons_today[idx - 1]
         prev_end = prev_start + prev_duration
         next_start, _next_duration, _ = lessons_today[idx]
         break_total = next_start - prev_end
-        return True, float(break_total), float(next_start - current_time_in_seconds), ''
+        return 0, float(break_total), float(next_start - current_time_in_seconds), ''
 
     def get_idx(self) -> int:
         idx, _lessons_today, _ = self._find_current_idx_and_cache()
@@ -355,9 +350,9 @@ class ScheduleManager:
             return []
         return self.provider.get_next_lessons()
 
-    def get_status(self) -> Tuple[bool, float, float, str]:
+    def get_status(self) -> Tuple[int, float, float, str]:
         if not self.provider:
-            return True, -1.0, 0.0, ''
+            return 3, -1.0, 0.0, ''
         return self.provider.get_status()
 
     def get_idx(self) -> int:
@@ -370,7 +365,7 @@ class ScheduleManager:
 
 
 class ScheduleThread(QThread):
-    status_updated = pyqtSignal(bool, float, float, str)
+    status_updated = pyqtSignal(int, float, float, str)
     next_lessons_updated = pyqtSignal(list)
     idx_updated = pyqtSignal(int)
 
@@ -403,6 +398,7 @@ class ScheduleThread(QThread):
 class NotificationManager:
     def __init__(self, schedule_thread: ScheduleThread):
         self.idx: Optional[int] = None
+        self.status: Optional[int] = None
         self.current_lesson_name: Optional[str] = None
         self.next_lessons: Optional[List[str]] = None
         self.schedule_thread = schedule_thread
@@ -420,12 +416,14 @@ class NotificationManager:
         self.idx = idx
 
     def on_status_updated(
-        self, is_break: bool, duration: float, total_time: float, lesson_name: str
+        self, status: int, duration: float, total_time: float, lesson_name: str
     ) -> None:
-        if is_break:
-            self.current_lesson_name = ''
-        else:
+        # status: 0=课间,1=上课,2=在所有课程之前,3=放学
+        self.status = status
+        if status == 1:
             self.current_lesson_name = lesson_name
+        else:
+            self.current_lesson_name = ''
 
     def on_next_lessons_updated(self, lessons: List[str]) -> None:
         self.next_lessons = lessons
@@ -433,13 +431,21 @@ class NotificationManager:
     def _provide_notification(self, idx: int) -> None:
         assert self.next_lessons is not None
         assert self.current_lesson_name is not None
-        if idx == -1:
-            if self.next_lessons:
-                tip_toast.push_notification(0, self.next_lessons[0])
-            else:
-                tip_toast.push_notification(2, '')
-        else:
+        # if idx == -1:
+        #     if self.next_lessons:
+        #         tip_toast.push_notification(0, self.next_lessons[0])
+        #     else:
+        #         tip_toast.push_notification(2, '')
+        # else:
+        #     tip_toast.push_notification(1, self.current_lesson_name)
+        assert self.status is not None
+        assert self.status != 2
+        if self.status == 1:
             tip_toast.push_notification(1, self.current_lesson_name)
+        elif self.status == 0:
+            tip_toast.push_notification(0, self.next_lessons[0])
+        elif self.status == 3:
+            tip_toast.push_notification(2, '')
 
 
 schedule_manager = ScheduleManager()
@@ -449,9 +455,9 @@ notification_manager = NotificationManager(schedule_thread)
 if __name__ == '__main__':
     thread_test = ScheduleThread(schedule_manager)
 
-    def print_status(is_break: bool, duration: float, total_time: float, lesson_name: str):
+    def print_status(status: int, duration: float, total_time: float, lesson_name: str):
         print(
-            f"is_break: {is_break}, duration: {duration}, total_time: {total_time}, lesson_name: {lesson_name}"
+            f"status: {status}, duration: {duration}, total_time: {total_time}, lesson_name: {lesson_name}"
         )
 
     def print_next_lessons(lessons: list):
